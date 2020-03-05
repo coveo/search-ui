@@ -3,6 +3,10 @@ import { FocusTrap } from '../ui/FocusTrap/FocusTrap';
 import { l } from '../strings/Strings';
 import { $$ } from './Dom';
 import { KeyboardUtils, KEYBOARD } from './KeyboardUtils';
+import { IQuickViewHeaderOptions } from './DomUtils';
+import { IQueryResult } from '../rest/QueryResult';
+import { IComponentBindings } from '../ui/Base/ComponentBindings';
+import { DomUtils } from '../Core';
 
 export interface IAccessibleModalOptions {
   overlayClose?: boolean;
@@ -31,6 +35,10 @@ export class AccessibleModal {
     return this.activeModal && this.activeModal.wrapper;
   }
 
+  private get headerElement() {
+    return this.element && this.element.querySelector<HTMLElement>('.coveo-modal-header h1');
+  }
+
   constructor(
     private className: string,
     private ownerBody: HTMLBodyElement,
@@ -45,10 +53,29 @@ export class AccessibleModal {
     };
   }
 
+  public openResult(
+    result: IQueryResult,
+    options: IQuickViewHeaderOptions,
+    bindings: IComponentBindings,
+    content: HTMLElement,
+    validation: () => boolean
+  ) {
+    if (this.isOpen) {
+      return;
+    }
+    this.openModalAndTrap(DomUtils.getQuickviewHeader(result, options, bindings).el, content, validation);
+    this.makeAccessible(options.title || result.title);
+  }
+
   public open(title: HTMLElement, content: HTMLElement, validation: () => boolean) {
     if (this.isOpen) {
       return;
     }
+    this.openModalAndTrap(title, content, validation);
+    this.makeAccessible();
+  }
+
+  private openModalAndTrap(title: HTMLElement, content: HTMLElement, validation: () => boolean) {
     this.initiallyFocusedElement = document.activeElement as HTMLElement;
     this.activeModal = this.modalboxModule.open(content, {
       title,
@@ -62,7 +89,6 @@ export class AccessibleModal {
       overlayClose: this.options.overlayClose
     });
     this.focusTrap = new FocusTrap(this.element);
-    this.makeAccessible();
   }
 
   public close() {
@@ -73,8 +99,11 @@ export class AccessibleModal {
     this.activeModal = null;
   }
 
-  private makeAccessible() {
+  private makeAccessible(title?: string) {
     this.element.setAttribute('aria-modal', 'true');
+    if (title) {
+      this.headerElement.setAttribute('aria-label', title);
+    }
     this.makeCloseButtonAccessible();
   }
 

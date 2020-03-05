@@ -1,6 +1,6 @@
 import * as axe from 'axe-core';
 import { $$, Component, YouTubeThumbnail, get } from 'coveo-search-ui';
-import { addFieldEqualFilter, afterQuerySuccess, getRoot, testResultElement, getModal } from './Testing';
+import { addFieldEqualFilter, afterQuerySuccess, getRoot, testResultElement, getModal, waitUntilSelectorIsPresent } from './Testing';
 
 export const AccessibilityYouTubeThumbnail = () => {
   describe('YouTubeThumbnail', () => {
@@ -35,6 +35,9 @@ export const AccessibilityYouTubeThumbnail = () => {
 
     it('should open an accessible modal', async done => {
       openVideo();
+      if (!getModal().querySelector('iframe[title]')) {
+        await waitUntilSelectorIsPresent(getModal(), 'iframe[title]');
+      }
       const axeResults = await axe.run(getModal());
       expect(axeResults).toBeAccessible();
       done();
