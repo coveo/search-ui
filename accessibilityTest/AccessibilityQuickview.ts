@@ -1,6 +1,6 @@
 import * as axe from 'axe-core';
-import { $$, Quickview, Component, get, Dom, Utils } from 'coveo-search-ui';
-import { afterQuerySuccess, getRoot, testResultElement, getModal } from './Testing';
+import { $$, Quickview, Component, get, Dom } from 'coveo-search-ui';
+import { afterQuerySuccess, getRoot, testResultElement, getModal, waitUntilSelectorIsPresent } from './Testing';
 
 export const AccessibilityQuickview = () => {
   describe('Quickview', () => {
@@ -38,7 +38,9 @@ export const AccessibilityQuickview = () => {
 
     it('should open an accessible modal', async done => {
       await openQuickview();
-      await Utils.resolveAfter(500);
+      if (!getModal().querySelector('iframe[title]')) {
+        await waitUntilSelectorIsPresent(getModal(), 'iframe[title]');
+      }
       const axeResults = await axe.run(getModal());
       expect(axeResults).toBeAccessible();
       done();
