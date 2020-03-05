@@ -17,6 +17,7 @@ export class AccessibleModal {
   private focusTrap: FocusTrap;
   private activeModal: Coveo.ModalBox.ModalBox;
   private options: IAccessibleModalOptions;
+  private initiallyFocusedElement: HTMLElement;
 
   public get isOpen() {
     return !!this.focusTrap;
@@ -75,6 +76,7 @@ export class AccessibleModal {
   }
 
   private openModalAndTrap(title: HTMLElement, content: HTMLElement, validation: () => boolean) {
+    this.initiallyFocusedElement = document.activeElement as HTMLElement;
     this.activeModal = this.modalboxModule.open(content, {
       title,
       className: this.className,
@@ -117,5 +119,8 @@ export class AccessibleModal {
   private onModalClose() {
     this.focusTrap.disable();
     this.focusTrap = null;
+    if (this.initiallyFocusedElement && document.body.contains(this.initiallyFocusedElement)) {
+      this.initiallyFocusedElement.focus();
+    }
   }
 }
