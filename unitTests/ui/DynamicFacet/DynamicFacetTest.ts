@@ -12,7 +12,6 @@ import { FakeResults } from '../../Fake';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 import { DynamicFacetManager } from '../../../src/ui/DynamicFacetManager/DynamicFacetManager';
-import { ComponentsTypes } from '../../../src/utils/ComponentsTypes';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
@@ -753,15 +752,13 @@ export function DynamicFacetTest() {
 
     describe('testing the DependsOnManager', () => {
       let dependentFacet: DynamicFacet;
-      const getAllFacetsInstance = ComponentsTypes.getAllFacetsInstance;
 
       beforeEach(() => {
-        dependentFacet = DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@dependentField', dependsOn: '@field' }, test.env).cmp;
+        dependentFacet = DynamicFacetTestUtils.createAdvancedFakeFacet(
+          { field: '@dependentField', dependsOn: test.cmp.options.id },
+          test.env
+        ).cmp;
         spyOn(dependentFacet, 'reset');
-      });
-
-      afterAll(() => {
-        ComponentsTypes.getAllFacetsInstance = getAllFacetsInstance;
       });
 
       it('should initialize the dependsOnManager', () => {
