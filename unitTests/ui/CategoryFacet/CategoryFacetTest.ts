@@ -627,19 +627,46 @@ export function CategoryFacetTest() {
     });
 
     describe('testing the DependsOnManager', () => {
+      let dependentFacet: CategoryFacet;
       beforeEach(() => {
-        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
-        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
+        dependentFacet = Mock.advancedComponentSetup<CategoryFacet>(
+          CategoryFacet,
+          new Mock.AdvancedComponentSetupOptions(
+            undefined,
+            <ICategoryFacetOptions>{
+              field: '@anotherField',
+              dependsOn: test.cmp.options.id
+            },
+            (builder: Mock.MockEnvironmentBuilder) => {
+              builder.withQueryStateModel(test.env.queryStateModel);
+              builder.withRoot(test.env.root);
+              return builder;
+            }
+          )
+        ).cmp;
+
+        spyOn(dependentFacet, 'changeActivePath');
       });
 
       it('should initialize the dependsOnManager', () => {
         expect(test.cmp.dependsOnManager).toBeTruthy();
       });
 
-      it(`when facet appearance is updated (e.g. after a successful query)
-      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
+      it(`when query state changes so that parent has selected values (default condition fulfilled)
+      should not call "changeActivePath" on the dependent facet`, () => {
         Simulate.query(test.env, simulateQueryData);
-        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+        test.cmp.selectValue('value1');
+
+        expect(dependentFacet.changeActivePath).not.toHaveBeenCalled();
+      });
+
+      it(`when query state changes so that parent has no selected values (default condition not fulfilled)
+      should call "changeActivePath" on the dependent facet`, () => {
+        Simulate.query(test.env, simulateQueryData);
+        test.cmp.selectValue('value1');
+        test.cmp.reset();
+
+        expect(dependentFacet.changeActivePath).toHaveBeenCalledTimes(1);
       });
     });
   });
