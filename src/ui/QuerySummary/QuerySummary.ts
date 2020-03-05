@@ -13,6 +13,7 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
+import { KeyboardUtils, KEYBOARD } from '../../Core';
 
 export interface IQuerySummaryOptions {
   onlyDisplaySearchTips?: boolean;
@@ -255,25 +256,31 @@ export class QuerySummary extends Component {
     const cancelLastAction = $$(
       'div',
       {
-        className: 'coveo-query-summary-cancel-last'
+        className: 'coveo-query-summary-cancel-last',
+        tabindex: '0',
+        role: 'button'
       },
       l('CancelLastAction')
     );
 
-    cancelLastAction.on('click', () => {
-      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
-      if (this.lastKnownGoodState) {
-        this.queryStateModel.reset();
-        this.queryStateModel.setMultiple(this.lastKnownGoodState);
-        $$(this.root).trigger(QuerySummaryEvents.cancelLastAction);
-        this.queryController.executeQuery();
-      } else {
-        history.back();
-      }
-    });
+    cancelLastAction.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.cancelLastAction()));
+
+    cancelLastAction.on('click', () => this.cancelLastAction());
 
     return cancelLastAction;
+  }
+
+  private cancelLastAction() {
+    this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
+    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
+    if (this.lastKnownGoodState) {
+      this.queryStateModel.reset();
+      this.queryStateModel.setMultiple(this.lastKnownGoodState);
+      $$(this.root).trigger(QuerySummaryEvents.cancelLastAction);
+      this.queryController.executeQuery();
+    } else {
+      history.back();
+    }
   }
 
   private getSearchTipsTitleElement() {
