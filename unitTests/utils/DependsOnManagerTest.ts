@@ -1,11 +1,10 @@
 import { $$ } from '../Test';
 import { IDependentFacet, DependsOnManager } from '../../src/utils/DependsOnManager';
-import { QueryStateModel, QueryEvents, Component } from '../../src/Core';
+import { QueryStateModel, Component, QueryEvents } from '../../src/Core';
 import { ComponentsTypes } from '../../src/utils/ComponentsTypes';
 
 export interface IDependsOnManagerTestMock {
   facet: IDependentFacet;
-  component: Component;
   manager: DependsOnManager;
 }
 
@@ -15,6 +14,7 @@ export function DependsOnManagerTest() {
     let queryStateModel: QueryStateModel;
     let masterMock: IDependsOnManagerTestMock;
     let dependentMock: IDependsOnManagerTestMock;
+    const getAllFacetsInstance = ComponentsTypes.getAllFacetsInstance;
 
     function createMock(id: string, dependsOn?: string): IDependsOnManagerTestMock {
       const element = document.createElement('div');
@@ -27,18 +27,11 @@ export function DependsOnManagerTest() {
 
       const facet: IDependentFacet = {
         reset: jasmine.createSpy('resetSpy'),
-        toggleDependentFacet: jasmine.createSpy('toggleSpy'),
-        bind: component.bind,
-        element,
-        id,
-        dependsOn,
-        root,
-        queryStateModel
+        ref: component
       };
 
       return {
         facet,
-        component,
         manager: new DependsOnManager(facet)
       };
     }
@@ -48,58 +41,55 @@ export function DependsOnManagerTest() {
       queryStateModel = new QueryStateModel(root);
       masterMock = createMock('@master');
       dependentMock = createMock('@dependent', '@master');
-      spyOn(ComponentsTypes, 'getAllFacetsInstance').and.returnValue([masterMock.component, dependentMock.component]);
+
+      ComponentsTypes.getAllFacetsInstance = () => [masterMock.facet.ref, dependentMock.facet.ref];
+    });
+
+    afterAll(() => {
+      ComponentsTypes.getAllFacetsInstance = getAllFacetsInstance;
     });
 
     it('the dependent facet is hidden at startup', () => {
-      expect($$(dependentMock.facet.element).isVisible()).toBe(false);
+      expect($$(dependentMock.facet.ref.element).isVisible()).toBe(false);
     });
 
     it('the master facet is visible at startup', () => {
-      expect($$(masterMock.facet.element).isVisible()).toBe(true);
+      expect($$(masterMock.facet.ref.element).isVisible()).toBe(true);
     });
 
-    it(`when a master facet has selected value(s)
-    calling "updateVisibilityBasedOnDependsOn" should show the dependent facet`, () => {
-      const attribute = QueryStateModel.getFacetId(masterMock.facet.id);
+    it(`when a master facet has selected value(s) (default condition fulfilled)
+      when triggering a new query
+      should enable the dependent facet`, () => {
+      const attribute = QueryStateModel.getFacetId(masterMock.facet.ref.options.id);
       queryStateModel.registerNewAttribute(attribute, ['a value']);
+      spyOn(dependentMock.facet.ref, 'enable');
 
-      dependentMock.manager.updateVisibilityBasedOnDependsOn();
-      expect($$(dependentMock.facet.element).isVisible()).toBe(true);
-    });
-
-    it(`when a master facet has no selected values
-    calling "updateVisibilityBasedOnDependsOn" should hide the dependent facet`, () => {
-      const attribute = QueryStateModel.getFacetId(masterMock.facet.id);
-      queryStateModel.registerNewAttribute(attribute, []);
-
-      dependentMock.manager.updateVisibilityBasedOnDependsOn();
-      expect($$(dependentMock.facet.element).isVisible()).toBe(false);
-    });
-
-    it(`when triggering a new query
-      should call "toggleDependentFacet" on the master facet`, () => {
       $$(root).trigger(QueryEvents.newQuery);
-
-      expect(masterMock.facet.toggleDependentFacet).toHaveBeenCalledWith(dependentMock.component);
+      expect(dependentMock.facet.ref.enable).toHaveBeenCalledTimes(1);
     });
 
-    describe('when "listenToParentIfDependentFacet" is triggered on a dependent facet', () => {
+    it(`when a master facet has no selected value (default condition unfulfilled)
+      when triggering a new query
+      should disable the dependent facet`, () => {
+      spyOn(dependentMock.facet.ref, 'disable');
+
+      $$(root).trigger(QueryEvents.newQuery);
+      expect(dependentMock.facet.ref.disable).toHaveBeenCalledTimes(1);
+    });
+
+    describe('when query state changes', () => {
       let attribute: string;
       beforeEach(() => {
-        attribute = QueryStateModel.getFacetId(masterMock.facet.id);
-        dependentMock.manager.listenToParentIfDependentFacet();
+        attribute = QueryStateModel.getFacetId(masterMock.facet.ref.options.id);
         queryStateModel.registerNewAttribute(attribute, []);
       });
 
-      it(`when query state changes
-      should reset if parent has no selected values`, () => {
+      it(`should reset if parent has no selected values (default condition fulfilled)`, () => {
         $$(root).trigger('state:change');
         expect(dependentMock.facet.reset).toHaveBeenCalled();
       });
 
-      it(`when query state changes
-      should not reset if parent has selected values`, () => {
+      it(`should not reset if parent has selected values (default condition unfulfilled)`, () => {
         queryStateModel.set(attribute, ['anything']);
         $$(root).trigger('state:change');
         expect(dependentMock.facet.reset).not.toHaveBeenCalled();
@@ -121,7 +111,7 @@ export function DependsOnManagerTest() {
 
     it(`when a master facet has dependent facets with selected values
       calling "dependentFacetsHaveSelectedValues" should return true`, () => {
-      const attribute = QueryStateModel.getFacetId(dependentMock.facet.id);
+      const attribute = QueryStateModel.getFacetId(dependentMock.facet.ref.options.id);
       queryStateModel.registerNewAttribute(attribute, ['a value']);
       expect(masterMock.manager.dependentFacetsHaveSelectedValues).toBe(true);
     });
