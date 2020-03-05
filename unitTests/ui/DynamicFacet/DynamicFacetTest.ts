@@ -753,42 +753,32 @@ export function DynamicFacetTest() {
 
     describe('testing the DependsOnManager', () => {
       let dependentFacet: DynamicFacet;
+      const getAllFacetsInstance = ComponentsTypes.getAllFacetsInstance;
 
       beforeEach(() => {
-        dependentFacet = DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@dependentField', dependsOn: test.cmp.options.id }).cmp;
-        spyOn(ComponentsTypes, 'getAllFacetsInstance').and.returnValue([test.cmp, dependentFacet]);
-        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
+        dependentFacet = DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@dependentField', dependsOn: '@field' }, test.env).cmp;
+        spyOn(dependentFacet, 'reset');
+      });
+
+      afterAll(() => {
+        ComponentsTypes.getAllFacetsInstance = getAllFacetsInstance;
       });
 
       it('should initialize the dependsOnManager', () => {
-        expect(test.cmp.dependsOnManager).toBeTruthy();
+        expect(dependentFacet.dependsOnManager).toBeTruthy();
       });
 
-      it(`when facet appearance is updated (e.g. when createDom is called)
-      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
-        test.cmp.createDom();
-        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      it(`when query state changes so that parent has selected values (default condition fulfilled)
+      should not call "reset" on the dependent facet`, () => {
+        test.cmp.selectValue('test');
+        expect(dependentFacet.reset).not.toHaveBeenCalled();
       });
 
-      it(`when calling reset
-      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
-        test.cmp.reset();
-        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
-      });
-
-      it(`when facet has no selected values
-        when triggering a newQuery
-        dependent facet should be disabled`, () => {
-        $$(test.env.root).trigger(QueryEvents.newQuery);
-        expect(dependentFacet.disabled).toBe(true);
-      });
-
-      it(`when facet has selected values
-        when triggering a newQuery
-        dependent facet should be enabled`, () => {
-        test.cmp.selectValue('value');
-        $$(test.env.root).trigger(QueryEvents.newQuery);
-        expect(dependentFacet.disabled).toBe(false);
+      it(`when query state changes so that parent has no selected values (default condition not fulfilled)
+      should call "reset" on the dependent facet`, () => {
+        test.cmp.selectValue('test');
+        test.cmp.deselectValue('test');
+        expect(dependentFacet.reset).toHaveBeenCalledTimes(1);
       });
     });
   });
