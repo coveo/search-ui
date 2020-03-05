@@ -2,7 +2,6 @@ import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { exportGlobally } from '../../GlobalExports';
 import { IQueryResult } from '../../rest/QueryResult';
 import { $$, Dom } from '../../utils/Dom';
-import { DomUtils } from '../../utils/DomUtils';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { Utils } from '../../utils/Utils';
@@ -154,11 +153,7 @@ export class YouTubeThumbnail extends Component {
 
     div.append(iframe.el);
 
-    this.modalbox.open(
-      DomUtils.getQuickviewHeader(this.result, { showDate: true, title: this.result.title }, this.bindings).el,
-      div.el,
-      () => true
-    );
+    this.modalbox.openResult(this.result, { showDate: true, title: this.result.title }, this.bindings, div.el, () => true);
 
     $$($$(this.modalbox.wrapper).find('.coveo-quickview-close-button')).on('click', () => {
       this.modalbox.close();

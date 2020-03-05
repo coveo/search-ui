@@ -219,7 +219,8 @@ export class Simulate {
         $$(
           'header',
           { className: 'coveo-modal-header' },
-          (closeButton = $$('div', { className: 'coveo-quickview-close-button coveo-small-close' }))
+          (closeButton = $$('div', { className: 'coveo-quickview-close-button coveo-small-close' })),
+          $$('h1')
         ).el
       ).el)
     ).el;
