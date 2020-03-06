@@ -13,7 +13,7 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { KeyboardUtils, KEYBOARD } from '../../Core';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IQuerySummaryOptions {
   onlyDisplaySearchTips?: boolean;
@@ -256,16 +256,16 @@ export class QuerySummary extends Component {
     const cancelLastAction = $$(
       'div',
       {
-        className: 'coveo-query-summary-cancel-last',
-        tabindex: '0',
-        role: 'button'
+        className: 'coveo-query-summary-cancel-last'
       },
       l('CancelLastAction')
     );
 
-    cancelLastAction.on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.cancelLastAction()));
-
-    cancelLastAction.on('click', () => this.cancelLastAction());
+    new AccessibleButton()
+      .withElement(cancelLastAction)
+      .withClickAction(() => this.cancelLastAction())
+      .withEnterKeyboardAction(() => this.cancelLastAction())
+      .build();
 
     return cancelLastAction;
   }
