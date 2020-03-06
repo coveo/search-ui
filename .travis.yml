@@ -6,6 +6,12 @@ notifications:
   email:
     on_success: change
     on_failure: always
+  slack:
+    rooms:
+      - secure: kEnVWejWIDAo6bWMovYAd/oHXJPOtfAdUg/I0tQu8a4BWBo6SaO05fLs/7DjRkXS2vAA++0aim96lQl0TmMFqpooYCf0XTO/797FPVQx0yA3W5XI20vwWUGxW4jKy56WQBTvxPzdSsSlOMcoVVYU8ID86D7coiAuzdfw8olaqmlN3gzcSwvrWbJsa3tAzQFTC0vvWgFyURxB79amYkl5y+KDQW4i7iSDTicXHj/5Tm6RxX3hUUYZFe/p/XenU3/KF3046EL3aYv98QpA3S8FXxMR5lrbLqXHCF8zMljzR2fVmlPSsrLgsXbZY9bvk64wgD+3borN42kab0kQxH6fPoCi7bKtQOoOdq1Z7b+YGRIUzEazl0goM7sQTq9aa3rR2+gzyYe4aLuCo3A9vOFIUGqEEiwmy2SCN7wa/yiWjreaaziRuZPaVo14cGfjtQ1z8S2okYFVmJM8EHzestpsnwTSDApX1w5cBlpYfFToGPYBR6B/Lhn1h6miUd+xNL+KJQpOXPOJVeiNacFzLG1nCq8wGwQ/terW5sODdkPLuKUV6UF6ZR10WED2WlqmdrtnDg5+t+3WMxX5oQGdwq+Zv5rlJVboa0WgDLhsEfNrycK9ncWu2tGE2MUsnEiwqqbqfh/O7E+xBbGAqk/rXLfCcWrSz+6o3K6/Xaq/NA6gAhQ=
+    on_success: never
+    on_failure: always
+    on_pull_requests: false
 node_js:
 - 8.15.1
 cache:
@@ -73,6 +79,11 @@ deploy:
     upload-dir: proda/StaticCDN/searchui/v$PACKAGE_JSON_VERSION
     acl: public_read
     skip_cleanup: true
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "! $TRAVIS_TAG =~ .*beta.*"
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:

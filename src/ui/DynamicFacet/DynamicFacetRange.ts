@@ -26,7 +26,8 @@ import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacet
  * - [`valueCaption`]{@link DynamicFacet.options.valueCaption}
  * - [`sortCriteria`]{@link DynamicFacet.options.sortCriteria}
  *
- *  @notSupportedIn salesforcefree
+ * @notSupportedIn salesforcefree
+ * @availablesince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
  */
 export class DynamicFacetRange extends DynamicFacet implements IComponentBindings {
   static ID = 'DynamicFacetRange';
@@ -53,6 +54,9 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
     /**
      * The string format to apply to the minimum and maximum value of each range displayed in the facet.
      *
+     * See [`DynamicFacetRangeValueFormat`]{@link DynamicFacetRangeValueFormat} for the list and
+     * description of allowed formats.
+     *
      * **Default:** If the [`field`]{@link DynamicFacet.options.field} contains "date", the format will be [`date`]{@link DynamicFacetRangeValueFormat.date}.
      * Else, it will be [`number`]{@link DynamicFacetRangeValueFormat.number}.
      *
@@ -73,7 +77,7 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
       section: 'CommonOptions'
     }),
     /**
-     * The currency symbol to use if the [`valueFormat`]{@link DynamicFacetRangeValueFormat.options.valueFormat} is [`currency`]{@link DynamicFacetRangeValueFormat.currency}.
+     * The currency symbol to use if the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} is [`currency`]{@link DynamicFacetRangeValueFormat.currency}.
      *
      * By default, the component uses the currency associated with the currently loaded culture file (see [Changing the Language of Your Search Interface](https://docs.coveo.com/421/)).
      */
@@ -85,7 +89,7 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
      *
      * If this option is not defined, the index will try to generate automatic ranges.
      */
-    ranges: ComponentOptions.buildJsonOption<IRangeValue[]>()
+    ranges: ComponentOptions.buildJsonOption<IRangeValue[]>({ required: true, section: 'CommonOptions' })
   };
 
   /**

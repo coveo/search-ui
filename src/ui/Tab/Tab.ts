@@ -152,22 +152,13 @@ export class Tab extends Component {
     constant: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
 
     /**
-     * Specifies whether to filter duplicates in the search results when the user selects the Tab.
+     * Whether to filter out duplicates, so that items resembling one another only appear once in the query results.
      *
-     * Setting this option to `true` forces duplicates to not appear in the search results. However, {@link Facet}
-     * counts still include duplicates, which can be confusing for the end user. This is a limitation of the index.
-     *
-     * **Example:**
-     *
-     * > The end user narrows a query down to one item that has a duplicate. If this options is `true` and the user
-     * > selects the Tab, only one item appears in the search results while the Facet count is still 2.
-     *
-     * **Note:**
-     *
-     * > It is also possible to enable duplicate filtering for the entire {@link SearchInterface} rather than for a
-     * > single Tab (see {@link SearchInterface.options.enableDuplicateFiltering}).
-     *
-     * Default value is `false`.
+     * **Notes:**
+     * - Two items must be at least 85% similar to one another to be considered duplicates.
+     * - When a pair of duplicates is found, only the higher-ranked item of the two is kept in the result set.
+     * - Enabling this feature can make the total result count less precise, as only the requested page of query results is submitted to duplicate filtering.
+     * - The default value for this option can be modified through the {@link SearchInterface} component.
      */
     enableDuplicateFiltering: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
@@ -212,6 +203,8 @@ export class Tab extends Component {
      * to `false` on one Tab to disable responsive mode.
      *
      * Default value is `true`.
+     *
+     * @availablesince [October 2016 Release (v1.1550.5)](https://docs.coveo.com/en/309/#october-2016-release-v115505)
      */
     enableResponsiveMode: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'ResponsiveOptions' }),
 

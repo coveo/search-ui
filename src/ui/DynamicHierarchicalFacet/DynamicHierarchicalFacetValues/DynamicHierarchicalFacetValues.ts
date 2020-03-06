@@ -9,6 +9,8 @@ import { Utils } from '../../../utils/Utils';
 import { l } from '../../../strings/Strings';
 import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicFacetValues/DynamicFacetValueMoreLessButton';
 import { IDynamicHierarchicalFacetValues, IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../IDynamicHierarchicalFacet';
+import { SVGDom } from '../../../utils/SVGDom';
+import { SVGIcons } from '../../../utils/SVGIcons';
 
 export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacetValues {
   private facetValues: IDynamicHierarchicalFacetValue[] = [];
@@ -23,6 +25,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
   }
 
   public createFromResponse(response: IFacetResponse) {
+    this.clearPath();
     this.facetValues = response.values.map(responseValue => this.createFacetValueFromResponse(responseValue));
   }
 
@@ -47,7 +50,6 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
         numberOfResults: responseValue.numberOfResults,
         state: responseValue.state,
         moreValuesAvailable: responseValue.moreValuesAvailable,
-        preventAutoSelect: false,
         path: newPath,
         displayValue,
         children
@@ -70,7 +72,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
 
   public resetValues() {
     this.facetValues = [];
-    this._selectedPath = [];
+    this.clearPath();
   }
 
   public clearPath() {
@@ -105,7 +107,6 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
         numberOfResults: 0,
         state: FacetValueState.idle,
         moreValuesAvailable: false,
-        preventAutoSelect: false,
         children
       },
       this.facet
@@ -150,11 +151,18 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
   }
 
   private prependAllCategories() {
-    const clear = $$(
-      'li',
-      {},
-      $$('button', { className: 'coveo-dynamic-hierarchical-facet-all', title: l('AllCategories') }, l('AllCategories'))
+    const clearButton = $$(
+      'button',
+      { className: 'coveo-dynamic-hierarchical-facet-all', title: this.facet.options.clearLabel },
+      this.facet.options.clearLabel
     );
+    clearButton.toggleClass('coveo-show-when-collapsed', this.facet.values.selectedPath.length === 1);
+
+    const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow' }, SVGIcons.icons.arrowDown);
+    SVGDom.addClassToSVGInContainer(arrowIcon.el, 'coveo-dynamic-hierarchical-facet-value-arrow-svg');
+    clearButton.prepend(arrowIcon.el);
+
+    const clear = $$('li', {}, clearButton);
     clear.on('click', () => this.facet.header.options.clear());
     $$(this.list).prepend(clear.el);
   }
@@ -163,7 +171,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
     const showLess = new DynamicFacetValueShowMoreLessButton({
       className: 'coveo-dynamic-hierarchical-facet-show-less',
       ariaLabel: l('ShowLessFacetResults', this.facet.options.title),
-      label: l('ShowLessCategories'),
+      label: l('ShowLess'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
         this.facet.showLessValues();
@@ -177,7 +185,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
     const showMore = new DynamicFacetValueShowMoreLessButton({
       className: 'coveo-dynamic-hierarchical-facet-show-more',
       ariaLabel: l('ShowMoreFacetResults', this.facet.options.title),
-      label: l('ShowMoreCategories'),
+      label: l('ShowMore'),
       action: () => {
         this.facet.enableFreezeFacetOrderFlag();
         this.facet.showMoreValues();

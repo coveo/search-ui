@@ -53,6 +53,8 @@ export function initSearchbox(element: HTMLElement, searchPageUri: string, optio
   searchInterfaceOptions.searchPageUri = searchPageUri;
   searchInterfaceOptions.autoTriggerQuery = false;
   searchInterfaceOptions.enableHistory = false;
+  searchInterfaceOptions = { ...searchInterfaceOptions, ...options.StandaloneSearchInterface };
+
   options = _.extend({}, options, { StandaloneSearchInterface: searchInterfaceOptions });
   return Initialization.initializeFramework(element, options, () => {
     return Initialization.initStandaloneSearchInterface(element, options);
@@ -469,6 +471,8 @@ Initialization.registerNamedMethod('configureResourceRoot', (path: string) => {
  * This can be an element onto which a component instance is bound
  * (e.g., document.querySelector(".CoveoAnalytics"),
  * or an ancestor of such an element (e.g., document.getElementById("search").
+ *
+ * @availablesince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
  */
 export function enableAnalytics(searchRoot = document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement) {
   const analytics = getCoveoAnalytics(searchRoot) as Analytics;
@@ -513,6 +517,8 @@ Initialization.registerNamedMethod('clearLocalData', () => {
  * This can be an element onto which a component instance is bound
  * (e.g., document.querySelector(".CoveoAnalytics"),
  * or an ancestor of such an element (e.g., document.getElementById("search").
+ *
+ * @availablesince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
  */
 export function disableAnalytics(searchRoot = document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement) {
   const analytics = getCoveoAnalytics(searchRoot) as Analytics;

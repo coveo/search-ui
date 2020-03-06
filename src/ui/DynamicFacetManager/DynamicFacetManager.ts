@@ -45,7 +45,8 @@ export interface IDynamicManagerCompatibleFacet extends Component, IAutoLayoutAd
  * The `DynamicFacetManager` component is meant to be a parent for multiple [DynamicFacet]{@link DynamicFacet} & [DynamicFacetRange]{@link DynamicFacetRange} components.
  * This component allows controlling a set of [`DynamicFacet`]{@link DynamicFacet} and [`DynamicFacetRange`]{@link DynamicFacetRange} as a group.
  *
- * See [Using Dynamic Facets](https://docs.coveo.com/en/2917/).
+ * @externaldocs [Using Dynamic Facets](https://docs.coveo.com/en/2917/).
+ * @availablesince [May 2019 Release (v2.6063)](https://docs.coveo.com/en/2909/)
  */
 export class DynamicFacetManager extends Component {
   static ID = 'DynamicFacetManager';
@@ -63,7 +64,7 @@ export class DynamicFacetManager extends Component {
      */
     enableReorder: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
     /**
-     * A function to execute whenever facets are updated in the query response (see [Implementing Custom Dynamic Facet Behaviors](https://docs.coveo.com/en/2902/#implementing-custom-dynamic-facet-behaviors)).
+     * A function to execute whenever facets are updated in the query response @externaldocs [Defining Custom Dynamic Facet Behaviors](https://docs.coveo.com/en/2917/javascript-search-framework/using-dynamic-facets#defining-custom-dynamic-facet-behaviors).
      *
      * **Note:**
      * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
@@ -76,7 +77,7 @@ export class DynamicFacetManager extends Component {
       return null;
     }),
     /**
-     * A custom sort function to execute on facets on every successful query response (see [Implementing a Custom Dynamic Facet Sort Function](https://docs.coveo.com/en/2902/#implementing-a-custom-dynamic-facet-sort-function)).
+     * A custom sort function to execute on facets on every successful query response @externaldocs [Using Custom Dynamic Facet Sort Functions](https://docs.coveo.com/en/2917/javascript-search-framework/using-dynamic-facets#using-custom-dynamic-facet-sort-functions).
      *
      * **Note:**
      * > If specified, the function must implement the JavaScript compareFunction (see [Array.prototype.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
@@ -99,7 +100,7 @@ export class DynamicFacetManager extends Component {
      *
      * Using the value `-1` disables the feature and keeps all facets expanded.
      *
-     * **Default:** `4`
+     * @availablesince [September 2019 Release (v2.7023)](https://docs.coveo.com/en/2990/)
      */
     maximumNumberOfExpandedFacets: ComponentOptions.buildNumberOption({ defaultValue: 4, min: -1 })
   };
@@ -142,7 +143,7 @@ export class DynamicFacetManager extends Component {
   private initEvents() {
     this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => this.handleAfterComponentsInitialization());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
   private isDynamicFacet(component: Component) {
@@ -190,41 +191,44 @@ export class DynamicFacetManager extends Component {
       dynamicFacet.handleQueryResults(data.results);
     });
 
-    if (this.options.enableReorder) {
-      this.mapResponseToComponents(data.results.facets);
-      this.sortFacetsIfCompareOptionsProvided();
-      this.reorderDynamicFacetsInDom();
+    const wasFacetOrderFrozen = data.query.facetOptions && data.query.facetOptions.freezeFacetOrder;
+    if (wasFacetOrderFrozen) {
+      return this.callOnUpdateOnChildrenFacets();
     }
+
+    if (this.options.enableReorder) {
+      this.options.compareFacets ? this.sortFacetsWithCompareOption() : this.sortFacetsWithResponseOrder(data.results.facets);
+      this.reorderFacetsInDom();
+    }
+
+    this.respectMaximumExpandedFacetsThreshold();
+    this.callOnUpdateOnChildrenFacets();
   }
 
-  private mapResponseToComponents(facetsResponse: IFacetResponse[]) {
+  private callOnUpdateOnChildrenFacets() {
+    if (!this.options.onUpdate) {
+      return;
+    }
+
+    this.childrenFacets.forEach((dynamicFacet, index) => this.options.onUpdate(dynamicFacet, index));
+  }
+
+  private sortFacetsWithResponseOrder(facetsResponse: IFacetResponse[]) {
     const facetsInResponse = facetsResponse.map(({ facetId }) => this.getChildFacetWithId(facetId)).filter(Utils.exists);
     const facetsNotInResponse = without(this.childrenFacets, ...facetsInResponse);
-
-    facetsInResponse.forEach(facet => facet.enable());
 
     this.childrenFacets = [...facetsInResponse, ...facetsNotInResponse];
   }
 
-  private sortFacetsIfCompareOptionsProvided() {
-    if (this.options.compareFacets) {
-      this.childrenFacets = this.childrenFacets.sort(this.options.compareFacets);
-    }
+  private sortFacetsWithCompareOption() {
+    this.childrenFacets = this.childrenFacets.sort(this.options.compareFacets);
   }
 
-  private reorderDynamicFacetsInDom() {
+  private reorderFacetsInDom() {
     this.resetContainer();
     const fragment = document.createDocumentFragment();
 
-    this.childrenFacets.forEach((dynamicFacet, index) => {
-      fragment.appendChild(dynamicFacet.element);
-
-      if (this.options.onUpdate) {
-        this.options.onUpdate(dynamicFacet, index);
-      }
-    });
-
-    this.respectMaximumExpandedFacetsThreshold();
+    this.childrenFacets.forEach(dynamicFacet => fragment.appendChild(dynamicFacet.element));
 
     this.containerElement.appendChild(fragment);
     this.prependContainer();
@@ -236,13 +240,10 @@ export class DynamicFacetManager extends Component {
     }
 
     const [collapsableFacets, uncollapsableFacets] = partition(this.displayedFacets, facet => facet.options.enableCollapse);
-    const [facetsWithActiveValues, remainingFacets] = partition(collapsableFacets, facet => facet.hasActiveValues);
-    let numberOfFacetsLeftToExpand =
-      this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length - facetsWithActiveValues.length;
+    let facetsLeftToExpandCounter = this.options.maximumNumberOfExpandedFacets - uncollapsableFacets.length;
 
-    facetsWithActiveValues.forEach(dynamicFacet => dynamicFacet.expand());
-    remainingFacets.forEach(dynamicFacet => {
-      if (numberOfFacetsLeftToExpand < 1) {
+    collapsableFacets.forEach(dynamicFacet => {
+      if (facetsLeftToExpandCounter < 1) {
         return dynamicFacet.collapse();
       }
 
@@ -255,7 +256,7 @@ export class DynamicFacetManager extends Component {
         return dynamicFacet.collapse();
       }
 
-      numberOfFacetsLeftToExpand--;
+      facetsLeftToExpandCounter--;
       dynamicFacet.expand();
     });
   }

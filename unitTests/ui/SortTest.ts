@@ -49,6 +49,15 @@ export function SortTest() {
       expect(test.cmp.select).toHaveBeenCalled();
     });
 
+    it("should trigger 'selectAndExecuteQuery' on click", function() {
+      test = buildSort('relevancy');
+
+      spyOn(test.cmp, 'selectAndExecuteQuery');
+
+      test.env.element.click();
+      expect(test.cmp.selectAndExecuteQuery).toHaveBeenCalled();
+    });
+
     it("should set a 'hidden' CSS class when the results from a querySuccess are empty", function() {
       $$(test.env.root).trigger(QueryEvents.querySuccess, <IQuerySuccessEventArgs>{
         results: {

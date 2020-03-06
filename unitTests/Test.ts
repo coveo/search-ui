@@ -18,6 +18,9 @@ BackOffRequestTest();
 import { FacetSortCriteriaTest } from './rest/Facet/FacetSortCriteriaTest';
 FacetSortCriteriaTest();
 
+import { PlanTest } from './rest/PlanTest';
+PlanTest();
+
 import { CookieUtilsTest } from './utils/CookieUtilsTest';
 CookieUtilsTest();
 
@@ -56,6 +59,9 @@ FacetQueryControllerTest();
 
 import { HistoryControllerTest } from './controllers/HistoryControllerTest';
 HistoryControllerTest();
+
+import { LocalStorageHistoryControllerTest } from './controllers/LocalStorageHistoryControllerTest';
++LocalStorageHistoryControllerTest();
 
 import { QueryControllerTest } from './controllers/QueryControllerTest';
 QueryControllerTest();
@@ -809,3 +815,12 @@ ResultPreviewsManagerTest();
 
 import { CommerceQueryTest } from './ui/CommerceQueryTest';
 CommerceQueryTest();
+
+import { FocusTrapTest } from './ui/FocusTrapTest';
+FocusTrapTest();
+
+import { AccessibleModalTest } from './utils/AccessibleModalTest';
+AccessibleModalTest();
+
+import { SortDropdownTest } from './ui/SortDropdownTest';
+SortDropdownTest();

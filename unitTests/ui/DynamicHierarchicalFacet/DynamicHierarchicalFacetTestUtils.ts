@@ -19,7 +19,7 @@ export class DynamicHierarchicalFacetTestUtils {
       numberOfValues: 5,
       pageSize: 10,
       enableMoreLess: true,
-      basePath: [],
+      basePath: ['hello', 'world'],
       ...options
     };
   }
@@ -33,7 +33,6 @@ export class DynamicHierarchicalFacetTestUtils {
       displayValue: value,
       moreValuesAvailable: false,
       numberOfResults: Math.ceil(Math.random() * 100000),
-      preventAutoSelect: false,
       path: [value]
     };
   }

@@ -51,6 +51,7 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
       expect(facetRequest().type).toBe(facet.facetType);
       expect(facetRequest().delimitingCharacter).toBe(facet.options.delimitingCharacter);
       expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
+      expect(facetRequest().basePath).toBe(facet.options.basePath);
     });
 
     it('the facet option freezeFacetOrder should not be defined by default', () => {
@@ -63,6 +64,17 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
       dynamicHierarchicalFacetQueryController.enableFreezeFacetOrderFlag();
       putFacetIntoQueryBuilder();
       expect(queryFacetOptions().freezeFacetOrder).toBe(true);
+    });
+
+    it('preventAutoSelect should be false by default', () => {
+      expect(facetRequest().preventAutoSelect).toBe(false);
+    });
+
+    it(`when calling enablePreventAutoSelectionFlag
+      allows to enable the flag`, () => {
+      dynamicHierarchicalFacetQueryController.enablePreventAutoSelectionFlag();
+
+      expect(facetRequest().preventAutoSelect).toBe(true);
     });
 
     it('numberOfValues should be equal to the numberOfValues option by default', () => {
@@ -122,7 +134,6 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
 
         expect(currentValue.value).toBe(facetValue.value);
         expect(currentValue.state).toBe(facetValue.state);
-        expect(currentValue.preventAutoSelect).toBe(facetValue.preventAutoSelect);
         expect(currentValue.retrieveCount).toBe(facetValue.retrieveCount);
       });
 
@@ -204,7 +215,5 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
         );
       });
     });
-
-    // TODO: add tests for dependsOnManager when feature is reworked
   });
 }

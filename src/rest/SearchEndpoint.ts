@@ -37,10 +37,10 @@ import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
-import { BackOffRequest } from './BackOffRequest';
-import { IBackOffRequest } from 'exponential-backoff';
+import { BackOffRequest, IBackOffRequest } from './BackOffRequest';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
+import { IPlanResponse, ExecutionPlan } from './Plan';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -58,9 +58,13 @@ export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
 /**
  * The `SearchEndpoint` class allows the framework to perform HTTP requests against the Search API (e.g., searching, getting query suggestions, getting the HTML preview of an item, etc.).
  *
- * @externaldocumentation https://docs.coveo.com/331/
+ * **Note:**
  *
- * **Note:** When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will _not_ trigger any [query events](https://docs.coveo.com/417/#query-events). In some cases, this may be what you want. However, if you _do_ want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the [`queryController`]{@link QueryController} instance instead.
+ * When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will *not* trigger any [query events](https://docs.coveo.com/en/417/#query-events).
+ *
+ * In some cases, this may be what you want. However, if you *do* want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the [`queryController`]{@link QueryController} instance instead.
+ *
+ * @externaldocs [JavaScript Search Framework Endpoint](https://docs.coveo.com/en/331/)
  */
 export class SearchEndpoint implements ISearchEndpoint {
   /**
@@ -322,6 +326,23 @@ export class SearchEndpoint implements ISearchEndpoint {
     return this.caller.useJsonp;
   }
 
+  @includeActionsHistory()
+  @includeReferrer()
+  @includeVisitorId()
+  @includeIsGuestUser()
+  private buildCompleteCall(request: any, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
+    Assert.exists(request);
+    callParams = {
+      ...callParams,
+      requestData: {
+        ...callParams.requestData,
+        ..._.omit(request, queryParam => Utils.isNullOrUndefined(queryParam))
+      }
+    };
+
+    return { options: callOptions, params: callParams };
+  }
+
   /**
    * Performs a search on the index and returns a Promise of [`IQueryResults`]{@link IQueryResults}.
    *
@@ -336,25 +357,13 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/')
   @method('POST')
   @responseType('text')
-  @includeActionsHistory()
-  @includeReferrer()
-  @includeVisitorId()
-  @includeIsGuestUser()
   public search(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IQueryResults> {
-    Assert.exists(query);
-    callParams = {
-      ...callParams,
-      requestData: {
-        ...callParams.requestData,
-        ..._.omit(query, queryParam => Utils.isNullOrUndefined(queryParam))
-      }
-    };
-
+    const call = this.buildCompleteCall(query, callOptions, callParams);
     this.logger.info('Performing REST query', query);
 
     const start = new Date();
 
-    return this.performOneCall<IQueryResults>(callParams, callOptions).then(results => {
+    return this.performOneCall<IQueryResults>(call.params, call.options).then(results => {
       this.logger.info('REST query successful', results, query);
 
       // Version check
@@ -382,6 +391,29 @@ export class SearchEndpoint implements ISearchEndpoint {
       return results;
     });
   }
+
+  /**
+   * Gets the plan of execution of a search request, without performing it.
+   *
+   * @param query The query to execute. Typically, the query object is built using a
+   * [`QueryBuilder`]{@link QueryBuilder}.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<ExecutionPlan>} A Promise of plan results.
+   */
+  @path('/plan')
+  @method('POST')
+  @requestDataType('application/json')
+  @responseType('json')
+  public async plan(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<ExecutionPlan> {
+    const call = this.buildCompleteCall(query, callOptions, callParams);
+    this.logger.info('Performing REST query PLAN', query);
+
+    const planResponse = await this.performOneCall<IPlanResponse>(call.params, call.options);
+    this.logger.info('REST query successful', planResponse, query);
+    return new ExecutionPlan(planResponse);
+  }
+
   /**
    * Gets a link / URI to download a query result set to the XLSX format.
    *
@@ -783,26 +815,15 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/querySuggest')
   @method('POST')
   @responseType('text')
-  @includeActionsHistory()
-  @includeReferrer()
-  @includeVisitorId()
-  @includeIsGuestUser()
   public getQuerySuggest(
     request: IQuerySuggestRequest,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<IQuerySuggestResponse> {
-    callParams = {
-      ...callParams,
-      requestData: {
-        ...callParams.requestData,
-        ..._.omit(request, parameter => Utils.isNullOrUndefined(parameter))
-      }
-    };
-
+    const call = this.buildCompleteCall(request, callOptions, callParams);
     this.logger.info('Performing REST query to get query suggest', request);
 
-    return this.performOneCall<IQuerySuggestResponse>(callParams, callOptions).then(response => {
+    return this.performOneCall<IQuerySuggestResponse>(call.params, call.options).then(response => {
       this.logger.info('REST query successful', response);
       return response;
     });
@@ -838,17 +859,10 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ): Promise<IFacetSearchResponse> {
-    callParams = {
-      ...callParams,
-      requestData: {
-        ...callParams.requestData,
-        ..._.omit(request, parameter => Utils.isNullOrUndefined(parameter))
-      }
-    };
-
+    const call = this.buildCompleteCall(request, callOptions, callParams);
     this.logger.info('Performing REST query to get facet search results', request);
 
-    const response = await this.performOneCall<IFacetSearchResponse>(callParams, callOptions);
+    const response = await this.performOneCall<IFacetSearchResponse>(call.params, call.options);
     this.logger.info('REST query successful', response);
     return response;
   }
@@ -1165,11 +1179,10 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private async backOffThrottledRequest<T>(request: () => Promise<T>) {
     try {
-      const backOffRequest: IBackOffRequest<T> = {
-        fn: () => request(),
-        retry: (e, attempt) => this.retryIf429Error(e, attempt)
-      };
-      return await BackOffRequest.enqueue<T>(backOffRequest);
+      const options = { retry: (e, attempt) => this.retryIf429Error(e, attempt) };
+      const backoffRequest: IBackOffRequest<T> = { fn: request, options };
+
+      return await BackOffRequest.enqueue<T>(backoffRequest);
     } catch (e) {
       throw this.handleErrorResponse(e);
     }

@@ -310,3 +310,6 @@ ImageFieldValue.doExport();
 
 import { CommerceQuery } from './ui/CommerceQuery/CommerceQuery';
 CommerceQuery.doExport();
+
+import { SortDropdown } from './ui/SortDropdown/SortDropdown';
+SortDropdown.doExport();

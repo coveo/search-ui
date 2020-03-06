@@ -28,6 +28,18 @@ export class InputManager {
   public onchangecursor: () => void;
   public ontabpress: () => void;
 
+  public set expanded(isExpanded: boolean) {
+    this.input.setAttribute('aria-expanded', isExpanded.toString());
+  }
+
+  public set activeDescendant(element: HTMLElement) {
+    if (element) {
+      this.input.setAttribute('aria-activedescendant', element.id);
+    } else {
+      this.input.removeAttribute('aria-activedescendant');
+    }
+  }
+
   constructor(element: HTMLElement, private onchange: (text: string, wordCompletion: boolean) => void, private magicBox: MagicBoxInstance) {
     this.root = Component.resolveRoot(element);
     this.underlay = document.createElement('div');
@@ -200,8 +212,9 @@ export class InputManager {
   }
 
   private addAccessibilitiesProperties() {
+    this.input.setAttribute('autocomplete', 'off');
     this.input.setAttribute('type', 'text');
-    this.input.setAttribute('role', 'searchbox');
+    this.input.setAttribute('role', 'combobox');
     this.input.setAttribute('form', 'coveo-dummy-form');
     this.input.setAttribute('aria-autocomplete', 'list');
     this.input.setAttribute('title', `${l('InsertAQuery')}. ${l('PressEnterToSend')}`);

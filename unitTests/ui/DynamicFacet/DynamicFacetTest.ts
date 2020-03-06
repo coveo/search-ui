@@ -12,6 +12,7 @@ import { FakeResults } from '../../Fake';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 import { DynamicFacetManager } from '../../../src/ui/DynamicFacetManager/DynamicFacetManager';
+import { ComponentsTypes } from '../../../src/utils/ComponentsTypes';
 
 export function DynamicFacetTest() {
   describe('DynamicFacet', () => {
@@ -512,8 +513,8 @@ export function DynamicFacetTest() {
       ]);
     });
 
-    it('facet position should be null by default', () => {
-      expect(test.cmp.position).toBeNull();
+    it('facet position should be undefined by default', () => {
+      expect(test.cmp.position).toBeUndefined();
     });
 
     it(`when "enableFacetSearch" option is false
@@ -681,21 +682,21 @@ export function DynamicFacetTest() {
       });
     });
 
-    describe('testing querySuccess', () => {
+    describe('testing deferredQuerySuccess', () => {
       beforeEach(() => {
         test.cmp.ensureDom();
       });
 
       it(`when facet as a dynamicFacetManager
         should call handleQueryResults on the facet`, () => {
-        $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
+        $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, { results: fakeResultsWithFacets() });
         expect(test.cmp.handleQueryResults).toHaveBeenCalled();
       });
 
       it(`when facet as a dynamicFacetManager
         should not call handleQueryResults on the facet`, () => {
         test.cmp.dynamicFacetManager = Mock.mockComponent(DynamicFacetManager);
-        $$(test.env.root).trigger(QueryEvents.querySuccess, { results: fakeResultsWithFacets() });
+        $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, { results: fakeResultsWithFacets() });
         expect(test.cmp.handleQueryResults).not.toHaveBeenCalled();
       });
     });
@@ -732,8 +733,8 @@ export function DynamicFacetTest() {
           test.cmp.handleQueryResults(fakeResultsWithNoFacets());
         });
 
-        it(`facet position should be "null"`, () => {
-          expect(test.cmp.position).toBeNull();
+        it(`facet position should be "undefined"`, () => {
+          expect(test.cmp.position).toBeUndefined();
         });
 
         it(`"resetValues" should be called on the values`, () => {
@@ -751,7 +752,11 @@ export function DynamicFacetTest() {
     });
 
     describe('testing the DependsOnManager', () => {
+      let dependentFacet: DynamicFacet;
+
       beforeEach(() => {
+        dependentFacet = DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@dependentField', dependsOn: test.cmp.options.id }).cmp;
+        spyOn(ComponentsTypes, 'getAllFacetsInstance').and.returnValue([test.cmp, dependentFacet]);
         spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
       });
 
@@ -769,6 +774,21 @@ export function DynamicFacetTest() {
       should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
         test.cmp.reset();
         expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      });
+
+      it(`when facet has no selected values
+        when triggering a newQuery
+        dependent facet should be disabled`, () => {
+        $$(test.env.root).trigger(QueryEvents.newQuery);
+        expect(dependentFacet.disabled).toBe(true);
+      });
+
+      it(`when facet has selected values
+        when triggering a newQuery
+        dependent facet should be enabled`, () => {
+        test.cmp.selectValue('value');
+        $$(test.env.root).trigger(QueryEvents.newQuery);
+        expect(dependentFacet.disabled).toBe(false);
       });
     });
   });

@@ -51,6 +51,7 @@ import { Logger } from '../../misc/Logger';
  * such as dynamic navigation experience (DNE).
  *
  * @notSupportedIn salesforcefree
+ * @availablesince [May 2019 Release (v2.6063)](https://docs.coveo.com/en/2909/)
  */
 export class DynamicFacet extends Component implements IDynamicFacet {
   static ID = 'DynamicFacet';
@@ -90,7 +91,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
         }
 
         return options.field.slice(0, maxCharLength - 1);
-      }
+      },
+      section: 'CommonOptions'
     }),
 
     /**
@@ -163,7 +165,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     /**
      * Whether to allow the end-user to expand and collapse this facet.
      */
-    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'Filtering' }),
+    enableCollapse: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
      * Whether to scroll back to the top of the page whenever the end-user interacts with the facet.
@@ -203,7 +205,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     /**
      * Whether this facet should be collapsed by default.
      */
-    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'Filtering', depend: 'enableCollapse' }),
+    collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions', depend: 'enableCollapse' }),
 
     /**
      * Whether to notify the [`Breadcrumb`]{@link Breadcrumb} component when toggling values in the facet.
@@ -238,13 +240,17 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * By default, the facet does not depend on any other facet to be displayed.
      *
      * @examples document-type-facet
+     *
+     * @availablesince [December 2019 Release (v2.7610)](https://docs.coveo.com/en/3142/)
      */
-    dependsOn: ComponentOptions.buildStringOption(),
+    dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
 
     /**
      * The number of items to scan for facet values.
      *
      * Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.
+     *
+     * @availablesince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 
@@ -253,7 +259,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      *
      * See also the [`Folding`]{@link folding} and [`FoldingForThread`]{@link FoldingForThread} components.
      *
-     * **Default:** `true` if folded results are requested;`false` otherwise.
+     * **Default:** `false` if folded results are requested; `true` otherwise.
      */
     filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' })
   };
@@ -268,7 +274,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   public dependsOnManager: DependsOnManager;
   public dynamicFacetQueryController: DynamicFacetQueryController;
   public values: DynamicFacetValues;
-  public position: number = null;
+  public position: number;
   public moreValuesAvailable = false;
   public isCollapsed: boolean;
   public isDynamicFacet = true;
@@ -427,6 +433,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
       this.values.clearAll();
       this.values.render();
     }
+    this.enablePreventAutoSelectionFlag();
     this.updateAppearance();
     this.updateQueryStateModel();
   }
@@ -478,7 +485,6 @@ export class DynamicFacet extends Component implements IDynamicFacet {
    * The flag is automatically set back to `false` after a query is built.
    */
   public enableFreezeCurrentValuesFlag() {
-    Assert.exists(this.dynamicFacetQueryController);
     this.dynamicFacetQueryController.enableFreezeCurrentValuesFlag();
   }
 
@@ -492,8 +498,11 @@ export class DynamicFacet extends Component implements IDynamicFacet {
    * The flag is automatically set back to `false` after a query is built.
    */
   public enableFreezeFacetOrderFlag() {
-    Assert.exists(this.dynamicFacetQueryController);
     this.dynamicFacetQueryController.enableFreezeFacetOrderFlag();
+  }
+
+  public enablePreventAutoSelectionFlag() {
+    this.dynamicFacetQueryController.enablePreventAutoSelectionFlag();
   }
 
   public scrollToTop() {
@@ -549,7 +558,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   private initQueryEvents() {
     this.bind.onRootElement(QueryEvents.duringQuery, () => this.ensureDom());
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, (data: IDoneBuildingQueryEventArgs) => this.handleDoneBuildingQuery(data));
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data.results));
     this.bind.onRootElement(QueryEvents.queryError, () => this.onNoValues());
   }
 
@@ -611,7 +620,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     const index = findIndex(results.facets, { facetId: this.options.id });
     const facetResponse = index !== -1 ? results.facets[index] : null;
 
-    this.position = facetResponse ? index + 1 : null;
+    this.position = facetResponse ? index + 1 : undefined;
     facetResponse ? this.onNewValues(facetResponse) : this.onNoValues();
 
     this.header.hideLoading();
@@ -686,7 +695,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   private toggleDependentFacet(dependentFacet: Component) {
-    this.values.hasSelectedValue ? dependentFacet.enable() : dependentFacet.disable();
+    this.values.hasSelectedValues ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   public createDom() {

@@ -53,6 +53,15 @@ export function ResponsiveComponentsManagerTest() {
         expect(handleResizeEvent).toHaveBeenCalled();
       });
 
+      it('should call resize listener of all ResponsiveComponentManager when resizeAllComponentsManager is called', () => {
+        root.width = () => 400;
+        responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+        ResponsiveComponentsManager.resizeAllComponentsManager();
+
+        jasmine.clock().tick(500);
+        expect(handleResizeEvent).toHaveBeenCalled();
+      });
+
       describe('and the root element width is zero', () => {
         beforeEach(() => {
           root.width = () => 0;

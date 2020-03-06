@@ -13,7 +13,7 @@ export function DynamicHierarchicalFacetValuesTest() {
     let facet: IDynamicHierarchicalFacet;
 
     beforeEach(() => {
-      facet = DynamicHierarchicalFacetTestUtils.createFakeFacet();
+      facet = DynamicHierarchicalFacetTestUtils.createAdvancedFakeFacet({ field: '@test', clearLabel: 'Clear all test' }).cmp;
       facet.values = new DynamicHierarchicalFacetValues(facet);
     });
 
@@ -50,7 +50,6 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect(testValue.displayValue).toBe(responseValue.value);
           expect(testValue.state).toBe(responseValue.state);
           expect(testValue.numberOfResults).toBe(responseValue.numberOfResults);
-          expect(testValue.preventAutoSelect).toBe(false);
           expect(testValue.moreValuesAvailable).toBe(responseValue.moreValuesAvailable);
         });
 
@@ -90,7 +89,6 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect(childTestValue.displayValue).toBe(responseChildValue.value);
           expect(childTestValue.state).toBe(responseChildValue.state);
           expect(childTestValue.numberOfResults).toBe(responseChildValue.numberOfResults);
-          expect(childTestValue.preventAutoSelect).toBe(false);
           expect(childTestValue.moreValuesAvailable).toBe(responseChildValue.moreValuesAvailable);
         });
 
@@ -126,11 +124,19 @@ export function DynamicHierarchicalFacetValuesTest() {
         it('should have the right selectedPath', () => {
           expect(facet.values.selectedPath).toEqual(facet.values.allFacetValues[0].path);
         });
+
+        it('should clear the path if a query with no selected value is returned', () => {
+          response.values = [];
+          facet.values.createFromResponse(response);
+          expect(facet.values.selectedPath).toEqual([]);
+        });
       });
     });
 
     it('resetValues should empty the values and clear the path', () => {
-      facet.values.createFromResponse(DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet));
+      const response = DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet);
+      facet.values.createFromResponse(response);
+      facet.values.selectPath([response.values[0].value]);
       facet.values.resetValues();
 
       expect(facet.values.allFacetValues.length).toBe(0);
@@ -138,7 +144,9 @@ export function DynamicHierarchicalFacetValuesTest() {
     });
 
     it('clearPath should clear the path', () => {
-      facet.values.createFromResponse(DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet));
+      const response = DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet);
+      facet.values.createFromResponse(response);
+      facet.values.selectPath([response.values[0].value]);
       facet.values.clearPath();
 
       expect(facet.values.allFacetValues.length).not.toBe(0);
@@ -184,7 +192,7 @@ export function DynamicHierarchicalFacetValuesTest() {
         });
       });
 
-      describe('when there is a value selected', () => {
+      describe('when there is a value selected (single level)', () => {
         beforeEach(() => {
           facet.values.selectPath(facet.values.allFacetValues[0].path);
           listElement = facet.values.render();
@@ -194,15 +202,30 @@ export function DynamicHierarchicalFacetValuesTest() {
           expect($$(listElement).hasClass('coveo-with-space')).toBe(true);
         });
 
-        it('list does not append the "All Categories" element', () => {
+        it('list does append the "All Categories" button', () => {
           expect(getAllCategoriesElement()).toBeTruthy();
         });
 
-        it('clicking on the "All Categories" element should call "clear" on the facet header', () => {
+        it('clicking on the "All Categories" button should call "clear" on the facet header', () => {
           spyOn(facet.header.options, 'clear');
           $$(getAllCategoriesElement()).trigger('click');
           expect(facet.header.options.clear).toHaveBeenCalled();
         });
+
+        it('the "All Categories" button should  have the class "coveo-with-space"', () => {
+          expect($$(getAllCategoriesElement()).hasClass('coveo-show-when-collapsed')).toBe(true);
+        });
+
+        it('the "All Categories" button should be defined by the "clearLabel" facet option', () => {
+          expect($$(getAllCategoriesElement()).text()).toBe(facet.options.clearLabel);
+        });
+      });
+
+      it(`when there is a value selected (multiple level)
+      the "All Categories" button should have the class "coveo-with-space"`, () => {
+        facet.values.selectPath(['hello', 'goodbye']);
+        listElement = facet.values.render();
+        expect($$(getAllCategoriesElement()).hasClass('coveo-show-when-collapsed')).toBe(false);
       });
     });
 
@@ -396,6 +419,8 @@ export function DynamicHierarchicalFacetValuesTest() {
 
         it(`when clicking on the "Show more" button
           should perform the correct actions on the facet`, () => {
+          spyOn(facet, 'showMoreValues');
+          spyOn(facet, 'enableFreezeFacetOrderFlag');
           $$(moreButton()).trigger('click');
           expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
           expect(facet.showMoreValues).toHaveBeenCalledTimes(1);
@@ -422,6 +447,8 @@ export function DynamicHierarchicalFacetValuesTest() {
 
         it(`when clicking on the "Show less" button
           should perform the correct actions on the facet`, () => {
+          spyOn(facet, 'enableFreezeFacetOrderFlag');
+          spyOn(facet, 'showLessValues');
           $$(lessButton()).trigger('click');
           expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
           expect(facet.showLessValues).toHaveBeenCalledTimes(1);

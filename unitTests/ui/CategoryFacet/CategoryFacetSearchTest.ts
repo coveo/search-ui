@@ -13,6 +13,7 @@ export function CategoryFacetSearchTest() {
   describe('CategoryFacetSearch', () => {
     const noResultsClass = 'coveo-no-results';
     const facetSearchNoResultsClass = 'coveo-facet-search-no-results';
+    const categoryFacetTitle = 'abcdef';
     let categoryFacetMock: CategoryFacet;
     let categoryFacetSearch: CategoryFacetSearch;
     let realDebounce;
@@ -64,7 +65,8 @@ export function CategoryFacetSearchTest() {
         };
       });
       categoryFacetMock = basicComponentSetup<CategoryFacet>(CategoryFacet, {
-        field: '@field'
+        field: '@field',
+        title: categoryFacetTitle
       }).cmp;
       fakeGroupByValues = FakeResults.createFakeGroupByResult('@field', 'value', 10).values;
       categoryFacetMock.categoryFacetQueryController = mock(CategoryFacetQueryController);
@@ -80,6 +82,16 @@ export function CategoryFacetSearchTest() {
     it('when building returns a container', () => {
       const container = categoryFacetSearch.build();
       expect(container.hasClass('coveo-category-facet-search-container')).toBe(true);
+    });
+
+    it('builds a container with the button role', () => {
+      const container = categoryFacetSearch.build();
+      expect(container.getAttribute('role')).toEqual('button');
+    });
+
+    it("builds a container with the category facet's title in the label", () => {
+      const container = categoryFacetSearch.build();
+      expect(container.getAttribute('aria-label')).toContain(categoryFacetTitle);
     });
 
     it('focus moves the focus to the input element', () => {

@@ -185,10 +185,25 @@ export interface IFacetRequest {
    * **Default (Search API):** `;`
    */
   delimitingCharacter?: string;
+
   /**
    * Whether to exclude folded result parents when estimating result counts for facet values.
    *
    * **Default (Search API):** `true`
    */
   filterFacetCount?: boolean;
+
+  /**
+   * The base path shared by all values for a given hierarchical facet.
+   *
+   * **Default (Search API):** `[]`
+   */
+  basePath?: string[];
+
+  /**
+   * Whether to prevent Coveo ML from automatically selecting values from that facet.
+   *
+   * **Default:** `false`
+   */
+  preventAutoSelect?: boolean;
 }

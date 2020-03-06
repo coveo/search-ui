@@ -1,6 +1,6 @@
 import * as axe from 'axe-core';
 import { $$, Component, DynamicHierarchicalFacet } from 'coveo-search-ui';
-import { afterQuerySuccess, getFacetColumn, getRoot, inDesktopMode, resetMode } from './Testing';
+import { afterDeferredQuerySuccess, getFacetColumn, getRoot, inDesktopMode, resetMode } from './Testing';
 
 export const AccessibilityDynamicHierarchicalFacet = () => {
   describe('DynamicHierarchicalFacet', () => {
@@ -23,11 +23,11 @@ export const AccessibilityDynamicHierarchicalFacet = () => {
 
     it('should be accessible', async done => {
       getFacetColumn().appendChild(dynamicHierarchicalFacet);
-      await afterQuerySuccess();
+      await afterDeferredQuerySuccess();
       $$(dynamicHierarchicalFacet)
         .find('.coveo-dynamic-hierarchical-facet-value')
         .click();
-      await afterQuerySuccess();
+      await afterDeferredQuerySuccess();
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();
       done();

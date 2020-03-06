@@ -187,6 +187,8 @@ export class Omnibox extends Component {
      * > query suggestion.
      *
      * Default value is `true`.
+     *
+     * @availablesince [December 2015 Release (v1.0.273)](https://docs.coveo.com/en/289/#december-2015-release-v10273)
      */
     enableQuerySuggestAddon: ComponentOptions.buildBooleanOption({
       defaultValue: true,
@@ -214,6 +216,8 @@ export class Omnibox extends Component {
 
     /**
      * Specifies a placeholder for the input.
+     *
+     * @availablesince [July 2016 Release (v1.667.24)](https://docs.coveo.com/en/309/#july-2016-release-v166724)
      */
     placeholder: ComponentOptions.buildLocalizedStringOption(),
 
@@ -259,6 +263,8 @@ export class Omnibox extends Component {
      * depend: 'enableQuerySuggestAddon'
      *
      * Default (and minimum): 0, meaning that trending query suggestions are displayed when focus is on the component, even if its text input is empty.
+     *
+     * @availablesince [July 2019 Release (v2.6459)](https://docs.coveo.com/en/2938/)
      */
     querySuggestCharacterThreshold: ComponentOptions.buildNumberOption({
       defaultValue: 0,
@@ -270,7 +276,7 @@ export class Omnibox extends Component {
      *
      * Note: This does not include the filter expression enforced by the currently selected tab, if any.
      *
-     * **Default:** `false`
+     * @availablesince [September 2019 Release (v2.7023)](https://docs.coveo.com/en/2990/)
      */
     clearFiltersOnNewQuery: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };

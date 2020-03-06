@@ -36,8 +36,7 @@
 
   .coveo-checkbox-label:hover,
   &.coveo-focused {
-    .coveo-checkbox-span-label,
-    .coveo-checkbox-span-label-suffix {
+    .coveo-checkbox-span-label {
       opacity: $active-text-opacity;
     }
   }
@@ -51,6 +50,11 @@
   @include facetShowLess();
 }
 
+.coveo-dynamic-facet-collapsed-values {
+  line-height: 1.6em;
+  display: none;
+}
+
 .coveo-dynamic-facet-collapsed {
   .coveo-dynamic-facet-value,
   .coveo-dynamic-facet-show-more,
@@ -58,7 +62,7 @@
     display: none;
   }
 
-  .coveo-dynamic-facet-value.coveo-selected {
+  .coveo-dynamic-facet-collapsed-values {
     display: inherit;
   }
 }

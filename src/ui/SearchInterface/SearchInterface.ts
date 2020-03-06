@@ -29,7 +29,7 @@ import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
 import { Utils } from '../../utils/Utils';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsTriggerRedirect } from '../Analytics/AnalyticsActionListMeta';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
 import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
@@ -53,6 +53,7 @@ import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustme
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { ScrollRestorer } from './ScrollRestorer';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -79,6 +80,7 @@ export interface ISearchInterfaceOptions {
   responsiveMediumBreakpoint?: number;
   responsiveSmallBreakpoint?: number;
   responsiveMode?: ValidResponsiveMode;
+  enableScrollRestoration?: boolean;
 }
 
 export interface IMissingTermManagerArgs {
@@ -374,22 +376,13 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     enableCollaborativeRating: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
-     * Specifies whether to filter duplicates in the search results.
+     * Whether to filter out duplicates, so that items resembling one another only appear once in the query results.
      *
-     * Setting this option to `true` forces duplicates to not appear in search results. However, {@link Facet} counts
-     * still include the duplicates, which can be confusing for the end user. This is a limitation of the index.
-     *
-     * **Example:**
-     *
-     * > The end user narrows a query down to a single item that has a duplicate. If the enableDuplicateFiltering
-     * > option is `true`, then only one item appears in the search results while the Facet count is still 2.
-     *
-     * **Note:**
-     *
-     * > It also is possible to set this option separately for each {@link Tab} component
-     * > (see {@link Tab.options.enableDuplicateFiltering}).
-     *
-     * Default value is `false`.
+     * **Notes:**
+     * - Two items must be at least 85% similar to one another to be considered duplicates.
+     * - When a pair of duplicates is found, only the higher-ranked item of the two is kept in the result set.
+     * - Enabling this feature can make the total result count less precise, as only the requested page of query results is submitted to duplicate filtering.
+     * - This option can also be explicitly set on the [`Tab`]{@link Tab} component. When this is the case, the `Tab` configuration prevails.
      */
     enableDuplicateFiltering: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
@@ -484,7 +477,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       {
         defaultValue: 'auto'
       }
-    )
+    ),
+    /**
+     * Specifies whether to restore the last scroll position when navigating back
+     * to the search interface.
+     */
+    enableScrollRestoration: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
@@ -496,6 +494,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
   public historyManager: IHistoryManager;
+  public scrollRestorer: ScrollRestorer;
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
    *
@@ -552,6 +551,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
     this.setupEventsHandlers();
     this.setupHistoryManager(element, _window);
+
+    this.setupScrollRestorer(element, _window, this.queryStateModel);
 
     this.element.style.display = element.style.display || 'block';
 
@@ -746,6 +747,12 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   private setupDebugInfo() {
     if (this.options.enableDebugInfo) {
       setTimeout(() => new Debug(this.element, this.getBindings()));
+    }
+  }
+
+  private setupScrollRestorer(element: HTMLElement, _window: Window, queryStateModel: QueryStateModel) {
+    if (this.options.enableScrollRestoration) {
+      this.scrollRestorer = new ScrollRestorer(element, queryStateModel);
     }
   }
 
@@ -1172,27 +1179,31 @@ export class StandaloneSearchInterface extends SearchInterface {
     data.cancel = true;
 
     if (!this.searchboxIsEmpty() || this.options.redirectIfEmpty) {
-      this.redirectToSearchPage(dataToSendOnBeforeRedirect.searchPageUri);
+      this.doRedirect(dataToSendOnBeforeRedirect.searchPageUri);
     }
   }
 
+  private async doRedirect(searchPage: string) {
+    const executionPlan = await this.queryController.fetchQueryExecutionPlan();
+    const redirectionURL = executionPlan && executionPlan.redirectionURL;
+    if (!redirectionURL) {
+      return this.redirectToSearchPage(searchPage);
+    }
+
+    this.redirectToURL(redirectionURL);
+  }
+
+  public redirectToURL(url: string) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsTriggerRedirect>(
+      analyticsActionCauseList.triggerRedirect,
+      { redirectedTo: url },
+      this.element
+    );
+
+    this._window.location.assign(url);
+  }
+
   public redirectToSearchPage(searchPage: string) {
-    const stateValues = this.queryStateModel.getAttributes();
-    let uaCausedBy = this.usageAnalytics.getCurrentEventCause();
-
-    if (uaCausedBy != null) {
-      // for legacy reason, searchbox submit were always logged a search from link in an external search box.
-      // transform them if that's what we hit.
-      if (uaCausedBy == analyticsActionCauseList.searchboxSubmit.name) {
-        uaCausedBy = analyticsActionCauseList.searchFromLink.name;
-      }
-      stateValues['firstQueryCause'] = uaCausedBy;
-    }
-    const uaMeta = this.usageAnalytics.getCurrentEventMeta();
-    if (uaMeta != null && !isEmpty(uaMeta)) {
-      stateValues['firstQueryMeta'] = uaMeta;
-    }
-
     const link = document.createElement('a');
     link.href = searchPage;
     link.href = link.href; // IE11 needs this to correctly fill the properties that are used below.
@@ -1203,8 +1214,40 @@ export class StandaloneSearchInterface extends SearchInterface {
     // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
     // eg: onblur of the magic box.
     setTimeout(() => {
-      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${HashUtils.encodeValues(stateValues)}`;
+      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${this.encodedHashValues}`;
     }, 0);
+  }
+
+  private get encodedHashValues() {
+    const values = {
+      ...this.modelAttributesToIncludeInUrl,
+      ...this.uaCausedByAttribute,
+      ...this.uaMetadataAttribute
+    };
+
+    return HashUtils.encodeValues(values);
+  }
+
+  private get modelAttributesToIncludeInUrl() {
+    const usingLocalStorageHistory = this.historyManager instanceof LocalStorageHistoryController;
+    return usingLocalStorageHistory ? {} : this.queryStateModel.getAttributes();
+  }
+
+  private get uaCausedByAttribute() {
+    const uaCausedBy = this.uaCausedBy;
+    return uaCausedBy ? { firstQueryCause: uaCausedBy } : {};
+  }
+
+  private get uaCausedBy() {
+    const uaCausedBy = this.usageAnalytics.getCurrentEventCause();
+    const isSearchboxSubmit = uaCausedBy === analyticsActionCauseList.searchboxSubmit.name;
+    // For legacy reasons, searchbox submit were always logged as a search from link in an external search box.
+    return isSearchboxSubmit ? analyticsActionCauseList.searchFromLink.name : uaCausedBy;
+  }
+
+  private get uaMetadataAttribute() {
+    const uaMeta = this.usageAnalytics.getCurrentEventMeta();
+    return uaMeta && !isEmpty(uaMeta) ? { firstQueryMeta: uaMeta } : {};
   }
 
   private searchboxIsEmpty(): boolean {

@@ -48,6 +48,8 @@ export const defaultLayout: ValidLayout = 'list';
  * valid layout value (see the {@link ValidLayout} type).
  *
  * See also the [Result Layouts](https://docs.coveo.com/en/360/) documentation.
+ *
+ * @availablesince [February 2018 Release (v2.3826.10)](https://docs.coveo.com/en/410/#february-2018-release-v2382610)
  */
 export class ResultLayoutSelector extends Component {
   static ID = 'ResultLayoutSelector';

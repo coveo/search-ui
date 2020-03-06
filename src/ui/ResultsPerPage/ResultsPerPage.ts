@@ -17,6 +17,7 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
+import { uniqueId } from 'underscore';
 
 export interface IResultsPerPageOptions {
   choicesDisplayed?: number[];
@@ -212,13 +213,16 @@ export class ResultsPerPage extends Component {
     this.span = $$(
       'span',
       {
+        id: uniqueId('coveo-results-per-page-text-'),
         className: 'coveo-results-per-page-text'
       },
       l('ResultsPerPage')
     ).el;
     this.element.appendChild(this.span);
     this.list = $$('ul', {
-      className: 'coveo-results-per-page-list'
+      className: 'coveo-results-per-page-list',
+      role: 'radiogroup',
+      'aria-labelledby': this.span.id
     }).el;
     this.element.appendChild(this.list);
   }
@@ -229,12 +233,15 @@ export class ResultsPerPage extends Component {
     for (var i = 0; i < numResultsList.length; i++) {
       const listItem = $$('li', {
         className: 'coveo-results-per-page-list-item',
+        role: 'radio',
         tabindex: 0
       }).el;
       const resultsPerPage = numResultsList[i];
-      if (resultsPerPage === this.currentResultsPerPage) {
+      const isActive = resultsPerPage === this.currentResultsPerPage;
+      if (isActive) {
         $$(listItem).addClass('coveo-active');
       }
+      listItem.setAttribute('aria-checked', isActive.toString());
 
       const clickAction = () => this.handleClickPage(resultsPerPage);
 
@@ -249,7 +256,9 @@ export class ResultsPerPage extends Component {
         $$(
           'a',
           {
-            className: 'coveo-results-per-page-list-item-text'
+            className: 'coveo-results-per-page-list-item-text',
+            tabindex: -1,
+            ariaHidden: 'true'
           },
           numResultsList[i].toString()
         ).el

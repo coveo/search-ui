@@ -30,6 +30,8 @@ export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOp
   dependsOn?: string;
   includeInBreadcrumb?: boolean;
   filterFacetCount?: boolean;
+  clearLabel?: string;
+  basePath?: string[];
 }
 
 export interface IDynamicHierarchicalFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {
@@ -57,6 +59,7 @@ export interface IDynamicHierarchicalFacet extends Component, IDynamicManagerCom
   getCaption(value: string): string;
   logAnalyticsEvent(eventName: IAnalyticsActionCause): void;
   enableFreezeFacetOrderFlag(): void;
+  enablePreventAutoSelectionFlag(): void;
 }
 
 export interface IDynamicHierarchicalFacetValueProperties {
@@ -66,7 +69,6 @@ export interface IDynamicHierarchicalFacetValueProperties {
   state: FacetValueState;
   numberOfResults: number;
   moreValuesAvailable: boolean;
-  preventAutoSelect: boolean;
   children: IDynamicHierarchicalFacetValue[];
 }
 

@@ -2701,9 +2701,9 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
   dependencies:
     homedir-polyfill "^1.0.1"
 
-exponential-backoff@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/exponential-backoff/-/exponential-backoff-1.0.5.tgz#bc2efab67b946424cf53b7ab117a59ebe78cb920"
+exponential-backoff@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/exponential-backoff/-/exponential-backoff-2.2.0.tgz#66bd0e6e574f045cb71562332031c3588306eabd"
 
 exports-loader@^0.6.3:
   version "0.6.4"

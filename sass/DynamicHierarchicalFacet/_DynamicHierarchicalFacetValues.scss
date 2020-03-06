@@ -1,12 +1,13 @@
 @import '../Variables';
 @import '../mixins/dynamicFacet';
 
-$level-space: 30px;
+$level-space: 20px;
 
 .coveo-dynamic-hierarchical-facet-values {
   @include facetValues;
 
   &.coveo-with-space {
+    .coveo-dynamic-hierarchical-facet-all,
     .coveo-dynamic-hierarchical-facet-value,
     .coveo-dynamic-hierarchical-facet-show-less,
     .coveo-dynamic-hierarchical-facet-show-more {
@@ -20,16 +21,20 @@ $level-space: 30px;
 }
 
 .coveo-dynamic-hierarchical-facet-collapsed {
-  .coveo-dynamic-hierarchical-facet-value:not(.coveo-selected),
+  .coveo-dynamic-hierarchical-facet-all,
+  .coveo-dynamic-hierarchical-facet-value,
   .coveo-dynamic-hierarchical-facet-show-less,
   .coveo-dynamic-hierarchical-facet-show-more {
-    display: none;
+    &:not(.coveo-show-when-collapsed) {
+      display: none;
+    }
   }
 }
 
 button.coveo-dynamic-hierarchical-facet-value,
 button.coveo-dynamic-hierarchical-facet-all {
   display: inline-flex;
+  position: relative;
 }
 
 .coveo-dynamic-hierarchical-facet-value,
@@ -52,8 +57,6 @@ button.coveo-dynamic-hierarchical-facet-all {
 }
 
 .coveo-dynamic-hierarchical-facet-value {
-  position: relative;
-
   &.coveo-with-space {
     padding-left: $level-space;
   }

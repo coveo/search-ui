@@ -2,6 +2,7 @@ import { $$, Dom } from '../../../utils/Dom';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { SVGDom } from '../../../utils/SVGDom';
 import { IDynamicHierarchicalFacetValue, IDynamicHierarchicalFacet } from '../IDynamicHierarchicalFacet';
+import { Utils } from '../../../utils/Utils';
 
 export class DynamicHierarchicalFacetValueRenderer {
   private button: Dom;
@@ -36,6 +37,7 @@ export class DynamicHierarchicalFacetValueRenderer {
   private toggleButtonStates() {
     this.button.toggleClass('coveo-selected', this.facetValue.isSelected);
     this.button.toggleClass('coveo-with-space', this.shouldHaveMargin);
+    this.button.toggleClass('coveo-show-when-collapsed', this.shouldShowWhenCollapsed);
     this.facetValue.isSelected && this.button.setAttribute('disabled', 'true');
     this.shouldHaveArrow && this.prependArrow();
   }
@@ -47,16 +49,22 @@ export class DynamicHierarchicalFacetValueRenderer {
   }
 
   private get shouldHaveMargin() {
-    return this.facetValue.path.length > 1 && !this.facetValue.children.length;
+    return !this.facetValue.isSelected && this.facetValue.path.length > 1 && !this.facetValue.children.length;
   }
 
   private get shouldHaveArrow() {
     return this.facet.values.hasSelectedValue && !this.facetValue.isSelected && !!this.facetValue.children.length;
   }
 
+  private get shouldShowWhenCollapsed() {
+    const isParentOfTheSelectedValue = Utils.arrayEqual(this.facetValue.path, this.facet.values.selectedPath.slice(0, -1));
+    return this.facetValue.isSelected || isParentOfTheSelectedValue;
+  }
+
   private selectAction() {
     this.facet.selectPath(this.facetValue.path);
     this.facet.enableFreezeFacetOrderFlag();
+    this.facet.enablePreventAutoSelectionFlag();
     this.facet.scrollToTop();
     this.facet.triggerNewQuery(() => this.facetValue.logSelectActionToAnalytics());
   }
