@@ -52,6 +52,7 @@ import { AccessibilityYouTubeThumbnail } from './AccessibilityYouTubeThumbnail';
 import { AccessibilityStarResult } from './AccessibilityStarResult';
 import { AccessibilityResultPreviewsManager } from './AccessibilityResultPreviewsManager';
 import { AccessibilitySettings } from './AccessibilitySettings';
+import { AccessibilityThumbnail } from './AccessibilityThumbnail';
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -149,4 +150,5 @@ describe('Testing ...', () => {
   AccessibilityStarResult();
   AccessibilityResultPreviewsManager();
   AccessibilitySettings();
+  AccessibilityThumbnail();
 });
