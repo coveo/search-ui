@@ -26,7 +26,9 @@ script:
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
 - yarn run build
-- yarn run accessibilityTests
+- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
+- yarn run unitTests
+- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run accessibilityTests ; fi
 - set +e
 - yarn run uploadCoverage
 - set -e
