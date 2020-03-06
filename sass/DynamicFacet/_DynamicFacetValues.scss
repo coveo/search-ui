@@ -36,8 +36,7 @@
 
   .coveo-checkbox-label:hover,
   &.coveo-focused {
-    .coveo-checkbox-span-label,
-    .coveo-checkbox-span-label-suffix {
+    .coveo-checkbox-span-label {
       opacity: $active-text-opacity;
     }
   }
@@ -52,6 +51,7 @@
 }
 
 .coveo-dynamic-facet-collapsed-values {
+  line-height: 1.6em;
   display: none;
 }
 

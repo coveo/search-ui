@@ -13,7 +13,7 @@ export class HashUtils {
     arrayEndRegExp: /\]$/
   };
 
-  public static getHash(w = window): string {
+  public static getHash(w: Window = window): string {
     Assert.exists(w);
 
     // window.location.hash returns the DECODED hash on Firefox (it's a well known bug),
@@ -130,7 +130,10 @@ export class HashUtils {
 
   private static endsWithEncodedRightSquareBracket(value: string) {
     const encodedBracket = Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayEnd);
-    return value.indexOf(encodedBracket) == value.length - encodedBracket.length;
+    const encodedBracketIndex = value.indexOf(encodedBracket);
+    const hasEncodedBracket = encodedBracketIndex !== -1;
+
+    return hasEncodedBracket && encodedBracketIndex == value.length - encodedBracket.length;
   }
 
   private static isObjectStartNotEncoded(value: string) {

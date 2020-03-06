@@ -132,6 +132,8 @@ export class Quickview extends Component {
      * `contentTemplate`, otherwise the component will throw an error when opened.
      *
      * Default value is `false`.
+     *
+     * @availablesince [September 2015 Release (v1.0.59)](https://docs.coveo.com/en/289/#september-2015-release-v1059)
      */
     alwaysShow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
@@ -444,19 +446,19 @@ export class Quickview extends Component {
     computedModalBoxContent.addClass('coveo-computed-modal-box-content');
     return openerObject.content.then(builtContent => {
       computedModalBoxContent.append(builtContent.el);
-      const title = DomUtils.getQuickviewHeader(
+      this.modalbox.openResult(
         this.result,
         {
           showDate: this.options.showDate,
           title: this.options.title
         },
-        this.bindings
-      ).el;
-
-      this.modalbox.open(title, computedModalBoxContent.el, () => {
-        this.closeQuickview();
-        return true;
-      });
+        this.bindings,
+        computedModalBoxContent.el,
+        () => {
+          this.closeQuickview();
+          return true;
+        }
+      );
       return computedModalBoxContent;
     });
   }

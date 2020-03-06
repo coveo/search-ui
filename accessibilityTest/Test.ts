@@ -51,6 +51,7 @@ import { AccessibilityTimespanFacet } from './AccessibilityTimespanFacet';
 import { AccessibilityYouTubeThumbnail } from './AccessibilityYouTubeThumbnail';
 import { AccessibilityStarResult } from './AccessibilityStarResult';
 import { AccessibilityResultPreviewsManager } from './AccessibilityResultPreviewsManager';
+import { AccessibilitySettings } from './AccessibilitySettings';
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -87,6 +88,7 @@ describe('Testing ...', () => {
     initialHTMLSetup();
     Coveo.Logger.disable();
     Coveo.SearchEndpoint.configureSampleEndpointV2();
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
     done();
   });
 
@@ -146,4 +148,5 @@ describe('Testing ...', () => {
   AccessibilityYouTubeThumbnail();
   AccessibilityStarResult();
   AccessibilityResultPreviewsManager();
+  AccessibilitySettings();
 });

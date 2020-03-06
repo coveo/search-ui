@@ -47,7 +47,8 @@ export const getResultList = () => {
   }
 
   const newResultList = $$('div', {
-    className: 'CoveoResultList'
+    className: 'CoveoResultList',
+    dataAutoSelectFieldsToInclude: 'true'
   });
 
   getResultsColumn().appendChild(newResultList.el);
@@ -148,6 +149,31 @@ export const afterDelay = (delayMs: number) => {
 
 export const isInit = () => {
   return get(getRoot(), SearchInterface) != null;
+};
+
+export const waitUntilSelectorIsPresent = <T extends Element = Element>(parentNode: HTMLElement, selector: string) => {
+  return observeUntil(
+    parentNode,
+    {
+      childList: true,
+      subtree: true,
+      attributes: true
+    },
+    () => parentNode.querySelector<T>(selector)
+  );
+};
+
+export const observeUntil = <T>(element: Node, options: MutationObserverInit, callback: (records: MutationRecord[]) => T) => {
+  return new Promise<T>(resolve => {
+    const observer = new MutationObserver(records => {
+      const result = callback(records);
+      if (result) {
+        observer.disconnect();
+        resolve(result);
+      }
+    });
+    observer.observe(element, options);
+  });
 };
 
 const afterEvent = (event: string) => {

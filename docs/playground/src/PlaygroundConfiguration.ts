@@ -520,6 +520,43 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
       });
     }
   },
+  SortDropdown: {
+    show: true,
+    element: new SectionBuilder()
+      .withDomElement(
+        new SectionBuilder($$('div', { className: 'coveo-sort-section' }))
+          .withDomElement(
+            $$(
+              'div',
+              { className: 'CoveoSortDropdown' },
+              $$('span', {
+                className: 'CoveoSort',
+                'data-sort-criteria': 'relevancy',
+                'data-caption': 'relevancy'
+              }),
+              $$('span', {
+                className: 'CoveoSort',
+                'data-sort-criteria': 'date descending',
+                'data-caption': 'Newest'
+              }),
+              $$('span', {
+                className: 'CoveoSort',
+                'data-sort-criteria': 'date ascending',
+                'data-caption': 'Oldest'
+              })
+            )
+          )
+          .build()
+      )
+      .withComponent('CoveoResultList')
+      .build(),
+    toExecute: () => {
+      getSearchInterfaceElement().style.padding = '20px';
+      $$(getSearchInterfaceElement()).on('buildingQuery', function(e, args) {
+        args.queryBuilder.numberOfResults = 3;
+      });
+    }
+  },
   StarRating: {
     show: true,
     options: {

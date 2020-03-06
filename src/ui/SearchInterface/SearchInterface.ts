@@ -54,7 +54,6 @@ import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { ScrollRestorer } from './ScrollRestorer';
-import { ResponsiveComponentsManager } from '../../Core';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -1201,26 +1200,10 @@ export class StandaloneSearchInterface extends SearchInterface {
       this.element
     );
 
-    this._window.location.replace(url);
+    this._window.location.assign(url);
   }
 
   public redirectToSearchPage(searchPage: string) {
-    const stateValues = this.queryStateModel.getAttributes();
-    let uaCausedBy = this.usageAnalytics.getCurrentEventCause();
-
-    if (uaCausedBy != null) {
-      // for legacy reason, searchbox submit were always logged a search from link in an external search box.
-      // transform them if that's what we hit.
-      if (uaCausedBy == analyticsActionCauseList.searchboxSubmit.name) {
-        uaCausedBy = analyticsActionCauseList.searchFromLink.name;
-      }
-      stateValues['firstQueryCause'] = uaCausedBy;
-    }
-    const uaMeta = this.usageAnalytics.getCurrentEventMeta();
-    if (uaMeta != null && !isEmpty(uaMeta)) {
-      stateValues['firstQueryMeta'] = uaMeta;
-    }
-
     const link = document.createElement('a');
     link.href = searchPage;
     link.href = link.href; // IE11 needs this to correctly fill the properties that are used below.
@@ -1231,15 +1214,40 @@ export class StandaloneSearchInterface extends SearchInterface {
     // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
     // eg: onblur of the magic box.
     setTimeout(() => {
-      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${HashUtils.encodeValues(stateValues)}`;
+      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${this.encodedHashValues}`;
     }, 0);
   }
 
-  /**
-   * Notify all {@link ResponsiveComponentManager} on the page that they should handle a resize.
-   */
-  public resizeAllComponentsManager() {
-    ResponsiveComponentsManager.resizeAllComponentsManager();
+  private get encodedHashValues() {
+    const values = {
+      ...this.modelAttributesToIncludeInUrl,
+      ...this.uaCausedByAttribute,
+      ...this.uaMetadataAttribute
+    };
+
+    return HashUtils.encodeValues(values);
+  }
+
+  private get modelAttributesToIncludeInUrl() {
+    const usingLocalStorageHistory = this.historyManager instanceof LocalStorageHistoryController;
+    return usingLocalStorageHistory ? {} : this.queryStateModel.getAttributes();
+  }
+
+  private get uaCausedByAttribute() {
+    const uaCausedBy = this.uaCausedBy;
+    return uaCausedBy ? { firstQueryCause: uaCausedBy } : {};
+  }
+
+  private get uaCausedBy() {
+    const uaCausedBy = this.usageAnalytics.getCurrentEventCause();
+    const isSearchboxSubmit = uaCausedBy === analyticsActionCauseList.searchboxSubmit.name;
+    // For legacy reasons, searchbox submit were always logged as a search from link in an external search box.
+    return isSearchboxSubmit ? analyticsActionCauseList.searchFromLink.name : uaCausedBy;
+  }
+
+  private get uaMetadataAttribute() {
+    const uaMeta = this.usageAnalytics.getCurrentEventMeta();
+    return uaMeta && !isEmpty(uaMeta) ? { firstQueryMeta: uaMeta } : {};
   }
 
   private searchboxIsEmpty(): boolean {

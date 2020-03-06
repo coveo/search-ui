@@ -40,7 +40,8 @@ $page-width: 1000px;
   }
   .coveo-facet-column {
     @include span-columns(3);
-    padding: 5px 15px;
+    margin-right: 0;
+    padding: 13px 10px 5px;
     &.coveo-no-results {
       display: none;
     }

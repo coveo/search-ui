@@ -27,6 +27,8 @@ export interface IResultActionsMenuOptions {
  *   [...]
  * </script>
  * ```
+ *
+ * @availablesince [July 2018 Release (v2.4382.10)](https://docs.coveo.com/410/#july-2018-release-v2438210)
  */
 export class ResultActionsMenu extends Component {
   static ID = 'ResultActionsMenu';

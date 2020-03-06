@@ -122,7 +122,7 @@
   margin: 5px 6px 5px 10px;
   width: 10px;
   height: 10px;
-  color: $color-light-greyish-blue;
+  color: $color-blueish-gray;
 }
 
 .coveo-facet-search-wait-animation {
@@ -168,13 +168,13 @@
     svg {
       bottom: 3px;
       .coveo-more-svg {
-        fill: $color-light-grey;
+        fill: grey;
       }
     }
   }
   .coveo-facet-value-checkbox > .coveo-facet-value-checkbox-svg,
   &:hover .coveo-facet-value-checkbox > .coveo-facet-value-checkbox-svg {
-    color: $color-light-grey;
+    color: grey;
     width: 16px;
     height: 11px;
   }
