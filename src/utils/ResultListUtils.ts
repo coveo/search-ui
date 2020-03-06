@@ -30,10 +30,14 @@ export class ResultListUtils {
       return window.scrollTo(0, 0);
     }
 
+    const searchInterfacePosition = resultList.searchInterface.element.getBoundingClientRect().top;
+    if (searchInterfacePosition > 0) {
+      return;
+    }
+
     const scrollContainer = resultList.options.infiniteScrollContainer;
 
     if (typeof scrollContainer.scrollTo === 'function') {
-      const searchInterfacePosition = resultList.searchInterface.element.getBoundingClientRect().top;
       scrollContainer.scrollTo(0, window.pageYOffset + searchInterfacePosition);
     } else {
       (<HTMLElement>scrollContainer).scrollTop = 0;
