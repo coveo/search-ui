@@ -263,24 +263,21 @@ export class QuerySummary extends Component {
 
     new AccessibleButton()
       .withElement(cancelLastAction)
-      .withClickAction(() => this.cancelLastAction())
-      .withEnterKeyboardAction(() => this.cancelLastAction())
+      .withSelectAction(() => {
+        this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
+        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
+        if (this.lastKnownGoodState) {
+          this.queryStateModel.reset();
+          this.queryStateModel.setMultiple(this.lastKnownGoodState);
+          $$(this.root).trigger(QuerySummaryEvents.cancelLastAction);
+          this.queryController.executeQuery();
+        } else {
+          history.back();
+        }
+      })
       .build();
 
     return cancelLastAction;
-  }
-
-  private cancelLastAction() {
-    this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
-    this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
-    if (this.lastKnownGoodState) {
-      this.queryStateModel.reset();
-      this.queryStateModel.setMultiple(this.lastKnownGoodState);
-      $$(this.root).trigger(QuerySummaryEvents.cancelLastAction);
-      this.queryController.executeQuery();
-    } else {
-      history.back();
-    }
   }
 
   private getSearchTipsTitleElement() {
