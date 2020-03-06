@@ -261,7 +261,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * - The end user will not have to manually select the specified base path values.
      * - Values that do not have the specified base path will not be displayed in the facet.
      *
-     * @examples c, c,folder
+     * @examples electronics, electronics\,laptops
      */
     basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
     ...ResponsiveFacetOptions
