@@ -13,6 +13,7 @@ import { Icon } from '../Icon/Icon';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
 import FieldTableModule = require('../FieldTable/FieldTable');
+import { l } from '../../strings/Strings';
 
 export interface IThumbnailOptions extends IResultLinkOptions {
   noThumbnailClass?: string;
@@ -123,6 +124,8 @@ export class Thumbnail extends Component {
       // pass the credential of the user. Useful for phonegap among others.
       this.buildImageWithBase64SrcAttribute(endpoint);
     }
+
+    this.makeAccessible();
   }
 
   private buildImageWithDirectSrcAttribute(endpoint: ISearchEndpoint) {
@@ -144,6 +147,10 @@ export class Thumbnail extends Component {
       .catch(() => {
         this.setEmptyThumbnailClass();
       });
+  }
+
+  private makeAccessible() {
+    this.img.setAttribute('alt', l('ThumbnailOf', this.result.title));
   }
 
   private resizeContainingFieldTable() {
