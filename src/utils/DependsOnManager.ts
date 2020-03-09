@@ -4,17 +4,27 @@ import { MODEL_EVENTS } from '../models/Model';
 import { ComponentsTypes } from './ComponentsTypes';
 import { $$ } from './Dom';
 
+export interface IDependsOnCompatibleFacetOptions {
+  id?: string;
+  dependsOn?: string;
+  dependsOnCondition?: IDependentFacetCondition;
+}
+
+export interface IDependsOnCompatibleFacet extends Component {
+  options: IDependsOnCompatibleFacetOptions;
+}
+
 export interface IDependentFacet {
   reset: () => void;
-  ref: Component;
+  ref: IDependsOnCompatibleFacet;
 }
 
 export interface IDependentFacetCondition {
-  (facet: Component): boolean;
+  (facet: IDependsOnCompatibleFacet): boolean;
 }
 
 export class DependsOnManager {
-  private parentFacet: Component;
+  private parentFacetRef: IDependsOnCompatibleFacet;
 
   constructor(private facet: IDependentFacet) {
     this.facet.ref.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
@@ -26,9 +36,9 @@ export class DependsOnManager {
   }
 
   private setupDependentFacet() {
-    this.parentFacet = this.getParentFacet(this.facet.ref);
+    this.parentFacetRef = this.getParentFacet(this.facet.ref);
 
-    if (this.parentFacet) {
+    if (this.parentFacetRef) {
       this.facet.ref.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfConditionUnfullfiled());
     }
   }
@@ -36,27 +46,27 @@ export class DependsOnManager {
   private resetIfConditionUnfullfiled() {
     const condition = this.getDependsOnCondition(this.facet.ref);
 
-    if (!condition(this.parentFacet)) {
+    if (!condition(this.parentFacetRef)) {
       this.facet.reset();
     }
   }
 
-  private getId(component: Component) {
+  private getId(component: IDependsOnCompatibleFacet) {
     const id = component.options.id;
     return id ? `${id}` : null;
   }
 
-  private getDependsOn(component: Component) {
+  private getDependsOn(component: IDependsOnCompatibleFacet) {
     const dependsOn = component.options.dependsOn;
     return dependsOn ? `${dependsOn}` : null;
   }
 
-  private getDependsOnCondition(component: Component): IDependentFacetCondition {
+  private getDependsOnCondition(component: IDependsOnCompatibleFacet): IDependentFacetCondition {
     const conditionOption = component.options.dependsOnCondition;
     return conditionOption && isFunction(conditionOption) ? conditionOption : () => this.parentHasSelectedValues(component);
   }
 
-  private parentHasSelectedValues(component: Component) {
+  private parentHasSelectedValues(component: IDependsOnCompatibleFacet) {
     const parent = this.getParentFacet(component);
     return parent && this.valuesExistForFacetWithId(this.getId(parent));
   }
@@ -67,10 +77,10 @@ export class DependsOnManager {
   }
 
   private get allFacetsInInterface() {
-    return ComponentsTypes.getAllFacetsInstance(this.facet.ref.root);
+    return ComponentsTypes.getAllFacetsInstance(this.facet.ref.root) as IDependsOnCompatibleFacet[];
   }
 
-  private getParentFacet(component: Component) {
+  private getParentFacet(component: IDependsOnCompatibleFacet) {
     const parent = this.allFacetsInInterface.filter(
       potentialParentFacet => this.getId(potentialParentFacet) === this.getDependsOn(component)
     );

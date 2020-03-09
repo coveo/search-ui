@@ -12,10 +12,9 @@ import { IRangeValue } from '../../rest/RangeValue';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { DynamicFacetHeader } from './DynamicFacetHeader/DynamicFacetHeader';
 import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
-import { DependsOnManager, IDependentFacetCondition } from '../../utils/DependsOnManager';
+import { DependsOnManager, IDependsOnCompatibleFacetOptions } from '../../utils/DependsOnManager';
 
-export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
-  id?: string;
+export interface IDynamicFacetOptions extends IResponsiveComponentOptions, IDependsOnCompatibleFacetOptions {
   title?: string;
   field?: IFieldOption;
   sortCriteria?: FacetSortCriteria;
@@ -29,8 +28,6 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions {
   includeInBreadcrumb?: boolean;
   numberOfValuesInBreadcrumb?: number;
   valueCaption?: Record<string, string>;
-  dependsOn?: string;
-  dependsOnCondition?: IDependentFacetCondition;
   injectionDepth?: number;
   filterFacetCount?: boolean;
 }

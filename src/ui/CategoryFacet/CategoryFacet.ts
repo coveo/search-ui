@@ -40,11 +40,16 @@ import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetO
 import { CategoryFacetHeader } from './CategoryFacetHeader';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { IStringMap } from '../../rest/GenericParam';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import {
+  DependsOnManager,
+  IDependentFacet,
+  IDependsOnCompatibleFacetOptions,
+  IDependentFacetCondition
+} from '../../utils/DependsOnManager';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { CategoryFacetValuesTree } from './CategoryFacetValuesTree';
 
-export interface ICategoryFacetOptions extends IResponsiveComponentOptions {
+export interface ICategoryFacetOptions extends IResponsiveComponentOptions, IDependsOnCompatibleFacetOptions {
   field: IFieldOption;
   title?: string;
   numberOfResultsInFacetSearch?: number;
@@ -284,6 +289,16 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * @availablesince [September 2019 Release (v2.7023)](https://docs.coveo.com/en/2990/)
      */
     dependsOn: ComponentOptions.buildStringOption(),
+
+    /**
+     * A function ...
+     */
+    dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
+      () => {
+        return null;
+      },
+      { depend: 'dependsOn', section: 'CommonOptions' }
+    ),
     ...ResponsiveFacetOptions
   };
 

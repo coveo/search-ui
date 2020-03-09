@@ -3,7 +3,7 @@ import { IFieldOption } from '../Base/IComponentOptions';
 import { IStringMap } from '../../rest/GenericParam';
 import { Component } from '../Base/Component';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
-import { DependsOnManager, IDependentFacetCondition } from '../../utils/DependsOnManager';
+import { DependsOnManager, IDependsOnCompatibleFacetOptions } from '../../utils/DependsOnManager';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { DynamicHierarchicalFacetQueryController } from '../../controllers/DynamicHierarchicalFacetQueryController';
 import { FacetType } from '../../rest/Facet/FacetRequest';
@@ -14,8 +14,7 @@ import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFa
 
 export type HierarchicalFacetSortCriteria = 'alphanumeric' | 'occurrences';
 
-export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOptions {
-  id?: string;
+export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOptions, IDependsOnCompatibleFacetOptions {
   field: IFieldOption;
   title?: string;
   enableCollapse?: boolean;
@@ -27,8 +26,6 @@ export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOp
   enableMoreLess?: boolean;
   delimitingCharacter?: string;
   valueCaption?: IStringMap<string>;
-  dependsOn?: string;
-  dependsOnCondition?: IDependentFacetCondition;
   includeInBreadcrumb?: boolean;
   filterFacetCount?: boolean;
   clearLabel?: string;

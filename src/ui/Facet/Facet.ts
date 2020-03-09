@@ -20,7 +20,12 @@ import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import {
+  DependsOnManager,
+  IDependentFacet,
+  IDependsOnCompatibleFacetOptions,
+  IDependentFacetCondition
+} from '../../utils/DependsOnManager';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$, Win } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
@@ -63,7 +68,7 @@ import { ValueElementRenderer } from './ValueElementRenderer';
 type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
 type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
 
-export interface IFacetOptions extends IResponsiveComponentOptions {
+export interface IFacetOptions extends IResponsiveComponentOptions, IDependsOnCompatibleFacetOptions {
   title?: string;
   field?: IFieldOption;
   isMultiValueField?: boolean;
@@ -87,7 +92,6 @@ export interface IFacetOptions extends IResponsiveComponentOptions {
   includeInOmnibox?: boolean;
   numberOfValuesInOmnibox?: number;
   numberOfValuesInBreadcrumb?: number;
-  id?: string;
   computedField?: IFieldOption;
   computedFieldOperation?: string;
   computedFieldFormat?: string;
@@ -102,7 +106,6 @@ export interface IFacetOptions extends IResponsiveComponentOptions {
   headerIcon?: string;
   valueIcon?: (facetValue: FacetValue) => string;
   additionalFilter?: IQueryExpression;
-  dependsOn?: string;
   useWildcardsInFacetSearch?: boolean;
 }
 
@@ -647,6 +650,15 @@ export class Facet extends Component {
      * Default value is `undefined`
      */
     dependsOn: ComponentOptions.buildStringOption(),
+    /**
+     * A function ...
+     */
+    dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
+      () => {
+        return null;
+      },
+      { depend: 'dependsOn', section: 'CommonOptions' }
+    ),
     /**
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
      * [Normalizing Facet Value Captions](https://docs.coveo.com/en/368/).
