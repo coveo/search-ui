@@ -246,7 +246,14 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
 
     /**
-     * A function ...
+     * A function used to verify if the facet should be displayed in the interface @externaldocs [....](https://docs.coveo.com/en/.....).
+     *
+     * **Note:**
+     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
+     * > [`init`]{@link init} call of your search interface (see
+     * > [Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
+     * > or before the `init` call, using the `options` top-level function (see
+     * > [Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
      */
     dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
       () => {
