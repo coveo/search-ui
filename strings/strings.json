@@ -7528,5 +7528,9 @@
   "Pagination": {
     "en": "Pagination",
     "fr": "Pagination"
+  },
+  "ThumbnailOf": {
+    "en": "Thumbnail of \"{0}\"",
+    "fr": "Aperçu de « {0} »"
   }
 }

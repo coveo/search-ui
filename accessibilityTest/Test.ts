@@ -53,6 +53,7 @@ import { AccessibilityStarResult } from './AccessibilityStarResult';
 import { AccessibilityResultPreviewsManager } from './AccessibilityResultPreviewsManager';
 import { AccessibilitySettings } from './AccessibilitySettings';
 import { AccessibilityQuerySummary } from './AccessibilityQuerySummary';
+import { AccessibilityThumbnail } from './AccessibilityThumbnail';
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -151,4 +152,5 @@ describe('Testing ...', () => {
   AccessibilityResultPreviewsManager();
   AccessibilitySettings();
   AccessibilityQuerySummary();
+  AccessibilityThumbnail();
 });

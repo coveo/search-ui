@@ -252,6 +252,17 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       section: 'CommonOptions'
     }),
 
+    /**
+     * The base path shared by all values to display in the hierarchical facet.
+     *
+     * If you set this option, the specified base path will always be active on the facet.
+     *
+     * This implies that:
+     * - The end user will not have to manually select the specified base path values.
+     * - Values that do not have the specified base path will not be displayed in the facet.
+     *
+     * @examples electronics, electronics\,laptops
+     */
     basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
     ...ResponsiveFacetOptions
   };
