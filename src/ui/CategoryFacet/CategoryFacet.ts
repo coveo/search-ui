@@ -762,10 +762,13 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
 
   private addAllCategoriesButton() {
     const allCategories = this.categoryFacetTemplates.buildAllCategoriesButton();
-    allCategories.on('click', () => {
-      this.reset();
-      this.scrollToTop();
-    });
+    new AccessibleButton()
+      .withElement(allCategories)
+      .withSelectAction(() => {
+        this.reset();
+        this.scrollToTop();
+      })
+      .build();
     this.categoryValueRoot.listRoot.append(allCategories.el);
   }
 
