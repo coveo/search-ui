@@ -445,6 +445,16 @@ export function CategoryFacetTest() {
         expect(allCategoriesButton()).not.toBeNull();
       });
 
+      it('gives the all categories button a tabindex', () => {
+        Simulate.query(test.env, simulateQueryData);
+        expect(allCategoriesButton().getAttribute('tabindex')).toEqual('0');
+      });
+
+      it('gives the all categories button a role', () => {
+        Simulate.query(test.env, simulateQueryData);
+        expect(allCategoriesButton().getAttribute('role')).toEqual('button');
+      });
+
       it('does not append an all categories button when there are no parents', () => {
         simulateQueryData.query.categoryFacets[0].path = [];
         Simulate.query(test.env, simulateQueryData);

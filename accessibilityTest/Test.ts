@@ -52,6 +52,7 @@ import { AccessibilityYouTubeThumbnail } from './AccessibilityYouTubeThumbnail';
 import { AccessibilityStarResult } from './AccessibilityStarResult';
 import { AccessibilityResultPreviewsManager } from './AccessibilityResultPreviewsManager';
 import { AccessibilitySettings } from './AccessibilitySettings';
+import { AccessibilityQuerySummary } from './AccessibilityQuerySummary';
 import { AccessibilityThumbnail } from './AccessibilityThumbnail';
 
 const initialHTMLSetup = () => {
@@ -150,5 +151,6 @@ describe('Testing ...', () => {
   AccessibilityStarResult();
   AccessibilityResultPreviewsManager();
   AccessibilitySettings();
+  AccessibilityQuerySummary();
   AccessibilityThumbnail();
 });
