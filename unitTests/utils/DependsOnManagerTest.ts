@@ -1,5 +1,5 @@
 import { $$ } from '../Test';
-import { IDependentFacet, DependsOnManager, IDependentFacetCondition } from '../../src/utils/DependsOnManager';
+import { IDependentFacet, DependsOnManager, IDependentFacetCondition, IDependsOnCompatibleFacet } from '../../src/utils/DependsOnManager';
 import { QueryStateModel, Component, QueryEvents } from '../../src/Core';
 import { ComponentsTypes } from '../../src/utils/ComponentsTypes';
 
@@ -18,7 +18,7 @@ export function DependsOnManagerTest() {
 
     function createMock(id: string, dependsOn?: string): IDependsOnManagerTestMock {
       const element = document.createElement('div');
-      const component = new Component(element, 'typeoffacet', { root });
+      const component = new Component(element, 'typeoffacet', { root }) as IDependsOnCompatibleFacet;
       component.queryStateModel = queryStateModel;
       component.options = {
         id,
