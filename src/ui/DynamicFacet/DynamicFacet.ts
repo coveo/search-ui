@@ -246,14 +246,14 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
 
     /**
-     * A function used to verify if the facet should be displayed in the interface @externaldocs [....](https://docs.coveo.com/en/.....).
+     * A function that verifies whether the current state of the `dependsOn` facet allows the dependent facet to be displayed.
      *
-     * **Note:**
-     * > You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-     * > [`init`]{@link init} call of your search interface (see
-     * > [Passing Component Options in the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsintheinitCall)),
-     * > or before the `init` call, using the `options` top-level function (see
-     * > [Passing Component Options Before the init Call](https://developers.coveo.com/x/PoGfAQ#Components-PassingComponentOptionsBeforetheinitCall)).
+     * If specified, the function receives a reference to the resolved `dependsOn` facet component instance as an argument, and must return a boolean.
+     * The function's argument should typically be treated as read-only.
+     *
+     * By default, the dependent facet is displayed whenever one or more values are selected in its `dependsOn` facet.
+     *
+     * @externaldocs [Defining Dependent Facets](https://docs.coveo.com/3210/)
      */
     dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
       () => {

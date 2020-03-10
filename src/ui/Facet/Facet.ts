@@ -651,7 +651,14 @@ export class Facet extends Component {
      */
     dependsOn: ComponentOptions.buildStringOption(),
     /**
-     * A function ...
+     * A function that verifies whether the current state of the `dependsOn` facet allows the dependent facet to be displayed.
+     *
+     * If specified, the function receives a reference to the resolved `dependsOn` facet component instance as an argument, and must return a boolean.
+     * The function's argument should typically be treated as read-only.
+     *
+     * By default, the dependent facet is displayed whenever one or more values are selected in its `dependsOn` facet.
+     *
+     * @externaldocs [Defining Dependent Facets](https://docs.coveo.com/3210/)
      */
     dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
       () => {
