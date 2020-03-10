@@ -27,7 +27,7 @@ import {
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { IStringMap } from '../../rest/GenericParam';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { DependsOnManager, IDependentFacet, IDependentFacetCondition } from '../../utils/DependsOnManager';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { FacetType } from '../../rest/Facet/FacetRequest';
 import { DynamicHierarchicalFacetValues } from './DynamicHierarchicalFacetValues/DynamicHierarchicalFacetValues';
@@ -210,6 +210,23 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
 
     /**
+     * A function that verifies whether the current state of the `dependsOn` facet allows the dependent facet to be displayed.
+     *
+     * If specified, the function receives a reference to the resolved `dependsOn` facet component instance as an argument, and must return a boolean.
+     * The function's argument should typically be treated as read-only.
+     *
+     * By default, the dependent facet is displayed whenever one or more values are selected in its `dependsOn` facet.
+     *
+     * @externaldocs [Defining Dependent Facets](https://docs.coveo.com/3210/)
+     */
+    dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
+      () => {
+        return null;
+      },
+      { depend: 'dependsOn', section: 'CommonOptions' }
+    ),
+
+    /**
      * Whether to exclude folded result parents when estimating result counts for facet values.
      *
      * See also the [`Folding`]{@link folding} and [`FoldingForThread`]{@link FoldingForThread} components.
@@ -370,9 +387,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   private updateAppearance() {
     this.header.toggleCollapse(this.isCollapsed);
     $$(this.element).toggleClass('coveo-dynamic-hierarchical-facet-collapsed', this.isCollapsed);
-    $$(this.element).removeClass('coveo-hidden');
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-    !this.values.allFacetValues.length && $$(this.element).addClass('coveo-hidden');
+    $$(this.element).toggleClass('coveo-hidden', !this.values.allFacetValues.length);
   }
 
   private handleQuerySuccess(results: IQueryResults) {
@@ -656,30 +671,15 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   private initQueryStateEvents() {
     this.queryStateModel.registerNewAttribute(this.queryStateAttribute, []);
     this.bind.onQueryState<IAttributesChangedEventArg>(MODEL_EVENTS.CHANGE, undefined, data => this.handleQueryStateChanged(data));
-    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
-      reset: () => this.dependsOnReset(),
-      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
-      element: this.element,
-      root: this.root,
-      dependsOn: this.options.dependsOn,
-      id: this.options.id,
-      queryStateModel: this.queryStateModel,
-      bind: this.bind
+      reset: () => this.reset(),
+      ref: this
     };
+
     this.dependsOnManager = new DependsOnManager(facetInfo);
-  }
-
-  private dependsOnReset() {
-    this.reset();
-    this.updateAppearance();
-  }
-
-  private toggleDependentFacet(dependentFacet: Component) {
-    this.values.hasSelectedValue ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private notImplementedError() {
