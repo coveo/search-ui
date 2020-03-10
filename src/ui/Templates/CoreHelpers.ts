@@ -21,6 +21,7 @@ import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
 import { Component } from '../Base/Component';
 import { TemplateCache } from './TemplateCache';
+import { INumberFormatOptions } from '../../utils/NumberUtils';
 
 /**
  * The core template helpers provided by default.
@@ -135,10 +136,10 @@ export interface ICoreHelpers {
    * Formats a numeric value using the format string.
    *
    * - `content`: The numeric value to format.
-   * - `format`: The format string to use. The options available are defined by
-   *   the [Globalize](https://github.com/klaaspieter/jquery-global#numbers) library.
+   * - `format`: Optional. The format string to use. The options available are defined by
+   *   the [Globalize](https://github.com/klaaspieter/jquery-global#numbers) library. Either a string or an object (see INumberFormatOptions).
    */
-  number: (content: string, format: string) => string;
+  number: (content: string, format: string | INumberFormatOptions) => string;
   /**
    * Formats a date value to a date-only string using the specified options.
    *
@@ -577,7 +578,7 @@ TemplateHelpers.registerTemplateHelper('highlightStreamHTMLv2', (content: string
   return executeHighlightStreamHTML(content, mergedOptions);
 });
 
-TemplateHelpers.registerFieldHelper('number', (value: any, options?: any) => {
+TemplateHelpers.registerFieldHelper('number', (value: any, options?: INumberFormatOptions | string) => {
   if (!Utils.exists(value)) {
     return undefined;
   }
