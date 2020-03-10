@@ -148,6 +148,8 @@ export class FieldValue extends Component {
         target: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
         class: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
 
+        format: ComponentOptions.buildStringOption(showOnlyWithHelper(['number'])),
+
         decimals: ComponentOptions.buildNumberOption(showOnlyWithHelper(['currency'], { min: 0 })),
         symbol: ComponentOptions.buildStringOption(showOnlyWithHelper(['currency'])),
 

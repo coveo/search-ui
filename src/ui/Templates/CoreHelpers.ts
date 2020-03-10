@@ -578,16 +578,17 @@ TemplateHelpers.registerTemplateHelper('highlightStreamHTMLv2', (content: string
 });
 
 TemplateHelpers.registerFieldHelper('number', (value: any, options?: any) => {
-  var numberValue = Number(value);
-  if (Utils.exists(value)) {
-    if (_.isString(options)) {
-      return StringUtils.htmlEncode(Globalize.format(numberValue, <string>options));
-    } else {
-      return StringUtils.htmlEncode(numberValue.toString());
-    }
-  } else {
+  if (!Utils.exists(value)) {
     return undefined;
   }
+
+  const numberValue = Number(value);
+  const format = _.isString(options) ? options : options && options.format;
+  if (!format) {
+    return StringUtils.htmlEncode(numberValue.toString());
+  }
+
+  return StringUtils.htmlEncode(Globalize.format(numberValue, <string>format));
 });
 
 TemplateHelpers.registerFieldHelper('date', (value: any, options?: IDateToStringOptions) => {
