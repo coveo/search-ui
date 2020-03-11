@@ -9,7 +9,7 @@ process.env.CHROME_BIN = revisionInfo.executablePath;
  */
 var configuration = {
   singleRun: true,
-  browsers: ['ChromeHeadless-Accessibility'],
+  browsers: ['ChromeHeadless'],
   frameworks: ['jasmine'],
   browserNoActivityTimeout: 90000,
   browserDisconnectTolerance: 10,
@@ -33,13 +33,7 @@ var configuration = {
     }
   ],
   reporters: ['spec'],
-  plugins: ['karma-jasmine', 'karma-chrome-launcher', 'karma-spec-reporter'],
-  customLaunchers: {
-    'ChromeHeadless-Accessibility': {
-      base: 'Chrome',
-      flags: ['--headless', '--remote-debugging-port=9222', '--no-sandbox', '--max_old_space_size=4096']
-    }
-  }
+  plugins: ['karma-jasmine', 'karma-chrome-launcher', 'karma-spec-reporter']
 };
 
 module.exports = function(config) {
