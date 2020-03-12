@@ -136,8 +136,15 @@ export interface ICoreHelpers {
    * Formats a numeric value using the format string.
    *
    * - `content`: The numeric value to format.
-   * - `format`: Optional. The format string to use. The options available are defined by
-   *   the [Globalize](https://github.com/klaaspieter/jquery-global#numbers) library. Either a string or an object (see INumberFormatOptions).
+   * - `format` Optional. The string format to use. See the <a href="https://github.com/klaaspieter/jquery-global#numbers" target="_blank">Globalize</a> library for the list of available formats.
+   *
+   * When the helper is used in a [`FieldValue`]{@link FieldValue} component, this value is automatically retrieved from the specified [`field`]{@link FieldValue.options.field}.
+   *
+   * **Example:**
+   *
+   *  ```html
+   *  <div class="CoveoFieldValue" data-field="@viewcount" data-text-caption="Views" data-helper="number" data-helper-options-format="n0"></div>
+   *  ```
    */
   number: (content: string, format: string | INumberFormatOptions) => string;
   /**
