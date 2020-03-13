@@ -284,15 +284,10 @@ export class ResultLink extends Component {
   }
   public renderUri(element: HTMLElement, result?: IQueryResult) {
     if (/^\s*$/.test(this.element.innerHTML)) {
-      if (!this.options.titleTemplate) {
-        this.element.innerHTML = this.result.title
-          ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight')
-          : this.result.clickUri;
-      } else {
-        let newTitle = StringUtils.buildStringTemplateFromResult(this.options.titleTemplate, this.result);
-        this.element.innerHTML = newTitle
-          ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight)
-          : this.result.clickUri;
+      const title = this.getDisplayedTitle(result);
+      this.element.innerHTML = title;
+      if (!this.element.title) {
+        this.element.title = title;
       }
     }
   }
@@ -358,6 +353,19 @@ export class ResultLink extends Component {
       this.setHrefIfNotAlready() ||
       this.openLinkThatIsNotAnAnchor()
     );
+  }
+
+  private getDisplayedTitle(result?: IQueryResult) {
+    if (!this.options.titleTemplate) {
+      return this.result.title
+        ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight')
+        : this.result.clickUri;
+    } else {
+      let newTitle = StringUtils.buildStringTemplateFromResult(this.options.titleTemplate, this.result);
+      return newTitle
+        ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight)
+        : this.result.clickUri;
+    }
   }
 
   private bindOnClickIfNotUndefined() {
