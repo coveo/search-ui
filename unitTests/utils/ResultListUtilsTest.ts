@@ -10,9 +10,10 @@ export const ResultListUtilsTest = () => {
     const utils = ResultListUtils;
     let root: SearchInterface;
     let cmp: Component;
+    let resultList: Component;
 
     function appendResultListToRoot(options: IResultListOptions = {}, disabled = false) {
-      const resultList = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, options).cmp;
+      resultList = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, options).cmp;
       resultList.disabled = disabled;
       root.element.appendChild(resultList.element);
     }
@@ -128,6 +129,15 @@ export const ResultListUtilsTest = () => {
 
         utils.scrollToTop(root.element);
         expect(scrollTopSpy).toHaveBeenCalledWith(0);
+      });
+
+      it(`when the top of the searchInterface is in the view port
+      should not scroll`, () => {
+        appendResultListToRoot();
+        spyOn(resultList.searchInterface.element, 'getBoundingClientRect').and.returnValue({ top: -100 });
+
+        utils.scrollToTop(root.element);
+        expect(scrollTopSpy).not.toHaveBeenCalled();
       });
     });
   });

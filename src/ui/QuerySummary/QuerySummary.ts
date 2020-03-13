@@ -13,6 +13,7 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IQuerySummaryOptions {
   onlyDisplaySearchTips?: boolean;
@@ -260,18 +261,21 @@ export class QuerySummary extends Component {
       l('CancelLastAction')
     );
 
-    cancelLastAction.on('click', () => {
-      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
-      if (this.lastKnownGoodState) {
-        this.queryStateModel.reset();
-        this.queryStateModel.setMultiple(this.lastKnownGoodState);
-        $$(this.root).trigger(QuerySummaryEvents.cancelLastAction);
-        this.queryController.executeQuery();
-      } else {
-        history.back();
-      }
-    });
+    new AccessibleButton()
+      .withElement(cancelLastAction)
+      .withSelectAction(() => {
+        this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
+        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
+        if (this.lastKnownGoodState) {
+          this.queryStateModel.reset();
+          this.queryStateModel.setMultiple(this.lastKnownGoodState);
+          $$(this.root).trigger(QuerySummaryEvents.cancelLastAction);
+          this.queryController.executeQuery();
+        } else {
+          history.back();
+        }
+      })
+      .build();
 
     return cancelLastAction;
   }

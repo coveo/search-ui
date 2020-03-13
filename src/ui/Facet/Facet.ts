@@ -20,7 +20,12 @@ import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import {
+  DependsOnManager,
+  IDependentFacet,
+  IDependsOnCompatibleFacetOptions,
+  IDependentFacetCondition
+} from '../../utils/DependsOnManager';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$, Win } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
@@ -63,7 +68,7 @@ import { ValueElementRenderer } from './ValueElementRenderer';
 type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
 type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
 
-export interface IFacetOptions extends IResponsiveComponentOptions {
+export interface IFacetOptions extends IResponsiveComponentOptions, IDependsOnCompatibleFacetOptions {
   title?: string;
   field?: IFieldOption;
   isMultiValueField?: boolean;
@@ -87,7 +92,6 @@ export interface IFacetOptions extends IResponsiveComponentOptions {
   includeInOmnibox?: boolean;
   numberOfValuesInOmnibox?: number;
   numberOfValuesInBreadcrumb?: number;
-  id?: string;
   computedField?: IFieldOption;
   computedFieldOperation?: string;
   computedFieldFormat?: string;
@@ -102,7 +106,6 @@ export interface IFacetOptions extends IResponsiveComponentOptions {
   headerIcon?: string;
   valueIcon?: (facetValue: FacetValue) => string;
   additionalFilter?: IQueryExpression;
-  dependsOn?: string;
   useWildcardsInFacetSearch?: boolean;
 }
 
@@ -647,6 +650,22 @@ export class Facet extends Component {
      * Default value is `undefined`
      */
     dependsOn: ComponentOptions.buildStringOption(),
+    /**
+     * A function that verifies whether the current state of the `dependsOn` facet allows the dependent facet to be displayed.
+     *
+     * If specified, the function receives a reference to the resolved `dependsOn` facet component instance as an argument, and must return a boolean.
+     * The function's argument should typically be treated as read-only.
+     *
+     * By default, the dependent facet is displayed whenever one or more values are selected in its `dependsOn` facet.
+     *
+     * @externaldocs [Defining Dependent Facets](https://docs.coveo.com/3210/)
+     */
+    dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
+      () => {
+        return null;
+      },
+      { depend: 'dependsOn', section: 'CommonOptions' }
+    ),
     /**
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
      * [Normalizing Facet Value Captions](https://docs.coveo.com/en/368/).
@@ -1317,7 +1336,7 @@ export class Facet extends Component {
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
     $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
+    $$(this.element).toggleClass('coveo-hidden', !this.getDisplayedFacetValues().length);
     $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
   }
 
@@ -1341,7 +1360,6 @@ export class Facet extends Component {
     this.queryStateModel.registerNewAttribute(this.lookupValueAttributeId, {});
 
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
-    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   protected initComponentStateEvents() {
@@ -1541,19 +1559,9 @@ export class Facet extends Component {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
-      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
-      element: this.element,
-      root: this.root,
-      dependsOn: this.options.dependsOn,
-      id: this.options.id,
-      queryStateModel: this.queryStateModel,
-      bind: this.bind
+      ref: this
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
-  }
-
-  private toggleDependentFacet(dependentFacet: Component) {
-    this.getSelectedValues().length ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private dependsOnUpdateParentDisplayValue() {

@@ -29,6 +29,20 @@ export function FacetTest() {
       });
     }
 
+    function initializeComponentWithQSM() {
+      test = Mock.advancedComponentSetup<Facet>(Facet, <Mock.AdvancedComponentSetupOptions>{
+        modifyBuilder: builder => {
+          return builder.withLiveQueryStateModel();
+        },
+        cmpOptions: {
+          field: '@field'
+        }
+      });
+      test.env.queryStateModel.registerNewAttribute('f:@field', []);
+      test.env.queryStateModel.registerNewAttribute('f:@field:not', []);
+      test.env.queryStateModel.registerNewAttribute('f:@field:operator', 'or');
+    }
+
     afterEach(() => {
       test = null;
     });
@@ -253,17 +267,7 @@ export function FacetTest() {
 
     describe('with a live query state model', () => {
       beforeEach(() => {
-        test = Mock.advancedComponentSetup<Facet>(Facet, <Mock.AdvancedComponentSetupOptions>{
-          modifyBuilder: builder => {
-            return builder.withLiveQueryStateModel();
-          },
-          cmpOptions: {
-            field: '@field'
-          }
-        });
-        test.env.queryStateModel.registerNewAttribute('f:@field', []);
-        test.env.queryStateModel.registerNewAttribute('f:@field:not', []);
-        test.env.queryStateModel.registerNewAttribute('f:@field:operator', 'or');
+        initializeComponentWithQSM();
       });
 
       it('should select the needed values', () => {
@@ -952,19 +956,44 @@ export function FacetTest() {
     });
 
     describe('testing the DependsOnManager', () => {
+      let dependentFacet: Facet;
       beforeEach(() => {
-        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
-        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
+        initializeComponentWithQSM();
+
+        dependentFacet = Mock.advancedComponentSetup<Facet>(
+          Facet,
+          new Mock.AdvancedComponentSetupOptions(
+            undefined,
+            <IFacetOptions>{
+              field: '@anotherField',
+              dependsOn: test.cmp.options.id
+            },
+            (builder: Mock.MockEnvironmentBuilder) => {
+              builder.withQueryStateModel(test.env.queryStateModel);
+              builder.withRoot(test.env.root);
+              return builder;
+            }
+          )
+        ).cmp;
+
+        spyOn(dependentFacet, 'reset');
       });
 
       it('should initialize the dependsOnManager', () => {
         expect(test.cmp.dependsOnManager).toBeTruthy();
       });
 
-      it(`when facet appearance is updated (e.g. when createDom is called)
-      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
-        test.cmp.createDom();
-        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      it(`when query state changes so that parent has selected values (default condition fulfilled)
+      should not call "reset" on the dependent facet`, () => {
+        test.cmp.selectValue('test');
+        expect(dependentFacet.reset).not.toHaveBeenCalled();
+      });
+
+      it(`when query state changes so that parent has no selected values (default condition not fulfilled)
+      should call "reset" on the dependent facet`, () => {
+        test.cmp.selectValue('test');
+        test.cmp.deselectValue('test');
+        expect(dependentFacet.reset).toHaveBeenCalledTimes(1);
       });
     });
   });
