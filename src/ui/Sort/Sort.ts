@@ -210,6 +210,7 @@ export class Sort extends Component {
       this.currentCriteria = null;
     }
     this.updateAppearance();
+    this.updateAccessibilityProperties();
   }
 
   private setTextToCaptionIfDefined() {
@@ -221,13 +222,12 @@ export class Sort extends Component {
   }
 
   private addAccessiblityAttributes() {
-    const localizedCaption = l(this.displayedSortText);
-
     new AccessibleButton()
       .withElement(this.element)
       .withSelectAction(() => this.handleClick())
-      .withLabel(l('SortResultsBy', localizedCaption))
+      .withLabel(this.getAccessibleLabel())
       .build();
+    this.updateAccessibleSelectedState();
   }
 
   private get displayedSortText() {
@@ -271,15 +271,46 @@ export class Sort extends Component {
 
   private updateAppearance() {
     $$(this.element).toggleClass('coveo-selected', this.isSelected());
-
     if (this.isToggle()) {
-      var direction = this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
+      const currentDirection = this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
       $$(this.element).removeClass('coveo-ascending');
       $$(this.element).removeClass('coveo-descending');
       if (this.isSelected()) {
-        $$(this.element).addClass(direction === 'ascending' ? 'coveo-ascending' : 'coveo-descending');
+        $$(this.element).addClass(currentDirection === 'ascending' ? 'coveo-ascending' : 'coveo-descending');
       }
     }
+  }
+
+  private updateAccessibilityProperties() {
+    this.updateAccessibleSelectedState();
+    this.updateAccessibleLabel();
+  }
+
+  private updateAccessibleSelectedState() {
+    this.element.setAttribute('aria-pressed', this.isSelected().toString());
+  }
+
+  private updateAccessibleLabel() {
+    this.element.setAttribute('aria-label', this.getAccessibleLabel());
+  }
+
+  private getAccessibleLabel() {
+    return this.isToggle() ? this.getAccessibleLabelWithSort() : this.getAccessibleLabelWithoutSort();
+  }
+
+  private getAccessibleLabelWithSort(): string {
+    const localizedCaption = l(this.displayedSortText);
+    const currentDirection = this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
+    let pressingWillSetToAscendingOrder = currentDirection === 'ascending';
+    if (this.isSelected()) {
+      pressingWillSetToAscendingOrder = !pressingWillSetToAscendingOrder;
+    }
+    return l(pressingWillSetToAscendingOrder ? 'SortResultsByAscending' : 'SortResultsByDescending', localizedCaption);
+  }
+
+  private getAccessibleLabelWithoutSort(): string {
+    const localizedCaption = l(this.displayedSortText);
+    return l('SortResultsBy', localizedCaption);
   }
 }
 
