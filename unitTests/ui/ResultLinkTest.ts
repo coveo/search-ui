@@ -58,6 +58,12 @@ export function ResultLinkTest() {
       );
     });
 
+    it('should set the title attribute to the displayed title', () => {
+      expect(test.cmp.element.title).toEqual(
+        HighlightUtils.highlightString(fakeResult.title, fakeResult.titleHighlights, null, 'coveo-highlight')
+      );
+    });
+
     it('should contain the clickUri if the result has no title', () => {
       fakeResult.title = undefined;
       test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, undefined);
