@@ -450,8 +450,8 @@
     "zh-tw": "搜尋 {0}"
   },
   "SubmitSearch": {
-    "en": "Search",
-    "fr": "Rechercher"
+    "en": "Submit search",
+    "fr": "Envoyer la requête"
   },
   "ShareQuery": {
     "en": "Share Query",
