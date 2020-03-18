@@ -284,7 +284,7 @@ export class ResultLink extends Component {
   }
   public renderUri(element: HTMLElement, result?: IQueryResult) {
     if (/^\s*$/.test(this.element.innerHTML)) {
-      const title = this.getDisplayedTitle(result);
+      const title = this.getDisplayedTitle();
       this.element.innerHTML = title;
       if (!this.element.title) {
         this.element.title = title;
@@ -355,7 +355,7 @@ export class ResultLink extends Component {
     );
   }
 
-  private getDisplayedTitle(result?: IQueryResult) {
+  private getDisplayedTitle() {
     if (!this.options.titleTemplate) {
       return this.result.title
         ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight')
