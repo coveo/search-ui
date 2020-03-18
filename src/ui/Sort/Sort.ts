@@ -221,6 +221,10 @@ export class Sort extends Component {
     return Utils.isNonEmptyString(this.options.caption);
   }
 
+  private get currentDirection() {
+    return this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
+  }
+
   private addAccessiblityAttributes() {
     new AccessibleButton()
       .withElement(this.element)
@@ -272,11 +276,10 @@ export class Sort extends Component {
   private updateAppearance() {
     $$(this.element).toggleClass('coveo-selected', this.isSelected());
     if (this.isToggle()) {
-      const currentDirection = this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
       $$(this.element).removeClass('coveo-ascending');
       $$(this.element).removeClass('coveo-descending');
       if (this.isSelected()) {
-        $$(this.element).addClass(currentDirection === 'ascending' ? 'coveo-ascending' : 'coveo-descending');
+        $$(this.element).addClass(this.currentDirection === 'ascending' ? 'coveo-ascending' : 'coveo-descending');
       }
     }
   }
@@ -300,12 +303,19 @@ export class Sort extends Component {
 
   private getAccessibleLabelWithSort(): string {
     const localizedCaption = l(this.displayedSortText);
-    const currentDirection = this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
-    let pressingWillSetToAscendingOrder = currentDirection === 'ascending';
     if (this.isSelected()) {
-      pressingWillSetToAscendingOrder = !pressingWillSetToAscendingOrder;
+      if (this.currentDirection === 'ascending') {
+        return l('SortResultsByDescending', localizedCaption);
+      } else {
+        return l('SortResultsByAscending', localizedCaption);
+      }
     }
-    return l(pressingWillSetToAscendingOrder ? 'SortResultsByAscending' : 'SortResultsByDescending', localizedCaption);
+
+    if (this.currentDirection === 'ascending') {
+      return l('SortResultsByAscending', localizedCaption);
+    }
+
+    return l('SortResultsByDescending', localizedCaption);
   }
 
   private getAccessibleLabelWithoutSort(): string {
