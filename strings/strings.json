@@ -7438,6 +7438,14 @@
     "en": "Sort results by {0}",
     "fr": "Trier les résultats par {0}"
   },
+  "SortResultsByAscending": {
+    "en": "Sort by {0} in ascending order",
+    "fr": "Trier en ordre croissant de {0}"
+  },
+  "SortResultsByDescending": {
+    "en": "Sort by {0} in descending order",
+    "fr": "Trier en ordre décroissant de {0}"
+  },
   "DisplayResultsAs": {
     "en": "Display results as {0}",
     "fr": "Afficher les résultats comme {0}"
