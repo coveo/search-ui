@@ -439,7 +439,7 @@ export class Omnibox extends Component {
     const input = $$(this.magicBox.element).find('input');
 
     if (input) {
-      $$(input).setAttribute('aria-label', l('SubmitSearch'));
+      $$(input).setAttribute('aria-label', l('Search'));
     }
 
     this.setupMagicBox();
