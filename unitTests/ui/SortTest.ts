@@ -5,12 +5,14 @@ import { Sort } from '../../src/ui/Sort/Sort';
 import { SortCriteria } from '../../src/ui/Sort/SortCriteria';
 import { $$, Dom } from '../../src/utils/Dom';
 import * as Mock from '../MockEnvironment';
+import { l } from '../../src/strings/Strings';
 
 export function SortTest() {
   describe('Sort', function() {
     var test: Mock.IBasicComponentSetup<Sort>;
 
-    function buildSort(sortCriteria: string) {
+    const caption = 'foobarde';
+    function buildSort(sortCriteria: string, queryStateModelValues?: { [attribute: string]: string }) {
       var elem: HTMLElement = document.createElement('div');
       elem.dataset['sortCriteria'] = sortCriteria;
       elem = Dom.createElement('div', {
@@ -18,7 +20,13 @@ export function SortTest() {
       });
       return Mock.advancedComponentSetup<Sort>(Sort, <Mock.AdvancedComponentSetupOptions>{
         element: elem,
-        cmpOptions: { caption: 'foobarde' }
+        cmpOptions: { caption },
+        modifyBuilder: builder => {
+          if (queryStateModelValues) {
+            (builder.queryStateModel.get as jasmine.Spy).and.callFake((attribute: string) => queryStateModelValues[attribute]);
+          }
+          return builder;
+        }
       });
     }
 
@@ -81,6 +89,20 @@ export function SortTest() {
       expect($$(test.cmp.element).hasClass('coveo-sort-hidden')).toBe(true);
     });
 
+    it('should be accessible as a toggleable button', () => {
+      expect(test.cmp.element.getAttribute('role')).toEqual('button');
+      expect(test.cmp.element.getAttribute('aria-pressed')).toEqual(false.toString());
+    });
+
+    it('should be accessible as a toggled button when active', () => {
+      test = buildSort('date ascending', { sort: 'date ascending' });
+      expect(test.cmp.element.getAttribute('aria-pressed')).toEqual(true.toString());
+    });
+
+    it('should have an accessible label', () => {
+      expect(test.cmp.element.getAttribute('aria-label')).toEqual(l('SortResultsBy', caption));
+    });
+
     describe('with a toggle', function() {
       beforeEach(function() {
         test = buildSort('date ascending,date descending');
@@ -114,7 +136,7 @@ export function SortTest() {
           elem.dataset['sortCriteria'] = sortCriteria;
           return Mock.advancedComponentSetup<Sort>(
             Sort,
-            new Mock.AdvancedComponentSetupOptions(elem, { caption: 'foobarde' }, (builder: Mock.MockEnvironmentBuilder) => {
+            new Mock.AdvancedComponentSetupOptions(elem, { caption }, (builder: Mock.MockEnvironmentBuilder) => {
               return builder.withLiveQueryStateModel();
             })
           );
@@ -135,6 +157,13 @@ export function SortTest() {
 
         beforeEach(function() {
           test = buildSort('date ascending,date descending');
+        });
+
+        it('should give an accessible label that correctly predicts what the sort will be when selected', () => {
+          expect(test.cmp.element.getAttribute('aria-label')).toEqual(l('SortResultsByAscending', caption));
+          test.cmp.select();
+          expect(test.cmp.element.getAttribute('aria-label')).toEqual(l('SortResultsByDescending', caption));
+          test.cmp.select();
         });
 
         it('should set itself as selected on the queryStateModel when selected', function() {
