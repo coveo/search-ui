@@ -28,9 +28,9 @@ export function ValueElementRendererTest() {
       expect(valueRenderer.build().listItem.getAttribute('data-value')).toBe('foo');
     });
 
-    it('should not make the label a div element', () => {
+    it('should give the label the "group" role to avoid overriding child labels', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1234)));
-      expect(valueRenderer.build().label.tagName).toEqual('DIV');
+      expect(valueRenderer.build().label.getAttribute('role')).toEqual('group');
     });
 
     it('should add a hover class for the list element', () => {
