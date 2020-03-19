@@ -64,6 +64,16 @@ export function TextInputTest() {
       expect(labelHTML).toBeNull();
     });
 
+    it('should contain an icon if specified', () => {
+      initializeComponentWithOptions(undefined, { prefixingIcon: 'arrowDown' });
+      expect(getElement().querySelector('svg')).not.toBeNull();
+    });
+
+    it('should not contain an icon if not specified', () => {
+      initializeComponentWithOptions();
+      expect(getElement().querySelector('svg')).toBeNull();
+    });
+
     it(`when name is specified and the options "usePlaceholder" is true
     should contain a placeholder instead of a label`, () => {
       const placeholder = 'A Placeholder';

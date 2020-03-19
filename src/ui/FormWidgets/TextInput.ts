@@ -1,7 +1,9 @@
 import { exportGlobally } from '../../GlobalExports';
+import { SVGIcons } from '../../utils/SVGIcons';
 import { $$, Dom } from '../../utils/Dom';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface ITextInputOptions {
   /**
@@ -33,13 +35,20 @@ export interface ITextInputOptions {
    * A custom aria-label attribute to add to the `TextInput`'s HTML element.
    */
   ariaLabel?: string;
+  /**
+   * An icon to display inside the input at its beginning.
+   *
+   * **Default:** `null`
+   */
+  prefixingIcon?: keyof typeof SVGIcons.icons;
 }
 
 const defaultOptions: ITextInputOptions = {
   usePlaceholder: false,
   className: 'coveo-input',
   triggerOnChangeAsYouType: false,
-  isRequired: true
+  isRequired: true,
+  prefixingIcon: null
 };
 
 /**
@@ -48,6 +57,7 @@ const defaultOptions: ITextInputOptions = {
 export class TextInput implements IFormWidget, IFormWidgetSettable {
   private element: HTMLElement;
   private input: Dom;
+  private icon: Dom;
   private lastQueryText: string = '';
 
   static doExport() {
@@ -73,6 +83,7 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
     };
 
     this.buildContent();
+    this.buildIcon();
   }
 
   /**
@@ -143,6 +154,17 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
 
     this.element.appendChild(this.input.el);
     this.name && this.createLabelOrPlaceholder();
+  }
+
+  private buildIcon() {
+    if (!this.options.prefixingIcon) {
+      return;
+    }
+    const iconClassName = `${this.options.className}-icon`;
+    this.icon = $$('span', { className: iconClassName });
+    this.icon.setHtml(SVGIcons.icons[this.options.prefixingIcon]);
+    SVGDom.addClassToSVGInContainer(this.icon.el, `${iconClassName}-svg`);
+    $$(this.element).prepend(this.icon.el);
   }
 
   private addEventListeners() {
