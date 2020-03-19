@@ -36,11 +36,11 @@ export interface ITextInputOptions {
    */
   ariaLabel?: string;
   /**
-   * An icon to display inside the input at its beginning.
+   * The name or svg source of an icon to display inside the input at its beginning.
    *
    * **Default:** `null`
    */
-  prefixingIcon?: keyof typeof SVGIcons.icons;
+  prefixingIcon?: string;
 }
 
 const defaultOptions: ITextInputOptions = {
@@ -162,7 +162,7 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
     }
     const iconClassName = `${this.options.className}-icon`;
     this.icon = $$('span', { className: iconClassName });
-    this.icon.setHtml(SVGIcons.icons[this.options.prefixingIcon]);
+    this.icon.setHtml(SVGIcons.icons[this.options.prefixingIcon] || this.options.prefixingIcon);
     SVGDom.addClassToSVGInContainer(this.icon.el, `${iconClassName}-svg`);
     $$(this.element).prepend(this.icon.el);
   }
