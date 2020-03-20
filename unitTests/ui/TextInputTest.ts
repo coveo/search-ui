@@ -65,7 +65,7 @@ export function TextInputTest() {
     });
 
     it('should contain an icon if specified', () => {
-      initializeComponentWithOptions(undefined, { prefixingIcon: 'arrowDown' });
+      initializeComponentWithOptions(undefined, { icon: 'arrowDown' });
       expect(getElement().querySelector('svg')).not.toBeNull();
     });
 
