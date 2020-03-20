@@ -1,5 +1,56 @@
-@import "../bourbon/bourbon";
-@import "../../node_modules/@material/select/dist/mdc.select.min.css";
+@import '../bourbon/bourbon';
+
+.mdc-multi-select {
+  border-color: rgba(0, 0, 0, 0.38);
+  border: 1px solid var(--mdc-theme-text-hint-on-light, rgba(0, 0, 0, 0.38));
+  width: 250px;
+  padding: 0;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  .mdc-list-group {
+    color: rgba(0, 0, 0, 0.38);
+    color: var(--mdc-theme-text-hint-on-light, rgba(0, 0, 0, 0.38));
+    margin: 16px 0 0;
+    padding: 0 0 0 16px;
+    font-weight: 400;
+
+    &:last-child {
+      margin-bottom: 16px;
+    }
+  }
+
+  .mdc-list-item {
+    color: rgba(0, 0, 0, 0.87);
+    color: var(--mdc-theme-text-primary-on-light, rgba(0, 0, 0, 0.87));
+    margin: 0 0 0 -16px;
+    padding: 0 16px;
+
+    &:checked {
+      background-color: #fff;
+      background-color: var(--mdc-theme-background, #fff);
+    }
+
+    &:first-child {
+      margin-top: 12px;
+    }
+
+    &:last-child {
+      margin-bottom: 8px;
+    }
+  }
+
+  &:focus {
+    .mdc-list-item {
+      &:checked {
+        background-color: #3f51b5;
+        background-color: var(--mdc-theme-primary, #3f51b5);
+      }
+    }
+  }
+}
 
 .mdc-list-item {
   height: 30px;
