@@ -1,6 +1,6 @@
 @import '../bourbon/bourbon';
 
-.mdc-multi-select {
+.coveo-multi-select {
   border-color: rgba(0, 0, 0, 0.38);
   border: 1px solid var(--mdc-theme-text-hint-on-light, rgba(0, 0, 0, 0.38));
   width: 250px;
@@ -10,7 +10,7 @@
   -moz-appearance: none;
   appearance: none;
 
-  .mdc-list-group {
+  .coveo-list-group {
     color: rgba(0, 0, 0, 0.38);
     color: var(--mdc-theme-text-hint-on-light, rgba(0, 0, 0, 0.38));
     margin: 16px 0 0;
@@ -22,7 +22,7 @@
     }
   }
 
-  .mdc-list-item {
+  .coveo-list-item {
     color: rgba(0, 0, 0, 0.87);
     color: var(--mdc-theme-text-primary-on-light, rgba(0, 0, 0, 0.87));
     margin: 0 0 0 -16px;
@@ -43,7 +43,7 @@
   }
 
   &:focus {
-    .mdc-list-item {
+    .coveo-list-item {
       &:checked {
         background-color: #3f51b5;
         background-color: var(--mdc-theme-primary, #3f51b5);
@@ -52,7 +52,7 @@
   }
 }
 
-.mdc-list-item {
+.coveo-list-item {
   height: 30px;
   @include display(flex);
   @include align-items(center);
