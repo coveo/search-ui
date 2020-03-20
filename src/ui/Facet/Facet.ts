@@ -1182,7 +1182,8 @@ export class Facet extends Component {
         ret = this.options.valueCaption[lookupValue] || ret;
       }
       if (typeof this.options.valueCaption == 'function') {
-        const valueFromList = this.facetValuesList.get(facetValue as FacetValue).facetValue;
+        const fv = facetValue instanceof FacetValue ? facetValue : FacetValue.create(facetValue);
+        const valueFromList = this.facetValuesList.get(fv).facetValue;
         ret = this.options.valueCaption.call(this, valueFromList);
       }
     }
