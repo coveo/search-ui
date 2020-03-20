@@ -1,8 +1,9 @@
+@import '../coveo-styleguide/scss/common/palette';
 @import '../bourbon/bourbon';
+@import '../Variables';
 
 .coveo-multi-select {
-  border-color: rgba(0, 0, 0, 0.38);
-  border: 1px solid var(--mdc-theme-text-hint-on-light, rgba(0, 0, 0, 0.38));
+  border: $default-low-contrast-border;
   width: 250px;
   padding: 0;
   outline: none;
@@ -11,8 +12,7 @@
   appearance: none;
 
   .coveo-list-group {
-    color: rgba(0, 0, 0, 0.38);
-    color: var(--mdc-theme-text-hint-on-light, rgba(0, 0, 0, 0.38));
+    color: $color-light-contrast-grey;
     margin: 16px 0 0;
     padding: 0 0 0 16px;
     font-weight: 400;
@@ -23,14 +23,12 @@
   }
 
   .coveo-list-item {
-    color: rgba(0, 0, 0, 0.87);
-    color: var(--mdc-theme-text-primary-on-light, rgba(0, 0, 0, 0.87));
+    color: $dark-grey;
     margin: 0 0 0 -16px;
     padding: 0 16px;
 
     &:checked {
-      background-color: #fff;
-      background-color: var(--mdc-theme-background, #fff);
+      background-color: transparent;
     }
 
     &:first-child {
@@ -45,8 +43,7 @@
   &:focus {
     .coveo-list-item {
       &:checked {
-        background-color: #3f51b5;
-        background-color: var(--mdc-theme-primary, #3f51b5);
+        background-color: $coveo-blue;
       }
     }
   }
