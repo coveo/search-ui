@@ -36,19 +36,18 @@ export interface ITextInputOptions {
    */
   ariaLabel?: string;
   /**
-   * The name or svg source of an icon to display inside the input at its beginning.
+   * The name of an icon to display inside the input at its beginning.
    *
-   * **Default:** `null`
+   * **Default:** `undefined`
    */
-  prefixingIcon?: string;
+  icon?: string;
 }
 
 const defaultOptions: ITextInputOptions = {
   usePlaceholder: false,
   className: 'coveo-input',
   triggerOnChangeAsYouType: false,
-  isRequired: true,
-  prefixingIcon: null
+  isRequired: true
 };
 
 /**
@@ -157,12 +156,12 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
   }
 
   private buildIcon() {
-    if (!this.options.prefixingIcon) {
+    if (!this.options.icon) {
       return;
     }
     const iconClassName = `${this.options.className}-icon`;
     this.icon = $$('span', { className: iconClassName });
-    this.icon.setHtml(SVGIcons.icons[this.options.prefixingIcon] || this.options.prefixingIcon);
+    this.icon.setHtml(SVGIcons.icons[this.options.icon]);
     SVGDom.addClassToSVGInContainer(this.icon.el, `${iconClassName}-svg`);
     $$(this.element).prepend(this.icon.el);
   }

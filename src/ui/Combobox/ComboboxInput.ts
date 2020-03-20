@@ -18,7 +18,7 @@ export class ComboboxInput {
     className: 'coveo-combobox-input',
     triggerOnChangeAsYouType: true,
     isRequired: false,
-    prefixingIcon: 'search'
+    icon: 'search'
   };
 
   constructor(private combobox: Combobox) {
