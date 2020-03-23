@@ -34,12 +34,6 @@ export function SearchEndpointTest() {
       expect(ep.options.restUri).toBeDefined();
     });
 
-    it('allow to get the default endpoint if there is only one endpoint set to default', () => {
-      SearchEndpoint.configureSampleEndpointV2();
-
-      expect(SearchEndpoint.endpoints['default']).toBe(SearchEndpoint.defaultEndpoint);
-    });
-
     it('allows to get the default endpoint if there is only one endpoint set to default', () => {
       SearchEndpoint.configureSampleEndpointV2();
 
