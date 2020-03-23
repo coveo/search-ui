@@ -15,6 +15,7 @@ import { IAPIAnalyticsEventResponse } from './APIAnalyticsEventResponse';
 import { IAPIAnalyticsVisitResponseRest } from './APIAnalyticsVisitResponse';
 import { ICustomEvent } from './CustomEvent';
 import { ITopQueries } from './TopQueries';
+import { SearchEndpoint } from '../rest/SearchEndpoint';
 
 export interface IAnalyticsEndpointOptions {
   accessToken: AccessToken;
@@ -25,7 +26,7 @@ export interface IAnalyticsEndpointOptions {
 export class AnalyticsEndpoint {
   logger: Logger;
 
-  static DEFAULT_ANALYTICS_URI = 'https://usageanalytics.coveo.com';
+  static DEFAULT_ANALYTICS_URI = 'https://platform.cloud.coveo.com/rest/ua';
   static DEFAULT_ANALYTICS_VERSION = 'v15';
   static CUSTOM_ANALYTICS_VERSION = undefined;
   static VISITOR_COOKIE_TIME = 10000 * 24 * 60 * 60 * 1000;
@@ -45,6 +46,15 @@ export class AnalyticsEndpoint {
 
     this.endpointCaller = new AnalyticsEndpointCaller(endpointCallerOptions);
     this.organization = options.organization;
+  }
+
+  public static getURLFromSearchEndpoint(endpoint: SearchEndpoint): string {
+    if (!endpoint || !endpoint.options || !endpoint.options.restUri) {
+      return this.DEFAULT_ANALYTICS_URI;
+    }
+
+    const [basePlatform] = endpoint.options.restUri.split('/rest');
+    return basePlatform + '/rest/ua';
   }
 
   public getCurrentVisitId(): string {
@@ -163,7 +173,7 @@ export class AnalyticsEndpoint {
   private getURL(path: string): IUrlNormalizedParts {
     const versionToCall = AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION;
     const urlNormalized = UrlUtils.normalizeAsParts({
-      paths: [this.options.serviceUrl, '/rest/', versionToCall, '/analytics/', path],
+      paths: [this.options.serviceUrl, versionToCall, '/analytics/', path],
       query: {
         org: this.organization,
         visitor: Cookie.get('visitorId')
@@ -212,12 +222,7 @@ export class AnalyticsEndpoint {
 
   private buildAnalyticsUrl(path: string) {
     return UrlUtils.normalizeAsString({
-      paths: [
-        this.options.serviceUrl,
-        '/rest/',
-        AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION,
-        path
-      ]
+      paths: [this.options.serviceUrl, AnalyticsEndpoint.CUSTOM_ANALYTICS_VERSION || AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION, path]
     });
   }
 }
