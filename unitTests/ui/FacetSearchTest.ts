@@ -88,11 +88,31 @@ export function FacetSearchTest() {
       });
 
       describe('when calling focus', () => {
-        it("should update the accessible element's accessibility properties", () => {
-          const setExpandedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setExpandedFacetSearchAccessibilityAttributes');
+        let setExpandedFacetSearchAccessibilityAttributes: jasmine.Spy;
+        beforeEach(() => {
+          setExpandedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setExpandedFacetSearchAccessibilityAttributes');
           facetSearch.focus();
+        });
+
+        it("should update the accessible element's accessibility properties", () => {
           expect(setExpandedFacetSearchAccessibilityAttributes).toHaveBeenCalledTimes(1);
           expect(setExpandedFacetSearchAccessibilityAttributes).toHaveBeenCalledWith(facetSearch.facetSearchElement['searchResults']);
+        });
+
+        it('should give the "combobox" role to the combobox', () => {
+          expect(facetSearch.facetSearchElement.combobox.getAttribute('role')).toEqual('combobox');
+        });
+
+        it('should give the combobox the aria-owns attribute', () => {
+          expect(facetSearch.facetSearchElement.combobox.getAttribute('aria-owns')).not.toBeNull();
+        });
+
+        it('should give the input the aria-controls attribute', () => {
+          expect(facetSearch.facetSearchElement.input.getAttribute('aria-controls')).not.toBeNull();
+        });
+
+        it("should set aria-expanded to true on the input's element", () => {
+          expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual(true.toString());
         });
       });
 
@@ -113,20 +133,38 @@ export function FacetSearchTest() {
           done();
         });
 
+        it('should have displayed results', () => {
+          expect(allSearchResults().length).toBe(10);
+          expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
+        });
+
         describe('and calling dismissSearchResults', () => {
-          it('should hide facet search results', done => {
-            expect(allSearchResults().length).toBe(10);
-            expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
+          let setCollapsedFacetSearchAccessibilityAttributes: jasmine.Spy;
+          beforeEach(() => {
+            setCollapsedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setCollapsedFacetSearchAccessibilityAttributes');
             facetSearch.dismissSearchResults();
+          });
+
+          it('should hide facet search results', done => {
             expect(allSearchResults().length).toBe(0);
             expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
             done();
           });
 
           it("should update the accessible element's accessibility properties", () => {
-            const setCollapsedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setCollapsedFacetSearchAccessibilityAttributes');
-            facetSearch.dismissSearchResults();
             expect(setCollapsedFacetSearchAccessibilityAttributes).toHaveBeenCalledTimes(1);
+          });
+
+          it("should remove the combobox's aria-owns attribute", () => {
+            expect(facetSearch.facetSearchElement.combobox.getAttribute('aria-owns')).toBeNull();
+          });
+
+          it("should remove the input's aria-controls attribute", () => {
+            expect(facetSearch.facetSearchElement.input.getAttribute('aria-controls')).toBeNull();
+          });
+
+          it("should set aria-expanded to false on the input's element", () => {
+            expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual(false.toString());
           });
         });
       });
