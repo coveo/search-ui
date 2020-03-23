@@ -824,3 +824,6 @@ AccessibleModalTest();
 
 import { SortDropdownTest } from './ui/SortDropdownTest';
 SortDropdownTest();
+
+import { ResultLayoutSelectorTest } from './ui/ResultLayoutSelectorTest';
+ResultLayoutSelectorTest();
