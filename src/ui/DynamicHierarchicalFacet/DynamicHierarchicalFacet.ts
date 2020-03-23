@@ -42,16 +42,13 @@ import { Logger } from '../../misc/Logger';
 
 /**
  * The `DynamicHierarchicalFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
- * current selected path of values.
+ * selected path of values.
  *
- * The path is a sequence of values that leads to a specific value in the hierarchy.
- * It is an array listing all the parents of a file (e.g., `['c', 'folder1']` for the `c:\folder1\text1.txt` file).
- *
- * This facet requires a [`field`]{@link DynamicHierarchicalFacet.options.field} with a special format to work correctly (see [Using the Hierarchical Facet Component](https://docs.coveo.com/en/2667)).
+ * This facet requires a [`field`]{@link DynamicHierarchicalFacet.options.field} with a special format to work correctly.
  *
  * @notSupportedIn salesforcefree
- *
  * @availablesince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
+ * @externaldocs [Using Hierarchical Facets](https://docs.coveo.com/en/2667)
  */
 export class DynamicHierarchicalFacet extends Component implements IDynamicHierarchicalFacet {
   static ID = 'DynamicHierarchicalFacet';
@@ -74,6 +71,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * those two facets. This `id` must be unique among the facets.
      *
      * Default value is the [`field`]{@link DynamicHierarchicalFacet.options.field} option value.
+     *
+     * @examples productcategory
      */
     id: ComponentOptions.buildStringOption({
       postProcessing: (value, options: IDynamicHierarchicalFacetOptions) => value || (options.field as string),
@@ -85,10 +84,10 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * `the; the|path; the|path|to; the|path|to|given; the|path|to|given|item;`
      * where the delimiting character is `|`. This default delimiting character can be changed using the [delimitingCharacter]{@link DynamicHierarchicalFacet.options.delimitingCharacter} option.
      *
-     * To help you verify whether your fields are setup correctly, see the {@link DynamicHierarchicalFacet.options.debug} option
-     * and the {@link DynamicHierarchicalFacet.debugValue} method.
+     * To help you verify whether your fields are setup correctly, use the [`debugInfo`]{@link DynamicHierarchicalFacet.debugInfo} method.
      *
-     * See [Using the Hierarchical Facet Component](https://docs.coveo.com/en/2667).
+     * @externaldocs [Using the Hierarchical Facet Component](https://docs.coveo.com/en/2667).
+     * @examples @category
      */
     field: ComponentOptions.buildFieldOption({ required: true, section: 'CommonOptions' }),
 
@@ -96,6 +95,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * The title to display at the top of the facet.
      *
      * Default value is the localized string for `NoTitle`.
+     *
+     * @examples Product category
      */
     title: ComponentOptions.buildLocalizedStringOption({
       localizedString: () => l('NoTitle'),
@@ -107,6 +108,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * clicks the arrow to show more.
      *
      * See also the [`enableMoreLess`]{@link DynamicHierarchicalFacet.options.enableMoreLess} option.
+     *
+     * @examples 8
      */
     numberOfValues: ComponentOptions.buildNumberOption({ defaultValue: 5, min: 0, section: 'CommonOptions' }),
 
@@ -117,9 +120,6 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
 
     /**
      * Whether this facet should be collapsed by default.
-     *
-     * See also the [`enableCollapse`]{@link DynamicHierarchicalFacet.options.enableCollapse}
-     * option.
      */
     collapsedByDefault: ComponentOptions.buildBooleanOption({ defaultValue: false, section: 'CommonOptions', depend: 'enableCollapse' }),
 
@@ -129,7 +129,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     enableScrollToTop: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
     /**
-     * Whether to notify the [Breadcrumb]{@link Breadcrumb} component when toggling values in the facet.
+     * Whether to notify the [`Breadcrumb`]{@link Breadcrumb} component when toggling values in the facet.
      */
     includeInBreadcrumb: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
 
@@ -137,6 +137,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * The number of items to scan for facet values.
      *
      * Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.
+     *
+     * @examples 500
      */
     injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
 
@@ -154,50 +156,18 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * If your field has the following values:
      *
-     * `@field: c; c>folder2; c>folder2>folder3;`
+     * `electronics; electronics>laptops; electronics>laptops>gaming;`
      *
      * The delimiting character is `>`.
+     *
+     * @examples >
      */
     delimitingCharacter: ComponentOptions.buildStringOption({ defaultValue: '|', section: 'CommonOptions' }),
 
     /**
-     * Specifies a JSON object describing a mapping of facet values to their desired captions. See
-     * [Normalizing Facet Value Captions](https://developers.coveo.com/x/jBsvAg).
+     * A mapping of facet values to their desired captions.
      *
-     * **Note:**
-     * If this option is specified, the facet search box will be unavailable.
-     *
-     * **Examples:**
-     *
-     * You can set the option in the ['init']{@link init} call:
-     * ```javascript
-     * var myValueCaptions = {
-     *   "txt" : "Text files",
-     *   "html" : "Web page",
-     *   [ ... ]
-     * };
-     *
-     * Coveo.init(document.querySelector("#search"), {
-     *   Facet : {
-     *     valueCaption : myValueCaptions
-     *   }
-     * });
-     * ```
-     *
-     * Or before the `init` call, using the ['options']{@link options} top-level function:
-     * ```javascript
-     * Coveo.options(document.querySelector("#search"), {
-     *   Facet : {
-     *     valueCaption : myValueCaptions
-     *   }
-     * });
-     * ```
-     *
-     * Or directly in the markup:
-     * ```html
-     * <!-- Ensure that the double quotes are properly handled in data-value-caption. -->
-     * <div class='CoveoDynamicHierarchicalFacet' data-field='@myotherfield' data-value-caption='{"txt":"Text files","html":"Web page"}'></div>
-     * ```
+     * @externaldocs [Normalizing Facet Value Captions](https://docs.coveo.com/en/368/)
      */
     valueCaption: ComponentOptions.buildJsonOption<IStringMap<string>>({ defaultValue: {} }),
 
@@ -206,6 +176,9 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * for the dependent hierarchical facet to be visible.
      *
      * **Default:** `undefined` and the hierarchical facet does not depend on any other facet to be displayed.
+     *
+     * @externaldocs [Defining Dependent Facets](https://docs.coveo.com/3210/)
+     * @examples department
      */
     dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
 
@@ -229,7 +202,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     /**
      * Whether to exclude folded result parents when estimating result counts for facet values.
      *
-     * See also the [`Folding`]{@link folding} and [`FoldingForThread`]{@link FoldingForThread} components.
+     * See also the [`Folding`]{@link Folding} and [`FoldingForThread`]{@link FoldingForThread} components.
      *
      * **Default:** `false` if folded results are requested; `true` otherwise.
      */
@@ -238,10 +211,9 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     /**
      * The sort criterion to use for this facet.
      *
-     * See [`HierarchicalFacetSortCriteria`]{@link HierarchicalFacetSortCriteria} for the list and
-     * description of allowed values.
+     * **Default (Search API):** `occurrences`.
      *
-     * **Default (Search API):** [`occurrences`]{@link HierarchicalFacetSortCriteria.occurrences}
+     * @examples alphanumeric
      */
     sortCriteria: <HierarchicalFacetSortCriteria>ComponentOptions.buildStringOption({
       postProcessing: value => {
@@ -263,6 +235,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * The label to display to clear the facet when a value is selected.
      *
      * Default value is the localized string for `AllCategories`.
+     *
+     * @examples Everything
      */
     clearLabel: ComponentOptions.buildLocalizedStringOption({
       localizedString: () => l('AllCategories'),

@@ -69,6 +69,13 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     basicExpression: 'testt',
     element: new SearchSectionBuilder().withComponent('CoveoDidYouMean').build()
   },
+  DynamicHierarchicalFacet: {
+    show: true,
+    options: {
+      field: '@atlgeographicalhierarchy',
+      title: 'Geographic position'
+    }
+  },
   DynamicFacet: {
     show: true,
     options: {

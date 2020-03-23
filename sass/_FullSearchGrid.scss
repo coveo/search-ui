@@ -75,6 +75,17 @@ $page-width: 1000px;
       display: none;
     }
   }
+  .coveo-results-footer {
+    &,
+    .coveo-results-footer-left,
+    .coveo-results-footer-right {
+      display: flex;
+      align-items: center;
+    }
+    .coveo-results-footer-left {
+      flex-grow: 1;
+    }
+  }
 }
 
 .coveo-after-initialization {
