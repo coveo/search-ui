@@ -114,16 +114,16 @@ export class MultiSelect implements IFormWidget, IFormWidgetSettable {
 
   private buildContent() {
     this.element = <HTMLSelectElement>$$('select', {
-      className: 'mdc-multi-select mdl-list',
+      className: 'coveo-multi-select',
       multiple: '',
       size: this.options.length.toString()
     }).el;
     const optgroup = $$('optgroup', {
-      className: 'mdc-list-group',
+      className: 'coveo-list-group',
       label: this.label
     });
     const options = _.map(this.options, opt => {
-      return $$('option', { value: opt, className: 'mdc-list-item' }, l(opt));
+      return $$('option', { value: opt, className: 'coveo-list-item' }, l(opt));
     });
     _.each(options, opt => optgroup.append(opt.el));
     this.element.appendChild(optgroup.el);
