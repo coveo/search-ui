@@ -61,7 +61,7 @@ var playground =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 17);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1762,7 +1762,7 @@ var playground =
   }
 }());
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(18)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(20)(module)))
 
 /***/ }),
 /* 1 */
@@ -3355,23 +3355,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var EndpointCaller_1 = __webpack_require__(19);
+var EndpointCaller_1 = __webpack_require__(21);
 var Logger_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(1);
-var Version_1 = __webpack_require__(23);
-var AjaxError_1 = __webpack_require__(24);
-var MissingAuthenticationError_1 = __webpack_require__(25);
-var QueryUtils_1 = __webpack_require__(26);
-var QueryError_1 = __webpack_require__(27);
+var Version_1 = __webpack_require__(25);
+var AjaxError_1 = __webpack_require__(26);
+var MissingAuthenticationError_1 = __webpack_require__(27);
+var QueryUtils_1 = __webpack_require__(28);
+var QueryError_1 = __webpack_require__(29);
 var Utils_1 = __webpack_require__(2);
 var _ = __webpack_require__(0);
-var coveo_analytics_1 = __webpack_require__(28);
-var CookieUtils_1 = __webpack_require__(35);
+var coveo_analytics_1 = __webpack_require__(30);
+var CookieUtils_1 = __webpack_require__(37);
 var TimeSpanUtils_1 = __webpack_require__(8);
 var UrlUtils_1 = __webpack_require__(9);
-var AccessToken_1 = __webpack_require__(36);
-var BackOffRequest_1 = __webpack_require__(37);
-var Plan_1 = __webpack_require__(39);
+var AccessToken_1 = __webpack_require__(38);
+var BackOffRequest_1 = __webpack_require__(39);
+var Plan_1 = __webpack_require__(47);
 var DefaultSearchEndpointOptions = /** @class */ (function () {
     function DefaultSearchEndpointOptions() {
         this.version = 'v2';
@@ -3385,9 +3385,13 @@ exports.DefaultSearchEndpointOptions = DefaultSearchEndpointOptions;
 /**
  * The `SearchEndpoint` class allows the framework to perform HTTP requests against the Search API (e.g., searching, getting query suggestions, getting the HTML preview of an item, etc.).
  *
- * @externaldocumentation https://docs.coveo.com/331/
+ * **Note:**
  *
- * **Note:** When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will _not_ trigger any [query events](https://docs.coveo.com/417/#query-events). In some cases, this may be what you want. However, if you _do_ want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the [`queryController`]{@link QueryController} instance instead.
+ * When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will *not* trigger any [query events](https://docs.coveo.com/en/417/#query-events).
+ *
+ * In some cases, this may be what you want. However, if you *do* want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the [`queryController`]{@link QueryController} instance instead.
+ *
+ * @externaldocs [JavaScript Search Framework Endpoint](https://docs.coveo.com/en/331/)
  */
 var SearchEndpoint = /** @class */ (function () {
     /**
@@ -3515,6 +3519,13 @@ var SearchEndpoint = /** @class */ (function () {
         }, otherOptions);
         SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
     };
+    Object.defineProperty(SearchEndpoint, "defaultEndpoint", {
+        get: function () {
+            return this.endpoints['default'] || _.find(SearchEndpoint.endpoints, function (endpoint) { return endpoint != null; });
+        },
+        enumerable: true,
+        configurable: true
+    });
     SearchEndpoint.removeUndefinedConfigOption = function (config) {
         _.each(_.keys(config), function (key) {
             if (config[key] == undefined) {
@@ -4162,16 +4173,14 @@ var SearchEndpoint = /** @class */ (function () {
     SearchEndpoint.prototype.backOffThrottledRequest = function (request) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
-            var backOffRequest, e_1;
+            var options, backoffRequest, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        backOffRequest = {
-                            fn: function () { return request(); },
-                            retry: function (e, attempt) { return _this.retryIf429Error(e, attempt); }
-                        };
-                        return [4 /*yield*/, BackOffRequest_1.BackOffRequest.enqueue(backOffRequest)];
+                        options = { retry: function (e, attempt) { return _this.retryIf429Error(e, attempt); } };
+                        backoffRequest = { fn: request, options: options };
+                        return [4 /*yield*/, BackOffRequest_1.BackOffRequest.enqueue(backoffRequest)];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
                         e_1 = _a.sent();
@@ -4859,7 +4868,7 @@ exports.UrlUtils = UrlUtils;
 "use strict";
 
 var history_1 = __webpack_require__(11);
-__webpack_require__(30);
+__webpack_require__(32);
 exports.Version = 'v15';
 exports.Endpoints = {
     default: 'https://usageanalytics.coveo.com',
@@ -5052,7 +5061,7 @@ exports.default = HistoryStore;
 "use strict";
 
 var detector = __webpack_require__(13);
-var cookieutils_1 = __webpack_require__(29);
+var cookieutils_1 = __webpack_require__(31);
 exports.preferredStorage = null;
 function getAvailableStorage() {
     if (exports.preferredStorage) {
@@ -5145,6 +5154,99 @@ exports.hasDocumentLocation = hasDocumentLocation;
 
 "use strict";
 
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var JitterTypes;
+(function (JitterTypes) {
+    JitterTypes["None"] = "none";
+    JitterTypes["Full"] = "full";
+})(JitterTypes = exports.JitterTypes || (exports.JitterTypes = {}));
+var defaultOptions = {
+    delayFirstAttempt: false,
+    jitter: JitterTypes.None,
+    maxDelay: Infinity,
+    numOfAttempts: 10,
+    retry: function () { return true; },
+    startingDelay: 100,
+    timeMultiple: 2
+};
+function getSanitizedOptions(options) {
+    var sanitized = __assign(__assign({}, defaultOptions), options);
+    if (sanitized.numOfAttempts < 1) {
+        sanitized.numOfAttempts = 1;
+    }
+    return sanitized;
+}
+exports.getSanitizedOptions = getSanitizedOptions;
+//# sourceMappingURL=options.js.map
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var jitter_factory_1 = __webpack_require__(43);
+var Delay = /** @class */ (function () {
+    function Delay(options) {
+        this.options = options;
+        this.attempt = 0;
+    }
+    Delay.prototype.apply = function () {
+        var _this = this;
+        return new Promise(function (resolve) { return setTimeout(resolve, _this.jitteredDelay); });
+    };
+    Delay.prototype.setAttemptNumber = function (attempt) {
+        this.attempt = attempt;
+    };
+    Object.defineProperty(Delay.prototype, "jitteredDelay", {
+        get: function () {
+            var jitter = jitter_factory_1.JitterFactory(this.options);
+            return jitter(this.delay);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Delay.prototype, "delay", {
+        get: function () {
+            var constant = this.options.startingDelay;
+            var base = this.options.timeMultiple;
+            var power = this.numOfDelayedAttempts;
+            var delay = constant * Math.pow(base, power);
+            return Math.min(delay, this.options.maxDelay);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Delay.prototype, "numOfDelayedAttempts", {
+        get: function () {
+            return this.attempt;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Delay;
+}());
+exports.Delay = Delay;
+//# sourceMappingURL=delay.base.js.map
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -5179,27 +5281,27 @@ exports.SectionBuilder = SectionBuilder;
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(16);
+module.exports = __webpack_require__(18);
 
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Playground_1 = __webpack_require__(17);
+var Playground_1 = __webpack_require__(19);
 document.addEventListener('DOMContentLoaded', function () {
     new Playground_1.Playground(document.body);
 });
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5207,9 +5309,9 @@ document.addEventListener('DOMContentLoaded', function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(4);
 var SearchEndpoint_1 = __webpack_require__(7);
-var PlaygroundConfiguration_1 = __webpack_require__(40);
-var QueryEvents_1 = __webpack_require__(42);
-var DefaultLanguage_1 = __webpack_require__(43);
+var PlaygroundConfiguration_1 = __webpack_require__(48);
+var QueryEvents_1 = __webpack_require__(50);
+var DefaultLanguage_1 = __webpack_require__(51);
 DefaultLanguage_1.setLanguageAfterPageLoaded();
 var Playground = /** @class */ (function () {
     function Playground(body) {
@@ -5370,7 +5472,7 @@ exports.Playground = Playground;
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -5398,7 +5500,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5407,7 +5509,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Logger_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(1);
 var TimeSpanUtils_1 = __webpack_require__(8);
-var DeviceUtils_1 = __webpack_require__(20);
+var DeviceUtils_1 = __webpack_require__(22);
 var Utils_1 = __webpack_require__(2);
 var JQueryutils_1 = __webpack_require__(6);
 var _ = __webpack_require__(0);
@@ -5772,14 +5874,14 @@ exports.EndpointCaller = EndpointCaller;
 
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 // Not sure about this : In year 2033 who's to say that this list won't be 50 pages long !
-var ResponsiveComponents_1 = __webpack_require__(21);
+var ResponsiveComponents_1 = __webpack_require__(23);
 var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 var DeviceUtils = /** @class */ (function () {
     function DeviceUtils() {
@@ -5848,14 +5950,14 @@ exports.DeviceUtils = DeviceUtils;
 
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(1);
-__webpack_require__(22);
+__webpack_require__(24);
 exports.MEDIUM_SCREEN_WIDTH = 800;
 exports.SMALL_SCREEN_WIDTH = 480;
 /**
@@ -5976,27 +6078,27 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.8521.7',
-    product: '2.8521.7',
+    lib: '2.8864.0-beta',
+    product: '2.8864.0-beta',
     supportedApiVersion: 2
 };
 
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6017,7 +6119,7 @@ exports.AjaxError = AjaxError;
 
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6035,7 +6137,7 @@ exports.MissingAuthenticationError = MissingAuthenticationError;
 
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6242,7 +6344,7 @@ exports.QueryUtils = QueryUtils;
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6265,25 +6367,25 @@ exports.QueryError = QueryError;
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var analytics = __webpack_require__(10);
 exports.analytics = analytics;
-var SimpleAnalytics = __webpack_require__(31);
+var SimpleAnalytics = __webpack_require__(33);
 exports.SimpleAnalytics = SimpleAnalytics;
 var history = __webpack_require__(11);
 exports.history = history;
-var donottrack = __webpack_require__(34);
+var donottrack = __webpack_require__(36);
 exports.donottrack = donottrack;
 var storage = __webpack_require__(12);
 exports.storage = storage;
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6337,7 +6439,7 @@ exports.Cookie = Cookie;
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -6804,14 +6906,14 @@ exports.Cookie = Cookie;
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var analytics = __webpack_require__(10);
-var objectassign_1 = __webpack_require__(32);
-var utils_1 = __webpack_require__(33);
+var objectassign_1 = __webpack_require__(34);
+var utils_1 = __webpack_require__(35);
 var SimpleAPI = (function () {
     function SimpleAPI() {
     }
@@ -6883,7 +6985,7 @@ exports.default = exports.SimpleAnalytics;
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6925,7 +7027,7 @@ exports.default = exports.assign;
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6941,7 +7043,7 @@ exports.popFromObject = popFromObject;
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6952,7 +7054,7 @@ exports.default = exports.doNotTrack;
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7023,7 +7125,7 @@ exports.Cookie = Cookie;
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7144,7 +7246,7 @@ exports.AccessToken = AccessToken;
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7185,7 +7287,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var exponential_backoff_1 = __webpack_require__(38);
+var exponential_backoff_1 = __webpack_require__(40);
 var backOff = exponential_backoff_1.backOff;
 function setBackOffModule(newModule) {
     backOff = newModule || exponential_backoff_1.backOff;
@@ -7202,7 +7304,7 @@ var BackOffRequest = /** @class */ (function () {
     };
     BackOffRequest.enqueueRequest = function (request, resolve, reject) {
         var req = function () {
-            return backOff(request)
+            return backOff(request.fn, request.options)
                 .then(resolve)
                 .catch(reject);
         };
@@ -7241,24 +7343,17 @@ exports.BackOffRequest = BackOffRequest;
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -7290,63 +7385,278 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var defaultOptions = {
-    numOfAttempts: 10,
-    timeMultiple: 2,
-    startingDelay: 100
-};
+var options_1 = __webpack_require__(14);
+var delay_factory_1 = __webpack_require__(41);
 function backOff(request, options) {
     if (options === void 0) { options = {}; }
     return __awaiter(this, void 0, void 0, function () {
-        var sanitizedOptions, attemptNumber, delay, e_1, shouldRetry, reachedRetryLimit;
+        var sanitizedOptions, backOff;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    sanitizedOptions = getSanitizedOptions(options);
-                    attemptNumber = 0;
-                    delay = sanitizedOptions.startingDelay;
-                    _a.label = 1;
-                case 1:
-                    if (!(attemptNumber < sanitizedOptions.numOfAttempts)) return [3 /*break*/, 7];
-                    _a.label = 2;
-                case 2:
-                    _a.trys.push([2, 5, , 6]);
-                    return [4 /*yield*/, delayBeforeExecuting(delay)];
-                case 3:
-                    _a.sent();
-                    attemptNumber++;
-                    return [4 /*yield*/, request.fn()];
-                case 4: return [2 /*return*/, _a.sent()];
-                case 5:
-                    e_1 = _a.sent();
-                    shouldRetry = request.retry ? request.retry(e_1, attemptNumber) : true;
-                    reachedRetryLimit = attemptNumber >= sanitizedOptions.numOfAttempts;
-                    if (!shouldRetry || reachedRetryLimit) {
-                        throw e_1;
-                    }
-                    delay *= sanitizedOptions.timeMultiple;
-                    return [3 /*break*/, 6];
-                case 6: return [3 /*break*/, 1];
-                case 7: throw new Error('Something went wrong.');
+                    sanitizedOptions = options_1.getSanitizedOptions(options);
+                    backOff = new BackOff(request, sanitizedOptions);
+                    return [4 /*yield*/, backOff.execute()];
+                case 1: return [2 /*return*/, _a.sent()];
             }
         });
     });
 }
 exports.backOff = backOff;
-function getSanitizedOptions(options) {
-    var sanitized = __assign({}, defaultOptions, options);
-    if (sanitized.numOfAttempts < 1) {
-        sanitized.numOfAttempts = 1;
+var BackOff = /** @class */ (function () {
+    function BackOff(request, options) {
+        this.request = request;
+        this.options = options;
+        this.attemptNumber = 0;
     }
-    return sanitized;
-}
-function delayBeforeExecuting(delay) {
-    return new Promise(function (resolve) { return setTimeout(resolve, delay); });
-}
+    BackOff.prototype.execute = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var e_1, shouldRetry;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!!this.attemptLimitReached) return [3 /*break*/, 6];
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 4, , 5]);
+                        return [4 /*yield*/, this.applyDelay()];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, this.request()];
+                    case 3: return [2 /*return*/, _a.sent()];
+                    case 4:
+                        e_1 = _a.sent();
+                        this.attemptNumber++;
+                        shouldRetry = this.options.retry(e_1, this.attemptNumber);
+                        if (!shouldRetry || this.attemptLimitReached) {
+                            throw e_1;
+                        }
+                        return [3 /*break*/, 5];
+                    case 5: return [3 /*break*/, 0];
+                    case 6: throw new Error("Something went wrong.");
+                }
+            });
+        });
+    };
+    Object.defineProperty(BackOff.prototype, "attemptLimitReached", {
+        get: function () {
+            return this.attemptNumber >= this.options.numOfAttempts;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BackOff.prototype.applyDelay = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var delay;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        delay = delay_factory_1.DelayFactory(this.options, this.attemptNumber);
+                        return [4 /*yield*/, delay.apply()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return BackOff;
+}());
 //# sourceMappingURL=backoff.js.map
 
 /***/ }),
-/* 39 */
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var skip_first_delay_1 = __webpack_require__(42);
+var always_delay_1 = __webpack_require__(46);
+function DelayFactory(options, attempt) {
+    var delay = initDelayClass(options);
+    delay.setAttemptNumber(attempt);
+    return delay;
+}
+exports.DelayFactory = DelayFactory;
+function initDelayClass(options) {
+    if (!options.delayFirstAttempt) {
+        return new skip_first_delay_1.SkipFirstDelay(options);
+    }
+    return new always_delay_1.AlwaysDelay(options);
+}
+//# sourceMappingURL=delay.factory.js.map
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var delay_base_1 = __webpack_require__(15);
+var SkipFirstDelay = /** @class */ (function (_super) {
+    __extends(SkipFirstDelay, _super);
+    function SkipFirstDelay() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SkipFirstDelay.prototype.apply = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.isFirstAttempt ? true : _super.prototype.apply.call(this)];
+            });
+        });
+    };
+    Object.defineProperty(SkipFirstDelay.prototype, "isFirstAttempt", {
+        get: function () {
+            return this.attempt === 0;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SkipFirstDelay.prototype, "numOfDelayedAttempts", {
+        get: function () {
+            return this.attempt - 1;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return SkipFirstDelay;
+}(delay_base_1.Delay));
+exports.SkipFirstDelay = SkipFirstDelay;
+//# sourceMappingURL=skip-first.delay.js.map
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var options_1 = __webpack_require__(14);
+var full_jitter_1 = __webpack_require__(44);
+var no_jitter_1 = __webpack_require__(45);
+function JitterFactory(options) {
+    switch (options.jitter) {
+        case options_1.JitterTypes.Full:
+            return full_jitter_1.fullJitter;
+        case options_1.JitterTypes.None:
+        default:
+            return no_jitter_1.noJitter;
+    }
+}
+exports.JitterFactory = JitterFactory;
+//# sourceMappingURL=jitter.factory.js.map
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function fullJitter(delay) {
+    var jitteredDelay = Math.random() * delay;
+    return Math.round(jitteredDelay);
+}
+exports.fullJitter = fullJitter;
+//# sourceMappingURL=full.jitter.js.map
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function noJitter(delay) {
+    return delay;
+}
+exports.noJitter = noJitter;
+//# sourceMappingURL=no.jitter.js.map
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var delay_base_1 = __webpack_require__(15);
+var AlwaysDelay = /** @class */ (function (_super) {
+    __extends(AlwaysDelay, _super);
+    function AlwaysDelay() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AlwaysDelay;
+}(delay_base_1.Delay));
+exports.AlwaysDelay = AlwaysDelay;
+//# sourceMappingURL=always.delay.js.map
+
+/***/ }),
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7398,7 +7708,7 @@ exports.ExecutionPlan = ExecutionPlan;
 
 
 /***/ }),
-/* 40 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7406,8 +7716,8 @@ exports.ExecutionPlan = ExecutionPlan;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(4);
 var SearchEndpoint_1 = __webpack_require__(7);
-var SearchSectionBuilder_1 = __webpack_require__(41);
-var SectionBuilder_1 = __webpack_require__(14);
+var SearchSectionBuilder_1 = __webpack_require__(49);
+var SectionBuilder_1 = __webpack_require__(16);
 var getComponentContainerElement = function () {
     return Dom_1.$$(document.body).find('.component-container');
 };
@@ -7457,6 +7767,13 @@ exports.PlaygroundConfiguration = {
         show: true,
         basicExpression: 'testt',
         element: new SearchSectionBuilder_1.SearchSectionBuilder().withComponent('CoveoDidYouMean').build()
+    },
+    DynamicHierarchicalFacet: {
+        show: true,
+        options: {
+            field: '@atlgeographicalhierarchy',
+            title: 'Geographic position'
+        }
     },
     DynamicFacet: {
         show: true,
@@ -7916,7 +8233,7 @@ exports.PlaygroundConfiguration = {
 
 
 /***/ }),
-/* 41 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7933,7 +8250,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Dom_1 = __webpack_require__(4);
-var SectionBuilder_1 = __webpack_require__(14);
+var SectionBuilder_1 = __webpack_require__(16);
 var SearchSectionBuilder = /** @class */ (function (_super) {
     __extends(SearchSectionBuilder, _super);
     function SearchSectionBuilder(sectionParameter) {
@@ -7982,7 +8299,7 @@ exports.SearchSectionBuilder = SearchSectionBuilder;
 
 
 /***/ }),
-/* 42 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8125,13 +8442,13 @@ exports.QueryEvents = QueryEvents;
 
 
 /***/ }),
-/* 43 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Globalize = __webpack_require__(44);
+var Globalize = __webpack_require__(52);
 var merge = function (obj1, obj2) {
     var obj3 = {};
     for (var attrname in obj1) {
@@ -8935,6 +9252,8 @@ var dict = {
     "InsertAQuery": "Insert a query",
     "PressEnterToSend": "Press enter to send",
     "SortResultsBy": "Sort results by {0}",
+    "SortResultsByAscending": "Sort by {0} in ascending order",
+    "SortResultsByDescending": "Sort by {0} in descending order",
     "DisplayResultsAs": "Display results as {0}",
     "FacetTitle": "{0} facet",
     "SelectValueWithResultCount": "Select {0} with {1}",
@@ -8957,6 +9276,7 @@ var dict = {
     "RatedBy": "by {0} user<pl>s</pl>",
     "NoRatings": "No ratings",
     "Pagination": "Pagination",
+    "ThumbnailOf": "Thumbnail of \"{0}\"",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
@@ -8979,14 +9299,14 @@ exports.setLanguageAfterPageLoaded = setLanguageAfterPageLoaded;
 
 
 /***/ }),
-/* 44 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(45);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(53);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-/* 45 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! globalize - v0.1.1 - 2013-04-30

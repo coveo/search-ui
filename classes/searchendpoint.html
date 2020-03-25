@@ -262,10 +262,12 @@
 					<div class="lead">
 						<p>The <code>SearchEndpoint</code> class allows the framework to perform HTTP requests against the Search API (e.g., searching, getting query suggestions, getting the HTML preview of an item, etc.).</p>
 					</div>
+					<p><strong>Note:</strong></p>
+					<p>When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will <em>not</em> trigger any <a href="https://docs.coveo.com/en/417/#query-events">query events</a>.</p>
+					<p>In some cases, this may be what you want. However, if you <em>do</em> want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the <a href="querycontroller.html"><code>queryController</code></a> instance instead.</p>
 					<dl class="tsd-comment-tags">
-						<dt>externaldocumentation</dt>
-						<dd><p><a href="https://docs.coveo.com/331/">https://docs.coveo.com/331/</a></p>
-							<p><strong>Note:</strong> When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will <em>not</em> trigger any <a href="querycontroller.html">query events](https://docs.coveo.com/417/#query-events). In some cases, this may be what you want. However, if you _do_ want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the [<code>queryController</code></a> instance instead.</p>
+						<dt>Additional documentation</dt>
+						<dd><p><a href="https://docs.coveo.com/en/331/">JavaScript Search Framework Endpoint</a></p>
 						</dd>
 					</dl>
 				</div>
@@ -341,8 +343,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L996">rest/SearchEndpoint.ts
-									:996</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L1003">rest/SearchEndpoint.ts
+									:1003</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -386,8 +388,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L731">rest/SearchEndpoint.ts
-									:731</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L738">rest/SearchEndpoint.ts
+									:738</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -426,8 +428,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L854">rest/SearchEndpoint.ts
-									:854</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L861">rest/SearchEndpoint.ts
+									:861</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -472,8 +474,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L879">rest/SearchEndpoint.ts
-									:879</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L886">rest/SearchEndpoint.ts
+									:886</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -517,8 +519,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L300">rest/SearchEndpoint.ts
-									:300</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L307">rest/SearchEndpoint.ts
+									:307</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -575,8 +577,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L285">rest/SearchEndpoint.ts
-									:285</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L292">rest/SearchEndpoint.ts
+									:292</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -600,8 +602,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L277">rest/SearchEndpoint.ts
-									:277</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L284">rest/SearchEndpoint.ts
+									:284</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -625,8 +627,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L529">rest/SearchEndpoint.ts
-									:529</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L536">rest/SearchEndpoint.ts
+									:536</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -671,8 +673,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L590">rest/SearchEndpoint.ts
-									:590</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L597">rest/SearchEndpoint.ts
+									:597</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -717,8 +719,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L560">rest/SearchEndpoint.ts
-									:560</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L567">rest/SearchEndpoint.ts
+									:567</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -763,8 +765,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L428">rest/SearchEndpoint.ts
-									:428</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L435">rest/SearchEndpoint.ts
+									:435</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -820,8 +822,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L815">rest/SearchEndpoint.ts
-									:815</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L822">rest/SearchEndpoint.ts
+									:822</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -866,8 +868,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L466">rest/SearchEndpoint.ts
-									:466</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L473">rest/SearchEndpoint.ts
+									:473</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -922,8 +924,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L501">rest/SearchEndpoint.ts
-									:501</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L508">rest/SearchEndpoint.ts
+									:508</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -975,8 +977,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L627">rest/SearchEndpoint.ts
-									:627</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L634">rest/SearchEndpoint.ts
+									:634</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1021,8 +1023,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L322">rest/SearchEndpoint.ts
-									:322</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L329">rest/SearchEndpoint.ts
+									:329</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1046,8 +1048,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L648">rest/SearchEndpoint.ts
-									:648</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L655">rest/SearchEndpoint.ts
+									:655</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1092,8 +1094,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L681">rest/SearchEndpoint.ts
-									:681</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L688">rest/SearchEndpoint.ts
+									:688</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1138,8 +1140,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L713">rest/SearchEndpoint.ts
-									:713</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L720">rest/SearchEndpoint.ts
+									:720</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1178,8 +1180,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L908">rest/SearchEndpoint.ts
-									:908</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L915">rest/SearchEndpoint.ts
+									:915</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1223,8 +1225,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L405">rest/SearchEndpoint.ts
-									:405</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L412">rest/SearchEndpoint.ts
+									:412</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1270,8 +1272,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L754">rest/SearchEndpoint.ts
-									:754</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L761">rest/SearchEndpoint.ts
+									:761</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1319,8 +1321,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L357">rest/SearchEndpoint.ts
-									:357</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L364">rest/SearchEndpoint.ts
+									:364</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1368,8 +1370,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L269">rest/SearchEndpoint.ts
-									:269</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L276">rest/SearchEndpoint.ts
+									:276</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1424,8 +1426,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L784">rest/SearchEndpoint.ts
-									:784</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L791">rest/SearchEndpoint.ts
+									:791</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1469,8 +1471,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L959">rest/SearchEndpoint.ts
-									:959</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L966">rest/SearchEndpoint.ts
+									:966</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1514,8 +1516,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L139">rest/SearchEndpoint.ts
-									:139</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L142">rest/SearchEndpoint.ts
+									:142</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1565,8 +1567,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L173">rest/SearchEndpoint.ts
-									:173</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L176">rest/SearchEndpoint.ts
+									:176</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1624,8 +1626,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L189">rest/SearchEndpoint.ts
-									:189</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L192">rest/SearchEndpoint.ts
+									:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1670,8 +1672,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L82">rest/SearchEndpoint.ts
-									:82</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L85">rest/SearchEndpoint.ts
+									:85</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1704,8 +1706,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L116">rest/SearchEndpoint.ts
-									:116</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L119">rest/SearchEndpoint.ts
+									:119</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1737,8 +1739,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L73">rest/SearchEndpoint.ts
-							:73</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L76">rest/SearchEndpoint.ts
+							:76</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1777,8 +1779,8 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L221">rest/SearchEndpoint.ts
-									:221</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/rest/SearchEndpoint.ts#L228">rest/SearchEndpoint.ts
+									:228</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
