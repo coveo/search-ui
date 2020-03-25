@@ -1196,7 +1196,10 @@ export class StandaloneSearchInterface extends SearchInterface {
   public redirectToURL(url: string) {
     this.usageAnalytics.logCustomEvent<IAnalyticsTriggerRedirect>(
       analyticsActionCauseList.triggerRedirect,
-      { redirectedTo: url },
+      {
+        redirectedTo: url,
+        query: this.queryStateModel.get(QueryStateModel.attributesEnum.q)
+      },
       this.element
     );
 
