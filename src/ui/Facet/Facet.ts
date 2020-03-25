@@ -1175,16 +1175,16 @@ export class Facet extends Component {
   public getValueCaption(facetValue: IIndexFieldValue | FacetValue): string {
     Assert.exists(facetValue);
     const lookupValue = facetValue.lookupValue || facetValue.value;
-    let ret = lookupValue;
-    ret = FacetUtils.tryToGetTranslatedCaption(<string>this.options.field, lookupValue);
+    let ret = FacetUtils.tryToGetTranslatedCaption(<string>this.options.field, lookupValue);
 
     if (Utils.exists(this.options.valueCaption)) {
       if (typeof this.options.valueCaption == 'object') {
         ret = this.options.valueCaption[lookupValue] || ret;
       }
       if (typeof this.options.valueCaption == 'function') {
-        this.values.get(lookupValue);
-        ret = this.options.valueCaption.call(this, this.facetValuesList.get(lookupValue).facetValue);
+        const fv = facetValue instanceof FacetValue ? facetValue : FacetValue.create(facetValue);
+        const valueFromList = this.facetValuesList.get(fv).facetValue;
+        ret = this.options.valueCaption.call(this, valueFromList);
       }
     }
     return ret;

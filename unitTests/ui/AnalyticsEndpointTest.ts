@@ -4,10 +4,11 @@ import { IAPIAnalyticsSearchEventsResponse } from '../../src/rest/APIAnalyticsSe
 import { IErrorResponse } from '../../src/rest/EndpointCaller';
 import { Cookie } from '../../src/utils/CookieUtils';
 import { FakeResults } from '../Fake';
+import { SearchEndpoint } from '../../src/Core';
 
 export function AnalyticsEndpointTest() {
   function buildUrl(endpoint: AnalyticsEndpoint, path: string) {
-    return endpoint.options.serviceUrl + '/rest/' + AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION + path;
+    return endpoint.options.serviceUrl + '/' + AnalyticsEndpoint.DEFAULT_ANALYTICS_VERSION + path;
   }
 
   describe('AnalyticsEndpoint', () => {
@@ -26,6 +27,31 @@ export function AnalyticsEndpointTest() {
       endpoint = null;
       AnalyticsEndpoint.pendingRequest = null;
       jasmine.Ajax.uninstall();
+    });
+
+    it('exposes a method to resolve URL from a valid SearchEndpoint', () => {
+      const searchEndpoint = new SearchEndpoint({
+        restUri: 'https://platform-eu.cloud.coveo.com/rest/search'
+      });
+      expect(AnalyticsEndpoint.getURLFromSearchEndpoint(searchEndpoint)).toBe('https://platform-eu.cloud.coveo.com/rest/ua');
+    });
+
+    it('exposes a method to resolve URL from an invalid SearchEndpoint', () => {
+      const searchEndpoint = new SearchEndpoint({
+        restUri: 'this-is-not-valid'
+      });
+      expect(AnalyticsEndpoint.getURLFromSearchEndpoint(searchEndpoint)).toBe('this-is-not-valid/rest/ua');
+    });
+
+    it('exposes a method to resolve URL from an SearchEndpoint with multiple /rest path', () => {
+      const searchEndpoint = new SearchEndpoint({
+        restUri: 'https://platform-eu.cloud.coveo.com/rest/search/rest/v2/rest/foo'
+      });
+      expect(AnalyticsEndpoint.getURLFromSearchEndpoint(searchEndpoint)).toBe('https://platform-eu.cloud.coveo.com/rest/ua');
+    });
+
+    it('exposes a method to resolve URL if the search endpoint is undefined', () => {
+      expect(AnalyticsEndpoint.getURLFromSearchEndpoint(undefined)).toBe('https://platform.cloud.coveo.com/rest/ua');
     });
 
     it('allow to get the current visit id', done => {

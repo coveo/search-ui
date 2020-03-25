@@ -201,6 +201,10 @@ export class SearchEndpoint implements ISearchEndpoint {
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
   }
 
+  static get defaultEndpoint(): SearchEndpoint {
+    return this.endpoints['default'] || _.find(SearchEndpoint.endpoints, endpoint => endpoint != null);
+  }
+
   static removeUndefinedConfigOption(config: ISearchEndpointOptions) {
     _.each(_.keys(config), key => {
       if (config[key] == undefined) {
