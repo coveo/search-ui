@@ -139,11 +139,15 @@ export function StandaloneSearchInterfaceTest() {
 
       it('should call the right analytics event', () => {
         spyOn(cmp.usageAnalytics, 'logCustomEvent');
+        spyOn(cmp.queryStateModel, 'get').and.returnValue('query');
         cmp.redirectToURL(redirectionURL);
 
         expect(cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
           analyticsActionCauseList.triggerRedirect,
-          { redirectedTo: redirectionURL },
+          {
+            redirectedTo: redirectionURL,
+            query: 'query'
+          },
           cmp.element
         );
       });
