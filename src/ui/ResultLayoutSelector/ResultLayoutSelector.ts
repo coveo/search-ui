@@ -334,12 +334,9 @@ export class ResultLayoutSelector extends Component {
       .withOwner(this.bind)
       .build();
 
-    if (layout === this.currentLayout) {
-      btn.addClass('coveo-selected');
-      btn.setAttribute('aria-pressed', true.toString());
-    } else {
-      btn.setAttribute('aria-pressed', false.toString());
-    }
+    const isCurrentLayout = layout === this.currentLayout;
+    btn.toggleClass('coveo-selected', isCurrentLayout);
+    btn.setAttribute('aria-pressed', isCurrentLayout.toString());
 
     $$(this.element).append(btn.el);
     this.currentActiveLayouts[layout] = {

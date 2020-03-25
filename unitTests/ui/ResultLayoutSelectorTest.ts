@@ -31,14 +31,18 @@ export function ResultLayoutSelectorTest() {
       triggerRootEvent(InitializationEvents.afterInitialization);
     }
 
+    function getLayoutButton(layout: ValidLayout) {
+      return test.cmp['currentActiveLayouts'][layout].button.el;
+    }
+
     it('if the list layout is selected, should give the pressed state to the list button', () => {
       buildResultLayoutSelector('list');
-      expect(test.cmp['currentActiveLayouts']['list'].button.el.getAttribute('aria-pressed')).toEqual(true.toString());
+      expect(getLayoutButton('list').getAttribute('aria-pressed')).toEqual('true');
     });
 
     it("if the card layout is selected, shouldn't give the pressed state to the list button", () => {
       buildResultLayoutSelector('card');
-      expect(test.cmp['currentActiveLayouts']['list'].button.el.getAttribute('aria-pressed')).toEqual(false.toString());
+      expect(getLayoutButton('list').getAttribute('aria-pressed')).toEqual('false');
     });
   });
 }
