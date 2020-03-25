@@ -101,9 +101,13 @@ export class Analytics extends Component {
      * Specifies the URL of the Usage Analytics service. You do not have to specify a value for this option, unless
      * the location of the service you use differs from the default Coveo Cloud Usage Analytics endpoint.
      *
-     * Default value is `https://usageanalytics.coveo.com`.
+     * Default value is `https://platform.cloud.coveo.com/rest/ua`.
      */
-    endpoint: ComponentOptions.buildStringOption({ defaultValue: AnalyticsEndpoint.DEFAULT_ANALYTICS_URI }),
+    endpoint: ComponentOptions.buildStringOption({
+      defaultFunction: () => {
+        return AnalyticsEndpoint.getURLFromSearchEndpoint(SearchEndpoint.defaultEndpoint);
+      }
+    }),
 
     /**
      * Specifies whether to convert search user identities to unique hash when logging analytics data, so that
@@ -521,11 +525,7 @@ export class Analytics extends Component {
   }
 
   private get defaultEndpoint(): SearchEndpoint {
-    return (
-      this.searchInterface.options.endpoint ||
-      SearchEndpoint.endpoints['default'] ||
-      _.find(SearchEndpoint.endpoints, endpoint => endpoint != null)
-    );
+    return this.searchInterface.options.endpoint || SearchEndpoint.defaultEndpoint;
   }
 
   private handleBuildingQuery(data: IBuildingQueryEventArgs) {
