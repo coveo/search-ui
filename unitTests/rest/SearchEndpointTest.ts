@@ -34,6 +34,44 @@ export function SearchEndpointTest() {
       expect(ep.options.restUri).toBeDefined();
     });
 
+    it('allows to get the default endpoint if there is only one endpoint set to default', () => {
+      SearchEndpoint.configureSampleEndpointV2();
+
+      expect(SearchEndpoint.endpoints['default']).toBe(SearchEndpoint.defaultEndpoint);
+    });
+
+    it('allows to get the default endpoint if there is only one endpoint set to something else than default', () => {
+      SearchEndpoint.endpoints['foo'] = new SearchEndpoint({
+        restUri: 'https://platform-eu.cloud.coveo.com/rest/search'
+      });
+
+      expect(SearchEndpoint.endpoints['foo']).toBe(SearchEndpoint.defaultEndpoint);
+    });
+
+    it('allows to get the default endpoint if there is multiple endpoint set with at least one set to default', () => {
+      SearchEndpoint.endpoints['foo'] = new SearchEndpoint({
+        restUri: 'https://platform-eu.cloud.coveo.com/rest/search'
+      });
+
+      SearchEndpoint.endpoints['default'] = new SearchEndpoint({
+        restUri: 'https://platform.cloud.coveo.com/rest/search'
+      });
+
+      expect(SearchEndpoint.endpoints['default']).toBe(SearchEndpoint.defaultEndpoint);
+    });
+
+    it('allows to get the default endpoint if there is multiple endpoint set with none of them being default', () => {
+      SearchEndpoint.endpoints['foo'] = new SearchEndpoint({
+        restUri: 'https://platform-eu.cloud.coveo.com/rest/search'
+      });
+
+      SearchEndpoint.endpoints['bar'] = new SearchEndpoint({
+        restUri: 'https://platform.cloud.coveo.com/rest/search'
+      });
+
+      expect(SearchEndpoint.defaultEndpoint).toBeDefined();
+    });
+
     it('allow to setup easily a cloud endpoint', () => {
       SearchEndpoint.configureCloudEndpoint('foo', 'bar');
       const ep: SearchEndpoint = SearchEndpoint.endpoints['default'];

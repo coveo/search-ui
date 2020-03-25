@@ -265,6 +265,18 @@ export function FacetTest() {
       expect(test.cmp.getValueCaption(FacetValue.createFromValue('txt'))).toBe('Text');
     });
 
+    it(`when the valueCaption option is a function, when calling getValueCaption,
+    it gets the value from the list using the passed FacetValue object`, () => {
+      test.cmp.options.valueCaption = () => '';
+      test.cmp.createDom();
+
+      const facetValue = FacetValue.createFromValue('foo');
+      const spy = spyOn(test.cmp.facetValuesList, 'get').and.returnValue(facetValue);
+      test.cmp.getValueCaption(facetValue);
+
+      expect(spy).toHaveBeenCalledWith(facetValue);
+    });
+
     describe('with a live query state model', () => {
       beforeEach(() => {
         initializeComponentWithQSM();
