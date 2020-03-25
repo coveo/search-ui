@@ -89,8 +89,10 @@ export function FacetSearchTest() {
 
       describe('when calling focus', () => {
         let setExpandedFacetSearchAccessibilityAttributes: jasmine.Spy;
+        let facetSearchId: string;
         beforeEach(() => {
           setExpandedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setExpandedFacetSearchAccessibilityAttributes');
+          facetSearchId = facetSearch.facetSearchElement['facetSearchId'];
           facetSearch.focus();
         });
 
@@ -104,15 +106,15 @@ export function FacetSearchTest() {
         });
 
         it('should give the combobox the aria-owns attribute', () => {
-          expect(facetSearch.facetSearchElement.combobox.getAttribute('aria-owns')).not.toBeNull();
+          expect(facetSearch.facetSearchElement.combobox.getAttribute('aria-owns')).toEqual(facetSearchId);
         });
 
         it('should give the input the aria-controls attribute', () => {
-          expect(facetSearch.facetSearchElement.input.getAttribute('aria-controls')).not.toBeNull();
+          expect(facetSearch.facetSearchElement.input.getAttribute('aria-controls')).toEqual(facetSearchId);
         });
 
         it("should set aria-expanded to true on the input's element", () => {
-          expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual(true.toString());
+          expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual('true');
         });
       });
 
@@ -164,7 +166,7 @@ export function FacetSearchTest() {
           });
 
           it("should set aria-expanded to false on the input's element", () => {
-            expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual(false.toString());
+            expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual('false');
           });
         });
       });

@@ -282,7 +282,7 @@ export class FacetSearchElement {
     this.combobox.setAttribute('role', 'combobox');
     this.combobox.setAttribute('aria-owns', this.facetSearchId);
     this.input.setAttribute('aria-controls', this.facetSearchId);
-    this.input.setAttribute('aria-expanded', true.toString());
+    this.input.setAttribute('aria-expanded', 'true');
     this.facetSearch.setExpandedFacetSearchAccessibilityAttributes(this.searchResults);
   }
 
@@ -295,7 +295,7 @@ export class FacetSearchElement {
     this.combobox.removeAttribute('aria-owns');
     this.input.removeAttribute('aria-controls');
     this.input.removeAttribute('aria-activedescendant');
-    this.input.setAttribute('aria-expanded', false.toString());
+    this.input.setAttribute('aria-expanded', 'false');
     this.facetSearch.setCollapsedFacetSearchAccessibilityAttributes();
   }
 }
