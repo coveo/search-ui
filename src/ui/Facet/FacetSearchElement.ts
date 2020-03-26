@@ -4,7 +4,6 @@ import { SVGDom } from '../../utils/SVGDom';
 import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
 import { EventsUtils } from '../../utils/EventsUtils';
-import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { IFacetSearch } from './IFacetSearch';
 import { FacetSearchUserInputHandler } from './FacetSearchUserInputHandler';
 import { uniqueId } from 'underscore';
@@ -130,7 +129,7 @@ export class FacetSearchElement {
 
   public positionSearchResults(root: HTMLElement, facetWidth: number, nextTo: HTMLElement) {
     if (this.searchResults != null) {
-      root.appendChild(this.searchResults);
+      $$(this.searchResults).insertAfter(nextTo);
       $$(this.searchResults).show();
       this.searchResults.style.width = facetWidth - FacetSearchElement.FACET_SEARCH_PADDING + 'px';
 
@@ -143,11 +142,8 @@ export class FacetSearchElement {
           this.searchResults.style.display = '';
         }
         EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', () => {
-          this.positionPopUp(nextTo, root);
           EventsUtils.removePrefixedEvent(this.search, 'AnimationEnd', this);
         });
-      } else {
-        this.positionPopUp(nextTo, root);
       }
     }
     this.addAriaAttributes();
@@ -257,13 +253,6 @@ export class FacetSearchElement {
       ariaHaspopup: 'true',
       ariaAutocomplete: 'list'
     }).el;
-  }
-
-  private positionPopUp(nextTo: HTMLElement, root: HTMLElement) {
-    PopupUtils.positionPopup(this.searchResults, nextTo, root, {
-      horizontal: PopupHorizontalAlignment.CENTER,
-      vertical: PopupVerticalAlignment.BOTTOM
-    });
   }
 
   private handleScrollEvent() {

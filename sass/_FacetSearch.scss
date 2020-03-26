@@ -2,6 +2,7 @@
 @import 'FacetValues';
 .coveo-facet-search-results {
   position: absolute;
+  left: 20px;
   @include defaultRoundedBorder();
   background-color: white;
   list-style: none;
@@ -38,6 +39,12 @@
   }
   .coveo-facet-value-label {
     padding-right: 15px;
+  }
+  .CoveoFacet & {
+    margin-top: -1px;
+  }
+  .CoveoCategoryFacet & {
+    line-height: normal;
   }
 }
 
