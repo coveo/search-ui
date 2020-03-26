@@ -126,9 +126,9 @@ export class FacetSearchElement {
     });
   }
 
-  public positionSearchResults(nextTo: HTMLElement) {
+  public positionSearchResults() {
     if (this.searchResults != null) {
-      $$(this.searchResults).insertAfter(nextTo);
+      $$(this.searchResults).insertAfter(this.search);
       $$(this.searchResults).show();
 
       if ($$(this.searchResults).css('display') == 'none') {

@@ -164,7 +164,7 @@ export class CategoryFacetSearch implements IFacetSearch {
       this.setFacetSearchResults(categoryFacetValues);
 
       if (this.shouldPositionSearchResults) {
-        this.facetSearchElement.positionSearchResults(this.facetSearchElement.search);
+        this.facetSearchElement.positionSearchResults();
       }
 
       this.facetSearchElement.hideFacetSearchWaitingAnimation();
