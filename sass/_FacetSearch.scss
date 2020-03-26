@@ -5,6 +5,7 @@
 .coveo-facet-search-results {
   position: absolute;
   left: $facet-value-padding;
+  right: $facet-value-padding;
   @include defaultRoundedBorder();
   background-color: white;
   list-style: none;

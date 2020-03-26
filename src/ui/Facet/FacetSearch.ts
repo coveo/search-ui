@@ -72,7 +72,7 @@ export class FacetSearch implements IFacetSearch {
    * Position the search results at the footer of the facet.
    */
   public positionSearchResults(nextTo: HTMLElement = this.search) {
-    this.facetSearchElement.positionSearchResults(this.facet.element.clientWidth, nextTo);
+    this.facetSearchElement.positionSearchResults(nextTo);
   }
 
   public fetchMoreValues() {

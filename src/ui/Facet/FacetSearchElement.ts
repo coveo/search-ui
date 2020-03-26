@@ -22,7 +22,6 @@ export class FacetSearchElement {
   public facetSearchUserInputHandler: FacetSearchUserInputHandler;
 
   private triggeredScroll = false;
-  private static FACET_SEARCH_PADDING = 40;
   private facetSearchId = uniqueId('coveo-facet-search-results');
   private searchDropdownNavigator: ISearchDropdownNavigator;
 
@@ -127,11 +126,10 @@ export class FacetSearchElement {
     });
   }
 
-  public positionSearchResults(facetWidth: number, nextTo: HTMLElement) {
+  public positionSearchResults(nextTo: HTMLElement) {
     if (this.searchResults != null) {
       $$(this.searchResults).insertAfter(nextTo);
       $$(this.searchResults).show();
-      this.searchResults.style.width = facetWidth - FacetSearchElement.FACET_SEARCH_PADDING + 'px';
 
       if ($$(this.searchResults).css('display') == 'none') {
         this.searchResults.style.display = '';
