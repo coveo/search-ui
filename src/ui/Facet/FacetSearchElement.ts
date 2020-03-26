@@ -127,7 +127,7 @@ export class FacetSearchElement {
     });
   }
 
-  public positionSearchResults(root: HTMLElement, facetWidth: number, nextTo: HTMLElement) {
+  public positionSearchResults(facetWidth: number, nextTo: HTMLElement) {
     if (this.searchResults != null) {
       $$(this.searchResults).insertAfter(nextTo);
       $$(this.searchResults).show();
