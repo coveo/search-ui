@@ -30,6 +30,8 @@ export class ComponentsTypes {
   }
 
   public static getAllFacetsInstance(root: HTMLElement | Dom) {
-    return ComponentsTypes.getAllFacetsElements(root).map(element => Component.get(element) as Component);
+    return ComponentsTypes.getAllFacetsElements(root)
+      .map(element => Component.get(element) as Component)
+      .filter(component => !!component);
   }
 }
