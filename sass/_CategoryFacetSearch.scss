@@ -1,7 +1,9 @@
 @import 'Variables';
 @import 'bourbon/bourbon';
+@import 'FacetVariables';
+
 .coveo-category-facet-search-container {
-  padding: 0 20px;
+  padding: 0 $facet-value-padding;
   height: 32px;
   line-height: 30px;
   .coveo-facet-search {

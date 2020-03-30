@@ -1,9 +1,11 @@
 @import 'Variables';
+@import 'FacetVariables';
 @import 'mixins/breadcrumb';
 @import 'mixins/_facetHeaderAnimation';
 @import 'bourbon/bourbon';
+
 @mixin facetValueLabelPadding {
-  padding: 5px 19px 5px 20px;
+  padding: 5px #{$facet-value-padding - 1px} 5px $facet-value-padding;
 }
 
 @mixin clickableCategoryFacetValue {
