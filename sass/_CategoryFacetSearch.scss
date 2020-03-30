@@ -1,7 +1,9 @@
 @import 'Variables';
 @import 'bourbon/bourbon';
+@import 'FacetVariables';
+
 .coveo-category-facet-search-container {
-  padding: 0 20px;
+  padding: 0 $facet-value-padding;
   height: 32px;
   line-height: 30px;
   .coveo-facet-search {
@@ -25,19 +27,19 @@
   margin-right: 15px;
   display: inline-block;
   bottom: 1px;
-  color: $color-light-grey;
-  @include defaultRoundedBorder();
+  color: grey;
+  @include defaultRoundedLowContrastBorder();
   border-style: dashed;
 }
 
 .coveo-category-facet-search-icon-svg {
-  color: $color-light-grey;
+  color: grey;
   width: 16px;
   height: 11px;
   bottom: 7px;
   position: relative;
   .coveo-more-svg {
-    fill: $color-light-grey;
+    fill: grey;
   }
 }
 

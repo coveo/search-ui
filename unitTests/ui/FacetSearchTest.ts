@@ -127,6 +127,7 @@ export function FacetSearchTest() {
 
           (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
 
+          $$('div').append(facetSearch.search);
           var params = new FacetSearchParameters(mockFacet);
           expect(allSearchResults().length).toBe(0);
           expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
@@ -138,6 +139,11 @@ export function FacetSearchTest() {
         it('should have displayed results', () => {
           expect(allSearchResults().length).toBe(10);
           expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
+        });
+
+        it('should append search results immediately after the search box', () => {
+          const { search, searchResults } = facetSearch.facetSearchElement;
+          expect(search.nextSibling).toBe(searchResults);
         });
 
         describe('and calling dismissSearchResults', () => {
