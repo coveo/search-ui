@@ -11,8 +11,7 @@
     width: #{$pixel-size};
     height: #{$pixel-size};
     box-sizing: content-box;
-    @include defaultRoundedBorder();
-    border-color: grey;
+    @include defaultRoundedLowContrastBorder();
     text-align: center;
     vertical-align: middle;
     margin-right: 15px;
