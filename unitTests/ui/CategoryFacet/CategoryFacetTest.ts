@@ -4,7 +4,7 @@ import { $$ } from '../../../src/utils/Dom';
 import { IBasicComponentSetup, mock } from '../../MockEnvironment';
 import { Simulate, ISimulateQueryData } from '../../Simulate';
 import { FakeResults } from '../../Fake';
-import { QueryBuilder } from '../../../src/Core';
+import { QueryBuilder, InitializationEvents } from '../../../src/Core';
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import { IBuildingQueryEventArgs } from '../../../src/events/QueryEvents';
 import { first, range, pluck, shuffle, partition, chain } from 'underscore';
@@ -655,6 +655,7 @@ export function CategoryFacetTest() {
           )
         ).cmp;
 
+        $$(dependentFacet.root).trigger(InitializationEvents.afterComponentsInitialization);
         spyOn(dependentFacet, 'changeActivePath');
       });
 
