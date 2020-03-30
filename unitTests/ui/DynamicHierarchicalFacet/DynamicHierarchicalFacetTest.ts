@@ -4,7 +4,7 @@ import { DynamicFacetTestUtils } from '../DynamicFacet/DynamicFacetTestUtils';
 import { DynamicHierarchicalFacet } from '../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacet';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 import { IPopulateBreadcrumbEventArgs, BreadcrumbEvents } from '../../../src/events/BreadcrumbEvents';
-import { $$, QueryBuilder, QueryEvents } from '../../../src/Core';
+import { $$, QueryBuilder, QueryEvents, InitializationEvents } from '../../../src/Core';
 import { FakeResults } from '../../Fake';
 import { Simulate } from '../../Simulate';
 import { IFacetResponseValue } from '../../../src/rest/Facet/FacetResponse';
@@ -424,6 +424,7 @@ export function DynamicHierarchicalFacetTest() {
           { field: '@dependentField', dependsOn: test.cmp.options.id },
           test.env
         ).cmp;
+        $$(dependentFacet.root).trigger(InitializationEvents.afterComponentsInitialization);
         spyOn(dependentFacet, 'reset');
       });
 
