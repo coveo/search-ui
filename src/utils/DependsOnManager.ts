@@ -3,6 +3,7 @@ import { QueryStateModel, QueryEvents, Component } from '../Core';
 import { MODEL_EVENTS } from '../models/Model';
 import { ComponentsTypes } from './ComponentsTypes';
 import { $$ } from './Dom';
+import { InitializationEvents } from '../events/InitializationEvents';
 
 export interface IDependsOnCompatibleFacetOptions {
   id?: string;
@@ -30,12 +31,12 @@ export class DependsOnManager {
     this.facet.ref.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
 
     if (this.getDependsOn(this.facet.ref)) {
-      $$(this.facet.ref.element).addClass('coveo-hidden');
-      this.setupDependentFacet();
+      this.facet.ref.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => this.setupDependentFacet());
     }
   }
 
   private setupDependentFacet() {
+    $$(this.facet.ref.element).addClass('coveo-hidden');
     this.parentFacetRef = this.getParentFacet(this.facet.ref);
 
     if (this.parentFacetRef) {

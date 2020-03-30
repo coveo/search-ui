@@ -3,7 +3,7 @@ import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
 import { IDynamicFacetOptions, IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/IDynamicFacet';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { DynamicFacetTestUtils } from './DynamicFacetTestUtils';
-import { $$, BreadcrumbEvents, QueryEvents, QueryBuilder } from '../../../src/Core';
+import { $$, BreadcrumbEvents, QueryEvents, QueryBuilder, InitializationEvents } from '../../../src/Core';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 import { Simulate } from '../../Simulate';
 import { IPopulateBreadcrumbEventArgs } from '../../../src/events/BreadcrumbEvents';
@@ -758,6 +758,7 @@ export function DynamicFacetTest() {
           { field: '@dependentField', dependsOn: test.cmp.options.id },
           test.env
         ).cmp;
+        $$(dependentFacet.root).trigger(InitializationEvents.afterComponentsInitialization);
         spyOn(dependentFacet, 'reset');
       });
 

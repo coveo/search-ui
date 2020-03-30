@@ -10,7 +10,7 @@ import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { KEYBOARD } from '../../src/Core';
+import { KEYBOARD, InitializationEvents } from '../../src/Core';
 
 export function FacetTest() {
   describe('Facet', () => {
@@ -988,6 +988,7 @@ export function FacetTest() {
           )
         ).cmp;
 
+        $$(dependentFacet.root).trigger(InitializationEvents.afterComponentsInitialization);
         spyOn(dependentFacet, 'reset');
       });
 
