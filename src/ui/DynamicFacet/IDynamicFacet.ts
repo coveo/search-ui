@@ -70,7 +70,7 @@ export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet
 export interface IValueCreator {
   createFromResponse(facetValue: IFacetResponseValue, index: number): IDynamicFacetValue;
   createFromValue(value: string): IDynamicFacetValue;
-  createFromRange(range: IRangeValue, index: number): IDynamicFacetValue;
+  getDefaultValues(): IDynamicFacetValue[];
 }
 
 export interface IValueRenderer {
@@ -109,7 +109,6 @@ export interface IDynamicFacetValue extends IDynamicFacetValueProperties {
 
 export interface IDynamicFacetValues {
   createFromResponse(response: IFacetResponse): void;
-  createFromRanges(ranges: IRangeValue[]): void;
   resetValues(): void;
   clearAll(): void;
   hasSelectedValue(arg: string | IDynamicFacetValue): boolean;

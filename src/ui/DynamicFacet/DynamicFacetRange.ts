@@ -105,10 +105,6 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
 
   protected initValues() {
     this.values = new DynamicFacetValues(this, DynamicFacetRangeValueCreator);
-
-    if (this.options.ranges) {
-      this.values.createFromRanges(this.options.ranges);
-    }
   }
 
   protected initDynamicFacetQueryController() {

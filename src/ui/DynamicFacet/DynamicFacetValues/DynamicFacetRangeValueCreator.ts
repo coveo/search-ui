@@ -14,7 +14,12 @@ export class DynamicFacetRangeValueCreator implements IValueCreator {
     this.parser = new DynamicFacetRangeValueParser(this.facet);
   }
 
-  public createFromRange(unvalidatedRange: IRangeValue, index: number) {
+  public getDefaultValues() {
+    const ranges = this.facet.options.ranges || [];
+    return ranges.map((range, index) => this.createFromRange(range, index)).filter(facetValue => !!facetValue);
+  }
+
+  private createFromRange(unvalidatedRange: IRangeValue, index: number) {
     const range = this.parser.validate(unvalidatedRange);
     if (!range) {
       this.facet.logger.error(`Unvalid range for ${this.facet.options.valueFormat} format`, unvalidatedRange);

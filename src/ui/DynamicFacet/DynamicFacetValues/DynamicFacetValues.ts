@@ -5,7 +5,6 @@ import { DynamicFacetValue } from './DynamicFacetValue';
 import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
-import { IRangeValue } from '../../../rest/RangeValue';
 import { IDynamicFacet, IValueCreator, IDynamicFacetValue, IDynamicFacetValues } from '../IDynamicFacet';
 import { DynamicFacetValueShowMoreLessButton } from './DynamicFacetValueMoreLessButton';
 
@@ -19,20 +18,16 @@ export class DynamicFacetValues implements IDynamicFacetValues {
   private valueCreator: IValueCreator;
 
   constructor(private facet: IDynamicFacet, creatorKlass: IDynamicFacetValueCreatorKlass) {
-    this.resetValues();
     this.valueCreator = new creatorKlass(this.facet);
+    this.resetValues();
   }
 
   public createFromResponse(response: IFacetResponse) {
     this.facetValues = response.values.map((facetValue, index) => this.valueCreator.createFromResponse(facetValue, index));
   }
 
-  public createFromRanges(ranges: IRangeValue[]) {
-    this.facetValues = ranges.map((range, index) => this.valueCreator.createFromRange(range, index)).filter(facetValue => !!facetValue);
-  }
-
   public resetValues() {
-    this.facetValues = [];
+    this.facetValues = this.valueCreator.getDefaultValues();
   }
 
   public get allFacetValues() {
