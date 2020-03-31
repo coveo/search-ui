@@ -61,13 +61,13 @@ export function DynamicFacetRangeQueryControllerTest() {
       });
     });
 
-    describe('when there no values', () => {
+    describe('when calling reset', () => {
       beforeEach(() => {
         facet.values.resetValues();
       });
 
-      it('freezeCurrentValues should be false', () => {
-        expect(facetRequest().freezeCurrentValues).toBe(false);
+      it('freezeCurrentValues should be true', () => {
+        expect(facetRequest().freezeCurrentValues).toBe(true);
       });
 
       it('numberOfValues should be equal to the numberOfValues option', () => {
