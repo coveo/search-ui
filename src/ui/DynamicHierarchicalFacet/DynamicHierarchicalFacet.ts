@@ -216,7 +216,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * @examples alphanumeric
      */
     sortCriteria: <HierarchicalFacetSortCriteria>ComponentOptions.buildStringOption({
-      postProcessing: value => {
+      postProcessing: (value, options: IDynamicHierarchicalFacetOptions) => {
         if (!value) {
           return undefined;
         }
@@ -225,7 +225,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
           return value;
         }
 
-        new Logger(value).warn('sortCriteria is not of the the allowed values: "alphanumeric", "occurrences"');
+        new Logger(options).warn('sortCriteria is not of the the allowed values: "alphanumeric", "occurrences"');
         return undefined;
       },
       section: 'Sorting'
@@ -254,7 +254,27 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * @examples electronics, electronics\,laptops
      */
-    basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
+    basePath: ComponentOptions.buildListOption<string>({ defaultValue: [], section: 'CommonOptions' }),
+
+    /**
+     * Whether to use the [`basePath`]{@link DynamicHierarchicalFacet.options.basePath} option as a filter for the results.
+     *
+     * **Note:**
+     * Setting this option to `true` and using the [`dependsOn`]{@link DynamicHierarchicalFacet.options.dependsOn} option can cause unexpected behaviour.
+     */
+    basePathShouldFilterResults: ComponentOptions.buildBooleanOption({
+      defaultValue: false,
+      depend: 'basePath',
+      section: 'CommonOptions',
+      postProcessing: (value, options: IDynamicHierarchicalFacetOptions) => {
+        if (value && options.dependsOn) {
+          new Logger(options).warn('basePathShouldFilterResults is not compatible with dependsOn, set to false');
+          return false;
+        }
+
+        return value;
+      }
+    }),
     ...ResponsiveFacetOptions
   };
 

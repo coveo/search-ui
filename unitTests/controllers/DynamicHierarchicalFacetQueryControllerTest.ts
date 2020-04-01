@@ -52,6 +52,7 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
       expect(facetRequest().delimitingCharacter).toBe(facet.options.delimitingCharacter);
       expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
       expect(facetRequest().basePath).toBe(facet.options.basePath);
+      expect(facetRequest().filterByBasePath).toBe(facet.options.basePathShouldFilterResults);
     });
 
     it('the facet option freezeFacetOrder should not be defined by default', () => {

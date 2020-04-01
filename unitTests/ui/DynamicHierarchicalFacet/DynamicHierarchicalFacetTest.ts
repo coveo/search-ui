@@ -125,6 +125,23 @@ export function DynamicHierarchicalFacetTest() {
       expect(getFirstFacetRequest().sortCriteria).toBe(FacetSortCriteria.alphanumeric);
     });
 
+    it(`basePathShouldFilterResults option should not be overriden by default `, () => {
+      options.basePathShouldFilterResults = true;
+      options.dependsOn = undefined;
+      initializeComponent();
+
+      expect(test.cmp.options.basePathShouldFilterResults).toBe(true);
+    });
+
+    it(`when defining a dependsOn option and setting the basePathShouldFilterResults to true
+      should force the basePathShouldFilterResults option to be false`, () => {
+      options.basePathShouldFilterResults = true;
+      options.dependsOn = 'hi its me';
+      initializeComponent();
+
+      expect(test.cmp.options.basePathShouldFilterResults).toBe(false);
+    });
+
     it('should populate breadcrumbs by default', () => {
       test.cmp.selectPath(['foo']);
       const breadcrumbs = triggerPopulateBreadcrumbs();
