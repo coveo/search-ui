@@ -201,6 +201,13 @@ export interface IFacetRequest {
   basePath?: string[];
 
   /**
+   * Whether to use `basePath` as a filter for the results.
+   *
+   * **Default (Search API):** `true`
+   */
+  filterByBasePath?: boolean;
+
+  /**
    * Whether to prevent Coveo ML from automatically selecting values from that facet.
    *
    * **Default:** `false`
