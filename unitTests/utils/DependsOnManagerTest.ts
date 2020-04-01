@@ -1,6 +1,6 @@
 import { $$ } from '../Test';
 import { IDependentFacet, DependsOnManager, IDependentFacetCondition, IDependsOnCompatibleFacet } from '../../src/utils/DependsOnManager';
-import { QueryStateModel, Component, QueryEvents } from '../../src/Core';
+import { QueryStateModel, Component, QueryEvents, InitializationEvents } from '../../src/Core';
 import { ComponentsTypes } from '../../src/utils/ComponentsTypes';
 
 export interface IDependsOnManagerTestMock {
@@ -30,9 +30,12 @@ export function DependsOnManagerTest() {
         ref: component
       };
 
+      const manager = new DependsOnManager(facet);
+      $$(component.root).trigger(InitializationEvents.afterComponentsInitialization);
+
       return {
         facet,
-        manager: new DependsOnManager(facet)
+        manager
       };
     }
 
