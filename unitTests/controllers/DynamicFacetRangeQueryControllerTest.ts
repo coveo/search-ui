@@ -74,5 +74,12 @@ export function DynamicFacetRangeQueryControllerTest() {
         expect(facetRequest().numberOfValues).toBe(facet.options.numberOfValues);
       });
     });
+
+    it('when no ranges are specified, freezeCurrentValues should be false', () => {
+      facetOptions.ranges = [];
+      initializeComponents();
+
+      expect(facetRequest().freezeCurrentValues).toBe(false);
+    });
   });
 }
