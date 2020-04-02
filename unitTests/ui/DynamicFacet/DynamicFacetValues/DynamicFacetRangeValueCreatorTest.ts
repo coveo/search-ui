@@ -16,7 +16,7 @@ export function DynamicFacetRangeValueCreatorTest() {
     });
 
     function initializeComponent() {
-      facet = DynamicFacetRangeTestUtils.createFakeFacet();
+      facet = DynamicFacetRangeTestUtils.createAdvancedFakeFacet().cmp;
       valueCreator = new DynamicFacetRangeValueCreator(facet);
     }
 
@@ -133,6 +133,7 @@ export function DynamicFacetRangeValueCreatorTest() {
       }
 
       it('should throw on a invalid format', () => {
+        spyOn(facet.logger, 'error');
         valueCreator.createFromValue('notValid');
         expect(facet.logger.error).toHaveBeenCalled();
       });

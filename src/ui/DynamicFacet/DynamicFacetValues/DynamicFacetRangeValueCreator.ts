@@ -15,7 +15,7 @@ export class DynamicFacetRangeValueCreator implements IValueCreator {
   }
 
   public getDefaultValues() {
-    const ranges = this.facet.options.ranges || [];
+    const ranges = this.facet.options.ranges;
     return ranges.map((range, index) => this.createFromRange(range, index)).filter(facetValue => !!facetValue);
   }
 

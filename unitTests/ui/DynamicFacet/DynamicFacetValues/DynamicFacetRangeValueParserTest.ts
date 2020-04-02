@@ -1,17 +1,23 @@
 import { DynamicFacetRangeValueParser } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueParser';
 import { DynamicFacetRangeTestUtils } from '../DynamicFacetRangeTestUtils';
-import { DynamicFacetRangeValueFormat } from '../../../../src/ui/DynamicFacet/IDynamicFacetRange';
+import { DynamicFacetRangeValueFormat, IDynamicFacetRangeOptions } from '../../../../src/ui/DynamicFacet/IDynamicFacetRange';
+import { DynamicFacetRange } from '../../../../src/ui/DynamicFacet/DynamicFacetRange';
 
 export function DynamicFacetRangeValueParserTest() {
   describe('DynamicFacetRangeValueParser', () => {
     let parser: DynamicFacetRangeValueParser;
+    let facetOptions: IDynamicFacetRangeOptions;
+    let facet: DynamicFacetRange;
+
+    function initFacet() {
+      facet = DynamicFacetRangeTestUtils.createAdvancedFakeFacet(facetOptions).cmp;
+    }
 
     describe('testing with the number format', () => {
       beforeEach(() => {
-        const facet = DynamicFacetRangeTestUtils.createFakeFacet({
-          valueFormat: DynamicFacetRangeValueFormat.number,
-          valueSeparator: 'to'
-        });
+        facetOptions = { valueFormat: DynamicFacetRangeValueFormat.number, valueSeparator: 'to' };
+        initFacet();
+
         parser = new DynamicFacetRangeValueParser(facet);
       });
 
@@ -96,7 +102,9 @@ export function DynamicFacetRangeValueParserTest() {
 
     describe('testing with the date format', () => {
       beforeEach(() => {
-        const facet = DynamicFacetRangeTestUtils.createFakeFacet({ valueFormat: DynamicFacetRangeValueFormat.date, valueSeparator: 'to' });
+        facetOptions = { valueFormat: DynamicFacetRangeValueFormat.date, valueSeparator: 'to' };
+        initFacet();
+
         parser = new DynamicFacetRangeValueParser(facet);
       });
 
@@ -186,11 +194,13 @@ export function DynamicFacetRangeValueParserTest() {
 
     describe('testing with the currency format (formatting only)', () => {
       beforeEach(() => {
-        const facet = DynamicFacetRangeTestUtils.createFakeFacet({
+        facetOptions = {
           valueFormat: DynamicFacetRangeValueFormat.currency,
           currencySymbol: '€',
           valueSeparator: 'to'
-        });
+        };
+        initFacet();
+
         parser = new DynamicFacetRangeValueParser(facet);
       });
 
