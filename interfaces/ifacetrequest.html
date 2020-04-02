@@ -147,6 +147,9 @@
 								<a href="ifacetrequest.html#field" class="tsd-kind-icon">field</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ifacetrequest.html#filterbybasepath" class="tsd-kind-icon">filter<wbr>ByBase<wbr>Path</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="ifacetrequest.html#filterfacetcount" class="tsd-kind-icon">filter<wbr>Facet<wbr>Count</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -220,6 +223,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#delimitingcharacter" class="tsd-kind-icon">delimiting<wbr>Character</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#facetid" class="tsd-kind-icon">facet<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#field" class="tsd-kind-icon">field</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#filterbybasepath" class="tsd-kind-icon">filter<wbr>ByBase<wbr>Path</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#filterfacetcount" class="tsd-kind-icon">filter<wbr>Facet<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#freezecurrentvalues" class="tsd-kind-icon">freeze<wbr>Current<wbr>Values</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetrequest.html#generateautomaticranges" class="tsd-kind-icon">generate<wbr>Automatic<wbr>Ranges</a></li>
@@ -332,6 +336,25 @@
 						</div>
 						<p><strong>Note:</strong> Must reference an index field whose <strong>Facet</strong> option is enabled.</p>
 						<p><strong>Example:</strong> <code>author</code></p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="filterbybasepath" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> filter<wbr>ByBase<wbr>Path</h3>
+					<div class="tsd-signature tsd-kind-icon">filter<wbr>ByBase<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L210">rest/Facet/FacetRequest.ts
+							:210</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to use the [<code>basePath</code>]{@link FacetRequest.basePath} as a filter for the results.</p>
+						</div>
+						<p><strong>Note:</strong> This parameter is ignored unless the facet [<code>type</code>]{@link FacetRequest.type} is <code>hierarchical</code>.</p>
+						<p><strong>Default (Search API):</strong> <code>true</code></p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -469,8 +492,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L208">rest/Facet/FacetRequest.ts
-							:208</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetRequest.ts#L217">rest/Facet/FacetRequest.ts
+							:217</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
