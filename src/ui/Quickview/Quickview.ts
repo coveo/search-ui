@@ -317,7 +317,7 @@ export class Quickview extends Component {
   }
 
   private buildCaption() {
-    return $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
+    return $$('div', { className: 'coveo-caption-for-icon' }, 'Quickview'.toLocaleString()).el;
   }
 
   private buildTooltipIfNotInCardLayout(icon: HTMLElement, caption: HTMLElement) {
