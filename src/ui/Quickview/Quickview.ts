@@ -256,8 +256,6 @@ export class Quickview extends Component {
 
   private modalbox: AccessibleModal;
 
-  private lastFocusedElement: HTMLElement;
-
   /**
    * Creates a new `Quickview` component.
    * @param element The HTMLElement on which to instantiate the component.
@@ -366,10 +364,7 @@ export class Quickview extends Component {
       Quickview.resultCurrentlyBeingRendered = this.result;
       // activeElement does not exist in LockerService
       if (document.activeElement && document.activeElement instanceof HTMLElement) {
-        this.lastFocusedElement = document.activeElement;
         $$(document.activeElement as HTMLElement).trigger('blur');
-      } else {
-        this.lastFocusedElement = null;
       }
 
       const openerObject = this.prepareOpenQuickviewObject();
@@ -389,9 +384,6 @@ export class Quickview extends Component {
   public close() {
     if (this.modalbox.isOpen) {
       this.modalbox.close();
-      if (this.lastFocusedElement && this.lastFocusedElement.parentElement) {
-        this.lastFocusedElement.focus();
-      }
     }
   }
 
@@ -457,7 +449,8 @@ export class Quickview extends Component {
         () => {
           this.closeQuickview();
           return true;
-        }
+        },
+        this.element
       );
       return computedModalBoxContent;
     });

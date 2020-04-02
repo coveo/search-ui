@@ -58,25 +58,26 @@ export class AccessibleModal {
     options: IQuickViewHeaderOptions,
     bindings: IComponentBindings,
     content: HTMLElement,
-    validation: () => boolean
+    validation: () => boolean,
+    origin?: HTMLElement
   ) {
     if (this.isOpen) {
       return;
     }
-    this.openModalAndTrap(DomUtils.getQuickviewHeader(result, options, bindings).el, content, validation);
+    this.openModalAndTrap(DomUtils.getQuickviewHeader(result, options, bindings).el, content, validation, origin);
     this.makeAccessible(options.title || result.title);
   }
 
-  public open(title: HTMLElement, content: HTMLElement, validation: () => boolean) {
+  public open(title: HTMLElement, content: HTMLElement, validation: () => boolean, origin?: HTMLElement) {
     if (this.isOpen) {
       return;
     }
-    this.openModalAndTrap(title, content, validation);
+    this.openModalAndTrap(title, content, validation, origin);
     this.makeAccessible();
   }
 
-  private openModalAndTrap(title: HTMLElement, content: HTMLElement, validation: () => boolean) {
-    this.initiallyFocusedElement = document.activeElement as HTMLElement;
+  private openModalAndTrap(title: HTMLElement, content: HTMLElement, validation: () => boolean, origin?: HTMLElement) {
+    this.initiallyFocusedElement = origin || (document.activeElement as HTMLElement);
     this.activeModal = this.modalboxModule.open(content, {
       title,
       className: this.className,

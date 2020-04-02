@@ -48,18 +48,17 @@ export function AccessibleModalTest() {
       let container: HTMLElement;
       let closeButton: HTMLElement;
       let closeButtonClickSpy: jasmine.Spy;
-      let initiallyFocusedElement: HTMLElement;
+      let origin: HTMLElement;
 
-      function createAndAppendInitiallyFocusedElement() {
-        initiallyFocusedElement = $$('button', {}, 'test').el;
-        spyOn(initiallyFocusedElement, 'focus');
-        document.body.appendChild(initiallyFocusedElement);
-        return initiallyFocusedElement;
+      function createOrigin() {
+        origin = $$('button', {}, 'test').el;
+        spyOn(origin, 'focus');
+        document.body.appendChild(origin);
+        return origin;
       }
 
       beforeEach(() => {
-        accessibleModal.open(createTitle(), createContent(), createValidationSpy());
-        accessibleModal['initiallyFocusedElement'] = createAndAppendInitiallyFocusedElement();
+        accessibleModal.open(createTitle(), createContent(), createValidationSpy(), createOrigin());
         focusTrap = accessibleModal['focusTrap'];
         container = accessibleModal.element;
         closeButton = container.querySelector('.coveo-small-close');
@@ -67,7 +66,7 @@ export function AccessibleModalTest() {
       });
 
       afterEach(() => {
-        initiallyFocusedElement.remove();
+        origin.remove();
       });
 
       it('has an element', () => {
@@ -128,8 +127,8 @@ export function AccessibleModalTest() {
           accessibleModal.close();
         });
 
-        it('resets the focus to its initial position', () => {
-          expect(initiallyFocusedElement.focus).toHaveBeenCalledTimes(1);
+        it('resets the focus to its origin', () => {
+          expect(origin.focus).toHaveBeenCalledTimes(1);
         });
 
         it("doesn't have an element", () => {
