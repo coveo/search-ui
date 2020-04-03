@@ -1,11 +1,9 @@
 import { DynamicFacetValues } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 import { FacetValueState } from '../../../../src/rest/Facet/FacetValueState';
 import { IDynamicFacetValueProperties } from '../../../../src/ui/DynamicFacet/IDynamicFacet';
-import { DynamicFacetRangeValueCreator } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { $$ } from '../../../../src/Core';
-import { DynamicFacetRangeTestUtils } from '../DynamicFacetRangeTestUtils';
 import { DynamicFacetValueCreator } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValueCreator';
 
 export function DynamicFacetValuesTest() {
@@ -32,11 +30,6 @@ export function DynamicFacetValuesTest() {
 
     function createValuesFromResponse() {
       dynamicFacetValues.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
-    }
-
-    function createValuesFromRanges() {
-      dynamicFacetValues = new DynamicFacetValues(facet, DynamicFacetRangeValueCreator);
-      dynamicFacetValues.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges(valueCount));
     }
 
     function moreButton() {
@@ -247,12 +240,6 @@ export function DynamicFacetValuesTest() {
     it(`when calling createValuesFromResponse
     it should create the values correctly`, () => {
       createValuesFromResponse();
-      expect(dynamicFacetValues.allFacetValues.length).toBe(valueCount);
-    });
-
-    it(`when calling createValuesFromRanges
-    it should create the values correctly`, () => {
-      createValuesFromRanges();
       expect(dynamicFacetValues.allFacetValues.length).toBe(valueCount);
     });
   });
