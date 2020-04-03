@@ -99,13 +99,29 @@ export function BackdropTest() {
     });
 
     describe('for a youtube result', () => {
-      it('should open the youtubethumbnail in a modalbox', () => {
-        fakeResult.raw['ytthumbnailurl'] = 'someurl';
-        let fakeModalBox = Simulate.modalBoxModule();
-        test.cmp = new Backdrop(test.env.root, { imageField: 'thumbnailurl' }, test.cmp.getBindings(), fakeResult, null, fakeModalBox);
+      let fakeModalBox: Coveo.ModalBox.ModalBox;
 
+      beforeEach(() => {
+        fakeResult.raw['ytthumbnailurl'] = 'someurl';
+        fakeModalBox = Simulate.modalBoxModule();
+        test.cmp = new Backdrop(test.env.root, { imageField: 'thumbnailurl' }, test.cmp.getBindings(), fakeResult, null, fakeModalBox);
+      });
+
+      it('should open the youtubethumbnail in a modalbox', () => {
         $$(test.cmp.element).trigger('click');
         expect(fakeModalBox.open).toHaveBeenCalled();
+      });
+
+      it('should have an aria-label', () => {
+        expect(test.cmp.element.getAttribute('aria-label')).toEqual(fakeResult.title);
+      });
+
+      it('should have a tabindex', () => {
+        expect(test.cmp.element.getAttribute('tabindex')).toEqual('0');
+      });
+
+      it('should have the button role', () => {
+        expect(test.cmp.element.getAttribute('role')).toEqual('button');
       });
     });
   });
