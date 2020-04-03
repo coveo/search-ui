@@ -158,7 +158,14 @@ export class YouTubeThumbnail extends Component {
 
     div.append(iframe.el);
 
-    this.modalbox.openResult(this.result, { showDate: true, title: this.result.title }, this.bindings, div.el, () => true, this.origin);
+    this.modalbox.openResult({
+      result: this.result,
+      options: { showDate: true, title: this.result.title },
+      bindings: this.bindings,
+      content: div.el,
+      validation: () => true,
+      origin: this.origin
+    });
 
     $$($$(this.modalbox.wrapper).find('.coveo-quickview-close-button')).on('click', () => {
       this.modalbox.close();

@@ -438,20 +438,20 @@ export class Quickview extends Component {
     computedModalBoxContent.addClass('coveo-computed-modal-box-content');
     return openerObject.content.then(builtContent => {
       computedModalBoxContent.append(builtContent.el);
-      this.modalbox.openResult(
-        this.result,
-        {
+      this.modalbox.openResult({
+        result: this.result,
+        options: {
           showDate: this.options.showDate,
           title: this.options.title
         },
-        this.bindings,
-        computedModalBoxContent.el,
-        () => {
+        bindings: this.bindings,
+        content: computedModalBoxContent.el,
+        validation: () => {
           this.closeQuickview();
           return true;
         },
-        this.element
-      );
+        origin: this.element
+      });
       return computedModalBoxContent;
     });
   }
