@@ -58,7 +58,12 @@ export function AccessibleModalTest() {
       }
 
       beforeEach(() => {
-        accessibleModal.open(createTitle(), createContent(), createValidationSpy(), createOrigin());
+        accessibleModal.open({
+          title: createTitle(),
+          content: createContent(),
+          validation: createValidationSpy(),
+          origin: createOrigin()
+        });
         focusTrap = accessibleModal['focusTrap'];
         container = accessibleModal.element;
         closeButton = container.querySelector('.coveo-small-close');
