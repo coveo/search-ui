@@ -16,7 +16,7 @@ export interface IAccessibleModalOptions {
 export interface IAccessibleModalOpenParameters {
   content: HTMLElement;
   validation: () => boolean;
-  origin?: HTMLElement;
+  origin: HTMLElement;
 }
 
 export interface IAccessibleModalOpenResultParameters extends IAccessibleModalOpenParameters {
