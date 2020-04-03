@@ -12,6 +12,10 @@ export class DynamicFacetValueCreator implements IValueCreator {
     return FacetUtils.getDisplayValueFromValueCaption(value, this.facet.options.field as string, this.facet.options.valueCaption);
   }
 
+  public getDefaultValues() {
+    return [];
+  }
+
   public createFromResponse(facetValue: IFacetResponseValue, index: number) {
     return new DynamicFacetValue(
       {
@@ -31,9 +35,5 @@ export class DynamicFacetValueCreator implements IValueCreator {
     const state = FacetValueState.idle;
     const displayValue = this.getDisplayValue(value);
     return new DynamicFacetValue({ value, displayValue, state, numberOfResults: 0, position }, this.facet, DynamicFacetValueRenderer);
-  }
-
-  public createFromRange() {
-    return null;
   }
 }

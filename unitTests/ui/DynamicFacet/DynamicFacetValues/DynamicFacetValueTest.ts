@@ -105,8 +105,8 @@ export function DynamicFacetValueTest() {
     });
 
     it(`should return the correct analyticsFacetMeta for a range value`, () => {
-      const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet();
-      rangeFacet.values.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges());
+      const ranges = DynamicFacetRangeTestUtils.createFakeRanges();
+      const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet({ ranges });
       dynamicFacetValue = rangeFacet.values.allFacetValues[0];
 
       expect(dynamicFacetValue.analyticsFacetMeta).toEqual({
@@ -129,8 +129,8 @@ export function DynamicFacetValueTest() {
     });
 
     it(`should return the correct analyticsFacetState for a range value`, () => {
-      const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet();
-      rangeFacet.values.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges());
+      const ranges = DynamicFacetRangeTestUtils.createFakeRanges();
+      const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet({ ranges });
       dynamicFacetValue = rangeFacet.values.allFacetValues[0];
 
       expect(dynamicFacetValue.analyticsFacetState).toEqual({
