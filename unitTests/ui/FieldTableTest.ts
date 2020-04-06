@@ -166,8 +166,7 @@ export function FieldTableTest() {
         when the container scrollHeight changes,
         when calling #expand, it keeps the height of the container equal to the initial value`, () => {
           // When retreiving the scrollHeight on every expand, I saw an animation lag when
-          // expanding and minimizing quickly. I decided to store the value in memory and only attempt to
-          // update it if it is falsy.
+          // expanding and minimizing quickly. So we use memoization, and only update the value if it is falsy.
           const scrollHeight1 = 100;
           const container = toggleContainer();
 
