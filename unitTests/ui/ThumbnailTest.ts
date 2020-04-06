@@ -58,7 +58,7 @@ export function ThumbnailTest() {
         fakeFieldTable.cmp.element.appendChild(test.cmp.element);
 
         setTimeout(function() {
-          expect(spyResize).toHaveBeenCalled();
+          expect(spyResize).not.toHaveBeenCalled();
           done();
         }, 0);
       });
