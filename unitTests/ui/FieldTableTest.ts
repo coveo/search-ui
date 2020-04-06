@@ -64,6 +64,10 @@ export function FieldTableTest() {
           return $$(test.env.root).find('.coveo-field-table-toggle-container');
         }
 
+        function toggleCaption() {
+          return $$(test.env.root).find('.coveo-field-table-toggle-caption');
+        }
+
         function setToggleContainerScrollHeight(height: number) {
           Object.defineProperty(toggleContainer(), 'scrollHeight', { value: height, writable: true });
         }
@@ -84,6 +88,10 @@ export function FieldTableTest() {
 
         it('should show a toggle link', function() {
           expect($$(test.env.root).find('.coveo-field-table-toggle')).not.toBeNull();
+        });
+
+        it('shows a toggle caption set to the minimizedTitle', () => {
+          expect(toggleCaption().textContent).toBe(test.cmp.options.minimizedTitle);
         });
 
         it('should put the tabindex to 0 on the toggle caption', function() {
