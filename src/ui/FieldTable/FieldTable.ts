@@ -249,7 +249,6 @@ export class FieldTable extends Component {
       this.toggleContainer.style.display = 'block';
       this.toggleContainer.style.height = this.containerHeight;
     } else {
-      this.toggleContainer.style.height = this.containerHeight;
       this.toggleContainer.style.height = '0';
     }
     if (!anim) {
