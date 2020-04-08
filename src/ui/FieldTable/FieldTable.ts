@@ -233,9 +233,7 @@ export class FieldTable extends Component {
       this.isExpanded = !QueryUtils.hasExcerpt(this.result);
     }
 
-    setTimeout(() => {
-      this.updateToggleHeight();
-    }); // Wait until toggleContainer.scrollHeight is computed.
+    this.updateToggleHeight();
 
     const toggleAction = () => this.toggle(true);
 
@@ -253,17 +251,25 @@ export class FieldTable extends Component {
     if (!anim) {
       $$(this.toggleContainer).addClass('coveo-no-transition');
     }
+
     if (visible) {
       this.toggleContainer.style.display = 'block';
-      this.toggleContainer.style.height = this.toggleContainerHeight + 'px';
+      this.toggleContainer.style.height = this.containerHeight;
     } else {
-      this.toggleContainer.style.height = this.toggleContainerHeight + 'px';
       this.toggleContainer.style.height = '0';
     }
     if (!anim) {
       this.toggleContainer.offsetHeight; // Force reflow
       $$(this.toggleContainer).removeClass('coveo-no-transition');
     }
+  }
+
+  private get containerHeight() {
+    if (!this.toggleContainerHeight) {
+      this.updateToggleContainerHeight();
+    }
+
+    return this.toggleContainerHeight + 'px';
   }
 
   private updateToggleContainerHeight() {
