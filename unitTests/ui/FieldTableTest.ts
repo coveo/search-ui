@@ -73,12 +73,8 @@ export function FieldTableTest() {
       });
 
       describe('allowMinimization set to true', function() {
-        function toggleContainer() {
-          return $$(test.env.root).find('.coveo-field-table-toggle-container');
-        }
-
         function setToggleContainerScrollHeight(height: number) {
-          Object.defineProperty(toggleContainer(), 'scrollHeight', { value: height, writable: true });
+          Object.defineProperty(findToggleContainer(), 'scrollHeight', { value: height, writable: true });
         }
 
         beforeEach(function() {
@@ -160,7 +156,7 @@ export function FieldTableTest() {
         it(`given a toggle container with a zero scrollHeight,
         when calling #expand after the container has a non-zero scrollHeight,
         it sets the height of the container to the new value`, () => {
-          const container = toggleContainer();
+          const container = findToggleContainer();
 
           expect(container.scrollHeight).toBe(0);
 
@@ -168,7 +164,7 @@ export function FieldTableTest() {
           setToggleContainerScrollHeight(newScrollHeight);
           test.cmp.expand();
 
-          expect(toggleContainer().style.height).toBe(`${newScrollHeight}px`);
+          expect(findToggleContainer().style.height).toBe(`${newScrollHeight}px`);
         });
 
         it(`given a toggle container with a non-zero scrollHeight,
@@ -177,7 +173,7 @@ export function FieldTableTest() {
           // When retreiving the scrollHeight on every expand, I saw an animation lag when
           // expanding and minimizing quickly. So we use memoization, and only update the value if it is falsy.
           const scrollHeight1 = 100;
-          const container = toggleContainer();
+          const container = findToggleContainer();
 
           setToggleContainerScrollHeight(scrollHeight1);
           test.cmp.updateToggleHeight();
@@ -189,7 +185,7 @@ export function FieldTableTest() {
           setToggleContainerScrollHeight(scrollHeight2);
           test.cmp.expand();
 
-          expect(toggleContainer().style.height).toBe(`${scrollHeight1}px`);
+          expect(findToggleContainer().style.height).toBe(`${scrollHeight1}px`);
         });
 
         it('minimizedByDefault set to true should initialize the table in a minimized state', function() {
