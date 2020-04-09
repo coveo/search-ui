@@ -14,6 +14,9 @@ import * as _ from 'underscore';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { Component } from '../Base/Component';
 import { IHighlight } from '../../rest/Highlight';
+import { AccessibleButton } from '../../utils/AccessibleButton';
+import { DeviceUtils } from '../../utils/DeviceUtils';
+import { l } from '../../strings/Strings';
 
 export interface IPrintableUriOptions extends IResultLinkOptions {}
 
@@ -113,23 +116,44 @@ export class PrintableUri extends Component {
     return link.element;
   }
 
-  private renderParentsXml(element: HTMLElement, parentsXml: string) {
+  private renderParentsXml(element: HTMLElement, parentsXml: string, startAt = 0, partsCount = DeviceUtils.isMobileDevice() ? 3 : 5) {
+    $$(element).empty();
     const xmlDoc: XMLDocument = Utils.parseXml(parentsXml);
     const parents = xmlDoc.getElementsByTagName('parent');
-    const tokens: HTMLElement[] = [];
-    const separators: HTMLElement[] = [];
-    for (let i = 0; i < parents.length; i++) {
-      if (i > 0) {
-        const separator = this.buildSeparator();
-        separators.push(separator);
-        element.appendChild(separator);
-      }
-      const parent = <Element>parents.item(i);
-      const token = this.buildHtmlToken(parent.getAttribute('name'), parent.getAttribute('uri'));
-      tokens.push(token);
-
-      element.appendChild(this.makeLinkAccessible(token));
+    if (startAt > 0) {
+      this.appendEllipsis(element, parentsXml, Math.max(0, startAt - partsCount + 1), partsCount);
+      this.appendSeparator(element);
     }
+    let lastIndex = Math.min(parents.length - 2, startAt + partsCount - 2);
+    for (let i = startAt; i <= lastIndex; i++) {
+      if (i > startAt) {
+        this.appendSeparator(element);
+      }
+      this.appendToken(element, parents.item(i));
+    }
+    if (lastIndex !== parents.length - 2) {
+      this.appendSeparator(element);
+      this.appendEllipsis(element, parentsXml, Math.min(Math.max(lastIndex + 1, 0), parents.length - partsCount), partsCount);
+    }
+    this.appendSeparator(element);
+    this.appendToken(element, parents.item(parents.length - 1));
+  }
+
+  private appendSeparator(parent: HTMLElement) {
+    parent.appendChild(this.buildSeparator());
+  }
+
+  private appendEllipsis(parent: HTMLElement, parentsXml: string, startAt: number, partsCount: number) {
+    parent.appendChild(
+      this.buildEllipsis(() => {
+        this.renderParentsXml(parent, parentsXml, startAt, partsCount);
+        (this.element.firstChild as HTMLElement).focus();
+      })
+    );
+  }
+
+  private appendToken(parent: HTMLElement, part: Element) {
+    parent.appendChild(this.makeLinkAccessible(this.buildHtmlToken(part.getAttribute('name'), part.getAttribute('uri'))));
   }
 
   private renderShortenedUri() {
@@ -163,6 +187,23 @@ export class PrintableUri extends Component {
       },
       link
     ).el;
+  }
+
+  private buildEllipsis(action: (e: Event) => void) {
+    const element = $$(
+      'span',
+      {
+        className: 'coveo-printable-uri-ellipsis',
+        role: 'listitem',
+        ariaLabel: l('CollapsedUriParts')
+      },
+      '...'
+    ).el;
+    new AccessibleButton()
+      .withElement(element)
+      .withSelectAction(action)
+      .build();
+    return element;
   }
 
   private buildElementForResultLink(title: string): HTMLElement {
