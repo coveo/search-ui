@@ -1,6 +1,6 @@
 import * as Mock from '../MockEnvironment';
 import { FacetRange, IFacetRangeOptions } from '../../src/ui/FacetRange/FacetRange';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { Simulate } from '../Simulate';
 
 export function FacetRangeTest() {
