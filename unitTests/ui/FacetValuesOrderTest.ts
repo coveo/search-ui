@@ -12,7 +12,7 @@ export function FacetValuesOrderTest() {
     let mockFacet: Facet;
     let mockFacetSort: FacetSort;
 
-    let expectEqualOrder = (ordered: FacetValue[], expecteds: string[]) => {
+    const expectEqualOrder = (ordered: FacetValue[], expecteds: string[]) => {
       _.each(expecteds, (expected, i) => {
         expect(ordered[i]).toEqual(jasmine.objectContaining({ value: expected }));
       });
@@ -39,11 +39,12 @@ export function FacetValuesOrderTest() {
       mockFacetSort.customSortDirection = 'ascending';
 
       mockFacet.options.customSort = ['c', 'a', 'b'];
-      let reordered = test.reorderValues([FacetValue.create('a'), FacetValue.create('b'), FacetValue.create('c')]);
+      const original = ['a', 'b', 'c'].map(FacetValue.create);
+      let reordered = test.reorderValues(original);
       expectEqualOrder(reordered, ['c', 'a', 'b']);
 
       mockFacetSort.customSortDirection = 'descending';
-      reordered = test.reorderValues([FacetValue.create('a'), FacetValue.create('b'), FacetValue.create('c')]);
+      reordered = test.reorderValues(original);
       expectEqualOrder(reordered, ['b', 'a', 'c']);
     });
 
@@ -53,15 +54,16 @@ export function FacetValuesOrderTest() {
         a: 'z',
         c: 'w'
       };
-      mockFacet.getValueCaption = (facetValue: any) => {
+      mockFacet.getValueCaption = (facetValue: FacetValue) => {
         return mockFacet.options.valueCaption[facetValue.value] || facetValue.value;
       };
 
-      let reordered = test.reorderValues([FacetValue.create('a'), FacetValue.create('b'), FacetValue.create('c')]);
+      const original = ['a', 'b', 'c'].map(FacetValue.create);
+      let reordered = test.reorderValues(original);
       expectEqualOrder(reordered, ['b', 'c', 'a']);
 
       mockFacetSort.activeSort.name = 'alphadescending';
-      reordered = test.reorderValues([FacetValue.create('a'), FacetValue.create('b'), FacetValue.create('c')]);
+      reordered = test.reorderValues(original);
       expectEqualOrder(reordered, ['a', 'c', 'b']);
     });
 
@@ -74,17 +76,76 @@ export function FacetValuesOrderTest() {
         two: 'z',
         three: 'é'
       };
-      mockFacet.getValueCaption = (facetValue: any) => {
+      mockFacet.getValueCaption = (facetValue: FacetValue) => {
         return mockFacet.options.valueCaption[facetValue.value] || facetValue.value;
       };
 
-      let reordered = test.reorderValues([FacetValue.create('one'), FacetValue.create('two'), FacetValue.create('three')]);
+      const original = ['one', 'two', 'three'].map(FacetValue.create);
+      let reordered = test.reorderValues(original);
       expectEqualOrder(reordered, ['one', 'three', 'two']);
 
       mockFacetSort.activeSort.name = 'alphadescending';
-      reordered = test.reorderValues([FacetValue.create('one'), FacetValue.create('two'), FacetValue.create('three')]);
+      reordered = test.reorderValues(original);
       expectEqualOrder(reordered, ['two', 'three', 'one']);
       String['locale'] = originalLocale;
+    });
+
+    it(`when the activeSort name is 'custom' and the customSort facet option is defined,
+    reorderValuesIfUsingCustomSort changes the order`, () => {
+      mockFacetSort.activeSort.name = 'custom';
+      mockFacetSort.customSortDirection = 'ascending';
+      mockFacet.options.customSort = ['b'];
+
+      const original = ['a', 'b'].map(FacetValue.create);
+      const reordered = test.reorderValuesIfUsingCustomSort(original);
+
+      expectEqualOrder(reordered, ['b', 'a']);
+    });
+
+    it(`when the activeSort name is 'custom' and the customSort facet option is undefined,
+    reorderValuesIfUsingCustomSort does not change the order`, () => {
+      mockFacetSort.activeSort.name = 'custom';
+
+      const original = ['a', 'b'];
+      const values = original.map(FacetValue.create);
+      const reordered = test.reorderValuesIfUsingCustomSort(values);
+
+      expectEqualOrder(reordered, original);
+    });
+
+    it(`when the activeSort name is not 'custom' and the customSort facet option is defined,
+    reorderValuesIfUsingCustomSort does not change the order`, () => {
+      mockFacetSort.activeSort.name = 'occurences';
+      mockFacet.options.customSort = ['b'];
+
+      const original = ['a', 'b'];
+      const values = original.map(FacetValue.create);
+      const reordered = test.reorderValuesIfUsingCustomSort(values);
+
+      expectEqualOrder(reordered, original);
+    });
+
+    it(`when the activeSort name contains 'alpha',
+    reorderValuesIfUsingAlphabeticalSort changes the order`, () => {
+      mockFacetSort.activeSort.name = 'alphaascending';
+      mockFacet.getValueCaption = (fv: FacetValue) => fv.value;
+
+      const original = ['b', 'a'];
+      const values = original.map(FacetValue.create);
+      const reordered = test.reorderValuesIfUsingAlphabeticalSort(values);
+
+      expectEqualOrder(reordered, ['a', 'b']);
+    });
+
+    it(`when the activeSort name does not contain 'alpha',
+    reorderValuesIfUsingAlphabeticalSort does not change the order`, () => {
+      mockFacetSort.activeSort.name = 'ascending';
+
+      const original = ['b', 'a'];
+      const values = original.map(FacetValue.create);
+      const reordered = test.reorderValuesIfUsingAlphabeticalSort(values);
+
+      expectEqualOrder(reordered, original);
     });
   });
 }
