@@ -3,6 +3,12 @@ import { Utils } from '../../utils/Utils';
 import { IGroupByResult } from '../../rest/GroupByResult';
 import { FacetValue } from './FacetValue';
 import * as _ from 'underscore';
+import { FacetValuesOrder } from './FacetValuesOrder';
+
+export interface ISortFacetValuesOptions {
+  facetValuesOrder: FacetValuesOrder;
+  numberOfValues: number;
+}
 
 export class FacetValues {
   private values: FacetValue[];
@@ -189,7 +195,15 @@ export class FacetValues {
     this.values = values;
   }
 
-  sortValuesDependingOnStatus(excludeLastIndex?: number) {
+  sort(options: ISortFacetValuesOptions) {
+    const { facetValuesOrder, numberOfValues } = options;
+
+    this.values = facetValuesOrder.reorderValuesIfUsingAlphabeticalSort(this.values);
+    this.sortValuesDependingOnStatus(numberOfValues);
+    this.values = facetValuesOrder.reorderValuesIfUsingCustomSort(this.values);
+  }
+
+  sortValuesDependingOnStatus(excludeLastIndex: number) {
     this.values = _.sortBy(this.values, (value: FacetValue) => {
       if (value.selected) {
         return 1;

@@ -58,7 +58,7 @@ import { FacetSortCriterion } from './FacetSortCriterion';
 import { FacetUtils } from './FacetUtils';
 import { FacetValueElement } from './FacetValueElement';
 import { FacetValue } from './FacetValue';
-import { FacetValues } from './FacetValues';
+import { FacetValues, ISortFacetValuesOptions } from './FacetValues';
 import { FacetValuesList } from './FacetValuesList';
 import { FacetValuesOrder } from './FacetValuesOrder';
 import { OmniboxValueElement } from './OmniboxValueElement';
@@ -1786,12 +1786,27 @@ export class Facet extends Component {
     if (this.keepDisplayedValuesNextTime) {
       this.values.updateCountsFromNewValues(facetValues);
     } else {
-      facetValues.importActiveValuesFromOtherList(this.values);
-      facetValues.sortValuesDependingOnStatus(this.numberOfValues);
-      this.values = facetValues;
+      this.values = this.consolidateAndSortNewFacetValues(facetValues);
     }
 
     this.updateNumberOfValues();
+  }
+
+  private consolidateAndSortNewFacetValues(newValues: FacetValues) {
+    newValues.importActiveValuesFromOtherList(this.values);
+    newValues.sort(this.optionsToSortFacetValues);
+    return newValues;
+  }
+
+  private get optionsToSortFacetValues(): ISortFacetValuesOptions {
+    return {
+      facetValuesOrder: this.facetValuesOrder,
+      numberOfValues: this.numberOfValues
+    };
+  }
+
+  private get facetValuesOrder() {
+    return new FacetValuesOrder(this, this.facetSort);
   }
 
   private ensureFacetValueIsInList(facetValue: FacetValue) {
@@ -1944,10 +1959,7 @@ export class Facet extends Component {
       .then((queryResults: IQueryResults) => {
         this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
         const facetValues = new FacetValues(queryResults.groupByResults[0]);
-
-        facetValues.importActiveValuesFromOtherList(this.values);
-        facetValues.sortValuesDependingOnStatus(this.numberOfValues);
-        this.values = facetValues;
+        this.values = this.consolidateAndSortNewFacetValues(facetValues);
 
         this.nbAvailableValues = this.values.size();
 

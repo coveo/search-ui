@@ -7,7 +7,6 @@ import { ValueElement } from './ValueElement';
 import { FacetValue } from './FacetValue';
 import { Utils } from '../../utils/Utils';
 import { FacetUtils } from './FacetUtils';
-import { FacetValuesOrder } from './FacetValuesOrder';
 import * as _ from 'underscore';
 
 export class FacetValuesList {
@@ -119,11 +118,7 @@ export class FacetValuesList {
   }
 
   protected getValuesToBuildWith() {
-    if (this.facet.facetSort) {
-      return new FacetValuesOrder(this.facet, this.facet.facetSort).reorderValues(this.facet.values.getAll());
-    } else {
-      return this.facet.values.getAll();
-    }
+    return this.facet.values.getAll();
   }
 
   private facetValueShouldBeRemoved(facetValue: FacetValue): boolean {
