@@ -1,5 +1,5 @@
 import { Facet } from './Facet';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { StringUtils } from '../../utils/StringUtils';
 import { FacetSort } from './FacetSort';
 import { IIndexFieldValue } from '../../rest/FieldValue';
