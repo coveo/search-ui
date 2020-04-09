@@ -147,7 +147,7 @@ export class PrintableUri extends Component {
     parent.appendChild(
       this.buildEllipsis(() => {
         this.renderParentsXml(parent, parentsXml, startAt, partsCount);
-        (this.element.firstChild as HTMLElement).focus();
+        (this.element.firstChild.firstChild as HTMLElement).focus();
       })
     );
   }
@@ -190,17 +190,23 @@ export class PrintableUri extends Component {
   }
 
   private buildEllipsis(action: (e: Event) => void) {
+    const button = $$(
+      'span',
+      {
+        ariaLabel: l('CollapsedUriParts')
+      },
+      '...'
+    );
     const element = $$(
       'span',
       {
         className: 'coveo-printable-uri-ellipsis',
-        role: 'listitem',
-        ariaLabel: l('CollapsedUriParts')
+        role: 'listitem'
       },
-      '...'
+      button
     ).el;
     new AccessibleButton()
-      .withElement(element)
+      .withElement(button)
       .withSelectAction(action)
       .build();
     return element;
