@@ -4,7 +4,7 @@ import { FacetValueElement, IFacetValueElementKlass } from './FacetValueElement'
 import { Facet } from './Facet';
 import { $$ } from '../../utils/Dom';
 import { ValueElement } from './ValueElement';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { Utils } from '../../utils/Utils';
 import { FacetUtils } from './FacetUtils';
 import { FacetValuesOrder } from './FacetValuesOrder';
