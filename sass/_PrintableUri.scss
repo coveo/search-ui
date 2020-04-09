@@ -26,7 +26,7 @@
     flex: 0 15 auto;
     min-width: 10px;
     @supports (max-width: max-content) {
-      flex: 1 0 0px !important;
+      flex: 1 0 0px;
       max-width: max-content;
     }
     white-space: nowrap;
