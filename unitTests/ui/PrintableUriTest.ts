@@ -93,7 +93,7 @@ export function PrintableUriTest() {
       describe('after clicking on the ellipsis', () => {
         beforeEach(() => {
           const [ellipsis] = getEllipsis();
-          ellipsis.click();
+          (ellipsis.firstChild as HTMLElement).click();
         });
 
         it('should display the next 4 parents and the last parent', () => {
@@ -107,7 +107,7 @@ export function PrintableUriTest() {
         describe('after clicking on the last ellipsis', () => {
           beforeEach(() => {
             const [, ellipsis] = getEllipsis();
-            ellipsis.click();
+            (ellipsis.firstChild as HTMLElement).click();
           });
 
           it('should display the last 5 parents', () => {
