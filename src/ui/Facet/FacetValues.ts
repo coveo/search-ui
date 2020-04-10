@@ -215,8 +215,8 @@ export class FacetValues {
     });
     if (excludeLastIndex != null && excludeLastIndex < this.values.length) {
       var nbExclude = this.getExcluded().length;
-      var excludes = this.values.splice(this.values.length - nbExclude, nbExclude);
-      Array.prototype.splice.apply(this.values, (<any[]>[excludeLastIndex - nbExclude, 0]).concat(excludes));
+      var excludedValues = this.values.splice(this.values.length - nbExclude, nbExclude);
+      Array.prototype.splice.apply(this.values, (<any[]>[excludeLastIndex - nbExclude, 0]).concat(excludedValues));
     }
   }
 }
