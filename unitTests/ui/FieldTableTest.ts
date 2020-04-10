@@ -3,6 +3,7 @@ import { FieldTable } from '../../src/ui/FieldTable/FieldTable';
 import { $$ } from '../../src/utils/Dom';
 import { FakeResults } from '../Fake';
 import { IFieldTableOptions } from '../../src/ui/FieldTable/FieldTable';
+import { l } from '../../src/strings/Strings';
 
 export function FieldTableTest() {
   describe('FieldTable', function() {
@@ -13,6 +14,18 @@ export function FieldTableTest() {
       element = $$('table', { className: 'CoveoFieldTable' }).el;
       element.appendChild($$('tr', { 'data-field': '@author', 'data-caption': 'Author' }).el);
     };
+
+    function findToggleButton() {
+      return $$(test.env.root).find('.coveo-field-table-toggle');
+    }
+
+    function findToggleCaption() {
+      return $$(test.env.root).find('.coveo-field-table-toggle-caption');
+    }
+
+    function findToggleContainer() {
+      return $$(test.env.root).find('.coveo-field-table-toggle-container');
+    }
 
     beforeEach(function() {
       test = Mock.advancedResultComponentSetup<FieldTable>(FieldTable, FakeResults.createFakeResult(), <Mock.AdvancedComponentSetupOptions>{
@@ -42,7 +55,7 @@ export function FieldTableTest() {
         });
 
         it('should not wrap table in a toggle container', function() {
-          expect($$(test.env.element).find('.coveo-field-table-toggle-container')).toBeNull();
+          expect(findToggleContainer()).toBeNull();
         });
 
         it('should be expanded', function() {
@@ -60,16 +73,8 @@ export function FieldTableTest() {
       });
 
       describe('allowMinimization set to true', function() {
-        function toggleContainer() {
-          return $$(test.env.root).find('.coveo-field-table-toggle-container');
-        }
-
-        function toggleCaption() {
-          return $$(test.env.root).find('.coveo-field-table-toggle-caption');
-        }
-
         function setToggleContainerScrollHeight(height: number) {
-          Object.defineProperty(toggleContainer(), 'scrollHeight', { value: height, writable: true });
+          Object.defineProperty(findToggleContainer(), 'scrollHeight', { value: height, writable: true });
         }
 
         beforeEach(function() {
@@ -87,19 +92,15 @@ export function FieldTableTest() {
         });
 
         it('should show a toggle link', function() {
-          expect($$(test.env.root).find('.coveo-field-table-toggle')).not.toBeNull();
+          expect(findToggleButton()).not.toBeNull();
         });
 
         it('shows a toggle caption set to the minimizedTitle', () => {
-          expect(toggleCaption().textContent).toBe(test.cmp.options.minimizedTitle);
+          expect(findToggleCaption().textContent).toBe(test.cmp.options.minimizedTitle);
         });
 
         it('should put the tabindex to 0 on the toggle caption', function() {
-          expect(
-            $$(test.env.root)
-              .find('.coveo-field-table-toggle')
-              .getAttribute('tabindex')
-          ).toBe('0');
+          expect(findToggleButton().getAttribute('tabindex')).toBe('0');
         });
 
         it('should wrap the table in a toggle container', function() {
@@ -118,7 +119,7 @@ export function FieldTableTest() {
               }
             }
           );
-          let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
+          let toggle = findToggleCaption();
           test.cmp.expand();
           expect(toggle.textContent).toBe('foobar2000');
           test.cmp.minimize();
@@ -127,7 +128,7 @@ export function FieldTableTest() {
 
         it('expandedTitle should be the localized version of "Details" by default', function() {
           test.cmp.expand();
-          let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
+          let toggle = findToggleCaption();
           expect(toggle.textContent).toBe('Details'.toLocaleString());
         });
 
@@ -143,7 +144,7 @@ export function FieldTableTest() {
               }
             }
           );
-          let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
+          let toggle = findToggleCaption();
           test.cmp.minimize();
           expect(toggle.textContent).toBe('foobar2000');
           test.cmp.expand();
@@ -152,14 +153,14 @@ export function FieldTableTest() {
 
         it('minimizedTitle should be the localized version of "Details" by default', function() {
           test.cmp.minimize();
-          let toggle = $$(test.env.root).find('.coveo-field-table-toggle-caption');
+          let toggle = findToggleCaption();
           expect(toggle.textContent).toBe('Details'.toLocaleString());
         });
 
         it(`given a toggle container with a zero scrollHeight,
         when calling #expand after the container has a non-zero scrollHeight,
         it sets the height of the container to the new value`, () => {
-          const container = toggleContainer();
+          const container = findToggleContainer();
 
           expect(container.scrollHeight).toBe(0);
 
@@ -167,7 +168,7 @@ export function FieldTableTest() {
           setToggleContainerScrollHeight(newScrollHeight);
           test.cmp.expand();
 
-          expect(toggleContainer().style.height).toBe(`${newScrollHeight}px`);
+          expect(findToggleContainer().style.height).toBe(`${newScrollHeight}px`);
         });
 
         it(`given a toggle container with a non-zero scrollHeight,
@@ -176,7 +177,7 @@ export function FieldTableTest() {
           // When retreiving the scrollHeight on every expand, I saw an animation lag when
           // expanding and minimizing quickly. So we use memoization, and only update the value if it is falsy.
           const scrollHeight1 = 100;
-          const container = toggleContainer();
+          const container = findToggleContainer();
 
           setToggleContainerScrollHeight(scrollHeight1);
           test.cmp.updateToggleHeight();
@@ -188,7 +189,7 @@ export function FieldTableTest() {
           setToggleContainerScrollHeight(scrollHeight2);
           test.cmp.expand();
 
-          expect(toggleContainer().style.height).toBe(`${scrollHeight1}px`);
+          expect(findToggleContainer().style.height).toBe(`${scrollHeight1}px`);
         });
 
         it('minimizedByDefault set to true should initialize the table in a minimized state', function() {
@@ -211,6 +212,26 @@ export function FieldTableTest() {
             FakeResults.createFakeResult()
           );
           expect(test.cmp.isExpanded).toBe(true);
+        });
+
+        it('toggle should set aria-expanded to its expanded state', () => {
+          test.cmp.minimize();
+          test.cmp.toggle();
+          expect(findToggleButton().getAttribute('aria-expanded')).toBe('true');
+          test.cmp.toggle();
+          expect(findToggleButton().getAttribute('aria-expanded')).toBe('false');
+        });
+
+        it('should give the toggleable container a unique id', () => {
+          expect(findToggleContainer().id.match(/[0-9]$/)).not.toBeNull();
+        });
+
+        it('should give the toggle button an aria-controls attribute', () => {
+          expect(findToggleButton().getAttribute('aria-controls')).toEqual(findToggleContainer().id);
+        });
+
+        it('should gibe the toggle button an appropriate label', () => {
+          expect(findToggleButton().getAttribute('aria-label')).toEqual(l('Details'));
         });
       });
     });
