@@ -1,9 +1,18 @@
-import { FacetValues } from '../../src/ui/Facet/FacetValues';
+import { FacetValues, ISortFacetValuesOptions } from '../../src/ui/Facet/FacetValues';
 import { FakeResults } from '../Fake';
 import { FacetValue } from '../../src/ui/Facet/FacetValue';
+import { FacetValuesOrder } from '../../src/ui/Facet/FacetValuesOrder';
+import { mock } from '../MockEnvironment';
 
 export function FacetValuesTest() {
   describe('FacetValues', () => {
+    function buildFacetValuesOrder() {
+      const facetValuesOrder = mock<FacetValuesOrder>(FacetValuesOrder);
+      facetValuesOrder.reorderValuesIfUsingAlphabeticalSort = (values: FacetValue[]) => values;
+      facetValuesOrder.reorderValuesIfUsingCustomSort = (values: FacetValue[]) => values;
+      return facetValuesOrder;
+    }
+
     it('should allow to updateCountsFromNewValues', () => {
       const oldValues = new FacetValues(FakeResults.createFakeGroupByResult('@field', '@token', 10));
       expect(oldValues.get('@token0').occurrences).toEqual(1);
@@ -87,6 +96,62 @@ export function FacetValuesTest() {
 
       list.sortValuesDependingOnStatus(values.length);
       expect(list.getAll()).toEqual([valueB, valueA]);
+    });
+
+    it(`when FacetValuesOrder is configured to sort alphabetically,
+    calling sort returns the values in alphabetical order`, () => {
+      const list = new FacetValues();
+      const valueA = FacetValue.create('a');
+      const valueB = FacetValue.create('b');
+      const values = [valueB, valueA];
+      values.forEach(val => list.add(val));
+
+      const facetValuesOrder = buildFacetValuesOrder();
+      facetValuesOrder.reorderValuesIfUsingAlphabeticalSort = () => values.reverse();
+      const options: ISortFacetValuesOptions = { facetValuesOrder, numberOfValues: values.length };
+
+      list.sort(options);
+
+      expect(list.getAll()).toEqual([valueA, valueB]);
+    });
+
+    it(`when FacetValuesOrder is configured to sort alphabetically, when the first value is selected,
+    calling sort returns the values with the selected first and the rest in alphabetical order`, () => {
+      const list = new FacetValues();
+      const valueA = FacetValue.create('a');
+      const valueB = FacetValue.create('b');
+      const valueC = FacetValue.create('c');
+      valueC.selected = true;
+
+      const values = [valueC, valueB, valueA];
+      values.forEach(val => list.add(val));
+
+      const facetValuesOrder = buildFacetValuesOrder();
+      facetValuesOrder.reorderValuesIfUsingAlphabeticalSort = () => values.reverse();
+      const options: ISortFacetValuesOptions = { facetValuesOrder, numberOfValues: values.length };
+
+      list.sort(options);
+
+      expect(list.getAll()).toEqual([valueC, valueA, valueB]);
+    });
+
+    it(`when FacetValuesOrder is configured to sort custom,
+    calling sort returns the values according to the custom order`, () => {
+      const list = new FacetValues();
+      const valueA = FacetValue.create('a');
+      const valueB = FacetValue.create('b');
+
+      const values = [valueA, valueB];
+      values.forEach(val => list.add(val));
+
+      const customOrder = [valueB, valueA];
+      const facetValuesOrder = buildFacetValuesOrder();
+      facetValuesOrder.reorderValuesIfUsingCustomSort = () => customOrder;
+      const options: ISortFacetValuesOptions = { facetValuesOrder, numberOfValues: values.length };
+
+      list.sort(options);
+
+      expect(list.getAll()).toEqual(customOrder);
     });
   });
 }
