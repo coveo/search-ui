@@ -12,7 +12,7 @@ import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { Icon } from '../Icon/Icon';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IResultLinkOptions } from '../ResultLink/ResultLinkOptions';
-import FieldTableModule = require('../FieldTable/FieldTable');
+import { FieldTable } from '../FieldTable/FieldTable';
 import { l } from '../../strings/Strings';
 
 export interface IThumbnailOptions extends IResultLinkOptions {
@@ -154,9 +154,10 @@ export class Thumbnail extends Component {
   }
 
   private resizeContainingFieldTable() {
-    let closestFieldTableElement = $$(this.element).closest(Component.computeCssClassNameForType('FieldTable'));
+    const className = Component.computeCssClassNameForType('FieldTable');
+    let closestFieldTableElement = $$(this.element).closest(className);
     if (closestFieldTableElement != null) {
-      let fieldTable = <FieldTableModule.FieldTable>get(closestFieldTableElement);
+      let fieldTable = <FieldTable>get(closestFieldTableElement);
       fieldTable.updateToggleHeight();
     }
   }

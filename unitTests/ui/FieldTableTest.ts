@@ -95,6 +95,10 @@ export function FieldTableTest() {
           expect(findToggleButton()).not.toBeNull();
         });
 
+        it('shows a toggle caption set to the minimizedTitle', () => {
+          expect(findToggleCaption().textContent).toBe(test.cmp.options.minimizedTitle);
+        });
+
         it('should put the tabindex to 0 on the toggle caption', function() {
           expect(findToggleButton().getAttribute('tabindex')).toBe('0');
         });
