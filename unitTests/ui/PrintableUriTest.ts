@@ -6,6 +6,7 @@ import { $$ } from '../../src/utils/Dom';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { FakeResults } from '../Fake';
 import { range } from 'underscore';
+import { DeviceUtils } from '../../src/utils/DeviceUtils';
 
 interface IParent {
   name: string;
@@ -116,6 +117,48 @@ export function PrintableUriTest() {
 
           it('should display an ellipsis', () => {
             expect(getEllipsis().length).toEqual(1);
+          });
+        });
+      });
+    });
+
+    describe('on mobile', () => {
+      let originalFunction: () => boolean;
+      beforeEach(() => {
+        originalFunction = DeviceUtils.isMobileDevice;
+        spyOn(DeviceUtils, 'isMobileDevice').and.returnValue(true);
+      });
+
+      afterEach(() => {
+        DeviceUtils.isMobileDevice = originalFunction;
+      });
+
+      describe('with a very long parents field', () => {
+        beforeEach(() => {
+          fakeResult.raw.parents = longParentsXml;
+          test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
+        });
+
+        it('should display the first 2 parents and the last parent', () => {
+          expect(getURIPartsNames()).toEqual([...range(2), longParentsCount - 1].map(index => index.toString()));
+        });
+
+        it('should display an ellipsis', () => {
+          expect(getEllipsis().length).toEqual(1);
+        });
+
+        describe('after clicking on the ellipsis', () => {
+          beforeEach(() => {
+            const [ellipsis] = getEllipsis();
+            (ellipsis.firstChild as HTMLElement).click();
+          });
+
+          it('should display the next 2 parents and the last parent', () => {
+            expect(getURIPartsNames()).toEqual([...range(2, 4), longParentsCount - 1].map(index => index.toString()));
+          });
+
+          it('should display two ellipsis', () => {
+            expect(getEllipsis().length).toEqual(2);
           });
         });
       });

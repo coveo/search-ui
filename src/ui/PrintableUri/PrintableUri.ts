@@ -20,6 +20,12 @@ import { l } from '../../strings/Strings';
 
 export interface IPrintableUriOptions extends IResultLinkOptions {}
 
+interface IPrintableUriRenderOptions {
+  parents: Element[];
+  firstIndexToRender: number;
+  maxNumOfParts: number;
+}
+
 /**
  * The `PrintableUri` component inherits from the [ `ResultLink` ]{@link ResultLink} component and supports all of its options.
  *
@@ -55,7 +61,7 @@ export class PrintableUri extends Component {
     super(element, PrintableUri.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, PrintableUri, options);
     this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink));
-    this.renderUri(this.element, this.result);
+    this.renderUri(this.result);
     this.addAccessibilityAttributes();
   }
 
@@ -86,10 +92,14 @@ export class PrintableUri extends Component {
     _.last(this.links).openLinkAsConfigured(logAnalytics);
   }
 
-  private renderUri(element: HTMLElement, result: IQueryResult) {
+  private renderUri(result: IQueryResult) {
     const parentsXml = Utils.getFieldValue(result, 'parents');
     if (parentsXml) {
-      this.renderParentsXml(element, parentsXml);
+      this.renderParents({
+        parents: this.parseXmlParents(parentsXml),
+        firstIndexToRender: 0,
+        maxNumOfParts: DeviceUtils.isMobileDevice() ? 3 : 5
+      });
     } else if (this.options.titleTemplate) {
       const link = new ResultLink(this.buildElementForResultLink(result.printableUri), this.options, this.bindings, this.result);
       this.links.push(link);
@@ -116,44 +126,78 @@ export class PrintableUri extends Component {
     return link.element;
   }
 
-  private renderParentsXml(element: HTMLElement, parentsXml: string, startAt = 0, partsCount = DeviceUtils.isMobileDevice() ? 3 : 5) {
-    $$(element).empty();
-    const xmlDoc: XMLDocument = Utils.parseXml(parentsXml);
-    const parents = xmlDoc.getElementsByTagName('parent');
-    if (startAt > 0) {
-      this.appendEllipsis(element, parentsXml, Math.max(0, startAt - partsCount + 1), partsCount);
-      this.appendSeparator(element);
+  private parseXmlParents(parentsXml: string): Element[] {
+    const elements = Utils.parseXml(parentsXml).getElementsByTagName('parent');
+    const parents: Element[] = [];
+    for (let i = 0; i < elements.length; i++) {
+      parents.push(elements.item(i));
     }
-    let lastIndex = Math.min(parents.length - 2, startAt + partsCount - 2);
-    for (let i = startAt; i <= lastIndex; i++) {
-      if (i > startAt) {
-        this.appendSeparator(element);
+    return parents;
+  }
+
+  private renderParents(renderOptions: IPrintableUriRenderOptions) {
+    $$(this.element).empty();
+    const lastIndex = renderOptions.parents.length - 1;
+    const lastIndexBeforeLastPart = lastIndex - 1;
+    const maxMiddleParts = renderOptions.maxNumOfParts - 1;
+    const lastMiddlePartIndex = Math.min(lastIndexBeforeLastPart, renderOptions.firstIndexToRender + maxMiddleParts - 1);
+    const partsBetweenMiddlePartsAndLastPart = lastIndexBeforeLastPart - lastMiddlePartIndex;
+
+    this.optionallyRenderFirstEllipsis(renderOptions);
+    this.renderMiddleParts(renderOptions, lastMiddlePartIndex);
+    if (partsBetweenMiddlePartsAndLastPart > 0) {
+      this.renderLastEllipsis({
+        ...renderOptions,
+        firstIndexToRender: Math.min(Math.max(lastMiddlePartIndex + 1, 0), renderOptions.parents.length - renderOptions.maxNumOfParts)
+      });
+    }
+    this.renderLastPart(renderOptions);
+  }
+
+  private optionallyRenderFirstEllipsis(nextRenderOptions: IPrintableUriRenderOptions) {
+    if (nextRenderOptions.firstIndexToRender > 0) {
+      this.appendEllipsis({
+        ...nextRenderOptions,
+        firstIndexToRender: Math.max(0, nextRenderOptions.firstIndexToRender - nextRenderOptions.maxNumOfParts + 1)
+      });
+      this.appendSeparator();
+    }
+  }
+
+  private renderMiddleParts(renderOptions: IPrintableUriRenderOptions, lastIndexToRender: number) {
+    for (let i = renderOptions.firstIndexToRender; i <= lastIndexToRender; i++) {
+      if (i > renderOptions.firstIndexToRender) {
+        this.appendSeparator();
       }
-      this.appendToken(element, parents.item(i));
+      this.appendToken(renderOptions.parents[i]);
     }
-    if (lastIndex !== parents.length - 2) {
-      this.appendSeparator(element);
-      this.appendEllipsis(element, parentsXml, Math.min(Math.max(lastIndex + 1, 0), parents.length - partsCount), partsCount);
-    }
-    this.appendSeparator(element);
-    this.appendToken(element, parents.item(parents.length - 1));
   }
 
-  private appendSeparator(parent: HTMLElement) {
-    parent.appendChild(this.buildSeparator());
+  private renderLastEllipsis(nextRenderOptions: IPrintableUriRenderOptions) {
+    this.appendSeparator();
+    this.appendEllipsis(nextRenderOptions);
   }
 
-  private appendEllipsis(parent: HTMLElement, parentsXml: string, startAt: number, partsCount: number) {
-    parent.appendChild(
+  private renderLastPart(renderOptions: IPrintableUriRenderOptions) {
+    this.appendSeparator();
+    this.appendToken(renderOptions.parents[renderOptions.parents.length - 1]);
+  }
+
+  private appendSeparator() {
+    this.element.appendChild(this.buildSeparator());
+  }
+
+  private appendEllipsis(nextRenderOptions: IPrintableUriRenderOptions) {
+    this.element.appendChild(
       this.buildEllipsis(() => {
-        this.renderParentsXml(parent, parentsXml, startAt, partsCount);
+        this.renderParents(nextRenderOptions);
         (this.element.firstChild.firstChild as HTMLElement).focus();
       })
     );
   }
 
-  private appendToken(parent: HTMLElement, part: Element) {
-    parent.appendChild(this.makeLinkAccessible(this.buildHtmlToken(part.getAttribute('name'), part.getAttribute('uri'))));
+  private appendToken(part: Element) {
+    this.element.appendChild(this.makeLinkAccessible(this.buildHtmlToken(part.getAttribute('name'), part.getAttribute('uri'))));
   }
 
   private renderShortenedUri() {
@@ -190,13 +234,7 @@ export class PrintableUri extends Component {
   }
 
   private buildEllipsis(action: (e: Event) => void) {
-    const button = $$(
-      'span',
-      {
-        ariaLabel: l('CollapsedUriParts')
-      },
-      '...'
-    );
+    const button = $$('button', {}, '...');
     const element = $$(
       'span',
       {
@@ -207,6 +245,7 @@ export class PrintableUri extends Component {
     ).el;
     new AccessibleButton()
       .withElement(button)
+      .withLabel(l('CollapsedUriParts'))
       .withSelectAction(action)
       .build();
     return element;
