@@ -15,6 +15,8 @@ export interface IResponsiveDropdownContent {
 export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   public static DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
 
+  public referenceClassname = ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS;
+
   private coveoRoot: Dom;
   private cssClassName: string;
 
@@ -89,7 +91,7 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   }
 
   private createPopper() {
-    const referenceElement = this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`);
+    const referenceElement = this.coveoRoot.find(`.${this.referenceClassname}`);
     this.popperReference = new PopperJs(referenceElement, this.element.el, {
       placement: 'bottom-end',
       positionFixed: true,

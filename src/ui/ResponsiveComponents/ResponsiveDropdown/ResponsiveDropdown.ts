@@ -143,13 +143,13 @@ export class ResponsiveDropdown {
     let dropdownContentPreviousSibling = this.dropdownContent.element.el.previousSibling;
     let dropdownContentParent = this.dropdownContent.element.el.parentElement;
     this.previousSibling = dropdownContentPreviousSibling ? $$(<HTMLElement>dropdownContentPreviousSibling) : null;
-    this.parent = $$(dropdownContentParent);
+    this.parent = dropdownContentParent ? $$(dropdownContentParent) : null;
   }
 
   private restoreContentPosition() {
     if (this.previousSibling) {
       this.dropdownContent.element.insertAfter(this.previousSibling.el);
-    } else {
+    } else if (this.parent) {
       this.parent.prepend(this.dropdownContent.element.el);
     }
   }
