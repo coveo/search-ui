@@ -26,6 +26,8 @@ import { l } from '../../strings/Strings';
  * </div>
  * ```
  * Each one of the children `Sort` components should have only one sort criteria to prevent the regular toggle behaviour.
+ *
+ * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
  */
 export class SortDropdown extends Component {
   static ID = 'SortDropdown';

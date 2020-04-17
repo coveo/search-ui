@@ -254,6 +254,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * By default, the dependent facet is displayed whenever one or more values are selected in its `dependsOn` facet.
      *
      * @externaldocs [Defining Dependent Facets](https://docs.coveo.com/3210/)
+     *
+     * @availablesince [April 2020 Release (v2.8864)](https://docs.coveo.com/en/3231/)
      */
     dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
       () => {
@@ -274,9 +276,11 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     /**
      * Whether to exclude folded result parents when estimating result counts for facet values.
      *
-     * See also the [`Folding`]{@link folding} and [`FoldingForThread`]{@link FoldingForThread} components.
+     * See also the [`Folding`]{@link Folding} and [`FoldingForThread`]{@link FoldingForThread} components.
      *
      * **Default:** `false` if folded results are requested; `true` otherwise.
+     *
+     * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
      */
     filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' })
   };

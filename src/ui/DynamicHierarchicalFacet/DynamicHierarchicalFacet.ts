@@ -214,6 +214,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * **Default (Search API):** `occurrences`.
      *
      * @examples alphanumeric
+     *
+     * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
      */
     sortCriteria: <HierarchicalFacetSortCriteria>ComponentOptions.buildStringOption({
       postProcessing: value => {
@@ -253,6 +255,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * - Values that do not have the specified base path will not be displayed in the facet.
      *
      * @examples electronics, electronics\,laptops
+     *
+     * @availablesince [April 2020 Release (v2.8864)](https://docs.coveo.com/en/3231/)
      */
     basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
     ...ResponsiveFacetOptions

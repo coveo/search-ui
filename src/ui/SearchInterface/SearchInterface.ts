@@ -481,6 +481,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     /**
      * Specifies whether to restore the last scroll position when navigating back
      * to the search interface.
+     *
+     * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
      */
     enableScrollRestoration: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
