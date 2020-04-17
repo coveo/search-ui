@@ -138,10 +138,10 @@ export class PrintableUri extends Component {
   private renderParents(renderOptions: IPrintableUriRenderOptions) {
     $$(this.element).empty();
     const lastIndex = renderOptions.parents.length - 1;
-    const lastIndexBeforeLastPart = lastIndex - 1;
+    const beforeLastIndex = lastIndex - 1;
     const maxMiddleParts = renderOptions.maxNumOfParts - 1;
-    const lastMiddlePartIndex = Math.min(lastIndexBeforeLastPart, renderOptions.firstIndexToRender + maxMiddleParts - 1);
-    const partsBetweenMiddlePartsAndLastPart = lastIndexBeforeLastPart - lastMiddlePartIndex;
+    const lastMiddlePartIndex = Math.min(beforeLastIndex, renderOptions.firstIndexToRender + maxMiddleParts - 1);
+    const partsBetweenMiddlePartsAndLastPart = beforeLastIndex - lastMiddlePartIndex;
 
     this.optionallyRenderFirstEllipsis(renderOptions);
     this.renderMiddleParts(renderOptions, lastMiddlePartIndex);
