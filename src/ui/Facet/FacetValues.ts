@@ -203,7 +203,7 @@ export class FacetValues {
     this.values = facetValuesOrder.reorderValuesIfUsingCustomSort(this.values);
   }
 
-  sortValuesDependingOnStatus(excludeLastIndex: number) {
+  sortValuesDependingOnStatus(numOfDisplayedValues: number) {
     this.values = _.sortBy(this.values, (value: FacetValue) => {
       if (value.selected) {
         return 1;
@@ -213,10 +213,15 @@ export class FacetValues {
         return 2;
       }
     });
-    if (excludeLastIndex != null && excludeLastIndex < this.values.length) {
+
+    this.ensureExcludedValuesAreDisplayed(numOfDisplayedValues);
+  }
+
+  private ensureExcludedValuesAreDisplayed(numOfDisplayedValues: number) {
+    if (numOfDisplayedValues != null && numOfDisplayedValues < this.values.length) {
       var nbExclude = this.getExcluded().length;
       var excludedValues = this.values.splice(this.values.length - nbExclude, nbExclude);
-      Array.prototype.splice.apply(this.values, (<any[]>[excludeLastIndex - nbExclude, 0]).concat(excludedValues));
+      this.values.splice(numOfDisplayedValues - nbExclude, 0, ...excludedValues);
     }
   }
 }

@@ -98,6 +98,23 @@ export function FacetValuesTest() {
       expect(list.getAll()).toEqual([valueB, valueA]);
     });
 
+    it(`given an excluded value, when the number of displayed values is fewer than the number of available values,
+    when calling sortValuesDependingOnStatus,
+    the excluded value is placed at the bottom of the viewable list`, () => {
+      const list = new FacetValues();
+
+      const valueA = FacetValue.create('a');
+      const valueB = FacetValue.create('b');
+      const valueC = FacetValue.create('c');
+      valueC.excluded = true;
+
+      const values = [valueA, valueB, valueC];
+      values.forEach(val => list.add(val));
+
+      list.sortValuesDependingOnStatus(values.length - 1);
+      expect(list.getAll()).toEqual([valueA, valueC, valueB]);
+    });
+
     it(`when FacetValuesOrder is configured to sort alphabetically,
     calling sort returns the values in alphabetical order`, () => {
       const list = new FacetValues();
