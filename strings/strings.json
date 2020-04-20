@@ -7540,5 +7540,9 @@
   "ThumbnailOf": {
     "en": "Thumbnail of \"{0}\"",
     "fr": "Aperçu de « {0} »"
+  },
+  "CollapsedUriParts": {
+    "en": "Collapsed URI parts",
+    "fr": "Segments d'URI réduits"
   }
 }
