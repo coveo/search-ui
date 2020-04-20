@@ -6,7 +6,7 @@ import { $$ } from '../../src/utils/Dom';
 import { TemplateHelpers } from '../../src/ui/Templates/TemplateHelpers';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { FacetValues } from '../../src/ui/Facet/FacetValues';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { IDateToStringOptions } from '../../src/utils/DateUtils';
 import { DateUtils } from '../../src/utils/DateUtils';
 import * as _ from 'underscore';

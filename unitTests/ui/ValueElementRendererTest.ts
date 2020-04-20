@@ -2,7 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { ValueElementRenderer } from '../../src/ui/Facet/ValueElementRenderer';
 import { IFacetOptions } from '../../src/ui/Facet/Facet';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
 

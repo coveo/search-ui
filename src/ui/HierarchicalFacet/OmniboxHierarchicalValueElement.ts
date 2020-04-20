@@ -2,7 +2,7 @@
 
 import { OmniboxValueElement } from '../Facet/OmniboxValueElement';
 import { HierarchicalFacet } from './HierarchicalFacet';
-import { FacetValue } from '../Facet/FacetValues';
+import { FacetValue } from '../Facet/FacetValue';
 import { IPopulateOmniboxObject } from '../Omnibox/OmniboxInterface';
 import { IValueElementEventsBinding } from '../Facet/ValueElement';
 

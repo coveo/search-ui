@@ -1,7 +1,7 @@
 import { BreadcrumbValueList } from '../../src/ui/Facet/BreadcrumbValuesList';
 import * as Mock from '../MockEnvironment';
 import { Facet } from '../../src/ui/Facet/Facet';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { BreadcrumbValueElement } from '../../src/ui/Facet/BreadcrumbValueElement';
 import * as _ from 'underscore';
 import { $$ } from '../../src/utils/Dom';

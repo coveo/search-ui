@@ -8,7 +8,7 @@ import { $$, Dom } from '../../utils/Dom';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Facet } from './Facet';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { l } from '../../strings/Strings';
 
 export interface IBreadcrumbValueElementKlass {

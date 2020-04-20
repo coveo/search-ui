@@ -1,6 +1,6 @@
 import { Facet, IFacetOptions } from '../../src/ui/Facet/Facet';
 import * as Mock from '../MockEnvironment';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { ValueElement } from '../../src/ui/Facet/ValueElement';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { ValueElementRenderer } from '../../src/ui/Facet/ValueElementRenderer';
