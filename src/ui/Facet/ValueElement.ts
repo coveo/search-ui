@@ -1,6 +1,6 @@
 /// <reference path="Facet.ts" />
 import { Facet } from './Facet';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { IPopulateOmniboxObject } from '../Omnibox/OmniboxInterface';
 import { ValueElementRenderer } from './ValueElementRenderer';
 import { Utils } from '../../utils/Utils';

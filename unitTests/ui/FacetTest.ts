@@ -2,7 +2,7 @@
 import * as Mock from '../MockEnvironment';
 import { Facet, IFacetOptions } from '../../src/ui/Facet/Facet';
 import { $$ } from '../../src/utils/Dom';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { Simulate } from '../Simulate';
 import { FakeResults } from '../Fake';
 import { OmniboxEvents } from '../../src/events/OmniboxEvents';

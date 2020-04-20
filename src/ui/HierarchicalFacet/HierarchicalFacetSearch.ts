@@ -5,7 +5,7 @@ import { HierarchicalFacet, IValueHierarchy } from './HierarchicalFacet';
 import { IFacetSearchValuesListKlass } from '../Facet/FacetSearchValuesList';
 import { FacetSearchParameters } from '../Facet/FacetSearchParameters';
 import { IIndexFieldValue } from '../../rest/FieldValue';
-import { FacetValue } from '../Facet/FacetValues';
+import { FacetValue } from '../Facet/FacetValue';
 import { Utils } from '../../utils/Utils';
 import { ModalBox } from '../../ExternalModulesShim';
 import * as _ from 'underscore';

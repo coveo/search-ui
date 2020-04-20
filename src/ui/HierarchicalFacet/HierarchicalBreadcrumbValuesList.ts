@@ -2,7 +2,7 @@
 
 import { BreadcrumbValueList } from '../Facet/BreadcrumbValuesList';
 import { HierarchicalFacet, IValueHierarchy } from './HierarchicalFacet';
-import { FacetValue } from '../Facet/FacetValues';
+import { FacetValue } from '../Facet/FacetValue';
 import { HierarchicalBreadcrumbValueElement } from './HierarchicalBreadcrumbValueElement';
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';

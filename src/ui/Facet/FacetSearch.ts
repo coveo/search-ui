@@ -10,7 +10,7 @@ import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/Anal
 import { IEndpointError } from '../../rest/EndpointError';
 import { l } from '../../strings/Strings';
 import { Assert } from '../../misc/Assert';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { StringUtils } from '../../utils/StringUtils';
 import { IFacetSearchValuesListKlass } from './FacetSearchValuesList';
 import { FacetValueElement } from './FacetValueElement';
