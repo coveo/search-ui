@@ -258,7 +258,7 @@ export function ResponsiveTabsTest() {
           expect(root.find('.coveo-tab-list-container')).not.toBeNull();
         });
 
-        it('should close the dropdown content when the dowpdown header is clicked again', () => {
+        it('should close the dropdown content when the dropdown header is clicked again', () => {
           $$(root.find('.coveo-dropdown-header')).trigger('click');
           expect(root.find('.coveo-tab-list-container')).toBeNull();
         });

@@ -33,7 +33,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
 
   private documentClickListener: EventListener;
   private dropdownClickListener: EventListener;
-  private ignoreNextClick = false;
+  private ignoreNextDocumentClick = false;
 
   constructor(private coveoRoot: Dom, public ID: string) {
     this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
@@ -235,7 +235,7 @@ export class ResponsiveTabs implements IResponsiveComponent {
       }
 
       if (event.type === 'click') {
-        this.ignoreNextClick = true;
+        this.ignoreNextDocumentClick = true;
       }
     };
     new AccessibleButton()
@@ -257,15 +257,15 @@ export class ResponsiveTabs implements IResponsiveComponent {
   private bindDropdownContentEvents() {
     this.dropdownClickListener = () => {
       if (this.isDropdownOpen()) {
-        this.ignoreNextClick = true;
+        this.ignoreNextDocumentClick = true;
       }
     };
 
     this.documentClickListener = event => {
-      if (!this.ignoreNextClick) {
+      if (!this.ignoreNextDocumentClick) {
         this.closeDropdown();
       }
-      this.ignoreNextClick = false;
+      this.ignoreNextDocumentClick = false;
     };
     $$(this.dropdownHeader).on('click', this.dropdownClickListener);
     $$(this.dropdownContent).on('click', this.dropdownClickListener);
