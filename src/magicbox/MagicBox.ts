@@ -204,7 +204,7 @@ export class MagicBoxInstance {
     const suggestions = await this.suggestionsManager.receiveSuggestions(this.getSuggestions != null ? this.getSuggestions() : []);
     this.addSelectEventHandlers(suggestions);
     this.inputManager.setWordCompletion(this.firstSuggestionText);
-    this.onSuggestions(suggestions);
+    this.onSuggestions && this.onSuggestions(suggestions);
   }
 
   private shouldMoveInSuggestions(key: KEYBOARD) {
@@ -244,7 +244,7 @@ export class MagicBoxInstance {
   public async clearSuggestion() {
     this.inputManager.setWordCompletion(null);
     this.suggestionsManager.clearSuggestions();
-    this.onSuggestions([]);
+    this.onSuggestions && this.onSuggestions([]);
   }
 
   private focusOnSuggestion(suggestion: Suggestion) {
