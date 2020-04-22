@@ -6091,8 +6091,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.8864.7',
-    product: '2.8864.7',
+    lib: '2.8959.0-beta',
+    product: '2.8959.0-beta',
     supportedApiVersion: 2
 };
 
@@ -9277,6 +9277,7 @@ var dict = {
     "NoRatings": "No ratings",
     "Pagination": "Pagination",
     "ThumbnailOf": "Thumbnail of \"{0}\"",
+    "CollapsedUriParts": "Collapsed URI parts",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
