@@ -1,7 +1,7 @@
 import * as Mock from '../MockEnvironment';
 import { NoopComponent } from '../../src/ui/NoopComponent/NoopComponent';
 import { registerCustomMatcher } from '../CustomMatchers';
-import { $$ } from '../../src/utils/Dom';
+import { $$, Dom } from '../../src/utils/Dom';
 import { JQuery as $ } from '../JQueryModule';
 
 export function ComponentEventsTest() {
@@ -63,6 +63,27 @@ export function ComponentEventsTest() {
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(spy).toHaveBeenCalledWith({ bar: 'baz' });
+      });
+
+      describe('when useNativeJavaScriptEvents is set to true', () => {
+        beforeEach(() => {
+          Dom.useNativeJavaScriptEvents = true;
+        });
+        afterEach(() => {
+          Dom.useNativeJavaScriptEvents = null;
+        });
+
+        it('handle native events', () => {
+          test.env.root.click();
+
+          expect(spy).toHaveBeenCalledTimes(1);
+        });
+
+        it('handle jQuery events', () => {
+          $(test.env.root).click();
+
+          expect(spy).toHaveBeenCalled();
+        });
       });
     });
 
