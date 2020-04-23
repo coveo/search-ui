@@ -1,6 +1,10 @@
 import { Component } from '../ui/Base/Component';
 import { $$, Dom } from './Dom';
 
+export interface IComponentsTypesSearchInterface {
+  getComponents: (type: string) => Component[];
+}
+
 export class ComponentsTypes {
   public static get allFacetsType() {
     return [
@@ -31,5 +35,12 @@ export class ComponentsTypes {
 
   public static getAllFacetsInstance(root: HTMLElement | Dom) {
     return ComponentsTypes.getAllFacetsElements(root).map(element => Component.get(element) as Component);
+  }
+
+  public static getAllFacetsFromSearchInterface(searchInterface: IComponentsTypesSearchInterface) {
+    return ComponentsTypes.allFacetsType.reduce(
+      (facets: Component[], facetType: string) => facets.concat(searchInterface.getComponents(facetType)),
+      []
+    );
   }
 }
