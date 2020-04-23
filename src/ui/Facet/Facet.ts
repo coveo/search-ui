@@ -2000,6 +2000,10 @@ export class Facet extends Component {
   }
 
   protected updateNumberOfValues() {
+    if (this.keepDisplayedValuesNextTime) {
+      return;
+    }
+
     if (this.currentPage <= 0) {
       // We're on the first page, let's reset the number of values to a minimum.
       this.currentPage = 0;
