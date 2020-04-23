@@ -27,6 +27,7 @@ export const MagicBoxClearTest = () => {
     beforeEach(() => {
       elem = $$('div').el;
       magicBox = new MagicBoxInstance(elem, new Grammar('Any', { Any: /.*/ }), {});
+      magicBox.onSuggestions = () => {};
       clear = new MagicBoxClear(magicBox);
       passFocusThrough();
       magicBox.setText('foo');
