@@ -69,6 +69,7 @@ export function ComponentEventsTest() {
         beforeEach(() => {
           Dom.useNativeJavaScriptEvents = true;
         });
+
         afterEach(() => {
           Dom.useNativeJavaScriptEvents = null;
         });
@@ -82,6 +83,11 @@ export function ComponentEventsTest() {
         it('handle jQuery events', () => {
           $(test.env.root).click();
 
+          expect(spy).toHaveBeenCalled();
+        });
+
+        it('allow to trigger event', () => {
+          test.cmp.bind.trigger(test.env.element, 'click');
           expect(spy).toHaveBeenCalled();
         });
       });

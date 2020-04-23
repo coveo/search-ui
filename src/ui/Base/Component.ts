@@ -185,10 +185,10 @@ export class ComponentEvents {
   public trigger(el: Dom, event: string, args?: Object);
   public trigger(arg: any, event: string, args?: Object) {
     this.wrapToCallIfEnabled(() => {
-      if (!this.shouldTreatElementAsJQuery(arg)) {
-        $$(arg).trigger(event, args);
-      } else {
+      if (this.shouldTreatElementAsJQuery(arg)) {
         arg.trigger(event, args);
+      } else {
+        $$(arg).trigger(event, args);
       }
     })(args);
   }
