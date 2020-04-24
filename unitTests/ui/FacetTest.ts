@@ -43,6 +43,15 @@ export function FacetTest() {
       test.env.queryStateModel.registerNewAttribute('f:@field:operator', 'or');
     }
 
+    function simulateQueryWithResults(numberOfValues = 10) {
+      const results = FakeResults.createFakeResults();
+      results.groupByResults = [FakeResults.createFakeGroupByResult('@field', 'foo', numberOfValues)];
+
+      Simulate.query(test.env, {
+        results: results
+      });
+    }
+
     afterEach(() => {
       test = null;
     });
@@ -406,12 +415,7 @@ export function FacetTest() {
         });
         test.cmp.selectValue('foo1');
 
-        var results = FakeResults.createFakeResults();
-        results.groupByResults = [FakeResults.createFakeGroupByResult('@field', 'foo', 10)];
-
-        Simulate.query(test.env, {
-          results: results
-        });
+        simulateQueryWithResults();
 
         expect(test.cmp.getEndpoint().search).not.toHaveBeenCalled();
 
@@ -421,9 +425,7 @@ export function FacetTest() {
         });
         test.cmp.selectValue('foo1');
 
-        Simulate.query(test.env, {
-          results: results
-        });
+        simulateQueryWithResults();
 
         expect(test.cmp.getEndpoint().search).toHaveBeenCalled();
       });
@@ -442,6 +444,24 @@ export function FacetTest() {
             })
           ])
         );
+      });
+
+      it(`when a query is successful and "keepDisplayedValuesNextTime" is false
+      the number of value should update`, () => {
+        test.cmp.numberOfValues = 13;
+        test.cmp.keepDisplayedValuesNextTime = false;
+
+        simulateQueryWithResults(test.cmp.options.numberOfValues);
+        expect(test.cmp.numberOfValues).toBe(test.cmp.options.numberOfValues);
+      });
+
+      it(`when a query is successful and "keepDisplayedValuesNextTime" is true
+      the number of value should not change`, () => {
+        test.cmp.numberOfValues = 13;
+        test.cmp.keepDisplayedValuesNextTime = true;
+
+        simulateQueryWithResults(test.cmp.options.numberOfValues);
+        expect(test.cmp.numberOfValues).toBe(13);
       });
 
       it('pageSize should specify the number of values for the more option', () => {
@@ -559,11 +579,7 @@ export function FacetTest() {
           field: '@field',
           customSort: ['foo3', 'foo1']
         });
-        var results = FakeResults.createFakeResults();
-        results.groupByResults = [FakeResults.createFakeGroupByResult('@field', 'foo', 10)];
-        Simulate.query(test.env, {
-          results: results
-        });
+        simulateQueryWithResults();
         expect(test.cmp.getDisplayedFacetValues()[0].value).toBe('foo3');
         expect(test.cmp.getDisplayedFacetValues()[1].value).toBe('foo1');
         expect(test.cmp.getDisplayedFacetValues()[2].value).toBe('foo0');
@@ -885,11 +901,7 @@ export function FacetTest() {
           field: '@field',
           enableMoreLess: true
         });
-        var results = FakeResults.createFakeResults();
-        results.groupByResults = [FakeResults.createFakeGroupByResult('@field', 'foo', 15)];
-        Simulate.query(test.env, {
-          results: results
-        });
+        simulateQueryWithResults(15);
 
         var more = $$(test.cmp.element).find('.coveo-facet-more');
         var less = $$(test.cmp.element).find('.coveo-facet-less');
