@@ -152,7 +152,7 @@ export class DynamicFacetManager extends Component {
   }
 
   private get allDynamicFacets(): IDynamicManagerCompatibleFacet[] {
-    const allFacetsInComponent = ComponentsTypes.getAllFacetsInstance(this.element);
+    const allFacetsInComponent = ComponentsTypes.getAllFacetInstancesFromElement(this.element);
     return <IDynamicManagerCompatibleFacet[]>allFacetsInComponent.filter(this.isDynamicFacet);
   }
 

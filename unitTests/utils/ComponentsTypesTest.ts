@@ -40,14 +40,14 @@ export function ComponentsTypesTest() {
       });
 
       it('should be able to return all top level facets element', () => {
-        const allFacetsElements = ComponentsTypes.getAllFacetsElements(root);
+        const allFacetsElements = ComponentsTypes.getAllFacetElementsFromElement(root);
 
         expect(allFacetsElements.length).toBe(expectedFacets.length);
         allFacetsElements.forEach(element => expect(element instanceof HTMLDivElement).toBe(true));
       });
 
       it('should be able to return all top level facets instance', () => {
-        const allFacetsInstance = ComponentsTypes.getAllFacetsInstance(root);
+        const allFacetsInstance = ComponentsTypes.getAllFacetInstancesFromElement(root);
 
         expect(allFacetsInstance.length).toBe(expectedFacets.length);
         allFacetsInstance.forEach(facetInstance => expect(facetInstance instanceof Component).toBe(true));
