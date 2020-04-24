@@ -1056,7 +1056,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   private get duplicatesFacets() {
     const duplicate = [];
-    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
+    const facets = ComponentsTypes.getAllFacetsFromSearchInterface(this);
 
     facets.forEach(facet => {
       facets.forEach(cmp => {
