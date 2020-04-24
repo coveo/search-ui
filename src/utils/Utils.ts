@@ -436,6 +436,6 @@ export class Utils {
   }
 
   static resolveAfter<T = void>(ms: number, returns?: T): Promise<T> {
-    return new Promise(resolve => setTimeout(() => (returns ? resolve(returns) : resolve()), ms));
+    return new Promise(resolve => setTimeout(() => (returns !== undefined ? resolve(returns) : resolve()), ms));
   }
 }
