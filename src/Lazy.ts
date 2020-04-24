@@ -311,3 +311,6 @@ lazyCommerceQuery();
 
 import { lazySortDropdown } from './ui/SortDropdown/LazySortDropdown';
 lazySortDropdown();
+
+import { lazyQuestionsAnswering } from './ui/QuestionsAnswering/LazyQuestionsAnswering';
+lazyQuestionsAnswering();

@@ -313,3 +313,6 @@ CommerceQuery.doExport();
 
 import { SortDropdown } from './ui/SortDropdown/SortDropdown';
 SortDropdown.doExport();
+
+import { QuestionsAnswering } from './ui/QuestionsAnswering/QuestionsAnswering';
+QuestionsAnswering.doExport();
