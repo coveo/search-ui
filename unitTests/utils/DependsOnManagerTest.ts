@@ -1,6 +1,8 @@
 import { $$ } from '../Test';
 import { IDependentFacet, DependsOnManager, IDependentFacetCondition, IDependsOnCompatibleFacet } from '../../src/utils/DependsOnManager';
 import { QueryStateModel, Component, QueryEvents, InitializationEvents } from '../../src/Core';
+import { mockSearchInterface } from '../MockEnvironment';
+import { SearchInterface } from '../../src/Eager';
 import { ComponentsTypes } from '../../src/utils/ComponentsTypes';
 
 export interface IDependsOnManagerTestMock {
@@ -11,14 +13,14 @@ export interface IDependsOnManagerTestMock {
 export function DependsOnManagerTest() {
   describe('DependsOnManager', () => {
     let root: HTMLElement;
+    let searchInterface: SearchInterface;
     let queryStateModel: QueryStateModel;
     let parentMock: IDependsOnManagerTestMock;
     let dependentMock: IDependsOnManagerTestMock;
-    const getAllFacetsInstance = ComponentsTypes.getAllFacetsInstance;
 
     function createMock(id: string, dependsOn?: string): IDependsOnManagerTestMock {
       const element = document.createElement('div');
-      const component = new Component(element, 'typeoffacet', { root }) as IDependsOnCompatibleFacet;
+      const component = new Component(element, ComponentsTypes.allFacetsType[0], { root, searchInterface }) as IDependsOnCompatibleFacet;
       component.queryStateModel = queryStateModel;
       component.options = {
         id,
@@ -60,16 +62,11 @@ export function DependsOnManagerTest() {
     }
 
     beforeEach(() => {
+      searchInterface = mockSearchInterface();
       root = document.createElement('div');
       queryStateModel = new QueryStateModel(root);
       parentMock = createMock('@parent');
       dependentMock = createMock('@dependent', '@parent');
-
-      ComponentsTypes.getAllFacetsInstance = () => [parentMock.facet.ref, dependentMock.facet.ref];
-    });
-
-    afterAll(() => {
-      ComponentsTypes.getAllFacetsInstance = getAllFacetsInstance;
     });
 
     it('the dependent facet is hidden at startup', () => {

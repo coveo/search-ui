@@ -20,6 +20,7 @@ export function DynamicFacetManagerTest() {
     let options: IDynamicFacetManagerOptions;
     let facets: DynamicFacet[];
     const getAllFacetsInstance = ComponentsTypes.getAllFacetsInstance;
+    const getAllFacetsFromSearchInterface = ComponentsTypes.getAllFacetsFromSearchInterface;
 
     beforeEach(() => {
       options = {};
@@ -29,6 +30,7 @@ export function DynamicFacetManagerTest() {
 
     afterAll(() => {
       ComponentsTypes.getAllFacetsInstance = getAllFacetsInstance;
+      ComponentsTypes.getAllFacetsFromSearchInterface = getAllFacetsFromSearchInterface;
     });
 
     function initializeFacets() {
@@ -56,6 +58,7 @@ export function DynamicFacetManagerTest() {
       spyOn(test.cmp.logger, 'warn');
 
       ComponentsTypes.getAllFacetsInstance = () => facets as any[];
+      ComponentsTypes.getAllFacetsFromSearchInterface = () => facets as any[];
     }
 
     function triggerAfterComponentsInitialization() {

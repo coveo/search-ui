@@ -995,6 +995,7 @@ export function FacetTest() {
             (builder: Mock.MockEnvironmentBuilder) => {
               builder.withQueryStateModel(test.env.queryStateModel);
               builder.withRoot(test.env.root);
+              builder.withSearchInterface(test.env.searchInterface);
               return builder;
             }
           )

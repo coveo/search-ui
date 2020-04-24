@@ -31,12 +31,13 @@ export class DynamicFacetTestUtils {
     return Mock.advancedComponentSetup<DynamicFacet>(DynamicFacet, <Mock.AdvancedComponentSetupOptions>{
       modifyBuilder: builder => {
         if (!env) {
-          builder = builder.withLiveQueryStateModel();
+          builder.withLiveQueryStateModel();
           return builder;
         }
 
-        builder = builder.withRoot(env.root);
-        builder = builder.withQueryStateModel(env.queryStateModel);
+        builder.withRoot(env.root);
+        builder.withQueryStateModel(env.queryStateModel);
+        builder.withSearchInterface(env.searchInterface);
         return builder;
       },
 
