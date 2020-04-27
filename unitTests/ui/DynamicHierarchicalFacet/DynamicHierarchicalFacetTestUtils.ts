@@ -124,9 +124,10 @@ export class DynamicHierarchicalFacetTestUtils {
           return builder;
         }
 
-        builder.withRoot(env.root);
-        builder.withQueryStateModel(env.queryStateModel);
-        builder.withSearchInterface(env.searchInterface);
+        builder
+          .withRoot(env.root)
+          .withQueryStateModel(env.queryStateModel)
+          .withSearchInterface(env.searchInterface);
         return builder;
       },
 

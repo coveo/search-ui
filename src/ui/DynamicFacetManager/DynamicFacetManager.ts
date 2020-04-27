@@ -33,7 +33,6 @@ export interface IDynamicManagerCompatibleFacet extends Component, IAutoLayoutAd
   dynamicFacetManager: DynamicFacetManager;
   hasActiveValues: boolean;
   isDynamicFacet: boolean;
-  isCollapsed: boolean;
 
   handleQueryResults(results: IQueryResults): void;
   putStateIntoQueryBuilder(queryBuilder: QueryBuilder): void;
