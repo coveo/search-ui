@@ -538,7 +538,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
-    this.facetValueStateHandler = new FacetValueStateHandler(this.element);
+    this.facetValueStateHandler = new FacetValueStateHandler(this);
     new SentryLogger(this.queryController);
 
     const missingTermManagerArgs: IMissingTermManagerArgs = {
@@ -1056,7 +1056,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   private get duplicatesFacets() {
     const duplicate = [];
-    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
+    const facets = ComponentsTypes.getAllFacetsFromSearchInterface(this);
 
     facets.forEach(facet => {
       facets.forEach(cmp => {
