@@ -78,7 +78,7 @@ export class DependsOnManager {
   }
 
   private get allFacetsInInterface() {
-    return ComponentsTypes.getAllFacetsInstance(this.facet.ref.root) as IDependsOnCompatibleFacet[];
+    return ComponentsTypes.getAllFacetsFromSearchInterface(this.facet.ref.searchInterface) as IDependsOnCompatibleFacet[];
   }
 
   private getParentFacet(component: IDependsOnCompatibleFacet) {

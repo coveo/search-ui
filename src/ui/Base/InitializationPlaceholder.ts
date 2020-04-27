@@ -167,7 +167,7 @@ export class InitializationPlaceholder {
     // Render an arbitrary number of placeholder facet.
     // Facets should become usable on the first deferredQuerySuccess
 
-    const facetElements = ComponentsTypes.getAllFacetsElements(this.root);
+    const facetElements = ComponentsTypes.getAllFacetElementsFromElement(this.root);
     if (Utils.isNonEmptyArray(facetElements)) {
       const placeholders: Dom[] = [];
       _.each(facetElements, (facetElement: HTMLElement) => $$(facetElement).addClass(InitializationPlaceholder.INITIALIZATION_CLASS));
