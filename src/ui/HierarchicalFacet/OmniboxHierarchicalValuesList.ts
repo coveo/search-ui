@@ -1,7 +1,7 @@
 /// <reference path="../HierarchicalFacet/HierarchicalFacet.ts" />
 
 import { OmniboxValuesList } from '../Facet/OmniboxValuesList';
-import { FacetValue } from '../Facet/FacetValues';
+import { FacetValue } from '../Facet/FacetValue';
 import { HierarchicalFacet } from '../HierarchicalFacet/HierarchicalFacet';
 import { IPopulateOmniboxObject } from '../Omnibox/OmniboxInterface';
 import { OmniboxHierarchicalValueElement } from './OmniboxHierarchicalValueElement';

@@ -1,5 +1,5 @@
 import { Facet } from './Facet';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { StringUtils } from '../../utils/StringUtils';
 import { FacetSort } from './FacetSort';
 import { IIndexFieldValue } from '../../rest/FieldValue';
@@ -12,13 +12,31 @@ export class FacetValuesOrder {
   public reorderValues(facetValues: FacetValue[]): FacetValue[];
   public reorderValues(facetValues: any[]): FacetValue[] | IIndexFieldValue[] {
     if (this.facetSort && this.facetSort.activeSort) {
-      if (this.facetSort.activeSort.name == 'custom' && this.facet.options.customSort != undefined) {
+      if (this.usingCustomSort) {
         return this.reorderValuesWithCustomOrder(facetValues);
-      } else if (this.facetSort.activeSort.name.indexOf('alpha') != -1) {
+      }
+
+      if (this.usingAlphabeticalSort) {
         return this.reorderValuesWithCustomCaption(facetValues);
       }
     }
     return facetValues;
+  }
+
+  public reorderValuesIfUsingCustomSort(values: FacetValue[]) {
+    return this.usingCustomSort ? this.reorderValuesWithCustomOrder(values) : values;
+  }
+
+  public reorderValuesIfUsingAlphabeticalSort(values: FacetValue[]) {
+    return this.usingAlphabeticalSort ? this.reorderValuesWithCustomCaption(values) : values;
+  }
+
+  private get usingCustomSort() {
+    return this.facetSort.activeSort.name == 'custom' && this.facet.options.customSort != undefined;
+  }
+
+  private get usingAlphabeticalSort() {
+    return this.facetSort.activeSort.name.indexOf('alpha') != -1;
   }
 
   private reorderValuesWithCustomOrder(facetValues: FacetValue[]) {

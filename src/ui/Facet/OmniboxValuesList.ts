@@ -6,7 +6,7 @@ import { IAnalyticsActionCause, IAnalyticsOmniboxFacetMeta } from '../Analytics/
 import { IPopulateOmniboxObject } from '../Omnibox/OmniboxInterface';
 import { Facet } from './Facet';
 import { FacetUtils } from './FacetUtils';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { IOmniboxValueElementKlass } from './OmniboxValueElement';
 import { ValueElement } from './ValueElement';
 

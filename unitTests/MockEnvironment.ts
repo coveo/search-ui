@@ -91,6 +91,11 @@ export class MockEnvironmentBuilder {
     return this;
   }
 
+  public withSearchInterface(searchInterface: SearchInterface) {
+    this.searchInterface = searchInterface ? searchInterface : this.searchInterface;
+    return this;
+  }
+
   public build(): IMockEnvironment {
     if (this.built) {
       return this.getBindings();
@@ -232,8 +237,18 @@ export function mockSearchInterface(): SearchInterface {
   m.getBindings = () => {
     return new MockEnvironmentBuilder().build() as any;
   };
+  mockComponentRegistration(m);
   m.ariaLive = mockAriaLive();
   return m;
+}
+
+function mockComponentRegistration(searchInterface: SearchInterface) {
+  const attachedComponents: { [type: string]: BaseComponent[] } = {};
+
+  (searchInterface.attachComponent as jasmine.Spy).and.callFake((type: string, component: BaseComponent) => {
+    attachedComponents[type] = attachedComponents[type] ? [...attachedComponents[type], component] : [component];
+  });
+  (searchInterface.getComponents as jasmine.Spy).and.callFake((type: string) => attachedComponents[type] || []);
 }
 
 function mockAriaLive(): IAriaLive {

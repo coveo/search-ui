@@ -5,7 +5,7 @@ import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { IBreadcrumbValueElementKlass } from './BreadcrumbValueElement';
 import { Facet } from './Facet';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 
 export class BreadcrumbValueList {
   private expanded: FacetValue[];

@@ -481,6 +481,8 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     /**
      * Specifies whether to restore the last scroll position when navigating back
      * to the search interface.
+     *
+     * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
      */
     enableScrollRestoration: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
@@ -536,7 +538,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
-    this.facetValueStateHandler = new FacetValueStateHandler(this.element);
+    this.facetValueStateHandler = new FacetValueStateHandler(this);
     new SentryLogger(this.queryController);
 
     const missingTermManagerArgs: IMissingTermManagerArgs = {
@@ -1054,7 +1056,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   private get duplicatesFacets() {
     const duplicate = [];
-    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
+    const facets = ComponentsTypes.getAllFacetsFromSearchInterface(this);
 
     facets.forEach(facet => {
       facets.forEach(cmp => {

@@ -1,5 +1,5 @@
 import { Facet } from './Facet';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
