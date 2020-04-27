@@ -24,7 +24,7 @@ export class ComponentsTypes {
     return ComponentsTypes.allFacetsType.map(type => `Coveo${type}`);
   }
 
-  public static getAllFacetsElements(root: HTMLElement | Dom) {
+  public static getAllFacetElementsFromElement(root: HTMLElement | Dom) {
     const selectors = ComponentsTypes.allFacetsClassname.map(className => `.${className}`).join(', ');
     const hasNoFacetChild = (element: HTMLElement) => !$$(element).findAll(selectors).length;
 
@@ -33,8 +33,8 @@ export class ComponentsTypes {
       .filter(hasNoFacetChild);
   }
 
-  public static getAllFacetsInstance(root: HTMLElement | Dom) {
-    return ComponentsTypes.getAllFacetsElements(root).map(element => Component.get(element) as Component);
+  public static getAllFacetInstancesFromElement(root: HTMLElement | Dom) {
+    return ComponentsTypes.getAllFacetElementsFromElement(root).map(element => Component.get(element) as Component);
   }
 
   public static getAllFacetsFromSearchInterface(searchInterface: IComponentsTypesSearchInterface) {
