@@ -35,9 +35,13 @@ export class CategoryFacetSearch implements IFacetSearch {
     return CategoryFacet.ID;
   }
 
-  public setExpandedFacetSearchAccessibilityAttributes(searchResultsElements: HTMLElement) {}
+  public setExpandedFacetSearchAccessibilityAttributes(searchResultsElements: HTMLElement) {
+    this.container.setAttribute('aria-expanded', 'true');
+  }
 
-  public setCollapsedFacetSearchAccessibilityAttributes() {}
+  public setCollapsedFacetSearchAccessibilityAttributes() {
+    this.container.setAttribute('aria-expanded', 'false');
+  }
 
   public build() {
     this.container = $$('div', {

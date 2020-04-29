@@ -194,6 +194,27 @@ export function CategoryFacetSearchTest() {
       });
     });
 
+    describe('when expanding', () => {
+      beforeEach(done => {
+        categoryFacetSearch.displayNewValues();
+        setTimeout(done);
+      });
+
+      it('sets aria-expanded to true', () => {
+        expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('true');
+      });
+
+      it('sets aria-expanded to false after collapsing', done => {
+        searchWithNoValues();
+        categoryFacetSearch.displayNewValues();
+
+        setTimeout(() => {
+          expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('false');
+          done();
+        });
+      });
+    });
+
     describe('when selecting with the keyboard (using ENTER)', () => {
       let keyboardEvent: KeyboardEvent;
 
