@@ -57,7 +57,7 @@ export class AccessibleModal {
 
   constructor(
     private className: string,
-    private ownerBody: HTMLBodyElement,
+    private ownerElement: HTMLElement,
     private modalboxModule: Coveo.ModalBox.ModalBox = ModalBoxModule,
     options: Partial<IAccessibleModalOptions> = {}
   ) {
@@ -99,7 +99,7 @@ export class AccessibleModal {
         this.onModalClose();
         return parameters.validation();
       },
-      body: this.ownerBody,
+      body: this.ownerElement,
       sizeMod: this.options.sizeMod,
       overlayClose: this.options.overlayClose
     });

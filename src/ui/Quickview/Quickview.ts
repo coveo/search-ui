@@ -293,7 +293,7 @@ export class Quickview extends Component {
       });
     }
 
-    this.modalbox = new AccessibleModal('coveo-quick-view', element.ownerDocument.body as HTMLBodyElement, ModalBox);
+    this.modalbox = new AccessibleModal('coveo-quick-view', this.searchInterface.element, ModalBox);
   }
 
   private buildContent() {
