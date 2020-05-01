@@ -10,16 +10,15 @@ import { ResponsiveComponents } from './ResponsiveComponents';
 import { IResponsiveComponent, IResponsiveComponentOptions, ResponsiveComponentsManager } from './ResponsiveComponentsManager';
 import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
-import { ResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
+import { IResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
 import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdownHeader';
 import { each, debounce } from 'underscore';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { ResponsiveDropdownModalContent } from './ResponsiveDropdown/ResponsiveDropdownModalContent';
 
 export class ResponsiveFacetColumn implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
 
-  private static DROPDOWN_MIN_WIDTH: number = 280;
-  private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
 
   private searchInterface: SearchInterface;
@@ -127,22 +126,19 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
     let dropdown = responsiveDropdown ? responsiveDropdown : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
+    dropdown.disablePopupBackground();
     return dropdown;
   }
 
-  private buildDropdownContent(): ResponsiveDropdownContent {
+  private buildDropdownContent(): IResponsiveDropdownContent {
     let dropdownContentElement = $$(this.coveoRoot.find('.coveo-facet-column'));
     let filterByContainer = $$('div', { className: 'coveo-facet-header-filter-by-container', style: 'display: none' });
     let filterBy = $$('div', { className: 'coveo-facet-header-filter-by' });
     filterBy.text(l('Filter by:'));
     filterByContainer.append(filterBy.el);
     dropdownContentElement.prepend(filterByContainer.el);
-    let dropdownContent = new ResponsiveDropdownContent(
-      'facet',
-      dropdownContentElement,
-      this.coveoRoot,
-      ResponsiveFacetColumn.DROPDOWN_MIN_WIDTH,
-      ResponsiveFacetColumn.DROPDOWN_WIDTH_RATIO
+    let dropdownContent = new ResponsiveDropdownModalContent('facet', dropdownContentElement, l('CloseFiltersDropdown'), () =>
+      this.dropdown.close()
     );
     return dropdownContent;
   }

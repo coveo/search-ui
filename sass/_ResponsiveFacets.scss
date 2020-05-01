@@ -1,5 +1,12 @@
 @import 'bourbon/bourbon';
 @import 'Variables';
+
+body.coveo-block-scrolling {
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
 .CoveoSearchInterface.coveo-small-facets {
   .coveo-facet-dropdown-content {
     z-index: 20;
@@ -19,39 +26,85 @@
     }
   }
 
-  .coveo-facet-column.coveo-facet-dropdown-content {
-    overflow-y: scroll;
-    max-height: 600px;
-    clear: both;
-    white-space: nowrap;
-    padding: 0;
-    min-width: 280px;
-    width: 35%;
-    z-index: 20;
-    box-shadow: 0 7px 15px rgba(0, 0, 0, 0.25);
-    border-radius: 0 0 0 2px;
-    #{$allFacetsType} {
-      margin: 0;
-      border: 0;
-      border-radius: 0;
-      .coveo-facet-header {
-        border: 0;
-        border-radius: 0;
-        border-top: $default-border;
-        white-space: initial;
+  .coveo-facet-column {
+    &.coveo-facet-dropdown-modal-content {
+      $padding: 20px;
+
+      z-index: 20;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      overflow-y: scroll;
+      padding: $padding;
+
+      .coveo-facet-modal-close-button {
+        $close-button-size: 32px;
+
+        width: $close-button-size;
+        height: $close-button-size;
+        border-radius: 50%;
+        background-color: $coveo-blue;
+        font-weight: bold;
+        font-size: small;
+        color: white;
+        margin-left: auto;
+        margin-bottom: $padding;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.8;
+        }
+
+        &:focus {
+          opacity: 0.5;
+        }
       }
     }
-    #{$allDynamicFacetsType} {
-      margin: 0;
 
-      .coveo-dynamic-facet-header,
-      .coveo-dynamic-facet-values,
-      .coveo-dynamic-hierarchical-facet-values {
-        padding: 5px;
+    &.coveo-hidden {
+      display: none;
+    }
+
+    &.coveo-facet-dropdown-content {
+      overflow-y: scroll;
+      max-height: 600px;
+      clear: both;
+      white-space: nowrap;
+      padding: 0;
+      min-width: 280px;
+      width: 35%;
+      z-index: 20;
+      box-shadow: 0 7px 15px rgba(0, 0, 0, 0.25);
+      border-radius: 0 0 0 2px;
+      #{$allFacetsType} {
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        .coveo-facet-header {
+          border: 0;
+          border-radius: 0;
+          border-top: $default-border;
+          white-space: initial;
+        }
       }
+      #{$allDynamicFacetsType} {
+        margin: 0;
 
-      .coveo-dynamic-facet-search {
-        margin: 10px 5px 0;
+        .coveo-dynamic-facet-header,
+        .coveo-dynamic-facet-values,
+        .coveo-dynamic-hierarchical-facet-values {
+          padding: 5px;
+        }
+
+        .coveo-dynamic-facet-search {
+          margin: 10px 5px 0;
+        }
       }
     }
   }
