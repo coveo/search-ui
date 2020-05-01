@@ -7,7 +7,7 @@ import { IQueryCorrection } from './QueryCorrection';
 import { ITrigger } from './Trigger';
 import { ICategoryFacetResult } from './CategoryFacetResult';
 import { IFacetResponse } from './Facet/FacetResponse';
-import { IQueryQuestionAnswer } from './QueryAnswers';
+import { IQueryQuestionAnswer } from './QueryQuestionAnswer';
 
 /**
  * Describe a set a results returned by the Search API

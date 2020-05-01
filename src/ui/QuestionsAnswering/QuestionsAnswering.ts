@@ -3,7 +3,7 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { QueryEvents, Initialization, $$ } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { IQueryQuestionAnswer } from '../../rest/QueryAnswers';
+import { IQueryQuestionAnswer } from '../../rest/QueryQuestionAnswer';
 
 export interface IQuestionsAnsweringOptions {}
 
