@@ -54,7 +54,7 @@ export function FieldValueTest() {
     function initializeFacet<T extends Facet | DynamicFacet>(type: { new (...args: any[]): T; ID: string }, options: T['options']) {
       const newFacet = Mock.mockComponent<T>(type);
 
-      newFacet.constructor['ID'] = 'Facet';
+      newFacet.constructor['ID'] = type.ID;
 
       newFacet.values = Mock.mock<FacetValues>(FacetValues);
       newFacet.values.get = () => {
