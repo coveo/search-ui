@@ -1,7 +1,6 @@
 import { contains, each, escape, extend, filter, find, isArray, isObject, isString, keys, map, omit } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
-import { QueryStateModel } from '../../models/QueryStateModel';
 import { IQueryResult } from '../../rest/QueryResult';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
@@ -41,6 +40,8 @@ export interface IAnalyticsFieldValueMeta {
   facetValue?: string;
   facetTitle?: string;
 }
+
+type CompatibleFacet = Facet | DynamicFacet;
 
 function showOnlyWithHelper<T>(helpers: string[], options?: T): T {
   if (options == null) {
@@ -412,34 +413,20 @@ export class FieldValue extends Component {
     this.bindDynamicFacets(element, originalFacetValue, renderedFacetValue);
   }
 
+  private getFacets<T extends CompatibleFacet>(type: { new (...args: any[]): T; ID: string }) {
+    const facets = this.searchInterface.getComponents<T>(type.ID).filter(facet => !facet.disabled);
+    const facetsWithMatchingId = facets.filter(facet => facet.options.id === this.options.facet);
+    if (facetsWithMatchingId.length) {
+      return facetsWithMatchingId;
+    }
+    return facets.filter(facet => facet.options.field === this.options.field);
+  }
+
   private bindFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
-    const facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
-    const facets = filter<Facet>(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
-      // Here, we need to check if a potential facet component (as returned by the component state model) is a "standard" facet.
-      // It's also possible that the FacetRange and FacetSlider constructor are not available (lazy loading mode)
-      // For that reason we also need to check that the constructor event exist before calling the instanceof operator or an exception would explode (cannot use instanceof "undefined")
-      let componentIsAStandardFacet = true;
-      const isDynamicFacet = possibleFacetComponent.type.indexOf('Dynamic') !== -1;
-      const facetRangeConstructorExists = Component.getComponentRef('FacetRange');
-      const facetSliderConstructorExists = Component.getComponentRef('FacetSlider');
-
-      if (possibleFacetComponent.disabled || isDynamicFacet) {
-        return false;
-      }
-
-      if (componentIsAStandardFacet && facetRangeConstructorExists) {
-        componentIsAStandardFacet = !(possibleFacetComponent instanceof facetRangeConstructorExists);
-      }
-
-      if (componentIsAStandardFacet && facetSliderConstructorExists) {
-        componentIsAStandardFacet = !(possibleFacetComponent instanceof facetSliderConstructorExists);
-      }
-
-      return componentIsAStandardFacet;
-    });
+    const facets = this.getFacets(Facet);
 
     if (facets.length) {
-      const isValueSelected = !!find<Facet>(facets, facet => {
+      const isValueSelected = !!find(facets, facet => {
         const facetValue = facet.values.get(originalFacetValue);
         return facetValue && facetValue.selected;
       });
@@ -449,19 +436,11 @@ export class FieldValue extends Component {
     }
   }
 
-  private getDynamicFacets() {
-    const dynamicFacetAttributeName = QueryStateModel.getFacetId(this.options.facet);
-    return filter<DynamicFacet>(
-      this.componentStateModel.get(dynamicFacetAttributeName),
-      (component: Component) => component.type === DynamicFacet.ID && !component.disabled
-    );
-  }
-
   private bindDynamicFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
-    const dynamicFacets = this.getDynamicFacets();
+    const dynamicFacets = this.getFacets(DynamicFacet);
 
     if (dynamicFacets.length) {
-      const isValueSelected = !!find<DynamicFacet>(dynamicFacets, dynamicFacet => dynamicFacet.values.hasSelectedValue(originalFacetValue));
+      const isValueSelected = !!find(dynamicFacets, dynamicFacet => dynamicFacet.values.hasSelectedValue(originalFacetValue));
 
       const selectAction = () => this.handleDynamicFacetSelection(isValueSelected, dynamicFacets, originalFacetValue);
       this.buildClickableElement(element, isValueSelected, renderedFacetValue, selectAction);
