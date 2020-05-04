@@ -5,21 +5,21 @@ import { QueryEvents, Initialization, $$ } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IQueryQuestionAnswer } from '../../rest/QueryQuestionAnswer';
 
-export interface IQuestionsAnsweringOptions {}
+export interface ISmartSnippetOptions {}
 
-export class QuestionsAnswering extends Component {
-  static ID = 'QuestionsAnswering';
+export class SmartSnippet extends Component {
+  static ID = 'SmartSnippet';
 
-  static options: IQuestionsAnsweringOptions = {};
+  static options: ISmartSnippetOptions = {};
 
   static doExport = () => {
     exportGlobally({
-      QuestionsAnswering: QuestionsAnswering
+      SmartSnippet
     });
   };
 
-  constructor(public element: HTMLElement, public options?: IQuestionsAnsweringOptions, bindings?: IComponentBindings) {
-    super(element, QuestionsAnswering.ID, bindings);
+  constructor(public element: HTMLElement, public options?: ISmartSnippetOptions, bindings?: IComponentBindings) {
+    super(element, SmartSnippet.ID, bindings);
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
@@ -36,4 +36,4 @@ export class QuestionsAnswering extends Component {
     this.element.innerHTML = questionAnswer.answerSnippet;
   }
 }
-Initialization.registerAutoCreateComponent(QuestionsAnswering);
+Initialization.registerAutoCreateComponent(SmartSnippet);
