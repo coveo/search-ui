@@ -1,4 +1,4 @@
-export interface IQueryQuestionAnswer {
+export interface IQuestionAnswerQuery {
   question: string;
   answerSnippet: string;
   documentId: {
