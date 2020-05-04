@@ -12,6 +12,7 @@ import { DateUtils } from '../../src/utils/DateUtils';
 import * as _ from 'underscore';
 import { l } from '../../src/Core';
 import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
+import { DynamicFacetValues } from '../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValues';
 
 export function FieldValueTest() {
   describe('FieldValue', () => {
@@ -56,12 +57,17 @@ export function FieldValueTest() {
 
       newFacet.constructor['ID'] = type.ID;
 
-      newFacet.values = Mock.mock<FacetValues>(FacetValues);
-      newFacet.values.get = () => {
-        const value = Mock.mock<FacetValue>(FacetValue);
-        value.selected = true;
-        return value;
-      };
+      if (type.ID === 'Facet') {
+        newFacet.values = Mock.mock<FacetValues>(FacetValues);
+        newFacet.values.get = () => {
+          const value = Mock.mock<FacetValue>(FacetValue);
+          value.selected = true;
+          return value;
+        };
+      } else if (type.ID === 'DynamicFacet') {
+        newFacet.values = Mock.mock<DynamicFacetValues>(DynamicFacetValues);
+        newFacet.values.hasSelectedValue = () => false;
+      }
 
       newFacet.options = options;
 
