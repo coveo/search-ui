@@ -221,7 +221,6 @@ export class InputManager {
   }
 
   public focus() {
-    this.hasFocus = true;
     // neet a timeout for IE8-9
     setTimeout(() => {
       this.input.focus();

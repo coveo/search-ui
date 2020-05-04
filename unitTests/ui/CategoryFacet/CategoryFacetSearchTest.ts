@@ -5,9 +5,10 @@ import { CategoryFacetSearch } from '../../../src/ui/CategoryFacet/CategoryFacet
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import _ = require('underscore');
 import { IGroupByValue } from '../../../src/rest/GroupByValue';
-import { $$ } from '../../../src/Core';
+import { $$, l } from '../../../src/Core';
 import { KEYBOARD } from '../../../src/utils/KeyboardUtils';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import * as Globalize from 'globalize';
 
 export function CategoryFacetSearchTest() {
   describe('CategoryFacetSearch', () => {
@@ -191,6 +192,39 @@ export function CategoryFacetSearchTest() {
         $$(getFacetSearchValues()[0]).trigger('click');
         expect(categoryFacetMock.scrollToTop).toHaveBeenCalled();
         done();
+      });
+    });
+
+    describe('when expanding', () => {
+      beforeEach(done => {
+        categoryFacetSearch.displayNewValues();
+        setTimeout(done);
+      });
+
+      it('sets aria-expanded to true', () => {
+        expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('true');
+      });
+
+      it('has accessible labels on each value', () => {
+        getFacetSearchValues().forEach(value => {
+          const count = parseInt(value.getElementsByClassName('coveo-category-facet-search-value-number').item(0).textContent, 10);
+          const formattedCount = Globalize.format(count, 'n0');
+          const path = value.getAttribute('data-path').split('|');
+
+          expect(value.getAttribute('aria-label')).toEqual(
+            l('SelectValueWithResultCount', _.last(path), l('ResultCount', formattedCount, count))
+          );
+        });
+      });
+
+      it('sets aria-expanded to false after collapsing', done => {
+        searchWithNoValues();
+        categoryFacetSearch.displayNewValues();
+
+        setTimeout(() => {
+          expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('false');
+          done();
+        });
       });
     });
 

@@ -19,7 +19,8 @@ export function DynamicFacetManagerTest() {
     let test: Mock.IBasicComponentSetup<DynamicFacetManager>;
     let options: IDynamicFacetManagerOptions;
     let facets: DynamicFacet[];
-    const getAllFacetsInstance = ComponentsTypes.getAllFacetsInstance;
+    const getAllFacetInstancesFromElement = ComponentsTypes.getAllFacetInstancesFromElement;
+    const getAllFacetsFromSearchInterface = ComponentsTypes.getAllFacetsFromSearchInterface;
 
     beforeEach(() => {
       options = {};
@@ -28,7 +29,8 @@ export function DynamicFacetManagerTest() {
     });
 
     afterAll(() => {
-      ComponentsTypes.getAllFacetsInstance = getAllFacetsInstance;
+      ComponentsTypes.getAllFacetInstancesFromElement = getAllFacetInstancesFromElement;
+      ComponentsTypes.getAllFacetsFromSearchInterface = getAllFacetsFromSearchInterface;
     });
 
     function initializeFacets() {
@@ -55,7 +57,8 @@ export function DynamicFacetManagerTest() {
       spyOn(test.cmp.logger, 'error');
       spyOn(test.cmp.logger, 'warn');
 
-      ComponentsTypes.getAllFacetsInstance = () => facets as any[];
+      ComponentsTypes.getAllFacetInstancesFromElement = () => facets as any[];
+      ComponentsTypes.getAllFacetsFromSearchInterface = () => facets as any[];
     }
 
     function triggerAfterComponentsInitialization() {
@@ -116,7 +119,7 @@ export function DynamicFacetManagerTest() {
       });
 
       it('should disable the component if it contains no DynamicFacet child', () => {
-        ComponentsTypes.getAllFacetsInstance = () => [];
+        ComponentsTypes.getAllFacetInstancesFromElement = () => [];
         triggerAfterComponentsInitialization();
         expect(test.cmp.disabled).toBe(true);
       });

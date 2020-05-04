@@ -1570,7 +1570,7 @@ export class Facet extends Component {
       return;
     }
 
-    const masterFacetComponent = ComponentsTypes.getAllFacetsInstance(this.root).filter((cmp: Facet) => {
+    const masterFacetComponent = ComponentsTypes.getAllFacetInstancesFromElement(this.root).filter((cmp: Facet) => {
       const idFacet = cmp instanceof Facet;
       return idFacet && cmp.options.id === this.options.dependsOn;
     }) as Facet[];
@@ -2000,6 +2000,10 @@ export class Facet extends Component {
   }
 
   protected updateNumberOfValues() {
+    if (this.keepDisplayedValuesNextTime) {
+      return;
+    }
+
     if (this.currentPage <= 0) {
       // We're on the first page, let's reset the number of values to a minimum.
       this.currentPage = 0;

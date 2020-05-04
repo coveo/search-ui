@@ -211,7 +211,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
 
   private getDropdownHeaderLabel() {
     let dropdownHeaderLabel: string;
-    ComponentsTypes.getAllFacetsInstance(this.coveoRoot.find('.coveo-facet-column')).forEach(facet => {
+    ComponentsTypes.getAllFacetInstancesFromElement(this.coveoRoot.find('.coveo-facet-column')).forEach(facet => {
       const options = facet.options as IResponsiveComponentOptions;
 
       if (!dropdownHeaderLabel && options.dropdownHeaderLabel) {
