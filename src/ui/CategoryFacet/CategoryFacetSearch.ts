@@ -35,9 +35,13 @@ export class CategoryFacetSearch implements IFacetSearch {
     return CategoryFacet.ID;
   }
 
-  public setExpandedFacetSearchAccessibilityAttributes(searchResultsElements: HTMLElement) {}
+  public setExpandedFacetSearchAccessibilityAttributes(searchResultsElements: HTMLElement) {
+    this.container.setAttribute('aria-expanded', 'true');
+  }
 
-  public setCollapsedFacetSearchAccessibilityAttributes() {}
+  public setCollapsedFacetSearchAccessibilityAttributes() {
+    this.container.setAttribute('aria-expanded', 'false');
+  }
 
   public build() {
     this.container = $$('div', {
@@ -219,7 +223,7 @@ export class CategoryFacetSearch implements IFacetSearch {
     );
     item.el.dataset.path = categoryFacetValue.value;
 
-    const countLabel = l('ResultCount', this.getFormattedCount(categoryFacetValue.numberOfResults));
+    const countLabel = l('ResultCount', this.getFormattedCount(categoryFacetValue.numberOfResults), categoryFacetValue.numberOfResults);
     const label = l('SelectValueWithResultCount', last(path), countLabel);
 
     new AccessibleButton()

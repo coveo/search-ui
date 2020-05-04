@@ -151,12 +151,18 @@ export class AccessibleButton {
       this.bindEvent(
         'keydown',
         KeyboardUtils.keypressAction(KEYBOARD.SPACEBAR, (e: Event) => {
+          if (e.target instanceof HTMLInputElement) {
+            return;
+          }
           e.preventDefault();
         })
       );
       this.bindEvent(
         'keyup',
         KeyboardUtils.keypressAction(KEYBOARD.SPACEBAR, (e: Event) => {
+          if (e.target instanceof HTMLInputElement) {
+            return;
+          }
           this.enterKeyboardAction(e);
         })
       );
