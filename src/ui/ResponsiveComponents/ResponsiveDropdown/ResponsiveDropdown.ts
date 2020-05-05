@@ -25,8 +25,13 @@ export class ResponsiveDropdown {
   private onCloseHandlers: HandlerCall[] = [];
   private popupBackground: Dom;
   private popupBackgroundIsEnabled: boolean = true;
+  private lockScrollIsEnabled: boolean = false;
   private previousSibling: Dom;
   private parent: Dom;
+
+  private set scrollLocked(lock: boolean) {
+    document.body.classList.toggle('coveo-block-scrolling', lock);
+  }
 
   constructor(public dropdownContent: IResponsiveDropdownContent, public dropdownHeader: ResponsiveDropdownHeader, public coveoRoot: Dom) {
     Assert.exists(dropdownContent);
@@ -65,6 +70,7 @@ export class ResponsiveDropdown {
       handlerCall.handler.apply(handlerCall.context);
     });
     this.showPopupBackground();
+    this.lockScroll();
     $$(this.dropdownHeader.element).trigger(ResponsiveDropdownEvent.OPEN);
   }
 
@@ -77,11 +83,16 @@ export class ResponsiveDropdown {
     this.dropdownHeader.close();
     this.dropdownContent.hideDropdown();
     this.hidePopupBackground();
+    this.unlockScroll();
     $$(this.dropdownHeader.element).trigger(ResponsiveDropdownEvent.CLOSE);
   }
 
   public disablePopupBackground() {
     this.popupBackgroundIsEnabled = false;
+  }
+
+  public enableScrollLocking() {
+    this.lockScrollIsEnabled = true;
   }
 
   private bindOnClickDropdownHeaderEvent() {
@@ -117,6 +128,16 @@ export class ResponsiveDropdown {
       this.popupBackground.el.style.opacity = ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY;
       this.popupBackground.addClass('coveo-dropdown-background-active');
     }
+  }
+
+  private lockScroll() {
+    if (this.lockScrollIsEnabled) {
+      this.scrollLocked = true;
+    }
+  }
+
+  private unlockScroll() {
+    this.scrollLocked = false;
   }
 
   private hidePopupBackground() {

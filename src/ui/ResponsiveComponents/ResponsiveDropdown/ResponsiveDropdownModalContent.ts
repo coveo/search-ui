@@ -10,10 +10,6 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     this.element.toggleClass('coveo-hidden', shouldHide);
   }
 
-  private set allowPageScrolling(allow: boolean) {
-    document.body.classList.toggle('coveo-block-scrolling', !allow);
-  }
-
   constructor(private componentName: string, public element: Dom, private closeButtonLabel: string, private close: () => void) {
     this.className = `coveo-${this.componentName}-dropdown-modal-content`;
   }
@@ -23,7 +19,6 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     this.element.setAttribute('role', 'group');
     this.element.setAttribute('aria-label', l('FiltersDropdown'));
     this.hidden = false;
-    this.allowPageScrolling = false;
     this.closeButton = $$('div', { className: 'coveo-facet-modal-close-button' }, '✕');
     new AccessibleButton()
       .withElement(this.closeButton.el)
@@ -38,7 +33,6 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     this.element.setAttribute('role', null);
     this.element.setAttribute('aria-label', null);
     this.hidden = true;
-    this.allowPageScrolling = true;
     if (this.closeButton) {
       this.closeButton.remove();
       this.closeButton = null;
