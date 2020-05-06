@@ -29,10 +29,6 @@ export class ResponsiveDropdown {
   private previousSibling: Dom;
   private parent: Dom;
 
-  private set scrollLocked(lock: boolean) {
-    document.body.classList.toggle('coveo-block-scrolling', lock);
-  }
-
   constructor(public dropdownContent: IResponsiveDropdownContent, public dropdownHeader: ResponsiveDropdownHeader, public coveoRoot: Dom) {
     Assert.exists(dropdownContent);
     Assert.exists(dropdownHeader);
@@ -43,6 +39,10 @@ export class ResponsiveDropdown {
     this.saveContentPosition();
     this.bindOnKeyboardEscapeEvent();
     this.bindNukeEvents();
+  }
+
+  private set scrollLocked(lock: boolean) {
+    document.body.classList.toggle('coveo-block-scrolling', lock);
   }
 
   public registerOnOpenHandler(handler: Function, context) {

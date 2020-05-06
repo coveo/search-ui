@@ -1,7 +1,7 @@
 @import 'bourbon/bourbon';
 @import 'Variables';
 
-body.coveo-block-scrolling {
+.coveo-block-scrolling {
   max-width: 100%;
   max-height: 100%;
   overflow: hidden;
@@ -42,13 +42,14 @@ body.coveo-block-scrolling {
 
       .coveo-facet-modal-close-button {
         $close-button-size: 32px;
+        $close-button-icon-size: 12px;
 
         width: $close-button-size;
         height: $close-button-size;
+        padding: ($close-button-size - $close-button-icon-size)/2;
         border-radius: 50%;
         background-color: $coveo-blue;
-        font-weight: bold;
-        font-size: small;
+        border: none;
         color: white;
         margin-left: auto;
         margin-bottom: $padding;

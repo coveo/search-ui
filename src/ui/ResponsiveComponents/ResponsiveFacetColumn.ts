@@ -51,6 +51,17 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     return column;
   }
 
+  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {
+    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
+    this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
+    this.dropdown = this.buildDropdown(responsiveDropdown);
+    this.bindDropdownContentEvents();
+    this.bindMobileFacetEvents();
+    this.registerOnCloseHandler();
+    this.registerQueryEvents();
+    this.initializeBreakpoint(options.responsiveBreakpoint);
+  }
+
   private get mobileFacetComponent(): MobileFacet {
     return this.searchInterface.getComponents<MobileFacet>(MobileFacet.ID)[0];
   }
@@ -65,17 +76,6 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
       };
     }
     return mobileFacetComponent.options;
-  }
-
-  constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {
-    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
-    this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
-    this.dropdown = this.buildDropdown(responsiveDropdown);
-    this.bindDropdownContentEvents();
-    this.bindMobileFacetEvents();
-    this.registerOnCloseHandler();
-    this.registerQueryEvents();
-    this.initializeBreakpoint(options.responsiveBreakpoint);
   }
 
   public registerComponent(accept: Component) {
