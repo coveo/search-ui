@@ -3,7 +3,7 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { QueryEvents, Initialization, $$ } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { IQuestionAnswerQuery } from '../../rest/QuestionAnswerQuery';
+import { IQueryAnswerResponse } from '../../rest/QueryAnswerResponse';
 
 export interface ISmartSnippetOptions {}
 
@@ -32,7 +32,7 @@ export class SmartSnippet extends Component {
     this.render(questionAnswer);
   }
 
-  private render(questionAnswer: IQuestionAnswerQuery) {
+  private render(questionAnswer: IQueryAnswerResponse) {
     this.element.innerHTML = questionAnswer.answerSnippet;
   }
 }
