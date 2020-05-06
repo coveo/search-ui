@@ -165,15 +165,14 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     dropdownContentElement.prepend(filterByContainer.el);
     if (this.mobileFacetOptions.isModal) {
       return new ResponsiveDropdownModalContent('facet', dropdownContentElement, l('CloseFiltersDropdown'), () => this.dropdown.close());
-    } else {
-      return new ResponsiveDropdownContent(
-        'facet',
-        dropdownContentElement,
-        this.coveoRoot,
-        ResponsiveFacetColumn.DROPDOWN_MIN_WIDTH,
-        ResponsiveFacetColumn.DROPDOWN_WIDTH_RATIO
-      );
     }
+    return new ResponsiveDropdownContent(
+      'facet',
+      dropdownContentElement,
+      this.coveoRoot,
+      ResponsiveFacetColumn.DROPDOWN_MIN_WIDTH,
+      ResponsiveFacetColumn.DROPDOWN_WIDTH_RATIO
+    );
   }
 
   private buildDropdownHeader(): ResponsiveDropdownHeader {
