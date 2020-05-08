@@ -15,8 +15,8 @@ import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdow
 import { each, debounce } from 'underscore';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { ResponsiveDropdownModalContent } from './ResponsiveDropdown/ResponsiveDropdownModalContent';
-import { MobileFacet, IMobileFacetOptions } from '../MobileFacet/MobileFacet';
-import { MobileFacetEvents } from '../../events/MobileFacetEvents';
+import { FacetsMobileMode, IFacetsMobileModeOptions } from '../FacetsMobileMode/FacetsMobileMode';
+import { FacetsMobileModeEvents } from '../../events/FacetsMobileModeEvents';
 
 export class ResponsiveFacetColumn implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
@@ -56,26 +56,26 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
     this.dropdown = this.buildDropdown(responsiveDropdown);
     this.bindDropdownContentEvents();
-    this.bindMobileFacetEvents();
+    this.bindFacetsMobileModeEvents();
     this.registerOnCloseHandler();
     this.registerQueryEvents();
     this.initializeBreakpoint(options.responsiveBreakpoint);
   }
 
-  private get mobileFacetComponent(): MobileFacet {
-    return this.searchInterface.getComponents<MobileFacet>(MobileFacet.ID)[0];
+  private get facetsMobileModeComponent(): FacetsMobileMode {
+    return this.searchInterface.getComponents<FacetsMobileMode>(FacetsMobileMode.ID)[0];
   }
 
-  private get mobileFacetOptions(): IMobileFacetOptions {
-    const mobileFacetComponent = this.mobileFacetComponent;
-    if (!mobileFacetComponent) {
+  private get facetsMobileModeOptions(): IFacetsMobileModeOptions {
+    const facetsMobileModeComponent = this.facetsMobileModeComponent;
+    if (!facetsMobileModeComponent) {
       return {
         isModal: false,
         lockScroll: false,
         showBackgroundWhileOpen: true
       };
     }
-    return mobileFacetComponent.options;
+    return facetsMobileModeComponent.options;
   }
 
   public registerComponent(accept: Component) {
@@ -147,10 +147,10 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
     let dropdown = responsiveDropdown ? responsiveDropdown : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
-    if (!this.mobileFacetOptions.showBackgroundWhileOpen) {
+    if (!this.facetsMobileModeOptions.showBackgroundWhileOpen) {
       dropdown.disablePopupBackground();
     }
-    if (this.mobileFacetOptions.lockScroll) {
+    if (this.facetsMobileModeOptions.lockScroll) {
       dropdown.enableScrollLocking();
     }
     return dropdown;
@@ -163,7 +163,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     filterBy.text(l('Filter by:'));
     filterByContainer.append(filterBy.el);
     dropdownContentElement.prepend(filterByContainer.el);
-    if (this.mobileFacetOptions.isModal) {
+    if (this.facetsMobileModeOptions.isModal) {
       return new ResponsiveDropdownModalContent('facet', dropdownContentElement, l('CloseFiltersDropdown'), () => this.dropdown.close());
     }
     return new ResponsiveDropdownContent(
@@ -185,8 +185,8 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   }
 
   private initializeBreakpoint(defaultBreakpoint: number) {
-    const mobileFacetBreakpoint = this.mobileFacetOptions.breakpoint;
-    this.breakpoint = Utils.isNullOrUndefined(mobileFacetBreakpoint) ? defaultBreakpoint : mobileFacetBreakpoint;
+    const facetsMobileModeBreakpoint = this.facetsMobileModeOptions.breakpoint;
+    this.breakpoint = Utils.isNullOrUndefined(facetsMobileModeBreakpoint) ? defaultBreakpoint : facetsMobileModeBreakpoint;
   }
 
   private registerOnCloseHandler() {
@@ -215,16 +215,16 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     );
   }
 
-  private bindMobileFacetEvents() {
-    const mobileFacetComponent = this.mobileFacetComponent;
-    if (mobileFacetComponent) {
+  private bindFacetsMobileModeEvents() {
+    const facetsMobileModeComponent = this.facetsMobileModeComponent;
+    if (facetsMobileModeComponent) {
       this.dropdown.registerOnOpenHandler(
-        () => $$(mobileFacetComponent.element).trigger(MobileFacetEvents.popupOpened),
-        mobileFacetComponent
+        () => $$(facetsMobileModeComponent.element).trigger(FacetsMobileModeEvents.popupOpened),
+        facetsMobileModeComponent
       );
       this.dropdown.registerOnCloseHandler(
-        () => $$(mobileFacetComponent.element).trigger(MobileFacetEvents.popupClosed),
-        mobileFacetComponent
+        () => $$(facetsMobileModeComponent.element).trigger(FacetsMobileModeEvents.popupClosed),
+        facetsMobileModeComponent
       );
     }
   }

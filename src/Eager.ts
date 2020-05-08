@@ -314,5 +314,5 @@ CommerceQuery.doExport();
 import { SortDropdown } from './ui/SortDropdown/SortDropdown';
 SortDropdown.doExport();
 
-import { MobileFacet } from './ui/MobileFacet/MobileFacet';
-MobileFacet.doExport();
+import { FacetsMobileMode } from './ui/FacetsMobileMode/FacetsMobileMode';
+FacetsMobileMode.doExport();

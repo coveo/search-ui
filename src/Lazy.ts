@@ -312,5 +312,5 @@ lazyCommerceQuery();
 import { lazySortDropdown } from './ui/SortDropdown/LazySortDropdown';
 lazySortDropdown();
 
-import { lazyMobileFacet } from './ui/MobileFacet/LazyMobileFacet';
-lazyMobileFacet();
+import { lazyFacetsMobileMode } from './ui/FacetsMobileMode/LazyFacetsMobileMode';
+lazyFacetsMobileMode();
