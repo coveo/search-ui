@@ -28,7 +28,7 @@ export class DependsOnManager {
   private parentFacetRef: IDependsOnCompatibleFacet;
 
   constructor(private facet: IDependentFacet) {
-    this.facet.ref.bind.onRootElement(QueryEvents.newQuery, () => this.handleNewQuery());
+    this.facet.ref.bind.onRootElement(QueryEvents.buildingQuery, () => this.handleBuildingQuery());
 
     if (this.getDependsOn(this.facet.ref)) {
       this.facet.ref.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => this.setupDependentFacet());
@@ -100,7 +100,7 @@ export class DependsOnManager {
     );
   }
 
-  private handleNewQuery() {
+  private handleBuildingQuery() {
     this.dependentFacets.forEach(dependentFacet => {
       const condition = this.getDependsOnCondition(dependentFacet);
       if (condition(this.facet.ref)) {
