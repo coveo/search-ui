@@ -63,7 +63,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   }
 
   private get facetsMobileModeComponent(): FacetsMobileMode {
-    return this.searchInterface.getComponents<FacetsMobileMode>(FacetsMobileMode.ID)[0];
+    return this.searchInterface ? this.searchInterface.getComponents<FacetsMobileMode>(FacetsMobileMode.ID)[0] : null;
   }
 
   private get facetsMobileModeOptions(): IFacetsMobileModeOptions {

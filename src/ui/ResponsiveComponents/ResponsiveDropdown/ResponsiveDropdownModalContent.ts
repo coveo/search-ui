@@ -1,10 +1,12 @@
 import { IResponsiveDropdownContent, ResponsiveDropdownContent } from './ResponsiveDropdownContent';
 import { Dom, $$, l } from '../../../Core';
 import { SVGIcons } from '../../../utils/SVGIcons';
+import { FocusTrap } from '../../FocusTrap/FocusTrap';
 
 export class ResponsiveDropdownModalContent implements IResponsiveDropdownContent {
   private closeButton: Dom;
   private className: string;
+  private focusTrap: FocusTrap;
 
   constructor(private componentName: string, public element: Dom, private closeButtonLabel: string, private close: () => void) {
     this.className = `coveo-${this.componentName}-dropdown-modal-content`;
@@ -29,6 +31,7 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     );
     this.closeButton.on('click', () => this.close());
     this.element.prepend(this.closeButton.el);
+    this.focusTrap = new FocusTrap(this.element.el);
   }
 
   public hideDropdown(): void {
@@ -39,6 +42,10 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     if (this.closeButton) {
       this.closeButton.remove();
       this.closeButton = null;
+    }
+    if (this.focusTrap) {
+      this.focusTrap.disable();
+      this.focusTrap = null;
     }
   }
 

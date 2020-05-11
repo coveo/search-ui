@@ -12,6 +12,10 @@ export function ResponsiveDropdownTest() {
     let responsiveDropdown: ResponsiveDropdown;
     let root: Dom;
 
+    function isScrollLocked() {
+      return root.hasClass('coveo-block-scrolling');
+    }
+
     beforeEach(() => {
       root = $$('div');
       responsiveDropdownContent = jasmine.createSpyObj('responsiveDropdownContent', ['positionDropdown', 'hideDropdown', 'cleanUp']);
@@ -43,7 +47,7 @@ export function ResponsiveDropdownTest() {
 
     it('should append a background when open is called', () => {
       responsiveDropdown.open();
-      expect(root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME}`)).not.toBeNull();
+      expect(root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_ACTIVE_CSS_CLASS_NAME}`)).not.toBeNull();
     });
 
     it('should not append a background when it is disabled and open is called', () => {
@@ -52,17 +56,32 @@ export function ResponsiveDropdownTest() {
       expect(root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME}`)).toBeNull();
     });
 
-    it('should hide the background when close is called', done => {
+    it('should hide the background when close is called', () => {
       responsiveDropdown.open();
       responsiveDropdown.close();
-      // The element is removed from the page on transtionend. For the test, the elements are not in the dom which causes this event
-      // to not be fired
-      let dropdownBackground = root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME}`);
-      $$(dropdownBackground).trigger('transitionend');
-      setTimeout(() => {
-        expect(root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME}`)).toBeNull();
-        done();
-      }, 1000);
+      expect(root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_ACTIVE_CSS_CLASS_NAME}`)).toBeNull();
+    });
+
+    describe('with scroll locking enabled', () => {
+      beforeEach(() => {
+        responsiveDropdown.enableScrollLocking();
+      });
+
+      it('should lock scrolling when open is called', () => {
+        responsiveDropdown.open();
+        expect(isScrollLocked()).toBeTruthy();
+      });
+
+      it('should unlock scrolling when close is called', () => {
+        responsiveDropdown.open();
+        responsiveDropdown.close();
+        expect(isScrollLocked()).toBeFalsy();
+      });
+    });
+
+    it('should not lock scrolling when open is called', () => {
+      responsiveDropdown.open();
+      expect(isScrollLocked()).toBeFalsy();
     });
 
     it('should close the dropdown header when close is called', () => {

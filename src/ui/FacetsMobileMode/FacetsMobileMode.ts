@@ -33,7 +33,7 @@ export class FacetsMobileMode extends Component {
      */
     breakpoint: ComponentOptions.buildNumberOption(),
     /**
-     * WWhether to display the facets in a modal instead of a pop-up when the end user expands them in mobile responsive mode.
+     * Whether to display the facets in a modal instead of a pop-up when the end user expands them in mobile responsive mode.
      */
     isModal: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
