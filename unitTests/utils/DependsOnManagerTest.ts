@@ -78,42 +78,42 @@ export function DependsOnManagerTest() {
     });
 
     it(`when a parent facet has selected value(s) (default condition fulfilled)
-      when triggering a new query
+      when triggering "building query"
       should enable the dependent facet`, () => {
       queryStateModel.registerNewAttribute(parentStateAttribute(), ['a value']);
       spyOn(dependentMock.facet.ref, 'enable');
 
-      $$(root).trigger(QueryEvents.newQuery);
+      $$(root).trigger(QueryEvents.buildingQuery);
       expect(dependentMock.facet.ref.enable).toHaveBeenCalledTimes(1);
     });
 
     it(`when a parent facet has no selected value (default condition not fulfilled)
-      when triggering a new query
+      when triggering "building query"
       should disable the dependent facet`, () => {
       spyOn(dependentMock.facet.ref, 'disable');
 
-      $$(root).trigger(QueryEvents.newQuery);
+      $$(root).trigger(QueryEvents.buildingQuery);
       expect(dependentMock.facet.ref.disable).toHaveBeenCalledTimes(1);
     });
 
     it(`when a parent facet fulfills the custom condition
-      when triggering a new query
+      when triggering "building query"
       should enable the dependent facet`, () => {
       assignCustomCondition();
       fulfillCustomCondition();
       spyOn(dependentMock.facet.ref, 'enable');
 
-      $$(root).trigger(QueryEvents.newQuery);
+      $$(root).trigger(QueryEvents.buildingQuery);
       expect(dependentMock.facet.ref.enable).toHaveBeenCalledTimes(1);
     });
 
     it(`when a parent facet does not fulfill the custom condition
-      when triggering a new query
+      when triggering "building query"
       should disable the dependent facet`, () => {
       assignCustomCondition();
       spyOn(dependentMock.facet.ref, 'disable');
 
-      $$(root).trigger(QueryEvents.newQuery);
+      $$(root).trigger(QueryEvents.buildingQuery);
       expect(dependentMock.facet.ref.disable).toHaveBeenCalledTimes(1);
     });
 
