@@ -174,20 +174,6 @@ export function FieldTableTest() {
           expect(findToggleContainer().style.height).toBe(`${newScrollHeight}px`);
         });
 
-        it(`given a toggle container with a zero scrollHeight,
-        when calling #expand after the container has a non-zero scrollHeight,
-        it sets the height of the container to the new value`, () => {
-          const container = findToggleContainer();
-
-          expect(container.scrollHeight).toBe(0);
-
-          const newScrollHeight = 100;
-          setToggleContainerScrollHeight(newScrollHeight);
-          test.cmp.expand();
-
-          expect(findToggleContainer().style.height).toBe(`${newScrollHeight}px`);
-        });
-
         it(`given a toggle container with a non-zero scrollHeight,
         when the container scrollHeight changes,
         when calling #expand, it keeps the height of the container equal to the initial value`, () => {
