@@ -137,7 +137,6 @@ export class FieldTable extends Component {
       $$(this.toggleContainer).insertBefore(this.element);
       this.toggleContainer.appendChild(this.element);
       this.toggleContainer.appendChild(this.toggleButtonInsideTable);
-      requestAnimationFrame(() => this.updateToggleHeight());
     }
   }
 
@@ -233,6 +232,8 @@ export class FieldTable extends Component {
     } else {
       this.isExpanded = !QueryUtils.hasExcerpt(this.result);
     }
+
+    requestAnimationFrame(() => this.updateToggleHeight());
 
     const toggleAction = () => this.toggle(true);
 
