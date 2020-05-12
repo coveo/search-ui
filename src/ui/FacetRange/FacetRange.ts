@@ -11,10 +11,9 @@ import { IGroupByResult } from '../../rest/GroupByResult';
 import { Initialization } from '../Base/Initialization';
 import * as Globalize from 'globalize';
 import { exportGlobally } from '../../GlobalExports';
-import { IIndexFieldValue } from '../../rest/FieldValue';
-import { IGroupByValue } from '../../rest/GroupByValue';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
+import { FacetValue } from '../Facet/FacetValue';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
@@ -117,7 +116,7 @@ export class FacetRange extends Facet implements IComponentBindings {
     ResponsiveFacets.init(this.root, this, this.options);
   }
 
-  public getValueCaption(facetValue: IIndexFieldValue): string {
+  public getValueCaption(facetValue: FacetValue): string {
     if (this.options.valueCaption) {
       return super.getValueCaption(facetValue);
     }
@@ -131,25 +130,25 @@ export class FacetRange extends Facet implements IComponentBindings {
 
   protected processNewGroupByResults(groupByResults: IGroupByResult) {
     if (groupByResults != null && this.options.ranges == null) {
-      groupByResults.values.sort((valueA, valueB) => this.sortRangeGroupByResults(valueA, valueB));
+      groupByResults.values.sort((valueA, valueB) => this.sortRangeGroupByResults(valueA.value, valueB.value));
     }
     super.processNewGroupByResults(groupByResults);
   }
 
-  private sortRangeGroupByResults(valueA: IGroupByValue, valueB: IGroupByValue) {
+  private sortRangeGroupByResults(valueA: string, valueB: string) {
     const startEndA = this.extractStartAndEndValue(valueA);
     const startEndB = this.extractStartAndEndValue(valueB);
     let firstValue: string;
     let secondValue: string;
 
     if (!startEndA) {
-      firstValue = valueA.value;
+      firstValue = valueA;
     } else {
       firstValue = startEndA.start;
     }
 
     if (!startEndB) {
-      secondValue = valueB.value;
+      secondValue = valueB;
     } else {
       secondValue = startEndB.start;
     }
@@ -160,17 +159,17 @@ export class FacetRange extends Facet implements IComponentBindings {
     return Number(firstValue) - Number(secondValue);
   }
 
-  private translateValuesFromFormat(facetValue: IIndexFieldValue) {
-    const { start, end } = this.extractStartAndEndValue(facetValue);
-    if (start == null || end == null) {
+  private translateValuesFromFormat(facetValue: FacetValue) {
+    const startAndEnd = this.extractStartAndEndValue(facetValue.value);
+    if (!startAndEnd) {
       return null;
     }
 
-    return `${this.formatValue(start)} - ${this.formatValue(end)}`;
+    return `${this.formatValue(startAndEnd.start)} - ${this.formatValue(startAndEnd.end)}`;
   }
 
-  private extractStartAndEndValue(facetValue: IIndexFieldValue) {
-    const startAndEnd = /^(.*)\.\.(.*)$/.exec(facetValue.value);
+  private extractStartAndEndValue(value: string) {
+    const startAndEnd = /^(.*)\.\.(.*)$/.exec(value);
 
     if (startAndEnd == null) {
       return null;
