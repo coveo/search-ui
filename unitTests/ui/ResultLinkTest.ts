@@ -14,9 +14,21 @@ export function ResultLinkTest() {
     let test: Mock.IBasicComponentSetup<ResultLink>;
     let fakeResult: IQueryResult;
 
-    beforeEach(() => {
-      fakeResult = initFakeResult();
+    function buildFakeResult(): IQueryResult {
+      let fakeResult = FakeResults.createFakeResult();
+      fakeResult.title = 'A test title';
+      fakeResult.titleHighlights = [{ offset: 2, length: 4 }];
+      fakeResult.clickUri = 'uri';
+      return fakeResult;
+    }
+
+    function initResultLink() {
       test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, undefined);
+    }
+
+    beforeEach(() => {
+      fakeResult = buildFakeResult();
+      initResultLink();
       spyOn(test.cmp, 'openLink');
       spyOn(window, 'open');
     });
@@ -66,8 +78,19 @@ export function ResultLinkTest() {
 
     it('should contain the clickUri if the result has no title', () => {
       fakeResult.title = undefined;
-      test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, undefined);
-      expect(test.cmp.element.innerHTML).toEqual(fakeResult.clickUri);
+      fakeResult.clickUri = 'https://www.google.com?q=hello&geo=world';
+      initResultLink();
+
+      const encodedUri = fakeResult.clickUri.replace('&', '&amp;');
+      expect(test.cmp.element.innerHTML).toEqual(encodedUri);
+    });
+
+    it('when the title is empty and the clickuri contains a html element, it does not render the element', () => {
+      fakeResult.title = '';
+      fakeResult.clickUri = '<IMG SRC=/ onerror="alert(String.fromCharCode(88,83,83))"></img>';
+      initResultLink();
+
+      expect(test.cmp.element.children.length).toBe(0);
     });
 
     it('can receive an onClick option to execute', done => {
@@ -329,12 +352,4 @@ export function ResultLinkTest() {
       });
     });
   });
-
-  function initFakeResult(): IQueryResult {
-    let fakeResult = FakeResults.createFakeResult();
-    fakeResult.title = 'A test title';
-    fakeResult.titleHighlights = [{ offset: 2, length: 4 }];
-    fakeResult.clickUri = 'uri';
-    return fakeResult;
-  }
 }
