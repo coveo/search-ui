@@ -193,6 +193,15 @@ export function ResultLinkTest() {
         expect($$(test.cmp.element).text()).toEqual(fakeResult.clickUri);
       });
 
+      it(`when the field referenced in the title template contains XSS html,
+      it escapes the html to prevent XSS`, () => {
+        titleTemplate = '${clickUri}';
+        fakeResult.clickUri = htmlContainingXSS();
+        initResultLinkWithTitleTemplate();
+
+        expect(test.cmp.element.innerHTML).toEqual('&lt;IMG SRC=/ onerror="alert(String.fromCharCode(88,83,83))"&gt;&lt;/img&gt;');
+      });
+
       it('should support nested values in result', () => {
         titleTemplate = '${raw.number}';
         initResultLinkWithTitleTemplate();
