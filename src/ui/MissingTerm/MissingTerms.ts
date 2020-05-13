@@ -93,8 +93,8 @@ export class MissingTerms extends Component {
       const result = regex.exec(query);
 
       if (result) {
-        const termInQuery = result[4];
-        terms.push(termInQuery);
+        const originalKeywordInQuery = result[4];
+        terms.push(originalKeywordInQuery);
       }
     }
 
