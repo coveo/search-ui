@@ -85,12 +85,14 @@ export function ResultLinkTest() {
       expect(test.cmp.element.innerHTML).toEqual(encodedUri);
     });
 
-    it('when the title is empty and the clickuri contains a html element, it does not render the element', () => {
+    it(`when the title is empty and the clickuri contains a html element,
+    it does not render the element to prevent XSS`, () => {
       fakeResult.title = '';
       fakeResult.clickUri = '<IMG SRC=/ onerror="alert(String.fromCharCode(88,83,83))"></img>';
       initResultLink();
 
       expect(test.cmp.element.children.length).toBe(0);
+      expect(test.cmp.element.innerHTML).toBe('&lt;IMG SRC=/ onerror="alert(String.fromCharCode(88,83,83))"&gt;&lt;/img&gt;');
     });
 
     it('can receive an onClick option to execute', done => {
