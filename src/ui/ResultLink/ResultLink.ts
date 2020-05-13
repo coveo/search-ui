@@ -17,7 +17,7 @@ import { Defer } from '../../misc/Defer';
 import { $$ } from '../../utils/Dom';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import { StringUtils } from '../../utils/StringUtils';
-import { once, debounce, extend } from 'underscore';
+import { once, debounce, extend, escape } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_ResultLink';
@@ -362,17 +362,17 @@ export class ResultLink extends Component {
     if (!this.options.titleTemplate) {
       return this.result.title
         ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight')
-        : this.encodedClickUri;
+        : this.escapedClickUri;
     } else {
       let newTitle = StringUtils.buildStringTemplateFromResult(this.options.titleTemplate, this.result);
       return newTitle
         ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight)
-        : this.encodedClickUri;
+        : this.escapedClickUri;
     }
   }
 
-  private get encodedClickUri() {
-    return encodeURI(this.result.clickUri);
+  private get escapedClickUri() {
+    return escape(this.result.clickUri);
   }
 
   private bindOnClickIfNotUndefined() {
@@ -453,7 +453,7 @@ export class ResultLink extends Component {
       this.queryController.saveLastQuery();
       let documentURL = $$(this.element).getAttribute('href');
       if (documentURL == undefined || documentURL == '') {
-        documentURL = this.encodedClickUri;
+        documentURL = this.escapedClickUri;
       }
       this.usageAnalytics.logClickEvent(
         analyticsActionCauseList.documentOpen,
@@ -484,7 +484,7 @@ export class ResultLink extends Component {
       return Utils.getFieldValue(this.result, <string>this.options.field);
     }
 
-    return this.encodedClickUri;
+    return this.escapedClickUri;
   }
 
   private elementIsAnAnchor() {
@@ -511,7 +511,7 @@ export class ResultLink extends Component {
   }
 
   private isUriThatMustBeOpenedInQuickview(): boolean {
-    return this.encodedClickUri.toLowerCase().indexOf('ldap://') == 0;
+    return this.escapedClickUri.toLowerCase().indexOf('ldap://') == 0;
   }
 
   private quickviewShouldBeOpened() {
