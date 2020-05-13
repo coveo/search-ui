@@ -80,19 +80,17 @@ export class FacetRange extends Facet implements IComponentBindings {
     ranges: ComponentOptions.buildJsonOption<IRangeValue[]>(),
 
     /**
-     * Specifies how to format the the range value.
+     * The format to apply to the range values. Only works for numeric values.
      *
-     * The available formats are defined in the Globalize library (see
-     * [Globalize](https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-).
+     * Some of the most commonly used formats are:
      *
-     * The most commonly used formats are:
-     * - `c0` - Formats the value as a currency.
-     * - `n0` - Formats the value as an integer.
-     * - `n2` - Formats the value as a floating point with 2 decimal digits.
+     * - `c0`: format  a numeric value as currency.
+     * - `n0`: formats a numeric value as an integer.
+     * - `n2`: formats a numeric value as a floating point number with two decimal digits.
      *
-     * **Note:**
-     * Does not work when the [`valueCaption`]{@link Facet.options.valueCaption} option is defined.
-     * Does not work with date type values.
+     * The available formats are defined in the [Globalize](https://github.com/klaaspieter/jquery-global#numbers) library.
+     *
+     * **Note:** This option is ignored when the [`valueCaption`]{@link Facet.options.valueCaption} is defined.
      */
     valueFormat: ComponentOptions.buildStringOption({ defaultValue: 'n0' }),
     ...ResponsiveFacetOptions
