@@ -26,6 +26,10 @@ export function ResultLinkTest() {
       test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, undefined);
     }
 
+    function htmlContainingXSS() {
+      return '<IMG SRC=/ onerror="alert(String.fromCharCode(88,83,83))"></img>';
+    }
+
     beforeEach(() => {
       fakeResult = buildFakeResult();
       initResultLink();
@@ -70,6 +74,15 @@ export function ResultLinkTest() {
       );
     });
 
+    it(`when the title contains a html element, it does not render the element to prevent XSS`, () => {
+      fakeResult.title = htmlContainingXSS();
+      initResultLink();
+
+      expect(test.cmp.element.innerHTML).toBe(
+        '&lt;I<span class="coveo-highlight">MG S</span>RC=/ onerror="alert(String.fromCharCode(88,83,83))"&gt;&lt;/img&gt;'
+      );
+    });
+
     it('should set the title attribute to the displayed title', () => {
       expect(test.cmp.element.title).toEqual(
         HighlightUtils.highlightString(fakeResult.title, fakeResult.titleHighlights, null, 'coveo-highlight')
@@ -88,7 +101,7 @@ export function ResultLinkTest() {
     it(`when the title is empty and the clickuri contains a html element,
     it does not render the element to prevent XSS`, () => {
       fakeResult.title = '';
-      fakeResult.clickUri = '<IMG SRC=/ onerror="alert(String.fromCharCode(88,83,83))"></img>';
+      fakeResult.clickUri = htmlContainingXSS();
       initResultLink();
 
       expect(test.cmp.element.children.length).toBe(0);
@@ -163,49 +176,66 @@ export function ResultLinkTest() {
     });
 
     describe('exposes the titleTemplate', () => {
+      let titleTemplate = '';
+
+      afterEach(() => {
+        titleTemplate = '';
+      });
+
+      function initResultLinkWithTitleTemplate() {
+        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate }, fakeResult);
+      }
+
       it('should replaces fields in the title template by the results equivalent', () => {
-        let titleTemplate = '${clickUri}';
-        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        titleTemplate = '${clickUri}';
+        initResultLinkWithTitleTemplate();
+
         expect($$(test.cmp.element).text()).toEqual(fakeResult.clickUri);
       });
 
       it('should support nested values in result', () => {
-        let titleTemplate = '${raw.number}';
-        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        titleTemplate = '${raw.number}';
+        initResultLinkWithTitleTemplate();
+
         expect(test.cmp.element.innerHTML).toEqual(fakeResult.raw['number'].toString());
       });
 
       it('should not parse standalone accolades', () => {
-        let titleTemplate = '${raw.number}{test}';
-        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        titleTemplate = '${raw.number}{test}';
+        initResultLinkWithTitleTemplate();
+
         expect(test.cmp.element.innerHTML).toEqual(fakeResult.raw['number'].toString() + '{test}');
       });
 
       it('should support external fields', () => {
         window['Coveo']['test'] = 'testExternal';
-        let titleTemplate = '${Coveo.test}';
-        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        titleTemplate = '${Coveo.test}';
+        initResultLinkWithTitleTemplate();
+
         expect(test.cmp.element.innerHTML).toEqual('testExternal');
         window['Coveo']['test'] = undefined;
       });
 
       it('should support external fields with more than 2 keys', () => {
         window['Coveo']['test'] = { key: 'testExternal' };
-        let titleTemplate = '${Coveo.test.key}';
-        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        titleTemplate = '${Coveo.test.key}';
+        initResultLinkWithTitleTemplate();
+
         expect(test.cmp.element.innerHTML).toEqual('testExternal');
         window['Coveo']['test'] = undefined;
       });
 
       it('should print the title if the option is set but the template is empty', () => {
-        let titleTemplate = '';
-        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        titleTemplate = '';
+        initResultLinkWithTitleTemplate();
+
         expect($$(test.cmp.element).text()).toEqual(fakeResult.title);
       });
 
       it('should print the template if the key used in the template is undefined', () => {
-        let titleTemplate = '${doesNotExist}';
-        test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate: titleTemplate }, fakeResult);
+        titleTemplate = '${doesNotExist}';
+        initResultLinkWithTitleTemplate();
+
         expect($$(test.cmp.element).text()).toEqual('${doesNotExist}');
       });
     });
