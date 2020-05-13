@@ -28,6 +28,7 @@ export function MissingTermsTest() {
     beforeEach(() => {
       fakeResult = FakeResults.createFakeResult();
     });
+
     describe('exposes options', () => {
       describe("when the 'clickable' option is set to", () => {
         let missingTermsClickableSpy: jasmine.Spy;
@@ -132,9 +133,9 @@ export function MissingTermsTest() {
           it will not be displayed as a missing term.`, () => {
             const wordBoundarysCharacter = getWordBoudaryChars();
             wordBoundarysCharacter.forEach(character => {
-              const boundaryCharacter = `\\${character}s`;
-              const query = `efile${boundaryCharacter} `;
-              fakeResult.absentTerms = [`${boundaryCharacter}`];
+              const boundaryCharacter = `${character}s`;
+              const query = `efile\\${boundaryCharacter} `;
+              fakeResult.absentTerms = [`\\${boundaryCharacter}`];
               test = mockComponent(query);
               expect(test.cmp.element.childElementCount).toEqual(0);
               expect(test.cmp.missingTerms).toEqual([`${boundaryCharacter}`]);
@@ -162,6 +163,15 @@ export function MissingTermsTest() {
             fakeResult.absentTerms = [termNotInQuery];
             expect(test.cmp.missingTerms.toString()).toBe(expectedResult.toString());
           });
+        });
+
+        it(`when a term in the query has a different case but otherwise matches an absent term,
+        the term is displayed using the query term's case`, () => {
+          const queryTerm = 'World';
+          fakeResult.absentTerms = [queryTerm.toLowerCase()];
+          test = mockComponent(`Hello ${queryTerm}`);
+
+          expect(test.cmp.missingTerms).toEqual([queryTerm]);
         });
 
         describe('when re-injecting a term', () => {
@@ -268,9 +278,9 @@ export function MissingTermsTest() {
           it will not be displayed as a missing term.`, () => {
             const wordBoundarysCharacter = getWordBoudaryChars();
             wordBoundarysCharacter.forEach(character => {
-              const boundaryCharacter = `\\${character}이것은`;
-              const query = `쿼리가${boundaryCharacter} `;
-              fakeResult.absentTerms = [`${boundaryCharacter}`];
+              const boundaryCharacter = `${character}이것은`;
+              const query = `쿼리가\\${boundaryCharacter} `;
+              fakeResult.absentTerms = [`\\${boundaryCharacter}`];
               test = mockComponent(query);
               expect(test.cmp.element.childElementCount).toEqual(0);
               expect(test.cmp.missingTerms).toEqual([`${boundaryCharacter}`]);
