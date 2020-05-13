@@ -17,7 +17,7 @@ import { Defer } from '../../misc/Defer';
 import { $$ } from '../../utils/Dom';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import { StringUtils } from '../../utils/StringUtils';
-import { once, debounce } from 'underscore';
+import { once, debounce, extend } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_ResultLink';
@@ -246,10 +246,10 @@ export class ResultLink extends Component {
     public os?: OS_NAME
   ) {
     super(element, ResultLink.ID, bindings);
-    this.options = {
-      ...ComponentOptions.initComponentOptions(element, ResultLink, options),
-      ...this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink)
-    };
+
+    const initialOptions = ComponentOptions.initComponentOptions(element, ResultLink, options);
+    const resultLinkOptions = this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink);
+    this.options = extend({}, initialOptions, resultLinkOptions);
 
     this.result = result || this.resolveResult();
 
