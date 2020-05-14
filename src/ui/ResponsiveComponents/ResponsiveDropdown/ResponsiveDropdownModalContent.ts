@@ -16,7 +16,7 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     this.element.toggleClass('coveo-hidden', shouldHide);
   }
 
-  public positionDropdown(): void {
+  public positionDropdown() {
     this.element.el.classList.add(this.className, ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
     this.element.setAttribute('role', 'group');
     this.element.setAttribute('aria-label', l('FiltersDropdown'));
@@ -34,7 +34,7 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     this.focusTrap = new FocusTrap(this.element.el);
   }
 
-  public hideDropdown(): void {
+  public hideDropdown() {
     this.element.el.classList.remove(this.className, ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
     this.element.setAttribute('role', null);
     this.element.setAttribute('aria-label', null);
@@ -49,7 +49,7 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     }
   }
 
-  public cleanUp(): void {
+  public cleanUp() {
     this.hidden = false;
   }
 }

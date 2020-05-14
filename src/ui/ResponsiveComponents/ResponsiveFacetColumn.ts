@@ -10,7 +10,7 @@ import { ResponsiveComponents } from './ResponsiveComponents';
 import { IResponsiveComponent, IResponsiveComponentOptions, ResponsiveComponentsManager } from './ResponsiveComponentsManager';
 import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
-import { IResponsiveDropdownContent, ResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
+import { ResponsiveDropdownContent, IResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
 import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdownHeader';
 import { each, debounce } from 'underscore';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
@@ -62,7 +62,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     this.initializeBreakpoint(options.responsiveBreakpoint);
   }
 
-  private get facetsMobileModeComponent(): FacetsMobileMode {
+  private get facetsMobileModeComponent() {
     return this.searchInterface ? this.searchInterface.getComponents<FacetsMobileMode>(FacetsMobileMode.ID)[0] : null;
   }
 
@@ -175,7 +175,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     );
   }
 
-  private buildDropdownHeader(): ResponsiveDropdownHeader {
+  private buildDropdownHeader() {
     let dropdownHeaderElement = $$('a');
     let content = $$('p');
     content.text(this.dropdownHeaderLabel);
