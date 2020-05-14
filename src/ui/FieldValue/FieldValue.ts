@@ -41,8 +41,6 @@ export interface IAnalyticsFieldValueMeta {
   facetTitle?: string;
 }
 
-type CompatibleFacet = Component & IFieldValueCompatibleFacet;
-
 function showOnlyWithHelper<T>(helpers: string[], options?: T): T {
   if (options == null) {
     options = <any>{};
@@ -413,9 +411,7 @@ export class FieldValue extends Component {
   }
 
   private getFacets() {
-    const facets = ComponentsTypes.getAllFacetsFromSearchInterface(this.searchInterface).filter(facet =>
-      isFacetFieldValueCompatible(facet)
-    ) as CompatibleFacet[];
+    const facets = ComponentsTypes.getAllFacetsFromSearchInterface(this.searchInterface).filter(isFacetFieldValueCompatible);
     const facetsWithMatchingId = facets.filter(facet => facet.options.id === this.options.facet);
     if (facetsWithMatchingId.length) {
       return facetsWithMatchingId;
@@ -450,7 +446,7 @@ export class FieldValue extends Component {
     $$(element).addClass('coveo-clickable');
   }
 
-  private handleFacetSelection(isValueSelected: boolean, facets: CompatibleFacet[], value: string) {
+  private handleFacetSelection(isValueSelected: boolean, facets: IFieldValueCompatibleFacet[], value: string) {
     facets.forEach(facet => {
       isValueSelected ? facet.deselectValue(value) : facet.selectValue(value);
     });
