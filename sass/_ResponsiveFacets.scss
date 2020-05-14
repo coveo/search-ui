@@ -36,11 +36,9 @@
 
       .coveo-facet-modal-close-button {
         $close-button-size: 32px;
-        $close-button-icon-size: 12px;
 
         width: $close-button-size;
         height: $close-button-size;
-        padding: ($close-button-size - $close-button-icon-size)/2;
         border-radius: 50%;
         background-color: $coveo-blue;
         border: none;
@@ -58,6 +56,13 @@
 
         &:focus {
           opacity: 0.5;
+        }
+
+        > svg {
+          $close-button-icon-size: 12px;
+
+          width: $close-button-icon-size;
+          height: $close-button-icon-size;
         }
       }
     }
