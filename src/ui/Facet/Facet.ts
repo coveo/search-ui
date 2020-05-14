@@ -65,6 +65,7 @@ import { OmniboxValueElement } from './OmniboxValueElement';
 import { OmniboxValuesList } from './OmniboxValuesList';
 import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
+import { IFieldValueCompatibleFacet } from '../FieldValue/IFieldValueCompatibleFacet';
 
 type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
 type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
@@ -128,7 +129,7 @@ export interface IFacetOptions extends IResponsiveComponentOptions, IDependsOnCo
  * extend this component), and the [`FacetSlider`]{@link FacetSlider} and [`CategoryFacet`]{@link CategoryFacet} components (which do not extend this
  * component, but are very similar).
  */
-export class Facet extends Component {
+export class Facet extends Component implements IFieldValueCompatibleFacet {
   static ID = 'Facet';
   static omniboxIndex = 50;
 
@@ -1024,6 +1025,15 @@ export class Facet extends Component {
   public getSelectedValues(): string[] {
     this.ensureDom();
     return _.map(this.values.getSelected(), (value: FacetValue) => value.value);
+  }
+
+  /**
+   * Checks if a single value is selected.
+   * @param value The name of the facet value to verify.
+   */
+  public hasSelectedValue(value: string) {
+    const facetValue = this.values.get(value);
+    return facetValue && facetValue.selected;
   }
 
   /**

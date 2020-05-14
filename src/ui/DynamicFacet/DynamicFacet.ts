@@ -382,6 +382,14 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   }
 
   /**
+   * Checks if a single value is selected.
+   * @param value The name of the facet value to verify.
+   */
+  public hasSelectedValue(value: string) {
+    return this.values.hasSelectedValue(value);
+  }
+
+  /**
    * Deselects multiple values in this facet.
    *
    * Does **not** trigger a query automatically.
