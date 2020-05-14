@@ -12,10 +12,6 @@ export function ResponsiveDropdownTest() {
     let responsiveDropdown: ResponsiveDropdown;
     let root: Dom;
 
-    function isScrollLocked() {
-      return root.hasClass('coveo-block-scrolling');
-    }
-
     beforeEach(() => {
       root = $$('div');
       responsiveDropdownContent = jasmine.createSpyObj('responsiveDropdownContent', ['positionDropdown', 'hideDropdown', 'cleanUp']);
@@ -63,25 +59,27 @@ export function ResponsiveDropdownTest() {
     });
 
     describe('with scroll locking enabled', () => {
+      let lockedContainer: HTMLElement;
+
       beforeEach(() => {
-        responsiveDropdown.enableScrollLocking();
+        responsiveDropdown.enableScrollLocking((lockedContainer = $$('div').el));
       });
 
       it('should lock scrolling when open is called', () => {
         responsiveDropdown.open();
-        expect(isScrollLocked()).toBeTruthy();
+        expect(lockedContainer.style.overflow).toEqual('hidden');
       });
 
       it('should unlock scrolling when close is called', () => {
         responsiveDropdown.open();
         responsiveDropdown.close();
-        expect(isScrollLocked()).toBeFalsy();
+        expect(lockedContainer.style.overflow).toBeFalsy();
       });
     });
 
-    it('should not lock scrolling when open is called', () => {
+    it('should not lock scrolling on the body when open is called', () => {
       responsiveDropdown.open();
-      expect(isScrollLocked()).toBeFalsy();
+      expect(document.body.style.overflow).toBeFalsy();
     });
 
     it('should close the dropdown header when close is called', () => {

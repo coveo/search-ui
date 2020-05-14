@@ -657,16 +657,18 @@ export class ComponentOptions {
   }
 
   static findParentScrolling(element: HTMLElement, doc: Document = document): HTMLElement {
-    while (<Node>element != doc && element != null) {
-      if (ComponentOptions.isElementScrollable(element)) {
-        if (element.tagName.toLowerCase() !== 'body') {
-          return element;
-        }
-        return <any>window;
-      }
-      element = element.parentElement;
+    element = this.findParentScrollLockable(element, doc);
+    return element instanceof HTMLBodyElement || !ComponentOptions.isElementScrollable(element) ? <any>window : element;
+  }
+
+  static findParentScrollLockable(element: HTMLElement, doc: Document = document): HTMLElement {
+    if (!element) {
+      element = doc.body;
     }
-    return <any>window;
+    if (ComponentOptions.isElementScrollable(element) || element instanceof HTMLBodyElement || !element.parentElement) {
+      return element;
+    }
+    return ComponentOptions.findParentScrollLockable(element.parentElement, doc);
   }
 
   static isElementScrollable(element: HTMLElement) {

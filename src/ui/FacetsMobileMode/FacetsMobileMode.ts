@@ -9,6 +9,7 @@ export interface IFacetsMobileModeOptions {
   isModal?: boolean;
   showBackgroundWhileOpen?: boolean;
   lockScroll?: boolean;
+  scrollContainer?: HTMLElement;
 }
 
 /**
@@ -45,7 +46,30 @@ export class FacetsMobileMode extends Component {
     /**
      * Whether to disable scrolling in the search interface while facets are expanded in mobile responsive mode.
      */
-    lockScroll: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    lockScroll: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * The element whose scrolling is locked.
+     *
+     * You can change the container by specifying its selector (e.g.,
+     * `data-scroll-container-selector='#someCssSelector'`).
+     *
+     * By default, the framework uses the first vertically scrollable parent element it finds, starting from the
+     * `FacetsMobileMode` element itself. A vertically scrollable element is an element whose CSS `overflow-y` attribute is
+     * `scroll`.
+     *
+     * This implies that if the framework can find no scrollable parent, it uses the `document.body` itself as a scrollable
+     * container.
+     *
+     * This heuristic is not perfect, for technical reasons. There are always some corner case CSS combination which the
+     * framework will not be able to correctly detect as 'scrollable'.
+     *
+     * It is highly recommended that you manually set this option if you wish something else than the `document.body` to be the
+     * scrollable element.
+     */
+    scrollContainer: ComponentOptions.buildChildHtmlElementOption({
+      depend: 'lockScroll',
+      defaultFunction: element => ComponentOptions.findParentScrollLockable(element)
+    })
   };
 
   static doExport = () => {
@@ -60,5 +84,8 @@ export class FacetsMobileMode extends Component {
     super(element, FacetsMobileMode.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, FacetsMobileMode, options);
+    if (this.options.lockScroll && !this.options.scrollContainer) {
+      this.options.scrollContainer = ComponentOptions.findParentScrollLockable(this.searchInterface.element);
+    }
   }
 }

@@ -151,7 +151,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
       dropdown.disablePopupBackground();
     }
     if (this.facetsMobileModeOptions.lockScroll) {
-      dropdown.enableScrollLocking();
+      dropdown.enableScrollLocking(this.facetsMobileModeOptions.scrollContainer);
     }
     return dropdown;
   }

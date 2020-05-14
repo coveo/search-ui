@@ -10,8 +10,8 @@ import { ResponsiveDropdown, ResponsiveComponentsManager } from '../../src/Core'
 import { ResponsiveComponentsUtils } from '../../src/ui/ResponsiveComponents/ResponsiveComponentsUtils';
 import { FacetsMobileModeEvents } from '../../src/events/FacetsMobileModeEvents';
 
-const TEST_SCREEN_WIDTH_SMALL = MEDIUM_SCREEN_WIDTH;
-const TEST_SCREEN_WIDTH_LARGE = MEDIUM_SCREEN_WIDTH + 1;
+const TEST_SCREEN_WIDTH_MOBILE = MEDIUM_SCREEN_WIDTH;
+const TEST_SCREEN_WIDTH_DESKTOP = MEDIUM_SCREEN_WIDTH + 1;
 
 export function ResponsiveFacetColumnTest() {
   let test: IBasicComponentSetup<SearchInterface>;
@@ -23,7 +23,7 @@ export function ResponsiveFacetColumnTest() {
   function createResponsiveComponents() {
     test.cmp.responsiveComponents = mock<ResponsiveComponents>(ResponsiveComponents);
     test.cmp.responsiveComponents.getResponsiveMode = () => 'auto';
-    test.cmp.responsiveComponents.getMediumScreenWidth = () => TEST_SCREEN_WIDTH_SMALL;
+    test.cmp.responsiveComponents.getMediumScreenWidth = () => TEST_SCREEN_WIDTH_MOBILE;
   }
 
   function appendFacetColumnElement() {
@@ -44,15 +44,17 @@ export function ResponsiveFacetColumnTest() {
     createResponsiveComponents();
     appendFacetColumnElement();
     appendHeaderWrapper();
-    setScreenWidth(TEST_SCREEN_WIDTH_SMALL);
+    setScreenWidth(TEST_SCREEN_WIDTH_MOBILE);
   }
+
   function createResponsiveFacetColumn() {
     column = new ResponsiveFacetColumn(root, 'bogus', {});
     dropdown = column['dropdown'];
   }
 
   function createFacetsMobileMode(options?: IFacetsMobileModeOptions) {
-    return new FacetsMobileMode((eventRoot = $$('div')).el, options);
+    root.append((eventRoot = $$('div')).el);
+    return new FacetsMobileMode(eventRoot.el, options);
   }
 
   function prepareTestWithMobileMode(facetsMobileModeOptions?: IFacetsMobileModeOptions) {
@@ -86,8 +88,8 @@ export function ResponsiveFacetColumnTest() {
           dropdown.open();
         });
 
-        it('should allow scrolling', () => {
-          expect(root.getClass()).not.toContain(ResponsiveDropdown.LOCK_SCROLL_CSS_CLASS_NAME);
+        it('should allow scrolling on the body', () => {
+          expect(root.el.style.overflow).toBeFalsy();
         });
       });
     });
@@ -95,14 +97,14 @@ export function ResponsiveFacetColumnTest() {
     describe('with a FacetsMobileMode component', () => {
       describe('with a breakpoint', () => {
         it('is in small mode if the breakpoint is equal to the screen width', () => {
-          prepareTestWithMobileMode({ breakpoint: TEST_SCREEN_WIDTH_SMALL });
+          prepareTestWithMobileMode({ breakpoint: TEST_SCREEN_WIDTH_MOBILE });
           column.handleResizeEvent();
 
           expect(ResponsiveComponentsUtils.isSmallFacetActivated(root)).toBeTruthy();
         });
 
         it("isn't in small mode if the breakpoint is under the screen width", () => {
-          prepareTestWithMobileMode({ breakpoint: TEST_SCREEN_WIDTH_SMALL - 1 });
+          prepareTestWithMobileMode({ breakpoint: TEST_SCREEN_WIDTH_MOBILE - 1 });
           column.handleResizeEvent();
 
           expect(ResponsiveComponentsUtils.isSmallFacetActivated(root)).toBeFalsy();
@@ -134,18 +136,60 @@ export function ResponsiveFacetColumnTest() {
       });
 
       describe('with lockScroll enabled', () => {
-        beforeEach(() => {
-          prepareTestWithMobileMode({ lockScroll: true });
-        });
-
-        describe('when opened', () => {
+        describe('without a scroll container', () => {
           beforeEach(() => {
-            column.handleResizeEvent();
-            dropdown.open();
+            prepareTestWithMobileMode({ lockScroll: true });
           });
 
-          it("shouldn't allow scrolling", () => {
-            expect(root.getClass()).toContain(ResponsiveDropdown.LOCK_SCROLL_CSS_CLASS_NAME);
+          describe('when opened', () => {
+            beforeEach(() => {
+              column.handleResizeEvent();
+              dropdown.open();
+            });
+
+            it("shouldn't allow scrolling on the body", () => {
+              expect(root.el.style.overflow).toEqual('hidden');
+            });
+
+            describe('then closed', () => {
+              beforeEach(() => {
+                dropdown.close();
+              });
+
+              it('should re-allow scrolling on the body', () => {
+                expect(root.el.style.overflow).toBeFalsy();
+              });
+            });
+          });
+        });
+
+        describe('with a scroll container', () => {
+          let container: HTMLElement;
+
+          beforeEach(() => {
+            container = $$('div').el;
+            prepareTestWithMobileMode({ lockScroll: true, scrollContainer: container });
+          });
+
+          describe('when opened', () => {
+            beforeEach(() => {
+              column.handleResizeEvent();
+              dropdown.open();
+            });
+
+            it("shouldn't allow scrolling on the container", () => {
+              expect(container.style.overflow).toEqual('hidden');
+            });
+
+            describe('then closed', () => {
+              beforeEach(() => {
+                dropdown.close();
+              });
+
+              it('should re-allow scrolling on the container', () => {
+                expect(container.style.overflow).toBeFalsy();
+              });
+            });
           });
         });
       });
@@ -193,7 +237,7 @@ export function ResponsiveFacetColumnTest() {
             });
 
             it('should trigger the closed event when large mode is activated', () => {
-              setScreenWidth(TEST_SCREEN_WIDTH_LARGE);
+              setScreenWidth(TEST_SCREEN_WIDTH_DESKTOP);
               column.handleResizeEvent();
               expect(popupOpened).not.toHaveBeenCalled();
               expect(popupClosed).toHaveBeenCalledTimes(1);

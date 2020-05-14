@@ -20,14 +20,13 @@ export class ResponsiveDropdown {
   public static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
   public static DROPDOWN_BACKGROUND_CSS_CLASS_NAME: string = 'coveo-dropdown-background';
   public static DROPDOWN_BACKGROUND_ACTIVE_CSS_CLASS_NAME: string = 'coveo-dropdown-background-active';
-  public static LOCK_SCROLL_CSS_CLASS_NAME: string = 'coveo-block-scrolling';
 
   public isOpened: boolean = false;
   private onOpenHandlers: HandlerCall[] = [];
   private onCloseHandlers: HandlerCall[] = [];
   private popupBackground: Dom;
   private popupBackgroundIsEnabled: boolean = true;
-  private lockScrollIsEnabled: boolean = false;
+  private scrollableContainerToLock: HTMLElement = null;
   private previousSibling: Dom;
   private parent: Dom;
 
@@ -44,7 +43,10 @@ export class ResponsiveDropdown {
   }
 
   private set scrollLocked(lock: boolean) {
-    this.coveoRoot.toggleClass(ResponsiveDropdown.LOCK_SCROLL_CSS_CLASS_NAME, lock);
+    if (!this.scrollableContainerToLock) {
+      return;
+    }
+    this.scrollableContainerToLock.style.overflow = lock ? 'hidden' : '';
   }
 
   public registerOnOpenHandler(handler: Function, context) {
@@ -93,8 +95,8 @@ export class ResponsiveDropdown {
     this.popupBackgroundIsEnabled = false;
   }
 
-  public enableScrollLocking() {
-    this.lockScrollIsEnabled = true;
+  public enableScrollLocking(scrollableContainer: HTMLElement) {
+    this.scrollableContainerToLock = scrollableContainer;
   }
 
   private bindOnClickDropdownHeaderEvent() {
@@ -133,9 +135,7 @@ export class ResponsiveDropdown {
   }
 
   private lockScroll() {
-    if (this.lockScrollIsEnabled) {
-      this.scrollLocked = true;
-    }
+    this.scrollLocked = true;
   }
 
   private unlockScroll() {

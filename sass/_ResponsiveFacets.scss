@@ -1,12 +1,6 @@
 @import 'bourbon/bourbon';
 @import 'Variables';
 
-.coveo-block-scrolling {
-  max-width: 100%;
-  max-height: 100%;
-  overflow: hidden;
-}
-
 .CoveoSearchInterface.coveo-small-facets {
   .coveo-facet-dropdown-content {
     z-index: 20;
