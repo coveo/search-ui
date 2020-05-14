@@ -233,7 +233,7 @@ export class FieldTable extends Component {
       this.isExpanded = !QueryUtils.hasExcerpt(this.result);
     }
 
-    this.updateToggleHeight();
+    requestAnimationFrame(() => this.updateToggleHeight());
 
     const toggleAction = () => this.toggle(true);
 
