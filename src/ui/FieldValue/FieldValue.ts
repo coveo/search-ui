@@ -411,7 +411,10 @@ export class FieldValue extends Component {
   }
 
   private getFacets() {
-    const facets = ComponentsTypes.getAllFacetsFromSearchInterface(this.searchInterface).filter(isFacetFieldValueCompatible);
+    const facets = ComponentsTypes.getAllFacetsFromSearchInterface(this.searchInterface)
+      .filter(isFacetFieldValueCompatible)
+      .filter(facet => !facet.disabled);
+
     const facetsWithMatchingId = facets.filter(facet => facet.options.id === this.options.facet);
     if (facetsWithMatchingId.length) {
       return facetsWithMatchingId;
