@@ -13,6 +13,7 @@ import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { DynamicFacetHeader } from './DynamicFacetHeader/DynamicFacetHeader';
 import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { DependsOnManager, IDependsOnCompatibleFacetOptions } from '../../utils/DependsOnManager';
+import { IFieldValueCompatibleFacet } from '../FieldValue/IFieldValueCompatibleFacet';
 
 export interface IDynamicFacetOptions extends IResponsiveComponentOptions, IDependsOnCompatibleFacetOptions {
   title?: string;
@@ -32,7 +33,11 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions, IDepe
   filterFacetCount?: boolean;
 }
 
-export interface IDynamicFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {
+export interface IDynamicFacet
+  extends Component,
+    IDynamicManagerCompatibleFacet,
+    IAutoLayoutAdjustableInsideFacetColumn,
+    IFieldValueCompatibleFacet {
   header: DynamicFacetHeader;
   options: IDynamicFacetOptions;
   dependsOnManager: DependsOnManager;
