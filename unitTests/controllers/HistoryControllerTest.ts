@@ -44,11 +44,29 @@ export function HistoryControllerTest() {
 
       $$(historyController.element).trigger('state:all');
       Defer.flush();
-      expect(historyController.window.location.hash).toBe('#c=notDefault&d=[1,2,3]');
+      expect(historyController.window.history.pushState).toHaveBeenCalledWith('', '', '#c=notDefault&d=[1,2,3]');
     });
 
     it('should listen to hashchange event', () => {
       expect(historyController.window.addEventListener).toHaveBeenCalledWith('hashchange', jasmine.any(Function));
+    });
+
+    it(`given at least one value in the hash, when calling #setHashValues with an empty object,
+    it updates the url without including a hash to prevent the page from scrolling to the top`, () => {
+      historyController.window.location.hash = '#f:@author=[TED]';
+      historyController.setHashValues({});
+      expect(historyController.window.history.pushState).toHaveBeenCalledWith('', '', '');
+    });
+
+    it(`when calling #setHashValues to update the hash,
+    it includes the current location.pathname and location.search in the new url`, () => {
+      const location = historyController.window.location;
+      location.pathname = '/sports';
+      location.search = '?type=basketball';
+      historyController.setHashValues({ q: 'shoes' });
+
+      const expectedUrl = `${location.pathname}${location.search}#q=shoes`;
+      expect(historyController.window.history.pushState).toHaveBeenCalledWith('', '', expectedUrl);
     });
 
     it('should not throw when history controller does not have an analytics client and there is a hash change', () => {

@@ -57,6 +57,7 @@ export class HistoryController extends RootComponent implements IHistoryManager 
     $$(this.element).on(InitializationEvents.restoreHistoryState, () => {
       this.logger.trace('Restore history state. Update model');
       this.updateModelFromHash();
+      this.initialHashChange = false;
       this.lastState = this.queryStateModel.getAttributes();
     });
 
@@ -100,10 +101,11 @@ export class HistoryController extends RootComponent implements IHistoryManager 
    * Set the given map of key value in the hash of the URL
    * @param values
    */
-  public setHashValues(values: {}) {
+  public setHashValues(values: Record<string, any>) {
     this.logger.trace('Update history hash');
 
-    const hash = '#' + this.hashUtils.encodeValues(values);
+    const encoded = this.hashUtils.encodeValues(values);
+    const hash = encoded ? `#${encoded}` : '';
     const hashHasChanged = this.window.location.hash != hash;
     this.ignoreNextHashChange = hashHasChanged;
 
@@ -120,7 +122,10 @@ export class HistoryController extends RootComponent implements IHistoryManager 
         this.logger.trace('History hash modified', hash);
       }
     } else if (hashHasChanged) {
-      this.window.location.hash = hash;
+      const location = this.window.location;
+      const url = `${location.pathname}${location.search}${hash}`;
+
+      this.window.history.pushState('', '', url);
       this.logger.trace('History hash created', hash);
     }
   }
