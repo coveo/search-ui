@@ -44,27 +44,17 @@ export class FacetsMobileMode extends Component {
       postProcessing: (value, options) => (Utils.isNullOrUndefined(value) ? !options.isModal : value)
     }),
     /**
-     * Whether to disable scrolling in the search interface while facets are expanded in mobile responsive mode.
+     * Whether to disable vertical scrolling on the specified or resolved [`scrollContainer`]{@link FacetsMobileMode.options.scrollContainer} while facets are expanded in mobile responsive mode.
      */
     lockScroll: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * The element whose scrolling is locked.
+     * The HTML element whose vertical scrolling should be locked while facets are expanded in mobile responsive mode.
      *
-     * You can change the container by specifying its selector (e.g.,
-     * `data-scroll-container-selector='#someCssSelector'`).
+     * By default, the component tries to detect and use the first ancestor element whose CSS `overflow-y` attribute is set to `scroll`, starting from the `FacetsMobileMode`'s element itself. If no such element is found, the `document.body` element is used.
      *
-     * By default, the framework uses the first vertically scrollable parent element it finds, starting from the
-     * `FacetsMobileMode` element itself. A vertically scrollable element is an element whose CSS `overflow-y` attribute is
-     * `scroll`.
+     * Since this heuristic is not perfect, we strongly recommend that you manually set this option by explicitly specifying the desired CSS selector.
      *
-     * This implies that if the framework can find no scrollable parent, it uses the `document.body` itself as a scrollable
-     * container.
-     *
-     * This heuristic is not perfect, for technical reasons. There are always some corner case CSS combination which the
-     * framework will not be able to correctly detect as 'scrollable'.
-     *
-     * It is highly recommended that you manually set this option if you wish something else than the `document.body` to be the
-     * scrollable element.
+     * **Example:** `data-scroll-container-selector='#someCssSelector'`
      */
     scrollContainer: ComponentOptions.buildChildHtmlElementOption({
       depend: 'lockScroll',
