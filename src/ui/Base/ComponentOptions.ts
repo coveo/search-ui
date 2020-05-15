@@ -663,7 +663,7 @@ export class ComponentOptions {
 
   static findParentScrollLockable(element: HTMLElement, doc: Document = document): HTMLElement {
     if (!element) {
-      element = doc.body;
+      return doc.body;
     }
     if (ComponentOptions.isElementScrollable(element) || element instanceof HTMLBodyElement || !element.parentElement) {
       return element;
