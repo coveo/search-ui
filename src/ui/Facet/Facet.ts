@@ -1028,7 +1028,7 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
   }
 
   /**
-   * Checks if a single value is selected.
+   * Determines whether the specified value is selected in the facet.
    * @param value The name of the facet value to verify.
    */
   public hasSelectedValue(value: string) {
