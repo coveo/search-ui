@@ -5,6 +5,7 @@ export interface IFacetSearchResultValue {
    * **Example:** `ACME Product A`
    */
   displayValue: string;
+  path: string[];
   /**
    * The original facet value, as retrieved from the field in the index.
    *
@@ -16,6 +17,10 @@ export interface IFacetSearchResultValue {
    * the filter expression that would get generated if the facet value were selected.
    */
   count: number;
+  /**
+   * Whether additional facet values matching the request are available.
+   */
+  moreValuesAvailable: boolean;
 }
 
 /**

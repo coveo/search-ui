@@ -39,6 +39,7 @@ import { IAnalyticsFacetState } from '../Analytics/IAnalyticsFacetState';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { Logger } from '../../misc/Logger';
+import { DynamicHierarchicalFacetSearch } from '../DynamicHierarchicalFacetSearch/DynamicHierarchicalFacetSearch';
 
 /**
  * The `DynamicHierarchicalFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
@@ -148,6 +149,16 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * See also the [`numberOfValues`]{@link DynamicHierarchicalFacet.options.numberOfValues} option.
      */
     enableMoreLess: ComponentOptions.buildBooleanOption({ defaultValue: true, section: 'CommonOptions' }),
+
+    /**
+     * Whether to allow the end-user to search the facet values.
+     *
+     * By default, the following behavior applies:
+     *
+     * - Enabled when more facet values are available.
+     * - Disabled when all available facet values are already displayed.
+     */
+    enableFacetSearch: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
 
     /**
      * The character that specifies the hierarchical dependency.
@@ -263,6 +274,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   };
 
   private listenToQueryStateChange = true;
+  private search: DynamicHierarchicalFacetSearch;
 
   public options: IDynamicHierarchicalFacetOptions;
   public dynamicHierarchicalFacetQueryController: DynamicHierarchicalFacetQueryController;
@@ -288,7 +300,6 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     this.initDependsOnManager();
     this.initBreadCrumbEvents();
     this.initQueryEvents();
-    this.buildFacetHeader();
     this.initQueryStateEvents();
   }
 
@@ -364,8 +375,23 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
 
   private updateAppearance() {
     this.header.toggleCollapse(this.isCollapsed);
+    this.toggleSearchDisplay();
     $$(this.element).toggleClass('coveo-dynamic-hierarchical-facet-collapsed', this.isCollapsed);
     $$(this.element).toggleClass('coveo-hidden', !this.values.allFacetValues.length);
+  }
+
+  private toggleSearchDisplay() {
+    if (this.options.enableFacetSearch === false) {
+      return;
+    }
+
+    if (Utils.isUndefined(this.options.enableFacetSearch)) {
+      $$(this.search.element).toggle(this.moreValuesAvailable);
+    }
+
+    if (this.isCollapsed) {
+      $$(this.search.element).toggle(false);
+    }
   }
 
   private handleQuerySuccess(results: IQueryResults) {
@@ -560,7 +586,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   }
 
   public createDom() {
-    this.element.appendChild(this.values.render());
+    this.createAndAppendContent();
     this.updateAppearance();
   }
 
@@ -612,7 +638,13 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     };
   }
 
-  private buildFacetHeader() {
+  private createAndAppendContent() {
+    this.createAndAppendHeader();
+    this.createAndAppendSearch();
+    this.createAndAppendValues();
+  }
+
+  private createAndAppendHeader() {
     this.header = new DynamicFacetHeader({
       title: this.options.title,
       enableCollapse: this.options.enableCollapse,
@@ -621,7 +653,20 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       expand: () => this.expand(),
       collapse: () => this.collapse()
     });
-    $$(this.element).prepend(this.header.element);
+    this.element.appendChild(this.header.element);
+  }
+
+  private createAndAppendSearch() {
+    if (this.options.enableFacetSearch === false) {
+      return;
+    }
+
+    this.search = new DynamicHierarchicalFacetSearch(this);
+    this.element.appendChild(this.search.element);
+  }
+
+  private createAndAppendValues() {
+    this.element.appendChild(this.values.render());
   }
 
   private pathIsValidForSelection(path: any): path is string[] {

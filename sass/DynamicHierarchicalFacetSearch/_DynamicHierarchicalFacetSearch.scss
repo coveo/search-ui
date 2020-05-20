@@ -1,0 +1,24 @@
+@import '../Variables';
+
+.coveo-dynamic-hierarchical-facet-search-value {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  cursor: pointer;
+
+  .coveo-dynamic-hierarchical-facet-search-value-results-count {
+    margin-left: 5px;
+    color: $color-light-contrast-grey;
+    font-weight: lighter;
+  }
+
+  .coveo-dynamic-hierarchical-facet-search-value-path {
+    padding: 0;
+    color: $color-light-contrast-grey;
+    font-weight: lighter;
+
+    .coveo-dynamic-hierarchical-facet-search-value-path-part {
+      display: inline;
+    }
+  }
+}
