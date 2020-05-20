@@ -25,10 +25,6 @@ export class DynamicHierarchicalFacetSearchValue implements IDynamicHierarchical
     return this.facetValue.numberOfResults;
   }
 
-  public get moreValuesAvailable() {
-    return this.facetValue.moreValuesAvailable;
-  }
-
   public get renderedElement() {
     if (this.element) {
       return this.element;

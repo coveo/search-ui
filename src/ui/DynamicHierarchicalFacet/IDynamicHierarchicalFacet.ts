@@ -65,7 +65,6 @@ export interface IDynamicHierarchicalFacetSearchValueProperties {
   fullPath: string[];
   displayValue: string;
   numberOfResults: number;
-  moreValuesAvailable: boolean;
 }
 
 export interface IDynamicHierarchicalFacetValueProperties {

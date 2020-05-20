@@ -44,8 +44,7 @@ export class DynamicHierarchicalFacetSearch {
         {
           fullPath: [...value.path, value.rawValue],
           displayValue: value.displayValue,
-          numberOfResults: value.count,
-          moreValuesAvailable: value.moreValuesAvailable
+          numberOfResults: value.count
         },
         this.facet
       );
