@@ -1,8 +1,6 @@
 import { IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 import { FacetSearchType, IFacetSearchRequest } from '../rest/Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from '../rest/Facet/FacetSearchResponse';
-import { QueryUtils, DateUtils } from '../Core';
-import { FileTypes } from '../ui/Misc/FileTypes';
 import { flatten } from 'underscore';
 
 type Path = string[];

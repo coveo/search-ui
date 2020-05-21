@@ -17,8 +17,27 @@
     color: $color-light-contrast-grey;
     font-weight: lighter;
 
+    display: flex;
+
+    .coveo-dynamic-hierarchical-facet-search-value-path-ellipsis,
     .coveo-dynamic-hierarchical-facet-search-value-path-part {
       display: inline;
+    }
+
+    .coveo-dynamic-hierarchical-facet-search-value-path-part {
+      flex: 0 15 auto;
+      min-width: 10px;
+      @supports (max-width: max-content) {
+        flex: 1 0 0;
+        max-width: max-content;
+      }
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .coveo-dynamic-hierarchical-facet-search-value-path-ellipsis {
+      margin-right: 2px;
     }
   }
 }
