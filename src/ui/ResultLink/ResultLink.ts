@@ -17,7 +17,7 @@ import { Defer } from '../../misc/Defer';
 import { $$ } from '../../utils/Dom';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import { StringUtils } from '../../utils/StringUtils';
-import * as _ from 'underscore';
+import { once, debounce, extend, escape } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_ResultLink';
@@ -246,8 +246,11 @@ export class ResultLink extends Component {
     public os?: OS_NAME
   ) {
     super(element, ResultLink.ID, bindings);
-    this.options = ComponentOptions.initComponentOptions(element, ResultLink, options);
-    this.options = _.extend({}, this.options, this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink));
+
+    const initialOptions = ComponentOptions.initComponentOptions(element, ResultLink, options);
+    const resultLinkOptions = this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink);
+    this.options = extend({}, initialOptions, resultLinkOptions);
+
     this.result = result || this.resolveResult();
 
     if (this.options.openQuickview == null) {
@@ -266,7 +269,7 @@ export class ResultLink extends Component {
       // It's still only one "click" event as far as UA is concerned.
       // Also need to handle "longpress" on mobile (the contextual menu), which we assume to be 1 s long.
 
-      const executeOnlyOnce = _.once(() => this.logOpenDocument());
+      const executeOnlyOnce = once(() => this.logOpenDocument());
 
       $$(element).on(['contextmenu', 'click', 'mousedown', 'mouseup'], executeOnlyOnce);
       let longPressTimer: number;
@@ -359,13 +362,17 @@ export class ResultLink extends Component {
     if (!this.options.titleTemplate) {
       return this.result.title
         ? HighlightUtils.highlightString(this.result.title, this.result.titleHighlights, null, 'coveo-highlight')
-        : this.result.clickUri;
+        : this.escapedClickUri;
     } else {
       let newTitle = StringUtils.buildStringTemplateFromResult(this.options.titleTemplate, this.result);
       return newTitle
         ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight)
-        : this.result.clickUri;
+        : this.escapedClickUri;
     }
+  }
+
+  private get escapedClickUri() {
+    return escape(this.result.clickUri);
   }
 
   private bindOnClickIfNotUndefined() {
@@ -441,12 +448,12 @@ export class ResultLink extends Component {
     }
   }
 
-  private logOpenDocument = _.debounce(
+  private logOpenDocument = debounce(
     () => {
       this.queryController.saveLastQuery();
       let documentURL = $$(this.element).getAttribute('href');
       if (documentURL == undefined || documentURL == '') {
-        documentURL = this.result.clickUri;
+        documentURL = this.escapedClickUri;
       }
       this.usageAnalytics.logClickEvent(
         analyticsActionCauseList.documentOpen,
@@ -468,14 +475,16 @@ export class ResultLink extends Component {
     if (this.options.hrefTemplate) {
       return StringUtils.buildStringTemplateFromResult(this.options.hrefTemplate, this.result);
     }
+
     if (this.options.field == undefined && this.options.openInOutlook) {
       this.setField();
     }
+
     if (this.options.field != undefined) {
       return Utils.getFieldValue(this.result, <string>this.options.field);
-    } else {
-      return this.result.clickUri;
     }
+
+    return this.escapedClickUri;
   }
 
   private elementIsAnAnchor() {
@@ -502,7 +511,7 @@ export class ResultLink extends Component {
   }
 
   private isUriThatMustBeOpenedInQuickview(): boolean {
-    return this.result.clickUri.toLowerCase().indexOf('ldap://') == 0;
+    return this.escapedClickUri.toLowerCase().indexOf('ldap://') == 0;
   }
 
   private quickviewShouldBeOpened() {
