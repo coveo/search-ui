@@ -7,6 +7,26 @@ const PATH_START_LENGTH = 1;
 const PATH_END_LENGTH = 2;
 const PATH_SEPARATOR = '/';
 
+const VALUE_CLASSNAME = 'coveo-dynamic-hierarchical-facet-search-value';
+const HEADER_CLASSNAME = `${VALUE_CLASSNAME}-header`;
+const LABEL_CLASSNAME = `${VALUE_CLASSNAME}-label`;
+const COUNT_CLASSNAME = `${VALUE_CLASSNAME}-results-count`;
+const PATH_CLASSNAME = `${VALUE_CLASSNAME}-path`;
+const PATH_ELLIPSIS_CLASSNAME = `${PATH_CLASSNAME}-ellipsis`;
+const PATH_PART_CLASSNAME = `${PATH_CLASSNAME}-part`;
+const PATH_SEPARATOR_CLASSNAME = `${PATH_CLASSNAME}-separator`;
+
+export const DynamicHierarchicalFacetSearchValueRendererClassNames = {
+  VALUE_CLASSNAME,
+  HEADER_CLASSNAME,
+  LABEL_CLASSNAME,
+  COUNT_CLASSNAME,
+  PATH_CLASSNAME,
+  PATH_ELLIPSIS_CLASSNAME,
+  PATH_PART_CLASSNAME,
+  PATH_SEPARATOR_CLASSNAME
+};
+
 export class DynamicHierarchicalFacetSearchValueRenderer {
   constructor(private facetValue: DynamicHierarchicalFacetSearchValue, private facet: IDynamicHierarchicalFacet) {}
 
@@ -35,12 +55,7 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
   }
 
   public render() {
-    const element = $$(
-      'div',
-      { className: 'coveo-dynamic-hierarchical-facet-search-value', ariaLabel: this.label },
-      this.renderHeader(),
-      this.renderPath()
-    );
+    const element = $$('div', { className: VALUE_CLASSNAME, ariaLabel: this.label }, this.renderHeader(), this.renderPath());
 
     return element.el;
   }
@@ -54,26 +69,21 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
   }
 
   private renderHeader() {
-    return $$(
-      'header',
-      { className: 'coveo-dynamic-hierarchical-facet-search-value-header', ariaHidden: true },
-      this.renderLabel(),
-      this.renderResultsCount()
-    );
+    return $$('header', { className: HEADER_CLASSNAME, ariaHidden: true }, this.renderLabel(), this.renderResultsCount());
   }
 
   private renderLabel() {
-    return $$('span', { className: 'coveo-dynamic-hierarchical-facet-search-value-label' }, this.facetValue.displayValue);
+    return $$('span', { className: LABEL_CLASSNAME }, this.facetValue.displayValue);
   }
 
   private renderResultsCount() {
-    const element = $$('span', { className: 'coveo-dynamic-hierarchical-facet-search-value-results-count' });
+    const element = $$('span', { className: COUNT_CLASSNAME });
     element.text(`(${this.facetValue.numberOfResults})`);
     return element;
   }
 
   private renderPath() {
-    const element = $$('ul', { className: 'coveo-dynamic-hierarchical-facet-search-value-path', ariaHidden: true });
+    const element = $$('ul', { className: PATH_CLASSNAME, ariaHidden: true });
     const { start, end } = this.pathToRender;
     start.forEach((part, index) => {
       if (index > 0) {
@@ -93,16 +103,16 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
   }
 
   private renderEllipsis() {
-    return $$('li', { className: 'coveo-dynamic-hierarchical-facet-search-value-path-ellipsis' }, '...');
+    return $$('li', { className: PATH_ELLIPSIS_CLASSNAME }, '...');
   }
 
   private renderPathPart(part: string) {
-    const element = $$('li', { className: 'coveo-dynamic-hierarchical-facet-search-value-path-part' });
+    const element = $$('li', { className: PATH_PART_CLASSNAME });
     element.text(part);
     return element;
   }
 
   private renderPathSeparator() {
-    return $$('span', { className: 'coveo-dynamic-hierarchical-facet-search-value-path-separator', role: 'separator' }, PATH_SEPARATOR);
+    return $$('span', { className: PATH_SEPARATOR_CLASSNAME, role: 'separator' }, PATH_SEPARATOR);
   }
 }

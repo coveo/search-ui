@@ -7544,5 +7544,9 @@
   "CollapsedUriParts": {
     "en": "Collapsed URI parts",
     "fr": "Segments d'URI réduits"
+  },
+  "HierarchicalFacetValueIndentedUnder": {
+    "en": "{0} under {1}",
+    "fr": "{0} sous {1}"
   }
 }
