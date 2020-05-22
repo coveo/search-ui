@@ -1,12 +1,15 @@
 import { IQuery } from '../Query';
 
+/**
+ * The facet types against which facet search is allowed.
+ */
 export enum FacetSearchType {
   /**
-   * Request facet values representing specific values.
+   * Search among specific (i.e., scalar) facet values (e.g., Alice Smith, Bob Jones, etc.).
    */
   specific = 'specific',
   /**
-   * Request facet values representing a hierarchy.
+   * Search among hierarchical facet values (e.g., Electronics|Entertainment|Gaming Consoles;, Electronics|Computers|Laptops;, etc.).
    */
   hierarchical = 'hierarchical'
 }
@@ -20,7 +23,7 @@ export interface IFacetSearchRequest {
    */
   field: string;
   /**
-   * The kind of values to request for the facet.
+   * The kind of facet values against which the search request is being made.
    *
    * **Default:** `specific`
    */
@@ -34,7 +37,7 @@ export interface IFacetSearchRequest {
   /**
    * A list of paths to filter out from the hierarchical facet search results.
    *
-   * **Example:** `[["A","B","C"], ["D", "E"]]`
+   * **Example:** `[["Electronics", "Entertainment", "Gaming Consoles"],["Appliances", "Kitchen"]]`
    */
   ignorePaths?: String[][];
   /**
