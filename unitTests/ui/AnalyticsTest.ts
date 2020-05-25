@@ -316,19 +316,23 @@ export function AnalyticsTest() {
           expect(analyticsClient().endpoint.endpointCaller.options.accessToken).toBe('qwerty123');
         });
 
-        it('endpoint can be specified', () => {
-          options = { endpoint: 'somewhere.com' };
+        it(`when an endpoint is defined that does not end with /rest,
+        it ensures the endpoint ends with /rest`, () => {
+          const endpoint = 'https://usageanalyticshipaa.cloud.coveo.com';
+          options = { endpoint };
           initAnalytics();
 
-          expect(analyticsClient().endpoint.options.serviceUrl).toBe('somewhere.com');
+          expect(test.cmp.options.endpoint).toBe(`${endpoint}/rest`);
         });
 
-        // it('if the endpoint is set to url not ending with /rest, it appends /rest', () => {
-        //   options = { endpoint: 'https://usageanalyticshipaa.cloud.coveo.com' }
-        //   initAnalytics();
+        it(`when an endpoint is defined that ends with /rest,
+        it does not append a second /rest`, () => {
+          const endpoint = 'somewhere.com/rest';
+          options = { endpoint };
+          initAnalytics();
 
-        //   expect(analyticsClient().endpoint.options.serviceUrl).toBe(`${options.endpoint}/rest`);
-        // })
+          expect(test.cmp.options.endpoint).toBe(endpoint);
+        });
 
         it('anonymous can be specified', () => {
           options = { anonymous: true };

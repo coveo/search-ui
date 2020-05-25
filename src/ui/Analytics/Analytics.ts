@@ -104,8 +104,13 @@ export class Analytics extends Component {
      * Default value is `https://platform.cloud.coveo.com/rest/ua`.
      */
     endpoint: ComponentOptions.buildStringOption({
-      defaultFunction: () => {
-        return AnalyticsEndpoint.getURLFromSearchEndpoint(SearchEndpoint.defaultEndpoint);
+      postProcessing: value => {
+        if (!value) {
+          return AnalyticsEndpoint.getURLFromSearchEndpoint(SearchEndpoint.defaultEndpoint);
+        }
+
+        const [basePlatform] = value.split('/rest');
+        return basePlatform + '/rest';
       }
     }),
 
