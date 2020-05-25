@@ -1,0 +1,7 @@
+@import 'Variables';
+
+.CoveoSmartSnippet {
+  @include defaultMediumRoundedBorder();
+  margin-top: 30px;
+  padding: 16px;
+}

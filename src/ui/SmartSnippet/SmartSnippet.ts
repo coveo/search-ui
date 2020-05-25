@@ -4,6 +4,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { QueryEvents, Initialization, $$ } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IQueryAnswerResponse } from '../../rest/QueryAnswerResponse';
+import 'styling/_SmartSnippet';
 
 export interface ISmartSnippetOptions {}
 
