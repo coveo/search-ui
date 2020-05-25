@@ -180,7 +180,6 @@ export function AnalyticsTest() {
       });
 
       describe('with data layer in page', () => {
-        let test: Mock.IBasicComponentSetup<Analytics>;
         let defaultDataLayerName = 'dataLayer';
         let customDataLayerName = 'myDataLayer';
         let data = {
@@ -292,65 +291,57 @@ export function AnalyticsTest() {
       });
 
       describe('exposes options', () => {
-        let test: Mock.IBasicComponentSetup<Analytics>;
-
-        afterEach(() => {
-          test = null;
-        });
+        function analyticsClient() {
+          return <LiveAnalyticsClient>test.cmp.client;
+        }
 
         it('user can be specified', () => {
           options = { user: 'foobar' };
           initAnalytics();
 
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.userId).toBe('foobar');
+          expect(analyticsClient().userId).toBe('foobar');
         });
 
         it('userdisplayname can be specified', () => {
           options = { userDisplayName: 'foobar' };
           initAnalytics();
 
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.userDisplayName).toBe('foobar');
+          expect(analyticsClient().userDisplayName).toBe('foobar');
         });
 
         it('token can be specified', () => {
           options = { token: 'qwerty123' };
           initAnalytics();
 
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.endpoint.endpointCaller.options.accessToken).toBe('qwerty123');
+          expect(analyticsClient().endpoint.endpointCaller.options.accessToken).toBe('qwerty123');
         });
 
         it('endpoint can be specified', () => {
           options = { endpoint: 'somewhere.com' };
           initAnalytics();
 
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.endpoint.options.serviceUrl).toBe('somewhere.com');
+          expect(analyticsClient().endpoint.options.serviceUrl).toBe('somewhere.com');
         });
 
         // it('if the endpoint is set to url not ending with /rest, it appends /rest', () => {
-        //   test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-        //     endpoint: 'https://usageanalyticshipaa.cloud.coveo.com'
-        //   });
+        //   options = { endpoint: 'https://usageanalyticshipaa.cloud.coveo.com' }
+        //   initAnalytics();
 
+        //   expect(analyticsClient().endpoint.options.serviceUrl).toBe(`${options.endpoint}/rest`);
         // })
 
         it('anonymous can be specified', () => {
           options = { anonymous: true };
           initAnalytics();
 
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.anonymous).toBe(true);
+          expect(analyticsClient().anonymous).toBe(true);
         });
 
         it('searchHub can be specified', () => {
           options = { searchHub: 'foobar' };
           initAnalytics();
 
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.originLevel1).toBe('foobar');
+          expect(analyticsClient().originLevel1).toBe('foobar');
         });
 
         it('searchhub will be put in the query params', () => {
@@ -372,16 +363,14 @@ export function AnalyticsTest() {
           options = { splitTestRunName: 'foobar' };
           initAnalytics();
 
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.splitTestRunName).toBe('foobar');
+          expect(analyticsClient().splitTestRunName).toBe('foobar');
         });
 
         it('splitTestRunVersion can be specified', () => {
           options = { splitTestRunVersion: 'foobar' };
           initAnalytics();
 
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.splitTestRunVersion).toBe('foobar');
+          expect(analyticsClient().splitTestRunVersion).toBe('foobar');
         });
       });
     });
