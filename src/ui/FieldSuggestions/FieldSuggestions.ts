@@ -113,7 +113,7 @@ export class FieldSuggestions extends Component {
      *
      *   // Search for matching title results in the default endpoint.
      *   Coveo.SearchEndpoint.endpoints["default"].search({
-     *     q: "@title=='" + selectedValue + "'"
+     *     q: "@title==" + selectedValue
      *   }).done(function(results) {
      *
      *     // If more than one result is found, select a result that matches the selected title.
