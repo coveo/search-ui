@@ -36,7 +36,7 @@ export class SmartSnippet extends Component {
 
   private buildShadow() {
     const shadow = this.element.attachShadow({ mode: 'open' });
-    shadow.appendChild((this.snippetContainer = $$('main').el));
+    shadow.appendChild((this.snippetContainer = $$('section', { className: 'coveo-smart-snippet-content' }).el));
     shadow.appendChild(this.buildStyle());
   }
 
