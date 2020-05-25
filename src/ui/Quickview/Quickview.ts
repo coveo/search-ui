@@ -54,6 +54,7 @@ export interface IQuickviewOptions {
   loadingAnimation?: HTMLElement | Promise<HTMLElement>;
   alwaysShow?: boolean;
   tooltipPlacement?: ValidTooltipPlacement;
+  modalContainer?: HTMLElement;
 }
 
 interface IQuickviewOpenerObject {
@@ -249,14 +250,35 @@ export class Quickview extends Component {
      */
     tooltipPlacement: ComponentOptions.buildCustomOption<ValidTooltipPlacement>((value: ValidTooltipPlacement) => value, {
       defaultValue: 'bottom'
-    })
+    }),
+
+    /**
+     * Specifies the HTMLElement where the Modal Box will be created when opening a QuickView. You can
+     * either specify a CSS selector or pass an HTMLElement in the options when calling Coveo.init.
+     *
+     * Default value is `element.ownerDocument.body`.
+     *
+     * **Example in attribute:**
+     * ```html
+     * <div class="CoveoQuickview" data-modal-container="#my-modal-container"></div>
+     * ```
+     *
+     * **Example in init options:**
+     * ```javascript
+     * var myContainer = document.getElementById('my-modal-container');
+     * Coveo.init(root, {
+     *   Quickview: {
+     *     modalContainer: myContainer
+     *   }
+     * });
+     * ```
+     */
+    modalContainer: ComponentOptions.buildSelectorOption({ defaultFunction: element => element.ownerDocument.body })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
 
   private modalbox: AccessibleModal;
-
-  private lastFocusedElement: HTMLElement;
 
   /**
    * Creates a new `Quickview` component.
@@ -295,7 +317,7 @@ export class Quickview extends Component {
       });
     }
 
-    this.modalbox = new AccessibleModal('coveo-quick-view', element.ownerDocument.body as HTMLBodyElement, ModalBox);
+    this.modalbox = new AccessibleModal('coveo-quick-view', this.options.modalContainer, ModalBox);
   }
 
   private buildContent() {
@@ -317,7 +339,7 @@ export class Quickview extends Component {
   }
 
   private buildCaption() {
-    return $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
+    return $$('div', { className: 'coveo-caption-for-icon' }, 'Quickview'.toLocaleString()).el;
   }
 
   private buildTooltipIfNotInCardLayout(icon: HTMLElement, caption: HTMLElement) {
@@ -366,10 +388,7 @@ export class Quickview extends Component {
       Quickview.resultCurrentlyBeingRendered = this.result;
       // activeElement does not exist in LockerService
       if (document.activeElement && document.activeElement instanceof HTMLElement) {
-        this.lastFocusedElement = document.activeElement;
         $$(document.activeElement as HTMLElement).trigger('blur');
-      } else {
-        this.lastFocusedElement = null;
       }
 
       const openerObject = this.prepareOpenQuickviewObject();
@@ -389,9 +408,6 @@ export class Quickview extends Component {
   public close() {
     if (this.modalbox.isOpen) {
       this.modalbox.close();
-      if (this.lastFocusedElement && this.lastFocusedElement.parentElement) {
-        this.lastFocusedElement.focus();
-      }
     }
   }
 
@@ -446,18 +462,19 @@ export class Quickview extends Component {
     computedModalBoxContent.addClass('coveo-computed-modal-box-content');
     return openerObject.content.then(builtContent => {
       computedModalBoxContent.append(builtContent.el);
-      const title = DomUtils.getQuickviewHeader(
-        this.result,
-        {
+      this.modalbox.openResult({
+        result: this.result,
+        options: {
           showDate: this.options.showDate,
           title: this.options.title
         },
-        this.bindings
-      ).el;
-
-      this.modalbox.open(title, computedModalBoxContent.el, () => {
-        this.closeQuickview();
-        return true;
+        bindings: this.bindings,
+        content: computedModalBoxContent.el,
+        validation: () => {
+          this.closeQuickview();
+          return true;
+        },
+        origin: this.element
       });
       return computedModalBoxContent;
     });

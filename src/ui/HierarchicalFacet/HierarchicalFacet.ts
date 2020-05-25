@@ -5,7 +5,7 @@
 /// <reference path="HierarchicalFacetValueElement.ts" />
 
 import { IFacetOptions } from '../Facet/Facet';
-import { FacetValue } from '../Facet/FacetValues';
+import { FacetValue } from '../Facet/FacetValue';
 import { Facet } from '../Facet/Facet';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { HierarchicalFacetValuesList } from './HierarchicalFacetValuesList';

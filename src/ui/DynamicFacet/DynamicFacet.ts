@@ -33,7 +33,7 @@ import { DynamicFacetSearch } from '../DynamicFacetSearch/DynamicFacetSearch';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { IQueryResults } from '../../rest/QueryResults';
 import { FacetType } from '../../rest/Facet/FacetRequest';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import { DependsOnManager, IDependentFacet, IDependentFacetCondition } from '../../utils/DependsOnManager';
 import { DynamicFacetValueCreator } from './DynamicFacetValues/DynamicFacetValueCreator';
 import { Logger } from '../../misc/Logger';
 
@@ -246,6 +246,25 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     dependsOn: ComponentOptions.buildStringOption({ section: 'CommonOptions' }),
 
     /**
+     * A function that verifies whether the current state of the `dependsOn` facet allows the dependent facet to be displayed.
+     *
+     * If specified, the function receives a reference to the resolved `dependsOn` facet component instance as an argument, and must return a boolean.
+     * The function's argument should typically be treated as read-only.
+     *
+     * By default, the dependent facet is displayed whenever one or more values are selected in its `dependsOn` facet.
+     *
+     * @externaldocs [Defining Dependent Facets](https://docs.coveo.com/3210/)
+     *
+     * @availablesince [April 2020 Release (v2.8864)](https://docs.coveo.com/en/3231/)
+     */
+    dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
+      () => {
+        return null;
+      },
+      { depend: 'dependsOn', section: 'CommonOptions' }
+    ),
+
+    /**
      * The number of items to scan for facet values.
      *
      * Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.
@@ -257,9 +276,11 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     /**
      * Whether to exclude folded result parents when estimating result counts for facet values.
      *
-     * See also the [`Folding`]{@link folding} and [`FoldingForThread`]{@link FoldingForThread} components.
+     * See also the [`Folding`]{@link Folding} and [`FoldingForThread`]{@link FoldingForThread} components.
      *
      * **Default:** `false` if folded results are requested; `true` otherwise.
+     *
+     * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
      */
     filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' })
   };
@@ -358,6 +379,14 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   public deselectValue(value: string) {
     Assert.exists(value);
     this.deselectMultipleValues([value]);
+  }
+
+  /**
+   * Determines whether the specified value is selected in the facet.
+   * @param value The name of the facet value to verify.
+   */
+  public hasSelectedValue(value: string) {
+    return this.values.hasSelectedValue(value);
   }
 
   /**
@@ -566,7 +595,6 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     this.includedAttributeId = QueryStateModel.getFacetId(this.options.id);
     this.queryStateModel.registerNewAttribute(this.includedAttributeId, []);
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, this.handleQueryStateChanged);
-    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   protected initBreadCrumbEvents() {
@@ -682,20 +710,10 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
-      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
-      element: this.element,
-      root: this.root,
-      dependsOn: this.options.dependsOn,
-      id: this.options.id,
-      queryStateModel: this.queryStateModel,
-      bind: this.bind
+      ref: this
     };
 
     this.dependsOnManager = new DependsOnManager(facetInfo);
-  }
-
-  private toggleDependentFacet(dependentFacet: Component) {
-    this.values.hasSelectedValues ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   public createDom() {
@@ -746,9 +764,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     this.toggleSearchDisplay();
     $$(this.element).toggleClass('coveo-dynamic-facet-collapsed', this.isCollapsed);
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedValues);
-    $$(this.element).removeClass('coveo-hidden');
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
-    !this.values.hasDisplayedValues && $$(this.element).addClass('coveo-hidden');
+    $$(this.element).toggleClass('coveo-hidden', !this.values.hasDisplayedValues);
   }
 
   private toggleSearchDisplay() {

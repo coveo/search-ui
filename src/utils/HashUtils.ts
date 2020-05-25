@@ -130,7 +130,10 @@ export class HashUtils {
 
   private static endsWithEncodedRightSquareBracket(value: string) {
     const encodedBracket = Utils.safeEncodeURIComponent(HashUtils.DELIMITER.arrayEnd);
-    return value.indexOf(encodedBracket) == value.length - encodedBracket.length;
+    const encodedBracketIndex = value.indexOf(encodedBracket);
+    const hasEncodedBracket = encodedBracketIndex !== -1;
+
+    return hasEncodedBracket && encodedBracketIndex == value.length - encodedBracket.length;
   }
 
   private static isObjectStartNotEncoded(value: string) {

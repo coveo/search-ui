@@ -1,7 +1,18 @@
 import { AccessibleButton } from '../../src/utils/AccessibleButton';
-import { Dom, $$, KEYBOARD, Component } from '../../src/Core';
+import { Dom, $$, KEYBOARD, Component, Defer } from '../../src/Core';
 import { Simulate } from '../Simulate';
 import { ComponentEvents } from '../../src/ui/Base/Component';
+
+function dispatchFakeKeyEvent(element: HTMLElement, eventName: 'keydown' | 'keyup', props: any) {
+  const event = new KeyboardEvent(eventName, {});
+  Object.keys(props).forEach(propertyName => {
+    Object.defineProperty(event, propertyName, {
+      get: () => props[propertyName]
+    });
+  });
+  element.dispatchEvent(event);
+  Defer.flush();
+}
 
 export const AccessibleButtonTest = () => {
   describe('AccessibleButton', () => {
@@ -66,6 +77,26 @@ export const AccessibleButtonTest = () => {
         it('should be called on keyboard spacebar keypress', () => {
           Simulate.keyUp(element.el, KEYBOARD.SPACEBAR);
           expect(action).toHaveBeenCalled();
+        });
+
+        describe('with a child input', () => {
+          let input: HTMLInputElement;
+          beforeEach(() => {
+            element.append((input = document.createElement('input')));
+          });
+
+          it("shouldn't call preventDefault on spacebar keydown", () => {
+            const preventDefault = jasmine.createSpy('preventDefault');
+
+            dispatchFakeKeyEvent(element.el, 'keydown', { keyCode: KEYBOARD.SPACEBAR, target: input, preventDefault });
+
+            expect(preventDefault).not.toHaveBeenCalled();
+          });
+
+          it("shouldn't be called on keyboard spacebar keypress", () => {
+            dispatchFakeKeyEvent(element.el, 'keyup', { keyCode: KEYBOARD.SPACEBAR, target: input });
+            expect(action).not.toHaveBeenCalled();
+          });
         });
       });
 

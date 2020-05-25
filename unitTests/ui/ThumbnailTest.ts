@@ -14,70 +14,85 @@ import { FakeResults } from '../Fake';
 
 export function ThumbnailTest() {
   describe('Thumbnail', function() {
+    let thumbnailEl: HTMLElement;
     let test: Mock.IBasicComponentSetup<Thumbnail>;
     let endpoint: SearchEndpoint;
     let getRawDataStreamPromise: Promise<ArrayBuffer>;
 
-    beforeEach(() => {
-      endpoint = Mock.mockSearchEndpoint();
-      getRawDataStreamPromise = new Promise<ArrayBuffer>((resolve, reject) => {});
-      endpoint.getRawDataStream = () => getRawDataStreamPromise;
+    function buildFieldTable() {
+      const result = FakeResults.createFakeResult();
+      const element = $$('table', { className: 'CoveoFieldTable' }).el;
+      const options = new Mock.AdvancedComponentSetupOptions(element);
+
+      return Mock.advancedResultComponentSetup<FieldTable>(FieldTable, result, options).cmp;
+    }
+
+    function buildThumbnailEl() {
+      return $$('img').el;
+    }
+
+    function initThumbnail() {
       test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) =>
           builder
-            .withElement($$('img').el)
+            .withElement(thumbnailEl)
             .withResult()
             .withEndpoint(endpoint)
       });
+    }
+
+    beforeEach(() => {
+      thumbnailEl = buildThumbnailEl();
+      endpoint = Mock.mockSearchEndpoint();
+      getRawDataStreamPromise = new Promise<ArrayBuffer>((resolve, reject) => {});
+      endpoint.getRawDataStream = () => getRawDataStreamPromise;
+      initThumbnail();
     });
 
     describe('without JSONP', () => {
       beforeEach(function() {
         endpoint.isJsonp = () => false;
-        endpoint.getRawDataStream = () => new Promise<ArrayBuffer>((resolve, reject) => resolve(new ArrayBuffer(0)));
-        test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
-          modifyBuilder: (builder: Mock.MockEnvironmentBuilder) =>
-            builder
-              .withElement($$('img').el)
-              .withResult()
-              .withEndpoint(endpoint)
-        });
+        endpoint.getRawDataStream = () => new Promise<ArrayBuffer>(resolve => resolve(new ArrayBuffer(0)));
+
+        initThumbnail();
       });
 
-      it('should use async call by default', done => {
-        setTimeout(function() {
-          expect(test.cmp.element.getAttribute('src')).toBe('data:image/png;base64, ');
-          done();
-        }, 0);
+      it('should use async call by default', async done => {
+        await Promise.resolve();
+        expect(test.cmp.element.getAttribute('src')).toBe('data:image/png;base64, ');
+        done();
       });
 
-      it("should try to resize FieldTable content if it's contained in one", done => {
-        let fakeFieldTable = Mock.basicResultComponentSetup<FieldTable>(FieldTable);
-        let spyResize = jasmine.createSpy('spyResize');
-        fakeFieldTable.cmp.updateToggleHeight = spyResize;
-        fakeFieldTable.cmp.element.appendChild(test.cmp.element);
+      it("should try to resize the FieldTable if it's contained in one", async done => {
+        const fieldTable = buildFieldTable();
+        const spy = spyOn(fieldTable, 'updateToggleHeight');
+        fieldTable.element.appendChild(test.cmp.element);
 
-        setTimeout(function() {
-          expect(spyResize).toHaveBeenCalled();
-          done();
-        }, 0);
+        await Promise.resolve();
+        expect(spy).toHaveBeenCalledTimes(1);
+        done();
       });
     });
 
     describe('with JSONP', () => {
-      beforeEach(function() {
+      beforeEach(() => {
         endpoint.isJsonp = () => true;
-        test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
-          modifyBuilder: (builder: Mock.MockEnvironmentBuilder) =>
-            builder
-              .withElement($$('img').el)
-              .withResult()
-              .withEndpoint(endpoint)
-        });
+        initThumbnail();
       });
 
       it('should use direct url', () => {
         expect(test.cmp.element.getAttribute('src')).toEqual('http://datastream.uri');
+      });
+
+      it("should try to resize the FieldTable if it's contained in one", () => {
+        const fieldTable = buildFieldTable();
+        const spy = spyOn(fieldTable, 'updateToggleHeight');
+
+        thumbnailEl = buildThumbnailEl();
+        fieldTable.element.appendChild(thumbnailEl);
+        initThumbnail();
+
+        expect(spy).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -93,10 +108,7 @@ export function ThumbnailTest() {
 
     describe('exposes options', () => {
       it('noThumbnailClass should set the appropriate CSS class when no thumbnail is available', done => {
-        endpoint.getRawDataStream = () =>
-          new Promise<ArrayBuffer>((resolve, reject) => {
-            reject();
-          });
+        endpoint.getRawDataStream = () => new Promise<ArrayBuffer>((resolve, reject) => reject());
 
         test = Mock.advancedResultComponentSetup<Thumbnail>(Thumbnail, undefined, <Mock.AdvancedComponentSetupOptions>{
           cmpOptions: <IThumbnailOptions>{ noThumbnailClass: 'coveo-heyo-there-is-no-class' },

@@ -191,6 +191,7 @@ export interface IAnalyticsTriggerNotify {
 
 export interface IAnalyticsTriggerRedirect {
   redirectedTo: string;
+  query?: string;
 }
 
 export interface IAnalyticsTriggerQuery {

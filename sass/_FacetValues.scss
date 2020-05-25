@@ -1,4 +1,6 @@
 @import 'Variables';
+@import 'FacetVariables';
+
 @mixin facetValuesCheckboxes($size: 'normal') {
   $pixel-size: '18px';
   @if $size=='smaller' {
@@ -11,8 +13,7 @@
     width: #{$pixel-size};
     height: #{$pixel-size};
     box-sizing: content-box;
-    @include defaultRoundedBorder();
-    border-color: grey;
+    @include defaultRoundedLowContrastBorder();
     text-align: center;
     vertical-align: middle;
     margin-right: 15px;
@@ -124,7 +125,7 @@
 }
 
 .coveo-facet-value {
-  padding: 0 20px;
+  padding: 0 $facet-value-padding;
   margin: 0;
   line-height: 22px;
   position: relative;

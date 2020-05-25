@@ -10,7 +10,7 @@ import { IAnalyticsFacetMeta, analyticsActionCauseList } from '../Analytics/Anal
 import { IEndpointError } from '../../rest/EndpointError';
 import { l } from '../../strings/Strings';
 import { Assert } from '../../misc/Assert';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { StringUtils } from '../../utils/StringUtils';
 import { IFacetSearchValuesListKlass } from './FacetSearchValuesList';
 import { FacetValueElement } from './FacetValueElement';
@@ -71,8 +71,8 @@ export class FacetSearch implements IFacetSearch {
   /**
    * Position the search results at the footer of the facet.
    */
-  public positionSearchResults(nextTo: HTMLElement = this.search) {
-    this.facetSearchElement.positionSearchResults(this.root, this.facet.element.clientWidth, nextTo);
+  public positionSearchResults() {
+    this.facetSearchElement.positionSearchResults();
   }
 
   public fetchMoreValues() {

@@ -51,6 +51,28 @@ import { AccessibilityTimespanFacet } from './AccessibilityTimespanFacet';
 import { AccessibilityYouTubeThumbnail } from './AccessibilityYouTubeThumbnail';
 import { AccessibilityStarResult } from './AccessibilityStarResult';
 import { AccessibilityResultPreviewsManager } from './AccessibilityResultPreviewsManager';
+import { AccessibilitySettings } from './AccessibilitySettings';
+import { AccessibilityQuerySummary } from './AccessibilityQuerySummary';
+import { AccessibilityThumbnail } from './AccessibilityThumbnail';
+import { AccessibilityCategoryFacet } from './AccessibilityCategoryFacet';
+
+const getFilename = (path: string) => /\/([^\/]*$)/.exec(path)[1];
+
+const stylesheetExists = (filename: string) => !!document.head.querySelector(`link[href$='/${filename}']`);
+
+const loadStylesheet = (path: string) => {
+  if (stylesheetExists(getFilename(path))) {
+    return;
+  }
+  const stylesheet = $$('link', {
+    rel: 'stylesheet',
+    href: path
+  });
+  return new Promise<void>(resolve => {
+    stylesheet.one('load', () => resolve());
+    document.head.appendChild(stylesheet.el);
+  });
+};
 
 const initialHTMLSetup = () => {
   const body = jasmine['getGlobal']().document.body;
@@ -83,10 +105,12 @@ export const teardownPageBetweenTest = () => {
 };
 
 describe('Testing ...', () => {
-  beforeAll(done => {
+  beforeAll(async done => {
     initialHTMLSetup();
+    await loadStylesheet('./base/bin/css/CoveoFullSearch.css');
     Coveo.Logger.disable();
     Coveo.SearchEndpoint.configureSampleEndpointV2();
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
     done();
   });
 
@@ -146,4 +170,8 @@ describe('Testing ...', () => {
   AccessibilityYouTubeThumbnail();
   AccessibilityStarResult();
   AccessibilityResultPreviewsManager();
+  AccessibilitySettings();
+  AccessibilityQuerySummary();
+  AccessibilityThumbnail();
+  AccessibilityCategoryFacet();
 });

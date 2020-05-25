@@ -1,6 +1,6 @@
 import * as axe from 'axe-core';
 import { $$, Component, Facet, get, Dom } from 'coveo-search-ui';
-import { afterDeferredQuerySuccess, afterDelay, getFacetColumn, getRoot, inDesktopMode, resetMode } from './Testing';
+import { afterDeferredQuerySuccess, getFacetColumn, getRoot, inDesktopMode, resetMode, waitUntilSelectorIsPresent } from './Testing';
 import { ContrastChecker } from './ContrastChecker';
 
 export const AccessibilityFacet = () => {
@@ -49,8 +49,18 @@ export const AccessibilityFacet = () => {
 
       it('settings should be accessible', async done => {
         facetElement.find('.coveo-facet-header-settings').click();
-        const axeResults = await axe.run(getRoot());
+        const axeResults = await axe.run(await waitUntilSelectorIsPresent(getRoot(), '.coveo-facet-settings-popup'));
         expect(axeResults).toBeAccessible();
+        done();
+      });
+
+      it('disabled settings items should have good contrast', async done => {
+        facetElement.find('.coveo-facet-header-settings').click();
+        const settingsItem = await waitUntilSelectorIsPresent<HTMLElement>(
+          getRoot(),
+          '.coveo-facet-settings-disabled .coveo-facet-settings-item'
+        );
+        expect(ContrastChecker.getContrastWithBackground(settingsItem)).toBeGreaterThan(ContrastChecker.MinimumHighContrastRatio);
         done();
       });
 
@@ -67,7 +77,7 @@ export const AccessibilityFacet = () => {
       describe('after focusing on the search button', () => {
         beforeEach(async done => {
           (get(facetElement.el) as Facet).facetSearch.focus();
-          await afterDelay(1000);
+          await waitUntilSelectorIsPresent(document.body, '.coveo-facet-search-results');
           done();
         });
 
@@ -79,7 +89,6 @@ export const AccessibilityFacet = () => {
 
         it('should still be accessible when search has been opened', async done => {
           (get(facetElement.el) as Facet).facetSearch.dismissSearchResults();
-          await afterDelay(1000);
           const axeResults = await axe.run(getRoot());
           expect(axeResults).toBeAccessible();
           done();

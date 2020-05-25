@@ -21,6 +21,7 @@ import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
 import { Component } from '../Base/Component';
 import { TemplateCache } from './TemplateCache';
+import { INumberFormatOptions } from '../../utils/NumberUtils';
 
 /**
  * The core template helpers provided by default.
@@ -135,10 +136,17 @@ export interface ICoreHelpers {
    * Formats a numeric value using the format string.
    *
    * - `content`: The numeric value to format.
-   * - `format`: The format string to use. The options available are defined by
-   *   the [Globalize](https://github.com/klaaspieter/jquery-global#numbers) library.
+   * - `format` Optional. The string format to use. See the <a href="https://github.com/klaaspieter/jquery-global#numbers" target="_blank">Globalize</a> library for the list of available formats.
+   *
+   * When the helper is used in a [`FieldValue`]{@link FieldValue} component, this value is automatically retrieved from the specified [`field`]{@link FieldValue.options.field}.
+   *
+   * **Example:**
+   *
+   *  ```html
+   *  <div class="CoveoFieldValue" data-field="@viewcount" data-text-caption="Views" data-helper="number" data-helper-options-format="n0"></div>
+   *  ```
    */
-  number: (content: string, format: string) => string;
+  number: (content: string, format: string | INumberFormatOptions) => string;
   /**
    * Formats a date value to a date-only string using the specified options.
    *
@@ -577,17 +585,18 @@ TemplateHelpers.registerTemplateHelper('highlightStreamHTMLv2', (content: string
   return executeHighlightStreamHTML(content, mergedOptions);
 });
 
-TemplateHelpers.registerFieldHelper('number', (value: any, options?: any) => {
-  var numberValue = Number(value);
-  if (Utils.exists(value)) {
-    if (_.isString(options)) {
-      return StringUtils.htmlEncode(Globalize.format(numberValue, <string>options));
-    } else {
-      return StringUtils.htmlEncode(numberValue.toString());
-    }
-  } else {
+TemplateHelpers.registerFieldHelper('number', (value: any, options?: INumberFormatOptions | string) => {
+  if (!Utils.exists(value)) {
     return undefined;
   }
+
+  const numberValue = Number(value);
+  const format = _.isString(options) ? options : options && options.format;
+  if (!format) {
+    return StringUtils.htmlEncode(numberValue.toString());
+  }
+
+  return StringUtils.htmlEncode(Globalize.format(numberValue, <string>format));
 });
 
 TemplateHelpers.registerFieldHelper('date', (value: any, options?: IDateToStringOptions) => {

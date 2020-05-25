@@ -65,6 +65,10 @@ export function AnalyticsTest() {
         test = null;
       });
 
+      it('use URL from default endpoint if not specified', () => {
+        expect(test.cmp.options.endpoint).toBe(SearchEndpoint.endpoints['default'].options.restUri + '/rest/ua');
+      });
+
       it('use access token from default endpoint if not specified', () => {
         expect(test.cmp.options.token).toBe('some token');
         expect(test.cmp.client.endpoint.endpointCaller.options.accessToken).toBe('some token');

@@ -824,3 +824,12 @@ AccessibleModalTest();
 
 import { SortDropdownTest } from './ui/SortDropdownTest';
 SortDropdownTest();
+
+import { ResultLayoutSelectorTest } from './ui/ResultLayoutSelectorTest';
+ResultLayoutSelectorTest();
+
+import { ResponsiveFacetColumnTest } from './ui/ResponsiveFacetColumnTest';
+ResponsiveFacetColumnTest();
+
+import { ResponsiveDropdownModalContentTest } from './ui/ResponsiveComponents/ResponsiveDropdownModalContentTest';
+ResponsiveDropdownModalContentTest();

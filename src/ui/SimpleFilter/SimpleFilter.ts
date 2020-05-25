@@ -168,6 +168,7 @@ export class SimpleFilter extends Component {
     /**
      * Whether to show a button to clear all selected values.
      *
+     * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
      */
     enableClearButton: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };

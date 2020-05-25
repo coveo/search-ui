@@ -95,12 +95,10 @@ export class ComponentEvents {
   public on(el: HTMLElement | Window | Document, event: string, handler: Function);
   public on(el: Dom, event: string, handler: Function);
   public on(arg: any, event: string, handler: Function) {
-    if (!JQueryUtils.getJQuery() || !JQueryUtils.isInstanceOfJQuery(arg)) {
-      var htmlEl: HTMLElement = arg;
-      $$(htmlEl).on(event, this.wrapToCallIfEnabled(handler));
+    if (this.shouldTreatElementAsJQuery(arg)) {
+      arg.on(event, this.wrapToCallIfEnabled(handler));
     } else {
-      var jq: Dom = arg;
-      jq.on(event, this.wrapToCallIfEnabled(handler));
+      $$(arg).on(event, this.wrapToCallIfEnabled(handler));
     }
   }
 
@@ -115,12 +113,10 @@ export class ComponentEvents {
   public one(el: HTMLElement, event: string, handler: Function);
   public one(el: Dom, event: string, handler: Function);
   public one(arg: any, event: string, handler: Function) {
-    if (arg instanceof HTMLElement) {
-      var htmlEl: HTMLElement = arg;
-      $$(htmlEl).one(event, this.wrapToCallIfEnabled(handler));
+    if (this.shouldTreatElementAsJQuery(arg)) {
+      arg.one(event, this.wrapToCallIfEnabled(handler));
     } else {
-      var jq: Dom = arg;
-      jq.one(event, this.wrapToCallIfEnabled(handler));
+      $$(arg).one(event, this.wrapToCallIfEnabled(handler));
     }
   }
 
@@ -189,12 +185,10 @@ export class ComponentEvents {
   public trigger(el: Dom, event: string, args?: Object);
   public trigger(arg: any, event: string, args?: Object) {
     this.wrapToCallIfEnabled(() => {
-      if (arg instanceof HTMLElement) {
-        var htmlEl: HTMLElement = arg;
-        $$(htmlEl).trigger(event, args);
+      if (this.shouldTreatElementAsJQuery(arg)) {
+        arg.trigger(event, args);
       } else {
-        var jq: Dom = arg;
-        jq.trigger(event, args);
+        $$(arg).trigger(event, args);
       }
     })(args);
   }
@@ -211,7 +205,7 @@ export class ComponentEvents {
           if (args[0].detail) {
             args = [args[0].detail];
           }
-        } else if (args && JQueryUtils.isInstanceOfJqueryEvent(args[0])) {
+        } else if (args && this.shouldTreatEventAsJQuery(args[0])) {
           if (args[1] != undefined) {
             args = [args[1]];
           } else if (args[0].hasOwnProperty('originalEvent')) {
@@ -224,6 +218,25 @@ export class ComponentEvents {
         return func.apply(this.owner, args);
       }
     };
+  }
+
+  private shouldTreatElementAsJQuery(arg: any) {
+    if (Dom.useNativeJavaScriptEvents === true) {
+      return false;
+    }
+
+    if (JQueryUtils.getJQuery() && JQueryUtils.isInstanceOfJQuery(arg)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private shouldTreatEventAsJQuery(arg: any) {
+    if (Dom.useNativeJavaScriptEvents === true) {
+      return false;
+    }
+    return JQueryUtils.getJQuery() && JQueryUtils.isInstanceOfJqueryEvent(arg);
   }
 
   private getQueryStateEventName(eventType: string, attribute?: string): string {
@@ -361,6 +374,18 @@ export class Component extends BaseComponent {
 
   public resolveResult(): IQueryResult {
     return Component.getResult(this.element);
+  }
+
+  protected removeTabSupport() {
+    if (this.element.hasAttribute('data-tab')) {
+      this.logger.warn('The "data-tab" attribute is not supported for this component and was removed.');
+      this.element.removeAttribute('data-tab');
+    }
+
+    if (this.element.hasAttribute('data-tab-not')) {
+      this.logger.warn('The "data-tab-not" attribute is not supported for this component and was removed.');
+      this.element.removeAttribute('data-tab-not');
+    }
   }
 
   private initDebugInfo() {

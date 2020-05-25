@@ -11,6 +11,7 @@ import { IRangeValue } from '../../rest/RangeValue';
 import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
 import { DynamicFacetRangeValueCreator } from './DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacetRangeQueryController';
+import { Utils } from '../../Core';
 
 /**
  * A `DynamicFacetRange` is a [facet](https://docs.coveo.com/en/198/) whose values are expressed as ranges.
@@ -87,7 +88,11 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
      *
      * This value will override the [`numberOfValues`]{@link DynamicFacet.options.numberOfValues} value.
      */
-    ranges: ComponentOptions.buildJsonOption<IRangeValue[]>({ required: true, section: 'CommonOptions' })
+    ranges: ComponentOptions.buildJsonOption<IRangeValue[]>({
+      required: true,
+      section: 'CommonOptions',
+      postProcessing: ranges => (Utils.isNonEmptyArray(ranges) ? ranges : [])
+    })
   };
 
   /**
@@ -105,10 +110,6 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
 
   protected initValues() {
     this.values = new DynamicFacetValues(this, DynamicFacetRangeValueCreator);
-
-    if (this.options.ranges) {
-      this.values.createFromRanges(this.options.ranges);
-    }
   }
 
   protected initDynamicFacetQueryController() {

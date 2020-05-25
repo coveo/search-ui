@@ -210,6 +210,7 @@ export class Sort extends Component {
       this.currentCriteria = null;
     }
     this.updateAppearance();
+    this.updateAccessibilityProperties();
   }
 
   private setTextToCaptionIfDefined() {
@@ -220,14 +221,17 @@ export class Sort extends Component {
     return Utils.isNonEmptyString(this.options.caption);
   }
 
-  private addAccessiblityAttributes() {
-    const localizedCaption = l(this.displayedSortText);
+  private get currentDirection() {
+    return this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
+  }
 
+  private addAccessiblityAttributes() {
     new AccessibleButton()
       .withElement(this.element)
       .withSelectAction(() => this.handleClick())
-      .withLabel(l('SortResultsBy', localizedCaption))
+      .withLabel(this.getAccessibleLabel())
       .build();
+    this.updateAccessibleSelectedState();
   }
 
   private get displayedSortText() {
@@ -271,15 +275,52 @@ export class Sort extends Component {
 
   private updateAppearance() {
     $$(this.element).toggleClass('coveo-selected', this.isSelected());
-
     if (this.isToggle()) {
-      var direction = this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
       $$(this.element).removeClass('coveo-ascending');
       $$(this.element).removeClass('coveo-descending');
       if (this.isSelected()) {
-        $$(this.element).addClass(direction === 'ascending' ? 'coveo-ascending' : 'coveo-descending');
+        $$(this.element).addClass(this.currentDirection === 'ascending' ? 'coveo-ascending' : 'coveo-descending');
       }
     }
+  }
+
+  private updateAccessibilityProperties() {
+    this.updateAccessibleSelectedState();
+    this.updateAccessibleLabel();
+  }
+
+  private updateAccessibleSelectedState() {
+    this.element.setAttribute('aria-pressed', this.isSelected().toString());
+  }
+
+  private updateAccessibleLabel() {
+    this.element.setAttribute('aria-label', this.getAccessibleLabel());
+  }
+
+  private getAccessibleLabel() {
+    return this.isToggle() ? this.getAccessibleLabelWithSort() : this.getAccessibleLabelWithoutSort();
+  }
+
+  private getAccessibleLabelWithSort(): string {
+    const localizedCaption = l(this.displayedSortText);
+    if (this.isSelected()) {
+      if (this.currentDirection === 'ascending') {
+        return l('SortResultsByDescending', localizedCaption);
+      } else {
+        return l('SortResultsByAscending', localizedCaption);
+      }
+    }
+
+    if (this.currentDirection === 'ascending') {
+      return l('SortResultsByAscending', localizedCaption);
+    }
+
+    return l('SortResultsByDescending', localizedCaption);
+  }
+
+  private getAccessibleLabelWithoutSort(): string {
+    const localizedCaption = l(this.displayedSortText);
+    return l('SortResultsBy', localizedCaption);
   }
 }
 

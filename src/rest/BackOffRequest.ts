@@ -1,8 +1,13 @@
-import { backOff as originalBackOff, IBackOffRequest } from 'exponential-backoff';
+import { backOff as originalBackOff, IBackOffOptions } from 'exponential-backoff';
 
 let backOff = originalBackOff;
 
-export function setBackOffModule(newModule?: (request: IBackOffRequest<any>) => Promise<any>) {
+export interface IBackOffRequest<T> {
+  fn: () => Promise<T>;
+  options?: Partial<IBackOffOptions>;
+}
+
+export function setBackOffModule(newModule?: (request: () => Promise<any>, options?: Partial<IBackOffOptions>) => Promise<any>) {
   backOff = newModule || originalBackOff;
 }
 
@@ -19,7 +24,7 @@ export class BackOffRequest {
 
   private static enqueueRequest<T>(request: IBackOffRequest<T>, resolve, reject) {
     const req = () =>
-      backOff<T>(request)
+      backOff<T>(request.fn, request.options)
         .then(resolve)
         .catch(reject);
     BackOffRequest.queue.push(req);

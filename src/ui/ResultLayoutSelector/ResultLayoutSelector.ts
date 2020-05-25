@@ -256,8 +256,10 @@ export class ResultLayoutSelector extends Component {
     if (layout) {
       if (this.currentLayout) {
         $$(this.currentActiveLayouts[this.currentLayout].button.el).removeClass('coveo-selected');
+        $$(this.currentActiveLayouts[this.currentLayout].button.el).setAttribute('aria-pressed', false.toString());
       }
       $$(this.currentActiveLayouts[layout].button.el).addClass('coveo-selected');
+      $$(this.currentActiveLayouts[layout].button.el).setAttribute('aria-pressed', true.toString());
       this.currentLayout = layout;
       $$(this.element).trigger(ResultListEvents.changeLayout, <IChangeLayoutEventArgs>{
         layout: layout,
@@ -332,9 +334,9 @@ export class ResultLayoutSelector extends Component {
       .withOwner(this.bind)
       .build();
 
-    if (layout === this.currentLayout) {
-      btn.addClass('coveo-selected');
-    }
+    const isCurrentLayout = layout === this.currentLayout;
+    btn.toggleClass('coveo-selected', isCurrentLayout);
+    btn.setAttribute('aria-pressed', isCurrentLayout.toString());
 
     $$(this.element).append(btn.el);
     this.currentActiveLayouts[layout] = {

@@ -2,7 +2,7 @@
 // https://app.frontify.com/d/GthysWU8RY0Q/brand-guidelines#/basics/colors
 // Corporate Main Colors
 $coveo-orange: #f58020;
-$coveo-blue: #004990;
+$coveo-blue: #0059b3;
 $coveo-red: #dc291e;
 // Complementary Colors Set 1
 $color-dark-grey: #313a45;
@@ -16,6 +16,7 @@ $color-vibrant-blue: #009ddc;
 $color-teal: #296896;
 $color-greyish-cyan: #cddee9;
 $color-greyish-light-cyan: #cddee9;
+$color-light-contrast-grey: #7e8c9a;
 $color-light-grey: #bcc3ca;
 $color-blueish-white-grey: #e6ecf0;
 $color-blueish-white: #f7f8f9;
@@ -40,8 +41,13 @@ $font-size-smallest: 12px;
 $default-border-radius: 2px;
 $small-border-radius: 1px;
 $default-border: thin solid $color-light-grey;
+$default-low-contrast-border: thin solid $color-light-contrast-grey;
 @mixin defaultRoundedBorder {
   border: $default-border;
+  border-radius: $default-border-radius;
+}
+@mixin defaultRoundedLowContrastBorder {
+  border: $default-low-contrast-border;
   border-radius: $default-border-radius;
 }
 

@@ -1,5 +1,5 @@
 import { Facet } from './Facet';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
@@ -59,7 +59,7 @@ export class ValueElementRenderer {
 
   protected buildExcludeIcon(): HTMLElement {
     const excludeIcon = $$('div', {
-      title: l('ExcludeValueWithResultCount', this.caption, l('ResultCount', this.count)),
+      title: l('ExcludeValueWithResultCount', this.caption, l('ResultCount', this.count, parseInt(this.count, 10))),
       className: 'coveo-facet-value-exclude',
       tabindex: 0,
       role: 'button'
@@ -171,7 +171,7 @@ export class ValueElementRenderer {
   }
 
   private buildListItem() {
-    this.listItem = $$('li', { className: 'coveo-facet-value coveo-facet-selectable' }).el;
+    this.listItem = $$('li', { className: 'coveo-facet-value coveo-facet-selectable', ariaLabel: this.ariaLabel }).el;
 
     if (!$$(this.listItem).canHandleEvent('touchstart')) {
       $$(this.listItem).addClass('coveo-with-hover');
@@ -181,7 +181,7 @@ export class ValueElementRenderer {
   }
 
   private initAndAppendLabel() {
-    this.label = $$('label', { className: 'coveo-facet-value-label' }).el;
+    this.label = $$('label', { className: 'coveo-facet-value-label', role: 'group' }).el;
     this.tryToInitAndAppendComputedField();
     this.initAndAppendFacetValueLabelWrapper();
     this.listItem.appendChild(this.label);
@@ -273,7 +273,7 @@ export class ValueElementRenderer {
   }
 
   private get ariaLabel() {
-    const resultCount = l('ResultCount', this.count);
+    const resultCount = l('ResultCount', this.count, parseInt(this.count, 10));
     return `${l(this.actionLabel, this.caption, resultCount)}`;
   }
 }

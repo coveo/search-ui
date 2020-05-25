@@ -2,7 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { ValueElementRenderer } from '../../src/ui/Facet/ValueElementRenderer';
 import { IFacetOptions } from '../../src/ui/Facet/Facet';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
 
@@ -26,6 +26,11 @@ export function ValueElementRendererTest() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1234)));
       expect(valueRenderer.build().listItem).toBeDefined();
       expect(valueRenderer.build().listItem.getAttribute('data-value')).toBe('foo');
+    });
+
+    it('should give the label the "group" role to avoid overriding child labels', () => {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1234)));
+      expect(valueRenderer.build().label.getAttribute('role')).toEqual('group');
     });
 
     it('should add a hover class for the list element', () => {
@@ -60,6 +65,12 @@ export function ValueElementRendererTest() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       valueRenderer.build();
       expect(valueRenderer.checkbox.getAttribute('aria-label')).toBeTruthy();
+    });
+
+    it('the list item has an aria-label', () => {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      valueRenderer.build();
+      expect(valueRenderer.listItem.getAttribute('aria-label')).toBeTruthy();
     });
 
     it('should put the tabindex attribute to 0 on a stylish checkbox', () => {

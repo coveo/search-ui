@@ -1,4 +1,7 @@
 @import 'Variables';
+
+$ellipse-font-family: Arial, Helvetica, sans-serif;
+
 .CoveoPrintableUri {
   @include justify-content(flex-start);
   margin: 2px 0 5px;
@@ -20,23 +23,27 @@
   .coveo-hidden {
     display: none;
   }
-  .coveo-printable-uri-part:nth-of-type(1) {
-    @include flex-shrink(1);
-    min-width: 15px;
-  }
-  .coveo-printable-uri-part:last-of-type {
-    @include flex-shrink(1);
-    min-width: 15px;
-  }
   .coveo-printable-uri-part {
     color: $color-coveo-for-salesforce;
     margin: 0;
     flex: 0 15 auto;
     min-width: 10px;
+    @supports (max-width: max-content) {
+      flex: 1 0 0;
+      max-width: max-content;
+    }
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0;
+  }
+  .coveo-printable-uri-ellipsis {
+    > button {
+      @include clickable();
+      border: none;
+      background: none;
+      font-family: $ellipse-font-family;
+    }
   }
 }
 

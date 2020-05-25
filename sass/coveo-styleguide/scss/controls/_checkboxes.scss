@@ -1,3 +1,5 @@
+@import '../../../Variables';
+
 .coveo-checkbox-button {
   position: relative;
 
@@ -6,7 +8,7 @@
   padding: 0;
 
   background: $pure-white;
-  border: 1px solid $medium-grey;
+  border: 1px solid $color-light-contrast-grey;
   border-radius: $border-radius;
   outline: none;
 

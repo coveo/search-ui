@@ -3,16 +3,37 @@ import { FocusTrap } from '../ui/FocusTrap/FocusTrap';
 import { l } from '../strings/Strings';
 import { $$ } from './Dom';
 import { KeyboardUtils, KEYBOARD } from './KeyboardUtils';
+import { IQuickViewHeaderOptions } from './DomUtils';
+import { IQueryResult } from '../rest/QueryResult';
+import { IComponentBindings } from '../ui/Base/ComponentBindings';
+import { DomUtils } from '../Core';
 
 export interface IAccessibleModalOptions {
   overlayClose?: boolean;
   sizeMod: 'small' | 'normal' | 'big';
 }
 
+export interface IAccessibleModalOpenParameters {
+  content: HTMLElement;
+  validation: () => boolean;
+  origin: HTMLElement;
+}
+
+export interface IAccessibleModalOpenResultParameters extends IAccessibleModalOpenParameters {
+  result: IQueryResult;
+  options: IQuickViewHeaderOptions;
+  bindings: IComponentBindings;
+}
+
+export interface IAccessibleModalOpenNormalParameters extends IAccessibleModalOpenParameters {
+  title: HTMLElement;
+}
+
 export class AccessibleModal {
   private focusTrap: FocusTrap;
   private activeModal: Coveo.ModalBox.ModalBox;
   private options: IAccessibleModalOptions;
+  private initiallyFocusedElement: HTMLElement;
 
   public get isOpen() {
     return !!this.focusTrap;
@@ -30,9 +51,13 @@ export class AccessibleModal {
     return this.activeModal && this.activeModal.wrapper;
   }
 
+  private get headerElement() {
+    return this.element && this.element.querySelector<HTMLElement>('.coveo-modal-header h1');
+  }
+
   constructor(
     private className: string,
-    private ownerBody: HTMLBodyElement,
+    private ownerElement: HTMLElement,
     private modalboxModule: Coveo.ModalBox.ModalBox = ModalBoxModule,
     options: Partial<IAccessibleModalOptions> = {}
   ) {
@@ -44,23 +69,41 @@ export class AccessibleModal {
     };
   }
 
-  public open(title: HTMLElement, content: HTMLElement, validation: () => boolean) {
+  public openResult(parameters: IAccessibleModalOpenResultParameters) {
     if (this.isOpen) {
       return;
     }
-    this.activeModal = this.modalboxModule.open(content, {
-      title,
+    this.openModalAndTrap({
+      content: parameters.content,
+      validation: parameters.validation,
+      origin: parameters.origin,
+      title: DomUtils.getQuickviewHeader(parameters.result, parameters.options, parameters.bindings).el
+    });
+    this.makeAccessible(parameters.options.title || parameters.result.title);
+  }
+
+  public open(parameters: IAccessibleModalOpenNormalParameters) {
+    if (this.isOpen) {
+      return;
+    }
+    this.openModalAndTrap(parameters);
+    this.makeAccessible();
+  }
+
+  private openModalAndTrap(parameters: IAccessibleModalOpenNormalParameters) {
+    this.initiallyFocusedElement = parameters.origin || (document.activeElement as HTMLElement);
+    this.activeModal = this.modalboxModule.open(parameters.content, {
+      title: parameters.title,
       className: this.className,
       validation: () => {
         this.onModalClose();
-        return validation();
+        return parameters.validation();
       },
-      body: this.ownerBody,
+      body: this.ownerElement,
       sizeMod: this.options.sizeMod,
       overlayClose: this.options.overlayClose
     });
     this.focusTrap = new FocusTrap(this.element);
-    this.makeAccessible();
   }
 
   public close() {
@@ -71,8 +114,11 @@ export class AccessibleModal {
     this.activeModal = null;
   }
 
-  private makeAccessible() {
+  private makeAccessible(title?: string) {
     this.element.setAttribute('aria-modal', 'true');
+    if (title) {
+      this.headerElement.setAttribute('aria-label', title);
+    }
     this.makeCloseButtonAccessible();
   }
 
@@ -88,5 +134,8 @@ export class AccessibleModal {
   private onModalClose() {
     this.focusTrap.disable();
     this.focusTrap = null;
+    if (this.initiallyFocusedElement && document.body.contains(this.initiallyFocusedElement)) {
+      this.initiallyFocusedElement.focus();
+    }
   }
 }

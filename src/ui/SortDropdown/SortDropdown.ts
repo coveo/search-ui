@@ -26,6 +26,8 @@ import { l } from '../../strings/Strings';
  * </div>
  * ```
  * Each one of the children `Sort` components should have only one sort criteria to prevent the regular toggle behaviour.
+ *
+ * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
  */
 export class SortDropdown extends Component {
   static ID = 'SortDropdown';
@@ -51,6 +53,7 @@ export class SortDropdown extends Component {
     super(element, SortDropdown.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, SortDropdown, options);
+    this.removeTabSupport();
 
     this.bind.oneRootElement(InitializationEvents.afterInitialization, () => this.handleAfterInitialization());
     this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.SORT, (args: IAttributeChangedEventArg) =>
@@ -64,8 +67,19 @@ export class SortDropdown extends Component {
     this.buildDropdown();
   }
 
+  private clearDropdown() {
+    this.dropdown && this.element.removeChild(this.dropdown.getElement());
+    this.dropdown = null;
+  }
+
   private buildDropdown() {
-    this.sortComponents = this.getSortComponents();
+    this.sortComponents = this.getEnabledSortComponents();
+    this.clearDropdown();
+
+    if (!this.sortComponents.length) {
+      return;
+    }
+
     this.dropdown = new Dropdown(
       () => this.handleChange(),
       this.getValuesForDropdown(),
@@ -76,7 +90,7 @@ export class SortDropdown extends Component {
     this.update();
   }
 
-  private getSortComponents() {
+  private getEnabledSortComponents() {
     const sortComponents = $$(this.element)
       .findAll(`.${Component.computeCssClassNameForType('Sort')}`)
       .map(sortElement => {
@@ -92,7 +106,7 @@ export class SortDropdown extends Component {
           return;
         }
       })
-      .filter(sortCmp => sortCmp);
+      .filter(sortCmp => sortCmp && !sortCmp.disabled);
 
     return sortComponents;
   }
@@ -126,7 +140,17 @@ export class SortDropdown extends Component {
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    data.results.results.length ? this.showElement() : this.hideElement();
+    if (!data.results.results.length) {
+      return this.hideElement();
+    }
+
+    this.buildDropdown();
+
+    if (!this.sortComponents.length) {
+      return this.hideElement();
+    }
+
+    this.showElement();
   }
 
   private handleQueryError(data: IQueryErrorEventArgs) {

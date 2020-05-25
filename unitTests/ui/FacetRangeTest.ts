@@ -1,6 +1,6 @@
 import * as Mock from '../MockEnvironment';
 import { FacetRange, IFacetRangeOptions } from '../../src/ui/FacetRange/FacetRange';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { Simulate } from '../Simulate';
 
 export function FacetRangeTest() {
@@ -16,8 +16,12 @@ export function FacetRangeTest() {
     });
 
     it('should allow to get a value caption for a facet value', () => {
-      const facetValue: FacetValue = FacetValue.create('foobar');
-      expect(test.cmp.getValueCaption(facetValue)).toEqual('foobar');
+      test = Mock.optionsComponentSetup<FacetRange, IFacetRangeOptions>(FacetRange, <IFacetRangeOptions>{
+        field: '@foo',
+        valueCaption: { hello: 'goodbye' }
+      });
+      const facetValue: FacetValue = FacetValue.create('hello');
+      expect(test.cmp.getValueCaption(facetValue)).toEqual('goodbye');
     });
 
     it('should add a group by query', () => {
@@ -45,30 +49,31 @@ export function FacetRangeTest() {
       });
     });
 
-    describe('with a value caption', () => {
-      it('should allow to get a formatted value caption', () => {
+    describe('with a value format', () => {
+      it('should allow to get a formatted value with a number ', () => {
         test = Mock.optionsComponentSetup<FacetRange, IFacetRangeOptions>(FacetRange, <IFacetRangeOptions>{
           field: '@foo',
-          valueCaption: 'date'
+          valueFormat: 'c0'
         });
-        const facetValue: FacetValue = FacetValue.create('2015/01/01..2016/01/01');
-        expect(test.cmp.getValueCaption(facetValue)).toEqual('1/1/2015 - 1/1/2016');
+        const facetValue: FacetValue = FacetValue.create('0.00000..9.999999');
+        expect(test.cmp.getValueCaption(facetValue)).toEqual('$0 - $10');
       });
 
-      it('should allow to get a formatted value caption if the helper is a predefined format', () => {
+      it('should not work when the value caption option is defined', () => {
         test = Mock.optionsComponentSetup<FacetRange, IFacetRangeOptions>(FacetRange, <IFacetRangeOptions>{
           field: '@foo',
-          valueCaption: 'dd-MM----yyyy',
-          dateField: true
+          valueFormat: 'c0',
+          valueCaption: {}
         });
-        const facetValue: FacetValue = FacetValue.create('2015/01/01..2016/01/01');
-        expect(test.cmp.getValueCaption(facetValue)).toEqual('01-01----2015 - 01-01----2016');
+        const facetValue: FacetValue = FacetValue.create('0.00000..9.999999');
+        expect(test.cmp.getValueCaption(facetValue)).toEqual('0.00000..9.999999');
       });
 
-      it('should format date value automatically if no value caption is provided with a standard format', () => {
+      it(`when a value is a date
+        should ignore the value format option and format the date`, () => {
         test = Mock.optionsComponentSetup<FacetRange, IFacetRangeOptions>(FacetRange, <IFacetRangeOptions>{
           field: '@foo',
-          dateField: true
+          valueFormat: 'c0'
         });
         const facetValue: FacetValue = FacetValue.create('2015/01/01..2016/01/01');
         expect(test.cmp.getValueCaption(facetValue)).toEqual('1/1/2015 - 1/1/2016');

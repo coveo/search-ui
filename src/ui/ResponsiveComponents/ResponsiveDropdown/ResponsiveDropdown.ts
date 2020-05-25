@@ -19,12 +19,14 @@ type HandlerCall = { handler: Function; context: any };
 export class ResponsiveDropdown {
   public static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
   public static DROPDOWN_BACKGROUND_CSS_CLASS_NAME: string = 'coveo-dropdown-background';
+  public static DROPDOWN_BACKGROUND_ACTIVE_CSS_CLASS_NAME: string = 'coveo-dropdown-background-active';
 
   public isOpened: boolean = false;
   private onOpenHandlers: HandlerCall[] = [];
   private onCloseHandlers: HandlerCall[] = [];
   private popupBackground: Dom;
   private popupBackgroundIsEnabled: boolean = true;
+  private scrollableContainerToLock: HTMLElement = null;
   private previousSibling: Dom;
   private parent: Dom;
 
@@ -38,6 +40,13 @@ export class ResponsiveDropdown {
     this.saveContentPosition();
     this.bindOnKeyboardEscapeEvent();
     this.bindNukeEvents();
+  }
+
+  private set scrollLocked(lock: boolean) {
+    if (!this.scrollableContainerToLock) {
+      return;
+    }
+    this.scrollableContainerToLock.style.overflow = lock ? 'hidden' : '';
   }
 
   public registerOnOpenHandler(handler: Function, context) {
@@ -65,6 +74,7 @@ export class ResponsiveDropdown {
       handlerCall.handler.apply(handlerCall.context);
     });
     this.showPopupBackground();
+    this.lockScroll();
     $$(this.dropdownHeader.element).trigger(ResponsiveDropdownEvent.OPEN);
   }
 
@@ -77,11 +87,16 @@ export class ResponsiveDropdown {
     this.dropdownHeader.close();
     this.dropdownContent.hideDropdown();
     this.hidePopupBackground();
+    this.unlockScroll();
     $$(this.dropdownHeader.element).trigger(ResponsiveDropdownEvent.CLOSE);
   }
 
   public disablePopupBackground() {
     this.popupBackgroundIsEnabled = false;
+  }
+
+  public enableScrollLocking(scrollableContainer: HTMLElement) {
+    this.scrollableContainerToLock = scrollableContainer;
   }
 
   private bindOnClickDropdownHeaderEvent() {
@@ -115,8 +130,16 @@ export class ResponsiveDropdown {
       this.coveoRoot.el.appendChild(this.popupBackground.el);
       window.getComputedStyle(this.popupBackground.el).opacity;
       this.popupBackground.el.style.opacity = ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY;
-      this.popupBackground.addClass('coveo-dropdown-background-active');
+      this.popupBackground.addClass(ResponsiveDropdown.DROPDOWN_BACKGROUND_ACTIVE_CSS_CLASS_NAME);
     }
+  }
+
+  private lockScroll() {
+    this.scrollLocked = true;
+  }
+
+  private unlockScroll() {
+    this.scrollLocked = false;
   }
 
   private hidePopupBackground() {
@@ -124,7 +147,7 @@ export class ResponsiveDropdown {
       // forces the browser to reflow the element, so that the transition is applied.
       window.getComputedStyle(this.popupBackground.el).opacity;
       this.popupBackground.el.style.opacity = '0';
-      this.popupBackground.removeClass('coveo-dropdown-background-active');
+      this.popupBackground.removeClass(ResponsiveDropdown.DROPDOWN_BACKGROUND_ACTIVE_CSS_CLASS_NAME);
     }
   }
 

@@ -21,7 +21,8 @@ export function FacetValueStateHandlerTest() {
         field: facetId
       });
 
-      test = new FacetValueStateHandler(facetMatchingFvState.env.root);
+      test = new FacetValueStateHandler(facetMatchingFvState.env.searchInterface);
+      (test.searchInterface.getComponents as jasmine.Spy).and.returnValue([facetMatchingFvState.cmp]);
     });
 
     afterEach(() => {

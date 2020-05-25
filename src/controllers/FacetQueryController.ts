@@ -4,7 +4,7 @@ import { Facet } from '../ui/Facet/Facet';
 import { IGroupByRequest } from '../rest/GroupByRequest';
 import { IGroupByResult } from '../rest/GroupByResult';
 import { ExpressionBuilder } from '../ui/Base/ExpressionBuilder';
-import { FacetValue } from '../ui/Facet/FacetValues';
+import { FacetValue } from '../ui/Facet/FacetValue';
 import { Utils } from '../utils/Utils';
 import { QueryBuilder } from '../ui/Base/QueryBuilder';
 import { FacetSearchParameters } from '../ui/Facet/FacetSearchParameters';
