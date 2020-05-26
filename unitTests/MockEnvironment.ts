@@ -191,9 +191,16 @@ export function mock<T>(contructorFunc, name = 'mock'): T {
 
 export function mockWindow(): Window {
   const mockWindow = <any>mock(window);
+
+  mockWindow.history = {
+    pushState: jasmine.createSpy('pushState')
+  };
+
   mockWindow.location = <Location>{
     href: '',
-    hash: ''
+    hash: '',
+    pathname: '',
+    search: ''
   };
   mockWindow.location.assign = mockWindow.location.replace = (newHref: string) => {
     newHref = newHref || '';
@@ -217,7 +224,6 @@ export function mockWindow(): Window {
   mockWindow.removeEventListener = jasmine.createSpy('removeEventListener');
   mockWindow.dispatchEvent = jasmine.createSpy('dispatchEvent');
   mockWindow.localStorage = mock<Storage>(localStorage);
-
   return <Window>mockWindow;
 }
 

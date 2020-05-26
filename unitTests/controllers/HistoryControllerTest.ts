@@ -16,6 +16,10 @@ export function HistoryControllerTest() {
     let historyController: HistoryController;
     let env: Mock.IMockEnvironment;
 
+    function triggerRestoreHistoryEvent() {
+      $$(historyController.element).trigger(InitializationEvents.restoreHistoryState);
+    }
+
     beforeEach(() => {
       env = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel().build();
       historyController = new HistoryController(env.root, Mock.mockWindow(), env.queryStateModel, env.queryController);
@@ -44,11 +48,29 @@ export function HistoryControllerTest() {
 
       $$(historyController.element).trigger('state:all');
       Defer.flush();
-      expect(historyController.window.location.hash).toBe('#c=notDefault&d=[1,2,3]');
+      expect(historyController.window.history.pushState).toHaveBeenCalledWith('', '', '#c=notDefault&d=[1,2,3]');
     });
 
     it('should listen to hashchange event', () => {
       expect(historyController.window.addEventListener).toHaveBeenCalledWith('hashchange', jasmine.any(Function));
+    });
+
+    it(`given at least one value in the hash, when calling #setHashValues with an empty object,
+    it updates the url without including a hash to prevent the page from scrolling to the top`, () => {
+      historyController.window.location.hash = '#f:@author=[TED]';
+      historyController.setHashValues({});
+      expect(historyController.window.history.pushState).toHaveBeenCalledWith('', '', '');
+    });
+
+    it(`when calling #setHashValues to update the hash,
+    it includes the current location.pathname and location.search in the new url`, () => {
+      const location = historyController.window.location;
+      location.pathname = '/sports';
+      location.search = '?type=basketball';
+      historyController.setHashValues({ q: 'shoes' });
+
+      const expectedUrl = `${location.pathname}${location.search}#q=shoes`;
+      expect(historyController.window.history.pushState).toHaveBeenCalledWith('', '', expectedUrl);
     });
 
     it('should not throw when history controller does not have an analytics client and there is a hash change', () => {
@@ -58,11 +80,19 @@ export function HistoryControllerTest() {
     });
 
     it('should not set the hash when it has not changed on the first hash change', () => {
-      $$(historyController.element).trigger(InitializationEvents.restoreHistoryState);
+      triggerRestoreHistoryEvent();
       expect(historyController.window.location.replace).not.toHaveBeenCalled();
     });
 
-    it('should not update the model hen simply replacing the state from an old value', () => {
+    it('After the first hash change, when calling #setHashUtils, it pushes a new history entry instead of replacing state', () => {
+      triggerRestoreHistoryEvent();
+      historyController.setHashValues({ q: 'hello' });
+
+      expect(historyController.window.location.replace).not.toHaveBeenCalled();
+      expect(historyController.window.history.pushState).toHaveBeenCalledWith('', '', '#q=hello');
+    });
+
+    it('should not update the model when simply replacing the state from an old value', () => {
       historyController = new HistoryController(env.root, Mock.mockWindow(), env.queryStateModel, env.queryController);
       spyOn(env.queryStateModel, 'setMultiple');
       historyController.replaceState({ q: 'bar' });
@@ -95,8 +125,7 @@ export function HistoryControllerTest() {
         };
 
         historyController.hashUtils.getValue = jasmine.createSpy('getValue').and.callFake(throwsAnError);
-
-        $$(env.root).trigger(InitializationEvents.restoreHistoryState);
+        triggerRestoreHistoryEvent();
 
         expect(historyController.hashUtils.getValue).toHaveBeenCalledTimes(_.size(env.queryStateModel.attributes));
       });
@@ -105,7 +134,7 @@ export function HistoryControllerTest() {
         beforeEach(() => {
           historyController = new HistoryController(env.root, window, env.queryStateModel, env.queryController);
           historyController.hashUtils = fakeHashUtils;
-          $$(historyController.element).trigger(InitializationEvents.restoreHistoryState);
+          triggerRestoreHistoryEvent();
         });
 
         afterEach(() => {
