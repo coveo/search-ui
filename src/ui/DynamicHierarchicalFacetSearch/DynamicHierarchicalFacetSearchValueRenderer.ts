@@ -50,7 +50,7 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
         this.facetValue.displayValue,
         l('ResultCount', this.facetValue.numberOfResults, this.facetValue.numberOfResults)
       ),
-      [...start, ...(end || [])].reverse().join(', ')
+      [...start, ...(end || [])].join(', ')
     );
   }
 

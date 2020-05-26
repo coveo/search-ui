@@ -181,7 +181,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
         render = renderer.render();
       });
 
-      it('should show every parent value in reverse order in the label', () => {
+      it('should show every parent value in the label', () => {
         const expectedLabel = l(
           'HierarchicalFacetValueIndentedUnder',
           l(
@@ -189,7 +189,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
             facetValue.displayValue,
             l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
           ),
-          parentValues.reverse().join(', ')
+          parentValues.join(', ')
         );
         expect(render.getAttribute('aria-label')).toEqual(expectedLabel);
       });
@@ -231,7 +231,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
         render = renderer.render();
       });
 
-      it('should only show the first and last two values in reverse order in the label', () => {
+      it('should only show the first and last two values in the label', () => {
         const expectedLabel = l(
           'HierarchicalFacetValueIndentedUnder',
           l(
@@ -239,7 +239,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
             facetValue.displayValue,
             l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
           ),
-          [parentValues[0], parentValues[2], parentValues[3]].reverse().join(', ')
+          [parentValues[0], parentValues[2], parentValues[3]].join(', ')
         );
         expect(render.getAttribute('aria-label')).toEqual(expectedLabel);
       });
