@@ -66,6 +66,14 @@ export function DynamicHierarchicalFacetTest() {
       return args.breadcrumbs;
     }
 
+    function searchFeatureActive() {
+      return !!$$(test.cmp.element).find('.coveo-dynamic-facet-search');
+    }
+
+    function searchFeatureDisplayed() {
+      return $$($$(test.cmp.element).find('.coveo-dynamic-facet-search')).isVisible();
+    }
+
     function testQueryStateModelValues(path: string[]) {
       const QueryStateModelValues: string[] = test.env.queryStateModel.attributes[`f:${test.cmp.options.id}`];
       expect(QueryStateModelValues).toEqual(path);
@@ -288,6 +296,51 @@ export function DynamicHierarchicalFacetTest() {
       test.cmp.triggerNewIsolatedQuery();
 
       expect(test.cmp.values.render).toHaveBeenCalled();
+    });
+
+    it(`when "enableFacetSearch" option is false
+    it should not render the search element`, () => {
+      options.enableFacetSearch = false;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect(searchFeatureActive()).toBe(false);
+    });
+
+    it(`when "enableFacetSearch" option is false
+    it should not throw when collapsing`, () => {
+      options.enableFacetSearch = false;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect(() => test.cmp.collapse()).not.toThrow();
+    });
+
+    it(`when "enableFacetSearch" option is true
+    it should render the search element`, () => {
+      options.enableFacetSearch = true;
+      initializeComponent();
+      test.cmp.ensureDom();
+
+      expect(searchFeatureActive()).toBe(true);
+    });
+
+    it(`when "enableFacetSearch" option is "undefined" and "moreValuesAvailable" is "true"
+    it should show the search`, () => {
+      initializeComponent();
+      test.cmp.moreValuesAvailable = true;
+      test.cmp.ensureDom();
+
+      expect(searchFeatureDisplayed()).toBe(true);
+    });
+
+    it(`when "enableFacetSearch" option is "undefined" and "moreValuesAvailable" is "true"
+    it should hide the search`, () => {
+      initializeComponent();
+      test.cmp.moreValuesAvailable = false;
+      test.cmp.ensureDom();
+
+      expect(searchFeatureDisplayed()).toBe(false);
     });
 
     describe('testing showMoreValues/showLessValues', () => {

@@ -207,6 +207,7 @@ export function DynamicHierarchicalFacetValuesTest() {
         });
 
         it('clicking on the "All Categories" button should call "clear" on the facet header', () => {
+          facet.ensureDom();
           spyOn(facet.header.options, 'clear');
           $$(getAllCategoriesElement()).trigger('click');
           expect(facet.header.options.clear).toHaveBeenCalled();

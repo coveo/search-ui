@@ -24,6 +24,7 @@ export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOp
   sortCriteria?: HierarchicalFacetSortCriteria;
   injectionDepth?: number;
   enableMoreLess?: boolean;
+  enableFacetSearch?: boolean;
   delimitingCharacter?: string;
   valueCaption?: IStringMap<string>;
   includeInBreadcrumb?: boolean;
@@ -58,6 +59,12 @@ export interface IDynamicHierarchicalFacet extends Component, IDynamicManagerCom
   logAnalyticsEvent(eventName: IAnalyticsActionCause): void;
   enableFreezeFacetOrderFlag(): void;
   enablePreventAutoSelectionFlag(): void;
+}
+
+export interface IDynamicHierarchicalFacetSearchValueProperties {
+  fullPath: string[];
+  displayValue: string;
+  numberOfResults: number;
 }
 
 export interface IDynamicHierarchicalFacetValueProperties {
