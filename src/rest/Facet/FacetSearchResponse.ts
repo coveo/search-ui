@@ -5,6 +5,11 @@ export interface IFacetSearchResultValue {
    * **Example:** `ACME Product A`
    */
   displayValue: string;
+  /**
+   * The hierarchical path to the value.
+
+   * **Note:** This property is only defined when the facet search request was made against hierarchical values.
+   */
   path: string[];
   /**
    * The original facet value, as retrieved from the field in the index.
