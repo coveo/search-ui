@@ -52,6 +52,8 @@ export function FieldValueTest() {
     function initializeFacet(options: IFieldValueCompatibleFacet['options']) {
       const newFacet = Mock.mockComponent<IFieldValueCompatibleFacet>(Facet);
 
+      newFacet.isFieldValueCompatible = true;
+
       newFacet.constructor['ID'] = Facet.ID;
 
       newFacet.hasSelectedValue = () => true;
