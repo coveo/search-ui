@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IFacetSearchResponse | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>FacetSearchType | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
@@ -128,11 +128,14 @@
 					<a id="globals-toc-link" href=../globals.html><b>Globals</b></a>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="ifacetsearchresponse.html" class="tsd-kind-icon">IFacet<wbr>Search<wbr>Response</a>
+					<li class="current tsd-kind-enum">
+						<a href="facetsearchtype.html" class="tsd-kind-icon">Facet<wbr>Search<wbr>Type</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ifacetsearchresponse.html#values" class="tsd-kind-icon">values</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="facetsearchtype.html#hierarchical" class="tsd-kind-icon">hierarchical</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="facetsearchtype.html#specific" class="tsd-kind-icon">specific</a>
 							</li>
 						</ul>
 					</li>
@@ -153,16 +156,16 @@
 							<a href="../globals.html">Globals</a>
 						</li>
 						<li>
-							<a href="ifacetsearchresponse.html">IFacetSearchResponse</a>
+							<a href="facetsearchtype.html">FacetSearchType</a>
 						</li>
 					</ul>
-					<h1>Interface IFacetSearchResponse</h1>
+					<h1>Enumeration FacetSearchType</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A Search API facet search response.</p>
+						<p>The facet types against which facet search is allowed.</p>
 					</div>
 				</div>
 			</section>
@@ -174,41 +177,51 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetsearchresponse.html#values" class="tsd-kind-icon">values</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="facetsearchtype.html#hierarchical" class="tsd-kind-icon">hierarchical</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="facetsearchtype.html#specific" class="tsd-kind-icon">specific</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="values" class="tsd-anchor"></a>
-					<h3>values</h3>
-					<div class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IFacetSearchResultValue[]</span></div>
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="hierarchical" class="tsd-anchor"></a>
+					<h3>hierarchical</h3>
+					<div class="tsd-signature tsd-kind-icon">hierarchical<span class="tsd-signature-symbol">:</span> </div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSearchResponse.ts#L38">rest/Facet/FacetSearchResponse.ts
-							:38</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSearchRequest.ts#L14">rest/Facet/FacetSearchRequest.ts
+							:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The facet values.</p>
+							<p>Search among hierarchical facet values (e.g., Electronics|Entertainment|Gaming Consoles;, Electronics|Computers|Laptops;, etc.).</p>
 						</div>
 					</div>
 				</section>
-			</section>
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">IFacetSearchResponse</span>
-					</li>
-				</ul>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="specific" class="tsd-anchor"></a>
+					<h3>specific</h3>
+					<div class="tsd-signature tsd-kind-icon">specific<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetSearchRequest.ts#L10">rest/Facet/FacetSearchRequest.ts
+							:10</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Search among specific (i.e., scalar) facet values (e.g., Alice Smith, Bob Jones, etc.).</p>
+						</div>
+					</div>
+				</section>
 			</section>
 			<footer class="with-border-bottom">
 				<div class="container">

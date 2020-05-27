@@ -2296,7 +2296,7 @@ var Utils = /** @class */ (function () {
         return difference;
     };
     Utils.resolveAfter = function (ms, returns) {
-        return new Promise(function (resolve) { return setTimeout(function () { return (returns ? resolve(returns) : resolve()); }, ms); });
+        return new Promise(function (resolve) { return setTimeout(function () { return (returns !== undefined ? resolve(returns) : resolve()); }, ms); });
     };
     return Utils;
 }());
@@ -6091,8 +6091,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.8959.10',
-    product: '2.8959.10',
+    lib: '2.9159.0-beta',
+    product: '2.9159.0-beta',
     supportedApiVersion: 2
 };
 
@@ -9278,6 +9278,7 @@ var dict = {
     "Pagination": "Pagination",
     "ThumbnailOf": "Thumbnail of \"{0}\"",
     "CollapsedUriParts": "Collapsed URI parts",
+    "HierarchicalFacetValueIndentedUnder": "{0} under {1}",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
