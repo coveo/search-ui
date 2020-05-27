@@ -127,11 +127,11 @@ export class Icon extends Component {
   }
 
   private initialize(element: HTMLElement, bindings: IComponentBindings) {
-    var possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType('Quickview'));
+    const possibleInternalQuickview = $$(this.element).find('.' + Component.computeCssClassNameForType('Quickview'));
     if (!Utils.isNullOrUndefined(possibleInternalQuickview) && QueryUtils.hasHTMLVersion(this.result)) {
       $$(this.element).addClass('coveo-with-quickview');
       $$(this.element).on('click', () => {
-        var qv = <any>Component.get(possibleInternalQuickview);
+        const qv = <any>Component.get(possibleInternalQuickview);
         qv.open();
       });
     }
@@ -140,8 +140,7 @@ export class Icon extends Component {
   }
 
   static createIcon(result: IQueryResult, options: IIconOptions = {}, element: HTMLElement = $$('div').el, bindings?: IComponentBindings) {
-    var info = FileTypes.get(result);
-
+    let info = FileTypes.get(result);
     if (!bindings && result.searchInterface) {
       // try to resolve results bindings automatically
       bindings = result.searchInterface.getBindings();

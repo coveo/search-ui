@@ -3,6 +3,7 @@ import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
 import { Assert } from '../../misc/Assert';
 import * as _ from 'underscore';
+import { StringUtils } from '../../Core';
 
 // On-demand mapping of file types to captions. Used by facets, but I don't
 // really like this. Maybe a dedicated filetype facet would be better? Hmm...
@@ -15,8 +16,8 @@ export interface IFileTypeInfo {
 
 export class FileTypes {
   static get(result: IQueryResult): IFileTypeInfo {
-    var objecttype = <string>Utils.getFieldValue(result, 'objecttype');
-    var filetype = <string>Utils.getFieldValue(result, 'filetype');
+    const objecttype = <string>Utils.getFieldValue(result, 'objecttype');
+    const filetype = <string>Utils.getFieldValue(result, 'filetype');
 
     // When @objecttype is File, Item, Document, or ContentVersion we fallback on @filetype for icons and such
     if (Utils.isNonEmptyString(objecttype) && !objecttype.match(/^(file|document|contentversion|item)$/i)) {
@@ -45,9 +46,13 @@ export class FileTypes {
     if (localizedString.toLowerCase() == variableValue.toLowerCase()) {
       localizedString = l(objecttype);
     }
+
+    const iconClass = StringUtils.htmlEncode(loweredCaseObjecttype).replace(' ', '-');
+    const caption = StringUtils.htmlEncode(localizedString);
+
     return {
-      icon: 'coveo-icon objecttype ' + loweredCaseObjecttype.replace(' ', '-'),
-      caption: localizedString
+      icon: `coveo-icon objecttype ${iconClass}`,
+      caption
     };
   }
 
@@ -70,9 +75,13 @@ export class FileTypes {
       // The main dictionary by using the original value.
       localizedString = l(filetype);
     }
+
+    const iconClass = StringUtils.htmlEncode(loweredCaseFiletype).replace(' ', '-');
+    const caption = StringUtils.htmlEncode(localizedString);
+
     return {
-      icon: 'coveo-icon filetype ' + loweredCaseFiletype.replace(' ', '-'),
-      caption: localizedString
+      icon: `coveo-icon filetype ${iconClass}`,
+      caption
     };
   }
 
