@@ -27,7 +27,6 @@ export class HistoryController extends RootComponent implements IHistoryManager 
 
   static attributesThatDoNotTriggerQuery = ['quickview'];
 
-  private ignoreNextHashChange = false;
   private initialHashChange = false;
   private willUpdateHash: boolean = false;
   private hashchange: (...args: any[]) => void;
@@ -57,6 +56,7 @@ export class HistoryController extends RootComponent implements IHistoryManager 
     $$(this.element).on(InitializationEvents.restoreHistoryState, () => {
       this.logger.trace('Restore history state. Update model');
       this.updateModelFromHash();
+      this.initialHashChange = false;
       this.lastState = this.queryStateModel.getAttributes();
     });
 
@@ -91,7 +91,6 @@ export class HistoryController extends RootComponent implements IHistoryManager 
   }
 
   public replaceState(state: Record<string, any>) {
-    this.ignoreNextHashChange = true;
     const hash = '#' + this.hashUtils.encodeValues(state);
     this.window.location.replace(hash);
   }
@@ -100,14 +99,13 @@ export class HistoryController extends RootComponent implements IHistoryManager 
    * Set the given map of key value in the hash of the URL
    * @param values
    */
-  public setHashValues(values: {}) {
+  public setHashValues(values: Record<string, any>) {
     this.logger.trace('Update history hash');
 
-    const hash = '#' + this.hashUtils.encodeValues(values);
+    const encoded = this.hashUtils.encodeValues(values);
+    const hash = encoded ? `#${encoded}` : '';
     const hashHasChanged = this.window.location.hash != hash;
-    this.ignoreNextHashChange = hashHasChanged;
 
-    this.logger.trace('ignoreNextHashChange', this.ignoreNextHashChange);
     this.logger.trace('initialHashChange', this.initialHashChange);
     this.logger.trace('from', this.window.location.hash, 'to', hash);
 
@@ -120,7 +118,10 @@ export class HistoryController extends RootComponent implements IHistoryManager 
         this.logger.trace('History hash modified', hash);
       }
     } else if (hashHasChanged) {
-      this.window.location.hash = hash;
+      const location = this.window.location;
+      const url = `${location.pathname}${location.search}${hash}`;
+
+      this.window.history.pushState('', '', url);
       this.logger.trace('History hash created', hash);
     }
   }
@@ -133,12 +134,6 @@ export class HistoryController extends RootComponent implements IHistoryManager 
 
   public handleHashChange() {
     this.logger.trace('History hash changed');
-
-    if (this.ignoreNextHashChange) {
-      this.logger.trace('History hash change ignored');
-      this.ignoreNextHashChange = false;
-      return;
-    }
 
     const attributesThatGotApplied = this.updateModelFromHash();
     if (_.difference(attributesThatGotApplied, HistoryController.attributesThatDoNotTriggerQuery).length > 0) {

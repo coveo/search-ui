@@ -85,10 +85,20 @@ export class MissingTerms extends Component {
    *Returns all original basic query expression terms that were not matched by the result item the component instance is associated with.
    */
   public get missingTerms(): string[] {
-    return this.result.absentTerms.filter(term => {
+    const terms = [];
+
+    for (const term of this.result.absentTerms) {
       const regex = this.createWordBoundaryDelimitedRegex(term);
-      return regex.test(this.queryStateModel.get('q'));
-    });
+      const query = this.queryStateModel.get('q');
+      const result = regex.exec(query);
+
+      if (result) {
+        const originalKeywordInQuery = result[4];
+        terms.push(originalKeywordInQuery);
+      }
+    }
+
+    return terms;
   }
 
   /**
@@ -167,7 +177,7 @@ export class MissingTerms extends Component {
   }
 
   private createWordBoundaryDelimitedRegex(term: string): RegExp {
-    return XRegExp(`${MissingTermManager.wordBoundary}(${term})${MissingTermManager.wordBoundary}`, 'g');
+    return XRegExp(`${MissingTermManager.wordBoundary}(${term})${MissingTermManager.wordBoundary}`, 'gi');
   }
 
   private containsFeaturedResults(term: string): boolean {

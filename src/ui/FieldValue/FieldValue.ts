@@ -14,11 +14,11 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentOptionsObjectOptionArgs, IFieldConditionOption, IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
-import { Facet } from '../Facet/Facet';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { TemplateFieldsEvaluator } from '../Templates/TemplateFieldsEvaluator';
 import { TemplateHelpers } from '../Templates/TemplateHelpers';
+import { IFieldValueCompatibleFacet, isFacetFieldValueCompatible } from './IFieldValueCompatibleFacet';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -40,8 +40,6 @@ export interface IAnalyticsFieldValueMeta {
   facetValue?: string;
   facetTitle?: string;
 }
-
-type CompatibleFacet = Facet | DynamicFacet;
 
 function showOnlyWithHelper<T>(helpers: string[], options?: T): T {
   if (options == null) {
@@ -410,11 +408,13 @@ export class FieldValue extends Component {
 
   private bindEventOnValue(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
     this.bindFacets(element, originalFacetValue, renderedFacetValue);
-    this.bindDynamicFacets(element, originalFacetValue, renderedFacetValue);
   }
 
-  private getFacets<T extends CompatibleFacet>(type: { new (...args: any[]): T; ID: string }) {
-    const facets = this.searchInterface.getComponents<T>(type.ID).filter(facet => !facet.disabled);
+  private getFacets() {
+    const facets = ComponentsTypes.getAllFacetsFromSearchInterface(this.searchInterface)
+      .filter(isFacetFieldValueCompatible)
+      .filter(facet => !facet.disabled);
+
     const facetsWithMatchingId = facets.filter(facet => facet.options.id === this.options.facet);
     if (facetsWithMatchingId.length) {
       return facetsWithMatchingId;
@@ -423,28 +423,15 @@ export class FieldValue extends Component {
   }
 
   private bindFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
-    const facets = this.getFacets(Facet);
+    const facets = this.getFacets();
 
-    if (facets.length) {
-      const isValueSelected = !!find(facets, facet => {
-        const facetValue = facet.values.get(originalFacetValue);
-        return facetValue && facetValue.selected;
-      });
-
-      const selectAction = () => this.handleFacetSelection(isValueSelected, facets, originalFacetValue);
-      this.buildClickableElement(element, !!isValueSelected, renderedFacetValue, selectAction);
+    if (!facets.length) {
+      return;
     }
-  }
 
-  private bindDynamicFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
-    const dynamicFacets = this.getFacets(DynamicFacet);
-
-    if (dynamicFacets.length) {
-      const isValueSelected = !!find(dynamicFacets, dynamicFacet => dynamicFacet.values.hasSelectedValue(originalFacetValue));
-
-      const selectAction = () => this.handleDynamicFacetSelection(isValueSelected, dynamicFacets, originalFacetValue);
-      this.buildClickableElement(element, isValueSelected, renderedFacetValue, selectAction);
-    }
+    const isValueSelected = !!find(facets, facet => facet.hasSelectedValue(originalFacetValue));
+    const selectAction = () => this.handleFacetSelection(isValueSelected, facets, originalFacetValue);
+    this.buildClickableElement(element, isValueSelected, renderedFacetValue, selectAction);
   }
 
   private buildClickableElement(element: HTMLElement, isSelected: boolean, value: string, selectAction: () => void) {
@@ -462,15 +449,7 @@ export class FieldValue extends Component {
     $$(element).addClass('coveo-clickable');
   }
 
-  private handleFacetSelection(isValueSelected: boolean, facets: Facet[], value: string) {
-    facets.forEach(facet => {
-      isValueSelected ? facet.deselectValue(value) : facet.selectValue(value);
-    });
-
-    this.executeQuery(value);
-  }
-
-  private handleDynamicFacetSelection(isValueSelected: boolean, facets: DynamicFacet[], value: string) {
+  private handleFacetSelection(isValueSelected: boolean, facets: IFieldValueCompatibleFacet[], value: string) {
     facets.forEach(facet => {
       isValueSelected ? facet.deselectValue(value) : facet.selectValue(value);
     });

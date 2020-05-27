@@ -316,3 +316,6 @@ SortDropdown.doExport();
 
 import { SmartSnippet } from './ui/SmartSnippet/SmartSnippet';
 SmartSnippet.doExport();
+
+import { FacetsMobileMode } from './ui/FacetsMobileMode/FacetsMobileMode';
+FacetsMobileMode.doExport();

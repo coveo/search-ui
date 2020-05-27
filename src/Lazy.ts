@@ -314,3 +314,6 @@ lazySortDropdown();
 
 import { lazySmartSnippet } from './ui/SmartSnippet/LazySmartSnippet';
 lazySmartSnippet();
+
+import { lazyFacetsMobileMode } from './ui/FacetsMobileMode/LazyFacetsMobileMode';
+lazyFacetsMobileMode();

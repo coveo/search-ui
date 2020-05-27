@@ -827,3 +827,12 @@ SortDropdownTest();
 
 import { ResultLayoutSelectorTest } from './ui/ResultLayoutSelectorTest';
 ResultLayoutSelectorTest();
+
+import { DynamicHierarchicalFacetSearchValueRendererTest } from './ui/DynamicHierarchicalFacetSearchValueRendererTest';
+DynamicHierarchicalFacetSearchValueRendererTest();
+
+import { ResponsiveFacetColumnTest } from './ui/ResponsiveFacetColumnTest';
+ResponsiveFacetColumnTest();
+
+import { ResponsiveDropdownModalContentTest } from './ui/ResponsiveComponents/ResponsiveDropdownModalContentTest';
+ResponsiveDropdownModalContentTest();

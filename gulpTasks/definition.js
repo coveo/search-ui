@@ -54,7 +54,7 @@ function clearEnumVariableDeclaration(match, p1, p2) {
 function getEnumRegex() {
   const enumIdentifier = '(enum [a-zA-Z_$]+\\s{$)';
   const enumDeclaration = '\\n^\\s*[a-zA-Z_$]+ = "[a-zA-Z_$\\s]+",?$';
-  const documentation = '\\n^\\s*[@{}\\[\\]\\w\\/*.,\\s]+$';
+  const documentation = '\\n^\\s*[@{}\\[\\]\\w\\/*.,\\s\\(\\)\\|;]+$';
   return new RegExp(`${enumIdentifier}((?:${enumDeclaration}|${documentation})*)`, 'gm');
 }
 

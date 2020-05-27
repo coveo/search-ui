@@ -55,6 +55,7 @@ import { AccessibilitySettings } from './AccessibilitySettings';
 import { AccessibilityQuerySummary } from './AccessibilityQuerySummary';
 import { AccessibilityThumbnail } from './AccessibilityThumbnail';
 import { AccessibilityCategoryFacet } from './AccessibilityCategoryFacet';
+import { AccessibilityDynamicHierarchicalFacetSearch } from './AccessibilityDynamicHierarchicalFacetSearch';
 
 const getFilename = (path: string) => /\/([^\/]*$)/.exec(path)[1];
 
@@ -174,4 +175,5 @@ describe('Testing ...', () => {
   AccessibilityQuerySummary();
   AccessibilityThumbnail();
   AccessibilityCategoryFacet();
+  AccessibilityDynamicHierarchicalFacetSearch();
 });
