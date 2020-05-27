@@ -718,6 +718,7 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
   public numberOfValues: number;
   public firstQuery = true;
   public operatorAttributeId: string;
+  public isFieldValueCompatible = true;
 
   /**
    * Renders and handles the facet **Search** part of the component.
