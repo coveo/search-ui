@@ -46,7 +46,7 @@ export class FileTypes {
       localizedString = l(objecttype);
     }
 
-    return this.safelyBuildFileTypeInfo('filetype', loweredCaseObjecttype, localizedString);
+    return this.safelyBuildFileTypeInfo('objecttype', loweredCaseObjecttype, localizedString);
   }
 
   static getFileType(filetype: string): IFileTypeInfo {
