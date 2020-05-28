@@ -836,3 +836,6 @@ ResponsiveFacetColumnTest();
 
 import { ResponsiveDropdownModalContentTest } from './ui/ResponsiveComponents/ResponsiveDropdownModalContentTest';
 ResponsiveDropdownModalContentTest();
+
+import { FileTypesTest } from './ui/FileTypesTest';
+FileTypesTest();

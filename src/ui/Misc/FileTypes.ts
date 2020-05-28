@@ -2,8 +2,7 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
 import { Assert } from '../../misc/Assert';
-import * as _ from 'underscore';
-import { StringUtils } from '../../Core';
+import { keys, escape } from 'underscore';
 
 // On-demand mapping of file types to captions. Used by facets, but I don't
 // really like this. Maybe a dedicated filetype facet would be better? Hmm...
@@ -47,13 +46,7 @@ export class FileTypes {
       localizedString = l(objecttype);
     }
 
-    const iconClass = StringUtils.htmlEncode(loweredCaseObjecttype).replace(' ', '-');
-    const caption = StringUtils.htmlEncode(localizedString);
-
-    return {
-      icon: `coveo-icon objecttype ${iconClass}`,
-      caption
-    };
+    return this.safelyBuildFileTypeInfo('filetype', loweredCaseObjecttype, localizedString);
   }
 
   static getFileType(filetype: string): IFileTypeInfo {
@@ -76,13 +69,7 @@ export class FileTypes {
       localizedString = l(filetype);
     }
 
-    const iconClass = StringUtils.htmlEncode(loweredCaseFiletype).replace(' ', '-');
-    const caption = StringUtils.htmlEncode(localizedString);
-
-    return {
-      icon: `coveo-icon filetype ${iconClass}`,
-      caption
-    };
+    return this.safelyBuildFileTypeInfo('filetype', loweredCaseFiletype, localizedString);
   }
 
   static getFileTypeCaptions() {
@@ -90,7 +77,7 @@ export class FileTypes {
       fileTypeCaptions = {};
       var strings = String['locales'][String['locale'].toLowerCase()];
       Assert.isNotUndefined(strings);
-      _.each(_.keys(strings), function(key) {
+      keys(strings).forEach(key => {
         if (key.indexOf('filetype_') == 0) {
           fileTypeCaptions[key.substr('filetype_'.length)] = key.toLocaleString();
         } else if (key.indexOf('objecttype_') == 0) {
@@ -100,5 +87,12 @@ export class FileTypes {
     }
 
     return fileTypeCaptions;
+  }
+
+  static safelyBuildFileTypeInfo(fieldname: string, iconClass: string, caption: string): IFileTypeInfo {
+    return {
+      icon: `coveo-icon ${fieldname} ${escape(iconClass.replace(' ', '-'))}`,
+      caption: escape(caption)
+    };
   }
 }
