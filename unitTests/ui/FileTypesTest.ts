@@ -1,4 +1,5 @@
 import { FileTypes } from '../../src/ui/Misc/FileTypes';
+import { escape } from 'underscore';
 
 export function FileTypesTest() {
   describe('FileTypes', () => {
@@ -6,8 +7,8 @@ export function FileTypesTest() {
       const unsafeInput = 'Foo><img src=y onerror=alert(document.cookie)>';
       const info = FileTypes.safelyBuildFileTypeInfo('objecttype', unsafeInput, unsafeInput);
 
-      expect(info.icon).toBe('coveo-icon objecttype Foo&gt;&lt;img-src=y onerror=alert(document.cookie)&gt;');
-      expect(info.caption).toBe('Foo&gt;&lt;img src=y onerror=alert(document.cookie)&gt;');
+      expect(info.icon).toEqual(`coveo-icon objecttype ${escape(unsafeInput.replace(' ', '-'))}`);
+      expect(info.caption).toBe(escape(unsafeInput));
     });
   });
 }
