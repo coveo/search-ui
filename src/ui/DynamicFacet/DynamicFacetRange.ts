@@ -95,6 +95,8 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
     })
   };
 
+  public isFieldValueCompatible = false;
+
   /**
    * Creates a new `DynamicFacetRange` instance.
    *
