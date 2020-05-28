@@ -3,6 +3,7 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
 import { Utils } from '../../Core';
+import { Initialization } from '../Base/Initialization';
 
 export interface IFacetsMobileModeOptions {
   breakpoint?: number;
@@ -79,3 +80,5 @@ export class FacetsMobileMode extends Component {
     }
   }
 }
+
+Initialization.registerAutoCreateComponent(FacetsMobileMode);
