@@ -11,9 +11,15 @@ import { AnalyticsEvents, $$ } from '../../src/Core';
 
 export function AnalyticsTest() {
   describe('Analytics', () => {
+    let options: IAnalyticsOptions = {};
     let test: Mock.IBasicComponentSetup<Analytics>;
 
+    function initAnalytics() {
+      test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, options);
+    }
+
     beforeEach(() => {
+      options = {};
       SearchEndpoint.endpoints['default'] = new SearchEndpoint({
         accessToken: 'some token',
         queryStringArguments: { organizationId: 'organization' },
@@ -87,9 +93,8 @@ export function AnalyticsTest() {
       });
 
       it('uses organization from options when specified', () => {
-        test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-          organization: 'orgFromOptions'
-        });
+        options.organization = 'orgFromOptions';
+        initAnalytics();
         expect(test.cmp.options.organization).toBe('orgFromOptions');
       });
 
@@ -175,7 +180,6 @@ export function AnalyticsTest() {
       });
 
       describe('with data layer in page', () => {
-        let test: Mock.IBasicComponentSetup<Analytics>;
         let defaultDataLayerName = 'dataLayer';
         let customDataLayerName = 'myDataLayer';
         let data = {
@@ -209,66 +213,76 @@ export function AnalyticsTest() {
         });
 
         it('should not automatically attempt to push to data layer if autoPushToGtmDataLayer is true and gtmDataLayerName is the empty string', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
+          options = {
             autoPushToGtmDataLayer: true,
             gtmDataLayerName: ''
-          });
+          };
+          initAnalytics();
+
           spyOn(test.cmp, 'pushToGtmDataLayer');
           $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
           expect(test.cmp.pushToGtmDataLayer).not.toHaveBeenCalled();
         });
 
         it('should not automatically attempt to push to data layer if autoPushToGtmDataLayer is true and data layer is undefined', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
+          options = {
             autoPushToGtmDataLayer: true,
             gtmDataLayerName: 'myImaginaryDataLayer'
-          });
+          };
+          initAnalytics();
+
           spyOn(test.cmp, 'pushToGtmDataLayer');
           $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
           expect(test.cmp.pushToGtmDataLayer).not.toHaveBeenCalled();
         });
 
         it('should automatically attempt to push to data layer if autoPushToGtmDataLayer is true and gtmDataLayerName is unspecified', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            autoPushToGtmDataLayer: true
-          });
+          options = { autoPushToGtmDataLayer: true };
+          initAnalytics();
+
           spyOn(test.cmp, 'pushToGtmDataLayer');
           $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
           expect(test.cmp.pushToGtmDataLayer).toHaveBeenCalledWith(data);
         });
 
         it('should automatically attempt to push to data layer if autoPushToGtmDataLayer is true and gtmDataLayerName is specified', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
+          options = {
             autoPushToGtmDataLayer: true,
             gtmDataLayerName: customDataLayerName
-          });
+          };
+          initAnalytics();
+
           spyOn(test.cmp, 'pushToGtmDataLayer');
           $$(test.env.root).trigger(AnalyticsEvents.analyticsEventReady, data);
           expect(test.cmp.pushToGtmDataLayer).toHaveBeenCalledWith(data);
         });
 
         it('can push to valid default gtmDataLayerName, even if autoPushToGtmDataLayer is false', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            autoPushToGtmDataLayer: false
-          });
+          options = { autoPushToGtmDataLayer: false };
+          initAnalytics();
+
           test.cmp.pushToGtmDataLayer.call(test.cmp, data);
           expect((<any>window)[defaultDataLayerName][0]).toBe(data);
         });
 
         it('can push to valid specified gtmDataLayerName, even if autoPushToGtmDataLayer is false', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
+          options = {
             autoPushToGtmDataLayer: false,
             gtmDataLayerName: customDataLayerName
-          });
+          };
+          initAnalytics();
+
           test.cmp.pushToGtmDataLayer.call(test.cmp, data);
           expect((<any>window)[customDataLayerName][0]).toBe(data);
         });
 
         it('should catch error when pushing to invalid data layer', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
+          options = {
             autoPushToGtmDataLayer: false,
             gtmDataLayerName: 'myImaginaryDataLayer'
-          });
+          };
+          initAnalytics();
+
           test.cmp.pushToGtmDataLayer.call(test.cmp, data);
           expect(() => {
             test.cmp.pushToGtmDataLayer.call(test.cmp, data);
@@ -277,90 +291,90 @@ export function AnalyticsTest() {
       });
 
       describe('exposes options', () => {
-        let test: Mock.IBasicComponentSetup<Analytics>;
-
-        afterEach(() => {
-          test = null;
-        });
+        function analyticsClient() {
+          return <LiveAnalyticsClient>test.cmp.client;
+        }
 
         it('user can be specified', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            user: 'foobar'
-          });
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.userId).toBe('foobar');
+          options = { user: 'foobar' };
+          initAnalytics();
+
+          expect(analyticsClient().userId).toBe('foobar');
         });
 
         it('userdisplayname can be specified', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            userDisplayName: 'foobar'
-          });
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.userDisplayName).toBe('foobar');
+          options = { userDisplayName: 'foobar' };
+          initAnalytics();
+
+          expect(analyticsClient().userDisplayName).toBe('foobar');
         });
 
         it('token can be specified', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            token: 'qwerty123'
-          });
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.endpoint.endpointCaller.options.accessToken).toBe('qwerty123');
+          options = { token: 'qwerty123' };
+          initAnalytics();
+
+          expect(analyticsClient().endpoint.endpointCaller.options.accessToken).toBe('qwerty123');
         });
 
-        it('endpoint can be specified', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            endpoint: 'somewhere.com'
-          });
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.endpoint.options.serviceUrl).toBe('somewhere.com');
+        it(`when an endpoint is defined that does not end with /rest,
+        it ensures the endpoint ends with /rest`, () => {
+          const endpoint = 'https://usageanalyticshipaa.cloud.coveo.com';
+          options = { endpoint };
+          initAnalytics();
+
+          expect(test.cmp.options.endpoint).toBe(`${endpoint}/rest`);
+        });
+
+        it(`when an endpoint is defined that ends with /rest,
+        it does not append a second /rest`, () => {
+          const endpoint = 'somewhere.com/rest';
+          options = { endpoint };
+          initAnalytics();
+
+          expect(test.cmp.options.endpoint).toBe(endpoint);
         });
 
         it('anonymous can be specified', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            anonymous: true
-          });
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.anonymous).toBe(true);
+          options = { anonymous: true };
+          initAnalytics();
+
+          expect(analyticsClient().anonymous).toBe(true);
         });
 
         it('searchHub can be specified', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            searchHub: 'foobar'
-          });
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.originLevel1).toBe('foobar');
+          options = { searchHub: 'foobar' };
+          initAnalytics();
+
+          expect(analyticsClient().originLevel1).toBe('foobar');
         });
 
         it('searchhub will be put in the query params', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            searchHub: 'yoo'
-          });
+          options = { searchHub: 'yoo' };
+          initAnalytics();
+
           let simulation = Simulate.query(test.env);
           expect(simulation.queryBuilder.build().searchHub).toBe('yoo');
         });
 
         it("searchhub should be put in the component options model for other component to see it's value", () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            searchHub: 'mama mia'
-          });
+          options = { searchHub: 'mama mia' };
+          initAnalytics();
 
           expect(test.env.componentOptionsModel.set).toHaveBeenCalledWith('searchHub', 'mama mia');
         });
 
         it('splitTestRunName can be specified', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            splitTestRunName: 'foobar'
-          });
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.splitTestRunName).toBe('foobar');
+          options = { splitTestRunName: 'foobar' };
+          initAnalytics();
+
+          expect(analyticsClient().splitTestRunName).toBe('foobar');
         });
 
         it('splitTestRunVersion can be specified', () => {
-          test = Mock.optionsComponentSetup<Analytics, IAnalyticsOptions>(Analytics, {
-            splitTestRunVersion: 'foobar'
-          });
-          let client: LiveAnalyticsClient = <LiveAnalyticsClient>test.cmp.client;
-          expect(client.splitTestRunVersion).toBe('foobar');
+          options = { splitTestRunVersion: 'foobar' };
+          initAnalytics();
+
+          expect(analyticsClient().splitTestRunVersion).toBe('foobar');
         });
       });
     });
