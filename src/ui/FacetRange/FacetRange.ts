@@ -83,6 +83,7 @@ export class FacetRange extends Facet implements IComponentBindings {
   };
 
   public options: IFacetRangeOptions;
+  public isFieldValueCompatible = false;
 
   /**
    * Creates a new `FacetRange`.
