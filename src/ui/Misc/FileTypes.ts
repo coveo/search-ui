@@ -2,7 +2,7 @@ import { IQueryResult } from '../../rest/QueryResult';
 import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
 import { Assert } from '../../misc/Assert';
-import * as _ from 'underscore';
+import { keys, escape } from 'underscore';
 
 // On-demand mapping of file types to captions. Used by facets, but I don't
 // really like this. Maybe a dedicated filetype facet would be better? Hmm...
@@ -15,8 +15,8 @@ export interface IFileTypeInfo {
 
 export class FileTypes {
   static get(result: IQueryResult): IFileTypeInfo {
-    var objecttype = <string>Utils.getFieldValue(result, 'objecttype');
-    var filetype = <string>Utils.getFieldValue(result, 'filetype');
+    const objecttype = <string>Utils.getFieldValue(result, 'objecttype');
+    const filetype = <string>Utils.getFieldValue(result, 'filetype');
 
     // When @objecttype is File, Item, Document, or ContentVersion we fallback on @filetype for icons and such
     if (Utils.isNonEmptyString(objecttype) && !objecttype.match(/^(file|document|contentversion|item)$/i)) {
@@ -45,10 +45,8 @@ export class FileTypes {
     if (localizedString.toLowerCase() == variableValue.toLowerCase()) {
       localizedString = l(objecttype);
     }
-    return {
-      icon: 'coveo-icon objecttype ' + loweredCaseObjecttype.replace(' ', '-'),
-      caption: localizedString
-    };
+
+    return this.safelyBuildFileTypeInfo('objecttype', loweredCaseObjecttype, localizedString);
   }
 
   static getFileType(filetype: string): IFileTypeInfo {
@@ -70,10 +68,8 @@ export class FileTypes {
       // The main dictionary by using the original value.
       localizedString = l(filetype);
     }
-    return {
-      icon: 'coveo-icon filetype ' + loweredCaseFiletype.replace(' ', '-'),
-      caption: localizedString
-    };
+
+    return this.safelyBuildFileTypeInfo('filetype', loweredCaseFiletype, localizedString);
   }
 
   static getFileTypeCaptions() {
@@ -81,7 +77,7 @@ export class FileTypes {
       fileTypeCaptions = {};
       var strings = String['locales'][String['locale'].toLowerCase()];
       Assert.isNotUndefined(strings);
-      _.each(_.keys(strings), function(key) {
+      keys(strings).forEach(key => {
         if (key.indexOf('filetype_') == 0) {
           fileTypeCaptions[key.substr('filetype_'.length)] = key.toLocaleString();
         } else if (key.indexOf('objecttype_') == 0) {
@@ -91,5 +87,12 @@ export class FileTypes {
     }
 
     return fileTypeCaptions;
+  }
+
+  static safelyBuildFileTypeInfo(fieldname: string, iconClass: string, caption: string): IFileTypeInfo {
+    return {
+      icon: `coveo-icon ${fieldname} ${escape(iconClass.replace(' ', '-'))}`,
+      caption: escape(caption)
+    };
   }
 }
