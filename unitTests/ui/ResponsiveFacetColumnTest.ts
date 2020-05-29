@@ -125,9 +125,9 @@ export function ResponsiveFacetColumnTest() {
         });
       });
 
-      describe('with showBackgroundWhileOpen disabled', () => {
+      describe('with displayOverlayWhileOpen disabled', () => {
         beforeEach(() => {
-          prepareTestWithMobileMode({ showBackgroundWhileOpen: false });
+          prepareTestWithMobileMode({ displayOverlayWhileOpen: false });
         });
 
         it("shouldn't show the background", () => {
@@ -135,10 +135,10 @@ export function ResponsiveFacetColumnTest() {
         });
       });
 
-      describe('with lockScroll enabled', () => {
+      describe('with preventScrolling enabled', () => {
         describe('without a scroll container', () => {
           beforeEach(() => {
-            prepareTestWithMobileMode({ lockScroll: true });
+            prepareTestWithMobileMode({ preventScrolling: true });
           });
 
           describe('when opened', () => {
@@ -168,7 +168,7 @@ export function ResponsiveFacetColumnTest() {
 
           beforeEach(() => {
             container = $$('div').el;
-            prepareTestWithMobileMode({ lockScroll: true, scrollContainer: container });
+            prepareTestWithMobileMode({ preventScrolling: true, scrollContainer: container });
           });
 
           describe('when opened', () => {
