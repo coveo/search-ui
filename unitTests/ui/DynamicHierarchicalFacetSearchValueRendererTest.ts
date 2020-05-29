@@ -134,10 +134,10 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
           expect(count.innerText).toEqual(`(${facetValue.numberOfResults})`);
         });
 
-        it('should render a path containing only the clearLabel', () => {
+        it('should render a path containing only the prefix and the clearLabel', () => {
           const [path] = $$(render).findClass(ClassNames.PATH_CLASSNAME);
           expect(path.getAttribute('aria-hidden')).toEqual('true');
-          const [part] = expectChildren(path, [ClassNames.PATH_PART_CLASSNAME]);
+          const [, part] = expectChildren(path, [ClassNames.PATH_PREFIX_CLASSNAME, ClassNames.PATH_PART_CLASSNAME]);
           expect(part.innerText).toEqual(facet.options.clearLabel);
         });
       });
@@ -165,9 +165,9 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
         expect(render.getAttribute('aria-label')).toEqual(expectedLabel);
       });
 
-      it('should render a path containing only the parent', () => {
+      it('should render a path containing only the prefix and the parent', () => {
         const [path] = $$(render).findClass(ClassNames.PATH_CLASSNAME);
-        const [part] = expectChildren(path, [ClassNames.PATH_PART_CLASSNAME]);
+        const [, part] = expectChildren(path, [ClassNames.PATH_PREFIX_CLASSNAME, ClassNames.PATH_PART_CLASSNAME]);
         expect(part.innerText).toEqual(parentValue);
       });
     });
@@ -196,7 +196,8 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
 
       it('should render a path containing three parents, two separators and no ellipse', () => {
         const [path] = $$(render).findClass(ClassNames.PATH_CLASSNAME);
-        const [parent0 /* separator */, , parent1 /* separator */, , parent2] = expectChildren(path, [
+        const [, parent0 /* separator */, , parent1 /* separator */, , parent2] = expectChildren(path, [
+          ClassNames.PATH_PREFIX_CLASSNAME,
           ClassNames.PATH_PART_CLASSNAME,
           ClassNames.PATH_SEPARATOR_CLASSNAME,
           ClassNames.PATH_PART_CLASSNAME,
@@ -211,7 +212,8 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
 
       it('should give separators the separator role', () => {
         const [path] = $$(render).findClass(ClassNames.PATH_CLASSNAME);
-        const [, /* parent */ firstSeparator] = expectChildren(path, [
+        const [, , /* parent */ firstSeparator] = expectChildren(path, [
+          ClassNames.PATH_PREFIX_CLASSNAME,
           ClassNames.PATH_PART_CLASSNAME,
           ClassNames.PATH_SEPARATOR_CLASSNAME,
           ClassNames.PATH_PART_CLASSNAME,
@@ -246,7 +248,8 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
 
       it('should render a path containing the first and the last two parents', () => {
         const [path] = $$(render).findClass(ClassNames.PATH_CLASSNAME);
-        const [parent0 /* separator */ /* ellipsis */ /* separator */, , , , parent2 /* separator */, , parent3] = expectChildren(path, [
+        const [, parent0 /* separator */ /* ellipsis */ /* separator */, , , , parent2 /* separator */, , parent3] = expectChildren(path, [
+          ClassNames.PATH_PREFIX_CLASSNAME,
           ClassNames.PATH_PART_CLASSNAME,
           ClassNames.PATH_SEPARATOR_CLASSNAME,
           ClassNames.PATH_ELLIPSIS_CLASSNAME,
