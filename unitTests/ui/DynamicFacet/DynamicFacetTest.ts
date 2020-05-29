@@ -579,7 +579,7 @@ export function DynamicFacetTest() {
         expect(searchFeatureDisplayed()).toBe(true);
       });
 
-      it(`when "moreValuesAvailable" is "true"
+      it(`when "moreValuesAvailable" is "false"
       it should hide the search`, () => {
         initializeComponent();
         test.cmp.moreValuesAvailable = false;
