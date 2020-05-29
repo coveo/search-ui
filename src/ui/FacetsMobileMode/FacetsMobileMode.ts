@@ -39,7 +39,7 @@ export class FacetsMobileMode extends Component {
      */
     isModal: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Whether to display a transparent overlay behind the facets when the end user expands them in mobile responsive mode.
+     * Whether to display an overlay behind the facets when the end user expands them in mobile responsive mode.
      *
      * By default, the following behavior applies:
      * - `true` when [isModal]{@link FacetsMobileMode.options.isModal} is `false`
