@@ -773,13 +773,11 @@ export class DynamicFacet extends Component implements IDynamicFacet {
       return;
     }
 
-    if (Utils.isUndefined(this.options.enableFacetSearch)) {
-      $$(this.search.element).toggle(this.moreValuesAvailable);
+    if (this.isCollapsed) {
+      return $$(this.search.element).toggle(false);
     }
 
-    if (this.isCollapsed) {
-      $$(this.search.element).toggle(false);
-    }
+    $$(this.search.element).toggle(this.options.enableFacetSearch || this.moreValuesAvailable);
   }
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
