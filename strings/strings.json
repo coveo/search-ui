@@ -7548,5 +7548,9 @@
   "HierarchicalFacetValueIndentedUnder": {
     "en": "{0} under {1}",
     "fr": "{0} sous {1}"
+  },
+  "HierarchicalFacetValuePathPrefix": {
+    "en": "in",
+    "fr": "dans"
   }
 }
