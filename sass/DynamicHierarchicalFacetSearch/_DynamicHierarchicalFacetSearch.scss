@@ -31,8 +31,13 @@
     display: flex;
 
     .coveo-dynamic-hierarchical-facet-search-value-path-ellipsis,
+    .coveo-dynamic-hierarchical-facet-search-value-path-prefix,
     .coveo-dynamic-hierarchical-facet-search-value-path-part {
       display: inline;
+    }
+
+    .coveo-dynamic-hierarchical-facet-search-value-path-prefix {
+      white-space: pre;
     }
 
     .coveo-dynamic-hierarchical-facet-search-value-path-part {

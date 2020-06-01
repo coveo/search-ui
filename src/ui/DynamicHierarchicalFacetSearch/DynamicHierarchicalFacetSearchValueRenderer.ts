@@ -13,6 +13,7 @@ const LABEL_CLASSNAME = `${VALUE_CLASSNAME}-label`;
 const COUNT_CLASSNAME = `${VALUE_CLASSNAME}-results-count`;
 const PATH_CLASSNAME = `${VALUE_CLASSNAME}-path`;
 const PATH_ELLIPSIS_CLASSNAME = `${PATH_CLASSNAME}-ellipsis`;
+const PATH_PREFIX_CLASSNAME = `${PATH_CLASSNAME}-prefix`;
 const PATH_PART_CLASSNAME = `${PATH_CLASSNAME}-part`;
 const PATH_SEPARATOR_CLASSNAME = `${PATH_CLASSNAME}-separator`;
 
@@ -23,6 +24,7 @@ export const DynamicHierarchicalFacetSearchValueRendererClassNames = {
   COUNT_CLASSNAME,
   PATH_CLASSNAME,
   PATH_ELLIPSIS_CLASSNAME,
+  PATH_PREFIX_CLASSNAME,
   PATH_PART_CLASSNAME,
   PATH_SEPARATOR_CLASSNAME
 };
@@ -83,7 +85,14 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
   }
 
   private renderPath() {
-    const element = $$('ul', { className: PATH_CLASSNAME, ariaHidden: true });
+    const element = $$(
+      'ul',
+      {
+        className: PATH_CLASSNAME,
+        ariaHidden: true
+      },
+      this.renderPathPrefix()
+    );
     const { start, end } = this.pathToRender;
     start.forEach((part, index) => {
       if (index > 0) {
@@ -99,6 +108,12 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
         element.append(this.renderPathPart(part).el);
       });
     }
+    return element;
+  }
+
+  private renderPathPrefix() {
+    const element = $$('li', { className: PATH_PREFIX_CLASSNAME });
+    element.text(`${l('HierarchicalFacetValuePathPrefix')} `);
     return element;
   }
 
