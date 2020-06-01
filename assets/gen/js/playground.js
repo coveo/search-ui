@@ -6091,8 +6091,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.9159.2-beta',
-    product: '2.9159.2-beta',
+    lib: '2.9159.4-beta',
+    product: '2.9159.4-beta',
     supportedApiVersion: 2
 };
 
@@ -9279,6 +9279,7 @@ var dict = {
     "ThumbnailOf": "Thumbnail of \"{0}\"",
     "CollapsedUriParts": "Collapsed URI parts",
     "HierarchicalFacetValueIndentedUnder": "{0} under {1}",
+    "HierarchicalFacetValuePathPrefix": "in",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
