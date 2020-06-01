@@ -71,8 +71,8 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     if (!facetsMobileModeComponent) {
       return {
         isModal: false,
-        lockScroll: false,
-        showBackgroundWhileOpen: true
+        preventScrolling: false,
+        displayOverlayWhileOpen: true
       };
     }
     return facetsMobileModeComponent.options;
@@ -147,10 +147,10 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
     let dropdown = responsiveDropdown ? responsiveDropdown : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
-    if (!this.facetsMobileModeOptions.showBackgroundWhileOpen) {
+    if (!this.facetsMobileModeOptions.displayOverlayWhileOpen) {
       dropdown.disablePopupBackground();
     }
-    if (this.facetsMobileModeOptions.lockScroll) {
+    if (this.facetsMobileModeOptions.preventScrolling) {
       dropdown.enableScrollLocking(this.facetsMobileModeOptions.scrollContainer);
     }
     return dropdown;
