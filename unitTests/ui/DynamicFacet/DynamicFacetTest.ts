@@ -516,47 +516,77 @@ export function DynamicFacetTest() {
       expect(test.cmp.position).toBeUndefined();
     });
 
-    it(`when "enableFacetSearch" option is false
-    it should not render the search element`, () => {
-      options.enableFacetSearch = false;
-      initializeComponent();
-      test.cmp.ensureDom();
+    describe('when "enableFacetSearch" option is false', () => {
+      beforeEach(() => {
+        options.enableFacetSearch = false;
+        initializeComponent();
+        test.cmp.ensureDom();
+      });
 
-      expect(searchFeatureActive()).toBe(false);
+      it(`it should not render the search element`, () => {
+        options.enableFacetSearch = false;
+        initializeComponent();
+        test.cmp.ensureDom();
+
+        expect(searchFeatureActive()).toBe(false);
+      });
+
+      it(`it should not throw when collapsing`, () => {
+        options.enableFacetSearch = false;
+        initializeComponent();
+        test.cmp.ensureDom();
+
+        expect(() => test.cmp.collapse()).not.toThrow();
+      });
     });
 
-    it(`when "enableFacetSearch" option is false
-    it should not throw when collapsing`, () => {
-      options.enableFacetSearch = false;
-      initializeComponent();
-      test.cmp.ensureDom();
+    describe('when "enableFacetSearch" option is true', () => {
+      beforeEach(() => {
+        options.enableFacetSearch = true;
+        initializeComponent();
+        test.cmp.ensureDom();
+      });
 
-      expect(() => test.cmp.collapse()).not.toThrow();
+      it(`it should show the search element`, () => {
+        expect(searchFeatureDisplayed()).toBe(true);
+      });
+
+      it(`when collapsing the facet
+      it should hide the search element`, () => {
+        test.cmp.collapse();
+
+        expect(searchFeatureDisplayed()).toBe(false);
+      });
+
+      it(`when expanding a collapsed facet
+      it should show the search element`, () => {
+        test.cmp.collapse();
+        test.cmp.expand();
+
+        expect(searchFeatureDisplayed()).toBe(true);
+      });
     });
 
-    it(`when "enableFacetSearch" option is true
-    it should render the search element`, () => {
-      options.enableFacetSearch = true;
-      initializeComponent();
-      test.cmp.ensureDom();
+    describe('when "enableFacetSearch" option is not defined', () => {
+      beforeEach(() => {
+        test.cmp.ensureDom();
+      });
 
-      expect(searchFeatureActive()).toBe(true);
-    });
+      it(`when "moreValuesAvailable" is "true"
+      it should show the search`, () => {
+        test.cmp.ensureDom();
 
-    it(`when "enableFacetSearch" option is "undefined" and "moreValuesAvailable" is "true"
-    it should show the search`, () => {
-      test.cmp.ensureDom();
+        expect(searchFeatureDisplayed()).toBe(true);
+      });
 
-      expect(searchFeatureDisplayed()).toBe(true);
-    });
+      it(`when "moreValuesAvailable" is "false"
+      it should hide the search`, () => {
+        initializeComponent();
+        test.cmp.moreValuesAvailable = false;
+        test.cmp.ensureDom();
 
-    it(`when "enableFacetSearch" option is "undefined" and "moreValuesAvailable" is "true"
-    it should hide the search`, () => {
-      initializeComponent();
-      test.cmp.moreValuesAvailable = false;
-      test.cmp.ensureDom();
-
-      expect(searchFeatureDisplayed()).toBe(false);
+        expect(searchFeatureDisplayed()).toBe(false);
+      });
     });
 
     it('calling "scrollToTop" should call "scrollToTop" on the ResultListUtils', () => {
