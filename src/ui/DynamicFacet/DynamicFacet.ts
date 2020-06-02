@@ -774,10 +774,10 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     }
 
     if (this.isCollapsed) {
-      return $$(this.search.element).toggle(false);
+      return $$(this.search.element).toggleClass('coveo-hidden', true);
     }
 
-    $$(this.search.element).toggle(this.options.enableFacetSearch || this.moreValuesAvailable);
+    $$(this.search.element).toggleClass('coveo-hidden', !this.options.enableFacetSearch && !this.moreValuesAvailable);
   }
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
