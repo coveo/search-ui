@@ -380,7 +380,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       return;
     }
 
-    return $$(this.search.element).toggle(!this.isCollapsed);
+    return $$(this.search.element).toggleClass('coveo-hidden', this.isCollapsed);
   }
 
   private handleQuerySuccess(results: IQueryResults) {
