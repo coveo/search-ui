@@ -344,17 +344,18 @@ export function SuggestionsManagerTest() {
         expect(inputManager.activeDescendant).toBeNull();
       });
 
-      describe('calling mergeSuggestions', () => {
+      describe('calling receiveSuggestions', () => {
         const textSuggestions = ['4', 'right'];
         let suggestionOnSelects: { [text: string]: jasmine.Spy };
         let suggestions: Suggestion[];
+
         function createSuggestions() {
           suggestionOnSelects = textSuggestions.reduce((obj, text) => ({ ...obj, [text]: jasmine.createSpy(text) }), {});
-          return (suggestions = textSuggestions.map(text => <Suggestion>{ text, onSelect: suggestionOnSelects[text] }));
+          suggestions = textSuggestions.map(text => <Suggestion>{ text, onSelect: suggestionOnSelects[text] });
         }
 
         async function receiveSuggestions() {
-          await suggestionsManager.receiveSuggestions([Promise.resolve(createSuggestions())]);
+          await suggestionsManager.receiveSuggestions([Promise.resolve(suggestions)]);
         }
 
         function waitForQuerySuggestRendered() {
@@ -368,10 +369,16 @@ export function SuggestionsManagerTest() {
         }
 
         let suggestionElements: HTMLElement[];
-        beforeEach(async done => {
+
+        async function renderSuggestions() {
           receiveSuggestions();
           await waitForQuerySuggestRendered();
           suggestionElements = $$(env.root).findClass(suggestionClass);
+        }
+
+        beforeEach(async done => {
+          createSuggestions();
+          await renderSuggestions();
           done();
         });
 
@@ -390,6 +397,13 @@ export function SuggestionsManagerTest() {
 
         it('renders suggestions', () => {
           expect(suggestionElements.map(element => element.innerText)).toEqual(textSuggestions);
+        });
+
+        it('sorts suggestions by descending index value', async done => {
+          suggestions[1].index = 100;
+          await renderSuggestions();
+          expect(suggestionElements[0].innerText).toEqual(textSuggestions[1]);
+          done();
         });
 
         it("doesn't have a previews container after focusing a suggestion", () => {
