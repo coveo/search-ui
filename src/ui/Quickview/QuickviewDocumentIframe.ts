@@ -82,7 +82,7 @@ export class QuickviewDocumentIframe {
 
   private buildIFrame(): Dom {
     const iframe = $$('iframe', {
-      sandbox: 'allow-same-origin allow-top-navigation allow-popups',
+      sandbox: 'allow-popups allow-same-origin allow-top-navigation',
       src: 'about:blank'
     });
     this.iframeElement = iframe.el as HTMLIFrameElement;
