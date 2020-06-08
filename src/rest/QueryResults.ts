@@ -7,7 +7,7 @@ import { IQueryCorrection } from './QueryCorrection';
 import { ITrigger } from './Trigger';
 import { ICategoryFacetResult } from './CategoryFacetResult';
 import { IFacetResponse } from './Facet/FacetResponse';
-import { IQueryAnswerResponse } from './QueryAnswerResponse';
+import { IQuestionAnswerResponse } from './QuestionAnswerResponse';
 
 /**
  * Describe a set a results returned by the Search API
@@ -152,5 +152,5 @@ export interface IQueryResults {
    * Facet results of the query
    */
   facets?: IFacetResponse[];
-  questionAnswer: IQueryAnswerResponse;
+  questionAnswer: IQuestionAnswerResponse;
 }

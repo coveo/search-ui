@@ -3,7 +3,7 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { QueryEvents, Initialization, $$ } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { IQueryAnswerResponse } from '../../rest/QueryAnswerResponse';
+import { IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import 'styling/_SmartSnippet';
 import { find } from 'underscore';
 import { IQueryResult } from '../../rest/QueryResult';
@@ -91,7 +91,7 @@ export class SmartSnippet extends Component {
   /**
    * @warning This method only works for the demo. In practice, the source of the answer will not always be part of the results.
    */
-  private getCorrespondingResult(questionAnswer: IQueryAnswerResponse) {
+  private getCorrespondingResult(questionAnswer: IQuestionAnswerResponse) {
     return find(
       this.queryController.getLastResults().results,
       result => result.raw[questionAnswer.documentId.contentIdKey] === questionAnswer.documentId.contentIdValue
@@ -108,7 +108,7 @@ export class SmartSnippet extends Component {
     this.render(questionAnswer);
   }
 
-  private render(questionAnswer: IQueryAnswerResponse) {
+  private render(questionAnswer: IQuestionAnswerResponse) {
     this.ensureDom();
     this.renderSnippet(questionAnswer.answerSnippet);
     const correspondingResult = this.getCorrespondingResult(questionAnswer);
