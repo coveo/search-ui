@@ -9,32 +9,32 @@
   &.coveo-smart-snippet-has-answer {
     display: block;
   }
+}
 
-  .coveo-smart-snippet-source {
-    margin-top: 24px;
+.coveo-smart-snippet-source {
+  margin-top: 24px;
 
-    .coveo-smart-snippet-source-url {
-      display: block;
-      color: $color-strong-contrast-grey;
-      text-decoration: none;
+  &-url {
+    display: block;
+    color: $color-strong-contrast-grey;
+    text-decoration: none;
 
-      &:hover,
-      &:focus {
-        text-decoration: underline;
-      }
+    &:hover,
+    &:focus {
+      text-decoration: underline;
     }
+  }
 
-    .coveo-smart-snippet-source-title {
-      margin-top: 8px;
-      display: block;
-      font-size: 26px;
-      color: $coveo-blue;
-      text-decoration: none;
+  &-title {
+    margin-top: 8px;
+    display: block;
+    font-size: 22px;
+    color: $coveo-blue;
+    text-decoration: none;
 
-      &:hover,
-      &:focus {
-        text-decoration: underline;
-      }
+    &:hover,
+    &:focus {
+      text-decoration: underline;
     }
   }
 }
