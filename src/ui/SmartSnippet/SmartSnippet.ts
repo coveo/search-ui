@@ -68,7 +68,10 @@ export class SmartSnippet extends Component {
     this.element.appendChild((this.shadowContainer = $$('div', { className: SHADOW_CLASSNAME }).el));
     const shadow = this.shadowContainer.attachShadow({ mode: 'open' });
     shadow.appendChild((this.snippetContainer = $$('section', { className: CONTENT_CLASSNAME }).el));
-    shadow.appendChild(this.buildStyle());
+    const style = this.buildStyle();
+    if (style) {
+      shadow.appendChild(style);
+    }
   }
 
   private buildSourceContainer() {
