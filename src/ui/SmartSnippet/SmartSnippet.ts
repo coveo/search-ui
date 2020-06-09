@@ -7,6 +7,7 @@ import { IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import 'styling/_SmartSnippet';
 import { find } from 'underscore';
 import { IQueryResult } from '../../rest/QueryResult';
+import { IQueryResults } from '../../rest/QueryResults';
 
 const BASE_CLASSNAME = 'coveo-smart-snippet';
 const HAS_ANSWER_CLASSNAME = `${BASE_CLASSNAME}-has-answer`;
@@ -91,11 +92,8 @@ export class SmartSnippet extends Component {
   /**
    * @warning This method only works for the demo. In practice, the source of the answer will not always be part of the results.
    */
-  private getCorrespondingResult(questionAnswer: IQuestionAnswerResponse) {
-    return find(
-      this.queryController.getLastResults().results,
-      result => result.raw[questionAnswer.documentId.contentIdKey] === questionAnswer.documentId.contentIdValue
-    );
+  private getCorrespondingResult(results: IQueryResults, questionAnswer: IQuestionAnswerResponse) {
+    return find(results.results, result => result.raw[questionAnswer.documentId.contentIdKey] === questionAnswer.documentId.contentIdValue);
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
@@ -105,17 +103,16 @@ export class SmartSnippet extends Component {
       return;
     }
     this.hasAnswer = true;
-    this.render(questionAnswer);
+    this.render(questionAnswer, this.getCorrespondingResult(data.results, questionAnswer));
   }
 
-  private render(questionAnswer: IQuestionAnswerResponse) {
+  private render(questionAnswer: IQuestionAnswerResponse, source?: IQueryResult) {
     this.ensureDom();
     this.renderSnippet(questionAnswer.answerSnippet);
-    const correspondingResult = this.getCorrespondingResult(questionAnswer);
-    if (!correspondingResult) {
+    if (source) {
+      this.renderSource(source);
       return;
     }
-    this.renderSource(correspondingResult);
   }
 
   private renderSnippet(content: string) {

@@ -836,3 +836,6 @@ ResponsiveFacetColumnTest();
 
 import { ResponsiveDropdownModalContentTest } from './ui/ResponsiveComponents/ResponsiveDropdownModalContentTest';
 ResponsiveDropdownModalContentTest();
+
+import { SmartSnippetTest } from './ui/SmartSnippetTest';
+SmartSnippetTest();
