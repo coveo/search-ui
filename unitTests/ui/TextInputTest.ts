@@ -195,6 +195,10 @@ export function TextInputTest() {
       });
     });
 
+    it(`should have the "autocomplete" attribute set to "off"`, () => {
+      expect(getInput().getAttribute('autocomplete')).toBe('off');
+    });
+
     it(`when the "ariaLabel" option is not defined (default)
     should not add the "aria-label" attribute`, () => {
       expect(getInput().hasAttribute('aria-label')).toBe(false);
