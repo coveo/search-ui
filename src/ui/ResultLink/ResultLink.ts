@@ -471,6 +471,14 @@ export class ResultLink extends Component {
     true
   );
 
+  private filterProtocol(uri: string) {
+    if (!/^https?:\/\//.test(uri)) {
+      return '';
+    }
+
+    return uri;
+  }
+
   private getResultUri(): string {
     if (this.options.hrefTemplate) {
       return StringUtils.buildStringTemplateFromResult(this.options.hrefTemplate, this.result);
@@ -481,10 +489,10 @@ export class ResultLink extends Component {
     }
 
     if (this.options.field != undefined) {
-      return Utils.getFieldValue(this.result, <string>this.options.field);
+      return this.filterProtocol(Utils.getFieldValue(this.result, <string>this.options.field));
     }
 
-    return this.escapedClickUri;
+    return this.filterProtocol(this.escapedClickUri);
   }
 
   private elementIsAnAnchor() {

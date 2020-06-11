@@ -18,7 +18,7 @@ export function ResultLinkTest() {
       let fakeResult = FakeResults.createFakeResult();
       fakeResult.title = 'A test title';
       fakeResult.titleHighlights = [{ offset: 2, length: 4 }];
-      fakeResult.clickUri = 'uri';
+      fakeResult.clickUri = 'http://www.coveo.com';
       return fakeResult;
     }
 
@@ -324,12 +324,34 @@ export function ResultLinkTest() {
     });
 
     describe('when the element is a hyperlink', () => {
+      function initHyperLink(options?: IResultLinkOptions) {
+        test = Mock.advancedResultComponentSetup<ResultLink>(
+          ResultLink,
+          fakeResult,
+          new Mock.AdvancedComponentSetupOptions($$('a').el, options)
+        );
+      }
+
       beforeEach(() => {
-        test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, new Mock.AdvancedComponentSetupOptions($$('a').el));
+        initHyperLink();
       });
 
       it('should set the href to the result click uri', () => {
         expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
+      });
+
+      it(`when the uri (clickUri) defined in the results contains an invalid protocol,
+        it clears the value to prevent XSS`, () => {
+        fakeResult.clickUri = 'javascript:void(0)';
+        initHyperLink();
+        expect(test.cmp.element.getAttribute('href')).toEqual('');
+      });
+
+      it(`when the field option is defined and the field contains an invalid protocol,
+        it clears the value to prevent XSS`, () => {
+        fakeResult.raw['test'] = 'javascript:void(0)';
+        initHyperLink({ field: '@test' });
+        expect(test.cmp.element.getAttribute('href')).toEqual('');
       });
 
       it('should not override the href if it is set before the initialization', () => {
@@ -343,8 +365,8 @@ export function ResultLinkTest() {
 
       describe('and the result has the outlookfield', () => {
         beforeEach(() => {
-          fakeResult.raw['outlookuri'] = 'uri.for.outlook';
-          fakeResult.raw['outlookformacuri'] = 'uri.for.outlook.for.mac';
+          fakeResult.raw['outlookuri'] = 'https://uri.for.outlook';
+          fakeResult.raw['outlookformacuri'] = 'https://uri.for.outlook.for.mac';
         });
 
         it('should generate the correct href if the os is windows and the option is openInOutlook', () => {
