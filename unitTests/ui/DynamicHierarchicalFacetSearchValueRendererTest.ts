@@ -8,23 +8,11 @@ import {
 import { DynamicHierarchicalFacetSearchValue } from '../../src/ui/DynamicHierarchicalFacetSearch/DynamicHierarchicalFacetSearchValue';
 import { l } from '../../src/strings/Strings';
 import { $$ } from '../../src/utils/Dom';
+import { expectChildren } from '../TestUtils';
 
 function setProperties<T>(obj: T, properties: Partial<T>) {
   Object.keys(properties).forEach(key => (obj[key] = properties[key]));
   return obj;
-}
-
-function expectClass(element: HTMLElement, className: string) {
-  expect(element.classList).toContain(className);
-}
-
-function expectChildren(element: HTMLElement, classNames: string[]) {
-  expect(element.childNodes.length).toEqual(classNames.length);
-  return classNames.map((className, index) => {
-    const childAtIndex = element.childNodes.item(index) as HTMLElement;
-    expectClass(childAtIndex, className);
-    return childAtIndex;
-  });
 }
 
 export function DynamicHierarchicalFacetSearchValueRendererTest() {
@@ -113,7 +101,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
         });
 
         it('should render a value containing a header and a path', () => {
-          expectClass(render, ClassNames.VALUE_CLASSNAME);
+          expect(render.classList).toContain(ClassNames.VALUE_CLASSNAME);
           expectChildren(render, [ClassNames.HEADER_CLASSNAME, ClassNames.PATH_CLASSNAME]);
         });
 

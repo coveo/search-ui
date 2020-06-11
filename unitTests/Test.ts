@@ -839,3 +839,6 @@ ResponsiveDropdownModalContentTest();
 
 import { FileTypesTest } from './ui/FileTypesTest';
 FileTypesTest();
+
+import { SmartSnippetTest } from './ui/SmartSnippetTest';
+SmartSnippetTest();
