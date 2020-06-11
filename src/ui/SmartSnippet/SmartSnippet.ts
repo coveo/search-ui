@@ -8,8 +8,10 @@ import 'styling/_SmartSnippet';
 import { find } from 'underscore';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IQueryResults } from '../../rest/QueryResults';
+import { UserFeedbackBanner } from './UserFeedbackBanner';
 
 const BASE_CLASSNAME = 'coveo-smart-snippet';
+const ANSWER_CONTAINER_CLASSNAME = `${BASE_CLASSNAME}-answer`;
 const HAS_ANSWER_CLASSNAME = `${BASE_CLASSNAME}-has-answer`;
 const SHADOW_CLASSNAME = `${BASE_CLASSNAME}-content`;
 const CONTENT_CLASSNAME = `${BASE_CLASSNAME}-content-wrapper`;
@@ -18,6 +20,7 @@ const SOURCE_TITLE_CLASSNAME = `${SOURCE_CLASSNAME}-title`;
 const SOURCE_URL_CLASSNAME = `${SOURCE_CLASSNAME}-url`;
 
 export const SmartSnippetClassNames = {
+  ANSWER_CONTAINER_CLASSNAME,
   HAS_ANSWER_CLASSNAME,
   SHADOW_CLASSNAME,
   CONTENT_CLASSNAME,
@@ -39,6 +42,7 @@ export class SmartSnippet extends Component {
     });
   };
 
+  private answerContainer: HTMLElement;
   private shadowContainer: HTMLElement;
   private sourceContainer: HTMLElement;
   private snippetContainer: HTMLElement;
@@ -61,22 +65,39 @@ export class SmartSnippet extends Component {
   }
 
   public createDom() {
-    this.buildShadow();
-    this.buildSourceContainer();
+    this.element.appendChild(this.buildAnswerContainer());
+    this.element.appendChild(
+      new UserFeedbackBanner(
+        isUseful => console.info(`Useful: ${isUseful}`),
+        explaination => console.info(`Explaination: ${explaination}`)
+      ).build()
+    );
+  }
+
+  private buildAnswerContainer() {
+    return (this.answerContainer = $$(
+      'div',
+      {
+        className: ANSWER_CONTAINER_CLASSNAME
+      },
+      this.buildShadow(),
+      this.buildSourceContainer()
+    ).el);
   }
 
   private buildShadow() {
-    this.element.appendChild((this.shadowContainer = $$('div', { className: SHADOW_CLASSNAME }).el));
+    this.shadowContainer = $$('div', { className: SHADOW_CLASSNAME }).el;
     const shadow = this.shadowContainer.attachShadow({ mode: 'open' });
     shadow.appendChild((this.snippetContainer = $$('section', { className: CONTENT_CLASSNAME }).el));
     const style = this.buildStyle();
     if (style) {
       shadow.appendChild(style);
     }
+    return this.shadowContainer;
   }
 
   private buildSourceContainer() {
-    this.element.appendChild((this.sourceContainer = $$('div', { className: SOURCE_CLASSNAME }).el));
+    return (this.sourceContainer = $$('div', { className: SOURCE_CLASSNAME }).el);
   }
 
   private buildStyle() {

@@ -7548,5 +7548,25 @@
   "HierarchicalFacetValueIndentedUnder": {
     "en": "{0} under {1}",
     "fr": "{0} sous {1}"
+  },
+  "UsefulnessFeedbackRequest": {
+    "en": "Was this useful?",
+    "fr": "Était-ce utile?"
+  },
+  "UsefulnessFeedbackThankYou": {
+    "en": "Thanks for your comments!",
+    "fr": "Merci pour vos commentaires!"
+  },
+  "UsefulnessFeedbackExplainWhy": {
+    "en": "Explain why",
+    "fr": "Expliquer pourquoi"
+  },
+  "Yes": {
+    "en": "Yes",
+    "fr": "Oui"
+  },
+  "No": {
+    "en": "No",
+    "fr": "Non"
   }
 }
