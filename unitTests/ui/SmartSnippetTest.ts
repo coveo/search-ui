@@ -5,6 +5,7 @@ import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvent
 import { SmartSnippet, SmartSnippetClassNames as ClassNames } from '../../src/ui/SmartSnippet/SmartSnippet';
 import { Component } from '../../src/Core';
 import { expectChildren } from '../TestUtils';
+import { UserFeedbackBannerClassNames } from '../../src/ui/SmartSnippet/UserFeedbackBanner';
 
 export function SmartSnippetTest() {
   const sourceTitle = 'Google!';
@@ -87,8 +88,15 @@ export function SmartSnippetTest() {
       triggerQuerySuccess();
     });
 
-    it('should render the content followed by the source', () => {
-      expectChildren(smartSnippetElement, [ClassNames.SHADOW_CLASSNAME, ClassNames.SOURCE_CLASSNAME]);
+    it('should render the answer container followed by the feedback banner', () => {
+      expectChildren(smartSnippetElement, [ClassNames.ANSWER_CONTAINER_CLASSNAME, UserFeedbackBannerClassNames.ROOT_CLASSNAME]);
+    });
+
+    it('should render the snippet followed by the source in the answer container', () => {
+      expectChildren(smartSnippetElement.querySelector<HTMLElement>(`.${ClassNames.ANSWER_CONTAINER_CLASSNAME}`), [
+        ClassNames.SHADOW_CLASSNAME,
+        ClassNames.SOURCE_CLASSNAME
+      ]);
     });
 
     it('should wrap the snippet in a container in a shadow DOM', () => {
