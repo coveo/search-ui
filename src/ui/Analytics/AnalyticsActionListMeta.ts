@@ -1327,5 +1327,13 @@ export var analyticsActionCauseList = {
   clickQuerySuggestPreview: <IAnalyticsActionCause>{
     name: 'clickQuerySuggestPreview',
     type: 'querySuggestPreview'
+  },
+  likeSmartSnippet: <IAnalyticsActionCause>{
+    name: 'likeSmartSnippet',
+    type: 'smartSnippet'
+  },
+  dislikeSmartSnippet: <IAnalyticsActionCause>{
+    name: 'dislikeSmartSnippet',
+    type: 'smartSnippet'
   }
 };

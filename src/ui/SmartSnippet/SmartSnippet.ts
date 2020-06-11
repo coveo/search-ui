@@ -9,6 +9,7 @@ import { find } from 'underscore';
 import { IQueryResult } from '../../rest/QueryResult';
 import { IQueryResults } from '../../rest/QueryResults';
 import { UserFeedbackBanner } from './UserFeedbackBanner';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 
 const BASE_CLASSNAME = 'coveo-smart-snippet';
 const ANSWER_CONTAINER_CLASSNAME = `${BASE_CLASSNAME}-answer`;
@@ -42,6 +43,8 @@ export class SmartSnippet extends Component {
     });
   };
 
+  private lastResults: IQueryResults;
+  private lastRenderedResult: IQueryResult;
   private answerContainer: HTMLElement;
   private shadowContainer: HTMLElement;
   private sourceContainer: HTMLElement;
@@ -68,7 +71,13 @@ export class SmartSnippet extends Component {
     this.element.appendChild(this.buildAnswerContainer());
     this.element.appendChild(
       new UserFeedbackBanner(
-        isUseful => console.info(`Useful: ${isUseful}`),
+        isUseful =>
+          this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
+            isUseful ? analyticsActionCauseList.likeSmartSnippet : analyticsActionCauseList.dislikeSmartSnippet,
+            {},
+            this.element,
+            this.lastRenderedResult
+          ),
         explaination => console.info(`Explaination: ${explaination}`)
       ).build()
     );
@@ -113,25 +122,29 @@ export class SmartSnippet extends Component {
   /**
    * @warning This method only works for the demo. In practice, the source of the answer will not always be part of the results.
    */
-  private getCorrespondingResult(results: IQueryResults, questionAnswer: IQuestionAnswerResponse) {
-    return find(results.results, result => result.raw[questionAnswer.documentId.contentIdKey] === questionAnswer.documentId.contentIdValue);
+  private getCorrespondingResult(questionAnswer: IQuestionAnswerResponse) {
+    return find(
+      this.lastResults.results,
+      result => result.raw[questionAnswer.documentId.contentIdKey] === questionAnswer.documentId.contentIdValue
+    );
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    const { questionAnswer } = data.results;
+    const { questionAnswer } = (this.lastResults = data.results);
     if (!questionAnswer) {
       this.hasAnswer = false;
       return;
     }
     this.hasAnswer = true;
-    this.render(questionAnswer, this.getCorrespondingResult(data.results, questionAnswer));
+    this.lastRenderedResult = this.getCorrespondingResult(questionAnswer);
+    this.render(questionAnswer);
   }
 
-  private render(questionAnswer: IQuestionAnswerResponse, source?: IQueryResult) {
+  private render(questionAnswer: IQuestionAnswerResponse) {
     this.ensureDom();
     this.renderSnippet(questionAnswer.answerSnippet);
-    if (source) {
-      this.renderSource(source);
+    if (this.lastRenderedResult) {
+      this.renderSource(this.lastRenderedResult);
       return;
     }
   }
