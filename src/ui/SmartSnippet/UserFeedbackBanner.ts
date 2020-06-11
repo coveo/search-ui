@@ -17,7 +17,7 @@ const EXPLAIN_WHY_CLASSNAME = `${ROOT_CLASSNAME}-explain-why`;
 const EXPLAIN_WHY_ACTIVE_CLASSNAME = `${EXPLAIN_WHY_CLASSNAME}-active`;
 
 enum UsefulState {
-  None,
+  Unknown,
   Yes,
   No
 }
@@ -54,7 +54,7 @@ export enum UserFeedbackExplaination {
 }
 
 export class UserFeedbackBanner {
-  private isUseful = UsefulState.None;
+  private isUseful = UsefulState.Unknown;
   private yesButton: HTMLElement;
   private noButton: HTMLElement;
   private thankYouBanner: HTMLElement;
@@ -115,7 +115,7 @@ export class UserFeedbackBanner {
       (this.yesButton = this.buildButton({
         text: l('Yes'),
         className: YES_BUTTON_CLASSNAME,
-        action: () => this.showUsefulness(true),
+        action: () => this.showThankYouBanner(true),
         icon: {
           className: ICON_CLASSNAME,
           content: SVGIcons.icons.checkYes
@@ -124,7 +124,7 @@ export class UserFeedbackBanner {
       (this.noButton = this.buildButton({
         text: l('No'),
         className: NO_BUTTON_CLASSNAME,
-        action: () => this.showUsefulness(false),
+        action: () => this.showThankYouBanner(false),
         icon: {
           className: ICON_CLASSNAME,
           content: SVGIcons.icons.clearSmall
@@ -151,8 +151,8 @@ export class UserFeedbackBanner {
     return button;
   }
 
-  private showUsefulness(isUseful: boolean) {
-    if (this.isUseful !== UsefulState.None && isUseful === (this.isUseful === UsefulState.Yes)) {
+  private showThankYouBanner(isUseful: boolean) {
+    if (this.isUseful !== UsefulState.Unknown && isUseful === (this.isUseful === UsefulState.Yes)) {
       return;
     }
     this.isUseful = isUseful ? UsefulState.Yes : UsefulState.No;
