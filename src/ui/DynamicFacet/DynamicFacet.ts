@@ -299,6 +299,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   public moreValuesAvailable = false;
   public isCollapsed: boolean;
   public isDynamicFacet = true;
+  public isFieldValueCompatible = true;
 
   /**
    * Creates a new `DynamicFacet` instance.
@@ -772,13 +773,11 @@ export class DynamicFacet extends Component implements IDynamicFacet {
       return;
     }
 
-    if (Utils.isUndefined(this.options.enableFacetSearch)) {
-      $$(this.search.element).toggle(this.moreValuesAvailable);
+    if (this.isCollapsed) {
+      return $$(this.search.element).toggleClass('coveo-hidden', true);
     }
 
-    if (this.isCollapsed) {
-      $$(this.search.element).toggle(false);
-    }
+    $$(this.search.element).toggleClass('coveo-hidden', !this.options.enableFacetSearch && !this.moreValuesAvailable);
   }
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {

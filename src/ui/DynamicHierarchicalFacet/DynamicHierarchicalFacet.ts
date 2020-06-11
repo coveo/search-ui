@@ -152,13 +152,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
 
     /**
      * Whether to allow the end-user to search the facet values.
-     *
-     * By default, the following behavior applies:
-     *
-     * - Enabled when more facet values are available.
-     * - Disabled when all available facet values are already displayed.
      */
-    enableFacetSearch: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
+    enableFacetSearch: ComponentOptions.buildBooleanOption({ section: 'Filtering', defaultValue: false }),
 
     /**
      * The character that specifies the hierarchical dependency.
@@ -385,13 +380,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       return;
     }
 
-    if (Utils.isUndefined(this.options.enableFacetSearch)) {
-      $$(this.search.element).toggle(this.moreValuesAvailable);
-    }
-
-    if (this.isCollapsed) {
-      $$(this.search.element).toggle(false);
-    }
+    return $$(this.search.element).toggleClass('coveo-hidden', this.isCollapsed);
   }
 
   private handleQuerySuccess(results: IQueryResults) {

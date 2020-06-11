@@ -3,12 +3,13 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { exportGlobally } from '../../GlobalExports';
 import { Utils } from '../../Core';
+import { Initialization } from '../Base/Initialization';
 
 export interface IFacetsMobileModeOptions {
   breakpoint?: number;
   isModal?: boolean;
-  showBackgroundWhileOpen?: boolean;
-  lockScroll?: boolean;
+  displayOverlayWhileOpen?: boolean;
+  preventScrolling?: boolean;
   scrollContainer?: HTMLElement;
 }
 
@@ -38,15 +39,25 @@ export class FacetsMobileMode extends Component {
      */
     isModal: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Whether to display a background behind the facets when the end user expands them in mobile responsive mode.
+     * Whether to display an overlay behind the facets when the end user expands them in mobile responsive mode.
+     *
+     * By default, the following behavior applies:
+     * - `true` when [isModal]{@link FacetsMobileMode.options.isModal} is `false`
+     * - `false` when [isModal]{@link FacetsMobileMode.options.isModal} is `true`
      */
-    showBackgroundWhileOpen: ComponentOptions.buildBooleanOption({
-      postProcessing: (value, options) => (Utils.isNullOrUndefined(value) ? !options.isModal : value)
+    displayOverlayWhileOpen: ComponentOptions.buildBooleanOption({
+      postProcessing: (value, options: IFacetsMobileModeOptions) => (Utils.isNullOrUndefined(value) ? !options.isModal : value)
     }),
     /**
      * Whether to disable vertical scrolling on the specified or resolved [`scrollContainer`]{@link FacetsMobileMode.options.scrollContainer} while facets are expanded in mobile responsive mode.
+     *
+     * By default, the following behavior applies:
+     * - `true` when [isModal]{@link FacetsMobileMode.options.isModal} is `true`
+     * - `false` when [isModal]{@link FacetsMobileMode.options.isModal} is `false`
      */
-    lockScroll: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    preventScrolling: ComponentOptions.buildBooleanOption({
+      postProcessing: (value, options: IFacetsMobileModeOptions) => (Utils.isNullOrUndefined(value) ? options.isModal : value)
+    }),
     /**
      * The HTML element whose vertical scrolling should be locked while facets are expanded in mobile responsive mode.
      *
@@ -56,10 +67,7 @@ export class FacetsMobileMode extends Component {
      *
      * **Example:** `data-scroll-container-selector='#someCssSelector'`
      */
-    scrollContainer: ComponentOptions.buildChildHtmlElementOption({
-      depend: 'lockScroll',
-      defaultFunction: element => ComponentOptions.findParentScrollLockable(element)
-    })
+    scrollContainer: ComponentOptions.buildChildHtmlElementOption({ depend: 'preventScrolling' })
   };
 
   static doExport = () => {
@@ -74,8 +82,11 @@ export class FacetsMobileMode extends Component {
     super(element, FacetsMobileMode.ID, bindings);
 
     this.options = ComponentOptions.initComponentOptions(element, FacetsMobileMode, options);
-    if (this.options.lockScroll && !this.options.scrollContainer) {
-      this.options.scrollContainer = ComponentOptions.findParentScrollLockable(this.searchInterface.element);
+    if (this.options.preventScrolling) {
+      const scrollContainer = this.options.scrollContainer || this.searchInterface.element;
+      this.options.scrollContainer = ComponentOptions.findParentScrollLockable(scrollContainer);
     }
   }
 }
+
+Initialization.registerAutoCreateComponent(FacetsMobileMode);
