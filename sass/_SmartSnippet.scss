@@ -1,16 +1,13 @@
 @import 'Variables';
 
-@mixin triangle($size: 20px) {
+@mixin pointer($size, $offsetY) {
   position: relative;
   &::before {
     content: '';
     display: inline-block;
-    width: $size;
-    height: $size;
-    background-color: $color-blue-background;
     position: absolute;
-    left: 50%;
-    transform: translate(-50%, 110%) rotate(45deg);
+    top: $size / 2 + $offsetY;
+    @include triangle($size, $color-blue-background, up);
   }
 }
 
@@ -28,8 +25,8 @@
     text-decoration: none;
   }
 
+  $icon-size: 14px;
   .coveo-user-feedback-banner-thanks-icon {
-    $icon-size: 14px;
     display: inline-block;
     width: $icon-size;
     height: $icon-size;
@@ -39,7 +36,7 @@
   &.coveo-user-feedback-banner-button-active {
     cursor: default;
     .coveo-user-feedback-banner-thanks-icon {
-      @include triangle;
+      @include pointer($icon-size, 3px);
     }
 
     $activeColor: $color-green;
