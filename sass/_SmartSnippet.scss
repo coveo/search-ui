@@ -72,15 +72,20 @@
         margin-left: 18px;
         display: inline-flex;
         align-items: center;
+        fill: $color-dark-grey;
+        color: $color-dark-grey;
+        cursor: pointer;
 
-        text-decoration: underline;
-        &:hover,
-        &.coveo-user-feedback-banner-button-active {
-          text-decoration: none;
+        &:hover {
+          text-decoration: underline;
         }
 
         &.coveo-user-feedback-banner-button-active {
           cursor: default;
+
+          &:hover {
+            text-decoration: none;
+          }
         }
 
         $icon-size: 14px;
@@ -132,7 +137,7 @@
       margin: 8px 16px 8px 0;
     }
 
-    @at-root .coveo-user-feedback-banner-explain-why {
+    @at-root button.coveo-user-feedback-banner-explain-why {
       border: none;
       background: none;
       padding: 0;
