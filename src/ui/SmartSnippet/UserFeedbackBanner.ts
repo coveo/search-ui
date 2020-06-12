@@ -82,58 +82,63 @@ export class UserFeedbackBanner {
   }
 
   private buildThankYouBanner() {
-    return (this.thankYouBanner = $$(
-      'div',
-      {
-        className: THANK_YOU_BANNER_CLASSNAME
-      },
-      $$('span', {}, l('UsefulnessFeedbackThankYou')).el,
-      (this.explainWhy = this.buildButton({
-        text: l('UsefulnessFeedbackExplainWhy'),
-        className: EXPLAIN_WHY_CLASSNAME,
-        action: () => this.requestExplaination()
-      }))
-    ).el);
+    this.thankYouBanner = $$('div', { className: THANK_YOU_BANNER_CLASSNAME }).el;
+
+    const text = $$('span', {}, l('UsefulnessFeedbackThankYou')).el;
+    this.thankYouBanner.appendChild(text);
+
+    this.explainWhy = this.buildButton({
+      text: l('UsefulnessFeedbackExplainWhy'),
+      className: EXPLAIN_WHY_CLASSNAME,
+      action: () => this.requestExplaination()
+    });
+    this.thankYouBanner.appendChild(this.explainWhy);
+
+    return this.thankYouBanner;
   }
 
   private buildButtons() {
-    return $$(
-      'div',
-      {
-        className: BUTTONS_CONTAINER_CLASSNAME
-      },
-      (this.yesButton = this.buildButton({
-        text: l('Yes'),
-        className: YES_BUTTON_CLASSNAME,
-        action: () => this.showThankYouBanner(true),
-        icon: {
-          className: ICON_CLASSNAME,
-          content: SVGIcons.icons.checkYes
-        }
-      })),
-      (this.noButton = this.buildButton({
-        text: l('No'),
-        className: NO_BUTTON_CLASSNAME,
-        action: () => this.showThankYouBanner(false),
-        icon: {
-          className: ICON_CLASSNAME,
-          content: SVGIcons.icons.clearSmall
-        }
-      }))
-    ).el;
+    const buttonsContainer = $$('div', { className: BUTTONS_CONTAINER_CLASSNAME }).el;
+
+    this.yesButton = this.buildButton({
+      text: l('Yes'),
+      className: YES_BUTTON_CLASSNAME,
+      action: () => this.showThankYouBanner(true),
+      icon: {
+        className: ICON_CLASSNAME,
+        content: SVGIcons.icons.checkYes
+      }
+    });
+    buttonsContainer.appendChild(this.yesButton);
+
+    this.noButton = this.buildButton({
+      text: l('No'),
+      className: NO_BUTTON_CLASSNAME,
+      action: () => this.showThankYouBanner(false),
+      icon: {
+        className: ICON_CLASSNAME,
+        content: SVGIcons.icons.clearSmall
+      }
+    });
+    buttonsContainer.appendChild(this.noButton);
+
+    return buttonsContainer;
   }
 
   private buildButton(options: IButtonOptions) {
-    const button = $$(
-      'button',
-      {
-        className: options.className
-      },
-      ...(options.icon
-        ? [$$('span', { className: options.icon.className }, options.icon.content), $$('span', {}, options.text)]
-        : [options.text])
-    ).el;
+    const button = $$('button', { className: options.className }).el;
+
+    if (options.icon) {
+      const icon = $$('span', { className: options.icon.className }, options.icon.content).el;
+      button.appendChild(icon);
+      const text = $$('span', {}, options.text).el;
+      button.appendChild(text);
+    } else {
+      button.innerText = options.text;
+    }
+
     button.addEventListener('click', () => options.action());
+
     return button;
   }
 
