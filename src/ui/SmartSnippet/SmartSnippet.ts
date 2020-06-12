@@ -70,15 +70,13 @@ export class SmartSnippet extends Component {
   public createDom() {
     this.element.appendChild(this.buildAnswerContainer());
     this.element.appendChild(
-      new UserFeedbackBanner(
-        isUseful =>
-          this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
-            isUseful ? analyticsActionCauseList.likeSmartSnippet : analyticsActionCauseList.dislikeSmartSnippet,
-            {},
-            this.element,
-            this.lastRenderedResult
-          ),
-        explaination => console.info(`Explaination: ${explaination}`)
+      new UserFeedbackBanner(isUseful =>
+        this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
+          isUseful ? analyticsActionCauseList.likeSmartSnippet : analyticsActionCauseList.dislikeSmartSnippet,
+          {},
+          this.element,
+          this.lastRenderedResult
+        )
       ).build()
     );
   }

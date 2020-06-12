@@ -47,12 +47,6 @@ export const UserFeedbackBannerClassNames = {
   EXPLAIN_WHY_ACTIVE_CLASSNAME
 };
 
-export enum UserFeedbackExplaination {
-  NotUseful,
-  Incorrect,
-  HardToRead
-}
-
 export class UserFeedbackBanner {
   private isUseful = UsefulState.Unknown;
   private yesButton: HTMLElement;
@@ -60,10 +54,7 @@ export class UserFeedbackBanner {
   private thankYouBanner: HTMLElement;
   private explainWhy: HTMLElement;
 
-  constructor(
-    private readonly sendUsefulnessAnalytics: (isUseful: boolean) => void,
-    private readonly sendExplainationAnalytics: (explaination: UserFeedbackExplaination) => void
-  ) {}
+  constructor(private readonly sendUsefulnessAnalytics: (isUseful: boolean) => void) {}
 
   public build() {
     return $$(
@@ -165,6 +156,5 @@ export class UserFeedbackBanner {
 
   private requestExplaination() {
     // TODO: Add a modal with feedback options.
-    this.sendExplainationAnalytics(UserFeedbackExplaination.NotUseful);
   }
 }
