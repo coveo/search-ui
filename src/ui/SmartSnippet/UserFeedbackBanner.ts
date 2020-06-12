@@ -1,6 +1,5 @@
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
-import { AccessibleButton } from '../../utils/AccessibleButton';
 import { SVGIcons } from '../../utils/SVGIcons';
 
 const ROOT_CLASSNAME = 'coveo-user-feedback-banner';
@@ -134,11 +133,7 @@ export class UserFeedbackBanner {
         ? [$$('span', { className: options.icon.className }, options.icon.content), $$('span', {}, options.text)]
         : [options.text])
     ).el;
-    new AccessibleButton()
-      .withElement(button)
-      .withLabel(options.text)
-      .withSelectAction(() => options.action())
-      .build();
+    button.addEventListener('click', () => options.action());
     return button;
   }
 
