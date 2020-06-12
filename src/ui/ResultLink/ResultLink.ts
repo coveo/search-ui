@@ -472,7 +472,7 @@ export class ResultLink extends Component {
   );
 
   private filterProtocol(uri: string) {
-    if (/^javascript:/.test(uri)) {
+    if (/^javascript:/i.test(uri)) {
       return '';
     }
 

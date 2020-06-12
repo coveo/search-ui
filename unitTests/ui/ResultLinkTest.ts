@@ -342,7 +342,7 @@ export function ResultLinkTest() {
 
       it(`when the uri (clickUri) defined in the results contains the javascript protocol,
         it clears the value to prevent XSS`, () => {
-        fakeResult.clickUri = 'javascript:void(0)';
+        fakeResult.clickUri = 'JavaScript:void(0)';
         initHyperLink();
         expect(test.cmp.element.getAttribute('href')).toEqual('');
       });
