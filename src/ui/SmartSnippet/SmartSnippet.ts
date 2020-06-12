@@ -7,7 +7,6 @@ import { IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import 'styling/_SmartSnippet';
 import { find } from 'underscore';
 import { IQueryResult } from '../../rest/QueryResult';
-import { IQueryResults } from '../../rest/QueryResults';
 import { UserFeedbackBanner } from './UserFeedbackBanner';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 
@@ -43,9 +42,7 @@ export class SmartSnippet extends Component {
     });
   };
 
-  private lastResults: IQueryResults;
   private lastRenderedResult: IQueryResult;
-  private answerContainer: HTMLElement;
   private shadowContainer: HTMLElement;
   private sourceContainer: HTMLElement;
   private snippetContainer: HTMLElement;
@@ -82,14 +79,14 @@ export class SmartSnippet extends Component {
   }
 
   private buildAnswerContainer() {
-    return (this.answerContainer = $$(
+    return $$(
       'div',
       {
         className: ANSWER_CONTAINER_CLASSNAME
       },
       this.buildShadow(),
       this.buildSourceContainer()
-    ).el);
+    ).el;
   }
 
   private buildShadow() {
@@ -122,27 +119,27 @@ export class SmartSnippet extends Component {
    */
   private getCorrespondingResult(questionAnswer: IQuestionAnswerResponse) {
     return find(
-      this.lastResults.results,
+      this.queryController.getLastResults().results,
       result => result.raw[questionAnswer.documentId.contentIdKey] === questionAnswer.documentId.contentIdValue
     );
   }
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
-    const { questionAnswer } = (this.lastResults = data.results);
+    const { questionAnswer } = data.results;
     if (!questionAnswer) {
       this.hasAnswer = false;
       return;
     }
     this.hasAnswer = true;
-    this.lastRenderedResult = this.getCorrespondingResult(questionAnswer);
     this.render(questionAnswer);
   }
 
   private render(questionAnswer: IQuestionAnswerResponse) {
     this.ensureDom();
     this.renderSnippet(questionAnswer.answerSnippet);
-    if (this.lastRenderedResult) {
-      this.renderSource(this.lastRenderedResult);
+    const lastRenderedResult = this.getCorrespondingResult(questionAnswer);
+    if (lastRenderedResult) {
+      this.renderSource(lastRenderedResult);
       return;
     }
   }
