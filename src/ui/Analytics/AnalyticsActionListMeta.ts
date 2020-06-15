@@ -1329,7 +1329,7 @@ export var analyticsActionCauseList = {
     type: 'querySuggestPreview'
   },
   /**
-   * The custom event logged when the "Yes" button was pressed in a [SmartSnippet]{@link SmartSnippet}'s feedback banner.
+   * The custom event logged when the "Yes" button is pressed in a [SmartSnippet]{@link SmartSnippet}'s feedback banner.
    *
    * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
    *
@@ -1345,7 +1345,7 @@ export var analyticsActionCauseList = {
     type: 'smartSnippet'
   },
   /**
-   * The custom event logged when the "No" button was pressed in a [SmartSnippet]{@link SmartSnippet}'s feedback banner.
+   * The custom event logged when the "No" button is pressed in a [SmartSnippet]{@link SmartSnippet}'s feedback banner.
    *
    * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
    *
