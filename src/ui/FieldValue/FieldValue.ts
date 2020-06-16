@@ -306,7 +306,7 @@ export class FieldValue extends Component {
    */
   public renderOneValue(value: string): HTMLElement {
     const element = $$('span').el;
-    let toRender = FacetUtils.tryToGetTranslatedCaption(this.options.field as string, value);
+    let toRender = this.getCaption(value);
 
     if (this.options.helper) {
       // Try to resolve and execute version 2 of each helper function if available
@@ -408,6 +408,16 @@ export class FieldValue extends Component {
 
   private bindEventOnValue(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
     this.bindFacets(element, originalFacetValue, renderedFacetValue);
+  }
+
+  private getCaption(value: string) {
+    for (let facet of this.getFacets()) {
+      const caption = facet.getCaptionForStringValue(value);
+      if (caption) {
+        return caption;
+      }
+    }
+    return FacetUtils.tryToGetTranslatedCaption(this.options.field as string, value);
   }
 
   private getFacets() {

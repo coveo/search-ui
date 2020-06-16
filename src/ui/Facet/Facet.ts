@@ -1203,6 +1203,16 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
   }
 
   /**
+   * Returns the configured caption for a desired facet value.
+   *
+   * @param value The string facet value whose caption the method should return.
+   */
+  public getCaptionForStringValue(value: string) {
+    Assert.exists(value);
+    return this.getValueCaption(this.facetValuesList.get(value).facetValue);
+  }
+
+  /**
    * Shows the next page of results in the facet.
    *
    * See the [`enableMoreLess`]{@link Facet.options.enableMoreLess}, and [`pageSize`]{@link Facet.options.pageSize}
@@ -1404,7 +1414,7 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
     const regex = new RegExp('^' + eventArg.completeQueryExpression.regex.source, 'i');
     const match = _.first(
       _.filter(this.getDisplayedValues(), (displayedValue: string) => {
-        const value = this.getValueCaption(this.facetValuesList.get(displayedValue).facetValue);
+        const value = this.getCaptionForStringValue(displayedValue);
         return regex.test(value);
       }),
       this.options.numberOfValuesInOmnibox
