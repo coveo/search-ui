@@ -9,6 +9,7 @@ import { find } from 'underscore';
 import { IQueryResult } from '../../rest/QueryResult';
 import { UserFeedbackBanner } from './UserFeedbackBanner';
 import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { HeightLimiter } from './HeightLimiter';
 
 const BASE_CLASSNAME = 'coveo-smart-snippet';
 const ANSWER_CONTAINER_CLASSNAME = `${BASE_CLASSNAME}-answer`;
@@ -46,6 +47,7 @@ export class SmartSnippet extends Component {
   private shadowContainer: HTMLElement;
   private sourceContainer: HTMLElement;
   private snippetContainer: HTMLElement;
+  private heightLimiter: HeightLimiter;
 
   constructor(public element: HTMLElement, public options?: ISmartSnippetOptions, bindings?: IComponentBindings) {
     super(element, SmartSnippet.ID, bindings);
@@ -85,6 +87,7 @@ export class SmartSnippet extends Component {
         className: ANSWER_CONTAINER_CLASSNAME
       },
       this.buildShadow(),
+      this.buildHeightLimiter(),
       this.buildSourceContainer()
     ).el;
   }
@@ -98,6 +101,10 @@ export class SmartSnippet extends Component {
       shadow.appendChild(style);
     }
     return this.shadowContainer;
+  }
+
+  private buildHeightLimiter() {
+    return (this.heightLimiter = new HeightLimiter(this.shadowContainer, 400)).toggleButton;
   }
 
   private buildSourceContainer() {
@@ -140,8 +147,8 @@ export class SmartSnippet extends Component {
     const lastRenderedResult = this.getCorrespondingResult(questionAnswer);
     if (lastRenderedResult) {
       this.renderSource(lastRenderedResult);
-      return;
     }
+    this.heightLimiter.onScrollHeightChanged();
   }
 
   private renderSnippet(content: string) {

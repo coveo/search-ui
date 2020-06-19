@@ -20,34 +20,100 @@
   }
 
   @at-root .coveo-smart-snippet-answer {
+    display: flex;
+    flex-direction: column;
+
     @include defaultMediumRoundedBorder();
     padding: 16px;
-  }
 
-  @at-root .coveo-smart-snippet-source {
-    margin-top: 24px;
+    @at-root .coveo-smart-snippet-content {
+      transition: height ease-in-out 0.5s;
+      overflow: hidden;
 
-    &-url {
-      display: block;
-      color: $color-strong-contrast-grey;
-      text-decoration: none;
+      @at-root .coveo-height-limiter-container-active {
+        position: relative;
 
-      &:hover,
-      &:focus {
-        text-decoration: underline;
+        &::after {
+          content: '';
+          @include linear-gradient(top, rgba(255,255,255,0), rgba(255, 255, 255, 1));
+          pointer-events: none;
+          display: inline-block;
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 64px;
+          bottom: 0;
+          z-index: 1;
+
+          opacity: 1;
+          transition: opacity ease-in-out 0.5s;
+        }
+
+        &.coveo-height-limiter-container-expanded::after {
+          opacity: 0;
+        }
       }
     }
 
-    &-title {
-      margin-top: 8px;
-      display: block;
-      font-size: 22px;
-      color: $coveo-blue;
-      text-decoration: none;
+    .coveo-height-limiter-button {
+      display: none;
+      justify-content: center;
+      align-items: center;
 
-      &:hover,
-      &:focus {
-        text-decoration: underline;
+      &.coveo-height-limiter-button-active {
+        display: flex;
+      }
+
+      @at-root & {
+        border: none;
+        align-self: center;
+        padding: 8px;
+        background: none;
+        color: $coveo-blue;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+
+        &-label {
+          font-size: 16px;
+          margin-right: 16px;
+        }
+
+        &-icon {
+          display: inline-block;
+          width: 24px;
+          transform: translateY(1px);
+        }
+      }
+    }
+
+    @at-root .coveo-smart-snippet-source {
+      margin-top: 24px;
+
+      &-url {
+        display: block;
+        color: $color-strong-contrast-grey;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+        }
+      }
+
+      &-title {
+        margin-top: 8px;
+        display: block;
+        font-size: 22px;
+        color: $coveo-blue;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+        }
       }
     }
   }
