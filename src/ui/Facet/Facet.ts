@@ -1184,9 +1184,9 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
    *
    * @param facetValue The `FacetValue` whose caption the method should return.
    */
-  public getValueCaption(facetValue: IIndexFieldValue | FacetValue): string {
+  public getValueCaption(facetValue: IIndexFieldValue | FacetValue | string): string {
     Assert.exists(facetValue);
-    const lookupValue = facetValue.lookupValue || facetValue.value;
+    const lookupValue = typeof facetValue === 'string' ? facetValue : facetValue.lookupValue || facetValue.value;
     let ret = FacetUtils.tryToGetTranslatedCaption(<string>this.options.field, lookupValue);
 
     if (Utils.exists(this.options.valueCaption)) {
@@ -1209,7 +1209,7 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
    */
   public getCaptionForStringValue(value: string) {
     Assert.exists(value);
-    return this.getValueCaption(this.facetValuesList.get(value).facetValue);
+    return this.getValueCaption(value);
   }
 
   /**
@@ -1414,7 +1414,7 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
     const regex = new RegExp('^' + eventArg.completeQueryExpression.regex.source, 'i');
     const match = _.first(
       _.filter(this.getDisplayedValues(), (displayedValue: string) => {
-        const value = this.getCaptionForStringValue(displayedValue);
+        const value = this.getValueCaption(this.facetValuesList.get(displayedValue).facetValue);
         return regex.test(value);
       }),
       this.options.numberOfValuesInOmnibox
