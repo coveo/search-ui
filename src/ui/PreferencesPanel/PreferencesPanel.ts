@@ -84,7 +84,8 @@ export class PreferencesPanel extends Component {
         validation: () => {
           this.cleanupOnExit();
           return true;
-        }
+        },
+        body: this.searchInterface.options.modalContainer
       });
     }
   }

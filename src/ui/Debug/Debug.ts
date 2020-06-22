@@ -211,7 +211,8 @@ export class Debug extends RootComponent {
         this.onCloseModalBox();
         return true;
       },
-      sizeMod: 'big'
+      sizeMod: 'big',
+      body: document.getElementsByClassName('CoveoSearchInterface')[0] // Will return undefined if no CoveoSearchInterface is present
     });
 
     const title = $$(this.modalBox.wrapper).find('.coveo-modal-header');

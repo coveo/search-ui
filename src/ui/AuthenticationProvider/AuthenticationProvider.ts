@@ -208,7 +208,8 @@ export class AuthenticationProvider extends Component {
 
     ModalBox.open(popup, {
       title: l('Authenticating', this.options.caption),
-      sizeMod: 'small'
+      sizeMod: 'small',
+      body: this.searchInterface.options.modalContainer
     });
     return ModalBox;
   }
@@ -220,7 +221,8 @@ export class AuthenticationProvider extends Component {
     ModalBox.open(popup, {
       title: l('Authenticating', this.options.caption),
       className: 'coveo-authentication-popup',
-      sizeMod: 'big'
+      sizeMod: 'big',
+      body: this.searchInterface.options.modalContainer
     });
     return ModalBox;
   }
