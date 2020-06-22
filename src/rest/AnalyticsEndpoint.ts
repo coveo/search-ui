@@ -29,7 +29,7 @@ export class AnalyticsEndpoint {
   static DEFAULT_ANALYTICS_URI = 'https://platform.cloud.coveo.com/rest/ua';
   static DEFAULT_ANALYTICS_VERSION = 'v15';
   static CUSTOM_ANALYTICS_VERSION = undefined;
-  static VISITOR_COOKIE_TIME = 10000 * 24 * 60 * 60 * 1000;
+  static VISITOR_COOKIE_TIME = 365 * 24 * 60 * 60 * 1000;
 
   static pendingRequest: Promise<any>;
 
