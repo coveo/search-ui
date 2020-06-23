@@ -1,16 +1,17 @@
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { QueryEvents, Initialization, $$ } from '../../Core';
+import { QueryEvents, Initialization, $$, Utils, UrlUtils } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import 'styling/_SmartSnippet';
 import { find } from 'underscore';
 import { IQueryResult } from '../../rest/QueryResult';
 import { UserFeedbackBanner } from './UserFeedbackBanner';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsNoMeta, IAnalyticsSmartSnippetContentLink } from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
 
+const OPEN_LINK_TIMEOUT = 350;
 const BASE_CLASSNAME = 'coveo-smart-snippet';
 const ANSWER_CONTAINER_CLASSNAME = `${BASE_CLASSNAME}-answer`;
 const HAS_ANSWER_CLASSNAME = `${BASE_CLASSNAME}-has-answer`;
@@ -69,13 +70,8 @@ export class SmartSnippet extends Component {
   public createDom() {
     this.element.appendChild(this.buildAnswerContainer());
     this.element.appendChild(
-      new UserFeedbackBanner(isUseful =>
-        this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
-          isUseful ? analyticsActionCauseList.likeSmartSnippet : analyticsActionCauseList.dislikeSmartSnippet,
-          {},
-          this.element,
-          this.lastRenderedResult
-        )
+      new UserFeedbackBanner(
+        isUseful => (isUseful ? this.sendLikeSmartSnippetAnalytics() : this.sendDislikeSmartSnippetAnalytics())
       ).build()
     );
   }
@@ -104,7 +100,11 @@ export class SmartSnippet extends Component {
   }
 
   private buildHeightLimiter() {
-    return (this.heightLimiter = new HeightLimiter(this.shadowContainer, 400)).toggleButton;
+    return (this.heightLimiter = new HeightLimiter(
+      this.shadowContainer,
+      400,
+      isExpanded => (isExpanded ? this.sendExpandSmartSnippetAnalytics() : this.sendCollapseSmartSnippetAnalytics())
+    )).toggleButton;
   }
 
   private buildSourceContainer() {
@@ -143,16 +143,19 @@ export class SmartSnippet extends Component {
 
   private render(questionAnswer: IQuestionAnswerResponse) {
     this.ensureDom();
-    this.renderSnippet(questionAnswer.answerSnippet);
     const lastRenderedResult = this.getCorrespondingResult(questionAnswer);
     if (lastRenderedResult) {
       this.renderSource(lastRenderedResult);
     }
+    this.renderSnippet(questionAnswer.answerSnippet, lastRenderedResult ? lastRenderedResult.clickUri : null);
     this.heightLimiter.onScrollHeightChanged();
   }
 
-  private renderSnippet(content: string) {
+  private renderSnippet(content: string, sourceUrl?: string) {
     this.snippetContainer.innerHTML = content;
+    $$(this.snippetContainer)
+      .findAll('a')
+      .forEach(link => this.fixSnippetLink(link as HTMLAnchorElement, sourceUrl));
   }
 
   private renderSource(source: IQueryResult) {
@@ -162,15 +165,100 @@ export class SmartSnippet extends Component {
   }
 
   private renderSourceTitle(title: string, clickUri: string) {
-    const element = $$('a', { className: SOURCE_TITLE_CLASSNAME, href: clickUri }).el;
-    element.innerText = title;
-    return element;
+    return this.renderLink(title, clickUri, SOURCE_TITLE_CLASSNAME);
   }
 
   private renderSourceUrl(url: string) {
-    const element = $$('a', { className: SOURCE_URL_CLASSNAME, href: url }).el;
-    element.innerText = url;
+    return this.renderLink(url, url, SOURCE_URL_CLASSNAME);
+  }
+
+  private renderLink(text: string, href: string, className: string) {
+    const element = $$('a', { className, href }).el as HTMLAnchorElement;
+    element.innerText = text;
+    this.enableAnalyticsOnLink(element, () => this.sendOpenSourceAnalytics());
     return element;
+  }
+
+  private fixSnippetLink(link: HTMLAnchorElement, sourceUrl?: string) {
+    const staticLink = link.cloneNode(true) as HTMLAnchorElement;
+    if (sourceUrl) {
+      const href = link.getAttribute('href');
+      link.href = UrlUtils.getLinkDestination(sourceUrl, href);
+    }
+    this.enableAnalyticsOnLink(link, () => this.sendOpenContentLinkAnalytics(staticLink));
+  }
+
+  private enableAnalyticsOnLink(link: HTMLAnchorElement, sendAnalytics: () => Promise<any>) {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      this.openLink(link.href, e.ctrlKey, sendAnalytics);
+    });
+  }
+
+  private async openLink(href: string, newTab: boolean, sendAnalytics: () => Promise<any>) {
+    await Promise.race<any>([sendAnalytics(), Utils.resolveAfter(OPEN_LINK_TIMEOUT)]);
+    if (newTab) {
+      window.open(href);
+    } else {
+      window.location.href = href;
+    }
+  }
+
+  private sendLikeSmartSnippetAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
+      analyticsActionCauseList.likeSmartSnippet,
+      {},
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendDislikeSmartSnippetAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
+      analyticsActionCauseList.dislikeSmartSnippet,
+      {},
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendExpandSmartSnippetAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
+      analyticsActionCauseList.expandSmartSnippet,
+      {},
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendCollapseSmartSnippetAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
+      analyticsActionCauseList.collapseSmartSnippet,
+      {},
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendOpenSourceAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
+      analyticsActionCauseList.openSmartSnippetSource,
+      {},
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendOpenContentLinkAnalytics(link: HTMLAnchorElement) {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetContentLink>(
+      analyticsActionCauseList.openLinkInSmartSnippetContent,
+      {
+        target: link.getAttribute('href'),
+        outerHTML: link.outerHTML
+      },
+      this.element,
+      this.lastRenderedResult
+    );
   }
 }
 Initialization.registerAutoCreateComponent(SmartSnippet);

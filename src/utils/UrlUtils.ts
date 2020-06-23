@@ -59,6 +59,58 @@ export class UrlUtils {
     };
   }
 
+  public static getLinkDestination(origin: string, href: string) {
+    if (!this.urlIsRelative(href)) {
+      return href;
+    }
+    let currentPosition = this.removeAtEnd(this.getRawUrlParameters(origin), origin);
+    if (!href) {
+      return currentPosition;
+    }
+    href.split('/').forEach((urlPart, index) => {
+      if (!urlPart && !index) {
+        currentPosition = this.getFullHostPath(origin) || '';
+      } else if (urlPart === '..') {
+        currentPosition = this.removeLastPart(currentPosition);
+      } else if (urlPart !== '.') {
+        currentPosition += `/${urlPart}`;
+      }
+    });
+    return currentPosition;
+  }
+
+  private static urlIsRelative(url: string) {
+    const host = this.getFullHostPath(url);
+    return !host || !url.match(/[^\/.]\.[^\/.]/);
+  }
+
+  private static removeLastPart(url: string) {
+    const host = this.getFullHostPath(url);
+    return (
+      (host || '') +
+      this.removeAtStart(host, url)
+        .split('/')
+        .slice(0, -1)
+        .join('/')
+    );
+  }
+
+  private static getRawUrlParameters(url: string) {
+    const match = url.match(/(\?.*|#.*)$/);
+    if (!match) {
+      return '';
+    }
+    return match[0];
+  }
+
+  private static getFullHostPath(url: string) {
+    const match = url.match(/^([^:]+:\/\/)?[^\/]+/);
+    if (!match) {
+      return null;
+    }
+    return match[0];
+  }
+
   private static getRelativePathLeadingCharacters(toNormalize: IUrlNormalize) {
     let leadingRelativeUrlCharacters = '';
 
@@ -138,6 +190,9 @@ export class UrlUtils {
   }
 
   private static removeAtEnd(searchString: string, targetString: string) {
+    if (!searchString) {
+      return targetString;
+    }
     while (this.endsWith(searchString, targetString)) {
       targetString = targetString.slice(0, targetString.length - searchString.length);
     }
@@ -146,6 +201,9 @@ export class UrlUtils {
   }
 
   private static removeAtStart(searchString: string, targetString: string) {
+    if (!searchString) {
+      return targetString;
+    }
     while (this.startsWith(searchString, targetString)) {
       targetString = targetString.slice(searchString.length);
     }

@@ -225,6 +225,11 @@ export interface IAnalyticsMissingTerm {
   missingTerm: string;
 }
 
+export interface IAnalyticsSmartSnippetContentLink {
+  target: string;
+  outerHTML: string;
+}
+
 /**
  * Describes the object sent as metadata along with [`clickQuerySuggestPreview`]{@link analyticsActionCauseList.clickQuerySuggestPreview} usage analytics events.
  */
@@ -1358,6 +1363,70 @@ export var analyticsActionCauseList = {
    */
   dislikeSmartSnippet: <IAnalyticsActionCause>{
     name: 'dislikeSmartSnippet',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when the "Show more" button is pressed in a [SmartSnippet]{@link SmartSnippet}.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "expandSmartSnippet",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  expandSmartSnippet: <IAnalyticsActionCause>{
+    name: 'expandSmartSnippet',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when the "Show less" button is pressed in a [SmartSnippet]{@link SmartSnippet}.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "collapseSmartSnippet",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  collapseSmartSnippet: <IAnalyticsActionCause>{
+    name: 'collapseSmartSnippet',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when the source of a [SmartSnippet]{@link SmartSnippet} is opened.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "openSmartSnippetSource",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  openSmartSnippetSource: <IAnalyticsActionCause>{
+    name: 'openSmartSnippetSource',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when a link inside a [SmartSnippet]{@link SmartSnippet} is opened.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "openLinkInSmartSnippetContent",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  openLinkInSmartSnippetContent: <IAnalyticsActionCause>{
+    name: 'openLinkInSmartSnippetContent',
     type: 'smartSnippet'
   }
 };
