@@ -3,12 +3,11 @@ import { Analytics } from '../../src/ui/Analytics/Analytics';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { IAnalyticsOptions } from '../../src/ui/Analytics/Analytics';
 import { Simulate } from '../Simulate';
-import { analyticsActionCauseList, IAnalyticsActionCause } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
 import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
 import { MultiAnalyticsClient } from '../../src/ui/Analytics/MultiAnalyticsClient';
 import { AnalyticsEvents, $$ } from '../../src/Core';
-import { AnalyticsUtils } from '../../src/utils/AnalyticsUtils';
 
 export function AnalyticsTest() {
   describe('Analytics', () => {
@@ -377,18 +376,6 @@ export function AnalyticsTest() {
 
           expect(analyticsClient().splitTestRunVersion).toBe('foobar');
         });
-      });
-    });
-    describe('utilities methods', () => {
-      it('can add/remove new actionCause to actionCauseList', () => {
-        const testActionCause: IAnalyticsActionCause = {
-          name: 'testActionCause',
-          type: 'test'
-        };
-        AnalyticsUtils.addActionCauseToList(testActionCause);
-        expect(analyticsActionCauseList[testActionCause.name]).toBe(testActionCause);
-        AnalyticsUtils.removeActionCauseFromList(testActionCause.name);
-        expect(analyticsActionCauseList[testActionCause.name]).toBe(undefined);
       });
     });
   });
