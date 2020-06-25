@@ -14,6 +14,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { FacetValue } from '../Facet/FacetValue';
+import { isUndefined } from 'underscore';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
@@ -116,7 +117,8 @@ export class FacetRange extends Facet implements IComponentBindings {
   }
 
   public getValueCaption(facetValue: FacetValue): string {
-    if (this.options.valueCaption) {
+    const lookupValueIsDefined = !isUndefined(facetValue.lookupValue) && facetValue.lookupValue !== facetValue.value;
+    if (this.options.valueCaption || lookupValueIsDefined) {
       return super.getValueCaption(facetValue);
     }
 
