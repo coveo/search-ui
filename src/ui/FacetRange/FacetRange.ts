@@ -117,8 +117,8 @@ export class FacetRange extends Facet implements IComponentBindings {
   }
 
   public getValueCaption(facetValue: FacetValue): string {
-    const lookupValueIsDefined = !isUndefined(facetValue.lookupValue) && facetValue.lookupValue !== facetValue.value;
-    if (this.options.valueCaption || lookupValueIsDefined) {
+    const lookupValueIsSpecified = !isUndefined(facetValue.lookupValue) && facetValue.lookupValue !== facetValue.value;
+    if (this.options.valueCaption || lookupValueIsSpecified) {
       return super.getValueCaption(facetValue);
     }
 
