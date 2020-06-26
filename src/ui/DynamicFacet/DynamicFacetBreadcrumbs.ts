@@ -5,6 +5,7 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IDynamicFacet, IDynamicFacetValue } from './IDynamicFacet';
 import { escape } from 'underscore';
+
 export class DynamicFacetBreadcrumbs {
   public element: HTMLElement;
 
