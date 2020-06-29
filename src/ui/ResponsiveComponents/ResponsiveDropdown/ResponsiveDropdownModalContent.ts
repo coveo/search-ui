@@ -21,17 +21,21 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     this.element.setAttribute('role', 'group');
     this.element.setAttribute('aria-label', l('FiltersDropdown'));
     this.hidden = false;
-    this.closeButton = $$(
-      'button',
-      {
-        className: 'coveo-facet-modal-close-button',
-        ariaLabel: this.closeButtonLabel
-      },
-      SVGIcons.icons.mainClear
-    );
-    this.closeButton.on('click', () => this.close());
-    this.element.prepend(this.closeButton.el);
-    this.focusTrap = new FocusTrap(this.element.el);
+    if (!this.closeButton) {
+      this.closeButton = $$(
+        'button',
+        {
+          className: 'coveo-facet-modal-close-button',
+          ariaLabel: this.closeButtonLabel
+        },
+        SVGIcons.icons.mainClear
+      );
+      this.closeButton.on('click', () => this.close());
+      this.element.prepend(this.closeButton.el);
+    }
+    if (!this.focusTrap) {
+      this.focusTrap = new FocusTrap(this.element.el);
+    }
   }
 
   public hideDropdown() {
