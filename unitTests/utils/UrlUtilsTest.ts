@@ -266,57 +266,5 @@ export function UrlUtilsTest() {
       });
       expect(url).toBe(`https://a.com?123=4&abc=d&efg=h`);
     });
-
-    describe('getLinkDestination', () => {
-      const originHost = 'https://cname.somewebsite.org';
-      const originPages = ['members', 'me'];
-      const originPage = originPages.join('/');
-      const origin = `${originHost}/${originPage}?friends=0&favorite-cake=chocolate#blog-title`;
-      it('should treat a path starting with a slash as absolute', () => {
-        expect(UrlUtils.getLinkDestination(origin, '/')).toEqual(`${originHost}/`);
-        expect(UrlUtils.getLinkDestination(origin, '/hello/world')).toEqual(`${originHost}/hello/world`);
-        expect(UrlUtils.getLinkDestination(origin, '/hello/world/')).toEqual(`${originHost}/hello/world/`);
-      });
-
-      it('should treat a path not starting with a slash as relative', () => {
-        expect(UrlUtils.getLinkDestination(origin, '')).toEqual(`${originHost}/${originPage}`);
-        expect(UrlUtils.getLinkDestination(origin, 'hello/world')).toEqual(`${originHost}/${originPage}/hello/world`);
-        expect(UrlUtils.getLinkDestination(origin, 'hello/world/')).toEqual(`${originHost}/${originPage}/hello/world/`);
-        expect(UrlUtils.getLinkDestination(origin, 'hello/world/')).toEqual(`${originHost}/${originPage}/hello/world/`);
-      });
-
-      it('should correctly handle single periods', () => {
-        expect(UrlUtils.getLinkDestination(origin, '.')).toEqual(`${originHost}/${originPage}`);
-        expect(UrlUtils.getLinkDestination(origin, './')).toEqual(`${originHost}/${originPage}/`);
-        expect(UrlUtils.getLinkDestination(origin, 'hello/./world')).toEqual(`${originHost}/${originPage}/hello/world`);
-        expect(UrlUtils.getLinkDestination(origin, 'hello/world/.')).toEqual(`${originHost}/${originPage}/hello/world`);
-        expect(UrlUtils.getLinkDestination(origin, 'hello/world/./')).toEqual(`${originHost}/${originPage}/hello/world/`);
-        expect(UrlUtils.getLinkDestination(origin, '/hello/./world')).toEqual(`${originHost}/hello/world`);
-        expect(UrlUtils.getLinkDestination(origin, '/hello/world/.')).toEqual(`${originHost}/hello/world`);
-        expect(UrlUtils.getLinkDestination(origin, '/hello/world/./')).toEqual(`${originHost}/hello/world/`);
-      });
-
-      it('should correctly handle double periods', () => {
-        expect(UrlUtils.getLinkDestination(origin, '..')).toEqual(`${originHost}/${originPages[0]}`);
-        expect(UrlUtils.getLinkDestination(origin, '../')).toEqual(`${originHost}/${originPages[0]}/`);
-        expect(UrlUtils.getLinkDestination(origin, '../..')).toEqual(`${originHost}`);
-        expect(UrlUtils.getLinkDestination(origin, '../../')).toEqual(`${originHost}/`);
-        expect(UrlUtils.getLinkDestination(origin, '../../hello/world/..')).toEqual(`${originHost}/hello`);
-        expect(UrlUtils.getLinkDestination(origin, '../../hello/world/../')).toEqual(`${originHost}/hello/`);
-        expect(UrlUtils.getLinkDestination(origin, '/..')).toEqual(originHost);
-        expect(UrlUtils.getLinkDestination(origin, '/hello/world/..')).toEqual(`${originHost}/hello`);
-        expect(UrlUtils.getLinkDestination(origin, '/hello/world/../')).toEqual(`${originHost}/hello/`);
-        expect(UrlUtils.getLinkDestination(origin, '/hello/../../../../blah')).toEqual(`${originHost}/blah`);
-      });
-
-      it('with an absolute path instead of a relative path, should return the new path', () => {
-        expect(UrlUtils.getLinkDestination(origin, 'mywebsite.com')).toEqual('mywebsite.com');
-        expect(UrlUtils.getLinkDestination(origin, 'www.mywebsite.com')).toEqual('www.mywebsite.com');
-        expect(UrlUtils.getLinkDestination(origin, 'www.mywebsite.com/')).toEqual('www.mywebsite.com/');
-        expect(UrlUtils.getLinkDestination(origin, 'https://www.mywebsite.com')).toEqual('https://www.mywebsite.com');
-        expect(UrlUtils.getLinkDestination(origin, 'http://www.mywebsite.com')).toEqual('http://www.mywebsite.com');
-        expect(UrlUtils.getLinkDestination(origin, origin)).toEqual(origin);
-      });
-    });
   });
 }

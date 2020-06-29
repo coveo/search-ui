@@ -1,7 +1,7 @@
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { QueryEvents, Initialization, $$, Utils, UrlUtils } from '../../Core';
+import { QueryEvents, Initialization, $$, Utils } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import 'styling/_SmartSnippet';
@@ -143,19 +143,19 @@ export class SmartSnippet extends Component {
 
   private render(questionAnswer: IQuestionAnswerResponse) {
     this.ensureDom();
+    this.renderSnippet(questionAnswer.answerSnippet);
     const lastRenderedResult = this.getCorrespondingResult(questionAnswer);
     if (lastRenderedResult) {
       this.renderSource(lastRenderedResult);
     }
-    this.renderSnippet(questionAnswer.answerSnippet, lastRenderedResult ? lastRenderedResult.clickUri : null);
     this.heightLimiter.onScrollHeightChanged();
   }
 
-  private renderSnippet(content: string, sourceUrl?: string) {
+  private renderSnippet(content: string) {
     this.snippetContainer.innerHTML = content;
     $$(this.snippetContainer)
       .findAll('a')
-      .forEach(link => this.fixSnippetLink(link as HTMLAnchorElement, sourceUrl));
+      .forEach((link: HTMLAnchorElement) => this.enableAnalyticsOnLink(link, () => this.sendOpenContentLinkAnalytics(link)));
   }
 
   private renderSource(source: IQueryResult) {
@@ -177,15 +177,6 @@ export class SmartSnippet extends Component {
     element.innerText = text;
     this.enableAnalyticsOnLink(element, () => this.sendOpenSourceAnalytics());
     return element;
-  }
-
-  private fixSnippetLink(link: HTMLAnchorElement, sourceUrl?: string) {
-    const staticLink = link.cloneNode(true) as HTMLAnchorElement;
-    if (sourceUrl) {
-      const href = link.getAttribute('href');
-      link.href = UrlUtils.getLinkDestination(sourceUrl, href);
-    }
-    this.enableAnalyticsOnLink(link, () => this.sendOpenContentLinkAnalytics(staticLink));
   }
 
   private enableAnalyticsOnLink(link: HTMLAnchorElement, sendAnalytics: () => Promise<any>) {
