@@ -71,6 +71,16 @@ export function ResponsiveDropdownModalContentTest() {
         it('prevents accessible focus from leaving', () => {
           expect(sibling.getAttribute('aria-hidden')).toEqual('true');
         });
+
+        describe('twice', () => {
+          beforeEach(() => {
+            modal.positionDropdown();
+          });
+
+          it("doesn't add more close buttons", () => {
+            expect(modalElement.findClass('coveo-facet-modal-close-button').length).toEqual(1);
+          });
+        });
       });
 
       describe('when cleaned up', () => {
