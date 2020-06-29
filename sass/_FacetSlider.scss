@@ -1,8 +1,6 @@
 @import 'mixins/slider';
 @include coveoSlider();
 .CoveoFacetSlider {
-  -ms-touch-action: none;
-  touch-action: none;
   &.coveo-disabled {
     .coveo-slider-line {
       background-color: $color-light-grey;
