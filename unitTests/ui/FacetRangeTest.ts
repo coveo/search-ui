@@ -49,6 +49,26 @@ export function FacetRangeTest() {
       });
     });
 
+    it(`when the facetValue's lookupValue is defined & different than the value
+    should display the lookupValue (originally the label) instead of the formatted value`, () => {
+      const facetValue: FacetValue = FacetValue.create('1900/01/31@18:38:50..2020/06/25@18:30:00');
+      facetValue.lookupValue = 'All dates';
+      expect(test.cmp.getValueCaption(facetValue)).toEqual('All dates');
+    });
+
+    it(`when the facetValue's lookupValue is identical as the value
+    should display the formatted value`, () => {
+      const facetValue: FacetValue = FacetValue.create('1900/01/31@18:38:50..2020/06/25@18:30:00');
+      facetValue.lookupValue = '1900/01/31@18:38:50..2020/06/25@18:30:00';
+      expect(test.cmp.getValueCaption(facetValue)).toEqual('1/31/1900 - 6/25/2020');
+    });
+
+    it(`when the facetValue's lookupValue is undefined
+    should display the formatted value`, () => {
+      const facetValue: FacetValue = FacetValue.create('1900/01/31@18:38:50..2020/06/25@18:30:00');
+      expect(test.cmp.getValueCaption(facetValue)).toEqual('1/31/1900 - 6/25/2020');
+    });
+
     describe('with a value format', () => {
       it('should allow to get a formatted value with a number ', () => {
         test = Mock.optionsComponentSetup<FacetRange, IFacetRangeOptions>(FacetRange, <IFacetRangeOptions>{

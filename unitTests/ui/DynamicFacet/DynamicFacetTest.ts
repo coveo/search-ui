@@ -237,6 +237,18 @@ export function DynamicFacetTest() {
       testQueryStateModelValues();
     });
 
+    it('allows to get a caption from a string value', () => {
+      initializeComponent();
+      test.cmp.options.valueCaption = {
+        abc: 'Pancakes',
+        def: 'Waffles'
+      };
+
+      expect(test.cmp.getCaptionForStringValue('abc')).toBe('Pancakes');
+      expect(test.cmp.getCaptionForStringValue('def')).toBe('Waffles');
+      expect(test.cmp.getCaptionForStringValue('ghi')).toBe('ghi');
+    });
+
     it(`when calling reset
       when there is any active value
       should clear and rerender values`, () => {

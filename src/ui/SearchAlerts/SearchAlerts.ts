@@ -336,7 +336,8 @@ export class SearchAlerts extends Component {
     this.modal = this.ModalBox.open(container.el, {
       title: title.el.outerHTML,
       className: 'coveo-subscriptions-panel',
-      sizeMod: sizeModForModalBox
+      sizeMod: sizeModForModalBox,
+      body: this.searchInterface.options.modalContainer
     });
   }
 

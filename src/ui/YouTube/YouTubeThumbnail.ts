@@ -128,8 +128,7 @@ export class YouTubeThumbnail extends Component {
     Initialization.automaticallyCreateComponentsInsideResult(element, result, {
       ResultLink: this.options.embed ? { onClick: () => this.openYoutubeIframe() } : null
     });
-
-    this.modalbox = new AccessibleModal('coveo-youtube-player', element.ownerDocument.body as HTMLBodyElement, ModalBox, {
+    this.modalbox = new AccessibleModal('coveo-youtube-player', this.searchInterface.options.modalContainer, ModalBox, {
       overlayClose: true
     });
   }

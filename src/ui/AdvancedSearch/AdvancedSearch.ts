@@ -151,7 +151,8 @@ export class AdvancedSearch extends Component {
       this.modalbox = this.ModalBox.open(this.content.el, {
         sizeMod: 'big',
         title: l('AdvancedSearch'),
-        className: 'coveo-advanced-search-modal'
+        className: 'coveo-advanced-search-modal',
+        body: this.searchInterface.options.modalContainer
       });
     }
   }

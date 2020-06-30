@@ -17,7 +17,8 @@ export function ShareQueryTest() {
       test.cmp.open();
       expect(test.modalBox.open).toHaveBeenCalledWith(test.cmp.dialogBoxContent, {
         title: l('Share Query'),
-        className: 'coveo-share-query-opened'
+        className: 'coveo-share-query-opened',
+        body: undefined
       });
     });
 
