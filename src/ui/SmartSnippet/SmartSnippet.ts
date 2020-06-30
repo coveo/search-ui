@@ -1,7 +1,7 @@
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { QueryEvents, Initialization, $$, Utils } from '../../Core';
+import { QueryEvents, Initialization, $$ } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import 'styling/_SmartSnippet';
@@ -11,7 +11,6 @@ import { UserFeedbackBanner } from './UserFeedbackBanner';
 import { analyticsActionCauseList, IAnalyticsNoMeta, IAnalyticsSmartSnippetContentLink } from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
 
-const OPEN_LINK_TIMEOUT = 350;
 const BASE_CLASSNAME = 'coveo-smart-snippet';
 const ANSWER_CONTAINER_CLASSNAME = `${BASE_CLASSNAME}-answer`;
 const HAS_ANSWER_CLASSNAME = `${BASE_CLASSNAME}-has-answer`;
@@ -186,8 +185,8 @@ export class SmartSnippet extends Component {
     });
   }
 
-  private async openLink(href: string, newTab: boolean, sendAnalytics: () => Promise<any>) {
-    await Promise.race<any>([sendAnalytics(), Utils.resolveAfter(OPEN_LINK_TIMEOUT)]);
+  private openLink(href: string, newTab: boolean, sendAnalytics: () => Promise<any>) {
+    sendAnalytics();
     if (newTab) {
       window.open(href);
     } else {
