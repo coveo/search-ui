@@ -1184,9 +1184,9 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
    *
    * @param facetValue The `FacetValue` whose caption the method should return.
    */
-  public getValueCaption(facetValue: IIndexFieldValue | FacetValue): string {
+  public getValueCaption(facetValue: IIndexFieldValue | FacetValue | string): string {
     Assert.exists(facetValue);
-    const lookupValue = facetValue.lookupValue || facetValue.value;
+    const lookupValue = typeof facetValue === 'string' ? facetValue : facetValue.lookupValue || facetValue.value;
     let ret = FacetUtils.tryToGetTranslatedCaption(<string>this.options.field, lookupValue);
 
     if (Utils.exists(this.options.valueCaption)) {
@@ -1200,6 +1200,16 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
       }
     }
     return ret;
+  }
+
+  /**
+   * Returns the configured caption for a desired facet value.
+   *
+   * @param value The string facet value whose caption the method should return.
+   */
+  public getCaptionForStringValue(value: string) {
+    Assert.exists(value);
+    return this.getValueCaption(value);
   }
 
   /**

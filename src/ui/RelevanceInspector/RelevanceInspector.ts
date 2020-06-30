@@ -98,7 +98,8 @@ export class RelevanceInspector {
       validation: () => {
         this.opened = false;
         return true;
-      }
+      },
+      body: document.getElementsByClassName('CoveoSearchInterface')[0] // Will return undefined if no CoveoSearchInterface is present
     };
   }
 

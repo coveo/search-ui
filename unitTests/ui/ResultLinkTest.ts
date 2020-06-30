@@ -324,12 +324,34 @@ export function ResultLinkTest() {
     });
 
     describe('when the element is a hyperlink', () => {
+      function initHyperLink(options?: IResultLinkOptions) {
+        test = Mock.advancedResultComponentSetup<ResultLink>(
+          ResultLink,
+          fakeResult,
+          new Mock.AdvancedComponentSetupOptions($$('a').el, options)
+        );
+      }
+
       beforeEach(() => {
-        test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, new Mock.AdvancedComponentSetupOptions($$('a').el));
+        initHyperLink();
       });
 
       it('should set the href to the result click uri', () => {
         expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
+      });
+
+      it(`when the uri (clickUri) defined in the results contains the javascript protocol,
+        it clears the value to prevent XSS`, () => {
+        fakeResult.clickUri = 'JavaScript:void(0)';
+        initHyperLink();
+        expect(test.cmp.element.getAttribute('href')).toEqual('');
+      });
+
+      it(`when the field option is defined and the field contains the javascript protocol,
+        it clears the value to prevent XSS`, () => {
+        fakeResult.raw['test'] = 'javascript:void(0)';
+        initHyperLink({ field: '@test' });
+        expect(test.cmp.element.getAttribute('href')).toEqual('');
       });
 
       it('should not override the href if it is set before the initialization', () => {

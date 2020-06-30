@@ -9,4 +9,5 @@ export interface IFieldValueCompatibleFacet extends Component {
   hasSelectedValue(value: string): boolean;
   selectValue(value: string): void;
   deselectValue(value: string): void;
+  getCaptionForStringValue(value: string): string;
 }

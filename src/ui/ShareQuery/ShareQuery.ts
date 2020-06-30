@@ -69,7 +69,8 @@ export class ShareQuery extends Component {
       this.dialogBoxContent = this.buildContent();
       this.modalbox = this.ModalBox.open(this.dialogBoxContent, {
         title: l('ShareQuery'),
-        className: 'coveo-share-query-opened'
+        className: 'coveo-share-query-opened',
+        body: this.searchInterface.options.modalContainer
       });
     }
   }

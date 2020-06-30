@@ -15,7 +15,8 @@ export class DynamicFacetValueShowMoreLessButton {
       'button',
       {
         className: options.className,
-        ariaLabel: options.ariaLabel
+        ariaLabel: options.ariaLabel,
+        type: 'button'
       },
       options.label
     );

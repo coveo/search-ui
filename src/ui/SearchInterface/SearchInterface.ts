@@ -81,6 +81,7 @@ export interface ISearchInterfaceOptions {
   responsiveSmallBreakpoint?: number;
   responsiveMode?: ValidResponsiveMode;
   enableScrollRestoration?: boolean;
+  modalContainer?: HTMLElement;
 }
 
 export interface IMissingTermManagerArgs {
@@ -484,7 +485,29 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
      */
-    enableScrollRestoration: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    enableScrollRestoration: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies the HTMLElement to which Modals components of the search interface will be attached to. You can
+     * either specify a CSS selector or pass an HTMLElement in the options when calling Coveo.init.
+     *
+     * Default value is `element.ownerDocument.body`.
+     *
+     * **Example in attribute:**
+     * ```html
+     * <div class="CoveoSearchInterface" data-modal-container="#my-modal-container"></div>
+     * ```
+     *
+     * **Example in init options:**
+     * ```javascript
+     * var myContainer = document.getElementById('my-modal-container');
+     * Coveo.init(root, {
+     *   SearchInterface: {
+     *     modalContainer: myContainer
+     *   }
+     * });
+     * ```
+     */
+    modalContainer: ComponentOptions.buildSelectorOption({ defaultFunction: element => element.ownerDocument.body })
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';

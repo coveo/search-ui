@@ -274,14 +274,40 @@ export function FacetTest() {
       expect(test.cmp.getValueCaption(FacetValue.createFromValue('txt'))).toBe('Text');
     });
 
+    it('allows to getCaptionForStringValue', () => {
+      test.cmp.options.field = '@filetype';
+      test.cmp.options.valueCaption = {
+        abc: 'Pancakes',
+        def: 'Waffles'
+      };
+
+      test.cmp.createDom();
+
+      expect(test.cmp.getCaptionForStringValue('abc')).toBe('Pancakes');
+      expect(test.cmp.getCaptionForStringValue('def')).toBe('Waffles');
+      expect(test.cmp.getCaptionForStringValue('ghi')).toBe('ghi');
+    });
+
     it(`when the valueCaption option is a function, when calling getValueCaption,
     it gets the value from the list using the passed FacetValue object`, () => {
       test.cmp.options.valueCaption = () => '';
       test.cmp.createDom();
 
       const facetValue = FacetValue.createFromValue('foo');
-      const spy = spyOn(test.cmp.facetValuesList, 'get').and.returnValue(facetValue);
+      const spy = spyOn(test.cmp.facetValuesList, 'get').and.returnValue({ facetValue });
       test.cmp.getValueCaption(facetValue);
+
+      expect(spy).toHaveBeenCalledWith(facetValue);
+    });
+
+    it(`when the valueCaption option is a function, when calling getCaptionForStringValue,
+    it gets the value from the list using the passed FacetValue object`, () => {
+      test.cmp.options.valueCaption = () => '';
+      test.cmp.createDom();
+
+      const facetValue = FacetValue.createFromValue('foo');
+      const spy = spyOn(test.cmp.facetValuesList, 'get').and.returnValue({ facetValue });
+      test.cmp.getCaptionForStringValue('foo');
 
       expect(spy).toHaveBeenCalledWith(facetValue);
     });

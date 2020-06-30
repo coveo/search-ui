@@ -54,7 +54,6 @@ export interface IQuickviewOptions {
   loadingAnimation?: HTMLElement | Promise<HTMLElement>;
   alwaysShow?: boolean;
   tooltipPlacement?: ValidTooltipPlacement;
-  modalContainer?: HTMLElement;
 }
 
 interface IQuickviewOpenerObject {
@@ -250,30 +249,7 @@ export class Quickview extends Component {
      */
     tooltipPlacement: ComponentOptions.buildCustomOption<ValidTooltipPlacement>((value: ValidTooltipPlacement) => value, {
       defaultValue: 'bottom'
-    }),
-
-    /**
-     * Specifies the HTMLElement where the Modal Box will be created when opening a QuickView. You can
-     * either specify a CSS selector or pass an HTMLElement in the options when calling Coveo.init.
-     *
-     * Default value is `element.ownerDocument.body`.
-     *
-     * **Example in attribute:**
-     * ```html
-     * <div class="CoveoQuickview" data-modal-container="#my-modal-container"></div>
-     * ```
-     *
-     * **Example in init options:**
-     * ```javascript
-     * var myContainer = document.getElementById('my-modal-container');
-     * Coveo.init(root, {
-     *   Quickview: {
-     *     modalContainer: myContainer
-     *   }
-     * });
-     * ```
-     */
-    modalContainer: ComponentOptions.buildSelectorOption({ defaultFunction: element => element.ownerDocument.body })
+    })
   };
 
   public static resultCurrentlyBeingRendered: IQueryResult = null;
@@ -317,7 +293,7 @@ export class Quickview extends Component {
       });
     }
 
-    this.modalbox = new AccessibleModal('coveo-quick-view', this.options.modalContainer, ModalBox);
+    this.modalbox = new AccessibleModal('coveo-quick-view', this.searchInterface.options.modalContainer, ModalBox);
   }
 
   private buildContent() {

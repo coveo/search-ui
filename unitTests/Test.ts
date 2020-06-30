@@ -27,6 +27,9 @@ CookieUtilsTest();
 import { ColorUtilsTest } from './utils/ColorUtilsTest';
 ColorUtilsTest();
 
+import { AnalyticsUtilsTest } from './utils/AnalyticsUtilsTest';
+AnalyticsUtilsTest();
+
 import { DomTests } from './utils/DomTest';
 DomTests();
 

@@ -36,6 +36,7 @@ import { FacetType } from '../../rest/Facet/FacetRequest';
 import { DependsOnManager, IDependentFacet, IDependentFacetCondition } from '../../utils/DependsOnManager';
 import { DynamicFacetValueCreator } from './DynamicFacetValues/DynamicFacetValueCreator';
 import { Logger } from '../../misc/Logger';
+import { FacetUtils } from '../Facet/FacetUtils';
 
 /**
  * The `DynamicFacet` component displays a *facet* of the results for the current query. A facet is a list of values for a
@@ -422,6 +423,15 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     facetValue.toggleSelect();
     this.logger.info('Toggle select facet value', facetValue);
     this.updateQueryStateModel();
+  }
+
+  /**
+   * Returns the configured caption for a desired facet value.
+   *
+   * @param value The string facet value whose caption the method should return.
+   */
+  public getCaptionForStringValue(value: string) {
+    return FacetUtils.getDisplayValueFromValueCaption(value, this.options.field as string, this.options.valueCaption);
   }
 
   /**

@@ -303,6 +303,24 @@ export function FieldValueTest() {
         });
       });
 
+      describe('with a caption', () => {
+        const caption = 'blah';
+        beforeEach(() => {
+          const fakeResult = FakeResults.createFakeResult();
+          fakeResult.raw['objecttype'] = 'opportunityproduct';
+
+          facet = initializeFacet({ field: '@objecttype' });
+          facet.getCaptionForStringValue = () => caption;
+
+          initializeFieldValueComponent({ field: '@objecttype' }, fakeResult, facet);
+        });
+
+        it('with a caption, should use the caption', () => {
+          expect(getText()).toEqual(caption);
+          expect(getTitle()).toContain(caption);
+        });
+      });
+
       it('should display the field value as clickable when its facet is enabled', () => {
         facet.disabled = false;
         initializeFieldValueComponent({ field: '@string' }, FakeResults.createFakeResult(), facet);
