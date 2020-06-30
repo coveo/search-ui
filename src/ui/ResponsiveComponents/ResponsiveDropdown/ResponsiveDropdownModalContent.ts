@@ -21,6 +21,24 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     this.element.setAttribute('role', 'group');
     this.element.setAttribute('aria-label', l('FiltersDropdown'));
     this.hidden = false;
+    this.ensureCloseButton();
+    this.ensureFocusTrap();
+  }
+
+  public hideDropdown() {
+    this.element.el.classList.remove(this.className, ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
+    this.element.setAttribute('role', null);
+    this.element.setAttribute('aria-label', null);
+    this.hidden = true;
+    this.removeCloseButton();
+    this.removeFocusTrap();
+  }
+
+  public cleanUp() {
+    this.hidden = false;
+  }
+
+  private ensureCloseButton() {
     if (!this.closeButton) {
       this.closeButton = $$(
         'button',
@@ -33,27 +51,25 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
       this.closeButton.on('click', () => this.close());
       this.element.prepend(this.closeButton.el);
     }
+  }
+
+  private ensureFocusTrap() {
     if (!this.focusTrap) {
       this.focusTrap = new FocusTrap(this.element.el);
     }
   }
 
-  public hideDropdown() {
-    this.element.el.classList.remove(this.className, ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
-    this.element.setAttribute('role', null);
-    this.element.setAttribute('aria-label', null);
-    this.hidden = true;
+  private removeCloseButton() {
     if (this.closeButton) {
       this.closeButton.remove();
       this.closeButton = null;
     }
+  }
+
+  private removeFocusTrap() {
     if (this.focusTrap) {
       this.focusTrap.disable();
       this.focusTrap = null;
     }
-  }
-
-  public cleanUp() {
-    this.hidden = false;
   }
 }
