@@ -186,7 +186,7 @@ export class SuggestionsManager {
       return;
     }
 
-    suggestions.sort((a, b) => b.index || 0 - a.index || 0).forEach(suggestion => {
+    suggestions.sort((a, b) => (b.index || 0) - (a.index || 0)).forEach(suggestion => {
       const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
 
       dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);

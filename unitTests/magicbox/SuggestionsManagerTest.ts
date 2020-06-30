@@ -400,6 +400,15 @@ export function SuggestionsManagerTest() {
         });
 
         it('sorts suggestions by descending index value', async done => {
+          suggestions[0].index = 100;
+          suggestions[1].index = 200;
+          await renderSuggestions();
+          expect(suggestionElements[0].innerText).toEqual(textSuggestions[1]);
+          done();
+        });
+
+        it('sorts suggestions by descending index index even with undefined values', async done => {
+          suggestions[0].index = undefined;
           suggestions[1].index = 100;
           await renderSuggestions();
           expect(suggestionElements[0].innerText).toEqual(textSuggestions[1]);
