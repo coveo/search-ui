@@ -13,6 +13,7 @@ const { templates } = require('./gulpTasks/templates');
 const { compile, compileTSOnly, minimize, analyze } = require('./gulpTasks/compile');
 const { definitions, validateDefs } = require('./gulpTasks/definition');
 const { dev, devTest, devAccessibilityTest } = require('./gulpTasks/dev');
+const { zipForGitReleases, zipForVeracode } = require('./gulpTasks/zip');
 
 requireDir('./gulpTasks');
 
@@ -30,3 +31,5 @@ exports.validateDefs = validateDefs;
 exports.dev = dev;
 exports.devTest = devTest;
 exports.devAccessibilityTest = devAccessibilityTest;
+exports.zipForGitReleases = zipForGitReleases;
+exports.zipForVeracode = zipForVeracode;
