@@ -14,6 +14,7 @@ const { compile, compileTSOnly, minimize, analyze } = require('./gulpTasks/compi
 const { definitions, validateDefs } = require('./gulpTasks/definition');
 const { dev, devTest, devAccessibilityTest } = require('./gulpTasks/dev');
 const { zipForGitReleases, zipForVeracode } = require('./gulpTasks/zip');
+const { coverage, uploadCoverage } = require('./gulpTasks/test');
 
 requireDir('./gulpTasks');
 
@@ -33,3 +34,5 @@ exports.devTest = devTest;
 exports.devAccessibilityTest = devAccessibilityTest;
 exports.zipForGitReleases = zipForGitReleases;
 exports.zipForVeracode = zipForVeracode;
+exports.coverage = coverage;
+exports.uploadCoverage = uploadCoverage;

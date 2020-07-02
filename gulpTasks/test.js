@@ -26,8 +26,6 @@ function setupTests() {
     .pipe(event_stream.wait());
 }
 
-gulp.task('coverage', ['lcovCoverage']);
-
 gulp.task('unitTests', ['setupTests', 'buildUnitTests'], function(done) {
   new TestServer(
     {
@@ -67,9 +65,11 @@ gulp.task(
   shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.accessibility.test.config.js'])
 );
 
-gulp.task('uploadCoverage', ['lcovCoverage'], shell.task(['cat bin/coverage/lcov.info | ./node_modules/.bin/coveralls']));
+const coverage = gulp.series(remapCoverage, convertCoverageToLcovFormat);
 
-gulp.task('remapCoverage', function(done) {
+const uploadCoverage = gulp.series(coverage, shell.task(['cat bin/coverage/lcov.info | ./node_modules/.bin/coveralls']));
+
+function remapCoverage() {
   return gulp
     .src(`${COVERAGE_DIR}/coverage-es5.json`)
     .pipe(
@@ -80,9 +80,9 @@ gulp.task('remapCoverage', function(done) {
     )
     .pipe(rename('coverage.json'))
     .pipe(gulp.dest(COVERAGE_DIR));
-});
+}
 
-gulp.task('lcovCoverage', ['remapCoverage'], function(done) {
+function convertCoverageToLcovFormat(cb) {
   // Convert JSON coverage from remap-istanbul to lcov format (needed for Sonar).
   combineCoverage({
     dir: COVERAGE_DIR,
@@ -91,8 +91,8 @@ gulp.task('lcovCoverage', ['remapCoverage'], function(done) {
       lcov: {}
     },
     print: 'summary'
-  }).then(() => done());
-});
+  }).then(cb);
+}
 
 function filesToExclude(fileName) {
   const entryFile = /search-ui[\/\\]bin[\/\\]tests[\/\\]unitTests.js/;
@@ -101,4 +101,4 @@ function filesToExclude(fileName) {
   return !entryFile.test(fileName) && !whiteList.test(fileName);
 }
 
-module.exports = { setupTests };
+module.exports = { setupTests, coverage, uploadCoverage };
