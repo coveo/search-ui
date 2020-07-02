@@ -14,11 +14,12 @@ declare const Coveo;
 export interface IPipelineContextOptions {}
 
 /**
- * The `PipelineContext` component injects custom contextual information into the search requests and usage analytics events sent from a search interface.
+ * The `PipelineContext` component injects custom contextual information into the search requests and usage analytics search events sent from a search interface.
  *
  * This component is meant to be initialized on a `script` HTML tag whose `type` attribute is set to `text/context` and whose optional JSON content defines the custom information to send (each value can be set to a string or array of strings).
  *
  * See [Sending Custom Context Information](https://docs.coveo.com/en/399/).
+ * Note: To customize the context sent on all usage analytics events, see [Sending Custom Metadata with Search, Click, or Custom Events](https://docs.coveo.com/en/2004/javascript-search-framework/sending-custom-metadata-with-search-click-or-custom-events).
  */
 export class PipelineContext extends Component implements IPipelineContextProvider {
   static ID = 'PipelineContext';

@@ -4,6 +4,7 @@ import { l } from '../../strings/Strings';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IDynamicFacet, IDynamicFacetValue } from './IDynamicFacet';
+import { escape } from 'underscore';
 
 export class DynamicFacetBreadcrumbs {
   public element: HTMLElement;
@@ -43,7 +44,7 @@ export class DynamicFacetBreadcrumbs {
         className: 'coveo-dynamic-facet-breadcrumb-value',
         ariaLabel: l('RemoveFilterOn', facetValue.displayValue)
       },
-      facetValue.displayValue
+      escape(facetValue.displayValue)
     ).el;
     const clearElement = $$('span', { className: 'coveo-dynamic-facet-breadcrumb-value-clear' }, SVGIcons.icons.mainClear).el;
     valueElement.appendChild(clearElement);
