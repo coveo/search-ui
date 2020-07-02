@@ -5,7 +5,6 @@ const fs = require('fs');
 const shell = require('gulp-shell');
 const notSupportedFeaturesConfig = require('./notSupportedFeaturesConfig');
 const del = require('del');
-const runsequence = require('run-sequence');
 const _ = require('underscore');
 const baseTsConfig = require('../tsconfig.json');
 

@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const TestServer = require('karma').Server;
-const express = require('express');
 const path = require('path');
 const rename = require('gulp-rename');
 const combineCoverage = require('istanbul-combine');
@@ -8,8 +7,6 @@ const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 const event_stream = require('event-stream');
 const shell = require('gulp-shell');
 const replace = require('gulp-replace');
-const coveralls = require('coveralls');
-
 const COVERAGE_DIR = path.resolve('bin/coverage');
 
 function setupTests() {

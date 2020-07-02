@@ -2,7 +2,6 @@
 const gulp = require('gulp');
 const conditions = require('../templates/conditions.json');
 const templatesParser = require('./templatesParser');
-const runsequence = require('run-sequence');
 const rename = require('gulp-rename');
 
 const templates = gulp.series(buildTemplates, duplicateTemplatesFile);

@@ -1,4 +1,3 @@
-const gulp = require('gulp');
 const strings = require('../strings/strings');
 const stringValidations = require('../strings/stringsValidations');
 

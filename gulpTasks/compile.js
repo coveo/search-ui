@@ -4,7 +4,6 @@ const shell = require('gulp-shell');
 const eol = require('gulp-eol');
 const rename = require('gulp-rename');
 const event_stream = require('event-stream');
-const runsequence = require('run-sequence');
 const { fileTypes } = require('./filetypes');
 const { setNodeProdEnv } = require('./nodeEnv');
 

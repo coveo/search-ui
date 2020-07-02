@@ -1,7 +1,6 @@
 'use strict';
 
 const gulp = require('gulp');
-const rename = require('gulp-rename');
 const event_stream = require('event-stream');
 
 // For old times sake, we simply take the precompiled/prebuilt css/images/templates for the old style and copy it in the bin directory

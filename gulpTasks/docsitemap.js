@@ -1,5 +1,3 @@
-const gulp = require('gulp');
-
 function docsitemap(cb) {
   var SitemapGenerator = require('sitemap-generator');
   const sitePath = 'https://coveo.github.io/search-ui';
