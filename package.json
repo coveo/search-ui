@@ -76,7 +76,7 @@
     "glob": "^7.0.3",
     "globals-loader": "0.0.3",
     "graceful-fs": "^4.1.11",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-concat": "^2.6.0",
     "gulp-eol": "^0.1.2",
     "gulp-footer": "^1.0.5",
