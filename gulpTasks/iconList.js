@@ -5,7 +5,8 @@ const _ = require('underscore');
 const fs = require('fs');
 const buildIconList = require('./buildIconList');
 
+function iconList(cb) {
+  buildIconList('image/svg', 'bin/image', 'icon-list', cb);
+}
 
-gulp.task('iconList', function (done) {
-  buildIconList('image/svg', 'bin/image', 'icon-list', done);
-});
+module.exports = { iconList };

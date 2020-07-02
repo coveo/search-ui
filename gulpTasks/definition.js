@@ -7,12 +7,11 @@ const footer = require('gulp-footer');
 const shell = require('gulp-shell');
 const tvm = require('tvm');
 
-gulp.task('definitions', function(done) {
-  runsequence('externalDefs', 'internalDefs', 'cleanDefs', done);
-});
+const definitions = gulp.series(externalDefs, internalDefs, cleanDefs);
 
-gulp.task('cleanDefs', function() {
-  return (gulp
+function cleanDefs() {
+  return (
+    gulp
       .src('bin/ts/CoveoJsSearch.d.ts')
       .pipe(footer('declare module Coveo {\n\t class ResultLayout extends ResultLayoutSelector { }\n}\n'))
       .pipe(replace(/import.*$/gm, ''))
@@ -42,8 +41,9 @@ gulp.task('cleanDefs', function() {
       .pipe(replace(/moment\.[a-zA-Z]+/g, 'any'))
       .pipe(replace(/Partial<[A-z]*>/g, 'any'))
       .pipe(replace(/<\s?([a-z]+)\s?=\s?[a-z]+\s?>/gi, '<$1>'))
-      .pipe(gulp.dest('bin/ts/')) );
-});
+      .pipe(gulp.dest('bin/ts/'))
+  );
+}
 
 function clearEnumVariableDeclaration(match, p1, p2) {
   let lines = p2.split('\n');
@@ -58,7 +58,7 @@ function getEnumRegex() {
   return new RegExp(`${enumIdentifier}((?:${enumDeclaration}|${documentation})*)`, 'gm');
 }
 
-gulp.task('externalDefs', function() {
+function externalDefs() {
   return gulp
     .src([
       './node_modules/@types/underscore/index.d.ts',
@@ -84,9 +84,9 @@ gulp.task('externalDefs', function() {
     .pipe(replace(/undefined/g, 'any'))
     .pipe(replace(/Partial<[A-z]*>/g, 'any'))
     .pipe(gulp.dest('./bin/ts'));
-});
+}
 
-gulp.task('internalDefs', function() {
+function internalDefs() {
   return require('dts-generator').default({
     name: 'Coveo',
     project: './',
@@ -103,15 +103,22 @@ gulp.task('internalDefs', function() {
       'test/Test.ts'
     ]
   });
-});
+}
 
-gulp.task('validateDefs', ['validateTSV1', 'validateTSV2']);
+const validateDefs = gulp.parallel(validateTSV1, validateTSV2);
 
-gulp.task('installTSV1', done => {
+function installTSV1() {
   const version = '1.8.10';
-  new Promise(() => tvm.install(version, () => tvm.use(version, done)));
-});
+  new Promise(resolve => tvm.install(version, () => tvm.use(version, resolve)));
+}
 
-gulp.task('validateTSV1', ['installTSV1'], shell.task('node node_modules/tvm/current/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'));
+async function validateTSV1() {
+  await installTSV1();
+  return shell.task('node node_modules/tvm/current/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts')();
+}
 
-gulp.task('validateTSV2', shell.task(['node node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts']));
+function validateTSV2() {
+  return shell.task(['node node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'])();
+}
+
+module.exports = { definitions, validateDefs };

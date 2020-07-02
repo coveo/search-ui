@@ -1,9 +1,8 @@
 const gulp = require('gulp');
 const replace = require('gulp-replace');
 
-gulp.task('setup', ['copy']);
+function setup() {
+  return gulp.src('pages/*.html').pipe(gulp.dest('./bin'));
+}
 
-gulp.task('copy', function () {
-  gulp.src('pages/*.html')
-      .pipe(gulp.dest('./bin'))
-})
+module.exports = { setup };

@@ -11,11 +11,13 @@ const baseTsConfig = require('../tsconfig.json');
 
 const docgenJsonPath = './bin/docgen/docgen.json';
 
-gulp.task('doc', done => {
-  runsequence('buildDoc', 'testDoc', 'copyDocgenToBin', done);
-});
+const copyBinToDoc = gulp.series(cleanGeneratedThemesFiles, copyThemeFiles);
 
-gulp.task('buildDoc', ['copyBinToDoc', 'buildPlayground'], () => {
+const buildPlayground = shell.task(['node node_modules/webpack/bin/webpack.js --config ./webpack.playground.config.js']);
+
+const buildDoc = gulp.series(gulp.parallel(copyBinToDoc, buildPlayground), generateDocs);
+
+function generateDocs() {
   const typedocConfig = {
     ...baseTsConfig.compilerOptions,
     mode: 'file',
@@ -34,23 +36,23 @@ gulp.task('buildDoc', ['copyBinToDoc', 'buildPlayground'], () => {
   app.generateDocs(project, 'docgen');
   app.generateJson(project, docgenJsonPath, 'https://coveo.github.io/search-ui/');
   return gulp.src('./readme.png').pipe(gulp.dest('./docgen'));
-});
+}
 
-gulp.task('cleanGeneratedThemesFiles', () => {
+const doc = gulp.series(buildDoc, testDoc, copyDocgenToBin);
+
+function cleanGeneratedThemesFiles() {
   return del(['./docs/theme/assets/gen/**/*']);
-});
+}
 
-gulp.task('copyBinToDoc', ['cleanGeneratedThemesFiles'], () => {
+function copyThemeFiles() {
   return gulp.src('./bin/{js,image,css}/**/*').pipe(gulp.dest('./docs/theme/assets/gen'));
-});
+}
 
-gulp.task('copyDocgenToBin', () => {
+function copyDocgenToBin() {
   return gulp.src('./docgen/**/*').pipe(gulp.dest('./bin/docgen'));
-});
+}
 
-gulp.task('buildPlayground', shell.task(['node node_modules/webpack/bin/webpack.js --config ./webpack.playground.config.js']));
-
-gulp.task('testDoc', () => {
+function testDoc() {
   const docgenJson = JSON.parse(fs.readFileSync(docgenJsonPath));
   if (!docgenJson || !docgenJson.length) {
     throw new Error('Invalid object');
@@ -59,7 +61,7 @@ gulp.task('testDoc', () => {
   checkAllAttributesAreDefinedCorrectly(docgenJson);
   checkSpecificKeywords(docgenJson);
   checkSpecificElements(docgenJson);
-});
+}
 
 function checkAllAttributesAreDefinedCorrectly(docgenJson) {
   const attributes = [
@@ -101,3 +103,5 @@ function checkSpecificElements(docgenJson) {
     throw new Error(`Can't validate specific elements`);
   }
 }
+
+module.exports = { doc };
