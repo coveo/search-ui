@@ -51,7 +51,7 @@ function copyDocgenToBin() {
   return gulp.src('./docgen/**/*').pipe(gulp.dest('./bin/docgen'));
 }
 
-function testDoc() {
+function testDoc(cb) {
   const docgenJson = JSON.parse(fs.readFileSync(docgenJsonPath));
   if (!docgenJson || !docgenJson.length) {
     throw new Error('Invalid object');
@@ -60,6 +60,7 @@ function testDoc() {
   checkAllAttributesAreDefinedCorrectly(docgenJson);
   checkSpecificKeywords(docgenJson);
   checkSpecificElements(docgenJson);
+  cb();
 }
 
 function checkAllAttributesAreDefinedCorrectly(docgenJson) {
