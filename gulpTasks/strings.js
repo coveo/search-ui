@@ -34,9 +34,9 @@ function buildStrings(cb) {
   cb();
 }
 
-gulp.task('testString', function(done) {
+function testString(cb) {
   stringValidations.validate('./strings/strings.json');
-  done();
-});
+  cb();
+}
 
-module.exports = { buildStrings };
+module.exports = { buildStrings, testString };

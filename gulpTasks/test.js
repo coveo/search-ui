@@ -26,44 +26,31 @@ function setupTests() {
     .pipe(event_stream.wait());
 }
 
-gulp.task('unitTests', ['setupTests', 'buildUnitTests'], function(done) {
+const buildUnitTests = shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.unit.test.config.js']);
+const startUnitTestServer = cb => configureTestServer('./karma.unit.test.conf.js', cb);
+
+const unitTests = gulp.series(gulp.parallel(setupTests, buildUnitTests), startUnitTestServer);
+
+const buildAccessibilityTests = shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.accessibility.test.config.js']);
+const startAccessibilityTestServer = cb => configureTestServer('./karma.accessibility.test.conf.js', cb);
+
+const accessibilityTests = gulp.series(gulp.parallel(setupTests, buildAccessibilityTests), startAccessibilityTestServer);
+
+function configureTestServer(configPath, cb) {
   new TestServer(
     {
-      configFile: path.resolve('./karma.unit.test.conf.js')
+      configFile: path.resolve(configPath)
     },
     exitCode => {
       if (exitCode) {
         // Fail CI builds if any test fails (since karma will exit 1 on any error)
         throw new Error(exitCode);
       } else {
-        done();
+        cb();
       }
     }
   ).start();
-});
-
-gulp.task('accessibilityTests', ['setupTests', 'buildAccessibilityTests'], done => {
-  new TestServer(
-    {
-      configFile: path.resolve('./karma.accessibility.test.conf.js')
-    },
-    exitCode => {
-      if (exitCode) {
-        // Fail CI builds if any test fails (since karma will exit 1 on any error)
-        throw new Error(exitCode);
-      } else {
-        done();
-      }
-    }
-  ).start();
-});
-
-gulp.task('buildUnitTests', shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.unit.test.config.js']));
-
-gulp.task(
-  'buildAccessibilityTests',
-  shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.accessibility.test.config.js'])
-);
+}
 
 const coverage = gulp.series(remapCoverage, convertCoverageToLcovFormat);
 
@@ -101,4 +88,4 @@ function filesToExclude(fileName) {
   return !entryFile.test(fileName) && !whiteList.test(fileName);
 }
 
-module.exports = { setupTests, coverage, uploadCoverage };
+module.exports = { setupTests, coverage, uploadCoverage, unitTests, accessibilityTests };
