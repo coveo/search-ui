@@ -12,7 +12,7 @@ const coveralls = require('coveralls');
 
 const COVERAGE_DIR = path.resolve('bin/coverage');
 
-gulp.task('setupTests', function() {
+function setupTests() {
   return event_stream
     .merge(
       gulp.src('./testsFramework/lib/**/*').pipe(gulp.dest('./bin/tests/lib')),
@@ -24,7 +24,7 @@ gulp.task('setupTests', function() {
       gulp.src('./accessibilityTest/Accessibility.html').pipe(gulp.dest('./bin/tests/'))
     )
     .pipe(event_stream.wait());
-});
+}
 
 gulp.task('coverage', ['lcovCoverage']);
 
@@ -100,3 +100,5 @@ function filesToExclude(fileName) {
 
   return !entryFile.test(fileName) && !whiteList.test(fileName);
 }
+
+module.exports = { setupTests };

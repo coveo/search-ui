@@ -12,6 +12,7 @@ const { setup } = require('./gulpTasks/setup');
 const { templates } = require('./gulpTasks/templates');
 const { compile, compileTSOnly, minimize, analyze } = require('./gulpTasks/compile');
 const { definitions, validateDefs } = require('./gulpTasks/definition');
+const { dev, devTest, devAccessibilityTest } = require('./gulpTasks/dev');
 
 requireDir('./gulpTasks');
 
@@ -26,3 +27,6 @@ exports.compileTSOnly = compileTSOnly;
 exports.minimize = minimize;
 exports.analyze = analyze;
 exports.validateDefs = validateDefs;
+exports.dev = dev;
+exports.devTest = devTest;
+exports.devAccessibilityTest = devAccessibilityTest;
