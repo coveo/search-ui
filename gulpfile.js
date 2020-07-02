@@ -1,6 +1,4 @@
 const { parallel, series } = require('gulp');
-const requireDir = require('require-dir');
-const runsequence = require('run-sequence');
 const { buildLegacy } = require('./gulpTasks/legacy');
 const { doc } = require('./gulpTasks/doc');
 const { linkGitHooks } = require('./gulpTasks/linkGitHooks');
@@ -17,8 +15,6 @@ const { zipForGitReleases, zipForVeracode } = require('./gulpTasks/zip');
 const { coverage, uploadCoverage, unitTests, accessibilityTests } = require('./gulpTasks/test');
 const { docsitemap } = require('./gulpTasks/docsitemap');
 const { injectTag } = require('./gulpTasks/injectTag');
-
-requireDir('./gulpTasks');
 
 const src = series(compile, definitions);
 

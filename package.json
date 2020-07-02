@@ -106,7 +106,6 @@
     "puppeteer": "^0.10.2",
     "q": "^1.4.1",
     "remap-istanbul": "https://github.com/coveord/remap-istanbul/tarball/master",
-    "require-dir": "^0.3.0",
     "resolve-url-loader": "^2.0",
     "rimraf": "^2.5.4",
     "sass-loader": "^6.0",
