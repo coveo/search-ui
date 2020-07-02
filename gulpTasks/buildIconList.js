@@ -1,5 +1,4 @@
 'use strict';
-const sizeOf = require('image-size');
 const fs = require('fs-extra');
 const path = require('path');
 const walk = require('walk');
@@ -15,8 +14,7 @@ let args = require('yargs')
     alias: 'o',
     describe: 'The output directory'
   })
-  .help('help')
-  .argv;
+  .help('help').argv;
 
 function buildIconList(iconsDir, outputDir, fileName, done) {
   iconsDir = iconsDir || args.sprites;
@@ -26,7 +24,7 @@ function buildIconList(iconsDir, outputDir, fileName, done) {
   if (outputDir == undefined) throw 'Error. No output directory defined';
 
   console.log('Generating icon list');
-  
+
   let icons = [];
 
   let walker = walk.walk(iconsDir);
@@ -58,7 +56,7 @@ function fileHandler(icons, root, fileStats, next) {
         name: iconName,
         isFileType: isFileType
       });
-    })
+    });
   }
   next();
 }
@@ -79,10 +77,10 @@ function generateHtmlOutput(icons) {
   );
   let header = '<!DOCTYPE html><html><table>';
   let style = `<style>td, th { border: 1px solid #ccc; } table { text-align: center; }\n${generateStyling()}</style>`;
-  let tableHeader = '<th>Icon name</th><th>Icon CSS class</th><th>Icon</th>'
+  let tableHeader = '<th>Icon name</th><th>Icon CSS class</th><th>Icon</th>';
   let footer = '</table></html>';
   icons = _.sortBy(icons, 'name');
-  icons = _.sortBy(icons, iconInfo => iconInfo.isFileType ? 0 : 1);
+  icons = _.sortBy(icons, iconInfo => (iconInfo.isFileType ? 0 : 1));
   let rows = _.map(icons, iconInfo => row({ iconInfo: iconInfo })).join('');
   return header + style + tableHeader + rows + footer;
 }
