@@ -39,6 +39,7 @@ exports.zipForVeracode = zipForVeracode;
 exports.coverage = coverage;
 exports.uploadCoverage = uploadCoverage;
 exports.docsitemap = docsitemap;
+exports.doc = doc;
 exports.injectTag = injectTag;
 exports.testString = testString;
 exports.unitTests = unitTests;
