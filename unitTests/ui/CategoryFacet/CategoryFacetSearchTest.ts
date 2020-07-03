@@ -95,6 +95,11 @@ export function CategoryFacetSearchTest() {
       expect(container.getAttribute('aria-label')).toContain(categoryFacetTitle);
     });
 
+    it("builds an input with the category facet's title in the label", () => {
+      const input = categoryFacetSearch.build().find('input');
+      expect(input.getAttribute('aria-label')).toContain(categoryFacetTitle);
+    });
+
     it('focus moves the focus to the input element', () => {
       spyOn(getInput(), 'focus');
 
@@ -304,6 +309,39 @@ export function CategoryFacetSearchTest() {
       setTimeout(() => {
         expect(getSearchResults().innerHTML).not.toEqual('');
         done();
+      });
+    });
+
+    describe('when displayButton is true (default', () => {
+      it('container should not have the class coveo-category-facet-search-without-button', () => {
+        expect(categoryFacetSearch.container.hasClass('coveo-category-facet-search-without-button')).toBe(false);
+      });
+
+      it("facetSearchElement's search should not have the class without-animation", () => {
+        expect($$(categoryFacetSearch.facetSearchElement.search).hasClass('without-animation')).toBe(false);
+      });
+
+      it('should have a search placeholder', () => {
+        expect(categoryFacetSearch.container.find('.coveo-category-facet-search-placeholder')).toBeTruthy();
+      });
+    });
+
+    describe('when displayButton is false', () => {
+      beforeEach(() => {
+        categoryFacetSearch = new CategoryFacetSearch(categoryFacetMock, false);
+        categoryFacetSearch.build();
+      });
+
+      it('container should have the class coveo-category-facet-search-without-button', () => {
+        expect(categoryFacetSearch.container.hasClass('coveo-category-facet-search-without-button')).toBe(true);
+      });
+
+      it("facetSearchElement's search should have the class without-animation", () => {
+        expect($$(categoryFacetSearch.facetSearchElement.search).hasClass('without-animation')).toBe(true);
+      });
+
+      it('should have no search placeholder', () => {
+        expect(categoryFacetSearch.container.find('.coveo-category-facet-search-placeholder')).toBeFalsy();
       });
     });
   });

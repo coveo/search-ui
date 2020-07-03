@@ -60,6 +60,10 @@ export class FacetSearch implements IFacetSearch {
     return Facet.ID;
   }
 
+  public get facetTitle() {
+    return this.facet.options.title || this.facet.options.field.toString();
+  }
+
   /**
    * Build the search component and return an `HTMLElement` which can be appended to the {@link Facet}.
    * @returns {HTMLElement}
