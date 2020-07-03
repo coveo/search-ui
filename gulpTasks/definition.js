@@ -103,20 +103,15 @@ function internalDefs() {
   });
 }
 
-const validateDefs = gulp.parallel(validateTSV1, validateTSV2);
-
 function installTSV1() {
   const version = '1.8.10';
   new Promise(resolve => tvm.install(version, () => tvm.use(version, resolve)));
 }
 
-async function validateTSV1() {
-  await installTSV1();
-  return shell.task('node node_modules/tvm/current/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts')();
-}
+const validateTSV1 = gulp.series(installTSV1, shell.task('node node_modules/tvm/current/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'));
 
-function validateTSV2() {
-  return shell.task(['node node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'])();
-}
+const validateTSV2 = shell.task(['node node_modules/typescript/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts']);
+
+const validateDefs = gulp.parallel(validateTSV1, validateTSV2);
 
 module.exports = { definitions, validateDefs };
