@@ -3,6 +3,7 @@ import { IIndexFieldValue } from '../../rest/FieldValue';
 
 export interface IFacetSearch {
   facetType: string;
+  facetTitle: string;
   currentlyDisplayedResults: string[];
   facetSearchElement: FacetSearchElement;
   facetSearchPromise: Promise<IIndexFieldValue[]>;
