@@ -66,6 +66,8 @@ export interface ICategoryFacetOptions extends IResponsiveComponentOptions, IDep
   maximumDepth?: number;
   valueCaption?: IStringMap<string>;
   dependsOn?: string;
+  displaySearchOnTop?: boolean;
+  displaySearchButton?: boolean;
 }
 
 export type CategoryValueDescriptor = {
@@ -306,6 +308,14 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       },
       { depend: 'dependsOn', section: 'CommonOptions' }
     ),
+    /**
+     * Whether to display the search on top of the results.
+     */
+    displaySearchOnTop: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Whether to display a search button on the facet or the input directly.
+     */
+    displaySearchButton: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     ...ResponsiveFacetOptions
   };
 
@@ -396,7 +406,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       return this.logDisabledFacetSearchWarning();
     }
 
-    this.categoryFacetSearch = new CategoryFacetSearch(this);
+    this.categoryFacetSearch = new CategoryFacetSearch(this, this.options.displaySearchButton);
   }
 
   private logDisabledFacetSearchWarning() {
@@ -474,7 +484,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.renderValues(categoryFacetResult, numberOfRequestedValues);
     if (this.isFacetSearchAvailable) {
       const facetSearch = this.categoryFacetSearch.build();
-      $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
+      this.options.displaySearchOnTop
+        ? $$(facetSearch).insertBefore(this.categoryValueRoot.listRoot.el)
+        : $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
     }
 
     this.moreLessContainer = $$('div', { className: 'coveo-category-facet-more-less-container' });

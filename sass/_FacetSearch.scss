@@ -108,7 +108,10 @@
   display: none;
   margin: 2px $facet-value-padding 1px;
   padding: 4px;
-  @include animation(grow 0.3s linear);
+
+  &:not(.without-animation) {
+    @include animation(grow 0.3s linear);
+  }
 }
 
 .coveo-facet-searching {
