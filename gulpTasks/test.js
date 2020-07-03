@@ -75,7 +75,7 @@ function convertCoverageToLcovFormat(cb) {
       lcov: {}
     },
     print: 'summary'
-  }).then(cb);
+  }).then(() => cb());
 }
 
 function filesToExclude(fileName) {
