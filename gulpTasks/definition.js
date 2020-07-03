@@ -103,9 +103,9 @@ function internalDefs() {
   });
 }
 
-function installTSV1() {
+function installTSV1(cb) {
   const version = '1.8.10';
-  new Promise(resolve => tvm.install(version, () => tvm.use(version, resolve)));
+  tvm.install(version, () => tvm.use(version, cb));
 }
 
 const validateTSV1 = gulp.series(installTSV1, shell.task('node node_modules/tvm/current/bin/tsc --noEmit ./bin/ts/CoveoJsSearch.d.ts'));
