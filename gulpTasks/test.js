@@ -8,6 +8,7 @@ const event_stream = require('event-stream');
 const shell = require('gulp-shell');
 const replace = require('gulp-replace');
 const COVERAGE_DIR = path.resolve('bin/coverage');
+require('coveralls');
 
 function setupTests() {
   return event_stream
