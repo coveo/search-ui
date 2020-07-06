@@ -1,3 +1,4 @@
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -8,8 +9,36 @@ import 'styling/_SmartSnippet';
 import { find } from 'underscore';
 import { IQueryResult } from '../../rest/QueryResult';
 import { UserFeedbackBanner } from './UserFeedbackBanner';
-import { analyticsActionCauseList, IAnalyticsNoMeta, IAnalyticsSmartSnippetContentLink } from '../Analytics/AnalyticsActionListMeta';
+import {
+  analyticsActionCauseList,
+  IAnalyticsNoMeta,
+  IAnalyticsSmartSnippetContentLinkMeta,
+  IAnalyticsSmartSnippetExplainWhyMeta,
+  IAnalyticsSmartSnippetExplainWhyDetailedMeta
+} from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
+import { ExplanationModal, IExplanation } from './ExplanationModal';
+import { l } from '../../strings/Strings';
+
+interface ISmartSnippetExplaination {
+  analyticsId: string;
+  localizationName: string;
+}
+
+const explanations: ISmartSnippetExplaination[] = [
+  {
+    analyticsId: 'does_not_answer',
+    localizationName: 'UsefulnessFeedbackDoesNotAnswer'
+  },
+  {
+    analyticsId: 'is_not_useful',
+    localizationName: 'UsefulnessFeedbackIsNotUseful'
+  },
+  {
+    analyticsId: 'was_not_a_question',
+    localizationName: 'UsefulnessFeedbackWasNotAQuestion'
+  }
+];
 
 const BASE_CLASSNAME = 'coveo-smart-snippet';
 const ANSWER_CONTAINER_CLASSNAME = `${BASE_CLASSNAME}-answer`;
@@ -48,8 +77,15 @@ export class SmartSnippet extends Component {
   private sourceContainer: HTMLElement;
   private snippetContainer: HTMLElement;
   private heightLimiter: HeightLimiter;
+  private explanationModal: ExplanationModal;
+  private feedbackBanner: UserFeedbackBanner;
 
-  constructor(public element: HTMLElement, public options?: ISmartSnippetOptions, bindings?: IComponentBindings) {
+  constructor(
+    public element: HTMLElement,
+    public options?: ISmartSnippetOptions,
+    bindings?: IComponentBindings,
+    private ModalBox = ModalBoxModule
+  ) {
     super(element, SmartSnippet.ID, bindings);
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
@@ -68,11 +104,25 @@ export class SmartSnippet extends Component {
 
   public createDom() {
     this.element.appendChild(this.buildAnswerContainer());
-    this.element.appendChild(
-      new UserFeedbackBanner(
-        isUseful => (isUseful ? this.sendLikeSmartSnippetAnalytics() : this.sendDislikeSmartSnippetAnalytics())
-      ).build()
+    this.feedbackBanner = new UserFeedbackBanner(
+      isUseful => (isUseful ? this.sendLikeSmartSnippetAnalytics() : this.sendDislikeSmartSnippetAnalytics()),
+      () => this.openExplanationModal()
     );
+    this.element.appendChild(this.feedbackBanner.build());
+    this.explanationModal = new ExplanationModal({
+      explanations: explanations.map(
+        explanation =>
+          <IExplanation>{
+            displayedName: l(explanation.localizationName),
+            name: explanation.analyticsId,
+            onSelect: () => this.sendExplainWhyAnalytics(explanation)
+          }
+      ),
+      onClosed: () => this.sendCloseExplainWhyAnalytics(),
+      onOtherExplanationGiven: details => this.sendExplainWhyDetailedAnalytics(details),
+      ownerElement: this.searchInterface.options.modalContainer,
+      modalBoxModule: this.ModalBox
+    });
   }
 
   private buildAnswerContainer() {
@@ -194,6 +244,11 @@ export class SmartSnippet extends Component {
     }
   }
 
+  private openExplanationModal() {
+    this.sendPressExplainWhyAnalytics();
+    this.explanationModal.open(this.feedbackBanner.explainWhy);
+  }
+
   private sendLikeSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.likeSmartSnippet,
@@ -240,11 +295,51 @@ export class SmartSnippet extends Component {
   }
 
   private sendOpenContentLinkAnalytics(link: HTMLAnchorElement) {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetContentLink>(
+    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetContentLinkMeta>(
       analyticsActionCauseList.openLinkInSmartSnippetContent,
       {
         target: link.getAttribute('href'),
         outerHTML: link.outerHTML
+      },
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendPressExplainWhyAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
+      analyticsActionCauseList.pressSmartSnippetExplainWhy,
+      {},
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendCloseExplainWhyAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
+      analyticsActionCauseList.closeSmartSnippetExplainWhyModal,
+      {},
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendExplainWhyAnalytics(reason: ISmartSnippetExplaination) {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetExplainWhyMeta>(
+      analyticsActionCauseList.smartSnippetExplainedWhy,
+      {
+        reason: reason.analyticsId
+      },
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendExplainWhyDetailedAnalytics(details: string) {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetExplainWhyDetailedMeta>(
+      analyticsActionCauseList.smartSnippetExplainedWhyDetailed,
+      {
+        details
       },
       this.element,
       this.lastRenderedResult

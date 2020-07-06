@@ -7565,6 +7565,22 @@
     "en": "Explain why",
     "fr": "Expliquer pourquoi"
   },
+  "UsefulnessFeedbackExplainWhyImperative": {
+    "en": "Explain why",
+    "fr": "Expliquez pourquoi"
+  },
+  "UsefulnessFeedbackDoesNotAnswer": {
+    "en": "Didn't answer my question",
+    "fr": "N'a pas répondu à ma question"
+  },
+  "UsefulnessFeedbackIsNotUseful": {
+    "en": "Wasn't helpful enough",
+    "fr": "N'aide pas assez"
+  },
+  "UsefulnessFeedbackWasNotAQuestion": {
+    "en": "Didn't expect an answer",
+    "fr": "Une réponse n'était pas attendu"
+  },
   "Yes": {
     "en": "Yes",
     "fr": "Oui"
@@ -7572,5 +7588,13 @@
   "No": {
     "en": "No",
     "fr": "Non"
+  },
+  "Other": {
+    "en": "Other",
+    "fr": "Autre"
+  },
+  "Send": {
+    "en": "Send",
+    "fr": "Envoyer"
   }
 }

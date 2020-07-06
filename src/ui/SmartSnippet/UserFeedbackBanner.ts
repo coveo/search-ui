@@ -47,13 +47,13 @@ export const UserFeedbackBannerClassNames = {
 };
 
 export class UserFeedbackBanner {
+  public explainWhy: HTMLElement;
   private isUseful = UsefulState.Unknown;
   private yesButton: HTMLElement;
   private noButton: HTMLElement;
   private thankYouBanner: HTMLElement;
-  private explainWhy: HTMLElement;
 
-  constructor(private readonly sendUsefulnessAnalytics: (isUseful: boolean) => void) {}
+  constructor(private readonly sendUsefulnessAnalytics: (isUseful: boolean) => void, private readonly onExplainWhyPressed: () => void) {}
 
   public build() {
     return $$(
@@ -155,6 +155,6 @@ export class UserFeedbackBanner {
   }
 
   private requestExplaination() {
-    // TODO: Add a modal with feedback options.
+    this.onExplainWhyPressed();
   }
 }
