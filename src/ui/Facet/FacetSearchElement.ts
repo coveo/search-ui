@@ -247,7 +247,7 @@ export class FacetSearchElement {
       type: 'text',
       autocapitalize: 'off',
       autocorrect: 'off',
-      ariaLabel: l('Search'),
+      ariaLabel: l('SearchFacetResults', this.facetSearch.facetTitle),
       ariaHaspopup: 'true',
       ariaAutocomplete: 'list'
     }).el;

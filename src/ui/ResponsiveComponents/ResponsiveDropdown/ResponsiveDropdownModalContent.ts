@@ -21,17 +21,8 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     this.element.setAttribute('role', 'group');
     this.element.setAttribute('aria-label', l('FiltersDropdown'));
     this.hidden = false;
-    this.closeButton = $$(
-      'button',
-      {
-        className: 'coveo-facet-modal-close-button',
-        ariaLabel: this.closeButtonLabel
-      },
-      SVGIcons.icons.mainClear
-    );
-    this.closeButton.on('click', () => this.close());
-    this.element.prepend(this.closeButton.el);
-    this.focusTrap = new FocusTrap(this.element.el);
+    this.ensureCloseButton();
+    this.ensureFocusTrap();
   }
 
   public hideDropdown() {
@@ -39,17 +30,46 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     this.element.setAttribute('role', null);
     this.element.setAttribute('aria-label', null);
     this.hidden = true;
-    if (this.closeButton) {
-      this.closeButton.remove();
-      this.closeButton = null;
-    }
-    if (this.focusTrap) {
-      this.focusTrap.disable();
-      this.focusTrap = null;
-    }
+    this.removeCloseButton();
+    this.removeFocusTrap();
   }
 
   public cleanUp() {
     this.hidden = false;
+  }
+
+  private ensureCloseButton() {
+    if (!this.closeButton) {
+      this.closeButton = $$(
+        'button',
+        {
+          className: 'coveo-facet-modal-close-button',
+          ariaLabel: this.closeButtonLabel
+        },
+        SVGIcons.icons.mainClear
+      );
+      this.closeButton.on('click', () => this.close());
+      this.element.prepend(this.closeButton.el);
+    }
+  }
+
+  private ensureFocusTrap() {
+    if (!this.focusTrap) {
+      this.focusTrap = new FocusTrap(this.element.el);
+    }
+  }
+
+  private removeCloseButton() {
+    if (this.closeButton) {
+      this.closeButton.remove();
+      this.closeButton = null;
+    }
+  }
+
+  private removeFocusTrap() {
+    if (this.focusTrap) {
+      this.focusTrap.disable();
+      this.focusTrap = null;
+    }
   }
 }
