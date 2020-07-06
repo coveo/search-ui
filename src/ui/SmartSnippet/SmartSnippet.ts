@@ -8,7 +8,7 @@ import 'styling/_SmartSnippet';
 import { find } from 'underscore';
 import { IQueryResult } from '../../rest/QueryResult';
 import { UserFeedbackBanner } from './UserFeedbackBanner';
-import { analyticsActionCauseList, IAnalyticsNoMeta, IAnalyticsSmartSnippetContentLink } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
 
 const BASE_CLASSNAME = 'coveo-smart-snippet';
@@ -152,9 +152,6 @@ export class SmartSnippet extends Component {
 
   private renderSnippet(content: string) {
     this.snippetContainer.innerHTML = content;
-    $$(this.snippetContainer)
-      .findAll('a')
-      .forEach((link: HTMLAnchorElement) => this.enableAnalyticsOnLink(link, () => this.sendOpenContentLinkAnalytics(link)));
   }
 
   private renderSource(source: IQueryResult) {
@@ -234,18 +231,6 @@ export class SmartSnippet extends Component {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.openSmartSnippetSource,
       {},
-      this.element,
-      this.lastRenderedResult
-    );
-  }
-
-  private sendOpenContentLinkAnalytics(link: HTMLAnchorElement) {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetContentLink>(
-      analyticsActionCauseList.openLinkInSmartSnippetContent,
-      {
-        target: link.getAttribute('href'),
-        outerHTML: link.outerHTML
-      },
       this.element,
       this.lastRenderedResult
     );

@@ -225,11 +225,6 @@ export interface IAnalyticsMissingTerm {
   missingTerm: string;
 }
 
-export interface IAnalyticsSmartSnippetContentLink {
-  target: string;
-  outerHTML: string;
-}
-
 /**
  * Describes the object sent as metadata along with [`clickQuerySuggestPreview`]{@link analyticsActionCauseList.clickQuerySuggestPreview} usage analytics events.
  */
@@ -1411,22 +1406,6 @@ export var analyticsActionCauseList = {
    */
   openSmartSnippetSource: <IAnalyticsActionCause>{
     name: 'openSmartSnippetSource',
-    type: 'smartSnippet'
-  },
-  /**
-   * The custom event logged when a link inside a [SmartSnippet]{@link SmartSnippet} is opened.
-   *
-   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
-   *
-   * ```javascript
-   * {
-   *  actionCause: "openLinkInSmartSnippetContent",
-   *  actionType: "smartSnippet"
-   * }
-   * ```
-   */
-  openLinkInSmartSnippetContent: <IAnalyticsActionCause>{
-    name: 'openLinkInSmartSnippetContent',
     type: 'smartSnippet'
   }
 };
