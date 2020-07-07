@@ -1,6 +1,6 @@
 import 'styling/DynamicFacet/_DynamicFacetValues';
 import { $$ } from '../../../utils/Dom';
-import { findWhere, find } from 'underscore';
+import { findWhere, find, escape } from 'underscore';
 import { DynamicFacetValue } from './DynamicFacetValue';
 import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
@@ -162,7 +162,7 @@ export class DynamicFacetValues implements IDynamicFacetValues {
           className: 'coveo-dynamic-facet-collapsed-values',
           ariaLabel: `${l('CurrentSelections')}: ${selectedValues}`
         },
-        selectedValues
+        escape(selectedValues)
       ).el
     );
   }

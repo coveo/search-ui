@@ -85,6 +85,18 @@ export function DynamicFacetValuesTest() {
       expect(selectedCollapsedValues().textContent).toBe(dynamicFacetValues.selectedValues.join(', '));
     });
 
+    it('when a selected facet value contains XSS, it escapes the XSS value rendered in collapsed mode', () => {
+      const facetValueWithXSS = DynamicFacetTestUtils.createFakeFacetValue({
+        value: '<img src=x onerror=alert(1)>',
+        state: FacetValueState.selected
+      });
+
+      mockFacetValues = [facetValueWithXSS];
+      initializeComponent();
+
+      expect(selectedCollapsedValues().textContent).toBe(facetValueWithXSS.value);
+    });
+
     it('when there are no selected values, hasSelectedValues should return false', () => {
       mockFacetValues = DynamicFacetTestUtils.createFakeFacetValues();
       initializeComponent();
