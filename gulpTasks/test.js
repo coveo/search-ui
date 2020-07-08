@@ -52,7 +52,7 @@ function configureTestServer(configPath, cb) {
 
 const coverage = gulp.series(remapCoverage, convertCoverageToLcovFormat);
 
-const uploadCoverage = gulp.series(coverage, shell.task(['cat bin/coverage/lcov.info | ./node_modules/.bin/coveralls']));
+const uploadCoverage = gulp.series(coverage, shell.task(['cat bin/coverage/lcov.info | npx coveralls']));
 
 function remapCoverage() {
   return gulp
