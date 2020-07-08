@@ -24,12 +24,12 @@ function setupTests() {
     .pipe(event_stream.wait());
 }
 
-const buildUnitTests = shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.unit.test.config.js']);
+const buildUnitTests = shell.task(['npx webpack --config webpack.unit.test.config.js']);
 const startUnitTestServer = cb => configureTestServer('./karma.unit.test.conf.js', cb);
 
 const unitTests = gulp.series(gulp.parallel(setupTests, buildUnitTests), startUnitTestServer);
 
-const buildAccessibilityTests = shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.accessibility.test.config.js']);
+const buildAccessibilityTests = shell.task(['npx webpack --config webpack.accessibility.test.config.js']);
 const startAccessibilityTestServer = cb => configureTestServer('./karma.accessibility.test.conf.js', cb);
 
 const accessibilityTests = gulp.series(gulp.parallel(setupTests, buildAccessibilityTests), startAccessibilityTestServer);

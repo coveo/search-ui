@@ -9,14 +9,11 @@ const { setNodeProdEnv } = require('./nodeEnv');
 
 const prepareSass = gulp.series(fileTypes, pipeModalBoxFiles);
 
-const executeWebpack = gulp.series(
-  gulp.parallel(addEolDependencies, deprecatedDependencies, prepareSass),
-  shell.task(['node node_modules/webpack/bin/webpack.js'])
-);
+const executeWebpack = gulp.series(gulp.parallel(addEolDependencies, deprecatedDependencies, prepareSass), shell.task(['npx webpack']));
 
 const compile = gulp.series(executeWebpack, gulp.parallel(duplicateCssFile, duplicateCssMapFile));
 
-const compileTSOnly = shell.task(['node node_modules/webpack/bin/webpack.js --config ./webpack.tsonly.config.js']);
+const compileTSOnly = shell.task(['npx webpack --config ./webpack.tsonly.config.js']);
 
 const minimize = gulp.series(
   gulp.parallel(addEolDependencies, setNodeProdEnv),

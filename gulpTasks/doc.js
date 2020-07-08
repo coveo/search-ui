@@ -12,7 +12,7 @@ const docgenJsonPath = './bin/docgen/docgen.json';
 
 const copyBinToDoc = gulp.series(cleanGeneratedThemesFiles, copyThemeFiles);
 
-const buildPlayground = shell.task(['node node_modules/webpack/bin/webpack.js --config ./webpack.playground.config.js']);
+const buildPlayground = shell.task(['npx webpack --config ./webpack.playground.config.js']);
 
 const buildDoc = gulp.series(gulp.parallel(copyBinToDoc, buildPlayground), generateDocs);
 
