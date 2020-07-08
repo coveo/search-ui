@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const TestServer = require('karma').Server;
-const express = require('express');
 const path = require('path');
 const rename = require('gulp-rename');
 const combineCoverage = require('istanbul-combine');
@@ -8,11 +7,10 @@ const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 const event_stream = require('event-stream');
 const shell = require('gulp-shell');
 const replace = require('gulp-replace');
-const coveralls = require('coveralls');
-
 const COVERAGE_DIR = path.resolve('bin/coverage');
+require('coveralls');
 
-gulp.task('setupTests', function() {
+function setupTests() {
   return event_stream
     .merge(
       gulp.src('./testsFramework/lib/**/*').pipe(gulp.dest('./bin/tests/lib')),
@@ -24,52 +22,39 @@ gulp.task('setupTests', function() {
       gulp.src('./accessibilityTest/Accessibility.html').pipe(gulp.dest('./bin/tests/'))
     )
     .pipe(event_stream.wait());
-});
+}
 
-gulp.task('coverage', ['lcovCoverage']);
+const buildUnitTests = shell.task(['npx webpack --config webpack.unit.test.config.js']);
+const startUnitTestServer = cb => configureTestServer('./karma.unit.test.conf.js', cb);
 
-gulp.task('unitTests', ['setupTests', 'buildUnitTests'], function(done) {
+const unitTests = gulp.series(gulp.parallel(setupTests, buildUnitTests), startUnitTestServer);
+
+const buildAccessibilityTests = shell.task(['npx webpack --config webpack.accessibility.test.config.js']);
+const startAccessibilityTestServer = cb => configureTestServer('./karma.accessibility.test.conf.js', cb);
+
+const accessibilityTests = gulp.series(gulp.parallel(setupTests, buildAccessibilityTests), startAccessibilityTestServer);
+
+function configureTestServer(configPath, cb) {
   new TestServer(
     {
-      configFile: path.resolve('./karma.unit.test.conf.js')
+      configFile: path.resolve(configPath)
     },
     exitCode => {
       if (exitCode) {
         // Fail CI builds if any test fails (since karma will exit 1 on any error)
         throw new Error(exitCode);
       } else {
-        done();
+        cb();
       }
     }
   ).start();
-});
+}
 
-gulp.task('accessibilityTests', ['setupTests', 'buildAccessibilityTests'], done => {
-  new TestServer(
-    {
-      configFile: path.resolve('./karma.accessibility.test.conf.js')
-    },
-    exitCode => {
-      if (exitCode) {
-        // Fail CI builds if any test fails (since karma will exit 1 on any error)
-        throw new Error(exitCode);
-      } else {
-        done();
-      }
-    }
-  ).start();
-});
+const coverage = gulp.series(remapCoverage, convertCoverageToLcovFormat);
 
-gulp.task('buildUnitTests', shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.unit.test.config.js']));
+const uploadCoverage = gulp.series(coverage, shell.task(['cat bin/coverage/lcov.info | npx coveralls']));
 
-gulp.task(
-  'buildAccessibilityTests',
-  shell.task(['node node_modules/webpack/bin/webpack.js --config webpack.accessibility.test.config.js'])
-);
-
-gulp.task('uploadCoverage', ['lcovCoverage'], shell.task(['cat bin/coverage/lcov.info | ./node_modules/.bin/coveralls']));
-
-gulp.task('remapCoverage', function(done) {
+function remapCoverage() {
   return gulp
     .src(`${COVERAGE_DIR}/coverage-es5.json`)
     .pipe(
@@ -80,9 +65,9 @@ gulp.task('remapCoverage', function(done) {
     )
     .pipe(rename('coverage.json'))
     .pipe(gulp.dest(COVERAGE_DIR));
-});
+}
 
-gulp.task('lcovCoverage', ['remapCoverage'], function(done) {
+function convertCoverageToLcovFormat(cb) {
   // Convert JSON coverage from remap-istanbul to lcov format (needed for Sonar).
   combineCoverage({
     dir: COVERAGE_DIR,
@@ -91,8 +76,8 @@ gulp.task('lcovCoverage', ['remapCoverage'], function(done) {
       lcov: {}
     },
     print: 'summary'
-  }).then(() => done());
-});
+  }).then(() => cb());
+}
 
 function filesToExclude(fileName) {
   const entryFile = /search-ui[\/\\]bin[\/\\]tests[\/\\]unitTests.js/;
@@ -100,3 +85,5 @@ function filesToExclude(fileName) {
 
   return !entryFile.test(fileName) && !whiteList.test(fileName);
 }
+
+module.exports = { setupTests, coverage, uploadCoverage, unitTests, accessibilityTests };
