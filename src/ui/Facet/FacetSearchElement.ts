@@ -9,6 +9,7 @@ import { FacetSearchUserInputHandler } from './FacetSearchUserInputHandler';
 import { uniqueId } from 'underscore';
 import { ISearchDropdownNavigator, ISearchDropdownConfig } from './FacetSearchDropdownNavigation/DefaultSearchDropdownNavigator';
 import { SearchDropdownNavigatorFactory } from './FacetSearchDropdownNavigation/SearchDropdownNavigatorFactory';
+import { KEYBOARD } from '../../utils/KeyboardUtils';
 
 export class FacetSearchElement {
   public search: HTMLElement | undefined;
@@ -77,6 +78,11 @@ export class FacetSearchElement {
   private initSearchResults() {
     this.searchResults = $$('ul', { id: this.facetSearchId, className: 'coveo-facet-search-results', role: 'listbox' }).el;
     $$(this.searchResults).on('scroll', () => this.handleScrollEvent());
+    $$(this.searchResults).on('keyup', (e: KeyboardEvent) => {
+      if (e.which === KEYBOARD.ESCAPE) {
+        this.facetSearch.dismissSearchResults();
+      }
+    });
     $$(this.searchResults).hide();
   }
 
