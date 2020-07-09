@@ -5,15 +5,14 @@ import { RadioButton } from '../FormWidgets/RadioButton';
 import 'styling/_ExplanationModal';
 
 export interface IExplanation {
-  name: string;
-  displayedName: string;
+  label: string;
   onSelect: () => void;
+  hasDetails?: boolean;
 }
 
 export interface IExplanationModalOptions {
   ownerElement: HTMLElement;
   explanations: IExplanation[];
-  onOtherExplanationGiven: (details: string) => void;
   onClosed: () => void;
   modalBoxModule?: Coveo.ModalBox.ModalBox;
 }
@@ -29,12 +28,18 @@ const SEND_BUTTON_CLASSNAME = `${ROOT_CLASSNAME}-send-button`;
 export class ExplanationModal {
   private modal: AccessibleModal;
   private explanationRadioButtons: RadioButton[];
-  private selectedRadioButton: RadioButton;
   private selectedExplanation: IExplanation;
-  private otherExplanationTextArea: HTMLTextAreaElement;
+  private detailsTextArea: HTMLTextAreaElement;
 
   constructor(public options: IExplanationModalOptions) {
     this.modal = new AccessibleModal(ROOT_CLASSNAME, this.options.ownerElement, this.options.modalBoxModule);
+  }
+
+  public get details() {
+    if (!this.selectedExplanation || !this.selectedExplanation.hasDetails) {
+      return null;
+    }
+    return this.detailsTextArea.value;
   }
 
   public open(origin: HTMLElement) {
@@ -64,10 +69,7 @@ export class ExplanationModal {
 
   private buildExplanations() {
     const explanationsContainer = $$('div', { className: EXPLANATIONS_CLASSNAME }).el;
-    this.explanationRadioButtons = [
-      ...this.options.explanations.map(explanation => this.buildExplanationRadioButton(explanation)),
-      this.buildOtherExplanationRadioButton()
-    ];
+    this.explanationRadioButtons = this.options.explanations.map(explanation => this.buildExplanationRadioButton(explanation));
     this.explanationRadioButtons[0].select();
     this.explanationRadioButtons.forEach(radioButton => explanationsContainer.appendChild(radioButton.getElement()));
     return explanationsContainer;
@@ -78,18 +80,14 @@ export class ExplanationModal {
       'div',
       { className: DETAILS_SECTION_CLASSNAME },
       $$('span', { className: DETAILS_LABEL_CLASSNAME }, l('Details')).el,
-      (this.otherExplanationTextArea = $$('textarea', { className: DETAILS_TEXTAREA_CLASSNAME, disabled: true }).el as HTMLTextAreaElement)
+      (this.detailsTextArea = $$('textarea', { className: DETAILS_TEXTAREA_CLASSNAME, disabled: true }).el as HTMLTextAreaElement)
     );
   }
 
   private buildSendButton() {
     const button = $$('button', { className: SEND_BUTTON_CLASSNAME }, l('Send'));
     button.on('click', () => {
-      if (this.selectedExplanation) {
-        this.selectedExplanation.onSelect();
-      } else {
-        this.options.onOtherExplanationGiven(this.otherExplanationTextArea.value);
-      }
+      this.selectedExplanation.onSelect();
       this.modal.close();
     });
     return button.el;
@@ -101,31 +99,11 @@ export class ExplanationModal {
         if (!radioButton.isSelected()) {
           return;
         }
-        this.selectedRadioButton = radioButton;
+        this.detailsTextArea.disabled = !explanation.hasDetails;
         this.selectedExplanation = explanation;
-        this.resetRadiosButtons();
       },
-      explanation.displayedName,
-      explanation.name
+      explanation.label,
+      'explanation'
     );
-  }
-
-  private buildOtherExplanationRadioButton() {
-    return new RadioButton(
-      radioButton => {
-        this.otherExplanationTextArea.disabled = !radioButton.isSelected();
-        if (radioButton.isSelected()) {
-          this.selectedRadioButton = radioButton;
-          this.selectedExplanation = null;
-          this.resetRadiosButtons();
-        }
-      },
-      l('Other'),
-      'other'
-    );
-  }
-
-  private resetRadiosButtons() {
-    this.explanationRadioButtons.forEach(radioButton => radioButton != this.selectedRadioButton && radioButton.reset());
   }
 }

@@ -230,12 +230,16 @@ export interface IAnalyticsSmartSnippetContentLinkMeta {
   outerHTML: string;
 }
 
-export interface IAnalyticsSmartSnippetExplainWhyMeta {
-  reason: string;
+export enum AnalyticsSmartSnippetExplainWhyReason {
+  DoesNotAnswer = 'does_not_answer',
+  IsNotUseful = 'is_not_useful',
+  WasNotAQuestion = 'was_not_a_question',
+  Other = 'other'
 }
 
-export interface IAnalyticsSmartSnippetExplainWhyDetailedMeta {
-  details: string;
+export interface IAnalyticsSmartSnippetFeedbackMeta {
+  reason: AnalyticsSmartSnippetExplainWhyReason;
+  details?: string;
 }
 
 /**
@@ -1444,13 +1448,13 @@ export var analyticsActionCauseList = {
    *
    * ```javascript
    * {
-   *  actionCause: "pressSmartSnippetExplainWhy",
+   *  actionCause: "openSmartSnippetFeedbackModal",
    *  actionType: "smartSnippet"
    * }
    * ```
    */
-  pressSmartSnippetExplainWhy: <IAnalyticsActionCause>{
-    name: 'pressSmartSnippetExplainWhy',
+  openSmartSnippetFeedbackModal: <IAnalyticsActionCause>{
+    name: 'openSmartSnippetFeedbackModal',
     type: 'smartSnippet'
   },
   /**
@@ -1460,13 +1464,13 @@ export var analyticsActionCauseList = {
    *
    * ```javascript
    * {
-   *  actionCause: "closeSmartSnippetExplainWhyModal",
+   *  actionCause: "closeSmartSnippetFeedbackModal",
    *  actionType: "smartSnippet"
    * }
    * ```
    */
-  closeSmartSnippetExplainWhyModal: <IAnalyticsActionCause>{
-    name: 'closeSmartSnippetExplainWhyModal',
+  closeSmartSnippetFeedbackModal: <IAnalyticsActionCause>{
+    name: 'closeSmartSnippetFeedbackModal',
     type: 'smartSnippet'
   },
   /**
@@ -1476,13 +1480,13 @@ export var analyticsActionCauseList = {
    *
    * ```javascript
    * {
-   *  actionCause: "smartSnippetExplainedWhy",
+   *  actionCause: "sendSmartSnippetExplanation",
    *  actionType: "smartSnippet"
    * }
    * ```
    */
-  smartSnippetExplainedWhy: <IAnalyticsActionCause>{
-    name: 'smartSnippetExplainedWhy',
+  sendSmartSnippetExplanation: <IAnalyticsActionCause>{
+    name: 'sendSmartSnippetExplanation',
     type: 'smartSnippet'
   },
   /**
@@ -1492,13 +1496,13 @@ export var analyticsActionCauseList = {
    *
    * ```javascript
    * {
-   *  actionCause: "smartSnippetExplainedWhyDetailed",
+   *  actionCause: "sendSmartSnippetDetailedExplanation",
    *  actionType: "smartSnippet"
    * }
    * ```
    */
-  smartSnippetExplainedWhyDetailed: <IAnalyticsActionCause>{
-    name: 'smartSnippetExplainedWhyDetailed',
+  sendSmartSnippetDetailedExplanation: <IAnalyticsActionCause>{
+    name: 'sendSmartSnippetDetailedExplanation',
     type: 'smartSnippet'
   }
 };

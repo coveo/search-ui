@@ -13,30 +13,36 @@ import {
   analyticsActionCauseList,
   IAnalyticsNoMeta,
   IAnalyticsSmartSnippetContentLinkMeta,
-  IAnalyticsSmartSnippetExplainWhyMeta,
-  IAnalyticsSmartSnippetExplainWhyDetailedMeta
+  IAnalyticsSmartSnippetFeedbackMeta,
+  AnalyticsSmartSnippetExplainWhyReason as AnalyticsSmartSnippetFeedbackReason
 } from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
 import { ExplanationModal, IExplanation } from './ExplanationModal';
 import { l } from '../../strings/Strings';
 
 interface ISmartSnippetExplaination {
-  analyticsId: string;
-  localizationName: string;
+  analytics: AnalyticsSmartSnippetFeedbackReason;
+  localeKey: string;
+  hasDetails?: boolean;
 }
 
 const explanations: ISmartSnippetExplaination[] = [
   {
-    analyticsId: 'does_not_answer',
-    localizationName: 'UsefulnessFeedbackDoesNotAnswer'
+    analytics: AnalyticsSmartSnippetFeedbackReason.DoesNotAnswer,
+    localeKey: 'UsefulnessFeedbackDoesNotAnswer'
   },
   {
-    analyticsId: 'is_not_useful',
-    localizationName: 'UsefulnessFeedbackIsNotUseful'
+    analytics: AnalyticsSmartSnippetFeedbackReason.IsNotUseful,
+    localeKey: 'UsefulnessFeedbackIsNotUseful'
   },
   {
-    analyticsId: 'was_not_a_question',
-    localizationName: 'UsefulnessFeedbackWasNotAQuestion'
+    analytics: AnalyticsSmartSnippetFeedbackReason.WasNotAQuestion,
+    localeKey: 'UsefulnessFeedbackWasNotAQuestion'
+  },
+  {
+    analytics: AnalyticsSmartSnippetFeedbackReason.Other,
+    localeKey: 'Other',
+    hasDetails: true
   }
 ];
 
@@ -113,13 +119,12 @@ export class SmartSnippet extends Component {
       explanations: explanations.map(
         explanation =>
           <IExplanation>{
-            displayedName: l(explanation.localizationName),
-            name: explanation.analyticsId,
-            onSelect: () => this.sendExplainWhyAnalytics(explanation)
+            label: l(explanation.localeKey),
+            onSelect: () => this.sendExplanationAnalytics(explanation.analytics, this.explanationModal.details),
+            hasDetails: explanation.hasDetails
           }
       ),
-      onClosed: () => this.sendCloseExplainWhyAnalytics(),
-      onOtherExplanationGiven: details => this.sendExplainWhyDetailedAnalytics(details),
+      onClosed: () => this.sendCloseFeedbackModalAnalytics(),
       ownerElement: this.searchInterface.options.modalContainer,
       modalBoxModule: this.ModalBox
     });
@@ -245,7 +250,7 @@ export class SmartSnippet extends Component {
   }
 
   private openExplanationModal() {
-    this.sendPressExplainWhyAnalytics();
+    this.sendOpenFeedbackModalAnalytics();
     this.explanationModal.open(this.feedbackBanner.explainWhy);
   }
 
@@ -306,39 +311,29 @@ export class SmartSnippet extends Component {
     );
   }
 
-  private sendPressExplainWhyAnalytics() {
+  private sendOpenFeedbackModalAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
-      analyticsActionCauseList.pressSmartSnippetExplainWhy,
+      analyticsActionCauseList.openSmartSnippetFeedbackModal,
       {},
       this.element,
       this.lastRenderedResult
     );
   }
 
-  private sendCloseExplainWhyAnalytics() {
+  private sendCloseFeedbackModalAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
-      analyticsActionCauseList.closeSmartSnippetExplainWhyModal,
+      analyticsActionCauseList.closeSmartSnippetFeedbackModal,
       {},
       this.element,
       this.lastRenderedResult
     );
   }
 
-  private sendExplainWhyAnalytics(reason: ISmartSnippetExplaination) {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetExplainWhyMeta>(
-      analyticsActionCauseList.smartSnippetExplainedWhy,
+  private sendExplanationAnalytics(reason: AnalyticsSmartSnippetFeedbackReason, details?: string) {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetFeedbackMeta>(
+      analyticsActionCauseList.sendSmartSnippetExplanation,
       {
-        reason: reason.analyticsId
-      },
-      this.element,
-      this.lastRenderedResult
-    );
-  }
-
-  private sendExplainWhyDetailedAnalytics(details: string) {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetExplainWhyDetailedMeta>(
-      analyticsActionCauseList.smartSnippetExplainedWhyDetailed,
-      {
+        reason,
         details
       },
       this.element,
