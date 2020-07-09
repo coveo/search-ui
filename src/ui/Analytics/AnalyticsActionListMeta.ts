@@ -230,15 +230,15 @@ export interface IAnalyticsSmartSnippetContentLinkMeta {
   outerHTML: string;
 }
 
-export enum AnalyticsSmartSnippetExplainWhyReason {
+export enum AnalyticsSmartSnippetFeedbackReason {
   DoesNotAnswer = 'does_not_answer',
-  IsNotUseful = 'is_not_useful',
+  PartiallyAnswers = 'partially_answers',
   WasNotAQuestion = 'was_not_a_question',
   Other = 'other'
 }
 
 export interface IAnalyticsSmartSnippetFeedbackMeta {
-  reason: AnalyticsSmartSnippetExplainWhyReason;
+  reason: AnalyticsSmartSnippetFeedbackReason;
   details?: string;
 }
 

@@ -14,7 +14,7 @@ import {
   IAnalyticsNoMeta,
   IAnalyticsSmartSnippetContentLinkMeta,
   IAnalyticsSmartSnippetFeedbackMeta,
-  AnalyticsSmartSnippetExplainWhyReason as AnalyticsSmartSnippetFeedbackReason
+  AnalyticsSmartSnippetFeedbackReason
 } from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
 import { ExplanationModal, IExplanation } from './ExplanationModal';
@@ -32,8 +32,8 @@ const explanations: ISmartSnippetExplaination[] = [
     localeKey: 'UsefulnessFeedbackDoesNotAnswer'
   },
   {
-    analytics: AnalyticsSmartSnippetFeedbackReason.IsNotUseful,
-    localeKey: 'UsefulnessFeedbackIsNotUseful'
+    analytics: AnalyticsSmartSnippetFeedbackReason.PartiallyAnswers,
+    localeKey: 'UsefulnessFeedbackPartiallyAnswers'
   },
   {
     analytics: AnalyticsSmartSnippetFeedbackReason.WasNotAQuestion,

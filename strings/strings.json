@@ -7570,16 +7570,16 @@
     "fr": "Expliquez pourquoi"
   },
   "UsefulnessFeedbackDoesNotAnswer": {
-    "en": "Didn't answer my question",
-    "fr": "N'a pas répondu à ma question"
+    "en": "This didn't answer my question at all",
+    "fr": "Ceci n'a pas répondu à ma question du tout"
   },
-  "UsefulnessFeedbackIsNotUseful": {
-    "en": "Wasn't helpful enough",
-    "fr": "N'aide pas assez"
+  "UsefulnessFeedbackPartiallyAnswers": {
+    "en": "This only partially answered my question",
+    "fr": "Ceci a seulement partiellement répondu à ma question"
   },
   "UsefulnessFeedbackWasNotAQuestion": {
-    "en": "Didn't expect an answer",
-    "fr": "Une réponse n'était pas attendu"
+    "en": "My request wasn't meant to be perceived as a question",
+    "fr": "Ma requête n'était pas sensée être perçue comme une question"
   },
   "Yes": {
     "en": "Yes",
