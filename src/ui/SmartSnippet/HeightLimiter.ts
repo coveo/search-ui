@@ -31,7 +31,7 @@ export class HeightLimiter {
   }
 
   private set height(height: number) {
-    this.element.style.height = `${Math.round(height)}px`;
+    this.element.style.height = `${height}px`;
   }
 
   constructor(private element: HTMLElement, private heightLimit: number, private onToggle?: (isExpanded: boolean) => void) {
@@ -64,7 +64,8 @@ export class HeightLimiter {
       this.updateExpandedAppearance();
     } else {
       this.isExpanded = false;
-      delete this.element.style.height;
+      this.updateExpandedAppearance();
+      this.element.style.height = '';
     }
   }
 

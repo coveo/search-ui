@@ -845,3 +845,9 @@ FileTypesTest();
 
 import { SmartSnippetTest } from './ui/SmartSnippetTest';
 SmartSnippetTest();
+
+import { HeightLimiterTest } from './ui/HeightLimiterTest';
+HeightLimiterTest();
+
+import { UserFeedbackBannerTest } from './ui/UserFeedbackBannerTest';
+UserFeedbackBannerTest();
