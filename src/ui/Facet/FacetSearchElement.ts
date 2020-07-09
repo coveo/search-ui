@@ -9,7 +9,7 @@ import { FacetSearchUserInputHandler } from './FacetSearchUserInputHandler';
 import { uniqueId } from 'underscore';
 import { ISearchDropdownNavigator, ISearchDropdownConfig } from './FacetSearchDropdownNavigation/DefaultSearchDropdownNavigator';
 import { SearchDropdownNavigatorFactory } from './FacetSearchDropdownNavigation/SearchDropdownNavigatorFactory';
-import { KEYBOARD } from '../../Core';
+import { KEYBOARD } from '../../utils/KeyboardUtils';
 
 export class FacetSearchElement {
   public search: HTMLElement | undefined;
