@@ -1,3 +1,4 @@
+import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
@@ -8,8 +9,42 @@ import 'styling/_SmartSnippet';
 import { find } from 'underscore';
 import { IQueryResult } from '../../rest/QueryResult';
 import { UserFeedbackBanner } from './UserFeedbackBanner';
-import { analyticsActionCauseList, IAnalyticsNoMeta } from '../Analytics/AnalyticsActionListMeta';
+import {
+  analyticsActionCauseList,
+  IAnalyticsNoMeta,
+  IAnalyticsSmartSnippetContentLinkMeta,
+  IAnalyticsSmartSnippetFeedbackMeta,
+  AnalyticsSmartSnippetFeedbackReason
+} from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
+import { ExplanationModal, IExplanation } from './ExplanationModal';
+import { l } from '../../strings/Strings';
+
+interface ISmartSnippetExplaination {
+  analytics: AnalyticsSmartSnippetFeedbackReason;
+  localeKey: string;
+  hasDetails?: boolean;
+}
+
+const explanations: ISmartSnippetExplaination[] = [
+  {
+    analytics: AnalyticsSmartSnippetFeedbackReason.DoesNotAnswer,
+    localeKey: 'UsefulnessFeedbackDoesNotAnswer'
+  },
+  {
+    analytics: AnalyticsSmartSnippetFeedbackReason.PartiallyAnswers,
+    localeKey: 'UsefulnessFeedbackPartiallyAnswers'
+  },
+  {
+    analytics: AnalyticsSmartSnippetFeedbackReason.WasNotAQuestion,
+    localeKey: 'UsefulnessFeedbackWasNotAQuestion'
+  },
+  {
+    analytics: AnalyticsSmartSnippetFeedbackReason.Other,
+    localeKey: 'Other',
+    hasDetails: true
+  }
+];
 
 const BASE_CLASSNAME = 'coveo-smart-snippet';
 const ANSWER_CONTAINER_CLASSNAME = `${BASE_CLASSNAME}-answer`;
@@ -48,8 +83,15 @@ export class SmartSnippet extends Component {
   private sourceContainer: HTMLElement;
   private snippetContainer: HTMLElement;
   private heightLimiter: HeightLimiter;
+  private explanationModal: ExplanationModal;
+  private feedbackBanner: UserFeedbackBanner;
 
-  constructor(public element: HTMLElement, public options?: ISmartSnippetOptions, bindings?: IComponentBindings) {
+  constructor(
+    public element: HTMLElement,
+    public options?: ISmartSnippetOptions,
+    bindings?: IComponentBindings,
+    private ModalBox = ModalBoxModule
+  ) {
     super(element, SmartSnippet.ID, bindings);
     this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
@@ -68,11 +110,24 @@ export class SmartSnippet extends Component {
 
   public createDom() {
     this.element.appendChild(this.buildAnswerContainer());
-    this.element.appendChild(
-      new UserFeedbackBanner(
-        isUseful => (isUseful ? this.sendLikeSmartSnippetAnalytics() : this.sendDislikeSmartSnippetAnalytics())
-      ).build()
+    this.feedbackBanner = new UserFeedbackBanner(
+      isUseful => (isUseful ? this.sendLikeSmartSnippetAnalytics() : this.sendDislikeSmartSnippetAnalytics()),
+      () => this.openExplanationModal()
     );
+    this.element.appendChild(this.feedbackBanner.build());
+    this.explanationModal = new ExplanationModal({
+      explanations: explanations.map(
+        explanation =>
+          <IExplanation>{
+            label: l(explanation.localeKey),
+            onSelect: () => this.sendExplanationAnalytics(explanation.analytics, this.explanationModal.details),
+            hasDetails: explanation.hasDetails
+          }
+      ),
+      onClosed: () => this.sendCloseFeedbackModalAnalytics(),
+      ownerElement: this.searchInterface.options.modalContainer,
+      modalBoxModule: this.ModalBox
+    });
   }
 
   private buildAnswerContainer() {
@@ -191,6 +246,11 @@ export class SmartSnippet extends Component {
     }
   }
 
+  private openExplanationModal() {
+    this.sendOpenFeedbackModalAnalytics();
+    this.explanationModal.open(this.feedbackBanner.explainWhy);
+  }
+
   private sendLikeSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.likeSmartSnippet,
@@ -231,6 +291,48 @@ export class SmartSnippet extends Component {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.openSmartSnippetSource,
       {},
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendOpenContentLinkAnalytics(link: HTMLAnchorElement) {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetContentLinkMeta>(
+      analyticsActionCauseList.openLinkInSmartSnippetContent,
+      {
+        target: link.getAttribute('href'),
+        outerHTML: link.outerHTML
+      },
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendOpenFeedbackModalAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
+      analyticsActionCauseList.openSmartSnippetFeedbackModal,
+      {},
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendCloseFeedbackModalAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
+      analyticsActionCauseList.closeSmartSnippetFeedbackModal,
+      {},
+      this.element,
+      this.lastRenderedResult
+    );
+  }
+
+  private sendExplanationAnalytics(reason: AnalyticsSmartSnippetFeedbackReason, details?: string) {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetFeedbackMeta>(
+      analyticsActionCauseList.sendSmartSnippetExplanation,
+      {
+        reason,
+        details
+      },
       this.element,
       this.lastRenderedResult
     );
