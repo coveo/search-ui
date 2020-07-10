@@ -25,11 +25,22 @@ const DETAILS_TEXTAREA_CLASSNAME = `${DETAILS_SECTION_CLASSNAME}-textarea`;
 const DETAILS_LABEL_CLASSNAME = `${DETAILS_SECTION_CLASSNAME}-label`;
 const SEND_BUTTON_CLASSNAME = `${ROOT_CLASSNAME}-send-button`;
 
+export const ExplanationModalClassNames = {
+  ROOT_CLASSNAME,
+  CONTENT_CLASSNAME,
+  EXPLANATIONS_CLASSNAME,
+  DETAILS_SECTION_CLASSNAME,
+  DETAILS_TEXTAREA_CLASSNAME,
+  DETAILS_LABEL_CLASSNAME,
+  SEND_BUTTON_CLASSNAME
+};
+
 export class ExplanationModal {
   private modal: AccessibleModal;
   private explanationRadioButtons: RadioButton[];
   private selectedExplanation: IExplanation;
   private detailsTextArea: HTMLTextAreaElement;
+  private isOpen = false;
 
   constructor(public options: IExplanationModalOptions) {
     this.modal = new AccessibleModal(ROOT_CLASSNAME, this.options.ownerElement, this.options.modalBoxModule);
@@ -48,10 +59,14 @@ export class ExplanationModal {
       title: l('UsefulnessFeedbackExplainWhyImperative'),
       content: this.buildContent(),
       validation: () => {
-        this.options.onClosed();
+        if (this.isOpen) {
+          this.options.onClosed();
+          this.isOpen = false;
+        }
         return true;
       }
     });
+    this.isOpen = true;
   }
 
   private buildContent() {
@@ -88,6 +103,7 @@ export class ExplanationModal {
     const button = $$('button', { className: SEND_BUTTON_CLASSNAME }, l('Send'));
     button.on('click', () => {
       this.selectedExplanation.onSelect();
+      this.isOpen = false;
       this.modal.close();
     });
     return button.el;

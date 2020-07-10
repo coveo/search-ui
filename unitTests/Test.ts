@@ -851,3 +851,6 @@ HeightLimiterTest();
 
 import { UserFeedbackBannerTest } from './ui/UserFeedbackBannerTest';
 UserFeedbackBannerTest();
+
+import { ExplanationModalTest } from './ui/ExplanationModalTest';
+ExplanationModalTest();
