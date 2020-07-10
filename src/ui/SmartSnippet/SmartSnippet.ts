@@ -16,7 +16,7 @@ import {
   AnalyticsSmartSnippetFeedbackReason
 } from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
-import { ExplanationModal, IExplanation } from './ExplanationModal';
+import { ExplanationModal, IReason } from './ExplanationModal';
 import { l } from '../../strings/Strings';
 
 interface ISmartSnippetExplaination {
@@ -117,7 +117,7 @@ export class SmartSnippet extends Component {
     this.explanationModal = new ExplanationModal({
       explanations: explanations.map(
         explanation =>
-          <IExplanation>{
+          <IReason>{
             label: l(explanation.localeKey),
             onSelect: () => this.sendExplanationAnalytics(explanation.analytics, this.explanationModal.details),
             hasDetails: explanation.hasDetails
@@ -315,7 +315,7 @@ export class SmartSnippet extends Component {
 
   private sendExplanationAnalytics(reason: AnalyticsSmartSnippetFeedbackReason, details?: string) {
     return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetFeedbackMeta>(
-      analyticsActionCauseList.sendSmartSnippetExplanation,
+      analyticsActionCauseList.sendSmartSnippetReason,
       {
         reason,
         details

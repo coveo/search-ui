@@ -4,7 +4,7 @@ import { $$ } from '../../utils/Dom';
 import { RadioButton } from '../FormWidgets/RadioButton';
 import 'styling/_ExplanationModal';
 
-export interface IExplanation {
+export interface IReason {
   label: string;
   onSelect: () => void;
   hasDetails?: boolean;
@@ -12,7 +12,7 @@ export interface IExplanation {
 
 export interface IExplanationModalOptions {
   ownerElement: HTMLElement;
-  explanations: IExplanation[];
+  explanations: IReason[];
   onClosed: () => void;
   modalBoxModule?: Coveo.ModalBox.ModalBox;
 }
@@ -37,8 +37,8 @@ export const ExplanationModalClassNames = {
 
 export class ExplanationModal {
   private modal: AccessibleModal;
-  private explanationRadioButtons: RadioButton[];
-  private selectedExplanation: IExplanation;
+  private reasons: RadioButton[];
+  private selectedReason: IReason;
   private detailsTextArea: HTMLTextAreaElement;
   private isOpen = false;
 
@@ -47,7 +47,7 @@ export class ExplanationModal {
   }
 
   public get details() {
-    if (!this.selectedExplanation || !this.selectedExplanation.hasDetails) {
+    if (!this.selectedReason || !this.selectedReason.hasDetails) {
       return null;
     }
     return this.detailsTextArea.value;
@@ -84,9 +84,9 @@ export class ExplanationModal {
 
   private buildExplanations() {
     const explanationsContainer = $$('div', { className: EXPLANATIONS_CLASSNAME }).el;
-    this.explanationRadioButtons = this.options.explanations.map(explanation => this.buildExplanationRadioButton(explanation));
-    this.explanationRadioButtons[0].select();
-    this.explanationRadioButtons.forEach(radioButton => explanationsContainer.appendChild(radioButton.getElement()));
+    this.reasons = this.options.explanations.map(explanation => this.buildExplanationRadioButton(explanation));
+    this.reasons[0].select();
+    this.reasons.forEach(radioButton => explanationsContainer.appendChild(radioButton.getElement()));
     return explanationsContainer;
   }
 
@@ -102,21 +102,21 @@ export class ExplanationModal {
   private buildSendButton() {
     const button = $$('button', { className: SEND_BUTTON_CLASSNAME }, l('Send'));
     button.on('click', () => {
-      this.selectedExplanation.onSelect();
+      this.selectedReason.onSelect();
       this.isOpen = false;
       this.modal.close();
     });
     return button.el;
   }
 
-  private buildExplanationRadioButton(explanation: IExplanation) {
+  private buildExplanationRadioButton(explanation: IReason) {
     return new RadioButton(
       radioButton => {
         if (!radioButton.isSelected()) {
           return;
         }
         this.detailsTextArea.disabled = !explanation.hasDetails;
-        this.selectedExplanation = explanation;
+        this.selectedReason = explanation;
       },
       explanation.label,
       'explanation'

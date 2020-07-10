@@ -1459,29 +1459,13 @@ export var analyticsActionCauseList = {
    *
    * ```javascript
    * {
-   *  actionCause: "sendSmartSnippetExplanation",
+   *  actionCause: "sendSmartSnippetReason",
    *  actionType: "smartSnippet"
    * }
    * ```
    */
-  sendSmartSnippetExplanation: <IAnalyticsActionCause>{
-    name: 'sendSmartSnippetExplanation',
-    type: 'smartSnippet'
-  },
-  /**
-   * The custom event logged when a written reason was sent from the modal opened when clicking the "Explain why" button in a [SmartSnippet]{@link SmartSnippet}.
-   *
-   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
-   *
-   * ```javascript
-   * {
-   *  actionCause: "sendSmartSnippetDetailedExplanation",
-   *  actionType: "smartSnippet"
-   * }
-   * ```
-   */
-  sendSmartSnippetDetailedExplanation: <IAnalyticsActionCause>{
-    name: 'sendSmartSnippetDetailedExplanation',
+  sendSmartSnippetReason: <IAnalyticsActionCause>{
+    name: 'sendSmartSnippetReason',
     type: 'smartSnippet'
   }
 };
