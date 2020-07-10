@@ -225,11 +225,6 @@ export interface IAnalyticsMissingTerm {
   missingTerm: string;
 }
 
-export interface IAnalyticsSmartSnippetContentLinkMeta {
-  target: string;
-  outerHTML: string;
-}
-
 export enum AnalyticsSmartSnippetFeedbackReason {
   DoesNotAnswer = 'does_not_answer',
   PartiallyAnswers = 'partially_answers',
@@ -1423,22 +1418,6 @@ export var analyticsActionCauseList = {
    */
   openSmartSnippetSource: <IAnalyticsActionCause>{
     name: 'openSmartSnippetSource',
-    type: 'smartSnippet'
-  },
-  /**
-   * The custom event logged when a link inside a [SmartSnippet]{@link SmartSnippet} is opened.
-   *
-   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
-   *
-   * ```javascript
-   * {
-   *  actionCause: "openLinkInSmartSnippetContent",
-   *  actionType: "smartSnippet"
-   * }
-   * ```
-   */
-  openLinkInSmartSnippetContent: <IAnalyticsActionCause>{
-    name: 'openLinkInSmartSnippetContent',
     type: 'smartSnippet'
   },
   /**

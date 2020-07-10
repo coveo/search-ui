@@ -12,7 +12,6 @@ import { UserFeedbackBanner } from './UserFeedbackBanner';
 import {
   analyticsActionCauseList,
   IAnalyticsNoMeta,
-  IAnalyticsSmartSnippetContentLinkMeta,
   IAnalyticsSmartSnippetFeedbackMeta,
   AnalyticsSmartSnippetFeedbackReason
 } from '../Analytics/AnalyticsActionListMeta';
@@ -291,18 +290,6 @@ export class SmartSnippet extends Component {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.openSmartSnippetSource,
       {},
-      this.element,
-      this.lastRenderedResult
-    );
-  }
-
-  private sendOpenContentLinkAnalytics(link: HTMLAnchorElement) {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetContentLinkMeta>(
-      analyticsActionCauseList.openLinkInSmartSnippetContent,
-      {
-        target: link.getAttribute('href'),
-        outerHTML: link.outerHTML
-      },
       this.element,
       this.lastRenderedResult
     );
