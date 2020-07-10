@@ -1,4 +1,4 @@
-import { IExplanation, ExplanationModal, ExplanationModalClassNames as ClassNames } from '../../src/ui/SmartSnippet/ExplanationModal';
+import { IReason, ExplanationModal, ExplanationModalClassNames as ClassNames } from '../../src/ui/SmartSnippet/ExplanationModal';
 import { $$ } from '../../src/utils/Dom';
 import { Simulate } from '../Simulate';
 import { mock } from '../MockEnvironment';
@@ -8,7 +8,7 @@ import { expectChildren } from '../TestUtils';
 
 export function ExplanationModalTest() {
   const details = 'Hello, World!';
-  let explanations: IExplanation[];
+  let explanations: IReason[];
   let onClosed: jasmine.Spy;
   let ownerElement: HTMLElement;
   let explanationModal: ExplanationModal;
@@ -16,7 +16,7 @@ export function ExplanationModalTest() {
   let origin: HTMLElement;
   let content: HTMLElement;
 
-  function createExplanations(firstExplanationHasDetails: boolean): IExplanation[] {
+  function createExplanations(firstExplanationHasDetails: boolean): IReason[] {
     return [
       {
         label: 'Explanation selected by default',
@@ -68,10 +68,7 @@ export function ExplanationModalTest() {
   }
 
   function selectExplanation(index: number) {
-    content
-      .querySelectorAll('input')
-      .item(index)
-      .click();
+    explanationModal['reasons'][index].select();
   }
 
   describe('ExplanationModal', () => {

@@ -7,13 +7,17 @@ export function UserFeedbackBannerTest() {
   describe('UserFeedbackBanner', () => {
     let rootElement: HTMLElement;
     let sendUsefulnessAnalyticsSpy: jasmine.Spy;
+    let onExplainWhyPressedSpy: jasmine.Spy;
 
     function getFirstChild(className: string) {
       return rootElement.getElementsByClassName(className)[0] as HTMLElement;
     }
 
     beforeEach(() => {
-      rootElement = new UserFeedbackBanner((sendUsefulnessAnalyticsSpy = jasmine.createSpy('sendUsefulnessAnalytics'))).build();
+      rootElement = new UserFeedbackBanner(
+        (sendUsefulnessAnalyticsSpy = jasmine.createSpy('sendUsefulnessAnalytics')),
+        (onExplainWhyPressedSpy = jasmine.createSpy('onExplainWhyPressed'))
+      ).build();
     });
 
     it('builds a root element with the root classname', () => {
@@ -175,6 +179,11 @@ export function UserFeedbackBannerTest() {
 
       it('sends analytics', () => {
         expect(sendUsefulnessAnalyticsSpy).toHaveBeenCalledWith(false);
+      });
+
+      it('then pressing on explain why, sends analytics', () => {
+        getFirstChild(ClassNames.EXPLAIN_WHY_CLASSNAME).click();
+        expect(onExplainWhyPressedSpy).toHaveBeenCalledTimes(1);
       });
 
       describe('then clicking on the yes button', () => {

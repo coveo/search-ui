@@ -7,21 +7,6 @@ import { expectChildren } from '../TestUtils';
 import { UserFeedbackBannerClassNames } from '../../src/ui/SmartSnippet/UserFeedbackBanner';
 import { IBasicComponentSetup, advancedComponentSetup, AdvancedComponentSetupOptions } from '../MockEnvironment';
 import { HeightLimiterClassNames } from '../../src/ui/SmartSnippet/HeightLimiter';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-
-function simulateClick(element: HTMLElement) {
-  element.dispatchEvent(new MouseEvent('click', { ctrlKey: true }));
-}
-
-function expectCallWith(funct: jasmine.Spy, ...params: any[]) {
-  const lastCall = funct.calls.mostRecent();
-  expect(lastCall).not.toBeNull();
-  if (!lastCall) {
-    return;
-  }
-  const lastCallArguments = lastCall.args;
-  params.forEach((value, i) => expect(lastCallArguments[i]).toEqual(value));
-}
 
 export function SmartSnippetTest() {
   const sourceTitle = 'Google!';
@@ -93,6 +78,9 @@ export function SmartSnippetTest() {
         SmartSnippet,
         new AdvancedComponentSetupOptions($$('div', {}, ...(hasStyling ? [mockStyling()] : [])).el)
       );
+      test.cmp['openLink'] = jasmine
+        .createSpy('openLink')
+        .and.callFake((href: string, newTab: boolean, sendAnalytics: () => void) => sendAnalytics());
     }
 
     function triggerQuerySuccess(withSource: boolean) {
@@ -159,34 +147,6 @@ export function SmartSnippetTest() {
 
           expect(title.href).toEqual(sourceUrl);
           expect(title.innerText).toEqual(sourceTitle);
-        });
-
-        it('should log analytics when clicking on the source URL', () => {
-          spyOn(window, 'open');
-
-          simulateClick(getFirstChild(ClassNames.SOURCE_URL_CLASSNAME));
-          expectCallWith(test.env.usageAnalytics.logCustomEvent as jasmine.Spy, analyticsActionCauseList.openSmartSnippetSource);
-        });
-
-        it('should log analytics when clicking on the title', () => {
-          spyOn(window, 'open');
-
-          simulateClick(getFirstChild(ClassNames.SOURCE_TITLE_CLASSNAME));
-          expectCallWith(test.env.usageAnalytics.logCustomEvent as jasmine.Spy, analyticsActionCauseList.openSmartSnippetSource);
-        });
-
-        it('should open a new tab when clicking on the source', () => {
-          const open = spyOn(window, 'open');
-
-          simulateClick(getFirstChild(ClassNames.SOURCE_URL_CLASSNAME));
-          expect(open).toHaveBeenCalledWith(sourceUrl);
-        });
-
-        it('should open a new tab when clicking on the title', () => {
-          const open = spyOn(window, 'open');
-
-          simulateClick(getFirstChild(ClassNames.SOURCE_TITLE_CLASSNAME));
-          expect(open).toHaveBeenCalledWith(sourceUrl);
         });
       });
 
