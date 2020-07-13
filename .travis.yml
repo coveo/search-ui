@@ -27,6 +27,9 @@ before_install:
   - export IS_RELEASE=$([[ $SOURCE_BRANCH =~ ^.*release.*$|^master$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
   - export IS_FEATURE=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
 script:
+- echo $TRAVIS_PULL_REQUEST
+- echo $TRAVIS_PULL_REQUEST_SLUG
+- echo $TRAVIS_REPO_SLUG
 - echo $IS_FORKED_PULL_REQUEST
 - echo $SOURCE_BRANCH
 - echo $IS_BETA
