@@ -21,7 +21,17 @@ cache:
 before_install:
   - npm install -g npm@5.5.1
   - sudo apt-get install libgconf2-4
+  - export IS_FORKED_PULL_REQUEST=$([ $TRAVIS_PULL_REQUEST = true && $TRAVIS_PULL_REQUEST_SLUG != $TRAVIS_REPO_SLUG ] && echo true || echo false)
+  - export SOURCE_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+  - export IS_BETA=$([[ $TRAVIS_TAG =~ .*beta.* && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
+  - export IS_RELEASE=$([[ $SOURCE_BRANCH =~ ^.*release.*$|^master$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
+  - export IS_FEATURE=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
 script:
+- echo $IS_FORKED_PULL_REQUEST
+- echo $SOURCE_BRANCH
+- echo $IS_BETA
+- echo $IS_RELEASE
+- echo $IS_FEATURE
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
@@ -50,7 +60,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "! $TRAVIS_TAG =~ .*beta.*"
+      condition: "$IS_RELEASE == true"
   - provider: script
     script: node deploy.beta.js
     skip_cleanup: true
@@ -58,7 +68,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "$TRAVIS_TAG =~ .*beta.*"
+      condition: "$IS_BETA == true"
   - provider: releases
     api_key:
       secure: jKNS2mWnLUP5kQkjApoIFxQVXAr8ed3nsTIltY6gOvf1/2kbkS0WbzR7Km9lewFA2ZEBSFAu/ek+ewXjEx8FVQAe3CeCS1sS5RVqU/2YvFGBPYzzVw1l3FOJkQsvruRc7UzkznXbLvk+7LerHDpsy3p6ut8stMokztiq8QyWN+GHhrB/QgBQV/swPx40QknAIXndtLEPQfttukLowAdH9ml2BgrgE0/3iitmja/8eIQxVT6dlFyXYV+iU44kPyS595wM7eakUGXNFB2W9sUZ9IY/8lUqPz85G3FkKyiPv3SZJRs158/32+vvdXAtT/wtHjP5PqESPv/pL31M9IpQYYIdTSPwUZtOdRZ6JrxV/xusQ2Nm5p3qNrKgtkEZ921BGHJEMK9xs0yAhMuT39JLhoZE30g8SXokWQWi6WzrRELODYubVMaXTmfgv2ZZN4T3B8xNSabmE3Jm7Gj5Lb9wdR+pbWxPlB475i4H7grOHAN9xRIWokAIIN9RuTPRx1XuxhLUI9BH/GrJXNZbv1800rqF15W9Yuw1RqMfrSWq2snyDalXW3gLHYeAFAP1hfD2mU1zySjP/HQ6VkCwmgCjlAg4W5xK4NlXX0C/EIkoLKhSefxLdhquMZQTION+v0fOvl7Kdz17vt231dEIjNZxsBlLL+JZoxOZA5tVRDMNbko=
@@ -70,6 +80,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
+      condition: "$IS_RELEASE == true || $IS_BETA == true"
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
@@ -83,7 +94,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "! $TRAVIS_TAG =~ .*beta.*"
+      condition: "$IS_RELEASE == true"
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
@@ -97,7 +108,34 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "! $TRAVIS_TAG =~ .*beta.*"
+      condition: "$IS_RELEASE == true"
+  - provider: s3
+    access_key_id: AKIAYKDJLZIT462WODCI
+    secret_access_key:
+      secure: sT8isIiaAIg/Ic7x8cCD3anwCEHAyzG/IWkngmkf5c128NEwUIUdmsQJ1hi4Bw84zk1OOb3id+yXjeaTuKDgIkxe/jk3e2xZ7xElfLNTOln6QLkgsYpKFtGHiKjROOHOb5+Es6L1mxpHWbXH9ebmEhRduUw/BeHWW2MfZmfb434DgvatViRm8DOeROeqlYnbCda5ZELuT5SdwEs/CbExaiSL0WKVoTvcxbe+At4uVnTuc6SYyOvRoblx/q6Ra6mdRipluMs7Go93eu/Oqo7cZ2akrNSi/WBXGqL/wXxe2pYsziSABWjQaqWXD/jKte1ZBx7OXssn88DUKat/RrL7Ak30WHzgY/goiNV+EPT/wtNYWHP3suAzzGqNNMhsPx0lSI7vSUga72J3hV1TOsX9ORosiRm1c2fnmNB9vJdH7yAX7lWpqH2XuOrldVvvTGazSJYx93eBukDViFCZ6egeb+gMT8VQ38uitwd9BZaMhycoujZgSjhx7JnbHUoUdXkdT3XBNV7fINTozWCNJW81iJN+JuLZzneJ/CbjmjkfGcVoFFPCD9rGSj8DbgvWpt8rkwI4ZfHTNOgO9iWgSklpk9r2wgM7Z87V2Zpu8UX/QCFxy8IREtJUo6X9YG9nBoy21wUa9zia2SWpideur9cXb6U0+q84onHVlA0Ehp/1OYs=
+    bucket: coveo-nprod-binaries
+    local-dir: bin
+    upload-dir: proda/StaticCDN/searchui/nightly
+    acl: public_read
+    skip_cleanup: true
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "$IS_BETA == true"
+  - provider: s3
+    access_key_id: AKIAYKDJLZIT462WODCI
+    secret_access_key:
+      secure: sT8isIiaAIg/Ic7x8cCD3anwCEHAyzG/IWkngmkf5c128NEwUIUdmsQJ1hi4Bw84zk1OOb3id+yXjeaTuKDgIkxe/jk3e2xZ7xElfLNTOln6QLkgsYpKFtGHiKjROOHOb5+Es6L1mxpHWbXH9ebmEhRduUw/BeHWW2MfZmfb434DgvatViRm8DOeROeqlYnbCda5ZELuT5SdwEs/CbExaiSL0WKVoTvcxbe+At4uVnTuc6SYyOvRoblx/q6Ra6mdRipluMs7Go93eu/Oqo7cZ2akrNSi/WBXGqL/wXxe2pYsziSABWjQaqWXD/jKte1ZBx7OXssn88DUKat/RrL7Ak30WHzgY/goiNV+EPT/wtNYWHP3suAzzGqNNMhsPx0lSI7vSUga72J3hV1TOsX9ORosiRm1c2fnmNB9vJdH7yAX7lWpqH2XuOrldVvvTGazSJYx93eBukDViFCZ6egeb+gMT8VQ38uitwd9BZaMhycoujZgSjhx7JnbHUoUdXkdT3XBNV7fINTozWCNJW81iJN+JuLZzneJ/CbjmjkfGcVoFFPCD9rGSj8DbgvWpt8rkwI4ZfHTNOgO9iWgSklpk9r2wgM7Z87V2Zpu8UX/QCFxy8IREtJUo6X9YG9nBoy21wUa9zia2SWpideur9cXb6U0+q84onHVlA0Ehp/1OYs=
+    bucket: coveo-nprod-binaries
+    local-dir: bin
+    upload-dir: proda/StaticCDN/searchui/$TRAVIS_BRANCH
+    acl: public_read
+    skip_cleanup: true
+    on:
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "$IS_FEATURE == true"
 
 after_deploy:
 - node invalidate.cloudfront.js
