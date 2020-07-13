@@ -21,17 +21,12 @@ cache:
 before_install:
   - npm install -g npm@5.5.1
   - sudo apt-get install libgconf2-4
-  - export IS_FORKED_PULL_REQUEST=$([[ $TRAVIS_PULL_REQUEST != false && $TRAVIS_PULL_REQUEST_SLUG != $TRAVIS_REPO_SLUG ]] && echo true || echo false)
   - export SOURCE_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+  - export IS_FORKED_PULL_REQUEST=$([[ $TRAVIS_PULL_REQUEST != false && $TRAVIS_PULL_REQUEST_SLUG != $TRAVIS_REPO_SLUG ]] && echo true || echo false)
   - export IS_BETA=$([[ $TRAVIS_TAG =~ .*beta.* && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
   - export IS_RELEASE=$([[ $SOURCE_BRANCH =~ ^.*release.*$|^master$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
   - export IS_FEATURE=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
 script:
-- echo $IS_FORKED_PULL_REQUEST
-- echo $SOURCE_BRANCH
-- echo $IS_BETA
-- echo $IS_RELEASE
-- echo $IS_FEATURE
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
