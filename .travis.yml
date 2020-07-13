@@ -26,6 +26,10 @@ before_install:
   - export IS_RELEASE=$([[ $SOURCE_BRANCH =~ ^.*release.*$|^master$ ]] && echo true || echo false)
   - export IS_FEATURE=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+$ ]] && echo true || echo false)
 script:
+- echo $SOURCE_BRANCH
+- echo $IS_BETA
+- echo $IS_RELEASE
+- echo $IS_FEATURE
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
