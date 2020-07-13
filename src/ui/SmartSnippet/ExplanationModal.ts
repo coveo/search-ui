@@ -20,10 +20,12 @@ export interface IExplanationModalOptions {
 const ROOT_CLASSNAME = 'coveo-user-explanation-modal';
 const CONTENT_CLASSNAME = `${ROOT_CLASSNAME}-content`;
 const EXPLANATIONS_CLASSNAME = `${ROOT_CLASSNAME}-explanations`;
+const EXPLANATIONS_LABEL_CLASSNAME = `${EXPLANATIONS_CLASSNAME}-label`;
 const DETAILS_SECTION_CLASSNAME = `${ROOT_CLASSNAME}-details`;
 const DETAILS_TEXTAREA_CLASSNAME = `${DETAILS_SECTION_CLASSNAME}-textarea`;
 const DETAILS_LABEL_CLASSNAME = `${DETAILS_SECTION_CLASSNAME}-label`;
 const SEND_BUTTON_CLASSNAME = `${ROOT_CLASSNAME}-send-button`;
+const DETAILS_ID = DETAILS_SECTION_CLASSNAME;
 
 export const ExplanationModalClassNames = {
   ROOT_CLASSNAME,
@@ -83,19 +85,24 @@ export class ExplanationModal {
   }
 
   private buildExplanations() {
-    const explanationsContainer = $$('div', { className: EXPLANATIONS_CLASSNAME }).el;
+    const explanationsContainer = $$('fieldset', { className: EXPLANATIONS_CLASSNAME }, this.buildExplanationsLabel()).el;
     this.reasons = this.options.explanations.map(explanation => this.buildExplanationRadioButton(explanation));
     this.reasons[0].select();
     this.reasons.forEach(radioButton => explanationsContainer.appendChild(radioButton.getElement()));
     return explanationsContainer;
   }
 
+  private buildExplanationsLabel() {
+    return $$('legend', { className: EXPLANATIONS_LABEL_CLASSNAME }, l('UsefulnessFeedbackReason')).el;
+  }
+
   private buildDetailsSection() {
     return $$(
       'div',
       { className: DETAILS_SECTION_CLASSNAME },
-      $$('span', { className: DETAILS_LABEL_CLASSNAME }, l('Details')).el,
-      (this.detailsTextArea = $$('textarea', { className: DETAILS_TEXTAREA_CLASSNAME, disabled: true }).el as HTMLTextAreaElement)
+      $$('label', { className: DETAILS_LABEL_CLASSNAME, for: DETAILS_ID }, l('Details')).el,
+      (this.detailsTextArea = $$('textarea', { className: DETAILS_TEXTAREA_CLASSNAME, id: DETAILS_ID, disabled: true })
+        .el as HTMLTextAreaElement)
     );
   }
 
