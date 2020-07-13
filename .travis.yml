@@ -21,9 +21,10 @@ cache:
 before_install:
   - npm install -g npm@5.5.1
   - sudo apt-get install libgconf2-4
+  - export SOURCE_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
   - export IS_BETA=$([[ $TRAVIS_TAG =~ .*beta.* ]] && echo true || echo false)
-  - export IS_RELEASE=$([[ $TRAVIS_BRANCH =~ ^.*release.*$|^master$ ]] && echo true || echo false)
-  - export IS_FEATURE=$([[ $TRAVIS_BRANCH =~ ^JSUI-[0-9]+$ ]] && echo true || echo false)
+  - export IS_RELEASE=$([[ $SOURCE_BRANCH =~ ^.*release.*$|^master$ ]] && echo true || echo false)
+  - export IS_FEATURE=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+$ ]] && echo true || echo false)
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
