@@ -8,7 +8,7 @@ import { expectChildren } from '../TestUtils';
 
 export function ExplanationModalTest() {
   const details = 'Hello, World!';
-  let explanations: IReason[];
+  let reasons: IReason[];
   let onClosed: jasmine.Spy;
   let ownerElement: HTMLElement;
   let explanationModal: ExplanationModal;
@@ -16,28 +16,28 @@ export function ExplanationModalTest() {
   let origin: HTMLElement;
   let content: HTMLElement;
 
-  function createExplanations(firstExplanationHasDetails: boolean): IReason[] {
+  function createReason(firstReasonHasDetails: boolean): IReason[] {
     return [
       {
         label: 'Explanation selected by default',
         onSelect: jasmine.createSpy('onSelect1'),
-        hasDetails: firstExplanationHasDetails
+        hasDetails: firstReasonHasDetails
       },
       {
-        label: 'Second explanation implicitly without details',
+        label: 'Second reason implicitly without details',
         onSelect: jasmine.createSpy('onSelect2')
       },
       {
-        label: 'Third explanation explicitly without details',
+        label: 'Third reason explicitly without details',
         onSelect: jasmine.createSpy('onSelect3'),
         hasDetails: false
       }
     ];
   }
 
-  function initializeModal(firstExplanationHasDetails = true) {
+  function initializeModal(firstReasonHasDetails = true) {
     explanationModal = new ExplanationModal({
-      explanations: (explanations = createExplanations(firstExplanationHasDetails)),
+      reasons: (reasons = createReason(firstReasonHasDetails)),
       onClosed: (onClosed = jasmine.createSpy('onClosed')),
       ownerElement: (ownerElement = $$('div').el),
       modalBoxModule: Simulate.modalBoxModule()
@@ -67,12 +67,12 @@ export function ExplanationModalTest() {
     (getFirstChild(ClassNames.DETAILS_TEXTAREA_CLASSNAME) as HTMLTextAreaElement).value = details;
   }
 
-  function selectExplanation(index: number) {
+  function selectReason(index: number) {
     explanationModal['reasons'][index].select();
   }
 
   describe('ExplanationModal', () => {
-    describe('with a first explanation that has details', () => {
+    describe('with a first reason that has details', () => {
       beforeEach(() => {
         initializeModal();
         openModal();
@@ -90,20 +90,16 @@ export function ExplanationModalTest() {
         expect(content.classList.contains(ClassNames.CONTENT_CLASSNAME)).toBeTruthy();
       });
 
-      it('builds the root with the explanations list, the details section and the send button', () => {
-        expectChildren(content, [
-          ClassNames.EXPLANATIONS_CLASSNAME,
-          ClassNames.DETAILS_SECTION_CLASSNAME,
-          ClassNames.SEND_BUTTON_CLASSNAME
-        ]);
+      it('builds the root with the reasons list, the details section and the send button', () => {
+        expectChildren(content, [ClassNames.REASONS_CLASSNAME, ClassNames.DETAILS_SECTION_CLASSNAME, ClassNames.SEND_BUTTON_CLASSNAME]);
       });
 
-      it('builds a radio button for each explanation', () => {
+      it('builds a radio button for each reason', () => {
         const inputs = $$(content).findAll('input');
-        expect(inputs.length).toEqual(explanations.length, 'Expected as many inputs as explanations.');
+        expect(inputs.length).toEqual(reasons.length, 'Expected as many inputs as reasons.');
         const labels = inputs.map(input => $$(content).find(`label[for="${input.id}"]`));
-        expect(labels.length).toEqual(explanations.length, 'Expected a label for each explanation');
-        labels.forEach((label, index) => expect(label.innerText).toEqual(explanations[index].label));
+        expect(labels.length).toEqual(reasons.length, 'Expected a label for each reason');
+        labels.forEach((label, index) => expect(label.innerText).toEqual(reasons[index].label));
       });
 
       it('builds a details section with a label and a textarea', () => {
@@ -121,9 +117,9 @@ export function ExplanationModalTest() {
         expect(getFirstChild(ClassNames.SEND_BUTTON_CLASSNAME).innerText).toEqual('Send');
       });
 
-      describe('after selecting the second explanation', () => {
+      describe('after selecting the second reason', () => {
         beforeEach(() => {
-          selectExplanation(1);
+          selectReason(1);
         });
 
         it('should disable the details textarea', () => {
@@ -135,8 +131,8 @@ export function ExplanationModalTest() {
             pressSendButton();
           });
 
-          it('calls onSelect on the second explanation', () => {
-            expect(explanations[1].onSelect).toHaveBeenCalledTimes(1);
+          it('calls onSelect on the second reason', () => {
+            expect(reasons[1].onSelect).toHaveBeenCalledTimes(1);
           });
 
           it("doesn't provide details from the textarea", () => {
@@ -146,9 +142,9 @@ export function ExplanationModalTest() {
         });
       });
 
-      describe('after selecting the third explanation', () => {
+      describe('after selecting the third reason', () => {
         beforeEach(() => {
-          selectExplanation(2);
+          selectReason(2);
         });
 
         it('should disable the details textarea', () => {
@@ -160,8 +156,8 @@ export function ExplanationModalTest() {
             pressSendButton();
           });
 
-          it('calls onSelect on the third explanation', () => {
-            expect(explanations[2].onSelect).toHaveBeenCalledTimes(1);
+          it('calls onSelect on the third reason', () => {
+            expect(reasons[2].onSelect).toHaveBeenCalledTimes(1);
           });
 
           it("doesn't provide details from the textarea", () => {
@@ -176,8 +172,8 @@ export function ExplanationModalTest() {
           pressSendButton();
         });
 
-        it('calls onSelect on the first explanation', () => {
-          expect(explanations[0].onSelect).toHaveBeenCalledTimes(1);
+        it('calls onSelect on the first reason', () => {
+          expect(reasons[0].onSelect).toHaveBeenCalledTimes(1);
         });
 
         it('provides details from the textarea', () => {
@@ -205,7 +201,7 @@ export function ExplanationModalTest() {
       });
     });
 
-    describe("with a first explanation that doesn't have details", () => {
+    describe("with a first reason that doesn't have details", () => {
       beforeEach(() => {
         initializeModal(false);
         openModal();

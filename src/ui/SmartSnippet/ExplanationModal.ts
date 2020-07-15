@@ -12,15 +12,15 @@ export interface IReason {
 
 export interface IExplanationModalOptions {
   ownerElement: HTMLElement;
-  explanations: IReason[];
+  reasons: IReason[];
   onClosed: () => void;
   modalBoxModule?: Coveo.ModalBox.ModalBox;
 }
 
 const ROOT_CLASSNAME = 'coveo-user-explanation-modal';
 const CONTENT_CLASSNAME = `${ROOT_CLASSNAME}-content`;
-const EXPLANATIONS_CLASSNAME = `${ROOT_CLASSNAME}-explanations`;
-const EXPLANATIONS_LABEL_CLASSNAME = `${EXPLANATIONS_CLASSNAME}-label`;
+const REASONS_CLASSNAME = `${ROOT_CLASSNAME}-explanations`;
+const REASONS_LABEL_CLASSNAME = `${REASONS_CLASSNAME}-label`;
 const DETAILS_SECTION_CLASSNAME = `${ROOT_CLASSNAME}-details`;
 const DETAILS_TEXTAREA_CLASSNAME = `${DETAILS_SECTION_CLASSNAME}-textarea`;
 const DETAILS_LABEL_CLASSNAME = `${DETAILS_SECTION_CLASSNAME}-label`;
@@ -30,7 +30,8 @@ const DETAILS_ID = DETAILS_SECTION_CLASSNAME;
 export const ExplanationModalClassNames = {
   ROOT_CLASSNAME,
   CONTENT_CLASSNAME,
-  EXPLANATIONS_CLASSNAME,
+  REASONS_CLASSNAME,
+  REASONS_LABEL_CLASSNAME,
   DETAILS_SECTION_CLASSNAME,
   DETAILS_TEXTAREA_CLASSNAME,
   DETAILS_LABEL_CLASSNAME,
@@ -78,22 +79,22 @@ export class ExplanationModal {
       {
         className: CONTENT_CLASSNAME
       },
-      this.buildExplanations(),
+      this.buildReasons(),
       detailsSection,
       this.buildSendButton()
     ).el;
   }
 
-  private buildExplanations() {
-    const explanationsContainer = $$('fieldset', { className: EXPLANATIONS_CLASSNAME }, this.buildExplanationsLabel()).el;
-    this.reasons = this.options.explanations.map(explanation => this.buildExplanationRadioButton(explanation));
+  private buildReasons() {
+    const reasonsContainer = $$('fieldset', { className: REASONS_CLASSNAME }, this.buildReasonsLabel()).el;
+    this.reasons = this.options.reasons.map(reason => this.buildReasonRadioButton(reason));
     this.reasons[0].select();
-    this.reasons.forEach(radioButton => explanationsContainer.appendChild(radioButton.getElement()));
-    return explanationsContainer;
+    this.reasons.forEach(radioButton => reasonsContainer.appendChild(radioButton.getElement()));
+    return reasonsContainer;
   }
 
-  private buildExplanationsLabel() {
-    return $$('legend', { className: EXPLANATIONS_LABEL_CLASSNAME }, l('UsefulnessFeedbackReason')).el;
+  private buildReasonsLabel() {
+    return $$('legend', { className: REASONS_LABEL_CLASSNAME }, l('UsefulnessFeedbackReason')).el;
   }
 
   private buildDetailsSection() {
@@ -116,17 +117,17 @@ export class ExplanationModal {
     return button.el;
   }
 
-  private buildExplanationRadioButton(explanation: IReason) {
+  private buildReasonRadioButton(reason: IReason) {
     return new RadioButton(
       radioButton => {
         if (!radioButton.isSelected()) {
           return;
         }
-        this.detailsTextArea.disabled = !explanation.hasDetails;
-        this.selectedReason = explanation;
+        this.detailsTextArea.disabled = !reason.hasDetails;
+        this.selectedReason = reason;
       },
-      explanation.label,
-      'explanation'
+      reason.label,
+      'reason'
     );
   }
 }
