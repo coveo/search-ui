@@ -12,24 +12,38 @@ export interface IReason {
 
 export interface IExplanationModalOptions {
   ownerElement: HTMLElement;
-  explanations: IReason[];
+  reasons: IReason[];
   onClosed: () => void;
   modalBoxModule?: Coveo.ModalBox.ModalBox;
 }
 
 const ROOT_CLASSNAME = 'coveo-user-explanation-modal';
 const CONTENT_CLASSNAME = `${ROOT_CLASSNAME}-content`;
-const EXPLANATIONS_CLASSNAME = `${ROOT_CLASSNAME}-explanations`;
+const REASONS_CLASSNAME = `${ROOT_CLASSNAME}-explanations`;
+const REASONS_LABEL_CLASSNAME = `${REASONS_CLASSNAME}-label`;
 const DETAILS_SECTION_CLASSNAME = `${ROOT_CLASSNAME}-details`;
 const DETAILS_TEXTAREA_CLASSNAME = `${DETAILS_SECTION_CLASSNAME}-textarea`;
 const DETAILS_LABEL_CLASSNAME = `${DETAILS_SECTION_CLASSNAME}-label`;
 const SEND_BUTTON_CLASSNAME = `${ROOT_CLASSNAME}-send-button`;
+const DETAILS_ID = DETAILS_SECTION_CLASSNAME;
+
+export const ExplanationModalClassNames = {
+  ROOT_CLASSNAME,
+  CONTENT_CLASSNAME,
+  REASONS_CLASSNAME,
+  REASONS_LABEL_CLASSNAME,
+  DETAILS_SECTION_CLASSNAME,
+  DETAILS_TEXTAREA_CLASSNAME,
+  DETAILS_LABEL_CLASSNAME,
+  SEND_BUTTON_CLASSNAME
+};
 
 export class ExplanationModal {
   private modal: AccessibleModal;
   private reasons: RadioButton[];
   private selectedReason: IReason;
   private detailsTextArea: HTMLTextAreaElement;
+  private isOpen = false;
 
   constructor(public options: IExplanationModalOptions) {
     this.modal = new AccessibleModal(ROOT_CLASSNAME, this.options.ownerElement, this.options.modalBoxModule);
@@ -48,10 +62,14 @@ export class ExplanationModal {
       title: l('UsefulnessFeedbackExplainWhyImperative'),
       content: this.buildContent(),
       validation: () => {
-        this.options.onClosed();
+        if (this.isOpen) {
+          this.options.onClosed();
+          this.isOpen = false;
+        }
         return true;
       }
     });
+    this.isOpen = true;
   }
 
   private buildContent() {
@@ -61,26 +79,31 @@ export class ExplanationModal {
       {
         className: CONTENT_CLASSNAME
       },
-      this.buildExplanations(),
+      this.buildReasons(),
       detailsSection,
       this.buildSendButton()
     ).el;
   }
 
-  private buildExplanations() {
-    const explanationsContainer = $$('div', { className: EXPLANATIONS_CLASSNAME }).el;
-    this.reasons = this.options.explanations.map(explanation => this.buildExplanationRadioButton(explanation));
+  private buildReasons() {
+    const reasonsContainer = $$('fieldset', { className: REASONS_CLASSNAME }, this.buildReasonsLabel()).el;
+    this.reasons = this.options.reasons.map(reason => this.buildReasonRadioButton(reason));
     this.reasons[0].select();
-    this.reasons.forEach(radioButton => explanationsContainer.appendChild(radioButton.getElement()));
-    return explanationsContainer;
+    this.reasons.forEach(radioButton => reasonsContainer.appendChild(radioButton.getElement()));
+    return reasonsContainer;
+  }
+
+  private buildReasonsLabel() {
+    return $$('legend', { className: REASONS_LABEL_CLASSNAME }, l('UsefulnessFeedbackReason')).el;
   }
 
   private buildDetailsSection() {
     return $$(
       'div',
       { className: DETAILS_SECTION_CLASSNAME },
-      $$('span', { className: DETAILS_LABEL_CLASSNAME }, l('Details')).el,
-      (this.detailsTextArea = $$('textarea', { className: DETAILS_TEXTAREA_CLASSNAME, disabled: true }).el as HTMLTextAreaElement)
+      $$('label', { className: DETAILS_LABEL_CLASSNAME, for: DETAILS_ID }, l('Details')).el,
+      (this.detailsTextArea = $$('textarea', { className: DETAILS_TEXTAREA_CLASSNAME, id: DETAILS_ID, disabled: true })
+        .el as HTMLTextAreaElement)
     );
   }
 
@@ -88,22 +111,23 @@ export class ExplanationModal {
     const button = $$('button', { className: SEND_BUTTON_CLASSNAME }, l('Send'));
     button.on('click', () => {
       this.selectedReason.onSelect();
+      this.isOpen = false;
       this.modal.close();
     });
     return button.el;
   }
 
-  private buildExplanationRadioButton(explanation: IReason) {
+  private buildReasonRadioButton(reason: IReason) {
     return new RadioButton(
       radioButton => {
         if (!radioButton.isSelected()) {
           return;
         }
-        this.detailsTextArea.disabled = !explanation.hasDetails;
-        this.selectedReason = explanation;
+        this.detailsTextArea.disabled = !reason.hasDetails;
+        this.selectedReason = reason;
       },
-      explanation.label,
-      'explanation'
+      reason.label,
+      'reason'
     );
   }
 }

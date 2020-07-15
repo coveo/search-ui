@@ -7596,5 +7596,9 @@
   "Send": {
     "en": "Send",
     "fr": "Envoyer"
+  },
+  "UsefulnessFeedbackReason": {
+    "en": "Reason",
+    "fr": "Raison"
   }
 }

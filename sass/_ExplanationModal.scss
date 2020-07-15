@@ -1,6 +1,16 @@
 @import 'Variables';
 
 .coveo-user-explanation-modal {
+  &-explanations {
+    border: none;
+    padding: 0;
+
+    &-label {
+      padding: 0;
+      margin-bottom: 6px;
+    }
+  }
+
   &-details {
     display: flex;
     flex-direction: column;

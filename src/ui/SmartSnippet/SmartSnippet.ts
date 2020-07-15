@@ -12,7 +12,6 @@ import { UserFeedbackBanner } from './UserFeedbackBanner';
 import {
   analyticsActionCauseList,
   IAnalyticsNoMeta,
-  IAnalyticsSmartSnippetContentLinkMeta,
   IAnalyticsSmartSnippetFeedbackMeta,
   AnalyticsSmartSnippetFeedbackReason
 } from '../Analytics/AnalyticsActionListMeta';
@@ -20,13 +19,13 @@ import { HeightLimiter } from './HeightLimiter';
 import { ExplanationModal, IReason } from './ExplanationModal';
 import { l } from '../../strings/Strings';
 
-interface ISmartSnippetExplaination {
+interface ISmartSnippetReason {
   analytics: AnalyticsSmartSnippetFeedbackReason;
   localeKey: string;
   hasDetails?: boolean;
 }
 
-const explanations: ISmartSnippetExplaination[] = [
+const reasons: ISmartSnippetReason[] = [
   {
     analytics: AnalyticsSmartSnippetFeedbackReason.DoesNotAnswer,
     localeKey: 'UsefulnessFeedbackDoesNotAnswer'
@@ -116,12 +115,12 @@ export class SmartSnippet extends Component {
     );
     this.element.appendChild(this.feedbackBanner.build());
     this.explanationModal = new ExplanationModal({
-      explanations: explanations.map(
-        explanation =>
+      reasons: reasons.map(
+        reason =>
           <IReason>{
-            label: l(explanation.localeKey),
-            onSelect: () => this.sendExplanationAnalytics(explanation.analytics, this.explanationModal.details),
-            hasDetails: explanation.hasDetails
+            label: l(reason.localeKey),
+            onSelect: () => this.sendExplanationAnalytics(reason.analytics, this.explanationModal.details),
+            hasDetails: reason.hasDetails
           }
       ),
       onClosed: () => this.sendCloseFeedbackModalAnalytics(),
@@ -207,9 +206,6 @@ export class SmartSnippet extends Component {
 
   private renderSnippet(content: string) {
     this.snippetContainer.innerHTML = content;
-    $$(this.snippetContainer)
-      .findAll('a')
-      .forEach((link: HTMLAnchorElement) => this.enableAnalyticsOnLink(link, () => this.sendOpenContentLinkAnalytics(link)));
   }
 
   private renderSource(source: IQueryResult) {
@@ -294,18 +290,6 @@ export class SmartSnippet extends Component {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.openSmartSnippetSource,
       {},
-      this.element,
-      this.lastRenderedResult
-    );
-  }
-
-  private sendOpenContentLinkAnalytics(link: HTMLAnchorElement) {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetContentLinkMeta>(
-      analyticsActionCauseList.openLinkInSmartSnippetContent,
-      {
-        target: link.getAttribute('href'),
-        outerHTML: link.outerHTML
-      },
       this.element,
       this.lastRenderedResult
     );

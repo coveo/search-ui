@@ -152,5 +152,5 @@ export interface IQueryResults {
    * Facet results of the query
    */
   facets?: IFacetResponse[];
-  questionAnswer: IQuestionAnswerResponse;
+  questionAnswer?: IQuestionAnswerResponse;
 }
