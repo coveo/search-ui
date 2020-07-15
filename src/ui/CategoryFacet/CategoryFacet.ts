@@ -309,11 +309,15 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       { depend: 'dependsOn', section: 'CommonOptions' }
     ),
     /**
-     * Whether to display the search on top of the results.
+     * Whether to display the facet search widget above the facet values instead of below them.
+     *
+     * @availablesince [July 2020 Release (v2.9373)](https://docs.coveo.com/3293/)
      */
     displaySearchOnTop: ComponentOptions.buildBooleanOption({ defaultValue: false }),
     /**
-     * Whether to display a search button on the facet or the input directly.
+     * Whether to display the facet search widget as a button instead of a search bar.
+     *
+     * @availablesince [July 2020 Release (v2.9373)](https://docs.coveo.com/3293/)
      */
     displaySearchButton: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     ...ResponsiveFacetOptions
