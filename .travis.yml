@@ -23,9 +23,9 @@ before_install:
   - sudo apt-get install libgconf2-4
   - export SOURCE_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
   - export IS_FORKED_PULL_REQUEST=$([[ $TRAVIS_PULL_REQUEST != false && $TRAVIS_PULL_REQUEST_SLUG != $TRAVIS_REPO_SLUG ]] && echo true || echo false)
-  - export IS_BETA=$([[ $TRAVIS_TAG =~ .*beta.* && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
-  - export IS_RELEASE=$([[ $SOURCE_BRANCH =~ ^.*release.*$|^master$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
-  - export IS_FEATURE=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
+  - export HAS_BETA_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+-beta$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
+  - export HAS_RELEASE_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
+  - export IS_ON_FEATURE_BRANCH=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
@@ -55,7 +55,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "$IS_RELEASE == true"
+      condition: "$HAS_RELEASE_TAG == true"
   - provider: script
     script: node deploy.beta.js
     skip_cleanup: true
@@ -63,7 +63,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "$IS_BETA == true"
+      condition: "$HAS_BETA_TAG == true"
   - provider: releases
     api_key:
       secure: jKNS2mWnLUP5kQkjApoIFxQVXAr8ed3nsTIltY6gOvf1/2kbkS0WbzR7Km9lewFA2ZEBSFAu/ek+ewXjEx8FVQAe3CeCS1sS5RVqU/2YvFGBPYzzVw1l3FOJkQsvruRc7UzkznXbLvk+7LerHDpsy3p6ut8stMokztiq8QyWN+GHhrB/QgBQV/swPx40QknAIXndtLEPQfttukLowAdH9ml2BgrgE0/3iitmja/8eIQxVT6dlFyXYV+iU44kPyS595wM7eakUGXNFB2W9sUZ9IY/8lUqPz85G3FkKyiPv3SZJRs158/32+vvdXAtT/wtHjP5PqESPv/pL31M9IpQYYIdTSPwUZtOdRZ6JrxV/xusQ2Nm5p3qNrKgtkEZ921BGHJEMK9xs0yAhMuT39JLhoZE30g8SXokWQWi6WzrRELODYubVMaXTmfgv2ZZN4T3B8xNSabmE3Jm7Gj5Lb9wdR+pbWxPlB475i4H7grOHAN9xRIWokAIIN9RuTPRx1XuxhLUI9BH/GrJXNZbv1800rqF15W9Yuw1RqMfrSWq2snyDalXW3gLHYeAFAP1hfD2mU1zySjP/HQ6VkCwmgCjlAg4W5xK4NlXX0C/EIkoLKhSefxLdhquMZQTION+v0fOvl7Kdz17vt231dEIjNZxsBlLL+JZoxOZA5tVRDMNbko=
@@ -75,7 +75,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "$IS_RELEASE == true || $IS_BETA == true"
+      condition: "$HAS_RELEASE_TAG == true || $HAS_BETA_TAG == true"
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
@@ -89,7 +89,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "$IS_RELEASE == true"
+      condition: "$HAS_RELEASE_TAG == true"
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
@@ -103,7 +103,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "$IS_RELEASE == true"
+      condition: "$HAS_RELEASE_TAG == true"
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
@@ -117,7 +117,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "$IS_BETA == true"
+      condition: "$HAS_BETA_TAG == true"
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
@@ -130,7 +130,7 @@ deploy:
     on:
       repo: coveo/search-ui
       all_branches: true
-      condition: "$IS_FEATURE == true"
+      condition: "$IS_ON_FEATURE_BRANCH == true"
 
 after_deploy:
 - node invalidate.cloudfront.js
