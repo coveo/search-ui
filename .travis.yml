@@ -26,6 +26,7 @@ before_install:
   - export HAS_BETA_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+-beta$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
   - export HAS_RELEASE_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
   - export IS_ON_FEATURE_BRANCH=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
+  - export IS_NIGHTLY=$([[ $HAS_BETA_TAG == true && $TRAVIS_EVENT_TYPE = cron ]] && echo true || echo false)
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
@@ -117,7 +118,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "$HAS_BETA_TAG == true"
+      condition: "$IS_NIGHTLY == true"
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
