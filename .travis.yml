@@ -108,8 +108,8 @@ deploy:
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
-      secure: sT8isIiaAIg/Ic7x8cCD3anwCEHAyzG/IWkngmkf5c128NEwUIUdmsQJ1hi4Bw84zk1OOb3id+yXjeaTuKDgIkxe/jk3e2xZ7xElfLNTOln6QLkgsYpKFtGHiKjROOHOb5+Es6L1mxpHWbXH9ebmEhRduUw/BeHWW2MfZmfb434DgvatViRm8DOeROeqlYnbCda5ZELuT5SdwEs/CbExaiSL0WKVoTvcxbe+At4uVnTuc6SYyOvRoblx/q6Ra6mdRipluMs7Go93eu/Oqo7cZ2akrNSi/WBXGqL/wXxe2pYsziSABWjQaqWXD/jKte1ZBx7OXssn88DUKat/RrL7Ak30WHzgY/goiNV+EPT/wtNYWHP3suAzzGqNNMhsPx0lSI7vSUga72J3hV1TOsX9ORosiRm1c2fnmNB9vJdH7yAX7lWpqH2XuOrldVvvTGazSJYx93eBukDViFCZ6egeb+gMT8VQ38uitwd9BZaMhycoujZgSjhx7JnbHUoUdXkdT3XBNV7fINTozWCNJW81iJN+JuLZzneJ/CbjmjkfGcVoFFPCD9rGSj8DbgvWpt8rkwI4ZfHTNOgO9iWgSklpk9r2wgM7Z87V2Zpu8UX/QCFxy8IREtJUo6X9YG9nBoy21wUa9zia2SWpideur9cXb6U0+q84onHVlA0Ehp/1OYs=
-    bucket: coveo-nprod-binaries
+      secure: "gayQ91dRX4PmzzelJk2nUwySRyzm1U0drjE+ugtnAINx+uTJUyImKSoYfsHQD4WPQ9R64LpOjskl+hnGOGdUWNoqz1Z7o45xEV0uGlXgAWyhX53a/rNWIMaDz9dWtK8dkafHOGkpmkms3QdI/jcTai6FB4FSdVvGXc9ey1kLIy/qVzJVTjxQt3ApY84ZtCoCw8fjUFxZkb3d4oiQU9VbGxWLvB6iWbQ4MDyXzjbHt6/WzwEk6CSgaztSxq8doKbjHs1WF0vuYwB3MY43iKPUSvtz0gA7+5HQsBEfjKMjRHtTodksiPDJopREZo+dchjfBpW2r1STb9P04Wg2gfNGlOKRvend++YbUKCm77WsELFOBB3KKEQj1u8jXZNcrSgFRbkXOdzINwDQ/PXDSSzLF9UTMq17BAOc9mYHV78PR1YeWh8yAm0fotsoOQiLcGw3hT/0QgVad+KExkBUgSmpt9mmmkUv5PTwf9eEOzt+V0LrcidYyqWCsHU/U5xKxHxXEEkty6LrdGyLiTEdMb0B/gRiffGV3ZuYQzEzDBicLW427B1kY0fkhvr1jJo0T0r0B9XOlv45sDgmtrA8rwa9GdzKxPrJmP5R4luG6eEZ43iX5+mi96Zq59b4b2Is4afZ5MxM+06mKCbXaQXl3x0LPy7BfTFikmg5Qla39VB9Sjo="
+    bucket: coveo-ndev-binaries
     local-dir: bin
     upload-dir: proda/StaticCDN/searchui/nightly
     acl: public_read
@@ -122,8 +122,8 @@ deploy:
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
-      secure: sT8isIiaAIg/Ic7x8cCD3anwCEHAyzG/IWkngmkf5c128NEwUIUdmsQJ1hi4Bw84zk1OOb3id+yXjeaTuKDgIkxe/jk3e2xZ7xElfLNTOln6QLkgsYpKFtGHiKjROOHOb5+Es6L1mxpHWbXH9ebmEhRduUw/BeHWW2MfZmfb434DgvatViRm8DOeROeqlYnbCda5ZELuT5SdwEs/CbExaiSL0WKVoTvcxbe+At4uVnTuc6SYyOvRoblx/q6Ra6mdRipluMs7Go93eu/Oqo7cZ2akrNSi/WBXGqL/wXxe2pYsziSABWjQaqWXD/jKte1ZBx7OXssn88DUKat/RrL7Ak30WHzgY/goiNV+EPT/wtNYWHP3suAzzGqNNMhsPx0lSI7vSUga72J3hV1TOsX9ORosiRm1c2fnmNB9vJdH7yAX7lWpqH2XuOrldVvvTGazSJYx93eBukDViFCZ6egeb+gMT8VQ38uitwd9BZaMhycoujZgSjhx7JnbHUoUdXkdT3XBNV7fINTozWCNJW81iJN+JuLZzneJ/CbjmjkfGcVoFFPCD9rGSj8DbgvWpt8rkwI4ZfHTNOgO9iWgSklpk9r2wgM7Z87V2Zpu8UX/QCFxy8IREtJUo6X9YG9nBoy21wUa9zia2SWpideur9cXb6U0+q84onHVlA0Ehp/1OYs=
-    bucket: coveo-nprod-binaries
+      secure: "gayQ91dRX4PmzzelJk2nUwySRyzm1U0drjE+ugtnAINx+uTJUyImKSoYfsHQD4WPQ9R64LpOjskl+hnGOGdUWNoqz1Z7o45xEV0uGlXgAWyhX53a/rNWIMaDz9dWtK8dkafHOGkpmkms3QdI/jcTai6FB4FSdVvGXc9ey1kLIy/qVzJVTjxQt3ApY84ZtCoCw8fjUFxZkb3d4oiQU9VbGxWLvB6iWbQ4MDyXzjbHt6/WzwEk6CSgaztSxq8doKbjHs1WF0vuYwB3MY43iKPUSvtz0gA7+5HQsBEfjKMjRHtTodksiPDJopREZo+dchjfBpW2r1STb9P04Wg2gfNGlOKRvend++YbUKCm77WsELFOBB3KKEQj1u8jXZNcrSgFRbkXOdzINwDQ/PXDSSzLF9UTMq17BAOc9mYHV78PR1YeWh8yAm0fotsoOQiLcGw3hT/0QgVad+KExkBUgSmpt9mmmkUv5PTwf9eEOzt+V0LrcidYyqWCsHU/U5xKxHxXEEkty6LrdGyLiTEdMb0B/gRiffGV3ZuYQzEzDBicLW427B1kY0fkhvr1jJo0T0r0B9XOlv45sDgmtrA8rwa9GdzKxPrJmP5R4luG6eEZ43iX5+mi96Zq59b4b2Is4afZ5MxM+06mKCbXaQXl3x0LPy7BfTFikmg5Qla39VB9Sjo="
+    bucket: coveo-ndev-binaries
     local-dir: bin
     upload-dir: proda/StaticCDN/searchui/$TRAVIS_BRANCH
     acl: public_read
@@ -140,3 +140,4 @@ branches:
   - master
   - "/^.*release.*$/"
   - "/2\\.[0-9]+\\.[0-9]+/"
+  - "/^JSUI-[0-9]+/"
