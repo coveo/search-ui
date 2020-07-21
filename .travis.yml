@@ -106,7 +106,7 @@ deploy:
       all_branches: true
       condition: "$HAS_RELEASE_TAG == true"
   - provider: s3
-    access_key_id: AKIAYKDJLZIT462WODCI
+    access_key_id: AKIAQ6FOLK5RP7PIETJ6
     secret_access_key:
       secure: "gayQ91dRX4PmzzelJk2nUwySRyzm1U0drjE+ugtnAINx+uTJUyImKSoYfsHQD4WPQ9R64LpOjskl+hnGOGdUWNoqz1Z7o45xEV0uGlXgAWyhX53a/rNWIMaDz9dWtK8dkafHOGkpmkms3QdI/jcTai6FB4FSdVvGXc9ey1kLIy/qVzJVTjxQt3ApY84ZtCoCw8fjUFxZkb3d4oiQU9VbGxWLvB6iWbQ4MDyXzjbHt6/WzwEk6CSgaztSxq8doKbjHs1WF0vuYwB3MY43iKPUSvtz0gA7+5HQsBEfjKMjRHtTodksiPDJopREZo+dchjfBpW2r1STb9P04Wg2gfNGlOKRvend++YbUKCm77WsELFOBB3KKEQj1u8jXZNcrSgFRbkXOdzINwDQ/PXDSSzLF9UTMq17BAOc9mYHV78PR1YeWh8yAm0fotsoOQiLcGw3hT/0QgVad+KExkBUgSmpt9mmmkUv5PTwf9eEOzt+V0LrcidYyqWCsHU/U5xKxHxXEEkty6LrdGyLiTEdMb0B/gRiffGV3ZuYQzEzDBicLW427B1kY0fkhvr1jJo0T0r0B9XOlv45sDgmtrA8rwa9GdzKxPrJmP5R4luG6eEZ43iX5+mi96Zq59b4b2Is4afZ5MxM+06mKCbXaQXl3x0LPy7BfTFikmg5Qla39VB9Sjo="
     bucket: coveo-ndev-binaries
@@ -120,7 +120,7 @@ deploy:
       all_branches: true
       condition: "$IS_NIGHTLY == true"
   - provider: s3
-    access_key_id: AKIAYKDJLZIT462WODCI
+    access_key_id: AKIAQ6FOLK5RP7PIETJ6
     secret_access_key:
       secure: "gayQ91dRX4PmzzelJk2nUwySRyzm1U0drjE+ugtnAINx+uTJUyImKSoYfsHQD4WPQ9R64LpOjskl+hnGOGdUWNoqz1Z7o45xEV0uGlXgAWyhX53a/rNWIMaDz9dWtK8dkafHOGkpmkms3QdI/jcTai6FB4FSdVvGXc9ey1kLIy/qVzJVTjxQt3ApY84ZtCoCw8fjUFxZkb3d4oiQU9VbGxWLvB6iWbQ4MDyXzjbHt6/WzwEk6CSgaztSxq8doKbjHs1WF0vuYwB3MY43iKPUSvtz0gA7+5HQsBEfjKMjRHtTodksiPDJopREZo+dchjfBpW2r1STb9P04Wg2gfNGlOKRvend++YbUKCm77WsELFOBB3KKEQj1u8jXZNcrSgFRbkXOdzINwDQ/PXDSSzLF9UTMq17BAOc9mYHV78PR1YeWh8yAm0fotsoOQiLcGw3hT/0QgVad+KExkBUgSmpt9mmmkUv5PTwf9eEOzt+V0LrcidYyqWCsHU/U5xKxHxXEEkty6LrdGyLiTEdMb0B/gRiffGV3ZuYQzEzDBicLW427B1kY0fkhvr1jJo0T0r0B9XOlv45sDgmtrA8rwa9GdzKxPrJmP5R4luG6eEZ43iX5+mi96Zq59b4b2Is4afZ5MxM+06mKCbXaQXl3x0LPy7BfTFikmg5Qla39VB9Sjo="
     bucket: coveo-ndev-binaries
