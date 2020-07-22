@@ -28,7 +28,6 @@ export function FacetSearchControllerTest() {
       const expectedRequest: IFacetSearchRequest = {
         field: facet.fieldName,
         numberOfValues: facet.options.numberOfValues,
-        ignoreValues: facet.values.allValues,
         captions: {},
         searchContext: facet.queryController.getLastQuery(),
         query: `*${query}*`

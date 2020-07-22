@@ -8,10 +8,6 @@ type Path = string[];
 export class HierarchicalFacetSearchController {
   constructor(private facet: IDynamicHierarchicalFacet) {}
 
-  private get ignoredPaths() {
-    return this.flattenPaths(this.facet.values.allFacetValues.map(value => this.getAllPaths(value)));
-  }
-
   private getAllPaths(value: IDynamicHierarchicalFacetValue): Path[] {
     return [value.path, ...this.flattenPaths(value.children.map(child => this.getAllPaths(child)))];
   }
@@ -25,7 +21,6 @@ export class HierarchicalFacetSearchController {
       field: this.facet.fieldName,
       type: FacetSearchType.hierarchical,
       numberOfValues: this.facet.options.numberOfValues,
-      ignorePaths: this.ignoredPaths,
       basePath: this.facet.options.basePath,
       captions: this.facet.options.valueCaption,
       searchContext: this.facet.queryController.getLastQuery(),
