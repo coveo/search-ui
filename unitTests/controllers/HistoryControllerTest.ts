@@ -20,15 +20,6 @@ export function HistoryControllerTest() {
       $$(historyController.element).trigger(InitializationEvents.restoreHistoryState);
     }
 
-    function simulateHashModule(key, value) {
-      historyController.hashUtils.getValue = jasmine.createSpy('getValue').and.callFake((valueNeeded: string) => {
-        if (valueNeeded == key) {
-          return value;
-        }
-        return undefined;
-      });
-    }
-
     beforeEach(() => {
       env = new Mock.MockEnvironmentBuilder().withLiveQueryStateModel().build();
       historyController = new HistoryController(env.root, Mock.mockWindow(), env.queryStateModel, env.queryController);
@@ -108,24 +99,6 @@ export function HistoryControllerTest() {
       expect(env.queryStateModel.setMultiple).not.toHaveBeenCalled();
     });
 
-    it(`when comparing a hash and a query state model's non-string value
-    when the value is different
-    should execute a query`, () => {
-      simulateHashModule('debug', 'false');
-      historyController.queryStateModel.set('debug', true);
-      historyController.handleHashChange();
-      expect(historyController.queryController.executeQuery).toHaveBeenCalled();
-    });
-
-    it(`when comparing a hash and a query state model's non-string value
-    when the value is identical but of different types (e.g., string vs boolean)
-    should not execute a query`, () => {
-      simulateHashModule('debug', 'true');
-      historyController.queryStateModel.set('debug', true);
-      historyController.handleHashChange();
-      expect(historyController.queryController.executeQuery).not.toHaveBeenCalled();
-    });
-
     describe('with a fake HashUtilsModule', () => {
       let fakeHashUtils;
       beforeEach(() => {
@@ -134,6 +107,33 @@ export function HistoryControllerTest() {
         fakeHashUtils.getHash = jasmine.createSpy('getHash').and.callFake(() => Mock.mockWindow().location.hash);
         fakeHashUtils.encodeValues = jasmine.createSpy('encodeValues');
         historyController.hashUtils = fakeHashUtils;
+      });
+
+      function simulateHashModule(key, value) {
+        historyController.hashUtils.getValue = jasmine.createSpy('getValue').and.callFake((valueNeeded: string) => {
+          if (valueNeeded == key) {
+            return value;
+          }
+          return undefined;
+        });
+      }
+
+      it(`when comparing a hash and a query state model's non-string value
+      when the value is different
+      should execute a query`, () => {
+        simulateHashModule('debug', 'false');
+        historyController.queryStateModel.set('debug', true);
+        historyController.handleHashChange();
+        expect(historyController.queryController.executeQuery).toHaveBeenCalled();
+      });
+
+      it(`when comparing a hash and a query state model's non-string value
+      when the value is identical but of different types (e.g., string vs boolean)
+      should not execute a query`, () => {
+        simulateHashModule('debug', 'true');
+        historyController.queryStateModel.set('debug', true);
+        historyController.handleHashChange();
+        expect(historyController.queryController.executeQuery).not.toHaveBeenCalled();
       });
 
       it('keeps parsing hash values after one fails to parse', () => {
