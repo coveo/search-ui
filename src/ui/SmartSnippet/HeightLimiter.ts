@@ -21,7 +21,6 @@ export const HeightLimiterClassNames = {
 
 export class HeightLimiter {
   private isExpanded = false;
-  private scrollHeight = 0;
   private button: HTMLElement;
   private buttonLabel: HTMLElement;
   private buttonIcon: HTMLElement;
@@ -31,16 +30,24 @@ export class HeightLimiter {
   }
 
   private set height(height: number) {
-    this.element.style.height = `${height}px`;
+    this.containerElement.style.height = `${height}px`;
   }
 
-  constructor(private element: HTMLElement, private heightLimit: number, private onToggle?: (isExpanded: boolean) => void) {
+  private get contentHeight() {
+    return this.contentElement.clientHeight;
+  }
+
+  constructor(
+    private containerElement: HTMLElement,
+    private contentElement: HTMLElement,
+    private heightLimit: number,
+    private onToggle?: (isExpanded: boolean) => void
+  ) {
     this.buildButton();
-    this.onScrollHeightChanged();
+    this.updateActiveAppearance();
   }
 
-  public onScrollHeightChanged() {
-    this.scrollHeight = this.element.scrollHeight;
+  public onContentHeightChanged() {
     this.updateActiveAppearance();
   }
 
@@ -57,15 +64,15 @@ export class HeightLimiter {
   }
 
   private updateActiveAppearance() {
-    const shouldBeActive = this.scrollHeight > this.heightLimit;
-    this.element.classList.toggle(CONTAINER_ACTIVE_CLASSNAME, shouldBeActive);
+    const shouldBeActive = this.contentHeight > this.heightLimit;
+    this.containerElement.classList.toggle(CONTAINER_ACTIVE_CLASSNAME, shouldBeActive);
     this.button.classList.toggle(BUTTON_ACTIVE_CLASSNAME, shouldBeActive);
     if (shouldBeActive) {
       this.updateExpandedAppearance();
     } else {
       this.isExpanded = false;
       this.updateExpandedAppearance();
-      this.element.style.height = '';
+      this.containerElement.style.height = '';
     }
   }
 
@@ -76,8 +83,8 @@ export class HeightLimiter {
 
   private updateExpandedAppearance() {
     this.updateButton();
-    this.element.classList.toggle(CONTAINER_EXPANDED_CLASSNAME, this.isExpanded);
-    this.height = this.isExpanded ? this.scrollHeight : this.heightLimit;
+    this.containerElement.classList.toggle(CONTAINER_EXPANDED_CLASSNAME, this.isExpanded);
+    this.height = this.isExpanded ? this.contentElement.clientHeight : this.heightLimit;
   }
 
   private toggle() {

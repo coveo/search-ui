@@ -15,23 +15,33 @@ interface IElementsState {
 export function HeightLimiterTest() {
   let heightLimiter: HeightLimiter;
   let container: HTMLElement;
+  let content: HTMLElement;
   let onToggleSpy: jasmine.Spy;
-  let scrollHeight: number;
+  let contentHeight: number;
 
-  function createContainer(height: number) {
-    scrollHeight = height;
-    container = $$('div').el;
-    Object.defineProperty(container, 'scrollHeight', { get: () => scrollHeight });
-    return container;
+  function createContainer() {
+    return (container = $$('div').el);
+  }
+
+  function createContent(height: number) {
+    contentHeight = height;
+    content = $$('div').el;
+    Object.defineProperty(content, 'clientHeight', { get: () => contentHeight });
+    return content;
   }
 
   function initializeHeightLimiter(initialHeight: number) {
-    heightLimiter = new HeightLimiter(createContainer(initialHeight), heightLimit, (onToggleSpy = jasmine.createSpy('onToggle')));
+    heightLimiter = new HeightLimiter(
+      createContainer(),
+      createContent(initialHeight),
+      heightLimit,
+      (onToggleSpy = jasmine.createSpy('onToggle'))
+    );
   }
 
   function resizeContainer(newHeight: number) {
-    scrollHeight = newHeight;
-    heightLimiter.onScrollHeightChanged();
+    contentHeight = newHeight;
+    heightLimiter.onContentHeightChanged();
   }
 
   function getElementsState(): IElementsState {
@@ -152,7 +162,7 @@ export function HeightLimiterTest() {
         });
 
         it('should force the scrollHeight on the container', () => {
-          expect(container.style.height).toEqual(`${scrollHeight}px`);
+          expect(container.style.height).toEqual(`${contentHeight}px`);
         });
 
         it('should have the show less label on the toggle button', () => {
