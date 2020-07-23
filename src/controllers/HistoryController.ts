@@ -171,7 +171,7 @@ export class HistoryController extends RootComponent implements IHistoryManager 
     _.each(<_.Dictionary<any>>this.queryStateModel.attributes, (value, key?, obj?) => {
       const valToSet = this.getHashValue(key);
       toSet[key] = valToSet;
-      if (this.queryStateModel.get(key) != valToSet) {
+      if (`${this.queryStateModel.get(key)}` !== `${valToSet}`) {
         diff.push(key);
       }
     });

@@ -109,6 +109,33 @@ export function HistoryControllerTest() {
         historyController.hashUtils = fakeHashUtils;
       });
 
+      function simulateHashModule(key, value) {
+        historyController.hashUtils.getValue = jasmine.createSpy('getValue').and.callFake((valueNeeded: string) => {
+          if (valueNeeded == key) {
+            return value;
+          }
+          return undefined;
+        });
+      }
+
+      it(`when comparing a hash and a query state model's non-string value
+      when the value is different
+      should execute a query`, () => {
+        simulateHashModule('debug', 'false');
+        historyController.queryStateModel.set('debug', true);
+        historyController.handleHashChange();
+        expect(historyController.queryController.executeQuery).toHaveBeenCalled();
+      });
+
+      it(`when comparing a hash and a query state model's non-string value
+      when the value is identical but of different types (e.g., string vs boolean)
+      should not execute a query`, () => {
+        simulateHashModule('debug', 'true');
+        historyController.queryStateModel.set('debug', true);
+        historyController.handleHashChange();
+        expect(historyController.queryController.executeQuery).not.toHaveBeenCalled();
+      });
+
       it('keeps parsing hash values after one fails to parse', () => {
         let threwError = false;
         env.queryStateModel.attributes = {
@@ -140,15 +167,6 @@ export function HistoryControllerTest() {
         afterEach(() => {
           window.location.hash = '';
         });
-
-        const simulateHashModule = (key, value) => {
-          historyController.hashUtils.getValue = jasmine.createSpy('getValue').and.callFake((valueNeeded: string) => {
-            if (valueNeeded == key) {
-              return value;
-            }
-            return undefined;
-          });
-        };
 
         const assertFacetAnalyticsCall = (cause: IAnalyticsActionCause) => {
           expect(historyController.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(cause, {
