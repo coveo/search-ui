@@ -19,7 +19,7 @@ export const Field: SubGrammar = {
     FieldValueList: '([FieldValueString][FieldValueStringList*])',
     FieldValueStringList: '[FieldValueSeparator][FieldValueString]',
     FieldValueSeparator: / *, */,
-    FieldValueNotQuoted: /[^ \(\),]+/,
+    FieldValueNotQuoted: /[^ \(\)\[\],]+/,
     NumberRange: '[Number][Spaces?]..[Spaces?][Number]'
   },
   include: [Date, Basic]
