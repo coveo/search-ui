@@ -492,7 +492,7 @@ export class ResultLink extends Component {
       return this.filterProtocol(Utils.getFieldValue(this.result, <string>this.options.field));
     }
 
-    return this.filterProtocol(this.escapedClickUri);
+    return this.filterProtocol(this.result.clickUri);
   }
 
   private elementIsAnAnchor() {
