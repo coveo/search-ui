@@ -83,7 +83,7 @@ export function SmartSnippetTest() {
         .and.callFake((href: string, newTab: boolean, sendAnalytics: () => void) => sendAnalytics());
     }
 
-    function triggerQuerySuccess(withSource: boolean) {
+    async function triggerQuerySuccess(withSource: boolean) {
       const results = withSource ? [mockResult()] : [];
       (test.env.queryController.getLastResults as jasmine.Spy).and.returnValue({ results });
       $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, <IQuerySuccessEventArgs>{
@@ -92,6 +92,7 @@ export function SmartSnippetTest() {
           questionAnswer: mockQuestionAnswer()
         }
       });
+      await test.cmp['shadowLoading'];
     }
 
     function getFirstChild(className: string) {
@@ -103,9 +104,10 @@ export function SmartSnippetTest() {
     }
 
     describe('with styling without a source', () => {
-      beforeEach(() => {
+      beforeEach(async done => {
         instantiateSmartSnippet(true);
-        triggerQuerySuccess(false);
+        await triggerQuerySuccess(false);
+        done();
       });
 
       it('should render the style', () => {
@@ -128,8 +130,9 @@ export function SmartSnippetTest() {
       });
 
       describe('with a source', () => {
-        beforeEach(() => {
-          triggerQuerySuccess(true);
+        beforeEach(async done => {
+          await triggerQuerySuccess(true);
+          done();
         });
 
         it('has the has-answer class', () => {
@@ -151,8 +154,9 @@ export function SmartSnippetTest() {
       });
 
       describe('without a source', () => {
-        beforeEach(() => {
-          triggerQuerySuccess(false);
+        beforeEach(async done => {
+          await triggerQuerySuccess(false);
+          done();
         });
 
         it('should render the answer container followed by the feedback banner', () => {
