@@ -95,7 +95,7 @@ export class SmartSnippet extends Component {
     private ModalBox = ModalBoxModule
   ) {
     super(element, SmartSnippet.ID, bindings);
-    this.bind.onRootElement(QueryEvents.querySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
   private get style() {
@@ -161,6 +161,7 @@ export class SmartSnippet extends Component {
   private buildHeightLimiter() {
     return (this.heightLimiter = new HeightLimiter(
       this.shadowContainer,
+      this.snippetContainer,
       400,
       isExpanded => (isExpanded ? this.sendExpandSmartSnippetAnalytics() : this.sendCollapseSmartSnippetAnalytics())
     )).toggleButton;
@@ -212,7 +213,7 @@ export class SmartSnippet extends Component {
         // On IE11, `scrollHeight` isn't instantly detected.
         await Utils.resolveAfter(0);
       }
-      this.heightLimiter.onScrollHeightChanged();
+      this.heightLimiter.onContentHeightChanged();
     });
   }
 

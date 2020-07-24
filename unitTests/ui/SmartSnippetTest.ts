@@ -86,7 +86,7 @@ export function SmartSnippetTest() {
     function triggerQuerySuccess(withSource: boolean) {
       const results = withSource ? [mockResult()] : [];
       (test.env.queryController.getLastResults as jasmine.Spy).and.returnValue({ results });
-      $$(test.env.root).trigger(QueryEvents.querySuccess, <IQuerySuccessEventArgs>{
+      $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, <IQuerySuccessEventArgs>{
         results: {
           results,
           questionAnswer: mockQuestionAnswer()
