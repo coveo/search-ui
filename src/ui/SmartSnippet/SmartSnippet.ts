@@ -86,7 +86,7 @@ export class SmartSnippet extends Component {
   private heightLimiter: HeightLimiter;
   private explanationModal: ExplanationModal;
   private feedbackBanner: UserFeedbackBanner;
-  private shadowLoading: Promise<ShadowRoot | HTMLBodyElement>;
+  private shadowLoading: Promise<ShadowRoot | HTMLElement>;
 
   constructor(
     public element: HTMLElement,

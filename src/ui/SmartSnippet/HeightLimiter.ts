@@ -84,7 +84,7 @@ export class HeightLimiter {
   private updateExpandedAppearance() {
     this.updateButton();
     $$(this.containerElement).toggleClass(CONTAINER_EXPANDED_CLASSNAME, this.isExpanded);
-    this.height = this.isExpanded ? this.contentElement.clientHeight : this.heightLimit;
+    this.height = this.isExpanded ? this.contentHeight : this.heightLimit;
   }
 
   private toggle() {
