@@ -147,10 +147,10 @@ export class UserFeedbackBanner {
       return;
     }
     this.isUseful = isUseful ? UsefulState.Yes : UsefulState.No;
-    this.yesButton.classList.toggle(BUTTON_ACTIVE_CLASSNAME, isUseful);
-    this.noButton.classList.toggle(BUTTON_ACTIVE_CLASSNAME, !isUseful);
-    this.thankYouBanner.classList.add(THANK_YOU_BANNER_ACTIVE_CLASSNAME);
-    this.explainWhy.classList.toggle(EXPLAIN_WHY_ACTIVE_CLASSNAME, !isUseful);
+    $$(this.yesButton).toggleClass(BUTTON_ACTIVE_CLASSNAME, isUseful);
+    $$(this.noButton).toggleClass(BUTTON_ACTIVE_CLASSNAME, !isUseful);
+    $$(this.thankYouBanner).addClass(THANK_YOU_BANNER_ACTIVE_CLASSNAME);
+    $$(this.explainWhy).toggleClass(EXPLAIN_WHY_ACTIVE_CLASSNAME, !isUseful);
     this.sendUsefulnessAnalytics(isUseful);
   }
 

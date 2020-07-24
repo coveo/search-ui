@@ -58,8 +58,8 @@ export class HeightLimiter {
 
   private updateActiveAppearance() {
     const shouldBeActive = this.scrollHeight > this.heightLimit;
-    this.element.classList.toggle(CONTAINER_ACTIVE_CLASSNAME, shouldBeActive);
-    this.button.classList.toggle(BUTTON_ACTIVE_CLASSNAME, shouldBeActive);
+    $$(this.element).toggleClass(CONTAINER_ACTIVE_CLASSNAME, shouldBeActive);
+    $$(this.button).toggleClass(BUTTON_ACTIVE_CLASSNAME, shouldBeActive);
     if (shouldBeActive) {
       this.updateExpandedAppearance();
     } else {
@@ -76,7 +76,7 @@ export class HeightLimiter {
 
   private updateExpandedAppearance() {
     this.updateButton();
-    this.element.classList.toggle(CONTAINER_EXPANDED_CLASSNAME, this.isExpanded);
+    $$(this.element).toggleClass(CONTAINER_EXPANDED_CLASSNAME, this.isExpanded);
     this.height = this.isExpanded ? this.scrollHeight : this.heightLimit;
   }
 

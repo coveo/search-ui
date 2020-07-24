@@ -18,6 +18,8 @@ import {
 import { HeightLimiter } from './HeightLimiter';
 import { ExplanationModal, IReason } from './ExplanationModal';
 import { l } from '../../strings/Strings';
+import { attachShadow } from '../../misc/AttachShadowPolyfill';
+import { Utils } from '../../utils/Utils';
 
 interface ISmartSnippetReason {
   analytics: AnalyticsSmartSnippetFeedbackReason;
@@ -84,6 +86,7 @@ export class SmartSnippet extends Component {
   private heightLimiter: HeightLimiter;
   private explanationModal: ExplanationModal;
   private feedbackBanner: UserFeedbackBanner;
+  private shadowLoading: Promise<ShadowRoot | HTMLBodyElement>;
 
   constructor(
     public element: HTMLElement,
@@ -104,7 +107,7 @@ export class SmartSnippet extends Component {
   }
 
   private set hasAnswer(hasAnswer: boolean) {
-    this.element.classList.toggle(HAS_ANSWER_CLASSNAME, hasAnswer);
+    $$(this.element).toggleClass(HAS_ANSWER_CLASSNAME, hasAnswer);
   }
 
   public createDom() {
@@ -143,12 +146,15 @@ export class SmartSnippet extends Component {
 
   private buildShadow() {
     this.shadowContainer = $$('div', { className: SHADOW_CLASSNAME }).el;
-    const shadow = this.shadowContainer.attachShadow({ mode: 'open' });
-    shadow.appendChild((this.snippetContainer = $$('section', { className: CONTENT_CLASSNAME }).el));
-    const style = this.buildStyle();
-    if (style) {
-      shadow.appendChild(style);
-    }
+    this.snippetContainer = $$('section', { className: CONTENT_CLASSNAME }).el;
+    this.shadowLoading = attachShadow(this.shadowContainer, { mode: 'open' }).then(shadow => {
+      shadow.appendChild(this.snippetContainer);
+      const style = this.buildStyle();
+      if (style) {
+        shadow.appendChild(style);
+      }
+      return shadow;
+    });
     return this.shadowContainer;
   }
 
@@ -201,7 +207,13 @@ export class SmartSnippet extends Component {
     if (lastRenderedResult) {
       this.renderSource(lastRenderedResult);
     }
-    this.heightLimiter.onScrollHeightChanged();
+    this.shadowLoading.then(async () => {
+      if (!this.shadowContainer.attachShadow) {
+        // On IE11, `scrollHeight` isn't instantly detected.
+        await Utils.resolveAfter(0);
+      }
+      this.heightLimiter.onScrollHeightChanged();
+    });
   }
 
   private renderSnippet(content: string) {
