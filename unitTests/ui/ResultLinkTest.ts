@@ -340,6 +340,14 @@ export function ResultLinkTest() {
         expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
       });
 
+      it(`when the href contains "&" characters,
+        should set the href the unescaped the result click uri`, () => {
+        fakeResult.clickUri =
+          'https://testing.com/supportcenter/portal?DataSource=Solutions&eventSubmit_doNavigate=&PageNumber=Prev&tab=Solutions&ts=6';
+        initHyperLink();
+        expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
+      });
+
       it(`when the uri (clickUri) defined in the results contains the javascript protocol,
         it clears the value to prevent XSS`, () => {
         fakeResult.clickUri = 'JavaScript:void(0)';
