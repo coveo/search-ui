@@ -6,6 +6,7 @@ import 'styling/_ExplanationModal';
 
 export interface IReason {
   label: string;
+  id: string;
   onSelect: () => void;
   hasDetails?: boolean;
 }
@@ -19,23 +20,29 @@ export interface IExplanationModalOptions {
 
 const ROOT_CLASSNAME = 'coveo-user-explanation-modal';
 const CONTENT_CLASSNAME = `${ROOT_CLASSNAME}-content`;
+const EXPLANATION_SECTION_CLASSNAME = `${ROOT_CLASSNAME}-explanation-section`;
 const REASONS_CLASSNAME = `${ROOT_CLASSNAME}-explanations`;
 const REASONS_LABEL_CLASSNAME = `${REASONS_CLASSNAME}-label`;
 const DETAILS_SECTION_CLASSNAME = `${ROOT_CLASSNAME}-details`;
 const DETAILS_TEXTAREA_CLASSNAME = `${DETAILS_SECTION_CLASSNAME}-textarea`;
 const DETAILS_LABEL_CLASSNAME = `${DETAILS_SECTION_CLASSNAME}-label`;
+const BUTTONS_SECTION_CLASSNAME = `${ROOT_CLASSNAME}-buttons-section`;
 const SEND_BUTTON_CLASSNAME = `${ROOT_CLASSNAME}-send-button`;
+const CANCEL_BUTTON_CLASSNAME = `${ROOT_CLASSNAME}-cancel-button`;
 const DETAILS_ID = DETAILS_SECTION_CLASSNAME;
 
 export const ExplanationModalClassNames = {
   ROOT_CLASSNAME,
   CONTENT_CLASSNAME,
+  EXPLANATION_SECTION_CLASSNAME,
   REASONS_CLASSNAME,
   REASONS_LABEL_CLASSNAME,
   DETAILS_SECTION_CLASSNAME,
   DETAILS_TEXTAREA_CLASSNAME,
   DETAILS_LABEL_CLASSNAME,
-  SEND_BUTTON_CLASSNAME
+  BUTTONS_SECTION_CLASSNAME,
+  SEND_BUTTON_CLASSNAME,
+  CANCEL_BUTTON_CLASSNAME
 };
 
 export class ExplanationModal {
@@ -43,7 +50,7 @@ export class ExplanationModal {
   private reasons: RadioButton[];
   private selectedReason: IReason;
   private detailsTextArea: HTMLTextAreaElement;
-  private isOpen = false;
+  private shouldCallCloseEvent = false;
 
   constructor(public options: IExplanationModalOptions) {
     this.modal = new AccessibleModal(ROOT_CLASSNAME, this.options.ownerElement, this.options.modalBoxModule);
@@ -62,27 +69,48 @@ export class ExplanationModal {
       title: l('UsefulnessFeedbackExplainWhyImperative'),
       content: this.buildContent(),
       validation: () => {
-        if (this.isOpen) {
+        if (this.shouldCallCloseEvent) {
           this.options.onClosed();
-          this.isOpen = false;
+          this.shouldCallCloseEvent = false;
         }
         return true;
       }
     });
-    this.isOpen = true;
+    this.shouldCallCloseEvent = true;
   }
 
   private buildContent() {
-    const detailsSection = this.buildDetailsSection();
     return $$(
       'div',
       {
         className: CONTENT_CLASSNAME
       },
-      this.buildReasons(),
-      detailsSection,
-      this.buildSendButton()
+      this.buildExplanationSection(),
+      this.buildButtonsSection()
     ).el;
+  }
+
+  private buildExplanationSection() {
+    const detailsSection = this.buildDetailsSection();
+    return $$(
+      'div',
+      {
+        className: EXPLANATION_SECTION_CLASSNAME
+      },
+      this.buildReasons(),
+      detailsSection
+    ).el;
+  }
+
+  private buildButtonsSection() {
+    return $$(
+      'div',
+      {
+        className: BUTTONS_SECTION_CLASSNAME
+      },
+      this.buildSendButton(),
+      this.buildCancelButton()
+    );
   }
 
   private buildReasons() {
@@ -111,9 +139,15 @@ export class ExplanationModal {
     const button = $$('button', { className: SEND_BUTTON_CLASSNAME }, l('Send'));
     button.on('click', () => {
       this.selectedReason.onSelect();
-      this.isOpen = false;
+      this.shouldCallCloseEvent = false;
       this.modal.close();
     });
+    return button.el;
+  }
+
+  private buildCancelButton() {
+    const button = $$('button', { className: CANCEL_BUTTON_CLASSNAME }, l('Cancel'));
+    button.on('click', () => this.modal.close());
     return button.el;
   }
 
@@ -127,7 +161,8 @@ export class ExplanationModal {
         this.selectedReason = reason;
       },
       reason.label,
-      'reason'
+      'reason',
+      `coveo-reason-${reason.id}`
     );
   }
 }

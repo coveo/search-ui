@@ -20,15 +20,18 @@ export function ExplanationModalTest() {
     return [
       {
         label: 'Explanation selected by default',
+        id: 'selected-by-default',
         onSelect: jasmine.createSpy('onSelect1'),
         hasDetails: firstReasonHasDetails
       },
       {
         label: 'Second reason implicitly without details',
+        id: 'implicitly-has-no-details',
         onSelect: jasmine.createSpy('onSelect2')
       },
       {
         label: 'Third reason explicitly without details',
+        id: 'explicitly-without-details',
         onSelect: jasmine.createSpy('onSelect3'),
         hasDetails: false
       }
@@ -90,8 +93,22 @@ export function ExplanationModalTest() {
         expect(content.classList.contains(ClassNames.CONTENT_CLASSNAME)).toBeTruthy();
       });
 
-      it('builds the root with the reasons list, the details section and the send button', () => {
-        expectChildren(content, [ClassNames.REASONS_CLASSNAME, ClassNames.DETAILS_SECTION_CLASSNAME, ClassNames.SEND_BUTTON_CLASSNAME]);
+      it('builds the root with the explanations section and the buttons section', () => {
+        expectChildren(content, [ClassNames.EXPLANATION_SECTION_CLASSNAME, ClassNames.BUTTONS_SECTION_CLASSNAME]);
+      });
+
+      it('builds the explanations section with the reasons list and the details section', () => {
+        expectChildren(getFirstChild(ClassNames.EXPLANATION_SECTION_CLASSNAME), [
+          ClassNames.REASONS_CLASSNAME,
+          ClassNames.DETAILS_SECTION_CLASSNAME
+        ]);
+      });
+
+      it('builds the buttons section with the send button and the cancel button', () => {
+        expectChildren(getFirstChild(ClassNames.BUTTONS_SECTION_CLASSNAME), [
+          ClassNames.SEND_BUTTON_CLASSNAME,
+          ClassNames.CANCEL_BUTTON_CLASSNAME
+        ]);
       });
 
       it('builds a radio button for each reason', () => {
