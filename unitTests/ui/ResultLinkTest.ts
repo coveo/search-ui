@@ -18,7 +18,7 @@ export function ResultLinkTest() {
       let fakeResult = FakeResults.createFakeResult();
       fakeResult.title = 'A test title';
       fakeResult.titleHighlights = [{ offset: 2, length: 4 }];
-      fakeResult.clickUri = 'uri';
+      fakeResult.clickUri = 'http://www.coveo.com';
       return fakeResult;
     }
 
@@ -373,8 +373,8 @@ export function ResultLinkTest() {
 
       describe('and the result has the outlookfield', () => {
         beforeEach(() => {
-          fakeResult.raw['outlookuri'] = 'uri.for.outlook';
-          fakeResult.raw['outlookformacuri'] = 'uri.for.outlook.for.mac';
+          fakeResult.raw['outlookuri'] = 'mailto:test@coveo.comm';
+          fakeResult.raw['outlookformacuri'] = 'mailto:test.mac@coveo.comm';
         });
 
         it('should generate the correct href if the os is windows and the option is openInOutlook', () => {
