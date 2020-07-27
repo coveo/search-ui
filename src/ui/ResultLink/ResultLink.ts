@@ -472,11 +472,11 @@ export class ResultLink extends Component {
   );
 
   private filterProtocol(uri: string) {
-    if (/^javascript:/i.test(uri)) {
-      return '';
+    if (/^(https?|ftp|file|mailto|tel):/i.test(uri)) {
+      return uri;
     }
 
-    return uri;
+    return '';
   }
 
   private getResultUri(): string {
