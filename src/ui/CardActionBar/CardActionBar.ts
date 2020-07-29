@@ -124,6 +124,8 @@ export class CardActionBar extends Component {
   private bindEvents() {
     $$(this.parentResult).on('click', () => this.show());
     $$(this.parentResult).on('mouseleave', () => this.hide());
+    $$(this.element).on('focusin', () => this.show());
+    $$(this.element).on('focusout', () => this.hide());
     if (this.options.openOnMouseOver) {
       $$(this.arrowContainer).on('mouseenter', () => this.show());
     }
