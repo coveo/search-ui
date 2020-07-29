@@ -26,7 +26,6 @@ export { Aggregate };
 
 import { Analytics } from './ui/Analytics/Analytics';
 Analytics.doExport();
-export { Analytics };
 
 import { AnalyticsSuggestions } from './ui/AnalyticsSuggestions/AnalyticsSuggestions';
 AnalyticsSuggestions.doExport();
@@ -410,3 +409,5 @@ export { SortDropdown };
 import { FacetsMobileMode } from './ui/FacetsMobileMode/FacetsMobileMode';
 FacetsMobileMode.doExport();
 export { FacetsMobileMode };
+
+export { Analytics } from './ui/Analytics/Analytics';
