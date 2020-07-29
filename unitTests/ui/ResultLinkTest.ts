@@ -18,7 +18,7 @@ export function ResultLinkTest() {
       let fakeResult = FakeResults.createFakeResult();
       fakeResult.title = 'A test title';
       fakeResult.titleHighlights = [{ offset: 2, length: 4 }];
-      fakeResult.clickUri = 'uri';
+      fakeResult.clickUri = 'http://www.coveo.com';
       return fakeResult;
     }
 
@@ -332,6 +332,14 @@ export function ResultLinkTest() {
         expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
       });
 
+      it(`when the href contains "&" characters,
+        should set the href the unescaped the result click uri`, () => {
+        fakeResult.clickUri =
+          'https://testing.com/supportcenter/portal?DataSource=Solutions&eventSubmit_doNavigate=&PageNumber=Prev&tab=Solutions&ts=6';
+        test = Mock.advancedResultComponentSetup<ResultLink>(ResultLink, fakeResult, new Mock.AdvancedComponentSetupOptions($$('a').el));
+        expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
+      });
+
       it('should not override the href if it is set before the initialization', () => {
         let element = $$('a');
         let href = 'javascript:void(0)';
@@ -343,8 +351,8 @@ export function ResultLinkTest() {
 
       describe('and the result has the outlookfield', () => {
         beforeEach(() => {
-          fakeResult.raw['outlookuri'] = 'uri.for.outlook';
-          fakeResult.raw['outlookformacuri'] = 'uri.for.outlook.for.mac';
+          fakeResult.raw['outlookuri'] = 'mailto:test@coveo.comm';
+          fakeResult.raw['outlookformacuri'] = 'mailto:test.mac@coveo.comm';
         });
 
         it('should generate the correct href if the os is windows and the option is openInOutlook', () => {

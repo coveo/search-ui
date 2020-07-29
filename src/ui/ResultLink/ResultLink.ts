@@ -484,7 +484,7 @@ export class ResultLink extends Component {
       return Utils.getFieldValue(this.result, <string>this.options.field);
     }
 
-    return this.escapedClickUri;
+    return this.result.clickUri;
   }
 
   private elementIsAnAnchor() {
