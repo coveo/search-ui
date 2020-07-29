@@ -1,7 +1,7 @@
 'use strict';
 const login = require('npm-cli-login');
 const exec = require('child_process').exec;
-login('coveo', process.env.NPM_PW, 'sandbox_JSUI@coveo.com');
+login(process.env.NPM_USERNAME, process.env.NPM_PW, 'sandbox_JSUI@coveo.com');
 
 const travisBranchName = process.env.TRAVIS_BRANCH || '';
 let branchToTag = '';
