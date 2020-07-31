@@ -391,7 +391,7 @@ export function SearchEndpointTest() {
           it('contains the right request headers', done => {
             expect(jasmine.Ajax.requests.mostRecent().requestHeaders).toEqual(
               jasmine.objectContaining({
-                'Content-Type': 'application/json; charset="UTF-8"'
+                'Content-Type': 'application/json; charset=UTF-8'
               })
             );
 

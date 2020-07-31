@@ -218,6 +218,11 @@ export function GrammarTest() {
       var result = coveoGrammar.parse('word @fieldName =  (value  , abc)');
       expect(result.isSuccess()).toBeTruthy();
     });
+    it('"@fieldName=value]"', () => {
+      var result = coveoGrammar.parse('@fieldName=value]');
+      expect(result.isSuccess()).toBeFalsy();
+      expect(result.getHumanReadableExpect()).toBe('Expected Spaces or end of input but "]" found.');
+    });
     it('"word (word2"', () => {
       var result = coveoGrammar.parse('word (word2');
       expect(result.isSuccess()).toBeFalsy();
