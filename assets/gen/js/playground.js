@@ -6091,8 +6091,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.9373.7-beta',
-    product: '2.9373.7-beta',
+    lib: '2.9373.8',
+    product: '2.9373.8',
     supportedApiVersion: 2
 };
 
