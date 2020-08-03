@@ -26,18 +26,19 @@ import { INumberFormatOptions } from '../../utils/NumberUtils';
 /**
  * The core template helpers provided by default.
  *
- * **Usage Examples:**
+ * **Usage examples:**
  *
- * >**HTML**
- * >
- * > ```html
- * > <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
- * > ```
- * >**Underscore**
- * >
- * > ```erb
- * > <%= helperName(argument1, argument2) %>
- * > ```
+ * **HTML**
+ *
+ * ```html
+ * <div class="CoveoFieldValue" data-field="@videoduration" data-helper="timeSpan" data-helper-options-is-milliseconds="false"></div>
+ * ```
+ *
+ * **Underscore**
+ *
+ * ```erb
+ * <%= timeSpan(raw.videoduration, { isMilliseconds: false }) %>
+ * ```
  */
 export interface ICoreHelpers {
   /**
@@ -151,14 +152,14 @@ export interface ICoreHelpers {
    * Formats a date value to a date-only string using the specified options.
    *
    * - `content`: The Date value to format.
-   * - `options`: Optional. The options to use (see IDateToStringOptions).
+   * - `options`: Optional. The options to use (see {@link IDateToStringOptions}).
    */
   date: (content: any, options?: IDateToStringOptions) => string;
   /**
    * Formats a date value to a time-only string using the specified options.
    *
    * - `content`: The Date value to format.
-   * - `options`: Optional. The options to use (see IDateToStringOptions).
+   * - `options`: Optional. The options to use (see {@link IDateToStringOptions}).
    */
   time: (content: any, options?: IDateToStringOptions) => string;
   /**
@@ -166,14 +167,14 @@ export interface ICoreHelpers {
    * options.
    *
    * - `content`: The Date value to format.
-   * - `options`: Optional. The options to use (see IDateToStringOptions).
+   * - `options`: Optional. The options to use (see {@link IDateToStringOptions}).
    */
   dateTime: (content: any, options?: IDateToStringOptions) => string;
   /**
    * Formats a currency value to a string using the specified options.
    *
    * - `content`: The number value to format.
-   * - `options`: Optional. The options to use (see ICurrencyToStringOptions).
+   * - `options`: Optional. The options to use (see {@link ICurrencyToStringOptions}).
    */
   currency: (content: any, options?: ICurrencyToStringOptions) => string;
   /**
@@ -181,7 +182,7 @@ export interface ICoreHelpers {
    * email dates
    *
    * - `content`: The Date value to format.
-   * - `options`: Optional. The options to use (see IDateToStringOptions).
+   * - `options`: Optional. The options to use (see {@link IDateToStringOptions}).
    */
   emailDateTime: (content: any, options?: IDateToStringOptions) => string;
   /**
