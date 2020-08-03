@@ -26,7 +26,7 @@ import { INumberFormatOptions } from '../../utils/NumberUtils';
 /**
  * The core template helpers provided by default.
  *
- * **Usage examples:**
+ * **Examples:**
  *
  * **HTML**
  *
@@ -293,7 +293,7 @@ export interface ICoreHelpers {
    * >
    * >`size(10240) => 10 KB`
    *
-   * **Usage Examples:**
+   * **Examples:**
    *
    * >**HTML**
    * >
