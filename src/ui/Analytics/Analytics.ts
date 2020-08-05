@@ -23,6 +23,9 @@ import { PendingSearchEvent } from './PendingSearchEvent';
 import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 import { AccessToken } from '../../rest/AccessToken';
 import { AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
+import { IClientInformationProvider, AnalyticsUtils } from '../../utils/AnalyticsUtils';
+import { Cookie } from '../../utils/CookieUtils';
+import { QueryUtils } from '../../utils/QueryUtils';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -53,7 +56,7 @@ export interface IAnalyticsOptions {
  * See also [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events) for more advanced use cases.
  */
 
-export class Analytics extends Component {
+export class Analytics extends Component implements IClientInformationProvider {
   static ID = 'Analytics';
 
   static doExport() {
@@ -254,6 +257,22 @@ export class Analytics extends Component {
       let event = this.componentOptionsModel.getEventName(Model.eventTypes.changeOne + ComponentOptionsModel.attributesEnum.searchHub);
       this.bind.onRootElement(event, (args: IAttributeChangedEventArg) => this.handleSearchHubChanged(args));
     }
+
+    AnalyticsUtils.setClientIdProvider(this);
+  }
+
+  public get visitorId() {
+    return Cookie.get('visitorId');
+  }
+
+  public get clientId() {
+    const clientId = Cookie.get('clientId');
+    if (clientId) {
+      return clientId;
+    }
+    const newclientId = QueryUtils.createGuid();
+    Cookie.set('clientId', newclientId);
+    return newclientId;
   }
 
   /**
@@ -405,7 +424,7 @@ export class Analytics extends Component {
     if (this.disabled || this.client instanceof NoopAnalyticsClient) {
       return this.logger.warn('Could not clear local data while analytics are disabled.');
     }
-    this.client.endpoint.clearCookies();
+    this.clearCookies();
     this.resolveQueryController().resetHistory();
   }
 
@@ -502,6 +521,12 @@ export class Analytics extends Component {
         this.getBindings()
       );
     }
+  }
+
+  private clearCookies() {
+    Cookie.erase('visitorId');
+    Cookie.erase('clientId');
+    Cookie.erase('visitId');
   }
 
   private setupAccessToken() {

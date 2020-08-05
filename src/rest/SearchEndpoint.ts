@@ -32,7 +32,6 @@ import { QueryError } from '../rest/QueryError';
 import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
 import { history } from 'coveo.analytics';
-import { Cookie } from '../utils/CookieUtils';
 import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
@@ -41,6 +40,7 @@ import { BackOffRequest, IBackOffRequest } from './BackOffRequest';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 import { IPlanResponse, ExecutionPlan } from './Plan';
+import { AnalyticsUtils } from '../utils/AnalyticsUtils';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -332,6 +332,9 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   @includeActionsHistory()
   @includeReferrer()
+  @includeLocation()
+  @includeClientId()
+  @includePageId()
   @includeVisitorId()
   @includeIsGuestUser()
   private buildCompleteCall(request: any, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
@@ -854,10 +857,6 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('POST')
   @requestDataType('application/json')
   @responseType('text')
-  @includeActionsHistory()
-  @includeReferrer()
-  @includeVisitorId()
-  @includeIsGuestUser()
   public async facetSearch(
     request: IFacetSearchRequest,
     callOptions?: IEndpointCallOptions,
@@ -1401,7 +1400,7 @@ function includeReferrer() {
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function(...args: any[]) {
-      let referrer = document.referrer;
+      let referrer = AnalyticsUtils.referrer;
       if (referrer == null) {
         referrer = '';
       }
@@ -1421,11 +1420,83 @@ function includeReferrer() {
   };
 }
 
+function includeClientId() {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
+    descriptor.value = function(...args: any[]) {
+      let clientId = AnalyticsUtils.clientId;
+      if (clientId == null) {
+        clientId = '';
+      }
+
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].requestData.clientId = clientId;
+      } else {
+        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
+          requestData: { clientId: clientId }
+        });
+        args[nbParams - 1] = endpointCallParams;
+      }
+      return originalMethod.apply(this, args);
+    };
+
+    return descriptor;
+  };
+}
+
+function includePageId() {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
+    descriptor.value = function(...args: any[]) {
+      let pageId = AnalyticsUtils.pageId;
+      if (pageId == null) {
+        pageId = '';
+      }
+
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].requestData.pageId = pageId;
+      } else {
+        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
+          requestData: { pageId: pageId }
+        });
+        args[nbParams - 1] = endpointCallParams;
+      }
+      return originalMethod.apply(this, args);
+    };
+
+    return descriptor;
+  };
+}
+
+function includeLocation() {
+  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
+    descriptor.value = function(...args: any[]) {
+      let location = AnalyticsUtils.location;
+      if (location == null) {
+        location = '';
+      }
+
+      if (args[nbParams - 1]) {
+        args[nbParams - 1].requestData.location = location;
+      } else {
+        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
+          requestData: { location: location }
+        });
+        args[nbParams - 1] = endpointCallParams;
+      }
+      return originalMethod.apply(this, args);
+    };
+
+    return descriptor;
+  };
+}
+
 function includeVisitorId() {
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function(...args: any[]) {
-      let visitorId = Cookie.get('visitorId');
+      let visitorId = AnalyticsUtils.visitorId;
       if (visitorId == null) {
         visitorId = '';
       }
