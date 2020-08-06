@@ -86,7 +86,7 @@ export class SmartSnippet extends Component {
   private heightLimiter: HeightLimiter;
   private explanationModal: ExplanationModal;
   private feedbackBanner: UserFeedbackBanner;
-  private shadowLoading: Promise<ShadowRoot | HTMLElement>;
+  private shadowLoading: Promise<HTMLElement>;
 
   constructor(
     public element: HTMLElement,
@@ -191,30 +191,26 @@ export class SmartSnippet extends Component {
     );
   }
 
-  private handleQuerySuccess(data: IQuerySuccessEventArgs) {
+  private async handleQuerySuccess(data: IQuerySuccessEventArgs) {
     const { questionAnswer } = data.results;
     if (!questionAnswer) {
       this.hasAnswer = false;
       return;
     }
     this.hasAnswer = true;
-    this.render(questionAnswer);
+    await this.render(questionAnswer);
   }
 
-  private render(questionAnswer: IQuestionAnswerResponse) {
+  private async render(questionAnswer: IQuestionAnswerResponse) {
     this.ensureDom();
     this.renderSnippet(questionAnswer.answerSnippet);
     const lastRenderedResult = this.getCorrespondingResult(questionAnswer);
     if (lastRenderedResult) {
       this.renderSource(lastRenderedResult);
     }
-    this.shadowLoading.then(async () => {
-      if (!this.shadowContainer.attachShadow) {
-        // On IE11, `scrollHeight` isn't instantly detected.
-        await Utils.resolveAfter(0);
-      }
-      this.heightLimiter.onContentHeightChanged();
-    });
+    await this.shadowLoading;
+    await Utils.resolveAfter(0); // `scrollHeight` isn't instantly detected, or at-least not on IE11.
+    this.heightLimiter.onContentHeightChanged();
   }
 
   private renderSnippet(content: string) {
