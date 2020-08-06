@@ -7600,5 +7600,9 @@
   "UsefulnessFeedbackReason": {
     "en": "Reason",
     "fr": "Raison"
+  },
+  "AnswerSnippet": {
+    "en": "Answer to your question",
+    "fr": "Réponse à votre question"
   }
 }

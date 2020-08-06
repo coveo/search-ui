@@ -1,8 +1,8 @@
 import { $$ } from '../utils/Dom';
 import 'styling/_AttachShadowPolyfill';
 
-export async function attachShadow(element: HTMLElement, init: ShadowRootInit): Promise<HTMLElement> {
-  const iframe = $$('iframe', { className: 'coveo-shadow-iframe', scrolling: 'no' }).el as HTMLIFrameElement;
+export async function attachShadow(element: HTMLElement, init: ShadowRootInit & { title: string }): Promise<HTMLElement> {
+  const iframe = $$('iframe', { className: 'coveo-shadow-iframe', scrolling: 'no', title: init.title }).el as HTMLIFrameElement;
   const onLoad = new Promise(resolve => iframe.addEventListener('load', () => resolve()));
   element.appendChild(iframe);
   await onLoad;

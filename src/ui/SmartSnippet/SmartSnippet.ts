@@ -147,7 +147,7 @@ export class SmartSnippet extends Component {
   private buildShadow() {
     this.shadowContainer = $$('div', { className: SHADOW_CLASSNAME }).el;
     this.snippetContainer = $$('section', { className: CONTENT_CLASSNAME }).el;
-    this.shadowLoading = attachShadow(this.shadowContainer, { mode: 'open' }).then(shadow => {
+    this.shadowLoading = attachShadow(this.shadowContainer, { mode: 'open', title: l('AnswerSnippet') }).then(shadow => {
       shadow.appendChild(this.snippetContainer);
       const style = this.buildStyle();
       if (style) {
