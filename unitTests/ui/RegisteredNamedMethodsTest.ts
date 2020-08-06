@@ -316,7 +316,7 @@ export function RegisteredNamedMethodsTest() {
       });
 
       it('should clear visitor cookie when disabling analytics', () => {
-        const clearCookiesFunction = spyOn(setup.cmp.client.endpoint, 'clearCookies');
+        const clearCookiesFunction = (setup.cmp['clearCookies'] = jasmine.createSpy('clearCookies'));
         RegisteredNamedMethod.disableAnalytics(setup.env.root);
         expect(clearCookiesFunction).toHaveBeenCalled();
       });
@@ -327,7 +327,7 @@ export function RegisteredNamedMethodsTest() {
       });
 
       it('should clear visitor cookie when clearing local data', () => {
-        const clearCookiesFunction = spyOn(setup.cmp.client.endpoint, 'clearCookies');
+        const clearCookiesFunction = (setup.cmp['clearCookies'] = jasmine.createSpy('clearCookies'));
         RegisteredNamedMethod.clearLocalData(setup.env.root);
         expect(clearCookiesFunction).toHaveBeenCalled();
       });
