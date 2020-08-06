@@ -54,7 +54,7 @@ export class HeightLimiter {
   private buildButton() {
     this.button = $$(
       'button',
-      { className: BUTTON_CLASSNAME, ariaLabel: l('ShowMore'), ariaPressed: 'false' },
+      { className: BUTTON_CLASSNAME, ariaLabel: l('ShowMore'), ariaPressed: 'false', ariaHidden: 'true' },
       (this.buttonLabel = $$('span', { className: BUTTON_LABEL_CLASSNAME }).el),
       (this.buttonIcon = $$('span', { className: BUTTON_ICON_CLASSNAME }).el)
     ).el;

@@ -74,7 +74,7 @@ export class UserFeedbackBanner {
 
   private buildContainer() {
     return $$(
-      'div',
+      'fieldset',
       {
         className: CONTAINER_CLASSNAME
       },
@@ -84,7 +84,7 @@ export class UserFeedbackBanner {
   }
 
   private buildLabel() {
-    return $$('span', { className: LABEL_CLASSNAME, id: this.labelId }, l('UsefulnessFeedbackRequest')).el;
+    return $$('legend', { className: LABEL_CLASSNAME, id: this.labelId }, l('UsefulnessFeedbackRequest')).el;
   }
 
   private buildThankYouBanner() {
