@@ -1,15 +1,13 @@
 @import 'Variables';
 
-@mixin pointer($size, $offsetX, $offsetY) {
+@mixin pointer($size, $offsetY) {
   position: relative;
-  &::before,
-  &:before {
+  &::before {
     content: ' ';
+    display: inline-block;
     position: absolute;
-    width: $size;
-    height: $size;
-    transform: translate(-$size / 2 + $offsetX, -$size / 2 + $offsetY) rotate(45deg);
-    background-color: $color-blue-background;
+    top: $size / 2 + $offsetY;
+    @include triangle($size, $color-blue-background, up);
   }
 }
 
@@ -169,7 +167,7 @@
         @at-root .coveo-user-feedback-banner-button-active {
           .coveo-user-feedback-banner-thanks-icon {
             overflow: visible;
-            @include pointer($icon-size, $icon-size / 2, $icon-size * 1.57 + 5px);
+            @include pointer($icon-size, 3px);
           }
 
           &.coveo-user-feedback-banner-yes-button {
