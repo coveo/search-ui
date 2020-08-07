@@ -54,7 +54,7 @@ export class HeightLimiter {
   private buildButton() {
     this.button = $$(
       'button',
-      { className: BUTTON_CLASSNAME },
+      { className: BUTTON_CLASSNAME, ariaLabel: l('ShowMore'), ariaPressed: 'false', ariaHidden: 'true' },
       (this.buttonLabel = $$('span', { className: BUTTON_LABEL_CLASSNAME }).el),
       (this.buttonIcon = $$('span', { className: BUTTON_ICON_CLASSNAME }).el)
     ).el;
@@ -78,6 +78,7 @@ export class HeightLimiter {
 
   private updateButton() {
     this.buttonLabel.innerText = this.isExpanded ? l('ShowLess') : l('ShowMore');
+    this.button.setAttribute('aria-pressed', `${this.isExpanded}`);
     this.buttonIcon.innerHTML = this.isExpanded ? SVGIcons.icons.arrowUp : SVGIcons.icons.arrowDown;
   }
 

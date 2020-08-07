@@ -63,15 +63,30 @@ export const AccessibilitySmartSnippet = () => {
       });
 
       describe('after pressing "Explain why"', () => {
-        let modalContent: HTMLElement;
+        let modalContainer: HTMLElement;
         beforeEach(async done => {
           getFirstChild('coveo-user-feedback-banner-explain-why').click();
-          modalContent = await waitUntilSelectorIsPresent<HTMLElement>(document.body, '.coveo-user-explanation-modal-content');
+          modalContainer = await waitUntilSelectorIsPresent<HTMLElement>(document.body, '.coveo-user-explanation-modal');
           done();
         });
 
         it('should be accessible', async done => {
-          const axeResults = await axe.run(modalContent);
+          const axeResults = await axe.run(modalContainer);
+          expect(axeResults).toBeAccessible();
+          done();
+        });
+
+        it('should be accessible after selecting other', async done => {
+          modalContainer.querySelector<HTMLInputElement>('#coveo-reason-other').click();
+          const axeResults = await axe.run(modalContainer);
+          expect(axeResults).toBeAccessible();
+          done();
+        });
+
+        it('should be accessible after selecting other and focusing the details', async done => {
+          modalContainer.querySelector<HTMLInputElement>('#coveo-reason-other').click();
+          modalContainer.querySelector<HTMLTextAreaElement>('#coveo-user-explanation-modal-details').focus();
+          const axeResults = await axe.run(modalContainer);
           expect(axeResults).toBeAccessible();
           done();
         });

@@ -1,6 +1,7 @@
 import { $$ } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { uniqueId } from 'underscore';
 
 const ROOT_CLASSNAME = 'coveo-user-feedback-banner';
 const CONTAINER_CLASSNAME = `${ROOT_CLASSNAME}-container`;
@@ -29,6 +30,7 @@ interface IButtonOptions {
     content: string;
     className: string;
   };
+  attributes?: any;
 }
 
 export const UserFeedbackBannerClassNames = {
@@ -52,14 +54,18 @@ export class UserFeedbackBanner {
   private yesButton: HTMLElement;
   private noButton: HTMLElement;
   private thankYouBanner: HTMLElement;
+  private labelId: string;
 
-  constructor(private readonly sendUsefulnessAnalytics: (isUseful: boolean) => void, private readonly onExplainWhyPressed: () => void) {}
+  constructor(private readonly sendUsefulnessAnalytics: (isUseful: boolean) => void, private readonly onExplainWhyPressed: () => void) {
+    this.labelId = uniqueId(LABEL_CLASSNAME);
+  }
 
   public build() {
     return $$(
       'div',
       {
-        className: ROOT_CLASSNAME
+        className: ROOT_CLASSNAME,
+        ariaLive: 'polite'
       },
       this.buildContainer(),
       this.buildThankYouBanner()
@@ -68,7 +74,7 @@ export class UserFeedbackBanner {
 
   private buildContainer() {
     return $$(
-      'div',
+      'fieldset',
       {
         className: CONTAINER_CLASSNAME
       },
@@ -78,7 +84,7 @@ export class UserFeedbackBanner {
   }
 
   private buildLabel() {
-    return $$('span', { className: LABEL_CLASSNAME }, l('UsefulnessFeedbackRequest')).el;
+    return $$('legend', { className: LABEL_CLASSNAME, id: this.labelId }, l('UsefulnessFeedbackRequest')).el;
   }
 
   private buildThankYouBanner() {
@@ -107,8 +113,13 @@ export class UserFeedbackBanner {
       icon: {
         className: ICON_CLASSNAME,
         content: SVGIcons.icons.checkYes
+      },
+      attributes: {
+        ariaPressed: false,
+        ariaDescribedby: this.labelId
       }
     });
+    this.yesButton.setAttribute('aria-pressed', 'false');
     buttonsContainer.appendChild(this.yesButton);
 
     this.noButton = this.buildButton({
@@ -118,6 +129,10 @@ export class UserFeedbackBanner {
       icon: {
         className: ICON_CLASSNAME,
         content: SVGIcons.icons.clearSmall
+      },
+      attributes: {
+        ariaPressed: false,
+        ariaDescribedby: this.labelId
       }
     });
     buttonsContainer.appendChild(this.noButton);
@@ -126,7 +141,7 @@ export class UserFeedbackBanner {
   }
 
   private buildButton(options: IButtonOptions) {
-    const button = $$('button', { className: options.className }).el;
+    const button = $$('button', { ...(options.attributes || {}), className: options.className }).el;
 
     if (options.icon) {
       const icon = $$('span', { className: options.icon.className }, options.icon.content).el;
@@ -148,7 +163,9 @@ export class UserFeedbackBanner {
     }
     this.isUseful = isUseful ? UsefulState.Yes : UsefulState.No;
     $$(this.yesButton).toggleClass(BUTTON_ACTIVE_CLASSNAME, isUseful);
+    $$(this.yesButton).setAttribute('aria-pressed', `${isUseful}`);
     $$(this.noButton).toggleClass(BUTTON_ACTIVE_CLASSNAME, !isUseful);
+    $$(this.noButton).setAttribute('aria-pressed', `${!isUseful}`);
     $$(this.thankYouBanner).addClass(THANK_YOU_BANNER_ACTIVE_CLASSNAME);
     $$(this.explainWhy).toggleClass(EXPLAIN_WHY_ACTIVE_CLASSNAME, !isUseful);
     this.sendUsefulnessAnalytics(isUseful);

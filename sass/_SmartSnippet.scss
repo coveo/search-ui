@@ -72,7 +72,8 @@
         color: $coveo-blue;
         cursor: pointer;
 
-        &:hover {
+        &:hover,
+        &:focus {
           text-decoration: underline;
         }
 
@@ -127,6 +128,12 @@
     padding: 6px 8px 8px 8px;
     overflow: hidden;
     font-size: 12px;
+    border: none;
+
+    @at-root .coveo-user-feedback-banner-label {
+      float: left;
+      padding: 0;
+    }
 
     @at-root .coveo-user-feedback-banner-buttons {
       display: flex;
@@ -144,14 +151,16 @@
         overflow: visible;
         cursor: pointer;
 
-        &:hover {
+        &:hover,
+        &:focus {
           text-decoration: underline;
         }
 
         &.coveo-user-feedback-banner-button-active {
           cursor: default;
 
-          &:hover {
+          &:hover,
+          &:focus {
             text-decoration: none;
           }
         }
@@ -171,8 +180,8 @@
           }
 
           &.coveo-user-feedback-banner-yes-button {
-            color: $color-dark-green;
-            fill: $color-dark-green;
+            color: $color-green;
+            fill: $color-green;
           }
 
           &.coveo-user-feedback-banner-no-button {
@@ -216,7 +225,8 @@
       cursor: pointer;
 
       text-decoration: underline;
-      &:hover {
+      &:hover,
+      &:focus {
         text-decoration: none;
       }
 

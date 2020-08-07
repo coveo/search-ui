@@ -122,6 +122,7 @@ export class SmartSnippet extends Component {
         reason =>
           <IReason>{
             label: l(reason.localeKey),
+            id: reason.analytics.replace(/_/g, '-'),
             onSelect: () => this.sendExplanationAnalytics(reason.analytics, this.explanationModal.details),
             hasDetails: reason.hasDetails
           }
