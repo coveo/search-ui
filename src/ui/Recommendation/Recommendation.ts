@@ -17,7 +17,6 @@ import { INoResultsEventArgs } from '../../events/QueryEvents';
 import { IQueryErrorEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ResponsiveRecommendation } from '../ResponsiveComponents/ResponsiveRecommendation';
-import { history } from 'coveo.analytics';
 import { get } from '../Base/RegisteredNamedMethods';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
@@ -203,7 +202,6 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   // so that clicks event inside the recommendation component can be modified and attached to the main search interface.
   public mainQuerySearchUID: string;
   public mainQueryPipeline: string;
-  public historyStore: CoveoAnalytics.HistoryStore;
 
   private mainInterfaceQuery: IQuerySuccessEventArgs;
 
@@ -236,12 +234,15 @@ export class Recommendation extends SearchInterface implements IComponentBinding
     $$(this.element).on(QueryEvents.noResults, (e: Event, args: INoResultsEventArgs) => this.handleRecommendationNoResults());
     $$(this.element).on(QueryEvents.queryError, (e: Event, args: IQueryErrorEventArgs) => this.handleRecommendationQueryError());
 
-    this.historyStore = new history.HistoryStore();
     if (!this.options.mainSearchInterface) {
       // When the recommendation component is "standalone", we add additional safeguard against bad config.
       this.ensureCurrentPageViewExistsInStore();
     }
     ResponsiveRecommendation.init(this.root, this, options);
+  }
+
+  public get historyStore() {
+    return this.actionHistory;
   }
 
   public getId(): string {
