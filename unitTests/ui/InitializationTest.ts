@@ -585,7 +585,7 @@ export function InitializationTest() {
       });
     });
 
-    it('when analytics is active, it will send action history on automatic query', done => {
+    it('when analytics is active, it will send action history on automatic query', async () => {
       const key = '__coveo.analytics.history';
 
       localStorage.removeItem(key);
@@ -594,14 +594,13 @@ export function InitializationTest() {
       const analyticsElement = $$('div', { className: 'CoveoAnalytics', 'data-token': 'el-tokeno' }).el;
       root.appendChild(analyticsElement);
 
-      Initialization.initializeFramework(root, searchInterfaceOptions, () => {
+      await Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      }).then(() => {
-        const actionHistory = localStorage.getItem(key);
-        expect(actionHistory).not.toBeNull();
-        expect(JSON.parse(actionHistory)[0].name).toEqual('Query');
-        done();
       });
+
+      const actionHistory = localStorage.getItem(key);
+      expect(actionHistory).not.toBeNull();
+      expect(JSON.parse(actionHistory)[0].name).toEqual('Query');
     });
 
     describe('when initializing recommendation interface', () => {
