@@ -27,8 +27,12 @@ export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
     let cmp: SearchInterface;
 
-    beforeEach(() => {
+    function initSearchInterface() {
       cmp = new SearchInterface(document.createElement('div'));
+    }
+
+    beforeEach(() => {
+      initSearchInterface();
     });
 
     afterEach(() => {
@@ -61,6 +65,23 @@ export function SearchInterfaceTest() {
 
     it('should set the root as itself', () => {
       expect(cmp.root).toBe(cmp.element, 'Not an element');
+    });
+
+    it(`when analytics is disabled, it clears the action history`, () => {
+      const key = '__coveo.analytics.history';
+      localStorage.setItem(key, 'a');
+
+      initSearchInterface();
+
+      expect(localStorage.getItem(key)).toBeFalsy();
+    });
+
+    it(`when analytics is disabled, setting action history does not store anything in localStorage`, () => {
+      localStorage.clear();
+      initSearchInterface();
+
+      cmp.actionHistory.setHistory(['a']);
+      expect(localStorage.getItem('__coveo.analytics.history')).toBeFalsy();
     });
 
     it('should allow to attach and detach component', () => {
@@ -113,6 +134,8 @@ export function SearchInterfaceTest() {
           className: 'CoveoAnalytics',
           'data-token': 'el-tokeno'
         }).el;
+
+        searchInterfaceDiv.appendChild(analyticsDiv);
       });
 
       afterEach(() => {
@@ -121,10 +144,16 @@ export function SearchInterfaceTest() {
       });
 
       it('should initialize if found inside the root', () => {
-        searchInterfaceDiv.appendChild(analyticsDiv);
-        analyticsDiv.setAttribute('data-token', 'el-tokeno');
         const searchInterface = new SearchInterface(searchInterfaceDiv);
         expect(searchInterface.usageAnalytics instanceof Coveo['LiveAnalyticsClient']).toBe(true);
+      });
+
+      it(`setting action history stores the value in localStorage`, () => {
+        localStorage.clear();
+        const searchInterface = new SearchInterface(searchInterfaceDiv);
+        searchInterface.actionHistory.setHistory(['a']);
+
+        expect(localStorage.getItem('__coveo.analytics.history')).toBeTruthy();
       });
     });
 
