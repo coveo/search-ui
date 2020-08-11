@@ -585,13 +585,19 @@ export function InitializationTest() {
       });
     });
 
-    it('will send action history on automatic query', done => {
-      localStorage.removeItem('__coveo.analytics.history');
-      expect(localStorage.getItem('__coveo.analytics.history')).toBeNull();
+    it('when analytics is active, it will send action history on automatic query', done => {
+      const key = '__coveo.analytics.history';
+
+      localStorage.removeItem(key);
+      expect(localStorage.getItem(key)).toBeNull();
+
+      const analyticsElement = $$('div', { className: 'CoveoAnalytics', 'data-token': 'el-tokeno' }).el;
+      root.appendChild(analyticsElement);
+
       Initialization.initializeFramework(root, searchInterfaceOptions, () => {
         return Initialization.initSearchInterface(root, searchInterfaceOptions);
       }).then(() => {
-        const actionHistory = localStorage.getItem('__coveo.analytics.history');
+        const actionHistory = localStorage.getItem(key);
         expect(actionHistory).not.toBeNull();
         expect(JSON.parse(actionHistory)[0].name).toEqual('Query');
         done();
