@@ -6,17 +6,26 @@ import { FakeResults } from '../Fake';
 import * as Mock from '../MockEnvironment';
 import { Simulate } from '../Simulate';
 import { ExecutionPlan } from '../../src/rest/Plan';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 
 export function QueryControllerTest() {
   describe('QueryController', () => {
     let test: Mock.IBasicComponentSetup<QueryController>;
+    let searchInterface: SearchInterface;
 
-    beforeEach(() => {
+    function initQueryController() {
       test = <Mock.IBasicComponentSetup<QueryController>>{};
       test.env = new Mock.MockEnvironmentBuilder().build();
-      test.cmp = new QueryController(test.env.root, {}, test.env.usageAnalytics, test.env.searchInterface);
+      test.cmp = new QueryController(test.env.root, {}, test.env.usageAnalytics, searchInterface);
       test.cmp.setEndpoint(test.env.searchEndpoint);
       test.cmp.element = test.env.root;
+    }
+
+    beforeEach(() => {
+      const env = new Mock.MockEnvironmentBuilder().build();
+      searchInterface = env.searchInterface;
+
+      initQueryController();
     });
 
     afterEach(() => {
@@ -399,8 +408,10 @@ export function QueryControllerTest() {
 
       beforeEach(() => {
         store = Simulate.analyticsStoreModule();
-        test.cmp.historyStore = store;
         spyOn(store, 'addElement');
+
+        searchInterface.actionHistory = store;
+        initQueryController();
       });
 
       afterEach(() => {
