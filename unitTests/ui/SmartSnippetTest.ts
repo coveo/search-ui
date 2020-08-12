@@ -106,8 +106,13 @@ export function SmartSnippetTest() {
     describe('with styling without a source', () => {
       beforeEach(async done => {
         instantiateSmartSnippet(true);
+        document.body.appendChild(test.env.root);
         await triggerQuerySuccess(false);
         done();
+      });
+
+      afterEach(() => {
+        test.env.root.remove();
       });
 
       it('should render the style', () => {
@@ -119,6 +124,11 @@ export function SmartSnippetTest() {
     describe('without styling', () => {
       beforeEach(() => {
         instantiateSmartSnippet(false);
+        document.body.appendChild(test.env.root);
+      });
+
+      afterEach(() => {
+        test.env.root.remove();
       });
 
       it("doesn't have the has-answer class", () => {
