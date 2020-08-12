@@ -472,6 +472,16 @@ export function FacetTest() {
         );
       });
 
+      it('when numberOfValues is 0, it does not hide the facet', () => {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@field',
+          numberOfValues: 0
+        });
+
+        Simulate.query(test.env);
+        expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
+      });
+
       it(`when a query is successful and "keepDisplayedValuesNextTime" is false
       the number of value should update`, () => {
         test.cmp.numberOfValues = 13;
