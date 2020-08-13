@@ -95,7 +95,7 @@ export function AnalyticsEndpointTest() {
       expect(endpoint.getCurrentVisitId()).toBeUndefined();
       expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
       expect(jasmine.Ajax.requests.mostRecent().requestHeaders['Authorization']).toBe('Bearer token');
-      expect(jasmine.Ajax.requests.mostRecent().requestHeaders['Content-Type']).toBe('application/json; charset="UTF-8"');
+      expect(jasmine.Ajax.requests.mostRecent().requestHeaders['Content-Type']).toBe('application/json; charset=UTF-8');
       expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params)[0]['actionCause']).toBe(fakeSearchEvent.actionCause);
       expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params)[0]['queryPipeline']).toBe(fakeSearchEvent.queryPipeline);
       jasmine.Ajax.requests.mostRecent().respondWith({

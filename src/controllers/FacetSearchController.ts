@@ -48,7 +48,7 @@ export class FacetSearchController {
     const request: IFacetSearchRequest = {
       field: this.facet.fieldName,
       numberOfValues: this.facet.options.numberOfValues,
-      ignoreValues: this.facet.values.allValues,
+      ignoreValues: this.facet.values.activeValues.map(value => value.value),
       captions: this.captions,
       searchContext: this.facet.queryController.getLastQuery(),
       query: `${optionalLeadingWildcard}${terms}*`

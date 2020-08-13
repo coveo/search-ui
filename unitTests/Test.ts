@@ -228,6 +228,9 @@ HiddenQueryTest();
 import { HierarchicalFacetTest } from './ui/HierarchicalFacetTest';
 HierarchicalFacetTest();
 
+import { HierarchicalFacetSearchControllerTest } from './controllers/HierarchicalFacetSearchControllerTest';
+HierarchicalFacetSearchControllerTest();
+
 import { IconTest } from './ui/IconTest';
 IconTest();
 

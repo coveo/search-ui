@@ -8,6 +8,7 @@ import { DynamicFacetSearchValueRenderer } from './DynamicFacetSearchValueRender
 import { IComboboxValue } from '../Combobox/ComboboxValues';
 import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 import { IDynamicFacet } from '../DynamicFacet/IDynamicFacet';
+import { FacetUtils } from '../Facet/FacetUtils';
 
 export class DynamicFacetSearch {
   public element: HTMLElement;
@@ -35,12 +36,17 @@ export class DynamicFacetSearch {
     return this.facetSearchController.search(terms);
   }
 
+  private getDisplayValue(value: string) {
+    return FacetUtils.getDisplayValueFromValueCaption(value, this.facet.options.field as string, this.facet.options.valueCaption);
+  }
+
   private createValuesFromResponse(response: IFacetSearchResponse): IComboboxValue[] {
     return response.values.map((value, index) => {
       const facetValue = new DynamicFacetValue(
         {
           value: value.rawValue,
-          displayValue: value.displayValue,
+          // TODO: remove when https://coveord.atlassian.net/browse/SEARCHAPI-4958 is fixed
+          displayValue: this.getDisplayValue(value.displayValue),
           numberOfResults: value.count,
           state: FacetValueState.idle,
           position: index + 1

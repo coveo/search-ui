@@ -35,7 +35,7 @@ export interface IEndpointCallParameters {
   requestData: IStringMap<any>;
   /**
    * Request data type.<br/>
-   * eg: "application/json", "application/x-www-form-urlencoded; charset=\"UTF-8\""
+   * eg: "application/json", "application/x-www-form-urlencoded; charset=UTF-8"
    */
   requestDataType?: string;
   /**
@@ -244,7 +244,7 @@ export class EndpointCaller implements IEndpointCaller {
       url: params.url,
       queryString: params.errorsAsSuccess ? params.queryString.concat(['errorsAsSuccess=1']) : params.queryString,
       requestData: params.requestData,
-      requestDataType: params.requestDataType || 'application/x-www-form-urlencoded; charset="UTF-8"',
+      requestDataType: params.requestDataType || 'application/x-www-form-urlencoded; charset=UTF-8',
       begun: new Date(),
       method: params.method
     };
@@ -542,9 +542,9 @@ export class EndpointCaller implements IEndpointCaller {
     }
 
     if (requestInfo.requestDataType.indexOf('application/json') === 0) {
-      headers['Content-Type'] = 'application/json; charset="UTF-8"';
+      headers['Content-Type'] = 'application/json; charset=UTF-8';
     } else {
-      headers['Content-Type'] = 'application/x-www-form-urlencoded; charset="UTF-8"';
+      headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     }
 
     return headers;

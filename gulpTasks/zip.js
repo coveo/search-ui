@@ -3,16 +3,18 @@
 const gulp = require('gulp');
 const zip = require('gulp-zip');
 
-gulp.task('zipForGitReleases', () => {
+function zipForGitReleases() {
   return gulp
     .src('bin/**/*')
     .pipe(zip('search-ui.zip'))
     .pipe(gulp.dest('./'));
-});
+}
 
-gulp.task('zipForVeracode', () => {
+function zipForVeracode() {
   return gulp
     .src(['src/**/*', 'yarn.lock', 'package.json'])
     .pipe(zip('veracode.zip'))
     .pipe(gulp.dest('./'));
-});
+}
+
+module.exports = { zipForGitReleases, zipForVeracode };

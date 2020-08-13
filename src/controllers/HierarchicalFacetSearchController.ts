@@ -1,23 +1,13 @@
-import { IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
+import { IDynamicHierarchicalFacet } from '../ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 import { FacetSearchType, IFacetSearchRequest } from '../rest/Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from '../rest/Facet/FacetSearchResponse';
 import { flatten } from 'underscore';
-
-type Path = string[];
 
 export class HierarchicalFacetSearchController {
   constructor(private facet: IDynamicHierarchicalFacet) {}
 
   private get ignoredPaths() {
-    return this.flattenPaths(this.facet.values.allFacetValues.map(value => this.getAllPaths(value)));
-  }
-
-  private getAllPaths(value: IDynamicHierarchicalFacetValue): Path[] {
-    return [value.path, ...this.flattenPaths(value.children.map(child => this.getAllPaths(child)))];
-  }
-
-  private flattenPaths(value: Path[][]): Path[] {
-    return flatten(value, true);
+    return [flatten(this.facet.values.selectedPath, true)];
   }
 
   public search(terms?: string): Promise<IFacetSearchResponse> {

@@ -681,5 +681,25 @@ export function CategoryFacetTest() {
         expect(dependentFacet.changeActivePath).toHaveBeenCalledTimes(1);
       });
     });
+
+    it(`when the displaySearchOnTop option is false
+    should display the search after the result`, () => {
+      options.enableFacetSearch = true;
+      options.displaySearchOnTop = false;
+      initializeComponent();
+      Simulate.query(test.env, simulateQueryData);
+
+      expect($$(test.cmp.element.children[2] as HTMLElement).hasClass('coveo-category-facet-search-container')).toBe(true);
+    });
+
+    it(`when the displaySearchOnTop option is true
+    should display the search before the result`, () => {
+      options.enableFacetSearch = true;
+      options.displaySearchOnTop = true;
+      initializeComponent();
+      Simulate.query(test.env, simulateQueryData);
+
+      expect($$(test.cmp.element.children[1] as HTMLElement).hasClass('coveo-category-facet-search-container')).toBe(true);
+    });
   });
 }

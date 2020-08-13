@@ -38,12 +38,17 @@ export class DynamicHierarchicalFacetSearch {
     return this.hierarchicalFacetSearchController.search(terms);
   }
 
+  private getDisplayValue(value: string) {
+    return this.facet.options.valueCaption[value] || value;
+  }
+
   private createValuesFromResponse(response: IFacetSearchResponse): IComboboxValue[] {
     return response.values.map(value => {
       const facetValue = new DynamicHierarchicalFacetSearchValue(
         {
           fullPath: [...value.path, value.rawValue],
-          displayValue: value.displayValue,
+          // TODO: remove when https://coveord.atlassian.net/browse/SEARCHAPI-4958 is fixed
+          displayValue: this.getDisplayValue(value.displayValue),
           numberOfResults: value.count
         },
         this.facet

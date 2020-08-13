@@ -6,12 +6,18 @@
   padding: 0 $facet-value-padding;
   height: 32px;
   line-height: 30px;
+  margin: 5px 0;
   .coveo-facet-search {
     margin: 0;
   }
 }
 
-.CoveoCategoryFacet:not(.coveo-category-facet-searching) .coveo-category-facet-search-container {
+.coveo-category-facet-search-container + .coveo-category-facet-values {
+  margin-top: 0;
+}
+
+.CoveoCategoryFacet:not(.coveo-category-facet-searching)
+  .coveo-category-facet-search-container:not(.coveo-category-facet-search-without-button) {
   outline: none;
 
   &:hover,
@@ -43,7 +49,8 @@
   }
 }
 
-.coveo-category-facet-searching {
+.coveo-category-facet-searching,
+.coveo-category-facet-search-without-button {
   .coveo-category-facet-search-placeholder {
     display: none;
   }

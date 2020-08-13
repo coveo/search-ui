@@ -24,7 +24,7 @@ export class CategoryFacetSearch implements IFacetSearch {
 
   private numberOfValuesToFetch: number;
 
-  constructor(private categoryFacet: CategoryFacet) {
+  constructor(private categoryFacet: CategoryFacet, private displayButton = true) {
     this.facetSearchElement = new FacetSearchElement(this);
     this.displayNewValues = debounce(this.getDisplayNewValuesFunction(), this.categoryFacet.options.facetSearchDelay);
     this.categoryFacet.root.addEventListener('click', (e: MouseEvent) => this.handleClickElsewhere(e));
@@ -33,6 +33,10 @@ export class CategoryFacetSearch implements IFacetSearch {
 
   public get facetType() {
     return CategoryFacet.ID;
+  }
+
+  public get facetTitle() {
+    return this.categoryFacet.options.title || this.categoryFacet.options.field.toString();
   }
 
   public setExpandedFacetSearchAccessibilityAttributes(searchResultsElements: HTMLElement) {
@@ -48,23 +52,26 @@ export class CategoryFacetSearch implements IFacetSearch {
       className: 'coveo-category-facet-search-container',
       role: 'button'
     });
+    this.container.toggleClass('coveo-category-facet-search-without-button', !this.displayButton);
 
-    const title = this.categoryFacet.options.title || this.categoryFacet.options.field;
+    this.displayButton && this.buildButton();
 
+    this.container.append(this.facetSearchElement.build());
+    $$(this.facetSearchElement.search).toggleClass('without-animation', !this.displayButton);
+    return this.container;
+  }
+
+  private buildButton() {
     new AccessibleButton()
       .withElement(this.container)
       .withSelectAction(() => {
         $$(this.categoryFacet.element).addClass('coveo-category-facet-searching');
         this.focus();
       })
-      .withLabel(l('SearchFacetResults', title))
+      .withLabel(l('SearchFacetResults', this.facetTitle))
       .build();
 
-    const search = this.facetSearchElement.build();
-    const searchPlaceholder = this.buildfacetSearchPlaceholder();
-    this.container.append(search);
-    this.container.append(searchPlaceholder.el);
-    return this.container;
+    this.buildfacetSearchPlaceholder();
   }
 
   public focus() {
@@ -145,7 +152,7 @@ export class CategoryFacetSearch implements IFacetSearch {
 
     placeholder.append(icon.el);
     placeholder.append(label.el);
-    return placeholder;
+    this.container.append(placeholder.el);
   }
 
   private getDisplayNewValuesFunction() {

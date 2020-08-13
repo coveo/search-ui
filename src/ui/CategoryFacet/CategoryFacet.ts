@@ -66,6 +66,8 @@ export interface ICategoryFacetOptions extends IResponsiveComponentOptions, IDep
   maximumDepth?: number;
   valueCaption?: IStringMap<string>;
   dependsOn?: string;
+  displaySearchOnTop?: boolean;
+  displaySearchButton?: boolean;
 }
 
 export type CategoryValueDescriptor = {
@@ -306,6 +308,18 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       },
       { depend: 'dependsOn', section: 'CommonOptions' }
     ),
+    /**
+     * Whether to display the facet search widget above the facet values instead of below them.
+     *
+     * @availablesince [July 2020 Release (v2.9373)](https://docs.coveo.com/3293/)
+     */
+    displaySearchOnTop: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Whether to display the facet search widget as a button instead of a search bar.
+     *
+     * @availablesince [July 2020 Release (v2.9373)](https://docs.coveo.com/3293/)
+     */
+    displaySearchButton: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     ...ResponsiveFacetOptions
   };
 
@@ -396,7 +410,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
       return this.logDisabledFacetSearchWarning();
     }
 
-    this.categoryFacetSearch = new CategoryFacetSearch(this);
+    this.categoryFacetSearch = new CategoryFacetSearch(this, this.options.displaySearchButton);
   }
 
   private logDisabledFacetSearchWarning() {
@@ -474,7 +488,9 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
     this.renderValues(categoryFacetResult, numberOfRequestedValues);
     if (this.isFacetSearchAvailable) {
       const facetSearch = this.categoryFacetSearch.build();
-      $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
+      this.options.displaySearchOnTop
+        ? $$(facetSearch).insertBefore(this.categoryValueRoot.listRoot.el)
+        : $$(facetSearch).insertAfter(this.categoryValueRoot.listRoot.el);
     }
 
     this.moreLessContainer = $$('div', { className: 'coveo-category-facet-more-less-container' });
