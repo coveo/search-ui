@@ -128,12 +128,6 @@
     padding: 6px 8px 8px 8px;
     overflow: hidden;
     font-size: 12px;
-    border: none;
-
-    @at-root .coveo-user-feedback-banner-label {
-      float: left;
-      padding: 0;
-    }
 
     @at-root .coveo-user-feedback-banner-buttons {
       display: flex;
