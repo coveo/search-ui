@@ -27,12 +27,8 @@ export function SearchInterfaceTest() {
   describe('SearchInterface', () => {
     let cmp: SearchInterface;
 
-    function initSearchInterface() {
-      cmp = new SearchInterface(document.createElement('div'));
-    }
-
     beforeEach(() => {
-      initSearchInterface();
+      cmp = new SearchInterface(document.createElement('div'));
     });
 
     afterEach(() => {
