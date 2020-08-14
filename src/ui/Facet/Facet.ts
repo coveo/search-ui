@@ -1358,7 +1358,6 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
     $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-    $$(this.element).toggleClass('coveo-hidden', !this.getDisplayedFacetValues().length);
     $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
   }
 
