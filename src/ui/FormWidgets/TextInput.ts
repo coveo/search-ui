@@ -1,7 +1,9 @@
 import { exportGlobally } from '../../GlobalExports';
+import { SVGIcons } from '../../utils/SVGIcons';
 import { $$, Dom } from '../../utils/Dom';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { IFormWidget, IFormWidgetSettable } from './FormWidgets';
+import { SVGDom } from '../../utils/SVGDom';
 
 export interface ITextInputOptions {
   /**
@@ -33,6 +35,12 @@ export interface ITextInputOptions {
    * A custom aria-label attribute to add to the `TextInput`'s HTML element.
    */
   ariaLabel?: string;
+  /**
+   * The name of an icon to display inside the input at its beginning.
+   *
+   * **Default:** `undefined`
+   */
+  icon?: string;
 }
 
 const defaultOptions: ITextInputOptions = {
@@ -48,6 +56,7 @@ const defaultOptions: ITextInputOptions = {
 export class TextInput implements IFormWidget, IFormWidgetSettable {
   private element: HTMLElement;
   private input: Dom;
+  private icon: Dom;
   private lastQueryText: string = '';
 
   static doExport() {
@@ -73,6 +82,7 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
     };
 
     this.buildContent();
+    this.buildIcon();
   }
 
   /**
@@ -134,7 +144,7 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
 
   private buildContent() {
     this.element = $$('div', { className: this.options.className }).el;
-    this.input = $$('input', { type: 'text' });
+    this.input = $$('input', { type: 'text', autocomplete: 'off' });
 
     this.options.isRequired && this.input.setAttribute('required', 'true');
     this.options.ariaLabel && this.input.setAttribute('aria-label', this.options.ariaLabel);
@@ -143,6 +153,17 @@ export class TextInput implements IFormWidget, IFormWidgetSettable {
 
     this.element.appendChild(this.input.el);
     this.name && this.createLabelOrPlaceholder();
+  }
+
+  private buildIcon() {
+    if (!this.options.icon) {
+      return;
+    }
+    const iconClassName = `${this.options.className}-icon`;
+    this.icon = $$('span', { className: iconClassName });
+    this.icon.setHtml(SVGIcons.icons[this.options.icon]);
+    SVGDom.addClassToSVGInContainer(this.icon.el, `${iconClassName}-svg`);
+    $$(this.element).prepend(this.icon.el);
   }
 
   private addEventListeners() {

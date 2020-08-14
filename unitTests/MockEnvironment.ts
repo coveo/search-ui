@@ -91,6 +91,11 @@ export class MockEnvironmentBuilder {
     return this;
   }
 
+  public withSearchInterface(searchInterface: SearchInterface) {
+    this.searchInterface = searchInterface ? searchInterface : this.searchInterface;
+    return this;
+  }
+
   public build(): IMockEnvironment {
     if (this.built) {
       return this.getBindings();
@@ -186,9 +191,16 @@ export function mock<T>(contructorFunc, name = 'mock'): T {
 
 export function mockWindow(): Window {
   const mockWindow = <any>mock(window);
+
+  mockWindow.history = {
+    pushState: jasmine.createSpy('pushState')
+  };
+
   mockWindow.location = <Location>{
     href: '',
-    hash: ''
+    hash: '',
+    pathname: '',
+    search: ''
   };
   mockWindow.location.assign = mockWindow.location.replace = (newHref: string) => {
     newHref = newHref || '';
@@ -212,7 +224,6 @@ export function mockWindow(): Window {
   mockWindow.removeEventListener = jasmine.createSpy('removeEventListener');
   mockWindow.dispatchEvent = jasmine.createSpy('dispatchEvent');
   mockWindow.localStorage = mock<Storage>(localStorage);
-
   return <Window>mockWindow;
 }
 
@@ -232,8 +243,18 @@ export function mockSearchInterface(): SearchInterface {
   m.getBindings = () => {
     return new MockEnvironmentBuilder().build() as any;
   };
+  mockComponentRegistration(m);
   m.ariaLive = mockAriaLive();
   return m;
+}
+
+function mockComponentRegistration(searchInterface: SearchInterface) {
+  const attachedComponents: { [type: string]: BaseComponent[] } = {};
+
+  (searchInterface.attachComponent as jasmine.Spy).and.callFake((type: string, component: BaseComponent) => {
+    attachedComponents[type] = attachedComponents[type] ? [...attachedComponents[type], component] : [component];
+  });
+  (searchInterface.getComponents as jasmine.Spy).and.callFake((type: string) => attachedComponents[type] || []);
 }
 
 function mockAriaLive(): IAriaLive {

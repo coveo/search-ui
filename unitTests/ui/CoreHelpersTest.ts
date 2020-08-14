@@ -195,10 +195,26 @@ export function CoreHelperTest() {
       });
     });
 
-    it('number should work correctly', () => {
-      expect(TemplateHelpers.getHelper('number')(1.3993, 'c1')).toEqual('$1.4');
-      expect(TemplateHelpers.getHelper('number')(1.3993, 'n2')).toEqual('1.40');
-      expect(TemplateHelpers.getHelper('number')('345')).toEqual('345');
+    describe('number', () => {
+      it(`when the format passed as a string
+      should return the number formatted`, () => {
+        expect(TemplateHelpers.getHelper('number')(1.3993, 'n2')).toEqual('1.40');
+      });
+
+      it(`when the format inside an object
+      should return the number formatted`, () => {
+        expect(TemplateHelpers.getHelper('number')(1.3993, { format: 'n2' })).toEqual('1.40');
+      });
+
+      it(`when no option is passed
+      should return the number not formatted`, () => {
+        expect(TemplateHelpers.getHelper('number')('345')).toEqual('345');
+      });
+
+      it(`when an empty object is passed as an option
+      should return the number not formatted`, () => {
+        expect(TemplateHelpers.getHelper('number')('345', {})).toEqual('345');
+      });
     });
 
     describe('with date and time related helpers', () => {

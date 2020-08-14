@@ -1,7 +1,7 @@
 /// <reference path="HierarchicalFacet.ts" />
 
 import { FacetValuesList } from '../Facet/FacetValuesList';
-import { FacetValue } from '../Facet/FacetValues';
+import { FacetValue } from '../Facet/FacetValue';
 import { HierarchicalFacet, IValueHierarchy } from './HierarchicalFacet';
 import { IFacetValueElementKlass } from '../Facet/FacetValueElement';
 import * as _ from 'underscore';

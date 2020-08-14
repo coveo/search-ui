@@ -49,8 +49,18 @@ export const AccessibilityFacet = () => {
 
       it('settings should be accessible', async done => {
         facetElement.find('.coveo-facet-header-settings').click();
-        const axeResults = await axe.run(getRoot());
+        const axeResults = await axe.run(await waitUntilSelectorIsPresent(getRoot(), '.coveo-facet-settings-popup'));
         expect(axeResults).toBeAccessible();
+        done();
+      });
+
+      it('disabled settings items should have good contrast', async done => {
+        facetElement.find('.coveo-facet-header-settings').click();
+        const settingsItem = await waitUntilSelectorIsPresent<HTMLElement>(
+          getRoot(),
+          '.coveo-facet-settings-disabled .coveo-facet-settings-item'
+        );
+        expect(ContrastChecker.getContrastWithBackground(settingsItem)).toBeGreaterThan(ContrastChecker.MinimumHighContrastRatio);
         done();
       });
 

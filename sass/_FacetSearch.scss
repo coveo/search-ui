@@ -1,7 +1,11 @@
 @import 'Variables';
 @import 'FacetValues';
+@import 'FacetVariables';
+
 .coveo-facet-search-results {
   position: absolute;
+  left: $facet-value-padding;
+  right: $facet-value-padding;
   @include defaultRoundedBorder();
   background-color: white;
   list-style: none;
@@ -38,6 +42,12 @@
   }
   .coveo-facet-value-label {
     padding-right: 15px;
+  }
+  .CoveoFacet & {
+    margin-top: -1px;
+  }
+  .CoveoCategoryFacet & {
+    line-height: normal;
   }
 }
 
@@ -87,7 +97,7 @@
     margin-right: 200px;
   }
   100% {
-    margin-right: 20px;
+    margin-right: $facet-value-padding;
   }
 }
 
@@ -96,9 +106,12 @@
   position: relative;
   background: white;
   display: none;
-  margin: 2px 20px 1px;
+  margin: 2px $facet-value-padding 1px;
   padding: 4px;
-  @include animation(grow 0.3s linear);
+
+  &:not(.without-animation) {
+    @include animation(grow 0.3s linear);
+  }
 }
 
 .coveo-facet-searching {

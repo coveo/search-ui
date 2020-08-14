@@ -3,7 +3,7 @@ import { IFieldOption } from '../Base/IComponentOptions';
 import { IStringMap } from '../../rest/GenericParam';
 import { Component } from '../Base/Component';
 import { IAutoLayoutAdjustableInsideFacetColumn } from '../SearchInterface/FacetColumnAutoLayoutAdjustment';
-import { DependsOnManager } from '../../utils/DependsOnManager';
+import { DependsOnManager, IDependsOnCompatibleFacetOptions } from '../../utils/DependsOnManager';
 import { DynamicFacetHeader } from '../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 import { DynamicHierarchicalFacetQueryController } from '../../controllers/DynamicHierarchicalFacetQueryController';
 import { FacetType } from '../../rest/Facet/FacetRequest';
@@ -14,8 +14,7 @@ import { IDynamicManagerCompatibleFacet } from '../DynamicFacetManager/DynamicFa
 
 export type HierarchicalFacetSortCriteria = 'alphanumeric' | 'occurrences';
 
-export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOptions {
-  id?: string;
+export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOptions, IDependsOnCompatibleFacetOptions {
   field: IFieldOption;
   title?: string;
   enableCollapse?: boolean;
@@ -25,9 +24,9 @@ export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOp
   sortCriteria?: HierarchicalFacetSortCriteria;
   injectionDepth?: number;
   enableMoreLess?: boolean;
+  enableFacetSearch?: boolean;
   delimitingCharacter?: string;
   valueCaption?: IStringMap<string>;
-  dependsOn?: string;
   includeInBreadcrumb?: boolean;
   filterFacetCount?: boolean;
   clearLabel?: string;
@@ -60,6 +59,12 @@ export interface IDynamicHierarchicalFacet extends Component, IDynamicManagerCom
   logAnalyticsEvent(eventName: IAnalyticsActionCause): void;
   enableFreezeFacetOrderFlag(): void;
   enablePreventAutoSelectionFlag(): void;
+}
+
+export interface IDynamicHierarchicalFacetSearchValueProperties {
+  fullPath: string[];
+  displayValue: string;
+  numberOfResults: number;
 }
 
 export interface IDynamicHierarchicalFacetValueProperties {

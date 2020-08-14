@@ -170,15 +170,30 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-query-summary-no-results-string')).toBeNull();
       });
 
-      it(`when enableCancelLastAction is set to true,
-          it should display the cancel last action link on no results`, () => {
-        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
-          enableCancelLastAction: true
+      describe('when enableCancelLastAction is set to true, on no results', () => {
+        function getCancelLastActionLink() {
+          return $$(test.cmp.element).find('.coveo-query-summary-cancel-last');
+        }
+
+        beforeEach(() => {
+          test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+            enableCancelLastAction: true
+          });
+
+          Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
         });
 
-        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+        it('should display the cancel last action link', () => {
+          expect(getCancelLastActionLink()).not.toBeNull();
+        });
 
-        expect($$(test.cmp.element).find('.coveo-query-summary-cancel-last')).not.toBeNull();
+        it('should give a tabindex to the cancel last action link', () => {
+          expect(getCancelLastActionLink().getAttribute('tabindex')).toEqual('0');
+        });
+
+        it('should give a role to the cancel last action link', () => {
+          expect(getCancelLastActionLink().getAttribute('role')).toEqual('button');
+        });
       });
 
       it(`when enableCancelLastAction is set to false,

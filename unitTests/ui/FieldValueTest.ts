@@ -5,14 +5,11 @@ import { IFieldValueOptions } from '../../src/ui/FieldValue/FieldValue';
 import { $$ } from '../../src/utils/Dom';
 import { TemplateHelpers } from '../../src/ui/Templates/TemplateHelpers';
 import { Facet } from '../../src/ui/Facet/Facet';
-import { FacetValues } from '../../src/ui/Facet/FacetValues';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
 import { IDateToStringOptions } from '../../src/utils/DateUtils';
 import { DateUtils } from '../../src/utils/DateUtils';
 import * as _ from 'underscore';
 import { l } from '../../src/Core';
-import { DynamicFacet } from '../../src/ui/DynamicFacet/DynamicFacet';
-import { DynamicFacetTestUtils } from './DynamicFacet/DynamicFacetTestUtils';
+import { IFieldValueCompatibleFacet } from '../../src/ui/FieldValue/IFieldValueCompatibleFacet';
 
 export function FieldValueTest() {
   describe('FieldValue', () => {
@@ -35,20 +32,35 @@ export function FieldValueTest() {
     function initializeFieldValueComponent(
       options: IFieldValueOptions,
       result = FakeResults.createFakeResult(),
-      facet?: Facet | DynamicFacet
+      ...facets: IFieldValueCompatibleFacet[]
     ) {
       result.raw.filetype = 'unknown';
       test = Mock.advancedResultComponentSetup<FieldValue>(FieldValue, result, <Mock.AdvancedComponentSetupOptions>{
         element: $$('span').el,
         cmpOptions: options,
         modifyBuilder: (builder: Mock.MockEnvironmentBuilder) => {
-          if (facet) {
-            builder.componentStateModel.get = () => [facet];
+          if (facets.length) {
+            builder.componentStateModel.get = () => facets;
             builder.queryStateModel.get = () => [];
+            facets.forEach(facet => builder.searchInterface.attachComponent((<typeof Facet>facet.constructor).ID, facet));
           }
           return builder;
         }
       });
+    }
+
+    function initializeFacet(options: IFieldValueCompatibleFacet['options']) {
+      const newFacet = Mock.mockComponent<IFieldValueCompatibleFacet>(Facet);
+
+      newFacet.isFieldValueCompatible = true;
+
+      newFacet.constructor['ID'] = Facet.ID;
+
+      newFacet.hasSelectedValue = () => true;
+
+      newFacet.options = options;
+
+      return newFacet;
     }
 
     describe('exposes options', () => {
@@ -266,23 +278,18 @@ export function FieldValueTest() {
     });
 
     describe('with a related facet', () => {
-      let facet: Facet;
+      let facet: IFieldValueCompatibleFacet;
 
       beforeEach(() => {
-        facet = Mock.mockComponent<Facet>(Facet);
-
-        facet.values = Mock.mock<FacetValues>(FacetValues);
-        facet.values.get = () => {
-          const value = Mock.mock<FacetValue>(FacetValue);
-          value.selected = true;
-          return value;
-        };
+        facet = initializeFacet({ field: '@string' });
       });
 
       describe('when translating standard field values', () => {
         beforeEach(() => {
           const fakeResult = FakeResults.createFakeResult();
           fakeResult.raw['objecttype'] = 'opportunityproduct';
+
+          facet = initializeFacet({ field: '@objecttype' });
 
           initializeFieldValueComponent({ field: '@objecttype' }, fakeResult, facet);
         });
@@ -296,54 +303,40 @@ export function FieldValueTest() {
         });
       });
 
-      it('should display the field value as clickable when its facet is enabled', () => {
-        facet.disabled = false;
-        initializeFieldValueComponent({ field: '@string' }, FakeResults.createFakeResult(), facet);
-        expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(true);
-      });
-
-      it('should not display the field value as clickable when its facet is disabled', () => {
-        facet.disabled = true;
-        initializeFieldValueComponent({ field: '@string' }, FakeResults.createFakeResult(), facet);
-        expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(false);
-      });
-    });
-
-    describe('with a related dynamic facet', () => {
-      let facet: DynamicFacet;
-
-      beforeEach(() => {
-        facet = DynamicFacetTestUtils.createFakeFacet();
-        facet.values.hasSelectedValue = () => true;
-      });
-
-      describe('when translating standard field values', () => {
+      describe('with a caption', () => {
+        const caption = 'blah';
         beforeEach(() => {
           const fakeResult = FakeResults.createFakeResult();
           fakeResult.raw['objecttype'] = 'opportunityproduct';
 
+          facet = initializeFacet({ field: '@objecttype' });
+          facet.getCaptionForStringValue = () => caption;
+
           initializeFieldValueComponent({ field: '@objecttype' }, fakeResult, facet);
         });
 
-        it('should use the translated value', () => {
-          expect(getText()).toBe(l('opportunityproduct'));
-        });
-
-        it('should use the translated value for the title', () => {
-          expect(getTitle()).toContain(l('opportunityproduct'));
+        it('with a caption, should use the caption', () => {
+          expect(getText()).toEqual(caption);
+          expect(getTitle()).toContain(caption);
         });
       });
 
       it('should display the field value as clickable when its facet is enabled', () => {
         facet.disabled = false;
         initializeFieldValueComponent({ field: '@string' }, FakeResults.createFakeResult(), facet);
-        expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(true);
+        expect(test.cmp.element.querySelector('.coveo-clickable')).not.toBeNull();
       });
 
       it('should not display the field value as clickable when its facet is disabled', () => {
         facet.disabled = true;
         initializeFieldValueComponent({ field: '@string' }, FakeResults.createFakeResult(), facet);
-        expect($$($$(test.cmp.element).find('span')).hasClass('coveo-clickable')).toBe(false);
+        expect(test.cmp.element.querySelector('.coveo-clickable')).toBeNull();
+      });
+
+      it('should not display the field value as clickable when its facet has a different field', () => {
+        facet.disabled = false;
+        initializeFieldValueComponent({ field: '@objecttype' }, FakeResults.createFakeResult(), facet);
+        expect(test.cmp.element.querySelector('.coveo-clickable')).toBeNull();
       });
     });
 

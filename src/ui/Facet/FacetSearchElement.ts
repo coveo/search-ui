@@ -4,12 +4,12 @@ import { SVGDom } from '../../utils/SVGDom';
 import { Component } from '../Base/Component';
 import { l } from '../../strings/Strings';
 import { EventsUtils } from '../../utils/EventsUtils';
-import { PopupUtils, PopupHorizontalAlignment, PopupVerticalAlignment } from '../../utils/PopupUtils';
 import { IFacetSearch } from './IFacetSearch';
 import { FacetSearchUserInputHandler } from './FacetSearchUserInputHandler';
 import { uniqueId } from 'underscore';
 import { ISearchDropdownNavigator, ISearchDropdownConfig } from './FacetSearchDropdownNavigation/DefaultSearchDropdownNavigator';
 import { SearchDropdownNavigatorFactory } from './FacetSearchDropdownNavigation/SearchDropdownNavigatorFactory';
+import { KEYBOARD } from '../../utils/KeyboardUtils';
 
 export class FacetSearchElement {
   public search: HTMLElement | undefined;
@@ -23,7 +23,6 @@ export class FacetSearchElement {
   public facetSearchUserInputHandler: FacetSearchUserInputHandler;
 
   private triggeredScroll = false;
-  private static FACET_SEARCH_PADDING = 40;
   private facetSearchId = uniqueId('coveo-facet-search-results');
   private searchDropdownNavigator: ISearchDropdownNavigator;
 
@@ -79,6 +78,11 @@ export class FacetSearchElement {
   private initSearchResults() {
     this.searchResults = $$('ul', { id: this.facetSearchId, className: 'coveo-facet-search-results', role: 'listbox' }).el;
     $$(this.searchResults).on('scroll', () => this.handleScrollEvent());
+    $$(this.searchResults).on('keyup', (e: KeyboardEvent) => {
+      if (e.which === KEYBOARD.ESCAPE) {
+        this.facetSearch.dismissSearchResults();
+      }
+    });
     $$(this.searchResults).hide();
   }
 
@@ -128,11 +132,10 @@ export class FacetSearchElement {
     });
   }
 
-  public positionSearchResults(root: HTMLElement, facetWidth: number, nextTo: HTMLElement) {
+  public positionSearchResults() {
     if (this.searchResults != null) {
-      root.appendChild(this.searchResults);
+      $$(this.searchResults).insertAfter(this.search);
       $$(this.searchResults).show();
-      this.searchResults.style.width = facetWidth - FacetSearchElement.FACET_SEARCH_PADDING + 'px';
 
       if ($$(this.searchResults).css('display') == 'none') {
         this.searchResults.style.display = '';
@@ -143,13 +146,11 @@ export class FacetSearchElement {
           this.searchResults.style.display = '';
         }
         EventsUtils.addPrefixedEvent(this.search, 'AnimationEnd', () => {
-          this.positionPopUp(nextTo, root);
           EventsUtils.removePrefixedEvent(this.search, 'AnimationEnd', this);
         });
-      } else {
-        this.positionPopUp(nextTo, root);
       }
     }
+    this.addAriaAttributes();
   }
 
   public setAsCurrentResult(toSet: Dom) {
@@ -252,17 +253,10 @@ export class FacetSearchElement {
       type: 'text',
       autocapitalize: 'off',
       autocorrect: 'off',
-      ariaLabel: l('Search'),
+      ariaLabel: l('SearchFacetResults', this.facetSearch.facetTitle),
       ariaHaspopup: 'true',
       ariaAutocomplete: 'list'
     }).el;
-  }
-
-  private positionPopUp(nextTo: HTMLElement, root: HTMLElement) {
-    PopupUtils.positionPopup(this.searchResults, nextTo, root, {
-      horizontal: PopupHorizontalAlignment.CENTER,
-      vertical: PopupVerticalAlignment.BOTTOM
-    });
   }
 
   private handleScrollEvent() {
@@ -281,6 +275,7 @@ export class FacetSearchElement {
     this.combobox.setAttribute('role', 'combobox');
     this.combobox.setAttribute('aria-owns', this.facetSearchId);
     this.input.setAttribute('aria-controls', this.facetSearchId);
+    this.input.setAttribute('aria-expanded', 'true');
     this.facetSearch.setExpandedFacetSearchAccessibilityAttributes(this.searchResults);
   }
 
@@ -293,6 +288,7 @@ export class FacetSearchElement {
     this.combobox.removeAttribute('aria-owns');
     this.input.removeAttribute('aria-controls');
     this.input.removeAttribute('aria-activedescendant');
+    this.input.setAttribute('aria-expanded', 'false');
     this.facetSearch.setCollapsedFacetSearchAccessibilityAttributes();
   }
 }

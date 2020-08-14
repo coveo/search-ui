@@ -106,7 +106,8 @@ export function QuerySuggestPreviewTest() {
         context: {
           'the first key': 'the first value',
           'the second key': 'the second value'
-        }
+        },
+        cq: 'some constant query'
       };
       setupQuerySuggestPreview();
       (test.cmp.queryController.getLastQuery as jasmine.Spy).and.returnValue(optionsToTest);
@@ -115,6 +116,15 @@ export function QuerySuggestPreviewTest() {
       for (let optionName of Object.keys(optionsToTest)) {
         expect(lastSearchQuery[optionName]).toEqual(optionsToTest[optionName]);
       }
+      done();
+    });
+
+    it('uses the suggestion text in its search', async done => {
+      setupQuerySuggestPreview();
+      const suggestionText = 'Hello, World!';
+      await triggerPopulateSearchResultPreviewsAndPassTime(suggestionText);
+      const lastSearchQuery = (test.cmp.queryController.getEndpoint().search as jasmine.Spy).calls.mostRecent().args[0] as IQuery;
+      expect(lastSearchQuery.q).toEqual(suggestionText);
       done();
     });
 

@@ -1,5 +1,5 @@
 import 'styling/_FieldTable';
-import { each } from 'underscore';
+import { each, uniqueId } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { IQueryResult } from '../../rest/QueryResult';
 import { l } from '../../strings/Strings';
@@ -97,8 +97,6 @@ export class FieldTable extends Component {
      */
     minimizedByDefault: ComponentOptions.buildBooleanOption({ depend: 'allowMinimization' })
   };
-
-  public isExpanded: boolean;
   private toggleButton: HTMLElement;
   private toggleCaption: HTMLElement;
   private toggleButtonSVGContainer: HTMLElement;
@@ -133,13 +131,22 @@ export class FieldTable extends Component {
     }
 
     if (this.isTogglable()) {
-      this.toggleContainer = $$('div', { className: 'coveo-field-table-toggle-container' }).el;
+      const className = 'coveo-field-table-toggle-container';
+      this.toggleContainer = $$('div', { className, id: uniqueId(className) }).el;
       this.buildToggle();
       $$(this.toggleContainer).insertBefore(this.element);
       this.toggleContainer.appendChild(this.element);
       this.toggleContainer.appendChild(this.toggleButtonInsideTable);
-    } else {
-      this.isExpanded = true;
+    }
+  }
+
+  public get isExpanded() {
+    return !this.toggleButton || this.toggleButton.getAttribute('aria-expanded') === 'true';
+  }
+
+  public set isExpanded(expanded: boolean) {
+    if (this.toggleButton) {
+      this.toggleButton.setAttribute('aria-expanded', expanded.toString());
     }
   }
 
@@ -149,10 +156,7 @@ export class FieldTable extends Component {
    * @param anim Specifies whether to show a sliding animation when toggling the display of the FieldTable.
    */
   public toggle(anim = false) {
-    if (this.isTogglable()) {
-      this.isExpanded = !this.isExpanded;
-      this.isExpanded ? this.expand(anim) : this.minimize(anim);
-    }
+    this.isExpanded ? this.minimize(anim) : this.expand(anim);
   }
 
   /**
@@ -204,7 +208,10 @@ export class FieldTable extends Component {
       className: 'coveo-field-table-toggle-caption'
     }).el;
 
-    this.toggleButton = $$('div', { className: 'coveo-field-table-toggle coveo-field-table-toggle-down' }).el;
+    this.toggleButton = $$('div', {
+      className: 'coveo-field-table-toggle coveo-field-table-toggle-down',
+      ariaControls: this.toggleContainer.id
+    }).el;
     this.toggleButtonSVGContainer = $$('span', null, SVGIcons.icons.arrowDown).el;
     SVGDom.addClassToSVGInContainer(this.toggleButtonSVGContainer, 'coveo-field-table-toggle-down-svg');
     this.toggleButton.appendChild(this.toggleCaption);
@@ -226,9 +233,7 @@ export class FieldTable extends Component {
       this.isExpanded = !QueryUtils.hasExcerpt(this.result);
     }
 
-    setTimeout(() => {
-      this.updateToggleHeight();
-    }); // Wait until toggleContainer.scrollHeight is computed.
+    requestAnimationFrame(() => this.updateToggleHeight());
 
     const toggleAction = () => this.toggle(true);
 
@@ -236,7 +241,7 @@ export class FieldTable extends Component {
       .withElement(this.toggleButton)
       .withSelectAction(() => toggleAction())
       .withOwner(this.bind)
-      .withLabel(l('Toggle'))
+      .withLabel(l('Details'))
       .build();
 
     $$(this.toggleButtonInsideTable).on('click', toggleAction);
@@ -246,17 +251,25 @@ export class FieldTable extends Component {
     if (!anim) {
       $$(this.toggleContainer).addClass('coveo-no-transition');
     }
+
     if (visible) {
       this.toggleContainer.style.display = 'block';
-      this.toggleContainer.style.height = this.toggleContainerHeight + 'px';
+      this.toggleContainer.style.height = this.containerHeight;
     } else {
-      this.toggleContainer.style.height = this.toggleContainerHeight + 'px';
       this.toggleContainer.style.height = '0';
     }
     if (!anim) {
       this.toggleContainer.offsetHeight; // Force reflow
       $$(this.toggleContainer).removeClass('coveo-no-transition');
     }
+  }
+
+  private get containerHeight() {
+    if (!this.toggleContainerHeight) {
+      this.updateToggleContainerHeight();
+    }
+
+    return this.toggleContainerHeight + 'px';
   }
 
   private updateToggleContainerHeight() {

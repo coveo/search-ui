@@ -13,6 +13,22 @@ export interface IAccessibleModalOptions {
   sizeMod: 'small' | 'normal' | 'big';
 }
 
+export interface IAccessibleModalOpenParameters {
+  content: HTMLElement;
+  validation: () => boolean;
+  origin: HTMLElement;
+}
+
+export interface IAccessibleModalOpenResultParameters extends IAccessibleModalOpenParameters {
+  result: IQueryResult;
+  options: IQuickViewHeaderOptions;
+  bindings: IComponentBindings;
+}
+
+export interface IAccessibleModalOpenNormalParameters extends IAccessibleModalOpenParameters {
+  title: HTMLElement;
+}
+
 export class AccessibleModal {
   private focusTrap: FocusTrap;
   private activeModal: Coveo.ModalBox.ModalBox;
@@ -41,7 +57,7 @@ export class AccessibleModal {
 
   constructor(
     private className: string,
-    private ownerBody: HTMLBodyElement,
+    private ownerElement: HTMLElement,
     private modalboxModule: Coveo.ModalBox.ModalBox = ModalBoxModule,
     options: Partial<IAccessibleModalOptions> = {}
   ) {
@@ -53,38 +69,37 @@ export class AccessibleModal {
     };
   }
 
-  public openResult(
-    result: IQueryResult,
-    options: IQuickViewHeaderOptions,
-    bindings: IComponentBindings,
-    content: HTMLElement,
-    validation: () => boolean
-  ) {
+  public openResult(parameters: IAccessibleModalOpenResultParameters) {
     if (this.isOpen) {
       return;
     }
-    this.openModalAndTrap(DomUtils.getQuickviewHeader(result, options, bindings).el, content, validation);
-    this.makeAccessible(options.title || result.title);
+    this.openModalAndTrap({
+      content: parameters.content,
+      validation: parameters.validation,
+      origin: parameters.origin,
+      title: DomUtils.getQuickviewHeader(parameters.result, parameters.options, parameters.bindings).el
+    });
+    this.makeAccessible(parameters.options.title || parameters.result.title);
   }
 
-  public open(title: HTMLElement, content: HTMLElement, validation: () => boolean) {
+  public open(parameters: IAccessibleModalOpenNormalParameters) {
     if (this.isOpen) {
       return;
     }
-    this.openModalAndTrap(title, content, validation);
+    this.openModalAndTrap(parameters);
     this.makeAccessible();
   }
 
-  private openModalAndTrap(title: HTMLElement, content: HTMLElement, validation: () => boolean) {
-    this.initiallyFocusedElement = document.activeElement as HTMLElement;
-    this.activeModal = this.modalboxModule.open(content, {
-      title,
+  private openModalAndTrap(parameters: IAccessibleModalOpenNormalParameters) {
+    this.initiallyFocusedElement = parameters.origin || (document.activeElement as HTMLElement);
+    this.activeModal = this.modalboxModule.open(parameters.content, {
+      title: parameters.title,
       className: this.className,
       validation: () => {
         this.onModalClose();
-        return validation();
+        return parameters.validation();
       },
-      body: this.ownerBody,
+      body: this.ownerElement,
       sizeMod: this.options.sizeMod,
       overlayClose: this.options.overlayClose
     });

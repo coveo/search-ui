@@ -1,8 +1,7 @@
-const gulp = require('gulp');
 const strings = require('../strings/strings');
 const stringValidations = require('../strings/stringsValidations');
 
-gulp.task('strings', [ 'fileTypes' ], function (done) {
+function buildStrings(cb) {
   const dict = strings.load('./bin/strings/filetypesNew.json');
   dict.merge(strings.load('./strings/strings.json', { module: 'Coveo' }));
 
@@ -31,10 +30,12 @@ gulp.task('strings', [ 'fileTypes' ], function (done) {
   dict.writeLanguageFile('./bin/js/cultures/tr.js', 'tr', './strings/cultures/globalize.culture.tr.js', false);
   dict.writeLanguageFile('./bin/js/cultures/zh-cn.js', 'zh-CN', './strings/cultures/globalize.culture.zh-CN.js', false);
   dict.writeLanguageFile('./bin/js/cultures/zh-tw.js', 'zh-TW', './strings/cultures/globalize.culture.zh-TW.js', false);
-  done();
-});
+  cb();
+}
 
-gulp.task('testString', function (done) {
+function testString(cb) {
   stringValidations.validate('./strings/strings.json');
-  done();
-});
+  cb();
+}
+
+module.exports = { buildStrings, testString };

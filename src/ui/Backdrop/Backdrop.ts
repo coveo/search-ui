@@ -11,6 +11,7 @@ import { IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
 import { IResultsComponentBindings } from '../Base/ResultsComponentBindings';
 import { IYouTubeThumbnailOptions, YouTubeThumbnail } from '../YouTube/YouTubeThumbnail';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IBackdropOptions {
   imageUrl?: string;
@@ -127,16 +128,21 @@ export class Backdrop extends Component {
         },
         <IResultsComponentBindings>this.getBindings(),
         this.result,
-        this.ModalBox
+        this.ModalBox,
+        this.element
       );
 
-      $$(this.element).on('click', (e: MouseEvent) => {
-        // Since the backdrop often contain a result link, we must make sure the click did no originate from one.
-        // Otherwise, we might end up opening 2 results at the same time
-        if (!$$(<HTMLElement>e.target).hasClass('CoveoResultLink')) {
-          thumbnailYouTube.openResultLink();
-        }
-      });
+      new AccessibleButton()
+        .withElement(this.element)
+        .withLabel(this.result.title)
+        .withSelectAction(e => {
+          // Since the backdrop often contain a result link, we must make sure the click did no originate from one.
+          // Otherwise, we might end up opening 2 results at the same time
+          if (!$$(<HTMLElement>e.target).hasClass('CoveoResultLink')) {
+            thumbnailYouTube.openResultLink();
+          }
+        })
+        .build();
     }
   }
 }

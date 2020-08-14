@@ -46,6 +46,19 @@ export function DynamicFacetBreadcrumbsTest() {
       expect(valueElements().length).toBe(mockFacetValues.length);
     });
 
+    it('should escape facet values to prevent XSS', () => {
+      const facetValueWithXSS = DynamicFacetTestUtils.createFakeFacetValue({
+        value: '<img src=x onerror=alert(1)>',
+        state: FacetValueState.selected
+      });
+
+      mockFacetValues = [facetValueWithXSS];
+      initializeComponent();
+
+      const [breadcrumb] = valueElements();
+      expect(breadcrumb.textContent).toBe('<img src=x onerror=alert(1)>');
+    });
+
     it('should not create a "collapsed breadcrumbs" element allowing to show more values', () => {
       expect(collapseElement()).toBeFalsy();
     });

@@ -136,7 +136,7 @@ export class Initialization {
    *
    * The framework tries to only include the needed fields from the index, for performance reasons.
    *
-   * @param componentId The id for the component (eg: CoveoFacet)
+   * @param componentId The id for the result template component (see [Result Templates](https://docs.coveo.com/en/413/)).
    * @param fields
    */
   public static registerComponentFields(componentId: string, fields: string[]) {

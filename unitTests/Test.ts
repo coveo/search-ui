@@ -27,6 +27,9 @@ CookieUtilsTest();
 import { ColorUtilsTest } from './utils/ColorUtilsTest';
 ColorUtilsTest();
 
+import { AnalyticsUtilsTest } from './utils/AnalyticsUtilsTest';
+AnalyticsUtilsTest();
+
 import { DomTests } from './utils/DomTest';
 DomTests();
 
@@ -224,6 +227,9 @@ HiddenQueryTest();
 
 import { HierarchicalFacetTest } from './ui/HierarchicalFacetTest';
 HierarchicalFacetTest();
+
+import { HierarchicalFacetSearchControllerTest } from './controllers/HierarchicalFacetSearchControllerTest';
+HierarchicalFacetSearchControllerTest();
 
 import { IconTest } from './ui/IconTest';
 IconTest();
@@ -824,3 +830,18 @@ AccessibleModalTest();
 
 import { SortDropdownTest } from './ui/SortDropdownTest';
 SortDropdownTest();
+
+import { ResultLayoutSelectorTest } from './ui/ResultLayoutSelectorTest';
+ResultLayoutSelectorTest();
+
+import { DynamicHierarchicalFacetSearchValueRendererTest } from './ui/DynamicHierarchicalFacetSearchValueRendererTest';
+DynamicHierarchicalFacetSearchValueRendererTest();
+
+import { ResponsiveFacetColumnTest } from './ui/ResponsiveFacetColumnTest';
+ResponsiveFacetColumnTest();
+
+import { ResponsiveDropdownModalContentTest } from './ui/ResponsiveComponents/ResponsiveDropdownModalContentTest';
+ResponsiveDropdownModalContentTest();
+
+import { FileTypesTest } from './ui/FileTypesTest';
+FileTypesTest();

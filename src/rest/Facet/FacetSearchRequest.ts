@@ -1,6 +1,20 @@
 import { IQuery } from '../Query';
 
 /**
+ * The facet types against which facet search is allowed.
+ */
+export enum FacetSearchType {
+  /**
+   * Search among specific (i.e., scalar) facet values (e.g., Alice Smith, Bob Jones, etc.).
+   */
+  specific = 'specific',
+  /**
+   * Search among hierarchical facet values (e.g., Electronics|Entertainment|Gaming Consoles;, Electronics|Computers|Laptops;, etc.).
+   */
+  hierarchical = 'hierarchical'
+}
+
+/**
  * A Search API facet search request.
  */
 export interface IFacetSearchRequest {
@@ -9,11 +23,23 @@ export interface IFacetSearchRequest {
    */
   field: string;
   /**
+   * The kind of facet values against which the search request is being made.
+   *
+   * **Default:** `specific`
+   */
+  type?: FacetSearchType;
+  /**
    * A list of index field values to filter out from the facet search results.
    *
    * **Example:** `["blue", "green"]`
    */
   ignoreValues?: String[];
+  /**
+   * A list of paths to filter out from the hierarchical facet search results.
+   *
+   * **Example:** `[["Electronics", "Entertainment", "Gaming Consoles"],["Appliances", "Kitchen"]]`
+   */
+  ignorePaths?: String[][];
   /**
    * The maximum number of facet values to fetch.
    *
@@ -41,4 +67,30 @@ export interface IFacetSearchRequest {
    * See the [query]{@link IQuery} documentation.
    */
   searchContext?: IQuery;
+  /**
+   * The character to use to split field values into a hierarchical sequence.
+   *
+   * **Example:**
+   *
+   * For a multi-value field containing the following values:
+   * ```
+   * c; c>folder2; c>folder2>folder3;
+   * ```
+   * The delimiting character is `>`.
+   *
+   * For a hierarchical field containing the following values:
+   * ```
+   * c;folder2;folder3;
+   * ```
+   * The delimiting character is `;`.
+   *
+   * **Default:** `;`
+   */
+  delimitingCharacter?: string;
+  /**
+   * The base path shared by all values for the facet.
+   *
+   * **Note:** This parameter has no effect unless the facet `type` is `hierarchical`.
+   */
+  basePath?: string[];
 }

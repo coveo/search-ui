@@ -78,7 +78,8 @@ export class YouTubeThumbnail extends Component {
     public options?: IYouTubeThumbnailOptions,
     public bindings?: IResultsComponentBindings,
     public result?: IQueryResult,
-    ModalBox = ModalBoxModule
+    ModalBox = ModalBoxModule,
+    private origin?: HTMLElement
   ) {
     super(element, YouTubeThumbnail.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, YouTubeThumbnail, options);
@@ -86,6 +87,10 @@ export class YouTubeThumbnail extends Component {
     this.resultLink = $$('a', {
       className: Component.computeCssClassName(ResultLink)
     });
+
+    if (!origin) {
+      this.origin = this.resultLink.el;
+    }
 
     const thumbnailDiv = $$('div', {
       className: 'coveo-youtube-thumbnail-container'
@@ -123,8 +128,7 @@ export class YouTubeThumbnail extends Component {
     Initialization.automaticallyCreateComponentsInsideResult(element, result, {
       ResultLink: this.options.embed ? { onClick: () => this.openYoutubeIframe() } : null
     });
-
-    this.modalbox = new AccessibleModal('coveo-youtube-player', element.ownerDocument.body as HTMLBodyElement, ModalBox, {
+    this.modalbox = new AccessibleModal('coveo-youtube-player', this.searchInterface.options.modalContainer, ModalBox, {
       overlayClose: true
     });
   }
@@ -153,7 +157,14 @@ export class YouTubeThumbnail extends Component {
 
     div.append(iframe.el);
 
-    this.modalbox.openResult(this.result, { showDate: true, title: this.result.title }, this.bindings, div.el, () => true);
+    this.modalbox.openResult({
+      result: this.result,
+      options: { showDate: true, title: this.result.title },
+      bindings: this.bindings,
+      content: div.el,
+      validation: () => true,
+      origin: this.origin
+    });
 
     $$($$(this.modalbox.wrapper).find('.coveo-quickview-close-button')).on('click', () => {
       this.modalbox.close();

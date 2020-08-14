@@ -5,9 +5,11 @@ import { CategoryFacetSearch } from '../../../src/ui/CategoryFacet/CategoryFacet
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import _ = require('underscore');
 import { IGroupByValue } from '../../../src/rest/GroupByValue';
-import { $$ } from '../../../src/Core';
+import { $$, l } from '../../../src/Core';
 import { KEYBOARD } from '../../../src/utils/KeyboardUtils';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import * as Globalize from 'globalize';
+import { Simulate } from '../../Simulate';
 
 export function CategoryFacetSearchTest() {
   describe('CategoryFacetSearch', () => {
@@ -92,6 +94,11 @@ export function CategoryFacetSearchTest() {
     it("builds a container with the category facet's title in the label", () => {
       const container = categoryFacetSearch.build();
       expect(container.getAttribute('aria-label')).toContain(categoryFacetTitle);
+    });
+
+    it("builds an input with the category facet's title in the label", () => {
+      const input = categoryFacetSearch.build().find('input');
+      expect(input.getAttribute('aria-label')).toContain(categoryFacetTitle);
     });
 
     it('focus moves the focus to the input element', () => {
@@ -194,6 +201,39 @@ export function CategoryFacetSearchTest() {
       });
     });
 
+    describe('when expanding', () => {
+      beforeEach(done => {
+        categoryFacetSearch.displayNewValues();
+        setTimeout(done);
+      });
+
+      it('sets aria-expanded to true', () => {
+        expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('true');
+      });
+
+      it('has accessible labels on each value', () => {
+        getFacetSearchValues().forEach(value => {
+          const count = parseInt(value.getElementsByClassName('coveo-category-facet-search-value-number').item(0).textContent, 10);
+          const formattedCount = Globalize.format(count, 'n0');
+          const path = value.getAttribute('data-path').split('|');
+
+          expect(value.getAttribute('aria-label')).toEqual(
+            l('SelectValueWithResultCount', _.last(path), l('ResultCount', formattedCount, count))
+          );
+        });
+      });
+
+      it('sets aria-expanded to false after collapsing', done => {
+        searchWithNoValues();
+        categoryFacetSearch.displayNewValues();
+
+        setTimeout(() => {
+          expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('false');
+          done();
+        });
+      });
+    });
+
     describe('when selecting with the keyboard (using ENTER)', () => {
       let keyboardEvent: KeyboardEvent;
 
@@ -230,7 +270,7 @@ export function CategoryFacetSearchTest() {
       });
     });
 
-    it('pressing down arrow moves current result down', done => {
+    it('pressing down arrow while on the input  moves current result down', done => {
       const keyboardEvent = { which: KEYBOARD.DOWN_ARROW } as KeyboardEvent;
       categoryFacetSearch.displayNewValues();
 
@@ -241,7 +281,7 @@ export function CategoryFacetSearchTest() {
       });
     });
 
-    it('pressing up arrow moves current result up', done => {
+    it('pressing up arrow while on the input moves current result up', done => {
       const keyboardEvent = { which: KEYBOARD.UP_ARROW } as KeyboardEvent;
       categoryFacetSearch.displayNewValues();
 
@@ -252,7 +292,7 @@ export function CategoryFacetSearchTest() {
       });
     });
 
-    it('pressing escape closes the search input', done => {
+    it('pressing escape while on the input closes the search input', done => {
       const keyboardEvent = { which: KEYBOARD.ESCAPE } as KeyboardEvent;
       spyOn(categoryFacetSearch.facetSearchElement, 'clearSearchInput');
       categoryFacetSearch.displayNewValues();
@@ -264,12 +304,56 @@ export function CategoryFacetSearchTest() {
       });
     });
 
-    it('pressing any other key displays new values', done => {
+    it('pressing any other key while on the input displays new values', done => {
       const keyboardEvent = { which: 1337 } as KeyboardEvent;
       getInputHandler().handleKeyboardEvent(keyboardEvent);
       setTimeout(() => {
         expect(getSearchResults().innerHTML).not.toEqual('');
         done();
+      });
+    });
+
+    it('pressing escape while on the results closes the search input', done => {
+      spyOn(categoryFacetSearch.facetSearchElement, 'clearSearchInput');
+      categoryFacetSearch.displayNewValues();
+
+      setTimeout(() => {
+        Simulate.keyUp(getSearchResults(), KEYBOARD.ESCAPE);
+        expect(categoryFacetSearch.facetSearchElement.clearSearchInput).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    describe('when displayButton is true (default', () => {
+      it('container should not have the class coveo-category-facet-search-without-button', () => {
+        expect(categoryFacetSearch.container.hasClass('coveo-category-facet-search-without-button')).toBe(false);
+      });
+
+      it("facetSearchElement's search should not have the class without-animation", () => {
+        expect($$(categoryFacetSearch.facetSearchElement.search).hasClass('without-animation')).toBe(false);
+      });
+
+      it('should have a search placeholder', () => {
+        expect(categoryFacetSearch.container.find('.coveo-category-facet-search-placeholder')).toBeTruthy();
+      });
+    });
+
+    describe('when displayButton is false', () => {
+      beforeEach(() => {
+        categoryFacetSearch = new CategoryFacetSearch(categoryFacetMock, false);
+        categoryFacetSearch.build();
+      });
+
+      it('container should have the class coveo-category-facet-search-without-button', () => {
+        expect(categoryFacetSearch.container.hasClass('coveo-category-facet-search-without-button')).toBe(true);
+      });
+
+      it("facetSearchElement's search should have the class without-animation", () => {
+        expect($$(categoryFacetSearch.facetSearchElement.search).hasClass('without-animation')).toBe(true);
+      });
+
+      it('should have no search placeholder', () => {
+        expect(categoryFacetSearch.container.find('.coveo-category-facet-search-placeholder')).toBeFalsy();
       });
     });
   });

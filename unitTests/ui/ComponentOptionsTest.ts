@@ -2,7 +2,7 @@ import { ComponentOptions } from '../../src/ui/Base/ComponentOptions';
 import { ComponentOptionsType, IComponentOptions } from '../../src/ui/Base/IComponentOptions';
 import { TemplateComponentOptions } from '../../src/ui/Base/TemplateComponentOptions';
 import { TemplateCache } from '../../src/ui/Templates/TemplateCache';
-import { Dom } from '../../src/utils/Dom';
+import { Dom, $$ } from '../../src/utils/Dom';
 
 export function ComponentOptionsTest() {
   describe('ComponentOptions', () => {
@@ -575,28 +575,132 @@ export function ComponentOptionsTest() {
       });
 
       describe('findParentScrolling', () => {
-        it('which finds a scrollable parent with overflow scroll', () => {
-          scrollElem.style.overflowY = 'scroll';
-          const option = ComponentOptions.findParentScrolling(elem, doc);
-          expect(option).toBe(scrollElem);
+        it('returns the window if the element is null', () => {
+          expect(ComponentOptions.findParentScrolling(null, doc)).toEqual(<any>window);
         });
 
-        it('which finds a scrollable parent with overflow auto', () => {
-          scrollElem.style.overflowY = 'auto';
-          const option = ComponentOptions.findParentScrolling(elem, doc);
-          expect(option).toBe(scrollElem);
+        describe('on an element without a parent document', () => {
+          it('will return its parent if it has overflow scroll', () => {
+            scrollElem.style.overflowY = 'scroll';
+            const option = ComponentOptions.findParentScrolling(elem, doc);
+            expect(option).toBe(scrollElem);
+          });
+
+          it('will return its parent if it has overflow auto', () => {
+            scrollElem.style.overflowY = 'auto';
+            const option = ComponentOptions.findParentScrolling(elem, doc);
+            expect(option).toBe(scrollElem);
+          });
+
+          it('will return the window if its parent has overflow visible', () => {
+            scrollElem.style.overflowY = 'visible';
+            const option = ComponentOptions.findParentScrolling(elem, doc);
+            expect(option).toBe(<any>window);
+          });
+
+          it('will return the window if its parent has overflow inherit', () => {
+            scrollElem.style.overflowY = 'inherit';
+            const option = ComponentOptions.findParentScrolling(elem, doc);
+            expect(option).toBe(<any>window);
+          });
         });
 
-        it("which won't detect overflow visible as scrollable", () => {
-          scrollElem.style.overflowY = 'visible';
-          const option = ComponentOptions.findParentScrolling(elem, doc);
-          expect(option).not.toBe(scrollElem);
+        describe('on an element with a parent document', () => {
+          beforeEach(() => {
+            doc.body.appendChild(scrollElem);
+          });
+
+          it('will return its parent if it has overflow scroll', () => {
+            scrollElem.style.overflowY = 'scroll';
+            const option = ComponentOptions.findParentScrolling(elem, doc);
+            expect(option).toBe(scrollElem);
+          });
+
+          it('will return its parent if it has overflow auto', () => {
+            scrollElem.style.overflowY = 'auto';
+            const option = ComponentOptions.findParentScrolling(elem, doc);
+            expect(option).toBe(scrollElem);
+          });
+
+          it('will return the window if its parent has overflow visible', () => {
+            scrollElem.style.overflowY = 'visible';
+            const option = ComponentOptions.findParentScrolling(elem, doc);
+            expect(option).toBe(<any>window);
+          });
+
+          it('will return the window if its parent has overflow inherit', () => {
+            scrollElem.style.overflowY = 'inherit';
+            const option = ComponentOptions.findParentScrolling(elem, doc);
+            expect(option).toBe(<any>window);
+          });
+        });
+      });
+
+      describe('findParentScrollLockable', () => {
+        it('returns the body if the element is null', () => {
+          expect(ComponentOptions.findParentScrollLockable(null, doc)).toEqual(doc.body);
         });
 
-        it("which won't detect overflow inherit as scrollable", () => {
-          scrollElem.style.overflowY = 'inherit';
-          const option = ComponentOptions.findParentScrolling(elem, doc);
-          expect(option).not.toBe(scrollElem);
+        describe('on an element with its highest ancestor being an unparent root element', () => {
+          let root: HTMLElement;
+          beforeEach(() => {
+            root = $$('div', {}, scrollElem).el;
+            root.style.overflowY = 'visible';
+          });
+
+          it('will return its parent if it has overflow scroll', () => {
+            scrollElem.style.overflowY = 'scroll';
+            const option = ComponentOptions.findParentScrollLockable(elem, doc);
+            expect(option).toBe(scrollElem);
+          });
+
+          it('will return its parent if it has overflow auto', () => {
+            scrollElem.style.overflowY = 'auto';
+            const option = ComponentOptions.findParentScrollLockable(elem, doc);
+            expect(option).toBe(scrollElem);
+          });
+
+          it('will return the highest ancestor if its parent has overflow visible', () => {
+            scrollElem.style.overflowY = 'visible';
+            const option = ComponentOptions.findParentScrollLockable(elem, doc);
+            expect(option).toBe(root);
+          });
+
+          it('will return the highest ancestor if its parent has overflow inherit', () => {
+            scrollElem.style.overflowY = 'inherit';
+            const option = ComponentOptions.findParentScrollLockable(elem, doc);
+            expect(option).toBe(root);
+          });
+        });
+
+        describe('on an element with a parent document', () => {
+          beforeEach(() => {
+            doc.body.appendChild(scrollElem);
+          });
+
+          it('will return its parent if it has overflow scroll', () => {
+            scrollElem.style.overflowY = 'scroll';
+            const option = ComponentOptions.findParentScrollLockable(elem, doc);
+            expect(option).toBe(scrollElem);
+          });
+
+          it('will return its parent if it has overflow auto', () => {
+            scrollElem.style.overflowY = 'auto';
+            const option = ComponentOptions.findParentScrollLockable(elem, doc);
+            expect(option).toBe(scrollElem);
+          });
+
+          it('will return the body if its parent has overflow visible', () => {
+            scrollElem.style.overflowY = 'visible';
+            const option = ComponentOptions.findParentScrollLockable(elem, doc);
+            expect(option).toBe(doc.body);
+          });
+
+          it('will return the body if its parent has overflow inherit', () => {
+            scrollElem.style.overflowY = 'inherit';
+            const option = ComponentOptions.findParentScrollLockable(elem, doc);
+            expect(option).toBe(doc.body);
+          });
         });
       });
 

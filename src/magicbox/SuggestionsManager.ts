@@ -1,4 +1,4 @@
-import { defaults, each, indexOf, find } from 'underscore';
+import { defaults, indexOf, find } from 'underscore';
 import { IQuerySuggestSelection, OmniboxEvents } from '../events/OmniboxEvents';
 import { Component } from '../ui/Base/Component';
 import { $$, Dom } from '../utils/Dom';
@@ -186,7 +186,7 @@ export class SuggestionsManager {
       return;
     }
 
-    each(suggestions, (suggestion: Suggestion) => {
+    suggestions.sort((a, b) => (b.index || 0) - (a.index || 0)).forEach(suggestion => {
       const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
 
       dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);

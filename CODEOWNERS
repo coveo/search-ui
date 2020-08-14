@@ -1,0 +1,9 @@
+# These owners will be the default owners for everything in
+# the repo.
+# see https://help.github.com/articles/about-codeowners/ for more details
+
+* @samisayegh @btaillon @olamothe @ThibodeauJF @dsing-coveo @kshimCoveo
+
+# Prevent PRs that only modify dependencies from notifying everyone
+package.json @ghost
+yarn.lock @ghost

@@ -3,8 +3,19 @@ import { Options } from '../misc/Options';
 import { Utils } from '../utils/Utils';
 import * as Globalize from 'globalize';
 
+/**
+ * The available options to format a numeric value as a currency string.
+ */
 export interface ICurrencyToStringOptions {
+  /**
+   * The number of decimals to display.
+   *
+   * **Default:** `0`
+   */
   decimals?: number;
+  /**
+   * The currency symbol to use.
+   */
   symbol?: string;
 }
 

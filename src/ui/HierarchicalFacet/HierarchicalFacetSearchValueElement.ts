@@ -1,7 +1,7 @@
 import { FacetValueElement } from '../Facet/FacetValueElement';
 import { HierarchicalFacet } from '../HierarchicalFacet/HierarchicalFacet';
 import { IValueElementEventsBinding } from '../Facet/ValueElement';
-import { FacetValue } from '../Facet/FacetValues';
+import { FacetValue } from '../Facet/FacetValue';
 
 export class HierarchicalFacetSearchValueElement extends FacetValueElement {
   constructor(public facet: HierarchicalFacet, public facetValue: FacetValue, public keepDisplayedValueNextTime: boolean) {

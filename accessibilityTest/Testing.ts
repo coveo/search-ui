@@ -24,6 +24,10 @@ export const getSearchSection = () => {
   return document.body.querySelector('.coveo-search-section') as HTMLElement;
 };
 
+export const getSummarySection = () => {
+  return document.body.querySelector('.coveo-summary-section') as HTMLElement;
+};
+
 export const getSortSection = () => {
   return document.body.querySelector('.coveo-sort-section') as HTMLElement;
 };
@@ -152,6 +156,10 @@ export const isInit = () => {
 };
 
 export const waitUntilSelectorIsPresent = <T extends Element = Element>(parentNode: HTMLElement, selector: string) => {
+  const alreadyExistingElement = parentNode.querySelector<T>(selector);
+  if (alreadyExistingElement) {
+    return alreadyExistingElement;
+  }
   return observeUntil(
     parentNode,
     {

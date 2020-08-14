@@ -5,6 +5,8 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { $$ } from '../../src/utils/Dom';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { FakeResults } from '../Fake';
+import { range } from 'underscore';
+import { DeviceUtils } from '../../src/utils/DeviceUtils';
 
 interface IParent {
   name: string;
@@ -26,6 +28,12 @@ const parents: IParent[] = [
 
 const parentsXml = generateParentsXMLFromList(parents);
 
+const longParentsCount = 11;
+
+const longParents: IParent[] = range(longParentsCount).map(index => ({ name: index.toString(), uri: `somewebsiteroot.com/${index}` }));
+
+const longParentsXml = generateParentsXMLFromList(longParents);
+
 export function PrintableUriTest() {
   describe('PrintableUri', function() {
     let test: Mock.IBasicComponentSetup<PrintableUri>;
@@ -34,6 +42,12 @@ export function PrintableUriTest() {
     const getFirstResultLinkElement = (cmp: PrintableUri): HTMLElement => {
       return $$(cmp.element).find('.CoveoResultLink');
     };
+
+    const getURIParts = () => $$(test.cmp.element).findAll('.coveo-printable-uri-part');
+
+    const getURIPartsNames = () => getURIParts().map(part => part.innerText);
+
+    const getEllipsis = () => $$(test.cmp.element).findAll('.coveo-printable-uri-ellipsis');
 
     beforeEach(() => {
       fakeResult = initFakeResult();
@@ -47,22 +61,107 @@ export function PrintableUriTest() {
       fakeResult = null;
     });
 
-    it('should display the XML correctly if the result has a non-null parents field', () => {
-      fakeResult.raw.parents =
-        '<?xml version="1.0" encoding="utf-16"?><parents><parent name="My Drive" uri="https://drive.google.com/#my-drive" /></parents>';
-      test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).find('.CoveoResultLink').innerText).toEqual('My Drive');
+    describe('with a non-null parents field', () => {
+      beforeEach(() => {
+        fakeResult.raw.parents =
+          '<?xml version="1.0" encoding="utf-16"?><parents><parent name="My Drive" uri="https://drive.google.com/#my-drive" /></parents>';
+        test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
+      });
+
+      it('should display the XML correctly', () => {
+        expect($$(test.cmp.element).find('.CoveoResultLink').innerText).toEqual('My Drive');
+      });
+
+      it('should not display an ellipsis', () => {
+        expect(getEllipsis().length).toEqual(0);
+      });
     });
 
-    it('should display the XML correctly if the result has a very long parents field', () => {
-      fakeResult.raw.parents =
-        '<?xml version="1.0" encoding="utf-16"?><parents><parent name="Organization" uri="https://na17.salesforce.com/home/home.jsp" />`' +
-        '<parent name="Technical_Article__ka" uri="http://www.salesforce.com/org:organization/articletype:Technical_Article" />`' +
-        '<parent name="Generator became sentient and refuses to cut power"`' +
-        ' uri="https://na17.salesforce.com/kA0o00000003Wpk" /><parent name="un autre test" uri="http//:google.ca" /></parents>';
-      test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
-      expect($$(test.cmp.element).findAll('.coveo-printable-uri-part')[0].innerText).toEqual('Organization');
-      expect($$(test.cmp.element).findAll('.coveo-printable-uri-part')[1].innerText).toEqual('Technical_Article__ka');
+    describe('with a very long parents field', () => {
+      beforeEach(() => {
+        fakeResult.raw.parents = longParentsXml;
+        test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
+      });
+
+      it('should display the first 4 parents and the last parent', () => {
+        expect(getURIPartsNames()).toEqual([...range(4), longParentsCount - 1].map(index => index.toString()));
+      });
+
+      it('should display an ellipsis', () => {
+        expect(getEllipsis().length).toEqual(1);
+      });
+
+      describe('after clicking on the ellipsis', () => {
+        beforeEach(() => {
+          const [ellipsis] = getEllipsis();
+          (ellipsis.firstChild as HTMLElement).click();
+        });
+
+        it('should display the next 4 parents and the last parent', () => {
+          expect(getURIPartsNames()).toEqual([...range(4, 8), longParentsCount - 1].map(index => index.toString()));
+        });
+
+        it('should display two ellipsis', () => {
+          expect(getEllipsis().length).toEqual(2);
+        });
+
+        describe('after clicking on the last ellipsis', () => {
+          beforeEach(() => {
+            const [, ellipsis] = getEllipsis();
+            (ellipsis.firstChild as HTMLElement).click();
+          });
+
+          it('should display the last 5 parents', () => {
+            expect(getURIPartsNames()).toEqual(range(longParentsCount - 5, longParentsCount).map(index => index.toString()));
+          });
+
+          it('should display an ellipsis', () => {
+            expect(getEllipsis().length).toEqual(1);
+          });
+        });
+      });
+    });
+
+    describe('on mobile', () => {
+      let originalFunction: () => boolean;
+      beforeEach(() => {
+        originalFunction = DeviceUtils.isMobileDevice;
+        spyOn(DeviceUtils, 'isMobileDevice').and.returnValue(true);
+      });
+
+      afterEach(() => {
+        DeviceUtils.isMobileDevice = originalFunction;
+      });
+
+      describe('with a very long parents field', () => {
+        beforeEach(() => {
+          fakeResult.raw.parents = longParentsXml;
+          test = Mock.advancedResultComponentSetup<PrintableUri>(PrintableUri, fakeResult, undefined);
+        });
+
+        it('should display the first 2 parents and the last parent', () => {
+          expect(getURIPartsNames()).toEqual([...range(2), longParentsCount - 1].map(index => index.toString()));
+        });
+
+        it('should display an ellipsis', () => {
+          expect(getEllipsis().length).toEqual(1);
+        });
+
+        describe('after clicking on the ellipsis', () => {
+          beforeEach(() => {
+            const [ellipsis] = getEllipsis();
+            (ellipsis.firstChild as HTMLElement).click();
+          });
+
+          it('should display the next 2 parents and the last parent', () => {
+            expect(getURIPartsNames()).toEqual([...range(2, 4), longParentsCount - 1].map(index => index.toString()));
+          });
+
+          it('should display two ellipsis', () => {
+            expect(getEllipsis().length).toEqual(2);
+          });
+        });
+      });
     });
 
     it('should add the list role to its element', () => {

@@ -607,7 +607,7 @@ export class FacetSlider extends Component {
       className: 'coveo-facet-slider-breadcrumb-value'
     });
     const caption = $$('span', {
-      clasName: 'coveo-facet-slider-breadcrumb-caption'
+      className: 'coveo-facet-slider-breadcrumb-caption'
     });
     caption.text(this.slider.getCaption());
     value.append(caption.el);
