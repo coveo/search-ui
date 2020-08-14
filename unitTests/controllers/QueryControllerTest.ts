@@ -4,19 +4,27 @@ import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { $$ } from '../../src/utils/Dom';
 import { FakeResults } from '../Fake';
 import * as Mock from '../MockEnvironment';
-import { Simulate } from '../Simulate';
 import { ExecutionPlan } from '../../src/rest/Plan';
+import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 
 export function QueryControllerTest() {
   describe('QueryController', () => {
     let test: Mock.IBasicComponentSetup<QueryController>;
+    let searchInterface: SearchInterface;
 
-    beforeEach(() => {
+    function initQueryController() {
       test = <Mock.IBasicComponentSetup<QueryController>>{};
       test.env = new Mock.MockEnvironmentBuilder().build();
-      test.cmp = new QueryController(test.env.root, {}, test.env.usageAnalytics, test.env.searchInterface);
+      test.cmp = new QueryController(test.env.root, {}, test.env.usageAnalytics, searchInterface);
       test.cmp.setEndpoint(test.env.searchEndpoint);
       test.cmp.element = test.env.root;
+    }
+
+    beforeEach(() => {
+      const env = new Mock.MockEnvironmentBuilder().build();
+      searchInterface = env.searchInterface;
+
+      initQueryController();
     });
 
     afterEach(() => {
@@ -395,27 +403,47 @@ export function QueryControllerTest() {
     });
 
     describe('coveoanalytics', () => {
-      let store: CoveoAnalytics.HistoryStore;
+      const key = '__coveo.analytics.history';
 
-      beforeEach(() => {
-        store = Simulate.analyticsStoreModule();
-        test.cmp.historyStore = store;
-        spyOn(store, 'addElement');
+      describe('when enabled', () => {
+        beforeEach(() => {
+          localStorage.clear();
+          searchInterface.usageAnalytics.isActivated = () => true;
+
+          initQueryController();
+        });
+
+        it(`setting action history stores the value in localStorage`, () => {
+          test.cmp.historyStore.setHistory(['a']);
+          expect(localStorage.getItem(key)).toBeTruthy();
+        });
+
+        it('should not log the query in history if not specified', () => {
+          test.cmp.executeQuery({ logInActionsHistory: false });
+          expect(localStorage.getItem(key)).toBeFalsy();
+        });
+
+        it('should log the query in history if specified', () => {
+          test.cmp.executeQuery({ logInActionsHistory: true });
+          expect(localStorage.getItem(key)).toBeTruthy();
+        });
       });
 
-      afterEach(() => {
-        store = undefined;
-        window['coveoanalytics'] = undefined;
-      });
+      describe('when disabled', () => {
+        it(`it clears the action history`, () => {
+          localStorage.setItem(key, 'a');
+          initQueryController();
 
-      it('should not log the query in the user history if not specified', () => {
-        test.cmp.executeQuery({ logInActionsHistory: false });
-        expect(store.addElement).not.toHaveBeenCalled();
-      });
+          expect(localStorage.getItem(key)).toBeFalsy();
+        });
 
-      it('should log the query in the user history if specified', () => {
-        test.cmp.executeQuery({ logInActionsHistory: true });
-        expect(store.addElement).toHaveBeenCalled();
+        it(`setting action history does not store anything in localStorage`, () => {
+          localStorage.clear();
+          initQueryController();
+
+          test.cmp.historyStore.setHistory(['a']);
+          expect(localStorage.getItem(key)).toBeFalsy();
+        });
       });
     });
   });
