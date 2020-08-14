@@ -99,6 +99,7 @@ export class QueryController extends RootComponent {
   public modalBox = ModalBox;
   public closeModalBox = true;
 
+  private actionsHistory: CoveoAnalytics.HistoryStore;
   private currentPendingQuery: Promise<IQueryResults>;
   private lastQueryBuilder: QueryBuilder;
   private lastQueryHash: string;
@@ -129,10 +130,11 @@ export class QueryController extends RootComponent {
     Assert.exists(element);
     Assert.exists(options);
     this.firstQuery = true;
+    this.initializeActionsHistory();
   }
 
   public get historyStore() {
-    return this.searchInterface.actionHistory;
+    return this.actionsHistory;
   }
 
   public get usageAnalytics(): IAnalyticsClient {
@@ -503,11 +505,22 @@ export class QueryController extends RootComponent {
   }
 
   public enableHistory() {
-    this.searchInterface.actionHistory = new history.HistoryStore();
+    this.actionsHistory = new history.HistoryStore();
   }
 
   public disableHistory() {
-    this.searchInterface.actionHistory = new history.HistoryStore(new NullStorage());
+    this.actionsHistory = new history.HistoryStore(new NullStorage());
+  }
+
+  private initializeActionsHistory() {
+    this.enableHistory();
+
+    if (this.usageAnalytics.isActivated()) {
+      return;
+    }
+
+    this.actionsHistory.clear();
+    this.disableHistory();
   }
 
   private closeModalBoxIfNeeded(needed?: boolean) {

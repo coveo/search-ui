@@ -67,23 +67,6 @@ export function SearchInterfaceTest() {
       expect(cmp.root).toBe(cmp.element, 'Not an element');
     });
 
-    it(`when analytics is disabled, it clears the action history`, () => {
-      const key = '__coveo.analytics.history';
-      localStorage.setItem(key, 'a');
-
-      initSearchInterface();
-
-      expect(localStorage.getItem(key)).toBeFalsy();
-    });
-
-    it(`when analytics is disabled, setting action history does not store anything in localStorage`, () => {
-      localStorage.clear();
-      initSearchInterface();
-
-      cmp.actionHistory.setHistory(['a']);
-      expect(localStorage.getItem('__coveo.analytics.history')).toBeFalsy();
-    });
-
     it('should allow to attach and detach component', () => {
       const cmpToAttach = Mock.mockComponent(Querybox);
       cmp.attachComponent('Querybox', cmpToAttach);
@@ -146,14 +129,6 @@ export function SearchInterfaceTest() {
       it('should initialize if found inside the root', () => {
         const searchInterface = new SearchInterface(searchInterfaceDiv);
         expect(searchInterface.usageAnalytics instanceof Coveo['LiveAnalyticsClient']).toBe(true);
-      });
-
-      it(`setting action history stores the value in localStorage`, () => {
-        localStorage.clear();
-        const searchInterface = new SearchInterface(searchInterfaceDiv);
-        searchInterface.actionHistory.setHistory(['a']);
-
-        expect(localStorage.getItem('__coveo.analytics.history')).toBeTruthy();
       });
     });
 

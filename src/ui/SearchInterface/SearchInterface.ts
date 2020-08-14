@@ -54,8 +54,6 @@ import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { ScrollRestorer } from './ScrollRestorer';
-import { history } from 'coveo.analytics';
-import { NullStorage } from 'coveo.analytics/dist/storage';
 
 export interface ISearchInterfaceOptions {
   enableHistory?: boolean;
@@ -521,7 +519,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
   public componentOptionsModel: ComponentOptionsModel;
   public usageAnalytics: IAnalyticsClient;
   public historyManager: IHistoryManager;
-  public actionHistory: CoveoAnalytics.HistoryStore;
   public scrollRestorer: ScrollRestorer;
   /**
    * Allows to get and set the different breakpoints for mobile and tablet devices.
@@ -563,7 +560,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.componentStateModel = new ComponentStateModel(element);
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
-    this.actionHistory = this.initializeActionHistory();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
     this.facetValueStateHandler = new FacetValueStateHandler(this);
     new SentryLogger(this.queryController);
@@ -729,17 +725,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
       return analyticsRef.create(this.element, this.analyticsOptions, this.getBindings());
     }
     return new NoopAnalyticsClient();
-  }
-
-  private initializeActionHistory() {
-    let actionHistory = new history.HistoryStore();
-
-    if (!this.usageAnalytics.isActivated()) {
-      actionHistory.clear();
-      actionHistory = new history.HistoryStore(new NullStorage());
-    }
-
-    return actionHistory;
   }
 
   private setupHistoryManager(element: HTMLElement, _window: Window) {

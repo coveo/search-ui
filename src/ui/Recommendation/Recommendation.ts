@@ -242,7 +242,7 @@ export class Recommendation extends SearchInterface implements IComponentBinding
   }
 
   public get historyStore() {
-    return this.actionHistory;
+    return this.queryController.historyStore;
   }
 
   public getId(): string {
