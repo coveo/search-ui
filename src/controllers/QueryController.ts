@@ -95,11 +95,11 @@ class DefaultQueryOptions implements IQueryOptions {
  */
 export class QueryController extends RootComponent {
   static ID = 'QueryController';
+  public historyStore: CoveoAnalytics.HistoryStore;
   public firstQuery: boolean;
   public modalBox = ModalBox;
   public closeModalBox = true;
 
-  private actionsHistory: CoveoAnalytics.HistoryStore;
   private currentPendingQuery: Promise<IQueryResults>;
   private lastQueryBuilder: QueryBuilder;
   private lastQueryHash: string;
@@ -131,10 +131,6 @@ export class QueryController extends RootComponent {
     Assert.exists(options);
     this.firstQuery = true;
     this.initializeActionsHistory();
-  }
-
-  public get historyStore() {
-    return this.actionsHistory;
   }
 
   public get usageAnalytics(): IAnalyticsClient {
@@ -505,11 +501,11 @@ export class QueryController extends RootComponent {
   }
 
   public enableHistory() {
-    this.actionsHistory = new history.HistoryStore();
+    this.historyStore = new history.HistoryStore();
   }
 
   public disableHistory() {
-    this.actionsHistory = new history.HistoryStore(new NullStorage());
+    this.historyStore = new history.HistoryStore(new NullStorage());
   }
 
   private initializeActionsHistory() {
@@ -519,7 +515,7 @@ export class QueryController extends RootComponent {
       return;
     }
 
-    this.actionsHistory.clear();
+    this.historyStore.clear();
     this.disableHistory();
   }
 
