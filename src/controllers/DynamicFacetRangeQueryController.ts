@@ -13,12 +13,16 @@ export class DynamicFacetRangeQueryController extends DynamicFacetQueryControlle
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: false,
-      generateAutomaticRanges: !this.freezeCurrentValues && !this.facet.options.ranges
+      generateAutomaticRanges: !this.areRangesDefined
     };
   }
 
   protected get numberOfValues() {
-    return this.facet.options.ranges ? this.facet.options.ranges.length : this.facet.options.numberOfValues;
+    return this.areRangesDefined ? this.facet.options.ranges.length : this.facet.options.numberOfValues;
+  }
+
+  private get areRangesDefined() {
+    return !!this.facet.options.ranges.length;
   }
 
   protected get currentValues(): IFacetRequestValue[] {
@@ -26,9 +30,7 @@ export class DynamicFacetRangeQueryController extends DynamicFacetQueryControlle
       start,
       end,
       endInclusive,
-      state,
-      // TODO: remove after SEARCHAPI-4233 is completed
-      preventAutoSelect: this.preventAutoSelection
+      state
     }));
   }
 }
