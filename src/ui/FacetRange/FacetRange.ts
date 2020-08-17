@@ -125,11 +125,7 @@ export class FacetRange extends Facet implements IComponentBindings {
   }
 
   private isLabelSpecifiedForValue(facetValue: FacetValue) {
-    if (!this.options.ranges) {
-      return false;
-    }
-
-    return !!this.options.ranges.filter(range => !isUndefined(range) && range.label === facetValue.lookupValue).length;
+    return this.options.ranges && this.options.ranges.filter(range => !isUndefined(range) && range.label === facetValue.lookupValue).length;
   }
 
   protected initFacetQueryController() {
