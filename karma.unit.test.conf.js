@@ -1,10 +1,8 @@
-const ChromiumRevision = require('puppeteer/package.json').puppeteer.chromium_revision;
-const Downloader = require('puppeteer/utils/ChromiumDownloader');
-const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), ChromiumRevision);
+const puppeteer = require('puppeteer');
 
-process.env.CHROME_BIN = revisionInfo.executablePath;
+process.env.CHROME_BIN = puppeteer.executablePath();
 
-var configuration = {
+const configuration = {
   singleRun: true,
   browsers: ['ChromeHeadless'],
   frameworks: ['jasmine'],
@@ -42,7 +40,10 @@ var configuration = {
   reporters: ['coverage', 'spec'],
   coverageReporter: {
     dir: './bin/coverage',
-    reporters: [{ type: 'json', subdir: '.', file: 'coverage-es5.json' }, { type: 'lcov', subdir: 'lcov-es5' }]
+    reporters: [
+      { type: 'json', subdir: '.', file: 'coverage-es5.json' },
+      { type: 'lcov', subdir: 'lcov-es5' }
+    ]
   }
 };
 
