@@ -117,12 +117,19 @@ export class FacetRange extends Facet implements IComponentBindings {
   }
 
   public getValueCaption(facetValue: FacetValue): string {
-    const lookupValueIsSpecified = !isUndefined(facetValue.lookupValue) && facetValue.lookupValue !== facetValue.value;
-    if (this.options.valueCaption || lookupValueIsSpecified) {
+    if (this.options.valueCaption || this.isLabelSpecifiedForValue(facetValue)) {
       return super.getValueCaption(facetValue);
     }
 
     return this.translateValuesFromFormat(facetValue);
+  }
+
+  private isLabelSpecifiedForValue(facetValue: FacetValue) {
+    if (!this.options.ranges) {
+      return false;
+    }
+
+    return !!this.options.ranges.filter(range => !isUndefined(range) && range.label === facetValue.lookupValue).length;
   }
 
   protected initFacetQueryController() {
@@ -161,7 +168,7 @@ export class FacetRange extends Facet implements IComponentBindings {
   }
 
   private translateValuesFromFormat(facetValue: FacetValue) {
-    const startAndEnd = this.extractStartAndEndValue(facetValue.value);
+    const startAndEnd = this.extractStartAndEndValue(facetValue.lookupValue || facetValue.value);
     if (!startAndEnd) {
       return null;
     }
