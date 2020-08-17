@@ -104,6 +104,7 @@ export class DependsOnManager {
     this.dependentFacets.forEach(dependentFacet => {
       const condition = this.getDependsOnCondition(dependentFacet);
       if (condition(this.facet.ref)) {
+        $$(dependentFacet.element).removeClass('coveo-hidden');
         return dependentFacet.enable();
       }
 
