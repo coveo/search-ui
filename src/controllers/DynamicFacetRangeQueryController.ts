@@ -9,7 +9,6 @@ export class DynamicFacetRangeQueryController extends DynamicFacetQueryControlle
   public buildFacetRequest(query: IQuery): IFacetRequest {
     return {
       ...this.requestBuilder.buildBaseRequestForQuery(query),
-      preventAutoSelect: this.preventAutoSelection,
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: false,
