@@ -117,9 +117,7 @@ export class DynamicFacetQueryController {
   protected get currentValues(): IFacetRequestValue[] {
     return this.facet.values.allFacetValues.map(({ value, state }) => ({
       value,
-      state,
-      // TODO: remove after SEARCHAPI-4233 is completed
-      preventAutoSelect: this.preventAutoSelection
+      state
     }));
   }
 
