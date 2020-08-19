@@ -1,8 +1,9 @@
-import { Dom } from '../../../utils/Dom';
+import { Dom, $$ } from '../../../utils/Dom';
 import PopperJs from 'popper.js';
 import { ResponsiveComponentsManager } from '../ResponsiveComponentsManager';
 import { Assert } from '../../../misc/Assert';
 import { l } from '../../../strings/Strings';
+import { ComponentOptions } from '../../Base/ComponentOptions';
 
 export interface IResponsiveDropdownContent {
   element: Dom;
@@ -52,6 +53,7 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
 
   public hideDropdown() {
     if (this.popperReference) {
+      this.unbindPopperEvents();
       this.popperReference.destroy();
     }
 
@@ -88,16 +90,41 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
     this.element.setAttribute('aria-label', null);
   }
 
+  private get popperReferenceElement() {
+    return this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`);
+  }
+
   private createPopper() {
-    const referenceElement = this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`);
-    this.popperReference = new PopperJs(referenceElement, this.element.el, {
+    this.popperReference = new PopperJs(this.popperReferenceElement, this.element.el, {
       placement: 'bottom-end',
       positionFixed: true,
       modifiers: {
         preventOverflow: {
           boundariesElement: this.coveoRoot.el
+        },
+        computeStyle: {
+          gpuAcceleration: false
         }
-      }
+      },
+      eventsEnabled: false
+    });
+
+    this.bindPopperEvents();
+  }
+
+  private get scrollableParent() {
+    return ComponentOptions.findParentScrolling(this.popperReferenceElement);
+  }
+
+  private bindPopperEvents() {
+    $$(this.scrollableParent).on(['scroll', 'resize'], () => {
+      this.popperReference.update();
+    });
+  }
+
+  private unbindPopperEvents() {
+    $$(this.scrollableParent).off(['scroll', 'resize'], () => {
+      this.popperReference.update();
     });
   }
 }
