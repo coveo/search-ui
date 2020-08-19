@@ -39,6 +39,11 @@
           width: 15px;
           height: 15px;
           color: $color-greyish-teal-blue;
+
+          svg {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
 
