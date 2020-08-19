@@ -1,0 +1,58 @@
+@import 'Variables';
+
+.CoveoSmartSnippetSuggestions {
+  margin: 16px 0;
+  $inner-padding: 16px;
+  @include defaultMediumRoundedBorder();
+
+  @at-root .coveo-smart-snippet-suggestions {
+    &-questions {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      &-title {
+        display: block;
+        padding: $inner-padding;
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+    }
+
+    &-question {
+      &-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: $default-medium-border;
+        padding: $inner-padding;
+        cursor: pointer;
+
+        &-label {
+          user-select: none;
+        }
+
+        &-checkbox {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 15px;
+          height: 15px;
+          color: $color-greyish-teal-blue;
+        }
+      }
+
+      &-snippet {
+        overflow: hidden;
+
+        &-hidden {
+          height: 0px;
+        }
+
+        &-content {
+          padding: 8px $inner-padding;
+        }
+      }
+    }
+  }
+}

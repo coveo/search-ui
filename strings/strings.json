@@ -7604,5 +7604,17 @@
   "AnswerSnippet": {
     "en": "Answer to your question",
     "fr": "Réponse à votre question"
+  },
+  "AnswerSpecificSnippet": {
+    "en": "Answer to \"{0}\"",
+    "fr": "Réponse à « {0} »"
+  },
+  "SuggestedQuestions": {
+    "en": "People also ask",
+    "fr": "Autres questions posées"
+  },
+  "ExpandQuestionAnswer": {
+    "en": "View answer for \"{0}\"",
+    "fr": "Regarder la réponse à « {0} »"
   }
 }
