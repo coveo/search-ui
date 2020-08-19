@@ -14,7 +14,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { FacetValue } from '../Facet/FacetValue';
-import { isUndefined } from 'underscore';
+import { isUndefined, find } from 'underscore';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
@@ -125,7 +125,7 @@ export class FacetRange extends Facet implements IComponentBindings {
   }
 
   private isLabelSpecifiedForValue(facetValue: FacetValue) {
-    return this.options.ranges && this.options.ranges.filter(range => !isUndefined(range) && range.label === facetValue.lookupValue).length;
+    return this.options.ranges && !!find(this.options.ranges, range => !isUndefined(range.label) && range.label === facetValue.lookupValue);
   }
 
   protected initFacetQueryController() {
