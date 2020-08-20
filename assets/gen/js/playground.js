@@ -2296,7 +2296,7 @@ var Utils = /** @class */ (function () {
         return difference;
     };
     Utils.resolveAfter = function (ms, returns) {
-        return new Promise(function (resolve) { return setTimeout(function () { return (returns ? resolve(returns) : resolve()); }, ms); });
+        return new Promise(function (resolve) { return setTimeout(function () { return (returns !== undefined ? resolve(returns) : resolve()); }, ms); });
     };
     return Utils;
 }());
@@ -2432,7 +2432,7 @@ exports.Logger = Logger;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var _ = __webpack_require__(0);
+var underscore_1 = __webpack_require__(0);
 var Assert_1 = __webpack_require__(1);
 var Logger_1 = __webpack_require__(3);
 var JQueryutils_1 = __webpack_require__(6);
@@ -2475,11 +2475,11 @@ var Dom = /** @class */ (function () {
                 elem.setAttribute(attr, props[key]);
             }
         }
-        _.each(children, function (child) {
+        underscore_1.each(children, function (child) {
             if (child instanceof HTMLElement) {
                 elem.appendChild(child);
             }
-            else if (_.isString(child)) {
+            else if (underscore_1.isString(child)) {
                 elem.innerHTML += child;
             }
             else if (child instanceof Dom) {
@@ -2774,8 +2774,8 @@ var Dom = /** @class */ (function () {
     };
     Dom.prototype.addClass = function (className) {
         var _this = this;
-        if (_.isArray(className)) {
-            _.each(className, function (name) {
+        if (underscore_1.isArray(className)) {
+            underscore_1.each(className, function (name) {
                 _this.addClass(name);
             });
         }
@@ -2847,7 +2847,7 @@ var Dom = /** @class */ (function () {
      * @returns {boolean}
      */
     Dom.prototype.hasClass = function (className) {
-        return _.contains(this.getClass(), className);
+        return underscore_1.contains(this.getClass(), className);
     };
     /**
      * Detach the element from the DOM.
@@ -2883,8 +2883,8 @@ var Dom = /** @class */ (function () {
     };
     Dom.prototype.on = function (type, eventHandle) {
         var _this = this;
-        if (_.isArray(type)) {
-            _.each(type, function (t) {
+        if (underscore_1.isArray(type)) {
+            underscore_1.each(type, function (t) {
                 _this.on(t, eventHandle);
             });
         }
@@ -2915,8 +2915,8 @@ var Dom = /** @class */ (function () {
     };
     Dom.prototype.one = function (type, eventHandle) {
         var _this = this;
-        if (_.isArray(type)) {
-            _.each(type, function (t) {
+        if (underscore_1.isArray(type)) {
+            underscore_1.each(type, function (t) {
                 _this.one(t, eventHandle);
             });
         }
@@ -2931,8 +2931,8 @@ var Dom = /** @class */ (function () {
     };
     Dom.prototype.off = function (type, eventHandle) {
         var _this = this;
-        if (_.isArray(type)) {
-            _.each(type, function (t) {
+        if (underscore_1.isArray(type)) {
+            underscore_1.each(type, function (t) {
                 _this.off(t, eventHandle);
             });
         }
@@ -3227,7 +3227,7 @@ function $$() {
     if (args.length === 1 && args[0] instanceof Dom) {
         return args[0];
     }
-    else if (args.length === 1 && !_.isString(args[0])) {
+    else if (args.length === 1 && !underscore_1.isString(args[0])) {
         return new Dom(args[0]);
     }
     else {
@@ -6091,8 +6091,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.8864.13',
-    product: '2.8864.13',
+    lib: '2.9373.12',
+    product: '2.9373.12',
     supportedApiVersion: 2
 };
 
@@ -9277,6 +9277,9 @@ var dict = {
     "NoRatings": "No ratings",
     "Pagination": "Pagination",
     "ThumbnailOf": "Thumbnail of \"{0}\"",
+    "CollapsedUriParts": "Collapsed URI parts",
+    "HierarchicalFacetValueIndentedUnder": "{0} under {1}",
+    "HierarchicalFacetValuePathPrefix": "in",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
