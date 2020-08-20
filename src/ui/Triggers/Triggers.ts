@@ -14,7 +14,7 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { Initialization } from '../Base/Initialization';
-import * as _ from 'underscore';
+import { object, map, filter, each, take, escape } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_Triggers';
@@ -92,7 +92,7 @@ export class Triggers extends Component {
       );
 
       this.notifications.push(trigger.content);
-      this.element.appendChild($$('div', { className: 'coveo-trigger-notify' }, trigger.content).el);
+      this.element.appendChild($$('div', { className: 'coveo-trigger-notify' }, escape(trigger.content)).el);
 
       showElement = true;
     });
@@ -138,8 +138,8 @@ export class Triggers extends Component {
       try {
         let func: Function = this._window['' + trigger.content.name];
         if (typeof func === 'function') {
-          let params = _.object(
-            _.map(trigger.content.params, (value, index) => {
+          let params = object(
+            map(trigger.content.params, (value, index) => {
               return ['param' + (index + 1), value];
             })
           );
@@ -171,12 +171,12 @@ export class Triggers extends Component {
   }
 
   private executeTriggers(trigger: ITrigger<any>[], type: string, func: (trigger: ITrigger<any>) => any, single: boolean = false) {
-    let triggersOfType = _.filter(trigger, (trigger: ITrigger<any>) => {
+    let triggersOfType = filter(trigger, (trigger: ITrigger<any>) => {
       return trigger.type == type;
     });
-    let oneOrAllTriggers = _.take(triggersOfType, single ? 1 : Number.MAX_VALUE);
+    let oneOrAllTriggers = take(triggersOfType, single ? 1 : Number.MAX_VALUE);
 
-    _.each(oneOrAllTriggers, func);
+    each(oneOrAllTriggers, func);
   }
 }
 
