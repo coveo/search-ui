@@ -5581,7 +5581,7 @@ var EndpointCaller = /** @class */ (function () {
             url: params.url,
             queryString: params.errorsAsSuccess ? params.queryString.concat(['errorsAsSuccess=1']) : params.queryString,
             requestData: params.requestData,
-            requestDataType: params.requestDataType || 'application/x-www-form-urlencoded; charset="UTF-8"',
+            requestDataType: params.requestDataType || 'application/x-www-form-urlencoded; charset=UTF-8',
             begun: new Date(),
             method: params.method
         };
@@ -5860,10 +5860,10 @@ var EndpointCaller = /** @class */ (function () {
             return headers;
         }
         if (requestInfo.requestDataType.indexOf('application/json') === 0) {
-            headers['Content-Type'] = 'application/json; charset="UTF-8"';
+            headers['Content-Type'] = 'application/json; charset=UTF-8';
         }
         else {
-            headers['Content-Type'] = 'application/x-www-form-urlencoded; charset="UTF-8"';
+            headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
         }
         return headers;
     };
@@ -6091,8 +6091,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.9373.14',
-    product: '2.9373.14',
+    lib: '2.9659.0-beta',
+    product: '2.9659.0-beta',
     supportedApiVersion: 2
 };
 

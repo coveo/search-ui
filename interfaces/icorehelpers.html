@@ -230,15 +230,13 @@
 					<div class="lead">
 						<p>The core template helpers provided by default.</p>
 					</div>
-					<p><strong>Usage Examples:</strong></p>
-					<blockquote>
-						<p><strong>HTML</strong></p>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"helperName"</span> <span class="hljs-attr">data-helper-options-optionName</span>=<span class="hljs-string">"option-value"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+					<p><strong>Examples:</strong></p>
+					<p><strong>HTML</strong></p>
+					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@videoduration"</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"timeSpan"</span> <span class="hljs-attr">data-helper-options-is-milliseconds</span>=<span class="hljs-string">"false"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
-						<p><strong>Underscore</strong></p>
-						<pre><code class="lang-erb"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span></span></span><span class="ruby"> helperName(argument1, argument2) </span><span class="xml"><span class="hljs-tag">%&gt;</span></span>
+					<p><strong>Underscore</strong></p>
+					<pre><code class="lang-erb"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span></span></span><span class="ruby"> timeSpan(raw.videoduration, { <span class="hljs-symbol">isMilliseconds:</span> <span class="hljs-literal">false</span> }) </span><span class="xml"><span class="hljs-tag">%&gt;</span></span>
 </code></pre>
-					</blockquote>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -288,8 +286,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L218">ui/Templates/CoreHelpers.ts
-							:218</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L219">ui/Templates/CoreHelpers.ts
+							:219</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -333,8 +331,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L178">ui/Templates/CoreHelpers.ts
-							:178</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L179">ui/Templates/CoreHelpers.ts
+							:179</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -343,7 +341,7 @@
 						</div>
 						<ul>
 							<li><code>content</code>: The number value to format.</li>
-							<li><code>options</code>: Optional. The options to use (see ICurrencyToStringOptions).</li>
+							<li><code>options</code>: Optional. The options to use (see <a href="icurrencytostringoptions.html">ICurrencyToStringOptions</a>).</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -351,7 +349,7 @@
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ICurrencyToStringOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, options<span class="tsd-signature-symbol">?: </span><a href="icurrencytostringoptions.html" class="tsd-signature-type">ICurrencyToStringOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
@@ -361,7 +359,7 @@
 												<h5>content: <span class="tsd-signature-type">any</span></h5>
 											</li>
 											<li>
-												<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">ICurrencyToStringOptions</span></h5>
+												<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="icurrencytostringoptions.html" class="tsd-signature-type">ICurrencyToStringOptions</a></h5>
 											</li>
 										</ul>
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -378,8 +376,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L156">ui/Templates/CoreHelpers.ts
-							:156</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L157">ui/Templates/CoreHelpers.ts
+							:157</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -388,7 +386,7 @@
 						</div>
 						<ul>
 							<li><code>content</code>: The Date value to format.</li>
-							<li><code>options</code>: Optional. The options to use (see IDateToStringOptions).</li>
+							<li><code>options</code>: Optional. The options to use (see <a href="idatetostringoptions.html">IDateToStringOptions</a>).</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -423,8 +421,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L171">ui/Templates/CoreHelpers.ts
-							:171</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L172">ui/Templates/CoreHelpers.ts
+							:172</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -434,7 +432,7 @@
 						</div>
 						<ul>
 							<li><code>content</code>: The Date value to format.</li>
-							<li><code>options</code>: Optional. The options to use (see IDateToStringOptions).</li>
+							<li><code>options</code>: Optional. The options to use (see <a href="idatetostringoptions.html">IDateToStringOptions</a>).</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -469,8 +467,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L211">ui/Templates/CoreHelpers.ts
-							:211</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L212">ui/Templates/CoreHelpers.ts
+							:212</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -541,8 +539,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L186">ui/Templates/CoreHelpers.ts
-							:186</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L187">ui/Templates/CoreHelpers.ts
+							:187</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -552,7 +550,7 @@
 						</div>
 						<ul>
 							<li><code>content</code>: The Date value to format.</li>
-							<li><code>options</code>: Optional. The options to use (see IDateToStringOptions).</li>
+							<li><code>options</code>: Optional. The options to use (see <a href="idatetostringoptions.html">IDateToStringOptions</a>).</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -587,8 +585,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L332">ui/Templates/CoreHelpers.ts
-							:332</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L333">ui/Templates/CoreHelpers.ts
+							:333</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -628,8 +626,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L253">ui/Templates/CoreHelpers.ts
-							:253</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L254">ui/Templates/CoreHelpers.ts
+							:254</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -679,8 +677,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L86">ui/Templates/CoreHelpers.ts
-							:86</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L87">ui/Templates/CoreHelpers.ts
+							:87</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -728,8 +726,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L129">ui/Templates/CoreHelpers.ts
-							:129</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L130">ui/Templates/CoreHelpers.ts
+							:130</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -789,8 +787,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L106">ui/Templates/CoreHelpers.ts
-							:106</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L107">ui/Templates/CoreHelpers.ts
+							:107</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -852,8 +850,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L225">ui/Templates/CoreHelpers.ts
-							:225</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L226">ui/Templates/CoreHelpers.ts
+							:226</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -897,8 +895,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L340">ui/Templates/CoreHelpers.ts
-							:340</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L341">ui/Templates/CoreHelpers.ts
+							:341</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -931,8 +929,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L270">ui/Templates/CoreHelpers.ts
-							:270</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L271">ui/Templates/CoreHelpers.ts
+							:271</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -989,8 +987,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L149">ui/Templates/CoreHelpers.ts
-							:149</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L150">ui/Templates/CoreHelpers.ts
+							:150</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1038,8 +1036,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L54">ui/Templates/CoreHelpers.ts
-							:54</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L55">ui/Templates/CoreHelpers.ts
+							:55</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1094,8 +1092,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L66">ui/Templates/CoreHelpers.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L67">ui/Templates/CoreHelpers.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1150,8 +1148,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L78">ui/Templates/CoreHelpers.ts
-							:78</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L79">ui/Templates/CoreHelpers.ts
+							:79</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1206,8 +1204,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L312">ui/Templates/CoreHelpers.ts
-							:312</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L313">ui/Templates/CoreHelpers.ts
+							:313</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1220,7 +1218,7 @@
 							<p><code>size(1025) =&gt; 1 KB</code></p>
 							<p><code>size(10240) =&gt; 10 KB</code></p>
 						</blockquote>
-						<p><strong>Usage Examples:</strong></p>
+						<p><strong>Examples:</strong></p>
 						<blockquote>
 							<p><strong>HTML</strong></p>
 							<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@size'</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"size"</span> <span class="hljs-attr">data-helper-options-base</span>=<span class="hljs-string">"1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
@@ -1268,8 +1266,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L240">ui/Templates/CoreHelpers.ts
-							:240</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L241">ui/Templates/CoreHelpers.ts
+							:241</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1325,8 +1323,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L163">ui/Templates/CoreHelpers.ts
-							:163</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L164">ui/Templates/CoreHelpers.ts
+							:164</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1335,7 +1333,7 @@
 						</div>
 						<ul>
 							<li><code>content</code>: The Date value to format.</li>
-							<li><code>options</code>: Optional. The options to use (see IDateToStringOptions).</li>
+							<li><code>options</code>: Optional. The options to use (see <a href="idatetostringoptions.html">IDateToStringOptions</a>).</li>
 						</ul>
 					</div>
 					<div class="tsd-type-declaration">
@@ -1370,8 +1368,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L283">ui/Templates/CoreHelpers.ts
-							:283</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L284">ui/Templates/CoreHelpers.ts
+							:284</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1420,8 +1418,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L326">ui/Templates/CoreHelpers.ts
-							:326</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Templates/CoreHelpers.ts#L327">ui/Templates/CoreHelpers.ts
+							:327</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">

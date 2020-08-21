@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IEndpointCallParameters | Coveo JavaScript Search Framework - Reference Documentation</title>
+	<title>ICurrencyToStringOptions | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
@@ -129,28 +129,13 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="iendpointcallparameters.html" class="tsd-kind-icon">IEndpoint<wbr>Call<wbr>Parameters</a>
+						<a href="icurrencytostringoptions.html" class="tsd-kind-icon">ICurrency<wbr>ToString<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#errorsassuccess" class="tsd-kind-icon">errors<wbr>AsSuccess</a>
+								<a href="icurrencytostringoptions.html#decimals" class="tsd-kind-icon">decimals</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#method" class="tsd-kind-icon">method</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#querystring" class="tsd-kind-icon">query<wbr>String</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#requestdata" class="tsd-kind-icon">request<wbr>Data</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#requestdatatype" class="tsd-kind-icon">request<wbr>Data<wbr>Type</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#responsetype" class="tsd-kind-icon">response<wbr>Type</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iendpointcallparameters.html#url" class="tsd-kind-icon">url</a>
+								<a href="icurrencytostringoptions.html#symbol" class="tsd-kind-icon">symbol</a>
 							</li>
 						</ul>
 					</li>
@@ -171,16 +156,16 @@
 							<a href="../globals.html">Globals</a>
 						</li>
 						<li>
-							<a href="iendpointcallparameters.html">IEndpointCallParameters</a>
+							<a href="icurrencytostringoptions.html">ICurrencyToStringOptions</a>
 						</li>
 					</ul>
-					<h1>Interface IEndpointCallParameters</h1>
+					<h1>Interface ICurrencyToStringOptions</h1>
 				</div>
 			</div>
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Parameters that can be used when calling an <a href="../classes/endpointcaller.html">EndpointCaller</a></p>
+						<p>The available options to format a numeric value as a currency string.</p>
 					</div>
 				</div>
 			</section>
@@ -194,13 +179,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#errorsassuccess" class="tsd-kind-icon">errors<wbr>AsSuccess</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#method" class="tsd-kind-icon">method</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#querystring" class="tsd-kind-icon">query<wbr>String</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#requestdata" class="tsd-kind-icon">request<wbr>Data</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#requestdatatype" class="tsd-kind-icon">request<wbr>Data<wbr>Type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#responsetype" class="tsd-kind-icon">response<wbr>Type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iendpointcallparameters.html#url" class="tsd-kind-icon">url</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icurrencytostringoptions.html#decimals" class="tsd-kind-icon">decimals</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icurrencytostringoptions.html#symbol" class="tsd-kind-icon">symbol</a></li>
 							</ul>
 						</section>
 					</div>
@@ -209,125 +189,37 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="errorsassuccess" class="tsd-anchor"></a>
-					<h3>errors<wbr>AsSuccess</h3>
-					<div class="tsd-signature tsd-kind-icon">errors<wbr>AsSuccess<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="decimals" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> decimals</h3>
+					<div class="tsd-signature tsd-kind-icon">decimals<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L53">rest/EndpointCaller.ts
-							:53</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/utils/CurrencyUtils.ts#L15">utils/CurrencyUtils.ts
+							:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Flag to specify if the endpoint should return different type of error as actual 200 success for the browser, but with the error code/message contained in the response.</p>
+							<p>The number of decimals to display.</p>
 						</div>
+						<p><strong>Default:</strong> <code>0</code></p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="method" class="tsd-anchor"></a>
-					<h3>method</h3>
-					<div class="tsd-signature tsd-kind-icon">method<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="symbol" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> symbol</h3>
+					<div class="tsd-signature tsd-kind-icon">symbol<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L44">rest/EndpointCaller.ts
-							:44</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/utils/CurrencyUtils.ts#L19">utils/CurrencyUtils.ts
+							:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Or HTTP verb : GET, POST, PUT, etc.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="querystring" class="tsd-anchor"></a>
-					<h3>query<wbr>String</h3>
-					<div class="tsd-signature tsd-kind-icon">query<wbr>String<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L30">rest/EndpointCaller.ts
-							:30</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Array of query string params.<br/>
-							eg: [&#39;foo=1&#39;,&#39;bar=2&#39;]</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="requestdata" class="tsd-anchor"></a>
-					<h3>request<wbr>Data</h3>
-					<div class="tsd-signature tsd-kind-icon">request<wbr>Data<span class="tsd-signature-symbol">:</span> <a href="istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L35">rest/EndpointCaller.ts
-							:35</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Body of the request.<br/>
-							key -&gt; value map (JSON)</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="requestdatatype" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> request<wbr>Data<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">request<wbr>Data<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L40">rest/EndpointCaller.ts
-							:40</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Request data type.<br/>
-							eg: &quot;application/json&quot;, &quot;application/x-www-form-urlencoded; charset=UTF-8&quot;</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="responsetype" class="tsd-anchor"></a>
-					<h3>response<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">response<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L49">rest/EndpointCaller.ts
-							:49</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>responseType of the request.</br>
-							eg: &quot;text&quot;, &quot;arraybuffer&quot; etc.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="url" class="tsd-anchor"></a>
-					<h3>url</h3>
-					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/EndpointCaller.ts#L25">rest/EndpointCaller.ts
-							:25</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Url to target</p>
+							<p>The currency symbol to use.</p>
 						</div>
 					</div>
 				</section>
@@ -336,7 +228,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IEndpointCallParameters</span>
+						<span class="target">ICurrencyToStringOptions</span>
 					</li>
 				</ul>
 			</section>
