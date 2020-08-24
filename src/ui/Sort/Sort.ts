@@ -14,9 +14,10 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { SortCriteria } from './SortCriteria';
-import { AccessibleButton } from '../../utils/AccessibleButton';
+import { SortCriteria, VALID_DIRECTION } from './SortCriteria';
+import { AccessibleButton, ArrowDirection } from '../../utils/AccessibleButton';
 import { l } from '../../strings/Strings';
+import { findIndex } from 'underscore';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -24,6 +25,8 @@ export interface ISortOptions {
 }
 /**
  * The `Sort` component renders a widget that the end user can interact with to select the criterion to use when sorting query results.
+ *
+ * To improve accessibility, it's recommended to group `Sort` components in a container with `role="radiogroup"`.
  */
 export class Sort extends Component {
   static ID = 'Sort';
@@ -90,7 +93,9 @@ export class Sort extends Component {
 
   private currentCriteria: SortCriteria;
 
-  private icon: HTMLElement;
+  private sortButton: HTMLElement;
+  private directionButton: HTMLElement;
+  private radioGroup: HTMLElement;
 
   /**
    * Creates a new `Sort` component instance.
@@ -112,22 +117,22 @@ export class Sort extends Component {
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
-    this.setTextToCaptionIfDefined();
-    this.addAccessiblityAttributes();
+    this.ensureDom();
+  }
 
-    if (this.isToggle()) {
-      this.icon = $$('span', { className: 'coveo-icon' }).el;
-      const iconAscending = $$('span', { className: 'coveo-sort-icon-ascending' }, SVGIcons.icons.arrowUp);
-      SVGDom.addClassToSVGInContainer(iconAscending.el, 'coveo-sort-icon-ascending-svg');
-      const iconDescending = $$('span', { className: 'coveo-sort-icon-descending' }, SVGIcons.icons.arrowDown);
-      SVGDom.addClassToSVGInContainer(iconDescending.el, 'coveo-sort-icon-descending-svg');
-      this.icon.appendChild(iconAscending.el);
-      this.icon.appendChild(iconDescending.el);
-      this.element.appendChild(this.icon);
+  public createDom() {
+    const el = $$(this.element);
+    el.on('click', () => this.selectAndExecuteQuery());
+    const innerText = el.text();
+    el.empty();
+
+    this.findOrCreateRadioGroup();
+    this.createSortButton(innerText);
+    if (this.canChangeDirection()) {
+      this.createDirectionButton();
     }
 
     this.update();
-    this.updateAppearance();
   }
 
   /**
@@ -142,15 +147,12 @@ export class Sort extends Component {
       this.currentCriteria = _.find(this.options.sortCriteria, (criteria: SortCriteria) => {
         return criteria.direction == direction;
       });
+      this.queryStateModel.set(QueryStateModel.attributesEnum.sort, this.currentCriteria.toString());
     } else if (Utils.exists(this.currentCriteria)) {
-      var indexOfCurrentCriteria = _.indexOf(this.options.sortCriteria, this.currentCriteria);
-      Assert.check(indexOfCurrentCriteria >= 0);
-      this.currentCriteria = this.options.sortCriteria[(indexOfCurrentCriteria + 1) % this.options.sortCriteria.length];
+      this.selectNextCriteria();
     } else {
-      this.currentCriteria = this.options.sortCriteria[0];
+      this.selectFirstCriteria();
     }
-
-    this.queryStateModel.set(QueryStateModel.attributesEnum.sort, this.currentCriteria.toString());
   }
 
   /**
@@ -163,9 +165,7 @@ export class Sort extends Component {
     var oldCriteria = this.currentCriteria;
     this.select();
     if (oldCriteria != this.currentCriteria) {
-      this.queryController.deferExecuteQuery({
-        beforeExecuteQuery: () => logSortEvent(this.usageAnalytics, this.currentCriteria.sort + this.currentCriteria.direction)
-      });
+      this.executeSearchQuery();
     }
   }
 
@@ -196,6 +196,108 @@ export class Sort extends Component {
     return _.any(this.options.sortCriteria, (sortCriteria: SortCriteria) => sortId == sortCriteria.toString());
   }
 
+  private findOrCreateRadioGroup() {
+    this.radioGroup = this.findRadioGroup();
+    if (!this.radioGroup) {
+      this.element.setAttribute('role', 'radiogroup');
+      this.radioGroup = this.element;
+    }
+  }
+
+  private createSortButton(innerText?: string) {
+    this.sortButton = $$('span').el;
+    this.sortButton.innerText = this.options.caption || innerText;
+    new AccessibleButton()
+      .withElement(this.sortButton)
+      .withEnterKeyboardAction(() => this.selectAndExecuteQuery())
+      .withArrowsAction((direction, e) => this.onArrowPressed(direction, e))
+      .withLabel(
+        this.canChangeDirection() ? this.getDirectionalLabel(this.initialDirection as VALID_DIRECTION) : this.getOmnidirectionalLabel()
+      )
+      .withRole('radio')
+      .build();
+    this.element.appendChild(this.sortButton);
+  }
+
+  private createDirectionButton() {
+    this.directionButton = $$('span', { className: 'coveo-icon' }, ...this.createIcons()).el;
+    new AccessibleButton()
+      .withElement(this.directionButton)
+      .withSelectAction(e => {
+        e.stopPropagation();
+        this.selectNextCriteriaAndExecuteQuery();
+      })
+      .withArrowsAction((direction, e) => this.onArrowPressed(direction, e))
+      .withLabel(
+        this.getDirectionalLabel(
+          this.initialDirection === VALID_DIRECTION.DESCENDING ? VALID_DIRECTION.ASCENDING : VALID_DIRECTION.DESCENDING
+        )
+      )
+      .withRole('radio')
+      .build();
+    this.element.appendChild(this.directionButton);
+  }
+
+  private onArrowPressed(direction: ArrowDirection, e: Event) {
+    this.selectNextRadioButton(direction === ArrowDirection.RIGHT || direction === ArrowDirection.DOWN ? 1 : -1);
+    e.stopPropagation();
+  }
+
+  private createIcons() {
+    const iconAscending = $$('span', { className: 'coveo-sort-icon-ascending' }, SVGIcons.icons.arrowUp);
+    SVGDom.addClassToSVGInContainer(iconAscending.el, 'coveo-sort-icon-ascending-svg');
+    const iconDescending = $$('span', { className: 'coveo-sort-icon-descending' }, SVGIcons.icons.arrowDown);
+    SVGDom.addClassToSVGInContainer(iconDescending.el, 'coveo-sort-icon-descending-svg');
+    return [iconAscending, iconDescending];
+  }
+
+  private findRadioGroup(element = this.element) {
+    if (!element || element === document.body) {
+      return null;
+    }
+    if (element.getAttribute('role') === 'radiogroup') {
+      return element;
+    }
+    return this.findRadioGroup(element.parentElement);
+  }
+
+  private selectNextRadioButton(direction = 1) {
+    const radioButtons = $$(this.radioGroup).findAll('[role="radio"]');
+    const currentIndex = findIndex(radioButtons, radio => radio.getAttribute('aria-checked') === 'true');
+    const indexToSelect =
+      currentIndex !== -1
+        ? (currentIndex + direction + radioButtons.length) % radioButtons.length
+        : direction >= 0 ? 0 : radioButtons.length - 1;
+    const radioToSelect = radioButtons[indexToSelect];
+    radioToSelect.focus();
+    radioToSelect.click();
+  }
+
+  private executeSearchQuery() {
+    this.queryController.deferExecuteQuery({
+      beforeExecuteQuery: () => logSortEvent(this.usageAnalytics, this.currentCriteria.sort + this.currentCriteria.direction)
+    });
+  }
+
+  private selectFirstCriteria() {
+    this.currentCriteria = this.options.sortCriteria[0];
+    this.queryStateModel.set(QueryStateModel.attributesEnum.sort, this.currentCriteria.toString());
+  }
+
+  private selectNextCriteria() {
+    const indexOfCurrentCriteria = this.currentCriteria ? _.indexOf(this.options.sortCriteria, this.currentCriteria) : 0;
+    this.currentCriteria = this.options.sortCriteria[(indexOfCurrentCriteria + 1) % this.options.sortCriteria.length];
+    this.queryStateModel.set(QueryStateModel.attributesEnum.sort, this.currentCriteria.toString());
+  }
+
+  private selectNextCriteriaAndExecuteQuery() {
+    const oldCriteria = this.currentCriteria;
+    this.selectNextCriteria();
+    if (oldCriteria != this.currentCriteria) {
+      this.executeSearchQuery();
+    }
+  }
+
   private handleQueryStateChanged(data: IAttributesChangedEventArg) {
     this.update();
   }
@@ -213,25 +315,16 @@ export class Sort extends Component {
     this.updateAccessibilityProperties();
   }
 
-  private setTextToCaptionIfDefined() {
-    this.captionIsDefined && $$(this.element).text(this.options.caption);
-  }
-
   private get captionIsDefined() {
     return Utils.isNonEmptyString(this.options.caption);
   }
 
   private get currentDirection() {
-    return this.currentCriteria ? this.currentCriteria.direction : this.options.sortCriteria[0].direction;
+    return this.currentCriteria ? this.currentCriteria.direction : this.initialDirection;
   }
 
-  private addAccessiblityAttributes() {
-    new AccessibleButton()
-      .withElement(this.element)
-      .withSelectAction(() => this.handleClick())
-      .withLabel(this.getAccessibleLabel())
-      .build();
-    this.updateAccessibleSelectedState();
+  private get initialDirection() {
+    return this.options.sortCriteria[0].direction;
   }
 
   private get displayedSortText() {
@@ -261,11 +354,7 @@ export class Sort extends Component {
     $$(this.element).addClass('coveo-sort-hidden');
   }
 
-  private handleClick() {
-    this.selectAndExecuteQuery();
-  }
-
-  private isToggle(): boolean {
+  private canChangeDirection(): boolean {
     return this.options.sortCriteria.length > 1;
   }
 
@@ -275,7 +364,7 @@ export class Sort extends Component {
 
   private updateAppearance() {
     $$(this.element).toggleClass('coveo-selected', this.isSelected());
-    if (this.isToggle()) {
+    if (this.canChangeDirection()) {
       $$(this.element).removeClass('coveo-ascending');
       $$(this.element).removeClass('coveo-descending');
       if (this.isSelected()) {
@@ -285,40 +374,20 @@ export class Sort extends Component {
   }
 
   private updateAccessibilityProperties() {
-    this.updateAccessibleSelectedState();
-    this.updateAccessibleLabel();
+    this.sortButton.setAttribute('aria-checked', `${this.isSelected() && this.currentDirection === this.initialDirection}`);
+    if (this.canChangeDirection()) {
+      this.directionButton.setAttribute('aria-checked', `${this.isSelected() && this.currentDirection !== this.initialDirection}`);
+    }
   }
 
-  private updateAccessibleSelectedState() {
-    this.element.setAttribute('aria-pressed', this.isSelected().toString());
-  }
-
-  private updateAccessibleLabel() {
-    this.element.setAttribute('aria-label', this.getAccessibleLabel());
-  }
-
-  private getAccessibleLabel() {
-    return this.isToggle() ? this.getAccessibleLabelWithSort() : this.getAccessibleLabelWithoutSort();
-  }
-
-  private getAccessibleLabelWithSort(): string {
+  private getDirectionalLabel(direction: VALID_DIRECTION) {
     const localizedCaption = l(this.displayedSortText);
-    if (this.isSelected()) {
-      if (this.currentDirection === 'ascending') {
-        return l('SortResultsByDescending', localizedCaption);
-      } else {
-        return l('SortResultsByAscending', localizedCaption);
-      }
-    }
-
-    if (this.currentDirection === 'ascending') {
-      return l('SortResultsByAscending', localizedCaption);
-    }
-
-    return l('SortResultsByDescending', localizedCaption);
+    return direction === VALID_DIRECTION.DESCENDING
+      ? l('SortResultsByDescending', localizedCaption)
+      : l('SortResultsByAscending', localizedCaption);
   }
 
-  private getAccessibleLabelWithoutSort(): string {
+  private getOmnidirectionalLabel(): string {
     const localizedCaption = l(this.displayedSortText);
     return l('SortResultsBy', localizedCaption);
   }
