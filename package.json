@@ -80,7 +80,7 @@
     "@types/underscore": "1.8.3",
     "@types/xregexp": "^3.0.30",
     "aws-sdk": "^2.155.0",
-    "axe-core": "~3.0.2",
+    "axe-core": "~3.0.3",
     "bluebird": "^3.4.7",
     "body-parser": "^1.18.2",
     "cheerio": "^0.20.0",
@@ -161,11 +161,11 @@
     "jstimezonedetect": "^1.0.6",
     "latinize": "^0.4.0",
     "modal-box": "^2.0.10",
+    "moment": "~2.22.2",
     "pikaday": "^1.4.0",
     "popper.js": "^1.14.3",
     "underscore": "^1.8.3",
-    "xregexp": "^4.2.4",
-    "moment": "~2.22.2"
+    "xregexp": "^4.2.4"
   },
   "resolutions": {
     "marked": "^0.7.0",
