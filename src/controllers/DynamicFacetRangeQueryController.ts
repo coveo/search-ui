@@ -1,23 +1,27 @@
 import { DynamicFacetQueryController } from './DynamicFacetQueryController';
 import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
-import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
 import { IQuery } from '../rest/Query';
+import { IDynamicFacetRange } from '../ui/DynamicFacet/IDynamicFacetRange';
 
 export class DynamicFacetRangeQueryController extends DynamicFacetQueryController {
-  protected facet: IDynamicFacet;
+  protected facet: IDynamicFacetRange;
 
   public buildFacetRequest(query: IQuery): IFacetRequest {
     return {
       ...this.requestBuilder.buildBaseRequestForQuery(query),
-      preventAutoSelect: this.preventAutoSelection,
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
-      freezeCurrentValues: this.facet.values.hasValues
+      freezeCurrentValues: false,
+      generateAutomaticRanges: !this.isRangesOptionDefined
     };
   }
 
   protected get numberOfValues() {
-    return this.facet.values.hasValues ? this.currentValues.length : this.facet.options.numberOfValues;
+    return this.isRangesOptionDefined ? this.facet.options.ranges.length : this.facet.options.numberOfValues;
+  }
+
+  private get isRangesOptionDefined() {
+    return !!this.facet.options.ranges.length;
   }
 
   protected get currentValues(): IFacetRequestValue[] {
@@ -25,9 +29,7 @@ export class DynamicFacetRangeQueryController extends DynamicFacetQueryControlle
       start,
       end,
       endInclusive,
-      state,
-      // TODO: remove after SEARCHAPI-4233 is completed
-      preventAutoSelect: this.preventAutoSelection
+      state
     }));
   }
 }
