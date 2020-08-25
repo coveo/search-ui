@@ -71,7 +71,7 @@
     "@salesforce-ux/design-system": "^2.6.0",
     "@types/ag-grid": "^3.2.0",
     "@types/axe-core": "^2.0.7",
-    "@types/bluebird": "^3.5.20",
+    "@types/bluebird": "3.5.20",
     "@types/d3": "3.5.36",
     "@types/d3-scale": "1.0.4",
     "@types/jasmine": "^2.8.7",
@@ -174,7 +174,8 @@
     "yargs-parser": "^13.1.2",
     "mem": "^4.0.0",
     "js-yaml": "^3.13.1",
-    "braces": "^2.3.1"
+    "braces": "^2.3.1",
+    "@types/node": "~10.5.4"
   },
   "snyk": true
 }
