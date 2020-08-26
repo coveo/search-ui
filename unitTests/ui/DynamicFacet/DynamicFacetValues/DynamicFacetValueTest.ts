@@ -166,7 +166,7 @@ export function DynamicFacetValueTest() {
       });
 
       it('should return the correct aria-label', () => {
-        const expectedAriaLabel = `Unselect ${dynamicFacetValue.value} with ${dynamicFacetValue.formattedCount} results`;
+        const expectedAriaLabel = `Select ${dynamicFacetValue.value} with ${dynamicFacetValue.formattedCount} results`;
         expect(dynamicFacetValue.selectAriaLabel).toBe(expectedAriaLabel);
       });
 
