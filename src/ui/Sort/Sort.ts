@@ -1,9 +1,8 @@
 import 'styling/_Sort';
-import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { IBuildingQueryEventArgs, IQueryErrorEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { Assert } from '../../misc/Assert';
-import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
+import { MODEL_EVENTS } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES, QueryStateModel } from '../../models/QueryStateModel';
 import { $$ } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
@@ -17,7 +16,7 @@ import { Initialization } from '../Base/Initialization';
 import { SortCriteria, VALID_DIRECTION } from './SortCriteria';
 import { AccessibleButton, ArrowDirection } from '../../utils/AccessibleButton';
 import { l } from '../../strings/Strings';
-import { findIndex } from 'underscore';
+import { findIndex, find, any } from 'underscore';
 
 export interface ISortOptions {
   sortCriteria?: SortCriteria[];
@@ -71,7 +70,7 @@ export class Sort extends Component {
      */
     sortCriteria: ComponentOptions.buildCustomListOption(
       values => {
-        return _.map(values, criteria => {
+        return values.map(criteria => {
           // 'any' because Underscore won't accept the union type as an argument.
           if (typeof criteria === 'string') {
             return new SortCriteria(criteria);
@@ -111,9 +110,7 @@ export class Sort extends Component {
 
     Assert.isLargerOrEqualsThan(1, this.options.sortCriteria.length);
 
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.SORT, (args: IAttributesChangedEventArg) =>
-      this.handleQueryStateChanged(args)
-    );
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.SORT, () => this.handleQueryStateChanged());
     this.bind.onRootElement(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) => this.handleQuerySuccess(args));
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
     this.bind.onRootElement(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError(args));
@@ -128,7 +125,7 @@ export class Sort extends Component {
 
     this.findOrCreateRadioGroup();
     this.createSortButton(innerText);
-    if (this.canChangeDirection()) {
+    if (this.isToggle()) {
       this.createDirectionButton();
     }
 
@@ -144,10 +141,10 @@ export class Sort extends Component {
    */
   public select(direction?: string) {
     if (direction) {
-      this.currentCriteria = _.find(this.options.sortCriteria, (criteria: SortCriteria) => {
+      this.currentCriteria = find(this.options.sortCriteria, (criteria: SortCriteria) => {
         return criteria.direction == direction;
       });
-      this.queryStateModel.set(QueryStateModel.attributesEnum.sort, this.currentCriteria.toString());
+      this.updateQueryStateModel();
     } else if (Utils.exists(this.currentCriteria)) {
       this.selectNextCriteria();
     } else {
@@ -193,7 +190,7 @@ export class Sort extends Component {
    * @param sortId The sort criteria name to look for (e.g., `date descending`).
    */
   public match(sortId: string) {
-    return _.any(this.options.sortCriteria, (sortCriteria: SortCriteria) => sortId == sortCriteria.toString());
+    return any(this.options.sortCriteria, (sortCriteria: SortCriteria) => sortId == sortCriteria.toString());
   }
 
   private findOrCreateRadioGroup() {
@@ -211,9 +208,7 @@ export class Sort extends Component {
       .withElement(this.sortButton)
       .withEnterKeyboardAction(() => this.selectAndExecuteQuery())
       .withArrowsAction((direction, e) => this.onArrowPressed(direction, e))
-      .withLabel(
-        this.canChangeDirection() ? this.getDirectionalLabel(this.initialDirection as VALID_DIRECTION) : this.getOmnidirectionalLabel()
-      )
+      .withLabel(this.isToggle() ? this.getDirectionalLabel(this.initialDirection as VALID_DIRECTION) : this.getOmnidirectionalLabel())
       .withRole('radio')
       .build();
     this.element.appendChild(this.sortButton);
@@ -264,10 +259,17 @@ export class Sort extends Component {
   private selectNextRadioButton(direction = 1) {
     const radioButtons = $$(this.radioGroup).findAll('[role="radio"]');
     const currentIndex = findIndex(radioButtons, radio => radio.getAttribute('aria-checked') === 'true');
-    const indexToSelect =
-      currentIndex !== -1
-        ? (currentIndex + direction + radioButtons.length) % radioButtons.length
-        : direction >= 0 ? 0 : radioButtons.length - 1;
+    let indexToSelect: number;
+    const isAnythingSelected = currentIndex !== -1;
+    if (isAnythingSelected) {
+      indexToSelect = (currentIndex + direction + radioButtons.length) % radioButtons.length;
+    } else {
+      if (direction >= 0) {
+        indexToSelect = 0;
+      } else {
+        indexToSelect = radioButtons.length - 1;
+      }
+    }
     const radioToSelect = radioButtons[indexToSelect];
     radioToSelect.focus();
     radioToSelect.click();
@@ -281,13 +283,13 @@ export class Sort extends Component {
 
   private selectFirstCriteria() {
     this.currentCriteria = this.options.sortCriteria[0];
-    this.queryStateModel.set(QueryStateModel.attributesEnum.sort, this.currentCriteria.toString());
+    this.updateQueryStateModel();
   }
 
   private selectNextCriteria() {
-    const indexOfCurrentCriteria = this.currentCriteria ? _.indexOf(this.options.sortCriteria, this.currentCriteria) : 0;
+    const indexOfCurrentCriteria = this.currentCriteria ? this.options.sortCriteria.indexOf(this.currentCriteria) : 0;
     this.currentCriteria = this.options.sortCriteria[(indexOfCurrentCriteria + 1) % this.options.sortCriteria.length];
-    this.queryStateModel.set(QueryStateModel.attributesEnum.sort, this.currentCriteria.toString());
+    this.updateQueryStateModel();
   }
 
   private selectNextCriteriaAndExecuteQuery() {
@@ -298,7 +300,7 @@ export class Sort extends Component {
     }
   }
 
-  private handleQueryStateChanged(data: IAttributesChangedEventArg) {
+  private handleQueryStateChanged() {
     this.update();
   }
 
@@ -307,7 +309,7 @@ export class Sort extends Component {
     var sortCriteria = <string>this.queryStateModel.get(QueryStateModel.attributesEnum.sort);
     if (Utils.isNonEmptyString(sortCriteria)) {
       var criteriaFromModel = SortCriteria.parse(sortCriteria);
-      this.currentCriteria = _.find(this.options.sortCriteria, (criteria: SortCriteria) => criteriaFromModel.equals(criteria));
+      this.currentCriteria = find(this.options.sortCriteria, (criteria: SortCriteria) => criteriaFromModel.equals(criteria));
     } else {
       this.currentCriteria = null;
     }
@@ -354,7 +356,7 @@ export class Sort extends Component {
     $$(this.element).addClass('coveo-sort-hidden');
   }
 
-  private canChangeDirection(): boolean {
+  private isToggle(): boolean {
     return this.options.sortCriteria.length > 1;
   }
 
@@ -364,7 +366,7 @@ export class Sort extends Component {
 
   private updateAppearance() {
     $$(this.element).toggleClass('coveo-selected', this.isSelected());
-    if (this.canChangeDirection()) {
+    if (this.isToggle()) {
       $$(this.element).removeClass('coveo-ascending');
       $$(this.element).removeClass('coveo-descending');
       if (this.isSelected()) {
@@ -374,9 +376,10 @@ export class Sort extends Component {
   }
 
   private updateAccessibilityProperties() {
-    this.sortButton.setAttribute('aria-checked', `${this.isSelected() && this.currentDirection === this.initialDirection}`);
-    if (this.canChangeDirection()) {
-      this.directionButton.setAttribute('aria-checked', `${this.isSelected() && this.currentDirection !== this.initialDirection}`);
+    const directionIsInitial = this.currentDirection === this.initialDirection;
+    this.sortButton.setAttribute('aria-checked', `${this.isSelected() && directionIsInitial}`);
+    if (this.isToggle()) {
+      this.directionButton.setAttribute('aria-checked', `${this.isSelected() && !directionIsInitial}`);
     }
   }
 
@@ -390,6 +393,10 @@ export class Sort extends Component {
   private getOmnidirectionalLabel(): string {
     const localizedCaption = l(this.displayedSortText);
     return l('SortResultsBy', localizedCaption);
+  }
+
+  private updateQueryStateModel() {
+    this.queryStateModel.set(QueryStateModel.attributesEnum.sort, this.currentCriteria.toString());
   }
 }
 
