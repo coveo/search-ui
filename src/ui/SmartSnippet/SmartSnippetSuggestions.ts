@@ -10,6 +10,7 @@ import { SmartSnippetCollapsibleSuggestion } from './SmartSnippetCollapsibleSugg
 import { l } from '../../strings/Strings';
 
 const BASE_CLASSNAME = 'coveo-smart-snippet-suggestions';
+const HAS_QUESTIONS_CLASSNAME = `${BASE_CLASSNAME}-has-questions`;
 const QUESTIONS_LIST_CLASSNAME = `${BASE_CLASSNAME}-questions`;
 const QUESTIONS_LIST_TITLE_CLASSNAME = `${QUESTIONS_LIST_CLASSNAME}-title`;
 
@@ -43,7 +44,9 @@ export class SmartSnippetSuggestions extends Component {
 
   private handleQuerySuccess(data: IQuerySuccessEventArgs) {
     const questionAnswer = data.results.questionAnswer;
-    if (questionAnswer && questionAnswer.relatedQuestions.length) {
+    const hasQuestions = !!(questionAnswer && questionAnswer.relatedQuestions.length);
+    $$(this.element).toggleClass(HAS_QUESTIONS_CLASSNAME, hasQuestions);
+    if (hasQuestions) {
       if (this.renderedQuestionAnswer && isEqual(questionAnswer, this.renderedQuestionAnswer)) {
         return;
       }

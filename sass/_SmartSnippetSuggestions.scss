@@ -1,9 +1,14 @@
 @import 'Variables';
 
 .CoveoSmartSnippetSuggestions {
+  display: none;
   margin: 16px 0;
   $inner-padding: 16px;
   @include defaultMediumRoundedBorder();
+
+  &.coveo-smart-snippet-suggestions-has-questions {
+    display: block;
+  }
 
   @at-root .coveo-smart-snippet-suggestions {
     &-questions {
@@ -39,6 +44,8 @@
           width: 15px;
           height: 15px;
           color: $color-greyish-teal-blue;
+          flex-shrink: 0;
+          margin-left: 1.2em;
 
           svg {
             width: 100%;
