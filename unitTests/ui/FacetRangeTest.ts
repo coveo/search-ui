@@ -49,8 +49,9 @@ export function FacetRangeTest() {
       });
     });
 
-    it(`when the facetValue's lookupValue is defined & different than the value
+    it(`when the facetValue's lookupValue is defined & identical to a range's label
     should display the lookupValue (originally the label) instead of the formatted value`, () => {
+      test.cmp.options.ranges = [{ label: 'All dates' }];
       const facetValue: FacetValue = FacetValue.create('1900/01/31@18:38:50..2020/06/25@18:30:00');
       facetValue.lookupValue = 'All dates';
       expect(test.cmp.getValueCaption(facetValue)).toEqual('All dates');
