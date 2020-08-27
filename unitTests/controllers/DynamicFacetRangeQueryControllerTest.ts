@@ -81,7 +81,7 @@ export function DynamicFacetRangeQueryControllerTest() {
         });
       });
 
-      describe('when there are values in the facet', () => {
+      describe('when there are active values in the facet', () => {
         beforeEach(() => {
           facet.selectMultipleValues(['0..100inc', '100..200inc', '200..300inc']);
           facet.deselectValue('0..100inc');
@@ -93,6 +93,21 @@ export function DynamicFacetRangeQueryControllerTest() {
 
         it('should send current available values', () => {
           expect(facetRequest().currentValues.length).toEqual(3);
+        });
+      });
+
+      describe('when there are no active values in the facet', () => {
+        beforeEach(() => {
+          facet.selectMultipleValues(['0..100inc', '100..200inc', '200..300inc']);
+          facet.deselectMultipleValues(['0..100inc', '100..200inc', '200..300inc']);
+        });
+
+        it('generateAutomaticRanges should be true', () => {
+          expect(facetRequest().generateAutomaticRanges).toBe(true);
+        });
+
+        it('should send no current values', () => {
+          expect(facetRequest().currentValues).toEqual([]);
         });
       });
     });
