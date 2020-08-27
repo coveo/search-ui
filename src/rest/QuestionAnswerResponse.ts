@@ -6,10 +6,6 @@ export interface IPartialQuestionAnswerResponse {
     contentIdValue: string;
   };
   score: number;
-  raw: { [key: string]: any } & {
-    title: string;
-    uri: string;
-  };
 }
 
 export interface IQuestionAnswerResponse extends IPartialQuestionAnswerResponse {

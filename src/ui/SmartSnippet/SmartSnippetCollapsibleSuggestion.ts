@@ -103,7 +103,7 @@ export class SmartSnippetCollapsibleSuggestion {
   }
 
   private updateExpanded() {
-    this.checkbox.setAttribute('aria-pressed', this.expanded.toString());
+    this.checkbox.setAttribute('aria-expanded', this.expanded.toString());
     this.checkbox.setHtml(this.expanded ? SVGIcons.icons.arrowUp : SVGIcons.icons.arrowDown);
     this.collapsibleContainer.setAttribute('tabindex', `${this.expanded ? 0 : -1}`);
     this.collapsibleContainer.setAttribute('aria-hidden', (!this.expanded).toString());

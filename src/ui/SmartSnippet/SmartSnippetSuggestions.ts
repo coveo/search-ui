@@ -8,18 +8,15 @@ import { $$, Dom } from '../../utils/Dom';
 import { uniqueId, isEqual } from 'underscore';
 import { SmartSnippetCollapsibleSuggestion } from './SmartSnippetCollapsibleSuggestion';
 import { l } from '../../strings/Strings';
+import { Initialization } from '../Base/Initialization';
 
 const BASE_CLASSNAME = 'coveo-smart-snippet-suggestions';
 const HAS_QUESTIONS_CLASSNAME = `${BASE_CLASSNAME}-has-questions`;
 const QUESTIONS_LIST_CLASSNAME = `${BASE_CLASSNAME}-questions`;
 const QUESTIONS_LIST_TITLE_CLASSNAME = `${QUESTIONS_LIST_CLASSNAME}-title`;
 
-export interface ISmartSnippetSuggestionsOptions {}
-
 export class SmartSnippetSuggestions extends Component {
   static ID = 'SmartSnippetSuggestions';
-
-  static options: ISmartSnippetSuggestionsOptions = {};
 
   static doExport = () => {
     exportGlobally({
@@ -33,7 +30,7 @@ export class SmartSnippetSuggestions extends Component {
   private questionAnswers: Dom;
   private renderedQuestionAnswer: IQuestionAnswerResponse;
 
-  constructor(public element: HTMLElement, public options?: ISmartSnippetSuggestionsOptions, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: {}, bindings?: IComponentBindings) {
     super(element, SmartSnippetSuggestions.ID, bindings);
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
@@ -89,3 +86,6 @@ export class SmartSnippetSuggestions extends Component {
       .join('\n');
   }
 }
+
+Initialization.registerAutoCreateComponent(SmartSnippetSuggestions);
+SmartSnippetSuggestions.doExport();
