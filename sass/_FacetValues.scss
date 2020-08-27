@@ -3,7 +3,7 @@
 
 @mixin facetValuesCheckboxes($size: 'normal') {
   $pixel-size: '18px';
-  @if $size=='smaller' {
+  @if $size== 'smaller' {
     $pixel-size: '13px';
   }
   input[type='checkbox'] {
@@ -19,7 +19,6 @@
     margin-right: 15px;
     background: white;
     position: relative;
-    float: left;
     top: 2px;
     > svg {
       position: relative;
@@ -86,7 +85,7 @@
 }
 
 @mixin coveo-hook($size: 'normal') {
-  @if $size=='smaller' {
+  @if $size== 'smaller' {
     width: 11px;
     height: 9px;
     bottom: 4px;
@@ -104,7 +103,7 @@
 }
 
 @mixin coveo-exclusion($size: 'normal') {
-  @if $size=='smaller' {
+  @if $size== 'smaller' {
     width: 7px;
     height: 7px;
     bottom: 5px;
@@ -166,6 +165,10 @@
   }
 }
 
+.coveo-facet-value-label-wrapper {
+  display: flex;
+}
+
 .coveo-facet-value-label {
   display: block;
   white-space: nowrap;
@@ -179,6 +182,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   vertical-align: middle;
+  flex-grow: 1;
 }
 
 .coveo-facet-value-icon {
@@ -192,7 +196,6 @@
   vertical-align: middle;
   margin: 0 5px;
   display: inline-block;
-  float: right;
   @include transition(opacity 1s);
   &.coveo-waitDelta {
     opacity: 0;
@@ -213,7 +216,9 @@
   @include justify-content(space-between);
   .coveo-facet-value-label-wrapper {
     @include order(1);
-    @include display('flex'); // This needs to be set, otherwise min-width auto on the elment will make the element overflow it's flex container;
+    @include display(
+      'flex'
+    ); // This needs to be set, otherwise min-width auto on the elment will make the element overflow it's flex container;
     min-width: 0;
     .coveo-facet-value-checkbox {
       @include order(1);
