@@ -6,6 +6,7 @@ import 'styling/_AccessibleButton';
 
 export class AccessibleButton {
   private element: Dom;
+  private hasLabel = true;
   private label: string;
   private title: string;
 
@@ -39,6 +40,11 @@ export class AccessibleButton {
 
   public withLabel(label: string) {
     this.label = label;
+    return this;
+  }
+
+  public withoutLabel() {
+    this.hasLabel = false;
     return this;
   }
 
@@ -129,6 +135,9 @@ export class AccessibleButton {
   }
 
   private ensureCorrectLabel() {
+    if (!this.hasLabel) {
+      return;
+    }
     if (!this.label) {
       this.logger.error(`Missing label to create an accessible button !`);
       return;
@@ -147,7 +156,10 @@ export class AccessibleButton {
   private ensureSelectAction() {
     if (this.enterKeyboardAction) {
       this.ensureTabIndex();
-      this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e)));
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e))
+      );
       this.bindEvent(
         'keydown',
         KeyboardUtils.keypressAction(KEYBOARD.SPACEBAR, (e: Event) => {
