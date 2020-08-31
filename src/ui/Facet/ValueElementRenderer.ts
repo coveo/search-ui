@@ -1,6 +1,6 @@
 import { Facet } from './Facet';
 import { FacetValue } from './FacetValue';
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
 import { Component } from '../Base/Component';
@@ -62,8 +62,11 @@ export class ValueElementRenderer {
       title: l('ExcludeValueWithResultCount', this.caption, l('ResultCount', this.count, parseInt(this.count, 10))),
       className: 'coveo-facet-value-exclude',
       tabindex: 0,
-      role: 'button'
+      role: 'button',
+      'aria-hidden': 'true'
     }).el;
+
+    this.toggleAriaHiddenOnFocusBlur($$(excludeIcon));
     this.addFocusAndBlurEventListeners(excludeIcon);
     excludeIcon.innerHTML = SVGIcons.icons.checkboxHookExclusionMore;
     SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg');
@@ -166,8 +169,23 @@ export class ValueElementRenderer {
   }
 
   private addFocusAndBlurEventListeners(elem: HTMLElement) {
-    $$(elem).on('focus', () => $$(this.listItem).addClass('coveo-focused'));
-    $$(elem).on('blur', () => $$(this.listItem).removeClass('coveo-focused'));
+    $$(elem).on('focus', () => {
+      $$(this.listItem).addClass('coveo-focused');
+    });
+
+    $$(elem).on('blur', () => {
+      $$(this.listItem).removeClass('coveo-focused');
+    });
+  }
+
+  private toggleAriaHiddenOnFocusBlur(elem: Dom) {
+    elem.on(['focus', 'mouseover'], () => {
+      elem.setAttribute('aria-hidden', 'false');
+    });
+
+    elem.on(['blur', 'mouseout'], () => {
+      elem.setAttribute('aria-hidden', 'true');
+    });
   }
 
   private buildListItem() {

@@ -147,6 +147,20 @@ export function ValueElementRendererTest() {
       expect(valueRenderer.build().excludeIcon.getAttribute('tabindex')).toBe('0');
     });
 
+    it('should put aria-hidden on exclude icon by default', () => {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      expect(valueRenderer.build().excludeIcon.getAttribute('aria-hidden')).toBe('true');
+    });
+
+    it('should toggle aria-hidden on exclude icon on focus and blur', () => {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      const excludeIcon = valueRenderer.build().excludeIcon;
+      $$(excludeIcon).trigger('focus');
+      expect(excludeIcon.getAttribute('aria-hidden')).toBe('false');
+      $$(excludeIcon).trigger('blur');
+      expect(excludeIcon.getAttribute('aria-hidden')).toBe('true');
+    });
+
     it('should render computed field only if needed', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().computedField).toBeUndefined();
