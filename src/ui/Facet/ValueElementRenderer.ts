@@ -169,13 +169,8 @@ export class ValueElementRenderer {
   }
 
   private addFocusAndBlurEventListeners(elem: HTMLElement) {
-    $$(elem).on('focus', () => {
-      $$(this.listItem).addClass('coveo-focused');
-    });
-
-    $$(elem).on('blur', () => {
-      $$(this.listItem).removeClass('coveo-focused');
-    });
+    $$(elem).on('focus', () => $$(this.listItem).addClass('coveo-focused'));
+    $$(elem).on('blur', () => $$(this.listItem).removeClass('coveo-focused'));
   }
 
   private toggleAriaHiddenOnFocusBlur(elem: Dom) {
