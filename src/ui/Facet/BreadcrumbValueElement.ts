@@ -10,7 +10,7 @@ import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/Anal
 import { Facet } from './Facet';
 import { FacetValue } from './FacetValue';
 import { l } from '../../strings/Strings';
-import { Component } from '../../Core';
+import { Component } from '../Base/Component';
 
 export interface IBreadcrumbValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
