@@ -1,7 +1,7 @@
 /// <reference path="Facet.ts" />
 
 import 'styling/_FacetBreadcrumb';
-import { compact } from 'underscore';
+import { compact, first } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$, Dom } from '../../utils/Dom';
@@ -10,6 +10,7 @@ import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/Anal
 import { Facet } from './Facet';
 import { FacetValue } from './FacetValue';
 import { l } from '../../strings/Strings';
+import { Component } from '../../Core';
 
 export interface IBreadcrumbValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
@@ -100,5 +101,12 @@ export class BreadcrumbValueElement {
         facetTitle: this.facet.options.title
       })
     );
+
+    this.focusOnContainer();
+  }
+
+  private focusOnContainer() {
+    const breadcrumb = first(this.facet.searchInterface.getComponents<Component>('Breadcrumb'));
+    breadcrumb ? breadcrumb.element.focus() : null;
   }
 }

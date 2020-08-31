@@ -6,6 +6,7 @@
   position: relative;
   overflow: hidden;
   border-bottom: $default-border;
+  outline: none;
   @include display(flex);
   @include align-items(flex-start);
 }
