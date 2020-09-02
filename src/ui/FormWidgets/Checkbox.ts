@@ -9,6 +9,8 @@ import { IFormWidgetSelectable, IFormWidgetWithLabel } from './FormWidgets';
 export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   protected element: HTMLElement;
   protected checkbox: HTMLInputElement;
+  private button: HTMLElement;
+  private ignoreNextChange = false;
 
   static doExport = () => {
     exportGlobally({
@@ -81,7 +83,8 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   public select(triggerChange = true) {
     const currentlyChecked = this.isSelected();
     this.checkbox.checked = true;
-    if (!currentlyChecked && triggerChange) {
+    if (!currentlyChecked) {
+      this.ignoreNextChange = !triggerChange;
       $$(this.checkbox).trigger('change');
     }
   }
@@ -111,10 +114,15 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
       type: 'checkbox',
       className: 'coveo-checkbox',
       value: this.label,
-      'aria-label': this.ariaLabel || this.label,
-      'aria-hidden': true
+      ariaLabel: this.ariaLabel || this.label,
+      ariaHidden: true
     }).el;
-    const button = $$('button', { type: 'button', className: 'coveo-checkbox-button', 'aria-label': this.ariaLabel || this.label });
+    this.button = $$('button', {
+      type: 'button',
+      className: 'coveo-checkbox-button',
+      ariaLabel: this.ariaLabel || this.label,
+      ariaPressed: this.isSelected().toString()
+    }).el;
     const labelSpan = $$('span', { className: 'coveo-checkbox-span-label' });
     labelSpan.text(this.label);
 
@@ -122,16 +130,27 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
     labelSuffixSpan.text(this.labelSuffix);
 
     label.append(this.checkbox);
-    label.append(button.el);
+    label.append(this.button);
     label.append(labelSpan.el);
     this.labelSuffix && label.append(labelSuffixSpan.el);
 
-    button.on('click', (e: Event) => {
+    $$(this.button).on('click', (e: Event) => {
       e.preventDefault();
       this.toggle();
     });
 
-    $$(this.checkbox).on('change', () => this.onChange(this));
+    $$(this.checkbox).on('change', () => {
+      this.updateAccessibilityAttributes();
+      if (!this.ignoreNextChange) {
+        this.onChange(this);
+      } else {
+        this.ignoreNextChange = false;
+      }
+    });
     this.element = label.el;
+  }
+
+  private updateAccessibilityAttributes() {
+    this.button.setAttribute('aria-pressed', this.isSelected().toString());
   }
 }
