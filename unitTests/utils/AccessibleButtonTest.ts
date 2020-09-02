@@ -1,4 +1,4 @@
-import { AccessibleButton } from '../../src/utils/AccessibleButton';
+import { AccessibleButton, ArrowDirection } from '../../src/utils/AccessibleButton';
 import { Dom, $$, KEYBOARD, Component, Defer } from '../../src/Core';
 import { Simulate } from '../Simulate';
 import { ComponentEvents } from '../../src/ui/Base/Component';
@@ -43,10 +43,19 @@ export const AccessibleButtonTest = () => {
       expect(element.getAttribute('title')).toBe(title);
     });
 
-    it('should add the correct role', () => {
+    it('with no specified role, should add the button role', () => {
       new AccessibleButton().withElement(element).build();
 
       expect(element.getAttribute('role')).toBe('button');
+    });
+
+    it('with a specified role, should add the specified role', () => {
+      new AccessibleButton()
+        .withElement(element)
+        .withRole('search')
+        .build();
+
+      expect(element.getAttribute('role')).toBe('search');
     });
 
     describe('with an action', () => {
@@ -254,6 +263,42 @@ export const AccessibleButtonTest = () => {
         it('should be called on mouseleave', () => {
           $$(element).trigger('mouseleave');
           expect(action).toHaveBeenCalled();
+        });
+      });
+
+      describe('configured as arrows', () => {
+        function getDirection() {
+          if (action.calls.count() === 0) {
+            return null;
+          }
+          return action.calls.mostRecent().args[0] as ArrowDirection;
+        }
+
+        beforeEach(() => {
+          new AccessibleButton()
+            .withElement(element)
+            .withArrowsAction(action)
+            .build();
+        });
+
+        it('should be called on keyboard up arrow keypress', () => {
+          Simulate.keyUp(element.el, KEYBOARD.UP_ARROW);
+          expect(getDirection()).toEqual(ArrowDirection.UP);
+        });
+
+        it('should be called on keyboard right arrow keypress', () => {
+          Simulate.keyUp(element.el, KEYBOARD.RIGHT_ARROW);
+          expect(getDirection()).toEqual(ArrowDirection.RIGHT);
+        });
+
+        it('should be called on keyboard down arrow keypress', () => {
+          Simulate.keyUp(element.el, KEYBOARD.DOWN_ARROW);
+          expect(getDirection()).toEqual(ArrowDirection.DOWN);
+        });
+
+        it('should be called on keyboard left arrow keypress', () => {
+          Simulate.keyUp(element.el, KEYBOARD.LEFT_ARROW);
+          expect(getDirection()).toEqual(ArrowDirection.LEFT);
         });
       });
 

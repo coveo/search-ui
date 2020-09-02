@@ -60,7 +60,7 @@ export class ValueElementRenderer {
   protected buildExcludeIcon(): HTMLElement {
     const isExcluded = this.facetValue.excluded;
     const excludeIcon = $$('div', {
-      title: l('ExcludeValueWithResultCount', this.caption, l('ResultCount', this.count, parseInt(this.count, 10))),
+      ariaLabel: l('ExcludeValueWithResultCount', this.caption, l('ResultCount', this.count, parseInt(this.count, 10))),
       className: 'coveo-facet-value-exclude',
       tabindex: 0,
       role: 'button',
