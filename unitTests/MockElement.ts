@@ -1,8 +1,8 @@
 import { mock } from './MockEnvironment';
 
-export type EventListenersMap = { [type: string]: ((event: Event) => any)[] };
+export type EventListenersMap = Record<string, ((event: Event) => any)[]>;
 
-export type EventTriggersMap = { [type: string]: Event[] };
+export type EventTriggersMap = Record<string, Event[]>;
 
 export class MockElement<T extends Element> {
   public readonly element: T;

@@ -60,7 +60,7 @@ export class ValueElementRenderer {
   protected buildExcludeIcon(): HTMLElement {
     const isExcluded = this.facetValue.excluded;
     const excludeIcon = $$('div', {
-      ariaLabel: l('ExcludeValueWithResultCount', this.caption, l('ResultCount', this.count, parseInt(this.count, 10))),
+      title: l('ExcludeValueWithResultCount', this.caption, l('ResultCount', this.count, parseInt(this.count, 10))),
       className: 'coveo-facet-value-exclude',
       tabindex: 0,
       role: 'button',
@@ -88,8 +88,8 @@ export class ValueElementRenderer {
   protected buildValueCheckbox(): HTMLElement {
     const checkbox = $$('input', {
       type: 'checkbox',
-      'aria-hidden': true,
-      'aria-label': this.ariaLabel
+      ariaHidden: true,
+      ariaLabel: this.ariaLabel
     }).el;
 
     this.facetValue.selected ? checkbox.setAttribute('checked', 'checked') : checkbox.removeAttribute('checked');
