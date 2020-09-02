@@ -114,13 +114,13 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
       type: 'checkbox',
       className: 'coveo-checkbox',
       value: this.label,
-      'aria-label': this.ariaLabel || this.label,
-      'aria-hidden': true
+      ariaLabel: this.ariaLabel || this.label,
+      ariaHidden: true
     }).el;
     this.button = $$('button', {
       type: 'button',
       className: 'coveo-checkbox-button',
-      'aria-label': this.ariaLabel || this.label,
+      ariaLabel: this.ariaLabel || this.label,
       ariaPressed: this.isSelected().toString()
     }).el;
     const labelSpan = $$('span', { className: 'coveo-checkbox-span-label' });

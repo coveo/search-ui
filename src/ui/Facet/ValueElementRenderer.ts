@@ -88,8 +88,8 @@ export class ValueElementRenderer {
   protected buildValueCheckbox(): HTMLElement {
     const checkbox = $$('input', {
       type: 'checkbox',
-      'aria-hidden': true,
-      'aria-label': this.ariaLabel
+      ariaHidden: true,
+      ariaLabel: this.ariaLabel
     }).el;
 
     this.facetValue.selected ? checkbox.setAttribute('checked', 'checked') : checkbox.removeAttribute('checked');
