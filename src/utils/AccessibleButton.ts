@@ -4,10 +4,18 @@ import { KEYBOARD, KeyboardUtils } from '../utils/KeyboardUtils';
 import { $$, Dom } from './Dom';
 import 'styling/_AccessibleButton';
 
+export enum ArrowDirection {
+  UP,
+  RIGHT,
+  DOWN,
+  LEFT
+}
+
 export class AccessibleButton {
   private element: Dom;
   private label: string;
   private title: string;
+  private role: string;
 
   private clickAction: (e: Event) => void;
   private enterKeyboardAction: (e: Event) => void;
@@ -15,6 +23,7 @@ export class AccessibleButton {
   private mouseleaveAction: (e: Event) => void;
   private focusAction: (e: Event) => void;
   private mouseenterAction: (e: Event) => void;
+  private arrowsAction: (direction: ArrowDirection, e: Event) => void;
 
   private logger: Logger;
   private eventOwner: ComponentEvents;
@@ -95,6 +104,16 @@ export class AccessibleButton {
     return this;
   }
 
+  public withArrowsAction(action: (direction: ArrowDirection, e: Event) => void) {
+    this.arrowsAction = action;
+    return this;
+  }
+
+  public withRole(role: string) {
+    this.role = role;
+    return this;
+  }
+
   public build() {
     if (!this.element) {
       this.element = $$('div');
@@ -107,6 +126,7 @@ export class AccessibleButton {
     this.ensureUnselectAction();
     this.ensureMouseenterAndFocusAction();
     this.ensureMouseleaveAndBlurAction();
+    this.ensureArrowsAction();
     this.ensureDifferentiationBetweenKeyboardAndMouseFocus();
 
     return this;
@@ -124,7 +144,7 @@ export class AccessibleButton {
 
   private ensureCorrectRole() {
     if (!this.element.getAttribute('role')) {
-      this.element.setAttribute('role', 'button');
+      this.element.setAttribute('role', this.role || 'button');
     }
   }
 
@@ -147,7 +167,10 @@ export class AccessibleButton {
   private ensureSelectAction() {
     if (this.enterKeyboardAction) {
       this.ensureTabIndex();
-      this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e)));
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e))
+      );
       this.bindEvent(
         'keydown',
         KeyboardUtils.keypressAction(KEYBOARD.SPACEBAR, (e: Event) => {
@@ -198,6 +221,27 @@ export class AccessibleButton {
     }
     if (this.blurAction) {
       this.bindEvent('blur', this.blurAction);
+    }
+  }
+
+  private ensureArrowsAction() {
+    if (this.arrowsAction) {
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.UP_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.UP, e))
+      );
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.RIGHT_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.RIGHT, e))
+      );
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.DOWN_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.DOWN, e))
+      );
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.LEFT_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.LEFT, e))
+      );
     }
   }
 
