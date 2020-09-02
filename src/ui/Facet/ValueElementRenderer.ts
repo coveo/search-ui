@@ -69,6 +69,7 @@ export class ValueElementRenderer {
     this.addFocusAndBlurEventListeners(excludeIcon);
     excludeIcon.innerHTML = isExcluded ? SVGIcons.icons.plus : SVGIcons.icons.checkboxHookExclusionMore;
     SVGDom.addClassToSVGInContainer(excludeIcon, isExcluded ? 'coveo-facet-value-unexclude-svg' : 'coveo-facet-value-exclude-svg');
+    SVGDom.addAttributesToSVGInContainer(excludeIcon, { 'aria-hidden': 'true' });
     return excludeIcon;
   }
 

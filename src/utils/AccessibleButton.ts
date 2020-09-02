@@ -167,7 +167,10 @@ export class AccessibleButton {
   private ensureSelectAction() {
     if (this.enterKeyboardAction) {
       this.ensureTabIndex();
-      this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e)));
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.ENTER, (e: Event) => this.enterKeyboardAction(e))
+      );
       this.bindEvent(
         'keydown',
         KeyboardUtils.keypressAction(KEYBOARD.SPACEBAR, (e: Event) => {
@@ -223,10 +226,22 @@ export class AccessibleButton {
 
   private ensureArrowsAction() {
     if (this.arrowsAction) {
-      this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.UP_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.UP, e)));
-      this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.RIGHT_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.RIGHT, e)));
-      this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.DOWN_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.DOWN, e)));
-      this.bindEvent('keyup', KeyboardUtils.keypressAction(KEYBOARD.LEFT_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.LEFT, e)));
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.UP_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.UP, e))
+      );
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.RIGHT_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.RIGHT, e))
+      );
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.DOWN_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.DOWN, e))
+      );
+      this.bindEvent(
+        'keyup',
+        KeyboardUtils.keypressAction(KEYBOARD.LEFT_ARROW, (e: Event) => this.arrowsAction(ArrowDirection.LEFT, e))
+      );
     }
   }
 
