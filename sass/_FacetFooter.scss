@@ -10,7 +10,33 @@
   &:hover,
   &:focus {
     background: $color-light-grey;
-    outline: none;
+    &,
+    &.coveo-accessible-button-pressed {
+      outline: 1px solid transparent;
+      /* Works on Firefox, doesn't work on IE */
+      outline-offset: -3px;
+    }
+    /* Works on IE and Edge, doesn't work on Firefox & Chrome */
+    @media screen and (-ms-high-contrast: white-on-black) {
+      &,
+      &.coveo-accessible-button-pressed {
+        background-color: white;
+        .coveo-facet-more-icon-svg,
+        .coveo-facet-less-icon-svg {
+          color: black;
+        }
+      }
+    }
+    @media screen and (-ms-high-contrast: black-on-white) {
+      &,
+      &.coveo-accessible-button-pressed {
+        background-color: black;
+        .coveo-facet-more-icon-svg,
+        .coveo-facet-less-icon-svg {
+          color: white;
+        }
+      }
+    }
   }
 }
 
