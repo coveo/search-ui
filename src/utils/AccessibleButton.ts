@@ -13,6 +13,7 @@ export enum ArrowDirection {
 
 export class AccessibleButton {
   private element: Dom;
+  private hasLabel = true;
   private label: string;
   private title: string;
   private role: string;
@@ -48,6 +49,11 @@ export class AccessibleButton {
 
   public withLabel(label: string) {
     this.label = label;
+    return this;
+  }
+
+  public withoutLabel() {
+    this.hasLabel = false;
     return this;
   }
 
@@ -149,6 +155,9 @@ export class AccessibleButton {
   }
 
   private ensureCorrectLabel() {
+    if (!this.hasLabel) {
+      return;
+    }
     if (!this.label) {
       this.logger.error(`Missing label to create an accessible button !`);
       return;
