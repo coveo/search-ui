@@ -339,6 +339,7 @@ export class ResultList extends Component {
       args.layouts.push(this.options.layout)
     );
     this.setupRenderer();
+    this.makeElementFocusable();
   }
 
   /**
@@ -835,6 +836,10 @@ export class ResultList extends Component {
         this.renderer = new ResultListRenderer(this.options, autoCreateComponentsFn);
         break;
     }
+  }
+
+  private makeElementFocusable() {
+    $$(this.element).setAttribute('tabindex', '-1');
   }
 }
 

@@ -91,7 +91,7 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
      * If this option is not defined, the index will try to generate automatic ranges.
      */
     ranges: ComponentOptions.buildJsonOption<IRangeValue[]>({
-      required: true,
+      required: false,
       section: 'CommonOptions',
       postProcessing: ranges => (Utils.isNonEmptyArray(ranges) ? ranges : [])
     })
