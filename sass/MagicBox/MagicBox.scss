@@ -18,7 +18,7 @@
     > input {
       color: $grey-900;
       text-align: left;
-      padding: $padding $height+1 $padding $padding;
+      padding: $padding $height + 1 $padding $padding;
       text-indent: 0;
       font-family: arial, sans-serif;
       font-size: $fontSize;
@@ -209,6 +209,10 @@
       }
       &:hover {
         background: $grey-100;
+      }
+      &.magic-box-selected,
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
