@@ -12,19 +12,23 @@ export class DynamicFacetRangeQueryController extends DynamicFacetQueryControlle
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: false,
-      generateAutomaticRanges: !this.isRangesOptionDefined
+      generateAutomaticRanges: !this.manualRangesAreDefined
     };
   }
 
   protected get numberOfValues() {
-    return this.isRangesOptionDefined ? this.facet.options.ranges.length : this.facet.options.numberOfValues;
+    return this.manualRangesAreDefined ? this.facet.options.ranges.length : this.facet.options.numberOfValues;
   }
 
-  private get isRangesOptionDefined() {
+  private get manualRangesAreDefined() {
     return !!this.facet.options.ranges.length;
   }
 
   protected get currentValues(): IFacetRequestValue[] {
+    if (!this.manualRangesAreDefined && !this.facet.hasActiveValues) {
+      return [];
+    }
+
     return this.facet.values.allFacetValues.map(({ start, end, endInclusive, state }) => ({
       start,
       end,

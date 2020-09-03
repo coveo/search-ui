@@ -1,5 +1,5 @@
 import { IStringMap } from '../rest/GenericParam';
-import * as _ from 'underscore';
+import { each } from 'underscore';
 
 export class SVGDom {
   public static addClassToSVGInContainer(svgContainer: HTMLElement, classToAdd: string) {
@@ -14,8 +14,15 @@ export class SVGDom {
 
   public static addStyleToSVGInContainer(svgContainer: HTMLElement, styleToAdd: IStringMap<any>) {
     const svgElement = svgContainer.querySelector('svg');
-    _.each(styleToAdd, (styleValue, styleKey) => {
+    each(styleToAdd, (styleValue, styleKey) => {
       svgElement.style[styleKey] = styleValue;
+    });
+  }
+
+  public static addAttributesToSVGInContainer(svgContainer: HTMLElement, attributesToAdd: IStringMap<string>) {
+    const svgElement = svgContainer.querySelector('svg');
+    each(attributesToAdd, (attributeValue, attributeKey) => {
+      svgElement.setAttribute(attributeKey, attributeValue);
     });
   }
 

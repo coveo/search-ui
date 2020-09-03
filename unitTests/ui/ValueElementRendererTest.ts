@@ -84,34 +84,73 @@ export function ValueElementRendererTest() {
       expect(valueRenderer.build().stylishCheckbox).toBeDefined();
     });
 
-    it(`when the facetValue is not selected,
-    the aria-label attribute contains the word 'Select'`, () => {
-      const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
-      facetValue.selected = false;
-      valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+    describe('when the facetValue is not selected', () => {
+      beforeEach(() => {
+        const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
+        facetValue.selected = false;
+        valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+      });
 
-      const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
-      expect(ariaLabel).toContain('Select');
+      it("the aria-label attribute starts with the word 'Select'", () => {
+        const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
+        expect(ariaLabel.indexOf('Select')).toEqual(0);
+      });
+
+      it('the aria-pressed attribute of the checkbox is false', () => {
+        const ariaPressed = valueRenderer.accessibleElement.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('false');
+      });
+
+      it('the aria-pressed attribute of the exclude button is false', () => {
+        const ariaPressed = valueRenderer.excludeIcon.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('false');
+      });
     });
 
-    it(`when the facetValue is selected,
-    the aria-label attribute contains the word 'Unselect'`, () => {
-      const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
-      facetValue.selected = true;
-      valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+    describe('when the facetValue is selected', () => {
+      beforeEach(() => {
+        const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
+        facetValue.selected = true;
+        valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+      });
 
-      const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
-      expect(ariaLabel).toContain('Unselect');
+      it("the aria-label attribute starts with the word 'Select'", () => {
+        const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
+        expect(ariaLabel.indexOf('Select')).toEqual(0);
+      });
+
+      it('the aria-pressed attribute of the checkbox is true', () => {
+        const ariaPressed = valueRenderer.accessibleElement.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('true');
+      });
+
+      it('the aria-pressed attribute of the exclude button is false', () => {
+        const ariaPressed = valueRenderer.excludeIcon.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('false');
+      });
     });
 
-    it(`when the facetValue is excluded,
-    the aria-label attribute contains the word 'Unexclude'`, () => {
-      const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
-      facetValue.excluded = true;
-      valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+    describe('when the facetValue is excluded', () => {
+      beforeEach(() => {
+        const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
+        facetValue.excluded = true;
+        valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+      });
 
-      const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
-      expect(ariaLabel).toContain('Unexclude');
+      it("the aria-label attribute starts with the word 'Select'", () => {
+        const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
+        expect(ariaLabel.indexOf('Select')).toEqual(0);
+      });
+
+      it('the aria-pressed attribute of the checkbox is false', () => {
+        const ariaPressed = valueRenderer.accessibleElement.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('false');
+      });
+
+      it('the aria-pressed attribute of the exclude button is true', () => {
+        const ariaPressed = valueRenderer.excludeIcon.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('true');
+      });
     });
 
     it('should build a caption', () => {
