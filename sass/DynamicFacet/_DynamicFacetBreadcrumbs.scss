@@ -13,3 +13,13 @@
 .coveo-dynamic-facet-breadcrumb-value-clear {
   @include breadcrumb-value-clear();
 }
+
+ul.coveo-dynamic-facet-breadcrumb.coveo-breadcrumb-item {
+  display: block;
+  list-style: none;
+  padding: 0;
+}
+
+li.coveo-dynamic-facet-breadcrumb-value-list-item {
+  display: inline-block;
+}
