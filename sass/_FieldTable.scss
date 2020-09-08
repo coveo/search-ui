@@ -89,7 +89,7 @@
 .CoveoFieldValue {
   .coveo-clickable {
     @include clickable();
-    outline: 1px solid transparent;
+    @include highContrastModeOutline();
     outline-offset: 3px;
     &.coveo-selected {
       font-weight: bold;
