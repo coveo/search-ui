@@ -1,3 +1,4 @@
+@import 'Variables';
 @import 'mixins/breadcrumb';
 @import 'mixins/mediaQuery';
 
@@ -18,12 +19,12 @@
 .coveo-breadcrumb-clear-all {
   @include linkButton();
   @include flex-shrink(0);
+  @include highContrastModeOutline();
 
   display: inline-block;
   font-size: $font-size-smaller;
   padding: 5px;
   margin-left: 5px;
-  outline: 1px solid transparent;
   margin-right: 1px;
 }
 

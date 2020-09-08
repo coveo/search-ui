@@ -11,9 +11,9 @@
 
 @mixin breadcrumb-value {
   @include linkButton();
+  @include highContrastModeOutline();
   font-size: $font-size-smaller;
   margin-right: 15px;
-  outline: 1px solid transparent;
   outline-offset: 1px;
 
   &.coveo-selected * {
