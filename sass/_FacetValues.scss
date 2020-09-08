@@ -19,7 +19,6 @@
     margin-right: 15px;
     background: white;
     position: relative;
-    float: left;
     top: 2px;
     > svg {
       position: relative;
@@ -155,6 +154,10 @@
   }
 }
 
+.coveo-facet-value-label-wrapper {
+  display: flex;
+}
+
 .coveo-facet-value-label {
   display: block;
   white-space: nowrap;
@@ -168,6 +171,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   vertical-align: middle;
+  flex-grow: 1;
 }
 
 .coveo-facet-value-icon {
@@ -181,7 +185,6 @@
   vertical-align: middle;
   margin: 0 5px;
   display: inline-block;
-  float: right;
   @include transition(opacity 1s);
   &.coveo-waitDelta {
     opacity: 0;
