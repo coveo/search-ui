@@ -51,6 +51,9 @@ $default-low-contrast-border: thin solid $color-light-contrast-grey;
   border: $default-low-contrast-border;
   border-radius: $default-border-radius;
 }
+@mixin highContrastModeOutline {
+  outline: 1px solid transparent;
+}
 
 $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 /*
@@ -60,7 +63,7 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
 @mixin align($direction: 'vertical', $position: relative) {
   position: $position;
-  @if $direction=='vertical' {
+  @if $direction== 'vertical' {
     top: 50%;
     @include transform(translateY(-50%));
   } @else {
@@ -80,7 +83,7 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-@mixin iconWithHoverState($iconClass, $float:'left', $inactive: 'coveo-disabled') {
+@mixin iconWithHoverState($iconClass, $float: 'left', $inactive: 'coveo-disabled') {
   .#{$iconClass} {
     float: #{$float};
   }
@@ -128,20 +131,20 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 * @param $size size of the icon to use
 */
 
-@mixin clearButton($selector, $size:'normal') {
+@mixin clearButton($selector, $size: 'normal') {
   cursor: pointer;
   color: $color-greyish-teal-blue;
   .coveo-exclusion-svg {
     fill: $color-greyish-teal-blue;
   }
   #{$selector} svg {
-    @if $size=='normal' {
+    @if $size== 'normal' {
       width: 12px;
       height: 12px;
-    } @else if $size=='small' {
+    } @else if $size== 'small' {
       width: 8px;
       height: 8px;
-    } @else if $size=='big' {
+    } @else if $size== 'big' {
       width: 15px;
       height: 15px;
     }
