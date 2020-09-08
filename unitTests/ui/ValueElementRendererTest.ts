@@ -5,6 +5,7 @@ import { IFacetOptions } from '../../src/ui/Facet/Facet';
 import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
+import { findLastIndex } from 'underscore';
 
 export function ValueElementRendererTest() {
   describe('ValueElementRenderer', function() {
@@ -169,6 +170,21 @@ export function ValueElementRendererTest() {
       // Should format big number
       valueRenderer.facetValue.occurrences = 31416;
       expect($$(valueRenderer.build().valueCount).text()).toBe('31,416');
+    });
+
+    it('should build either checkbox, the caption then the count in that order', () => {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1)));
+      const buildResult = valueRenderer.build();
+      const wrapper = buildResult['facetValueLabelWrapper'];
+      const wrapperChildren = $$(wrapper).children();
+      const lastCheckboxIndex = findLastIndex(
+        wrapperChildren,
+        child => [buildResult.stylishCheckbox, buildResult.checkbox].indexOf(child) !== -1
+      );
+      expect(wrapperChildren.slice(lastCheckboxIndex + 1, lastCheckboxIndex + 3)).toEqual([
+        buildResult.valueCaption,
+        buildResult.valueCount
+      ]);
     });
 
     it('should build an exclude icon', () => {

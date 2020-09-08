@@ -226,8 +226,8 @@ export class ValueElementRenderer {
 
     this.initAndAppendCheckbox();
     this.initAndAppendStylishCheckbox();
-    this.initAndAppendValueCount();
     this.initAndAppendValueCaption();
+    this.initAndAppendValueCount();
 
     this.label.appendChild(this.facetValueLabelWrapper);
   }

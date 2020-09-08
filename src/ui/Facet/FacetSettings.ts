@@ -234,7 +234,10 @@ export class FacetSettings extends FacetSort {
 
     $$(el).on('mouseleave', mouseLeave);
     $$(el).on('mouseenter', mouseEnter);
-    $$(el).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ESCAPE, () => this.handleKeyboardClose()));
+    $$(el).on(
+      'keyup',
+      KeyboardUtils.keypressAction(KEYBOARD.ESCAPE, () => this.handleKeyboardClose())
+    );
   }
 
   private handleKeyboardClose() {
@@ -327,10 +330,11 @@ export class FacetSettings extends FacetSort {
     directionAscendingSection.appendChild(iconAscending);
     directionAscendingSection.appendChild(directionItemsAscending);
     new AccessibleButton()
-      .withElement(directionAscendingSection)
-      .withLabel(l('Ascending'))
-      .withSelectAction((e: Event) => this.handleDirectionClick(e, 'ascending'))
+      .withElement(ascending)
+      .withoutLabel()
+      .withSelectAction(() => this.handleDirectionClick(ascending, 'ascending'))
       .build();
+    this.unselectSection(directionAscendingSection);
 
     const directionDescendingSection = this.buildAscendingOrDescendingSection('Descending');
     const directionItemsDescending = this.buildItems();
@@ -340,10 +344,11 @@ export class FacetSettings extends FacetSort {
     directionDescendingSection.appendChild(iconDescending);
     directionDescendingSection.appendChild(directionItemsDescending);
     new AccessibleButton()
-      .withElement(directionDescendingSection)
-      .withLabel(l('Descending'))
-      .withSelectAction((e: Event) => this.handleDirectionClick(e, 'descending'))
+      .withElement(descending)
+      .withoutLabel()
+      .withSelectAction(() => this.handleDirectionClick(descending, 'descending'))
       .build();
+    this.unselectSection(directionDescendingSection);
 
     if (!this.activeSort.directionToggle) {
       $$(directionAscendingSection).addClass('coveo-facet-settings-disabled');
@@ -375,7 +380,7 @@ export class FacetSettings extends FacetSort {
     new AccessibleButton()
       .withElement(saveStateSection)
       .withSelectAction(() => this.handleSaveStateClick())
-      .withLabel(l('SaveFacetState'))
+      .withoutLabel()
       .build();
 
     return saveStateSection;
@@ -392,7 +397,7 @@ export class FacetSettings extends FacetSort {
     new AccessibleButton()
       .withElement(clearStateSection)
       .withSelectAction(() => this.handleClearStateClick())
-      .withLabel(l('ClearFacetState'))
+      .withoutLabel()
       .build();
 
     return clearStateSection;
@@ -499,21 +504,19 @@ export class FacetSettings extends FacetSort {
       } else {
         this.disableDirectionSection();
       }
+      this.unselectSection(this.sortSection.element);
       this.selectItem(<HTMLElement>e.target);
       this.closePopupAndUpdateSort();
     }
   }
 
-  private handleDirectionClick(e: Event, direction: string) {
-    if (
-      !$$((<HTMLElement>e.target).parentElement.parentElement).hasClass('coveo-facet-settings-disabled') &&
-      this.activeSort.name.indexOf(direction) == -1
-    ) {
+  private handleDirectionClick(item: HTMLElement, direction: string) {
+    if (item.getAttribute('aria-disabled') === 'false' && this.activeSort.name.indexOf(direction) === -1) {
       this.activeSort = FacetSettings.availableSorts[this.activeSort.relatedSort];
       each(this.directionSection, d => {
         this.unselectSection(d);
       });
-      this.selectItem(<HTMLElement>e.target);
+      this.selectItem(item);
       if (this.activeSort.name == 'custom' && this.customSortDirection != direction) {
         this.customSortDirection = direction;
         this.customSortDirectionChange = true;
@@ -568,7 +571,7 @@ export class FacetSettings extends FacetSort {
       $$(direction).removeClass('coveo-facet-settings-disabled');
       $$(direction)
         .find('.coveo-facet-settings-item')
-        .removeAttribute('aria-disabled');
+        .setAttribute('aria-disabled', 'false');
       this.unselectSection(direction);
     });
     this.selectItem(this.getCurrentDirectionItem());
@@ -589,20 +592,20 @@ export class FacetSettings extends FacetSort {
   }
 
   private unselectSection(section: HTMLElement) {
-    each(this.getItems(section), i => {
-      $$(i).removeClass('coveo-selected');
-    });
+    each(this.getItems(section), i => this.unselectItem(i));
   }
 
   private selectItem(item: HTMLElement) {
     if (item) {
       $$(item).addClass('coveo-selected');
+      item.setAttribute('aria-pressed', 'true');
     }
   }
 
   private unselectItem(item: HTMLElement) {
     if (item) {
       $$(item).removeClass('coveo-selected');
+      item.setAttribute('aria-pressed', 'false');
     }
   }
 

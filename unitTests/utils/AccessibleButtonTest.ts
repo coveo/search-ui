@@ -1,7 +1,8 @@
 import { AccessibleButton, ArrowDirection } from '../../src/utils/AccessibleButton';
-import { Dom, $$, KEYBOARD, Component, Defer } from '../../src/Core';
+import { Dom, $$, KEYBOARD, Component, Defer, Logger } from '../../src/Core';
 import { Simulate } from '../Simulate';
 import { ComponentEvents } from '../../src/ui/Base/Component';
+import { mock } from '../MockEnvironment';
 
 function dispatchFakeKeyEvent(element: HTMLElement, eventName: 'keydown' | 'keyup', props: any) {
   const event = new KeyboardEvent(eventName, {});
@@ -30,6 +31,33 @@ export const AccessibleButtonTest = () => {
         .build();
 
       expect(element.getAttribute('aria-label')).toBe('qwerty');
+    });
+
+    it("should log an error if there's no label", () => {
+      const button = new AccessibleButton();
+      const logger = (button['logger'] = mock(Logger));
+      button.withElement(element).build();
+      expect(logger.error).toHaveBeenCalledTimes(1);
+    });
+
+    it("shouldn't log an error if there's a label", () => {
+      const button = new AccessibleButton();
+      const logger = (button['logger'] = mock(Logger));
+      button
+        .withElement(element)
+        .withLabel('qwerty')
+        .build();
+      expect(logger.error).not.toHaveBeenCalled();
+    });
+
+    it("shouldn't log an error if withoutLabel is specified", () => {
+      const button = new AccessibleButton();
+      const logger = (button['logger'] = mock(Logger));
+      button
+        .withElement(element)
+        .withoutLabel()
+        .build();
+      expect(logger.error).not.toHaveBeenCalled();
     });
 
     it('should add the specified title', () => {
