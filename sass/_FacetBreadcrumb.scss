@@ -5,7 +5,8 @@
 }
 
 .coveo-facet-breadcrumb-value,
-.coveo-facet-slider-breadcrumb-value {
+.coveo-facet-slider-breadcrumb-value,
+.coveo-facet-breadcrumb-value-list-item {
   @include breadcrumb-value();
   display: inline-block;
   &.coveo-excluded .coveo-facet-breadcrumb-caption {
@@ -13,7 +14,19 @@
   }
 }
 
+.coveo-facet-breadcrumb-value-list-item {
+  margin: 0;
+  padding: 0;
+}
+
 .coveo-facet-breadcrumb-clear,
 .coveo-facet-slider-breadcrumb-clear {
   @include breadcrumb-value-clear();
+}
+
+ul.coveo-facet-breadcrumb-values {
+  display: inline-block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }

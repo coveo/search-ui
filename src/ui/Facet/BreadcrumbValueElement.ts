@@ -22,12 +22,13 @@ export class BreadcrumbValueElement {
   public build(): Dom {
     Assert.exists(this.facetValue);
 
-    const { container, caption, clear } = this.buildElements();
+    const { container, caption, clear, listContainer } = this.buildElements();
 
     container.append(caption.el);
     container.append(clear.el);
+    listContainer.append(container.el);
 
-    return container;
+    return listContainer;
   }
 
   public getBreadcrumbTooltip(): string {
@@ -43,7 +44,8 @@ export class BreadcrumbValueElement {
     return {
       container: this.buildContainer(),
       clear: this.buildClear(),
-      caption: this.buildCaption()
+      caption: this.buildCaption(),
+      listContainer: this.buildListContainer()
     };
   }
 
@@ -65,6 +67,12 @@ export class BreadcrumbValueElement {
       .build();
 
     return container;
+  }
+
+  private buildListContainer() {
+    return $$('li', {
+      className: 'coveo-facet-breadcrumb-value-list-item'
+    });
   }
 
   private buildClear() {
