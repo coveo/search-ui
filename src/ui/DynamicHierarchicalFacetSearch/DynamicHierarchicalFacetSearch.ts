@@ -23,7 +23,7 @@ export class DynamicHierarchicalFacetSearch {
   private build(): HTMLElement {
     this.combobox = new Combobox({
       label: l('SearchFacetResults', this.facet.options.title),
-      searchInterface: this.facet.searchInterface,
+      ariaLive: this.facet.searchInterface.ariaLive,
       requestValues: terms => this.hierarchicalFacetSearchController.search(terms),
       createValuesFromResponse: (response: IFacetSearchResponse) => this.createValuesFromResponse(response),
       onSelectValue: this.onSelectValue,

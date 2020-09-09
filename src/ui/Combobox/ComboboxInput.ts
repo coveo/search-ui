@@ -1,13 +1,8 @@
 import { TextInput, ITextInputOptions } from '../FormWidgets/TextInput';
 import { $$ } from '../../utils/Dom';
-import { Combobox } from './Combobox';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { Utils } from '../../utils/Utils';
-
-export interface IComboboxAccessibilityAttributes {
-  activeDescendant: string;
-  expanded: boolean;
-}
+import { IComboboxAccessibilityAttributes, ICombobox } from './ICombobox';
 
 export class ComboboxInput {
   public element: HTMLElement;
@@ -21,7 +16,7 @@ export class ComboboxInput {
     icon: 'search'
   };
 
-  constructor(private combobox: Combobox) {
+  constructor(private combobox: ICombobox) {
     this.create();
     this.element = this.textInput.getElement();
     this.inputElement = $$(this.element).find('input');

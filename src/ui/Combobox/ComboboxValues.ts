@@ -1,4 +1,4 @@
-import { Combobox } from './Combobox';
+import { ICombobox, IComboboxValues } from './ICombobox';
 import { $$ } from '../../utils/Dom';
 import { find } from 'underscore';
 
@@ -7,14 +7,14 @@ export interface IComboboxValue {
   element: HTMLElement;
 }
 
-export class ComboboxValues {
+export class ComboboxValues implements IComboboxValues {
   public element: HTMLElement;
   public mouseIsOverValue = false;
   private values: IComboboxValue[] = [];
   private keyboardActiveValue?: IComboboxValue;
   private isScrollable: boolean;
 
-  constructor(private combobox: Combobox) {
+  constructor(private combobox: ICombobox) {
     this.element = $$('ul', {
       id: `${this.combobox.id}-listbox`,
       role: 'listbox',

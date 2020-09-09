@@ -1,32 +1,15 @@
 import { $$ } from '../../utils/Dom';
-import { ComboboxInput, IComboboxAccessibilityAttributes } from './ComboboxInput';
+import { ComboboxInput } from './ComboboxInput';
 import { uniqueId, throttle } from 'underscore';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
-import { ComboboxValues, IComboboxValue } from './ComboboxValues';
+import { ComboboxValues } from './ComboboxValues';
 import 'styling/_Combobox';
 import { Utils } from '../../utils/Utils';
-import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { l } from '../../strings/Strings';
+import { IComboboxOptions, ICombobox, IComboboxAccessibilityAttributes } from './ICombobox';
 
-export interface IComboboxOptions {
-  label: string;
-  requestValues: (terms: string) => Promise<any>;
-  createValuesFromResponse: (response: any) => IComboboxValue[];
-  onSelectValue: (value: IComboboxValue) => void;
-  searchInterface: SearchInterface;
-  noValuesFoundLabel?: string;
-  placeholderText?: string;
-  wrapperClassName?: string;
-  clearOnBlur?: boolean;
-  scrollable?: {
-    maxDropdownHeight: () => number;
-    requestMoreValues: () => Promise<any>;
-    areMoreValuesAvailable: () => boolean;
-  };
-}
-
-export class Combobox {
+export class Combobox implements ICombobox {
   public element: HTMLElement;
   public id: string;
   public values: ComboboxValues;
@@ -119,7 +102,7 @@ export class Combobox {
   }
 
   public updateAriaLive(text: string) {
-    this.options.searchInterface.ariaLive.updateText(text);
+    this.options.ariaLive.updateText(text);
   }
 
   public onScrollEndReached() {
