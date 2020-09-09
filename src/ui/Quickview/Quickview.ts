@@ -347,7 +347,8 @@ export class Quickview extends Component {
         offset: {
           offset: '0,8'
         }
-      }
+      },
+      eventsEnabled: false
     });
 
     $$(this.element).on('mouseover', () => {

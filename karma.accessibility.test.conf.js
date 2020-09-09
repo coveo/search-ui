@@ -1,13 +1,8 @@
-const ChromiumRevision = require('puppeteer/package.json').puppeteer.chromium_revision;
-const Downloader = require('puppeteer/utils/ChromiumDownloader');
-const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), ChromiumRevision);
+const puppeteer = require('puppeteer');
 
-process.env.CHROME_BIN = revisionInfo.executablePath;
+process.env.CHROME_BIN = puppeteer.executablePath();
 
-/**
- * @type {import('karma').ConfigOptions}
- */
-var configuration = {
+const configuration = {
   singleRun: true,
   browsers: ['ChromeHeadless-Accessibility'],
   frameworks: ['jasmine'],

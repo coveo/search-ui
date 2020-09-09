@@ -130,7 +130,7 @@ export class QueryController extends RootComponent {
     Assert.exists(element);
     Assert.exists(options);
     this.firstQuery = true;
-    this.enableHistory();
+    this.initializeActionsHistory();
   }
 
   public get usageAnalytics(): IAnalyticsClient {
@@ -506,6 +506,17 @@ export class QueryController extends RootComponent {
 
   public disableHistory() {
     this.historyStore = new history.HistoryStore(new NullStorage());
+  }
+
+  private initializeActionsHistory() {
+    this.enableHistory();
+
+    if (this.usageAnalytics.isActivated()) {
+      return;
+    }
+
+    this.historyStore.clear();
+    this.disableHistory();
   }
 
   private closeModalBoxIfNeeded(needed?: boolean) {

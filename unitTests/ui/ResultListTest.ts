@@ -514,6 +514,32 @@ export function ResultListTest() {
         });
       });
 
+      it(`when "data-result-container-selector" attribute is set,
+      it appends the result list to the element with the selector`, done => {
+        const selector = 'mycontainer';
+        const root = document.createElement('div');
+        const target = $$('div', { id: selector });
+
+        const resultList = $$('div', {
+          className: 'CoveoResultList',
+          'data-result-container-selector': `#${selector}`
+        });
+
+        root.appendChild(target.el);
+        root.appendChild(resultList.el);
+
+        document.body.appendChild(root);
+        test = Mock.advancedComponentSetup<ResultList>(ResultList, <Mock.AdvancedComponentSetupOptions>{ element: resultList.el });
+        document.body.removeChild(root);
+
+        Simulate.query(test.env);
+
+        setTimeout(() => {
+          expect(target.el.children.length).toBe(10);
+          done();
+        }, 0);
+      });
+
       it('should get the minimal amount of fields to include when the option is true', () => {
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           autoSelectFieldsToInclude: true
