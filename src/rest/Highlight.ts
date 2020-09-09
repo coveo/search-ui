@@ -1,5 +1,5 @@
 /**
- * An highlight structure, as returned by the index.
+ * A highlight structure, as returned by the index.
  * This structure can be used to do the actual highlighting job.
  */
 export interface IHighlight {

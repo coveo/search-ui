@@ -14,12 +14,10 @@ function setCoveoUnderscore() {
   }
 }
 
-function setTemplateSettings(instance) {
-  instance['templateSettings'] = {
-    evaluate: /(?:<%|{{)([\s\S]+?)(?:%>|}})/g,
-    interpolate: /(?:<%|{{)=([\s\S]+?)(?:%>|}})/g,
-    escape: /(?:<%|{{)-([\s\S]+?)(?:%>|}})/g
-  };
+function setTemplateSettings({ templateSettings }: { templateSettings: _.TemplateSettings }) {
+  templateSettings.evaluate = /(?:<%|{{)([\s\S]+?)(?:%>|}})/g;
+  templateSettings.interpolate = /(?:<%|{{)=([\s\S]+?)(?:%>|}})/g;
+  templateSettings.escape = /(?:<%|{{)-([\s\S]+?)(?:%>|}})/g;
 }
 
 window['_'] = _;

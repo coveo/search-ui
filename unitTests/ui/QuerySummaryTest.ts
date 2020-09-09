@@ -405,7 +405,7 @@ export function QuerySummaryTest() {
         test.env.queryStateModel.get = () => 'querySearched';
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        const parsedCustomNoResultsPage: string = '<div><a href="&lt;span class=" coveo-highlight"="">querySearched"&gt;</a></div>';
+        const parsedCustomNoResultsPage: string = '<div><a href="<span class=" coveo-highlight"="">querySearched"&gt;</a></div>';
         expect(getcustomNoResultsPageElement().innerHTML).toBe(parsedCustomNoResultsPage);
       });
 

@@ -14,7 +14,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
 import { ResponsiveFacets } from '../ResponsiveComponents/ResponsiveFacets';
 import { FacetValue } from '../Facet/FacetValue';
-import { isUndefined } from 'underscore';
+import { isUndefined, find } from 'underscore';
 
 export interface IFacetRangeOptions extends IFacetOptions {
   ranges?: IRangeValue[];
@@ -117,12 +117,15 @@ export class FacetRange extends Facet implements IComponentBindings {
   }
 
   public getValueCaption(facetValue: FacetValue): string {
-    const lookupValueIsSpecified = !isUndefined(facetValue.lookupValue) && facetValue.lookupValue !== facetValue.value;
-    if (this.options.valueCaption || lookupValueIsSpecified) {
+    if (this.options.valueCaption || this.isLabelSpecifiedForValue(facetValue)) {
       return super.getValueCaption(facetValue);
     }
 
     return this.translateValuesFromFormat(facetValue);
+  }
+
+  private isLabelSpecifiedForValue(facetValue: FacetValue) {
+    return this.options.ranges && !!find(this.options.ranges, range => !isUndefined(range.label) && range.label === facetValue.lookupValue);
   }
 
   protected initFacetQueryController() {
@@ -161,7 +164,7 @@ export class FacetRange extends Facet implements IComponentBindings {
   }
 
   private translateValuesFromFormat(facetValue: FacetValue) {
-    const startAndEnd = this.extractStartAndEndValue(facetValue.value);
+    const startAndEnd = this.extractStartAndEndValue(facetValue.lookupValue || facetValue.value);
     if (!startAndEnd) {
       return null;
     }

@@ -38,6 +38,7 @@ export class SVGIcons {
     star: require(`svg/star`),
     listLayout: require(`svg/list-layout`),
     cardLayout: require(`svg/card-layout`),
-    tableLayout: require(`svg/table-layout`)
+    tableLayout: require(`svg/table-layout`),
+    plus: require(`svg/plus`)
   };
 }
