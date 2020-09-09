@@ -1,4 +1,3 @@
-import { IFacetSearchRequest } from '../rest/Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from '../rest/Facet/FacetSearchResponse';
 import { FileTypes } from '../ui/Misc/FileTypes';
 import { QueryUtils } from '../utils/QueryUtils';
@@ -6,6 +5,9 @@ import { DateUtils } from '../utils/DateUtils';
 import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
 
 export class FacetSearchController {
+  private page = 1;
+  private terms = '';
+
   constructor(private facet: IDynamicFacet) {}
 
   private getMonthsValueCaptions() {
@@ -42,18 +44,30 @@ export class FacetSearchController {
     };
   }
 
-  public search(terms?: string): Promise<IFacetSearchResponse> {
-    const optionalLeadingWildcard = this.facet.options.useLeadingWildcardInFacetSearch ? '*' : '';
+  private get baseNumberOfValues() {
+    return this.facet.values.allValues.length * 2;
+  }
 
-    const request: IFacetSearchRequest = {
+  private get request() {
+    const optionalLeadingWildcard = this.facet.options.useLeadingWildcardInFacetSearch ? '*' : '';
+    return {
       field: this.facet.fieldName,
-      numberOfValues: this.facet.options.numberOfValues,
+      numberOfValues: this.baseNumberOfValues * this.page,
       ignoreValues: this.facet.values.activeValues.map(value => value.value),
       captions: this.captions,
       searchContext: this.facet.queryController.getLastQuery(),
-      query: `${optionalLeadingWildcard}${terms}*`
+      query: `${optionalLeadingWildcard}${this.terms}*`
     };
+  }
 
-    return this.facet.queryController.getEndpoint().facetSearch(request);
+  public search(terms: string): Promise<IFacetSearchResponse> {
+    this.terms = terms;
+    this.page = 1;
+    return this.facet.queryController.getEndpoint().facetSearch(this.request);
+  }
+
+  public fetchMore(): Promise<IFacetSearchResponse> {
+    this.page++;
+    return this.facet.queryController.getEndpoint().facetSearch(this.request);
   }
 }

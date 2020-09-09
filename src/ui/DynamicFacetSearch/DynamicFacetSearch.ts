@@ -9,6 +9,7 @@ import { IComboboxValue } from '../Combobox/ComboboxValues';
 import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 import { IDynamicFacet } from '../DynamicFacet/IDynamicFacet';
 import { FacetUtils } from '../Facet/FacetUtils';
+import { $$ } from '../../utils/Dom';
 
 export class DynamicFacetSearch {
   public element: HTMLElement;
@@ -22,11 +23,13 @@ export class DynamicFacetSearch {
       label: l('SearchFacetResults', this.facet.options.title),
       searchInterface: this.facet.searchInterface,
       requestValues: terms => this.facetSearch(terms),
+      requestMoreValues: () => this.facetSearchController.fetchMore(),
       createValuesFromResponse: (response: IFacetSearchResponse) => this.createValuesFromResponse(response),
       onSelectValue: this.onSelectValue,
       placeholderText: l('Search'),
       wrapperClassName: 'coveo-dynamic-facet-search',
-      clearOnBlur: true
+      clearOnBlur: true,
+      maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-facet-values').clientHeight
     });
 
     this.element = this.combobox.element;
