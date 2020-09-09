@@ -23,14 +23,16 @@ export class DynamicFacetSearch {
       label: l('SearchFacetResults', this.facet.options.title),
       searchInterface: this.facet.searchInterface,
       requestValues: terms => this.facetSearchController.search(terms),
-      requestMoreValues: () => this.facetSearchController.fetchMoreResults(),
-      areMoreValuesAvailable: () => this.facetSearchController.moreValuesAvailable,
       createValuesFromResponse: (response: IFacetSearchResponse) => this.createValuesFromResponse(response),
       onSelectValue: this.onSelectValue,
       placeholderText: l('Search'),
       wrapperClassName: 'coveo-dynamic-facet-search',
       clearOnBlur: true,
-      maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-facet-values').clientHeight
+      scrollable: {
+        requestMoreValues: () => this.facetSearchController.fetchMoreResults(),
+        areMoreValuesAvailable: () => this.facetSearchController.moreValuesAvailable,
+        maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-facet-values').clientHeight
+      }
     });
 
     this.element = this.combobox.element;

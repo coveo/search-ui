@@ -23,10 +23,7 @@ export class ComboboxValues {
     }).el;
     $$(this.element).hide();
 
-    this.isScrollable =
-      !!this.combobox.options.maxDropdownHeight &&
-      !!this.combobox.options.requestMoreValues &&
-      !!this.combobox.options.areMoreValuesAvailable;
+    this.isScrollable = !!this.combobox.options.scrollable;
     this.isScrollable && this.element.addEventListener('scroll', () => this.onScroll());
   }
 
@@ -160,7 +157,7 @@ export class ComboboxValues {
 
   private onScroll() {
     const scrollEndReached = this.element.scrollTop + this.element.clientHeight >= this.element.scrollHeight;
-    if (scrollEndReached && this.combobox.options.areMoreValuesAvailable()) {
+    if (scrollEndReached && this.combobox.options.scrollable.areMoreValuesAvailable()) {
       this.combobox.onScrollEndReached();
     }
   }
@@ -169,7 +166,7 @@ export class ComboboxValues {
     if (!this.isScrollable) {
       return;
     }
-    this.element.style.maxHeight = `${this.combobox.options.maxDropdownHeight()}px`;
+    this.element.style.maxHeight = `${this.combobox.options.scrollable.maxDropdownHeight()}px`;
     this.element.scrollTop = 0;
   }
 

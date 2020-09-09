@@ -25,14 +25,16 @@ export class DynamicHierarchicalFacetSearch {
       label: l('SearchFacetResults', this.facet.options.title),
       searchInterface: this.facet.searchInterface,
       requestValues: terms => this.hierarchicalFacetSearchController.search(terms),
-      requestMoreValues: () => this.hierarchicalFacetSearchController.fetchMoreResults(),
-      areMoreValuesAvailable: () => this.hierarchicalFacetSearchController.moreValuesAvailable,
       createValuesFromResponse: (response: IFacetSearchResponse) => this.createValuesFromResponse(response),
       onSelectValue: this.onSelectValue,
       placeholderText: l('Search'),
       wrapperClassName: 'coveo-dynamic-facet-search',
       clearOnBlur: true,
-      maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-hierarchical-facet-values').clientHeight
+      scrollable: {
+        requestMoreValues: () => this.hierarchicalFacetSearchController.fetchMoreResults(),
+        areMoreValuesAvailable: () => this.hierarchicalFacetSearchController.moreValuesAvailable,
+        maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-hierarchical-facet-values').clientHeight
+      }
     });
 
     return this.combobox.element;

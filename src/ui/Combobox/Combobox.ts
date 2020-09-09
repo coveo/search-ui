@@ -12,8 +12,6 @@ import { l } from '../../strings/Strings';
 export interface IComboboxOptions {
   label: string;
   requestValues: (terms: string) => Promise<any>;
-  requestMoreValues?: () => Promise<any>;
-  areMoreValuesAvailable?: () => boolean;
   createValuesFromResponse: (response: any) => IComboboxValue[];
   onSelectValue: (value: IComboboxValue) => void;
   searchInterface: SearchInterface;
@@ -21,7 +19,11 @@ export interface IComboboxOptions {
   placeholderText?: string;
   wrapperClassName?: string;
   clearOnBlur?: boolean;
-  maxDropdownHeight?: () => number;
+  scrollable?: {
+    maxDropdownHeight: () => number;
+    requestMoreValues: () => Promise<any>;
+    areMoreValuesAvailable: () => boolean;
+  };
 }
 
 export class Combobox {
@@ -121,7 +123,7 @@ export class Combobox {
   }
 
   public onScrollEndReached() {
-    this.options.requestMoreValues && this.throttledRequest(this.options.requestMoreValues());
+    this.options.scrollable && this.throttledRequest(this.options.scrollable.requestMoreValues());
   }
 
   private throttledRequest = throttle(this.triggerRequest, this.throttlingDelay, {
