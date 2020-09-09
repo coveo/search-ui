@@ -13,6 +13,7 @@ export class ComboboxValues implements IComboboxValues {
   private values: IComboboxValue[] = [];
   private keyboardActiveValue?: IComboboxValue;
   private isScrollable: boolean;
+  private focusedValueId: string;
 
   constructor(private combobox: ICombobox) {
     this.element = $$('ul', {
@@ -229,5 +230,24 @@ export class ComboboxValues implements IComboboxValues {
   private get lastValue() {
     const lastValueIndex = this.values.length - 1;
     return this.values[lastValueIndex];
+  }
+
+  public saveFocusedValue() {
+    if (!this.keyboardActiveValue) {
+      this.focusedValueId = null;
+      return;
+    }
+
+    this.focusedValueId = this.keyboardActiveValue.element.id;
+  }
+
+  public restoreFocusedValue() {
+    if (!this.focusedValueId) {
+      return;
+    }
+
+    const element = $$(this.element).find(`#${this.focusedValueId}`);
+    element.focus();
+    this.focusedValueId = null;
   }
 }

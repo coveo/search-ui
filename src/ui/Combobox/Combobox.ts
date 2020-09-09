@@ -106,7 +106,8 @@ export class Combobox implements ICombobox {
   }
 
   public onScrollEndReached() {
-    this.options.scrollable && this.throttledRequest(this.options.scrollable.requestMoreValues());
+    this.values.saveFocusedValue();
+    this.options.scrollable && this.throttledRequest(this.options.scrollable.requestMoreValues(), () => this.values.restoreFocusedValue());
   }
 
   private throttledRequest = throttle(this.triggerRequest, this.throttlingDelay, {

@@ -46,6 +46,8 @@ export interface IComboboxValues {
   moveActiveValueUp(): void;
   moveActiveValueToTop(): void;
   moveActiveValueToBottom(): void;
+  saveFocusedValue(): void;
+  restoreFocusedValue(): void;
 }
 
 export interface IComboboxAccessibilityAttributes {
