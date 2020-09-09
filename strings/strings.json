@@ -7521,5 +7521,9 @@
   "HierarchicalFacetValuePathPrefix": {
     "en": "in",
     "fr": "dans"
+  },
+  "Breadcrumb": {
+    "en": "Active filters",
+    "fr": "Filtres actifs"
   }
 }
