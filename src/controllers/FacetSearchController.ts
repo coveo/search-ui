@@ -3,10 +3,12 @@ import { FileTypes } from '../ui/Misc/FileTypes';
 import { QueryUtils } from '../utils/QueryUtils';
 import { DateUtils } from '../utils/DateUtils';
 import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
+import { IFacetSearchRequest } from '../rest/Facet/FacetSearchRequest';
 
 export class FacetSearchController {
   private page = 1;
   private terms = '';
+  private numberOfValuesMultiplier = 3;
 
   constructor(private facet: IDynamicFacet) {}
 
@@ -44,15 +46,15 @@ export class FacetSearchController {
     };
   }
 
-  private get baseNumberOfValues() {
-    return this.facet.values.allValues.length * 2;
+  private get numberOfValues() {
+    return this.facet.values.allValues.length * this.numberOfValuesMultiplier * this.page;
   }
 
-  private get request() {
+  private get request(): IFacetSearchRequest {
     const optionalLeadingWildcard = this.facet.options.useLeadingWildcardInFacetSearch ? '*' : '';
     return {
       field: this.facet.fieldName,
-      numberOfValues: this.baseNumberOfValues * this.page,
+      numberOfValues: this.numberOfValues,
       ignoreValues: this.facet.values.activeValues.map(value => value.value),
       captions: this.captions,
       searchContext: this.facet.queryController.getLastQuery(),
@@ -60,14 +62,20 @@ export class FacetSearchController {
     };
   }
 
-  public search(terms: string): Promise<IFacetSearchResponse> {
+  public moreValuesAvailable = true;
+
+  public async search(terms: string): Promise<IFacetSearchResponse> {
     this.terms = terms;
     this.page = 1;
-    return this.facet.queryController.getEndpoint().facetSearch(this.request);
+    const response = await this.facet.queryController.getEndpoint().facetSearch(this.request);
+    this.moreValuesAvailable = response.moreValuesAvailable;
+    return response;
   }
 
-  public fetchMore(): Promise<IFacetSearchResponse> {
+  public async fetchMoreResults(): Promise<IFacetSearchResponse> {
     this.page++;
-    return this.facet.queryController.getEndpoint().facetSearch(this.request);
+    const response = await this.facet.queryController.getEndpoint().facetSearch(this.request);
+    this.moreValuesAvailable = response.moreValuesAvailable;
+    return response;
   }
 }

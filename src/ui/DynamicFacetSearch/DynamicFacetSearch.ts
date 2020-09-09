@@ -22,8 +22,9 @@ export class DynamicFacetSearch {
     this.combobox = new Combobox({
       label: l('SearchFacetResults', this.facet.options.title),
       searchInterface: this.facet.searchInterface,
-      requestValues: terms => this.facetSearch(terms),
-      requestMoreValues: () => this.facetSearchController.fetchMore(),
+      requestValues: terms => this.facetSearchController.search(terms),
+      requestMoreValues: () => this.facetSearchController.fetchMoreResults(),
+      areMoreValuesAvailable: () => this.facetSearchController.moreValuesAvailable,
       createValuesFromResponse: (response: IFacetSearchResponse) => this.createValuesFromResponse(response),
       onSelectValue: this.onSelectValue,
       placeholderText: l('Search'),
@@ -33,10 +34,6 @@ export class DynamicFacetSearch {
     });
 
     this.element = this.combobox.element;
-  }
-
-  private async facetSearch(terms: string) {
-    return this.facetSearchController.search(terms);
   }
 
   private getDisplayValue(value: string) {

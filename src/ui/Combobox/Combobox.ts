@@ -13,6 +13,7 @@ export interface IComboboxOptions {
   label: string;
   requestValues: (terms: string) => Promise<any>;
   requestMoreValues?: () => Promise<any>;
+  areMoreValuesAvailable?: () => boolean;
   createValuesFromResponse: (response: any) => IComboboxValue[];
   onSelectValue: (value: IComboboxValue) => void;
   searchInterface: SearchInterface;
