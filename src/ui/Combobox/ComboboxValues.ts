@@ -12,6 +12,7 @@ export class ComboboxValues {
   public mouseIsOverValue = false;
   private values: IComboboxValue[] = [];
   private keyboardActiveValue?: IComboboxValue;
+  private isScrollable: boolean;
 
   constructor(private combobox: Combobox) {
     this.element = $$('ul', {
@@ -21,6 +22,9 @@ export class ComboboxValues {
       ariaLabelledby: `${this.combobox.id}-input`
     }).el;
     $$(this.element).hide();
+
+    this.isScrollable = !!this.combobox.options.maxDropdownHeight && !!this.combobox.options.requestMoreValues;
+    this.isScrollable && this.element.addEventListener('scroll', () => this.onScroll());
   }
 
   public renderFromResponse(response: any) {
@@ -151,6 +155,35 @@ export class ComboboxValues {
     this.combobox.clearAll();
   }
 
+  private onScroll() {
+    const scrollEndReached = this.element.scrollTop + this.element.clientHeight >= this.element.scrollHeight;
+    scrollEndReached && this.combobox.onScrollEndReached();
+  }
+
+  public resetScroll() {
+    if (!this.isScrollable) {
+      return;
+    }
+    this.element.style.maxHeight = `${this.combobox.options.maxDropdownHeight()}px`;
+    this.element.scrollTop = 0;
+  }
+
+  public moveActiveValueToTop() {
+    if (!this.hasValues()) {
+      return;
+    }
+
+    this.firstValue.element.focus();
+  }
+
+  public moveActiveValueToBottom() {
+    if (!this.hasValues()) {
+      return;
+    }
+
+    this.lastValue.element.focus();
+  }
+
   public moveActiveValueDown() {
     if (!this.hasValues()) {
       return;
@@ -171,20 +204,28 @@ export class ComboboxValues {
 
   private get nextOrFirstValue() {
     if (!this.keyboardActiveValue) {
-      return this.values[0];
+      return this.firstValue;
     }
 
     const nextValueIndex = (this.values.indexOf(this.keyboardActiveValue) + 1) % this.values.length;
     return this.values[nextValueIndex];
   }
 
+  private get firstValue() {
+    return this.values[0];
+  }
+
   private get previousOrLastValue() {
-    const lastValueIndex = this.values.length - 1;
     if (!this.keyboardActiveValue) {
-      return this.values[lastValueIndex];
+      return this.lastValue;
     }
 
     const previousValueIndex = this.values.indexOf(this.keyboardActiveValue) - 1;
-    return previousValueIndex >= 0 ? this.values[previousValueIndex] : this.values[lastValueIndex];
+    return previousValueIndex >= 0 ? this.values[previousValueIndex] : this.values[this.values.length - 1];
+  }
+
+  private get lastValue() {
+    const lastValueIndex = this.values.length - 1;
+    return this.values[lastValueIndex];
   }
 }

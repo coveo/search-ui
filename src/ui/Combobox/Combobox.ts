@@ -12,6 +12,7 @@ import { l } from '../../strings/Strings';
 export interface IComboboxOptions {
   label: string;
   requestValues: (terms: string) => Promise<any>;
+  requestMoreValues?: () => Promise<any>;
   createValuesFromResponse: (response: any) => IComboboxValue[];
   onSelectValue: (value: IComboboxValue) => void;
   searchInterface: SearchInterface;
@@ -19,6 +20,7 @@ export interface IComboboxOptions {
   placeholderText?: string;
   wrapperClassName?: string;
   clearOnBlur?: boolean;
+  maxDropdownHeight?: () => number;
 }
 
 export class Combobox {
@@ -32,8 +34,8 @@ export class Combobox {
     noValuesFoundLabel: l('NoValuesFound'),
     clearOnBlur: false
   };
-  private isThrottledRequestCancelled = false;
   private throttlingDelay = 600;
+  private isRequestCancelled = false;
 
   constructor(public options: IComboboxOptions) {
     this.options = {
@@ -85,8 +87,8 @@ export class Combobox {
 
   private cancelRequest() {
     this.toggleWaitAnimation(false);
-    this.throttledTriggerNewRequest.cancel();
-    this.isThrottledRequestCancelled = true;
+    this.throttledRequest.cancel();
+    this.isRequestCancelled = true;
   }
 
   public onInputChange(value: string) {
@@ -94,8 +96,7 @@ export class Combobox {
       return this.clearValues();
     }
 
-    this.toggleWaitAnimation(true);
-    this.throttledTriggerNewRequest(value);
+    this.throttledRequest(this.options.requestValues(value), () => this.values.resetScroll());
   }
 
   public onInputBlur() {
@@ -118,18 +119,25 @@ export class Combobox {
     this.options.searchInterface.ariaLive.updateText(text);
   }
 
-  private throttledTriggerNewRequest = throttle(this.triggerRequest, this.throttlingDelay, {
+  public onScrollEndReached() {
+    this.options.requestMoreValues && this.throttledRequest(this.options.requestMoreValues());
+  }
+
+  private throttledRequest = throttle(this.triggerRequest, this.throttlingDelay, {
     leading: true,
     trailing: true
   });
 
-  private async triggerRequest(terms: string) {
-    this.isThrottledRequestCancelled = false;
-    const response = await this.options.requestValues(terms);
+  private async triggerRequest(request: Promise<any>, callback?: Function) {
+    this.isRequestCancelled = false;
+    this.toggleWaitAnimation(true);
+
+    const response = await request;
     this.toggleWaitAnimation(false);
 
-    if (!this.isThrottledRequestCancelled) {
+    if (!this.isRequestCancelled) {
       this.values.renderFromResponse(response);
+      callback && callback();
     }
   }
 }

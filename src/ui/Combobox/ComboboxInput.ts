@@ -42,7 +42,7 @@ export class ComboboxInput {
       $$(this.inputElement).on('focus', () => this.combobox.onInputChange(this.textInput.getValue()));
     }
     $$(this.combobox.element).on('focusout', (e: FocusEvent) => this.handleFocusOut(e));
-    $$(this.combobox.element).on('keydown', (e: KeyboardEvent) => this.handleKeyboardUpDownArrows(e));
+    $$(this.combobox.element).on('keydown', (e: KeyboardEvent) => this.handleKeyboardDirection(e));
     $$(this.combobox.element).on('keyup', (e: KeyboardEvent) => this.handleKeyboardEnterEscape(e));
   }
 
@@ -81,7 +81,7 @@ export class ComboboxInput {
     this.combobox.onInputBlur();
   }
 
-  private handleKeyboardUpDownArrows(event: KeyboardEvent) {
+  private handleKeyboardDirection(event: KeyboardEvent) {
     switch (event.which) {
       case KEYBOARD.DOWN_ARROW:
         event.preventDefault();
@@ -90,6 +90,14 @@ export class ComboboxInput {
       case KEYBOARD.UP_ARROW:
         event.preventDefault();
         this.combobox.values.moveActiveValueUp();
+        break;
+      case KEYBOARD.HOME:
+        event.preventDefault();
+        this.combobox.values.moveActiveValueToTop();
+        break;
+      case KEYBOARD.END:
+        event.preventDefault();
+        this.combobox.values.moveActiveValueToBottom();
         break;
     }
   }
