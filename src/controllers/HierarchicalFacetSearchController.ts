@@ -7,6 +7,8 @@ export class HierarchicalFacetSearchController {
   private terms = '';
   private numberOfValuesMultiplier = 2;
 
+  public moreValuesAvailable = true;
+
   constructor(private facet: IDynamicHierarchicalFacet) {}
 
   private get ignoredPaths() {
@@ -31,22 +33,20 @@ export class HierarchicalFacetSearchController {
     };
   }
 
-  public moreValuesAvailable = true;
-
-  public async search(terms: string) {
-    this.terms = terms;
-    this.page = 1;
-
+  private async triggerRequest() {
     const response = await this.facet.queryController.getEndpoint().facetSearch(this.request);
     this.moreValuesAvailable = response.moreValuesAvailable;
     return response;
   }
 
-  public async fetchMoreResults() {
-    this.page++;
+  public search(terms: string) {
+    this.terms = terms;
+    this.page = 1;
+    return this.triggerRequest();
+  }
 
-    const response = await this.facet.queryController.getEndpoint().facetSearch(this.request);
-    this.moreValuesAvailable = response.moreValuesAvailable;
-    return response;
+  public fetchMoreResults() {
+    this.page++;
+    return this.triggerRequest();
   }
 }

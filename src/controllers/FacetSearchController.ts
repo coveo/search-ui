@@ -10,6 +10,8 @@ export class FacetSearchController {
   private terms = '';
   private numberOfValuesMultiplier = 3;
 
+  public moreValuesAvailable = true;
+
   constructor(private facet: IDynamicFacet) {}
 
   private getMonthsValueCaptions() {
@@ -62,20 +64,20 @@ export class FacetSearchController {
     };
   }
 
-  public moreValuesAvailable = true;
-
-  public async search(terms: string): Promise<IFacetSearchResponse> {
-    this.terms = terms;
-    this.page = 1;
+  private async triggerRequest() {
     const response = await this.facet.queryController.getEndpoint().facetSearch(this.request);
     this.moreValuesAvailable = response.moreValuesAvailable;
     return response;
   }
 
-  public async fetchMoreResults(): Promise<IFacetSearchResponse> {
+  public search(terms: string): Promise<IFacetSearchResponse> {
+    this.terms = terms;
+    this.page = 1;
+    return this.triggerRequest();
+  }
+
+  public fetchMoreResults(): Promise<IFacetSearchResponse> {
     this.page++;
-    const response = await this.facet.queryController.getEndpoint().facetSearch(this.request);
-    this.moreValuesAvailable = response.moreValuesAvailable;
-    return response;
+    return this.triggerRequest();
   }
 }
