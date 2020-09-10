@@ -169,7 +169,7 @@ export class ComboboxValues implements IComboboxValues {
     this.element.scrollTop = 0;
   }
 
-  public moveActiveValueToTop() {
+  public focusFirstValue() {
     if (!this.hasValues()) {
       return;
     }
@@ -177,7 +177,7 @@ export class ComboboxValues implements IComboboxValues {
     this.firstValue.element.focus();
   }
 
-  public moveActiveValueToBottom() {
+  public focusLastValue() {
     if (!this.hasValues()) {
       return;
     }
@@ -185,7 +185,7 @@ export class ComboboxValues implements IComboboxValues {
     this.lastValue.element.focus();
   }
 
-  public moveActiveValueDown() {
+  public focusNextValue() {
     if (!this.hasValues()) {
       return;
     }
@@ -194,7 +194,7 @@ export class ComboboxValues implements IComboboxValues {
     nextActiveValue.element.focus();
   }
 
-  public moveActiveValueUp() {
+  public focusPreviousValue() {
     if (!this.hasValues()) {
       return;
     }

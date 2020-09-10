@@ -43,10 +43,10 @@ export interface IComboboxValues {
   clearValues(): void;
   selectActiveValue(): void;
   resetScroll(): void;
-  moveActiveValueDown(): void;
-  moveActiveValueUp(): void;
-  moveActiveValueToTop(): void;
-  moveActiveValueToBottom(): void;
+  focusNextValue(): void;
+  focusPreviousValue(): void;
+  focusFirstValue(): void;
+  focusLastValue(): void;
   saveFocusedValue(): void;
   restoreFocusedValue(): void;
 }

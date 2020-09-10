@@ -80,19 +80,19 @@ export class ComboboxInput {
     switch (event.which) {
       case KEYBOARD.DOWN_ARROW:
         event.preventDefault();
-        this.combobox.values.moveActiveValueDown();
+        this.combobox.values.focusNextValue();
         break;
       case KEYBOARD.UP_ARROW:
         event.preventDefault();
-        this.combobox.values.moveActiveValueUp();
+        this.combobox.values.focusPreviousValue();
         break;
       case KEYBOARD.HOME:
         event.preventDefault();
-        this.combobox.values.moveActiveValueToTop();
+        this.combobox.values.focusFirstValue();
         break;
       case KEYBOARD.END:
         event.preventDefault();
-        this.combobox.values.moveActiveValueToBottom();
+        this.combobox.values.focusLastValue();
         break;
     }
   }
