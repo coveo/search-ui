@@ -72,6 +72,20 @@ export function ComboboxInputTest() {
       expect(combobox.values.focusPreviousValue).toHaveBeenCalled();
     });
 
+    it(`when pressing the home button on the keyboard
+    should call the "focusFirstValue" method of the combobox values`, () => {
+      spyOn(combobox.values, 'focusFirstValue');
+      Simulate.keyDown(combobox.element, KEYBOARD.HOME);
+      expect(combobox.values.focusFirstValue).toHaveBeenCalled();
+    });
+
+    it(`when pressing the end button on the keyboard
+    should call the "focusLastValue" method of the combobox values`, () => {
+      spyOn(combobox.values, 'focusLastValue');
+      Simulate.keyDown(combobox.element, KEYBOARD.END);
+      expect(combobox.values.focusLastValue).toHaveBeenCalled();
+    });
+
     it(`when pressing enter button of the keyboard
     should call the "selectActiveValue" method of the combobox values`, () => {
       spyOn(combobox.values, 'selectActiveValue');

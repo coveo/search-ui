@@ -320,6 +320,108 @@ export function ComboboxValuesTest() {
       });
     });
 
+    describe('when calling "focusFirstValue"', () => {
+      beforeEach(() => {
+        triggerRenderFromResponse(['hi', 'hello', 'bye']);
+      });
+
+      it(`when no value is active
+      should activate the first value`, () => {
+        comboboxValues.focusFirstValue();
+
+        expect(isChildrenActiveAtIndex(0)).toBe(true);
+      });
+
+      it(`when no value is active
+      should focus the first value`, () => {
+        comboboxValues.focusFirstValue();
+
+        expect(getFocusCountAtIndex(0)).toEqual(1);
+      });
+
+      it(`when a value is active
+      should activate the first value`, () => {
+        comboboxValues.focusNextValue();
+        comboboxValues.focusNextValue();
+        comboboxValues.focusFirstValue();
+
+        expect(isChildrenActiveAtIndex(1)).toBe(false);
+        expect(isChildrenActiveAtIndex(0)).toBe(true);
+      });
+
+      it(`when a value is active
+      should focus the first value`, () => {
+        comboboxValues.focusNextValue();
+        comboboxValues.focusNextValue();
+        comboboxValues.focusFirstValue();
+
+        expect(getFocusCountAtIndex(0)).toEqual(2);
+        expect(getFocusCountAtIndex(1)).toEqual(1);
+      });
+
+      it('should call "updateAccessibilityAttributes" with the rigth attributes', () => {
+        spyOn(combobox, 'updateAccessibilityAttributes');
+        comboboxValues.focusFirstValue();
+
+        const expected: IComboboxAccessibilityAttributes = {
+          expanded: true,
+          activeDescendant: getChildren()[0].getAttribute('id')
+        };
+
+        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalledWith(expected);
+      });
+    });
+
+    describe('when calling "focusLastValue"', () => {
+      beforeEach(() => {
+        triggerRenderFromResponse(['hi', 'hello', 'bye']);
+      });
+
+      it(`when no value is active
+      should activate the last value`, () => {
+        comboboxValues.focusLastValue();
+
+        expect(isChildrenActiveAtIndex(2)).toBe(true);
+      });
+
+      it(`when no value is active
+      should focus the last value`, () => {
+        comboboxValues.focusLastValue();
+
+        expect(getFocusCountAtIndex(2)).toEqual(1);
+      });
+
+      it(`when a value is active
+      should activate the last value`, () => {
+        comboboxValues.focusNextValue();
+        comboboxValues.focusLastValue();
+
+        expect(isChildrenActiveAtIndex(2)).toBe(true);
+        expect(isChildrenActiveAtIndex(0)).toBe(false);
+      });
+
+      it(`when a value is active
+      should focus the last value`, () => {
+        comboboxValues.focusNextValue();
+        comboboxValues.focusLastValue();
+
+        expect(getFocusCountAtIndex(2)).toEqual(1);
+        expect(getFocusCountAtIndex(0)).toEqual(1);
+      });
+
+      it('should call "updateAccessibilityAttributes" with the rigth attributes', () => {
+        spyOn(combobox, 'updateAccessibilityAttributes');
+        comboboxValues.focusLastValue();
+
+        const expected: IComboboxAccessibilityAttributes = {
+          expanded: true,
+          activeDescendant: getChildren()[2].getAttribute('id')
+        };
+
+        expect(combobox.updateAccessibilityAttributes).toHaveBeenCalledWith(expected);
+      });
+    });
+
     describe('when calling "selectActiveValue"', () => {
       beforeEach(() => {
         triggerRenderFromResponse(['hi']);
@@ -344,6 +446,51 @@ export function ComboboxValuesTest() {
           element: getChildren()[0]
         });
       });
+    });
+
+    describe('when scrolling in the values', () => {
+      beforeEach(() => {
+        spyOn(combobox, 'onScrollEndReached');
+      });
+
+      it(`if areMoreValuesAvailable return true and the scroll end is reached
+      it should call the onScrollEndReached on the combobox`, () => {
+        comboboxValues.element.dispatchEvent(new CustomEvent('scroll'));
+        expect(combobox.onScrollEndReached).toHaveBeenCalled();
+      });
+
+      it(`if areMoreValuesAvailable return false and the scroll end is reached
+      it should call the onScrollEndReached on the combobox`, () => {
+        combobox.options.scrollable.areMoreValuesAvailable = () => false;
+        comboboxValues.element.dispatchEvent(new CustomEvent('scroll'));
+        expect(combobox.onScrollEndReached).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when calling "resetScroll"', () => {
+      it('should set the maxHeight value to the maxDropdownHeight option', () => {
+        comboboxValues.resetScroll();
+        expect(comboboxValues.element.style.maxHeight).toBe('100px');
+      });
+
+      it('should reset the scrollTop value to 0', () => {
+        comboboxValues.element.scrollTop = 300;
+        comboboxValues.resetScroll();
+        expect(comboboxValues.element.scrollTop).toBe(0);
+      });
+    });
+
+    it('should "saveFocusedValue" & "restoreFocusedValue" correctly', () => {
+      triggerRenderFromResponse(['hi', 'hello']);
+
+      comboboxValues.focusLastValue();
+      comboboxValues.saveFocusedValue();
+
+      triggerRenderFromResponse(['hi', 'hello', 'goodbye']);
+
+      comboboxValues.restoreFocusedValue();
+
+      expect(isChildrenActiveAtIndex(1)).toBe(true);
     });
   });
 }
