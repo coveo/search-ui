@@ -121,9 +121,15 @@
 }
 
 .coveo-facet-search-no-results {
-  background-color: #ffd0d0;
-  .coveo-facet-search-magnifier {
-    visibility: hidden;
+  + .coveo-facet-search-results {
+    padding: 0;
+    overflow-y: hidden;
+
+    @at-root .coveo-facet-value-not-found {
+      margin: 1px;
+      padding: 4px 9px;
+      font-size: 13px;
+    }
   }
 }
 
