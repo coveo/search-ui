@@ -6,8 +6,8 @@ import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
 import { IFacetSearchRequest } from '../rest/Facet/FacetSearchRequest';
 
 export class FacetSearchController {
-  private page = 1;
   private terms = '';
+  private pageCount = 1;
   private numberOfValuesMultiplier = 3;
 
   public moreValuesAvailable = true;
@@ -49,7 +49,7 @@ export class FacetSearchController {
   }
 
   private get numberOfValues() {
-    return this.facet.values.allValues.length * this.numberOfValuesMultiplier * this.page;
+    return this.facet.values.allValues.length * this.numberOfValuesMultiplier * this.pageCount;
   }
 
   private get request(): IFacetSearchRequest {
@@ -72,12 +72,12 @@ export class FacetSearchController {
 
   public search(terms: string): Promise<IFacetSearchResponse> {
     this.terms = terms;
-    this.page = 1;
+    this.pageCount = 1;
     return this.triggerRequest();
   }
 
   public fetchMoreResults(): Promise<IFacetSearchResponse> {
-    this.page++;
+    this.pageCount++;
     return this.triggerRequest();
   }
 }

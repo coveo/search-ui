@@ -4,8 +4,8 @@ import { flatten } from 'underscore';
 import { IFacetSearchResponse } from '../rest/Facet/FacetSearchResponse';
 
 export class HierarchicalFacetSearchController {
-  private page = 1;
   private terms = '';
+  private pageCount = 1;
   private numberOfValuesMultiplier = 2;
 
   public moreValuesAvailable = true;
@@ -17,7 +17,7 @@ export class HierarchicalFacetSearchController {
   }
 
   private get numberOfValues() {
-    return this.facet.values.allFacetValues.length * this.numberOfValuesMultiplier * this.page;
+    return this.facet.values.allFacetValues.length * this.numberOfValuesMultiplier * this.pageCount;
   }
 
   private get request(): IFacetSearchRequest {
@@ -42,12 +42,12 @@ export class HierarchicalFacetSearchController {
 
   public search(terms: string): Promise<IFacetSearchResponse> {
     this.terms = terms;
-    this.page = 1;
+    this.pageCount = 1;
     return this.triggerRequest();
   }
 
   public fetchMoreResults(): Promise<IFacetSearchResponse> {
-    this.page++;
+    this.pageCount++;
     return this.triggerRequest();
   }
 }
