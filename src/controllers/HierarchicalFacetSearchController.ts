@@ -1,6 +1,7 @@
 import { IDynamicHierarchicalFacet } from '../ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 import { FacetSearchType, IFacetSearchRequest } from '../rest/Facet/FacetSearchRequest';
 import { flatten } from 'underscore';
+import { IFacetSearchResponse } from '../rest/Facet/FacetSearchResponse';
 
 export class HierarchicalFacetSearchController {
   private page = 1;
@@ -39,13 +40,13 @@ export class HierarchicalFacetSearchController {
     return response;
   }
 
-  public search(terms: string) {
+  public search(terms: string): Promise<IFacetSearchResponse> {
     this.terms = terms;
     this.page = 1;
     return this.triggerRequest();
   }
 
-  public fetchMoreResults() {
+  public fetchMoreResults(): Promise<IFacetSearchResponse> {
     this.page++;
     return this.triggerRequest();
   }
