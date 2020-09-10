@@ -22,8 +22,8 @@ export class BaseComponent {
    */
   public disabled = false;
   /**
-   * The static ID that each component need to be identified.<br/>
-   * For example, SearchButton -> static ID : SearchButton -> className : CoveoSearchButton
+   * The static ID that each component needs to be identified.<br/>
+   * For example, SearchButton -> static ID: SearchButton -> className: CoveoSearchButton
    */
   static ID: string;
 
@@ -47,7 +47,7 @@ export class BaseComponent {
   /**
    * Disable the component.
    * Normally this means that the component will not execute handlers for the framework events (query events, for example).
-   * Component are enabled by default on creation.
+   * Components are enabled by default on creation.
    */
   public disable() {
     this.disabled = true;
