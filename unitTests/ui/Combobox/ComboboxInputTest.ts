@@ -59,17 +59,17 @@ export function ComboboxInputTest() {
     });
 
     it(`when pressing the down arrow on the keyboard
-    should call the "moveActiveValueDown" method of the combobox values`, () => {
-      spyOn(combobox.values, 'moveActiveValueDown');
+    should call the "focusNextValue" method of the combobox values`, () => {
+      spyOn(combobox.values, 'focusNextValue');
       Simulate.keyDown(combobox.element, KEYBOARD.DOWN_ARROW);
-      expect(combobox.values.moveActiveValueDown).toHaveBeenCalled();
+      expect(combobox.values.focusNextValue).toHaveBeenCalled();
     });
 
     it(`when pressing the up arrow on the keyboard
-    should call the "moveActiveValueUp" method of the combobox values`, () => {
-      spyOn(combobox.values, 'moveActiveValueUp');
+    should call the "focusPreviousValue" method of the combobox values`, () => {
+      spyOn(combobox.values, 'focusPreviousValue');
       Simulate.keyDown(combobox.element, KEYBOARD.UP_ARROW);
-      expect(combobox.values.moveActiveValueUp).toHaveBeenCalled();
+      expect(combobox.values.focusPreviousValue).toHaveBeenCalled();
     });
 
     it(`when pressing enter button of the keyboard
