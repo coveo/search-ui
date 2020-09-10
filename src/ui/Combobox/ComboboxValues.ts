@@ -5,6 +5,7 @@ import { find } from 'underscore';
 export class ComboboxValues implements IComboboxValues {
   public element: HTMLElement;
   public mouseIsOverValue = false;
+  public isRenderingNewValues = false;
   private values: IComboboxValue[] = [];
   private keyboardActiveValue?: IComboboxValue;
   private isScrollable: boolean;
@@ -24,9 +25,11 @@ export class ComboboxValues implements IComboboxValues {
   }
 
   public renderFromResponse(response: any) {
+    this.isRenderingNewValues = true;
     this.clearValues();
     this.values = this.combobox.options.createValuesFromResponse(response);
     this.render();
+    this.isRenderingNewValues = false;
   }
 
   private render() {

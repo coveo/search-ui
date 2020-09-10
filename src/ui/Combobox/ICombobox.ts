@@ -38,6 +38,7 @@ export interface ICombobox {
 export interface IComboboxValues {
   element: HTMLElement;
   mouseIsOverValue: boolean;
+  isRenderingNewValues: boolean;
   renderFromResponse(response: any): void;
   clearValues(): void;
   selectActiveValue(): void;

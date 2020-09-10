@@ -93,6 +93,10 @@ export class Combobox implements ICombobox {
       return;
     }
 
+    if (this.values.isRenderingNewValues) {
+      return;
+    }
+
     if (this.options.clearOnBlur) {
       return this.clearAll();
     }
