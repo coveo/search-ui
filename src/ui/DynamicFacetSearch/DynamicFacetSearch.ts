@@ -5,7 +5,7 @@ import { IFacetSearchResponse } from '../../rest/Facet/FacetSearchResponse';
 import { DynamicFacetValue } from '../DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { DynamicFacetSearchValueRenderer } from './DynamicFacetSearchValueRenderer';
-import { IComboboxValue } from '../Combobox/ComboboxValues';
+import { IComboboxValue } from '../Combobox/ICombobox';
 import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 import { IDynamicFacet } from '../DynamicFacet/IDynamicFacet';
 import { FacetUtils } from '../Facet/FacetUtils';

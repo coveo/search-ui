@@ -3,7 +3,7 @@ import { HierarchicalFacetSearchController } from '../../controllers/Hierarchica
 import { Combobox } from '../Combobox/Combobox';
 import { l } from '../../strings/Strings';
 import { IFacetSearchResponse } from '../../rest/Facet/FacetSearchResponse';
-import { IComboboxValue } from '../Combobox/ComboboxValues';
+import { IComboboxValue } from '../Combobox/ICombobox';
 import { DynamicHierarchicalFacetSearchValue } from './DynamicHierarchicalFacetSearchValue';
 import { DynamicHierarchicalFacetSearchValueRenderer } from './DynamicHierarchicalFacetSearchValueRenderer';
 import 'styling/DynamicHierarchicalFacetSearch/_DynamicHierarchicalFacetSearch';

@@ -1,11 +1,6 @@
-import { ICombobox, IComboboxValues } from './ICombobox';
+import { ICombobox, IComboboxValues, IComboboxValue } from './ICombobox';
 import { $$ } from '../../utils/Dom';
 import { find } from 'underscore';
-
-export interface IComboboxValue {
-  value: any;
-  element: HTMLElement;
-}
 
 export class ComboboxValues implements IComboboxValues {
   public element: HTMLElement;
