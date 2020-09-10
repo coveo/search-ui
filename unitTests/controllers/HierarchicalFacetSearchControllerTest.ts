@@ -32,7 +32,7 @@ export function HierarchicalFacetSearchControllerTest() {
       const expectedRequest: IFacetSearchRequest = {
         field: facet.fieldName,
         type: FacetSearchType.hierarchical,
-        numberOfValues: facet.options.numberOfValues,
+        numberOfValues: facet.values.allFacetValues.length * 2,
         ignorePaths: [flatten(facet.values.selectedPath, true)],
         basePath: facet.options.basePath,
         captions: {},

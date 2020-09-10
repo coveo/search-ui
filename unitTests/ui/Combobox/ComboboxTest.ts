@@ -1,5 +1,6 @@
 import { $$ } from '../../../src/Core';
-import { Combobox, IComboboxOptions } from '../../../src/ui/Combobox/Combobox';
+import { Combobox } from '../../../src/ui/Combobox/Combobox';
+import { IComboboxOptions } from '../../../src/ui/Combobox/ICombobox';
 import { mockSearchInterface } from '../../MockEnvironment';
 
 export function comboboxDefaultOptions() {
@@ -8,7 +9,7 @@ export function comboboxDefaultOptions() {
     createValuesFromResponse: jasmine.createSpy('createValuesFromResponse').and.callFake(() => []),
     requestValues: jasmine.createSpy('requestValues').and.callFake(async () => await []),
     onSelectValue: jasmine.createSpy('onSelectValue'),
-    searchInterface: mockSearchInterface()
+    ariaLive: mockSearchInterface().ariaLive
   };
 }
 
@@ -136,10 +137,10 @@ export function ComboboxTest() {
 
     it(`when calling updateAriaLive
     should call updateText on the searchInterface's ariaLive component`, () => {
-      spyOn(combobox.options.searchInterface.ariaLive, 'updateText');
+      spyOn(combobox.options.ariaLive, 'updateText');
       const text = 'test';
       combobox.updateAriaLive(text);
-      expect(combobox.options.searchInterface.ariaLive.updateText).toHaveBeenCalledWith(text);
+      expect(combobox.options.ariaLive.updateText).toHaveBeenCalledWith(text);
     });
   });
 }

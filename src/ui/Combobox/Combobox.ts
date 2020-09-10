@@ -82,7 +82,10 @@ export class Combobox implements ICombobox {
       return this.clearValues();
     }
 
-    this.throttledRequest(this.options.requestValues(value), () => this.values.resetScroll());
+    this.throttledRequest(
+      () => this.options.requestValues(value),
+      () => this.values.resetScroll()
+    );
   }
 
   public onInputBlur() {
@@ -107,7 +110,11 @@ export class Combobox implements ICombobox {
 
   public onScrollEndReached() {
     this.values.saveFocusedValue();
-    this.options.scrollable && this.throttledRequest(this.options.scrollable.requestMoreValues(), () => this.values.restoreFocusedValue());
+    this.options.scrollable &&
+      this.throttledRequest(
+        () => this.options.scrollable.requestMoreValues(),
+        () => this.values.restoreFocusedValue()
+      );
   }
 
   private throttledRequest = throttle(this.triggerRequest, this.throttlingDelay, {
@@ -115,11 +122,11 @@ export class Combobox implements ICombobox {
     trailing: true
   });
 
-  private async triggerRequest(request: Promise<any>, callback?: Function) {
+  private async triggerRequest(request: () => Promise<any>, callback?: Function) {
     this.isRequestCancelled = false;
     this.toggleWaitAnimation(true);
 
-    const response = await request;
+    const response = await request();
     this.toggleWaitAnimation(false);
 
     if (!this.isRequestCancelled) {

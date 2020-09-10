@@ -1,8 +1,8 @@
-import { Combobox, IComboboxOptions } from '../../../src/ui/Combobox/Combobox';
+import { Combobox } from '../../../src/ui/Combobox/Combobox';
 import { comboboxDefaultOptions } from './ComboboxTest';
 import { ComboboxValues } from '../../../src/ui/Combobox/ComboboxValues';
 import { $$ } from '../../../src/Core';
-import { IComboboxAccessibilityAttributes } from '../../../src/ui/Combobox/ComboboxInput';
+import { IComboboxOptions, IComboboxAccessibilityAttributes } from '../../../src/ui/Combobox/ICombobox';
 
 function createValuesFromResponse(response: string[]) {
   return response.map(value => {
