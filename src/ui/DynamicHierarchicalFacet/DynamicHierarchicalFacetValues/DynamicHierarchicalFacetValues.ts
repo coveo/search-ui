@@ -106,7 +106,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
         displayValue: this.formatDisplayValue(value),
         numberOfResults: 0,
         state: FacetValueState.idle,
-        isLeafValue: true, // TODO: validate
+        isLeafValue: !children.length,
         moreValuesAvailable: false,
         children
       },
