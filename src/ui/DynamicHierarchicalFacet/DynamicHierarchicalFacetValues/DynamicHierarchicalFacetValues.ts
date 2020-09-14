@@ -9,7 +9,6 @@ import { Utils } from '../../../utils/Utils';
 import { l } from '../../../strings/Strings';
 import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicFacetValues/DynamicFacetValueMoreLessButton';
 import { IDynamicHierarchicalFacetValues, IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../IDynamicHierarchicalFacet';
-import { SVGDom } from '../../../utils/SVGDom';
 import { SVGIcons } from '../../../utils/SVGIcons';
 
 export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacetValues {
@@ -160,8 +159,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
     );
     clearButton.toggleClass('coveo-show-when-collapsed', this.facet.values.selectedPath.length === 1);
 
-    const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow' }, SVGIcons.icons.arrowDown);
-    SVGDom.addClassToSVGInContainer(arrowIcon.el, 'coveo-dynamic-hierarchical-facet-value-arrow-svg');
+    const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow-left' }, SVGIcons.icons.arrowDown);
     clearButton.prepend(arrowIcon.el);
 
     const clear = $$('li', {}, clearButton);

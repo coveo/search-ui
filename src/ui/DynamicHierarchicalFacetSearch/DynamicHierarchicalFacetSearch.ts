@@ -6,6 +6,7 @@ import { IFacetSearchResponse } from '../../rest/Facet/FacetSearchResponse';
 import { IComboboxValue } from '../Combobox/ComboboxValues';
 import { DynamicHierarchicalFacetSearchValue } from './DynamicHierarchicalFacetSearchValue';
 import { DynamicHierarchicalFacetSearchValueRenderer } from './DynamicHierarchicalFacetSearchValueRenderer';
+import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 import 'styling/DynamicHierarchicalFacetSearch/_DynamicHierarchicalFacetSearch';
 
 export class DynamicHierarchicalFacetSearch {
