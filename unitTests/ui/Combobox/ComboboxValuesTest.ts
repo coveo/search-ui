@@ -239,7 +239,7 @@ export function ComboboxValuesTest() {
         expect(getFocusCountAtIndex(1)).toEqual(1);
       });
 
-      it('should call "updateAccessibilityAttributes" with the rigth attributes', () => {
+      it('should call "updateAccessibilityAttributes" with the right attributes', () => {
         spyOn(combobox, 'updateAccessibilityAttributes');
         comboboxValues.focusNextValue();
 
@@ -359,7 +359,7 @@ export function ComboboxValuesTest() {
         expect(getFocusCountAtIndex(1)).toEqual(1);
       });
 
-      it('should call "updateAccessibilityAttributes" with the rigth attributes', () => {
+      it('should call "updateAccessibilityAttributes" with the right attributes', () => {
         spyOn(combobox, 'updateAccessibilityAttributes');
         comboboxValues.focusFirstValue();
 
@@ -409,7 +409,7 @@ export function ComboboxValuesTest() {
         expect(getFocusCountAtIndex(0)).toEqual(1);
       });
 
-      it('should call "updateAccessibilityAttributes" with the rigth attributes', () => {
+      it('should call "updateAccessibilityAttributes" with the right attributes', () => {
         spyOn(combobox, 'updateAccessibilityAttributes');
         comboboxValues.focusLastValue();
 
@@ -460,7 +460,7 @@ export function ComboboxValuesTest() {
       });
 
       it(`if areMoreValuesAvailable return false and the scroll end is reached
-      it should call the onScrollEndReached on the combobox`, () => {
+      it should not call the onScrollEndReached on the combobox`, () => {
         combobox.options.scrollable.areMoreValuesAvailable = () => false;
         comboboxValues.element.dispatchEvent(new CustomEvent('scroll'));
         expect(combobox.onScrollEndReached).not.toHaveBeenCalled();
