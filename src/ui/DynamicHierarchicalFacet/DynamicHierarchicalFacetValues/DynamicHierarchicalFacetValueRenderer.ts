@@ -38,16 +38,16 @@ export class DynamicHierarchicalFacetValueRenderer {
     this.button.toggleClass('coveo-with-space', this.shouldHaveMargin);
     this.button.toggleClass('coveo-show-when-collapsed', this.shouldShowWhenCollapsed);
     this.facetValue.isSelected && this.button.setAttribute('disabled', 'true');
-    this.shouldHaveBackArrow && this.prependArrow();
-    this.shouldHaveForwardArrow && this.appendArrow();
+    this.shouldHaveBackArrow && this.prependBackArrow();
+    this.shouldHaveForwardArrow && this.appendForwardArrow();
   }
 
-  private prependArrow() {
+  private prependBackArrow() {
     const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow-left' }, SVGIcons.icons.arrowDown);
     this.button.prepend(arrowIcon.el);
   }
 
-  private appendArrow() {
+  private appendForwardArrow() {
     const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow-right' }, SVGIcons.icons.arrowDown);
     this.button.append(arrowIcon.el);
   }
