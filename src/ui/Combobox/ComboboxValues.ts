@@ -1,19 +1,17 @@
-import { Combobox } from './Combobox';
+import { ICombobox, IComboboxValues, IComboboxValue } from './ICombobox';
 import { $$ } from '../../utils/Dom';
 import { find } from 'underscore';
 
-export interface IComboboxValue {
-  value: any;
-  element: HTMLElement;
-}
-
-export class ComboboxValues {
+export class ComboboxValues implements IComboboxValues {
   public element: HTMLElement;
   public mouseIsOverValue = false;
+  public isRenderingNewValues = false;
   private values: IComboboxValue[] = [];
   private keyboardActiveValue?: IComboboxValue;
+  private isScrollable: boolean;
+  private focusedValueId: string;
 
-  constructor(private combobox: Combobox) {
+  constructor(private combobox: ICombobox) {
     this.element = $$('ul', {
       id: `${this.combobox.id}-listbox`,
       role: 'listbox',
@@ -21,12 +19,17 @@ export class ComboboxValues {
       ariaLabelledby: `${this.combobox.id}-input`
     }).el;
     $$(this.element).hide();
+
+    this.isScrollable = !!this.combobox.options.scrollable;
+    this.isScrollable && this.element.addEventListener('scroll', () => this.onScroll());
   }
 
   public renderFromResponse(response: any) {
+    this.isRenderingNewValues = true;
     this.clearValues();
     this.values = this.combobox.options.createValuesFromResponse(response);
     this.render();
+    this.isRenderingNewValues = false;
   }
 
   private render() {
@@ -151,7 +154,38 @@ export class ComboboxValues {
     this.combobox.clearAll();
   }
 
-  public moveActiveValueDown() {
+  private onScroll() {
+    const scrollEndReached = this.element.scrollTop + this.element.clientHeight >= this.element.scrollHeight;
+    if (scrollEndReached && this.combobox.options.scrollable.areMoreValuesAvailable()) {
+      this.combobox.onScrollEndReached();
+    }
+  }
+
+  public resetScroll() {
+    if (!this.isScrollable) {
+      return;
+    }
+    this.element.style.maxHeight = `${this.combobox.options.scrollable.maxDropdownHeight()}px`;
+    this.element.scrollTop = 0;
+  }
+
+  public focusFirstValue() {
+    if (!this.hasValues()) {
+      return;
+    }
+
+    this.firstValue.element.focus();
+  }
+
+  public focusLastValue() {
+    if (!this.hasValues()) {
+      return;
+    }
+
+    this.lastValue.element.focus();
+  }
+
+  public focusNextValue() {
     if (!this.hasValues()) {
       return;
     }
@@ -160,7 +194,7 @@ export class ComboboxValues {
     nextActiveValue.element.focus();
   }
 
-  public moveActiveValueUp() {
+  public focusPreviousValue() {
     if (!this.hasValues()) {
       return;
     }
@@ -171,20 +205,47 @@ export class ComboboxValues {
 
   private get nextOrFirstValue() {
     if (!this.keyboardActiveValue) {
-      return this.values[0];
+      return this.firstValue;
     }
 
     const nextValueIndex = (this.values.indexOf(this.keyboardActiveValue) + 1) % this.values.length;
     return this.values[nextValueIndex];
   }
 
+  private get firstValue() {
+    return this.values[0];
+  }
+
   private get previousOrLastValue() {
-    const lastValueIndex = this.values.length - 1;
     if (!this.keyboardActiveValue) {
-      return this.values[lastValueIndex];
+      return this.lastValue;
     }
 
     const previousValueIndex = this.values.indexOf(this.keyboardActiveValue) - 1;
-    return previousValueIndex >= 0 ? this.values[previousValueIndex] : this.values[lastValueIndex];
+    return previousValueIndex >= 0 ? this.values[previousValueIndex] : this.values[this.values.length - 1];
+  }
+
+  private get lastValue() {
+    const lastValueIndex = this.values.length - 1;
+    return this.values[lastValueIndex];
+  }
+
+  public saveFocusedValue() {
+    if (!this.keyboardActiveValue) {
+      this.focusedValueId = null;
+      return;
+    }
+
+    this.focusedValueId = this.keyboardActiveValue.element.id;
+  }
+
+  public restoreFocusedValue() {
+    if (!this.focusedValueId) {
+      return;
+    }
+
+    const element = $$(this.element).find(`#${this.focusedValueId}`);
+    element.focus();
+    this.focusedValueId = null;
   }
 }

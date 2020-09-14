@@ -33,13 +33,13 @@ export const AccessibilityDynamicHierarchicalFacetSearch = () => {
         displayValue: 'abc',
         path,
         rawValue: 'abc',
-        count: 1234,
-        moreValuesAvailable: false
+        count: 1234
       };
     }
 
     function createMockQueryController() {
       return <HierarchicalFacetSearchController>{
+        moreValuesAvailable: false,
         search: () =>
           Promise.resolve({
             values: [
@@ -47,7 +47,22 @@ export const AccessibilityDynamicHierarchicalFacetSearch = () => {
               createMockFacetSearchResult(['aaa', 'bbb', 'ccc', 'ddd']),
               createMockFacetSearchResult(['aaa', 'bbb', 'ccc', 'ddd', 'eee']),
               createMockFacetSearchResult(['aaa', 'bbb', 'ccc', 'ddd', 'fff'])
-            ]
+            ],
+            moreValuesAvailable: false
+          }),
+        fetchMoreResults: () =>
+          Promise.resolve({
+            values: [
+              createMockFacetSearchResult(['aaa']),
+              createMockFacetSearchResult(['aaa', 'bbb', 'ccc', 'ddd']),
+              createMockFacetSearchResult(['aaa', 'bbb', 'ccc', 'ddd', 'eee']),
+              createMockFacetSearchResult(['aaa', 'bbb', 'ccc', 'ddd', 'fff']),
+              createMockFacetSearchResult(['fff']),
+              createMockFacetSearchResult(['fff', 'ggg', 'hhh', 'iii']),
+              createMockFacetSearchResult(['fff', 'ggg', 'hhh', 'iii', 'jjj']),
+              createMockFacetSearchResult(['fff', 'ggg', 'hhh', 'iii', 'kkk'])
+            ],
+            moreValuesAvailable: false
           })
       };
     }
