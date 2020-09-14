@@ -39,7 +39,8 @@ export class DynamicHierarchicalFacetValueRenderer {
     this.button.toggleClass('coveo-with-space', this.shouldHaveMargin);
     this.button.toggleClass('coveo-show-when-collapsed', this.shouldShowWhenCollapsed);
     this.facetValue.isSelected && this.button.setAttribute('disabled', 'true');
-    this.shouldHaveArrow && this.prependArrow();
+    this.shouldHaveBackArrow && this.prependArrow();
+    !this.facetValue.isLeafValue && this.appendArrow();
   }
 
   private prependArrow() {
@@ -48,11 +49,17 @@ export class DynamicHierarchicalFacetValueRenderer {
     this.button.prepend(arrowIcon.el);
   }
 
+  private appendArrow() {
+    const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow' }, SVGIcons.icons.pagerRightArrow);
+    SVGDom.addClassToSVGInContainer(arrowIcon.el, 'coveo-dynamic-hierarchical-facet-value-arrow-svg');
+    this.button.append(arrowIcon.el);
+  }
+
   private get shouldHaveMargin() {
     return !this.facetValue.isSelected && this.facetValue.path.length > 1 && !this.facetValue.children.length;
   }
 
-  private get shouldHaveArrow() {
+  private get shouldHaveBackArrow() {
     return this.facet.values.hasSelectedValue && !this.facetValue.isSelected && !!this.facetValue.children.length;
   }
 
