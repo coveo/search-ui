@@ -52,12 +52,12 @@ export class DynamicHierarchicalFacetValue implements IDynamicHierarchicalFacetV
     return this.facetValue.children;
   }
 
-  public get isLeafValue() {
-    return this.facetValue.isLeafValue;
-  }
-
   public set children(children: IDynamicHierarchicalFacetValue[]) {
     this.facetValue.children = children;
+  }
+
+  public get isLeafValue() {
+    return this.facetValue.isLeafValue;
   }
 
   public get isIdle() {
