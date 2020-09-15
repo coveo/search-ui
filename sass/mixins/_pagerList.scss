@@ -6,7 +6,7 @@
 }
 
 @mixin pager-list-item {
-  @include defaultRoundedBorder();
+  @include defaultRoundedLowContrastBorder();
   margin: 5px 6px;
   padding: 4px 8px;
   list-style: none;

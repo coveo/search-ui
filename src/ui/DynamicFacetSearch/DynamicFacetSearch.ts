@@ -5,10 +5,11 @@ import { IFacetSearchResponse } from '../../rest/Facet/FacetSearchResponse';
 import { DynamicFacetValue } from '../DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { DynamicFacetSearchValueRenderer } from './DynamicFacetSearchValueRenderer';
-import { IComboboxValue } from '../Combobox/ComboboxValues';
+import { IComboboxValue } from '../Combobox/ICombobox';
 import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 import { IDynamicFacet } from '../DynamicFacet/IDynamicFacet';
 import { FacetUtils } from '../Facet/FacetUtils';
+import { $$ } from '../../utils/Dom';
 
 export class DynamicFacetSearch {
   public element: HTMLElement;
@@ -20,20 +21,21 @@ export class DynamicFacetSearch {
 
     this.combobox = new Combobox({
       label: l('SearchFacetResults', this.facet.options.title),
-      searchInterface: this.facet.searchInterface,
-      requestValues: terms => this.facetSearch(terms),
+      ariaLive: this.facet.searchInterface.ariaLive,
+      requestValues: terms => this.facetSearchController.search(terms),
       createValuesFromResponse: (response: IFacetSearchResponse) => this.createValuesFromResponse(response),
       onSelectValue: this.onSelectValue,
       placeholderText: l('Search'),
       wrapperClassName: 'coveo-dynamic-facet-search',
-      clearOnBlur: true
+      clearOnBlur: true,
+      scrollable: {
+        requestMoreValues: () => this.facetSearchController.fetchMoreResults(),
+        areMoreValuesAvailable: () => this.facetSearchController.moreValuesAvailable,
+        maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-facet-values').clientHeight
+      }
     });
 
     this.element = this.combobox.element;
-  }
-
-  private async facetSearch(terms: string) {
-    return this.facetSearchController.search(terms);
   }
 
   private getDisplayValue(value: string) {
