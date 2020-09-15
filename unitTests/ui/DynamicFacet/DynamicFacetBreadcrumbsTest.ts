@@ -56,6 +56,9 @@ export function DynamicFacetBreadcrumbsTest() {
       initializeComponent();
 
       const [breadcrumb] = valueElements();
+      $$(breadcrumb)
+        .findAll('svg')
+        .forEach(child => child.remove());
       expect(breadcrumb.textContent).toBe('<img src=x onerror=alert(1)>');
     });
 

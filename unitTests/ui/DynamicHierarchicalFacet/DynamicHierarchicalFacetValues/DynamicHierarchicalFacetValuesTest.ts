@@ -218,7 +218,11 @@ export function DynamicHierarchicalFacetValuesTest() {
         });
 
         it('the "All Categories" button should be defined by the "clearLabel" facet option', () => {
-          expect($$(getAllCategoriesElement()).text()).toBe(facet.options.clearLabel);
+          const values = getAllCategoriesElement();
+          $$(values)
+            .findAll('svg')
+            .forEach(child => child.remove());
+          expect($$(values).text()).toBe(facet.options.clearLabel);
         });
       });
 
