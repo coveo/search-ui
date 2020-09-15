@@ -249,7 +249,7 @@ export class CategoryFacetSearch implements IFacetSearch {
 
   private noFacetSearchResults() {
     this.facetSearchElement.hideFacetSearchWaitingAnimation();
-    this.facetSearchElement.hideSearchResultsElement();
+    this.facetSearchElement.emptyAndShowNoResults();
     $$(this.facetSearchElement.search).addClass('coveo-facet-search-no-results');
     $$(this.categoryFacet.element).addClass('coveo-no-results');
   }
