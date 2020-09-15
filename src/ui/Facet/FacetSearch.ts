@@ -299,8 +299,9 @@ export class FacetSearch implements IFacetSearch {
       if (facetSearchParameters.fetchMore) {
         this.moreValuesToFetch = false;
       } else {
-        this.facetSearchElement.hideSearchResultsElement();
         $$(this.search).addClass('coveo-facet-search-no-results');
+        this.showSearchResultsElement();
+        this.facetSearchElement.emptyAndShowNoResults();
       }
     }
   }
