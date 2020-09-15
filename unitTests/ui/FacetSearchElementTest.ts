@@ -27,7 +27,7 @@ export function FacetSearchElementTest() {
       });
 
       it('renders a noResults element with an id and a class', () => {
-        expect($$(noResultsElement).hasClass('coveo-facet-value-not-found'));
+        expect($$(noResultsElement).hasClass('coveo-facet-value-not-found')).toBeTruthy();
         expect(noResultsElement.id.indexOf('coveo-facet-value-not-found')).toEqual(0);
       });
 
