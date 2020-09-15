@@ -95,9 +95,7 @@ $arrow-svg-dimensions: 11px;
     width: $arrow-svg-dimensions;
     height: $arrow-svg-dimensions;
     color: $coveo-blue;
-
     display: inline-block;
-    vertical-align: middle;
   }
 }
 
@@ -105,12 +103,12 @@ $arrow-svg-dimensions: 11px;
   margin-left: 8px;
   svg {
     transform: rotate(270deg);
+    vertical-align: middle;
   }
 }
 
 .coveo-dynamic-hierarchical-facet-value-arrow-left {
   position: absolute;
-  top: -2px;
   left: 2px;
   svg {
     transform: rotate(90deg);

@@ -31,7 +31,7 @@ export interface IFacetResponseValue extends IRangeValue {
   children?: IFacetResponseValue[];
 
   /**
-   * Whether the hierarchical value is a childless node.
+   * When the hierarchical value has no children, this property is `true`.
    */
   isLeafValue?: boolean;
 }
