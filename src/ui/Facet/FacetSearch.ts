@@ -295,6 +295,7 @@ export class FacetSearch implements IFacetSearch {
       }
       this.highlightCurrentQueryWithinSearchResults();
       this.makeFirstSearchResultTheCurrentOne();
+      this.facetSearchElement.updateAriaLiveWithResults(this.input.value, this.currentlyDisplayedResults.length, this.moreValuesToFetch);
     } else {
       if (facetSearchParameters.fetchMore) {
         this.moreValuesToFetch = false;
