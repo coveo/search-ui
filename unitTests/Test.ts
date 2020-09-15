@@ -845,3 +845,6 @@ ResponsiveDropdownModalContentTest();
 
 import { FileTypesTest } from './ui/FileTypesTest';
 FileTypesTest();
+
+import { FacetSearchElementTest } from './ui/FacetSearchElementTest';
+FacetSearchElementTest();
