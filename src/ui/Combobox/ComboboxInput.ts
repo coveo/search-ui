@@ -1,13 +1,8 @@
 import { TextInput, ITextInputOptions } from '../FormWidgets/TextInput';
 import { $$ } from '../../utils/Dom';
-import { Combobox } from './Combobox';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { Utils } from '../../utils/Utils';
-
-export interface IComboboxAccessibilityAttributes {
-  activeDescendant: string;
-  expanded: boolean;
-}
+import { IComboboxAccessibilityAttributes, ICombobox } from './ICombobox';
 
 export class ComboboxInput {
   public element: HTMLElement;
@@ -21,7 +16,7 @@ export class ComboboxInput {
     icon: 'search'
   };
 
-  constructor(private combobox: Combobox) {
+  constructor(private combobox: ICombobox) {
     this.create();
     this.element = this.textInput.getElement();
     this.inputElement = $$(this.element).find('input');
@@ -42,7 +37,7 @@ export class ComboboxInput {
       $$(this.inputElement).on('focus', () => this.combobox.onInputChange(this.textInput.getValue()));
     }
     $$(this.combobox.element).on('focusout', (e: FocusEvent) => this.handleFocusOut(e));
-    $$(this.combobox.element).on('keydown', (e: KeyboardEvent) => this.handleKeyboardUpDownArrows(e));
+    $$(this.combobox.element).on('keydown', (e: KeyboardEvent) => this.handleKeyboardDirection(e));
     $$(this.combobox.element).on('keyup', (e: KeyboardEvent) => this.handleKeyboardEnterEscape(e));
   }
 
@@ -81,15 +76,23 @@ export class ComboboxInput {
     this.combobox.onInputBlur();
   }
 
-  private handleKeyboardUpDownArrows(event: KeyboardEvent) {
+  private handleKeyboardDirection(event: KeyboardEvent) {
     switch (event.which) {
       case KEYBOARD.DOWN_ARROW:
         event.preventDefault();
-        this.combobox.values.moveActiveValueDown();
+        this.combobox.values.focusNextValue();
         break;
       case KEYBOARD.UP_ARROW:
         event.preventDefault();
-        this.combobox.values.moveActiveValueUp();
+        this.combobox.values.focusPreviousValue();
+        break;
+      case KEYBOARD.HOME:
+        event.preventDefault();
+        this.combobox.values.focusFirstValue();
+        break;
+      case KEYBOARD.END:
+        event.preventDefault();
+        this.combobox.values.focusLastValue();
         break;
     }
   }
