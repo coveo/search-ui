@@ -448,7 +448,6 @@ export class FieldValue extends Component {
     const label = isSelected ? l('RemoveFilterOn', value) : l('FilterOn', value);
     new AccessibleButton()
       .withTitle(label)
-      .withLabel(label)
       .withElement(element)
       .withSelectAction(selectAction)
       .build();
