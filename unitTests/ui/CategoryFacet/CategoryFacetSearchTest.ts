@@ -125,6 +125,16 @@ export function CategoryFacetSearchTest() {
       });
     });
 
+    it('should call updateAriaLiveWithResults', done => {
+      spyOn(categoryFacetSearch.facetSearchElement, 'updateAriaLiveWithResults');
+      categoryFacetSearch.displayNewValues();
+
+      setTimeout(() => {
+        expect(categoryFacetSearch.facetSearchElement.updateAriaLiveWithResults).toHaveBeenCalled();
+        done();
+      });
+    });
+
     it('renders values correctly', done => {
       categoryFacetSearch.displayNewValues();
 
