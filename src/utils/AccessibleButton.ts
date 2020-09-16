@@ -126,7 +126,7 @@ export class AccessibleButton {
     }
 
     this.ensureCorrectRole();
-    this.ensureHasLabelOrTitle();
+    this.ensureCorrectLabelOrTitle();
     this.ensureSelectAction();
     this.ensureUnselectAction();
     this.ensureMouseenterAndFocusAction();
@@ -153,7 +153,7 @@ export class AccessibleButton {
     }
   }
 
-  private ensureHasLabelOrTitle() {
+  private ensureCorrectLabelOrTitle() {
     if (!this.hasLabelOrTitle) {
       return;
     }
