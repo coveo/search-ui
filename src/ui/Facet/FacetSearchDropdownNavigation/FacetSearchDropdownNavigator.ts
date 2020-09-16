@@ -43,12 +43,13 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
   }
 
   private moveResultUp() {
-    this.defaultDropdownNavigator.moveCurrentResultUp();
-
     if (this.willExcludeCurrentResult) {
       this.toggleCanExcludeCurrentResult();
-      this.announceCurrentResultCanBeExcluded();
+      return;
     }
+
+    this.defaultDropdownNavigator.moveCurrentResultUp();
+    this.toggleCanExcludeCurrentResult();
   }
 
   private get isCurrentResultNotAFacetValue() {
