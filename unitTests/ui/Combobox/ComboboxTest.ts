@@ -213,7 +213,7 @@ export function ComboboxTest() {
 
       it(`when there are results
       when there are more values available
-      should update the AriaLive component with "{X} result(s) for {query}. More values are available."`, () => {
+      should update the AriaLive component with "{X} result(s) for {query}. (more values are available)"`, () => {
         spyOn(combobox.values, 'hasValues').and.returnValue(true);
         spyOn(combobox.options.scrollable, 'areMoreValuesAvailable').and.returnValue(true);
         combobox.updateAriaLive();
