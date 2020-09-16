@@ -124,9 +124,9 @@ export function ValueElementRendererTest() {
         expect(ariaPressed).toEqual('true');
       });
 
-      it('the aria-pressed attribute of the exclude button is false', () => {
+      it('the aria-pressed attribute of the exclude button is mixed', () => {
         const ariaPressed = valueRenderer.excludeIcon.getAttribute('aria-pressed');
-        expect(ariaPressed).toEqual('false');
+        expect(ariaPressed).toEqual('mixed');
       });
     });
 
@@ -142,9 +142,9 @@ export function ValueElementRendererTest() {
         expect(ariaLabel.indexOf('Select')).toEqual(0);
       });
 
-      it('the aria-pressed attribute of the checkbox is false', () => {
+      it('the aria-pressed attribute of the checkbox is mixed', () => {
         const ariaPressed = valueRenderer.accessibleElement.getAttribute('aria-pressed');
-        expect(ariaPressed).toEqual('false');
+        expect(ariaPressed).toEqual('mixed');
       });
 
       it('the aria-pressed attribute of the exclude button is true', () => {
