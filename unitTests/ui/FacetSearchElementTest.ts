@@ -43,10 +43,6 @@ export function FacetSearchElementTest() {
         expect(facetSearchElement.input.getAttribute('aria-activedescendant')).toEqual(noResultsElement.id);
         expect(noResultsElement.getAttribute('aria-selected')).toEqual('true');
       });
-
-      it(`should update AriaLive with the text: "No values found"`, () => {
-        expect(facetSearch.updateAriaLive).toHaveBeenCalledWith(l('NoValuesFound'));
-      });
     });
 
     describe('when calling updateAriaLiveWithResults', () => {

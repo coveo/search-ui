@@ -194,7 +194,6 @@ export class FacetSearchElement {
       ).el
     );
     this.input.setAttribute('aria-activedescendant', this.facetValueNotFoundId);
-    this.facetSearch.updateAriaLive(l('NoValuesFound'));
   }
 
   public updateAriaLiveWithResults(inputValue: string, numberOfResults: number, moreValuesToFetch: boolean) {
