@@ -331,7 +331,7 @@ export class FacetSettings extends FacetSort {
     directionAscendingSection.appendChild(directionItemsAscending);
     new AccessibleButton()
       .withElement(ascending)
-      .withoutLabel()
+      .withoutLabelOrTitle()
       .withSelectAction(() => this.handleDirectionClick(ascending, 'ascending'))
       .build();
     this.unselectSection(directionAscendingSection);
@@ -345,7 +345,7 @@ export class FacetSettings extends FacetSort {
     directionDescendingSection.appendChild(directionItemsDescending);
     new AccessibleButton()
       .withElement(descending)
-      .withoutLabel()
+      .withoutLabelOrTitle()
       .withSelectAction(() => this.handleDirectionClick(descending, 'descending'))
       .build();
     this.unselectSection(directionDescendingSection);
@@ -380,7 +380,7 @@ export class FacetSettings extends FacetSort {
     new AccessibleButton()
       .withElement(saveStateSection)
       .withSelectAction(() => this.handleSaveStateClick())
-      .withoutLabel()
+      .withoutLabelOrTitle()
       .build();
 
     return saveStateSection;
@@ -397,7 +397,7 @@ export class FacetSettings extends FacetSort {
     new AccessibleButton()
       .withElement(clearStateSection)
       .withSelectAction(() => this.handleClearStateClick())
-      .withoutLabel()
+      .withoutLabelOrTitle()
       .build();
 
     return clearStateSection;
