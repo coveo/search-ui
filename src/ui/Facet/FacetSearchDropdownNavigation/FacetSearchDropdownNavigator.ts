@@ -22,60 +22,57 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
   }
 
   public focusNextElement() {
-    if (this.isCurrentResultNotAFacetValue) {
-      this.moveResultDownAndAnnounce();
-      return;
-    }
-
     this.toggleCanExcludeCurrentResult();
 
-    if (this.canExcludeCurrentResult) {
+    if (this.willExcludeCurrentResult) {
       this.announceCurrentResultCanBeExcluded();
       return;
     }
 
-    this.moveResultDownAndAnnounce();
+    this.defaultDropdownNavigator.moveCurrentResultDown();
   }
 
   public focusPreviousElement() {
-    if (this.canExcludeCurrentResult) {
+    if (this.willExcludeCurrentResult) {
       this.toggleCanExcludeCurrentResult();
       return;
     }
 
-    this.moveResultUpAndAnnounce();
+    this.moveResultUp();
+    this.toggleCanExcludeCurrentResult();
   }
 
-  private moveResultDownAndAnnounce() {
-    this.defaultDropdownNavigator.moveCurrentResultDown();
-  }
-
-  private moveResultUpAndAnnounce() {
+  private moveResultUp() {
     this.defaultDropdownNavigator.moveCurrentResultUp();
 
-    if (!this.canExcludeCurrentResult) {
-      return;
+    if (this.willExcludeCurrentResult) {
+      this.toggleCanExcludeCurrentResult();
+      this.announceCurrentResultCanBeExcluded();
     }
-    this.toggleCanExcludeCurrentResult();
-    this.announceCurrentResultCanBeExcluded();
   }
 
   private get isCurrentResultNotAFacetValue() {
     return this.currentResult.hasClass('coveo-facet-search-select-all') || this.currentResult.hasClass('coveo-facet-value-not-found');
   }
 
-  private get canExcludeCurrentResult() {
+  private get willExcludeCurrentResult() {
     return this.currentResult.hasClass('coveo-facet-value-will-exclude');
   }
 
   private toggleCanExcludeCurrentResult() {
-    this.currentResult.toggleClass('coveo-facet-value-will-exclude', !this.canExcludeCurrentResult);
+    if (this.isCurrentResultNotAFacetValue) {
+      return;
+    }
+
+    this.currentResult.toggleClass('coveo-facet-value-will-exclude', !this.willExcludeCurrentResult);
   }
 
   private announceCurrentResultCanBeExcluded() {
-    const excludeIconTitle = $$(this.currentResult)
-      .find('.coveo-facet-value-exclude')
-      .getAttribute('aria-label');
-    this.config.facetSearch.updateAriaLive(excludeIconTitle);
+    if (this.isCurrentResultNotAFacetValue) {
+      return;
+    }
+
+    const excludeIcon = $$(this.currentResult).find('.coveo-facet-value-exclude');
+    this.config.facetSearch.updateAriaLive(excludeIcon.getAttribute('aria-label'));
   }
 }
