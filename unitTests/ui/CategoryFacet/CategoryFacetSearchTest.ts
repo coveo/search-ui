@@ -231,12 +231,12 @@ export function CategoryFacetSearchTest() {
         });
       });
 
-      it('sets aria-expanded to false after collapsing', done => {
+      it('keeps aria-expanded true when displaying no values', done => {
         searchWithNoValues();
         categoryFacetSearch.displayNewValues();
 
         setTimeout(() => {
-          expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('false');
+          expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('true');
           done();
         });
       });

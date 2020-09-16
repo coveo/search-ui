@@ -56,6 +56,10 @@ export class DynamicHierarchicalFacetValue implements IDynamicHierarchicalFacetV
     this.facetValue.children = children;
   }
 
+  public get isLeafValue() {
+    return this.facetValue.isLeafValue;
+  }
+
   public get isIdle() {
     return this.state === FacetValueState.idle;
   }
