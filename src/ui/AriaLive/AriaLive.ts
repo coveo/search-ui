@@ -18,7 +18,7 @@ export class AriaLive implements IAriaLive {
   }
 
   public updateText(text: string) {
-    const liveText = text === $$(this.ariaLiveEl).text() ? `${text} \u00A0` : text;
+    const liveText = text === $$(this.ariaLiveEl).text() ? `${text}\u00A0` : text;
     $$(this.ariaLiveEl).text(liveText);
   }
 
