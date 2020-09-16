@@ -202,7 +202,7 @@ export function ComboboxTest() {
 
       it(`when there are results
       when there is no more values available
-      should update the AriaLive component with "{X} result for {query}"`, () => {
+      should update the AriaLive component with "{X} result(s) for {query}"`, () => {
         spyOn(combobox.values, 'hasValues').and.returnValue(true);
         spyOn(combobox.options.scrollable, 'areMoreValuesAvailable').and.returnValue(false);
         combobox.updateAriaLive();
@@ -213,7 +213,7 @@ export function ComboboxTest() {
 
       it(`when there are results
       when there are more values available
-      should update the AriaLive component with "{X} result for {query}. More values are available."`, () => {
+      should update the AriaLive component with "{X} result(s) for {query}. More values are available."`, () => {
         spyOn(combobox.values, 'hasValues').and.returnValue(true);
         spyOn(combobox.options.scrollable, 'areMoreValuesAvailable').and.returnValue(true);
         combobox.updateAriaLive();
