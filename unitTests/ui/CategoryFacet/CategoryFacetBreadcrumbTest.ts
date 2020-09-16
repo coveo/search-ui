@@ -58,10 +58,7 @@ export function CategoryFacetBreadcrumbTest() {
       it('build a breadcrumb with the full path if there is no base path', () => {
         const breadcrumb = buildCategoryFacetBreadcrumb();
         const values = $$(breadcrumb).find('.coveo-category-facet-breadcrumb-values');
-        $$(values)
-          .findAll('svg')
-          .forEach(child => child.remove());
-        expect($$(values).text()).toEqual('path_one/path_two');
+        expect(values.childNodes[0].nodeValue).toEqual('path_one/path_two');
       });
 
       it('build a breadcrumb without the full path if there is a base path', () => {
@@ -69,10 +66,7 @@ export function CategoryFacetBreadcrumbTest() {
 
         const breadcrumb = buildCategoryFacetBreadcrumb();
         const values = $$(breadcrumb).find('.coveo-category-facet-breadcrumb-values');
-        $$(values)
-          .findAll('svg')
-          .forEach(child => child.remove());
-        expect($$(values).text()).toEqual('path_two');
+        expect(values.childNodes[0].nodeValue).toEqual('path_two');
       });
 
       it(`when the categoryFacet has the valueCaption option configured,

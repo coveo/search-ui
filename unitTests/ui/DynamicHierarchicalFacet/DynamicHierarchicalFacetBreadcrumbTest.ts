@@ -33,11 +33,7 @@ export function DynamicHierarchicalFacetBreadcrumbTest() {
     });
 
     it('should create a value with the right path', () => {
-      const values = valueElement();
-      $$(values)
-        .findAll('svg')
-        .forEach(child => child.remove());
-      expect(values.innerText).toBe('test / allo');
+      expect(valueElement().childNodes[0].nodeValue).toBe('test / allo');
     });
 
     it(`when clicking on a breadcrumb value element
