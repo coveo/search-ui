@@ -65,7 +65,7 @@ export function FacetSearchElementTest() {
       it(`when there are more values to fetch
       should update AriaLive with the text "More values are available." appended`, () => {
         facetSearchElement.updateAriaLiveWithResults('', 10, true);
-        expect(facetSearch.updateAriaLive).toHaveBeenCalledWith(`${l('ShowingResults', 10, 10)}. ${l('MoreValuesAvailable')}`);
+        expect(facetSearch.updateAriaLive).toHaveBeenCalledWith(`${l('ShowingResults', 10, 10)} (${l('MoreValuesAvailable')})`);
       });
     });
   });

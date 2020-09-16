@@ -115,7 +115,7 @@ export class Combobox implements ICombobox {
 
     let text = l('ShowingResultsWithQuery', this.values.numberOfValues, this.input.value, this.values.numberOfValues);
     if (this.options.scrollable && this.options.scrollable.areMoreValuesAvailable()) {
-      text = `${text}. ${l('MoreValuesAvailable')}`;
+      text = `${text} (${l('MoreValuesAvailable')})`;
     }
 
     this.options.ariaLive.updateText(text);

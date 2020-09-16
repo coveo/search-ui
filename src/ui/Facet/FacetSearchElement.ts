@@ -204,7 +204,7 @@ export class FacetSearchElement {
         : l('ShowingResultsWithQuery', numberOfResults, inputValue, numberOfResults);
 
     if (moreValuesToFetch) {
-      ariaLiveText = `${ariaLiveText}. ${l('MoreValuesAvailable')}`;
+      ariaLiveText = `${ariaLiveText} (${l('MoreValuesAvailable')})`;
     }
 
     this.facetSearch.updateAriaLive(ariaLiveText);

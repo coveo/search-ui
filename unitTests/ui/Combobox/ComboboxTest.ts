@@ -218,9 +218,9 @@ export function ComboboxTest() {
         spyOn(combobox.options.scrollable, 'areMoreValuesAvailable').and.returnValue(true);
         combobox.updateAriaLive();
         expect(combobox.options.ariaLive.updateText).toHaveBeenCalledWith(
-          `${l('ShowingResultsWithQuery', combobox.values.numberOfValues, 'query', combobox.values.numberOfValues)}. ${l(
+          `${l('ShowingResultsWithQuery', combobox.values.numberOfValues, 'query', combobox.values.numberOfValues)} (${l(
             'MoreValuesAvailable'
-          )}`
+          )})`
         );
       });
     });
