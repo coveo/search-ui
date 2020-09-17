@@ -1158,10 +1158,6 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
     const valuesThatStays = this.values.getSelected().concat(this.values.getExcluded());
     this.numberOfValues = valuesThatStays.length + _.difference(valuesThatStays, facetValues).length;
     this.numberOfValues = Math.max(this.numberOfValues, this.options.numberOfValues);
-    // Then, we set current page as the last "full" page (math.floor)
-    // This is so there is no additional values displayed requested to fill the current page
-    // Also, when the user hit more, it will request the current page and fill it with more values
-    this.currentPage = Math.floor((this.numberOfValues - this.options.numberOfValues) / this.options.pageSize);
 
     this.updateQueryStateModel();
     this.triggerNewQuery(() =>
@@ -1221,7 +1217,7 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
    * Triggers a query if needed, or displays the already available values.
    */
   public showMore() {
-    this.currentPage++;
+    this.currentPage = Math.floor((this.numberOfValues - this.options.numberOfValues) / this.options.pageSize) + 1;
     this.updateNumberOfValues();
     if (this.nbAvailableValues >= this.numberOfValues || !this.canFetchMore) {
       this.rebuildValueElements();
@@ -1358,7 +1354,6 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
     $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-    $$(this.element).toggleClass('coveo-hidden', !this.getDisplayedFacetValues().length);
     $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
   }
 

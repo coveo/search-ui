@@ -46,6 +46,18 @@ export function CardActionBarTest() {
         it('should display an arrow indicator in its parent CoveoResult', function() {
           expect($$(parentResult).find('.coveo-card-action-bar-arrow-container')).not.toBeNull();
         });
+
+        it('should show when action bar is focused in', function() {
+          spyOn(test.cmp, 'show');
+          $$(test.cmp.element).trigger('focusin');
+          expect(test.cmp.show).toHaveBeenCalledTimes(1);
+        });
+
+        it('should hide when action bar is focused out', function() {
+          spyOn(test.cmp, 'hide');
+          $$(test.cmp.element).trigger('focusout');
+          expect(test.cmp.hide).toHaveBeenCalledTimes(1);
+        });
       });
 
       describe('hidden set to false', function() {

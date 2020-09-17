@@ -113,6 +113,8 @@ export function SearchInterfaceTest() {
           className: 'CoveoAnalytics',
           'data-token': 'el-tokeno'
         }).el;
+
+        searchInterfaceDiv.appendChild(analyticsDiv);
       });
 
       afterEach(() => {
@@ -121,8 +123,6 @@ export function SearchInterfaceTest() {
       });
 
       it('should initialize if found inside the root', () => {
-        searchInterfaceDiv.appendChild(analyticsDiv);
-        analyticsDiv.setAttribute('data-token', 'el-tokeno');
         const searchInterface = new SearchInterface(searchInterfaceDiv);
         expect(searchInterface.usageAnalytics instanceof Coveo['LiveAnalyticsClient']).toBe(true);
       });

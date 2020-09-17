@@ -75,6 +75,7 @@ export interface IDynamicHierarchicalFacetValueProperties {
   numberOfResults: number;
   moreValuesAvailable: boolean;
   children: IDynamicHierarchicalFacetValue[];
+  isLeafValue: boolean;
 }
 
 export interface IDynamicHierarchicalFacetValue extends IDynamicHierarchicalFacetValueProperties {

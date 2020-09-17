@@ -228,6 +228,9 @@ HiddenQueryTest();
 import { HierarchicalFacetTest } from './ui/HierarchicalFacetTest';
 HierarchicalFacetTest();
 
+import { HierarchicalFacetSearchControllerTest } from './controllers/HierarchicalFacetSearchControllerTest';
+HierarchicalFacetSearchControllerTest();
+
 import { IconTest } from './ui/IconTest';
 IconTest();
 
@@ -842,3 +845,6 @@ ResponsiveDropdownModalContentTest();
 
 import { FileTypesTest } from './ui/FileTypesTest';
 FileTypesTest();
+
+import { FacetSearchElementTest } from './ui/FacetSearchElementTest';
+FacetSearchElementTest();

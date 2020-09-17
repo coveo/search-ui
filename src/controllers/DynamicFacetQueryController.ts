@@ -13,7 +13,7 @@ export class DynamicFacetQueryController {
   private numberOfValuesToRequest: number;
   private freezeCurrentValues = false;
   private freezeFacetOrder = false;
-  protected preventAutoSelection = false;
+  private preventAutoSelection = false;
 
   constructor(protected facet: IDynamicFacet) {
     this.requestBuilder = new DynamicFacetRequestBuilder({
@@ -117,9 +117,7 @@ export class DynamicFacetQueryController {
   protected get currentValues(): IFacetRequestValue[] {
     return this.facet.values.allFacetValues.map(({ value, state }) => ({
       value,
-      state,
-      // TODO: remove after SEARCHAPI-4233 is completed
-      preventAutoSelect: this.preventAutoSelection
+      state
     }));
   }
 

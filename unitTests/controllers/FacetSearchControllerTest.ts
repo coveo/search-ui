@@ -9,9 +9,12 @@ export function FacetSearchControllerTest() {
   describe('FacetSearchController', () => {
     let facet: DynamicFacet;
     let facetSearchController: FacetSearchController;
+    let facetSearchSpy: jasmine.Spy;
+    const facetValuesMultiplier = 3;
 
     beforeEach(() => {
       initializeComponents();
+      facetSearchSpy = facet.queryController.getEndpoint().facetSearch as jasmine.Spy;
     });
 
     function initializeComponents(options?: IDynamicFacetOptions) {
@@ -27,14 +30,45 @@ export function FacetSearchControllerTest() {
 
       const expectedRequest: IFacetSearchRequest = {
         field: facet.fieldName,
-        numberOfValues: facet.options.numberOfValues,
-        ignoreValues: facet.values.allValues,
+        numberOfValues: facet.values.allValues.length * facetValuesMultiplier,
+        ignoreValues: facet.values.activeValues.map(value => value.value),
         captions: {},
         searchContext: facet.queryController.getLastQuery(),
         query: `*${query}*`
       };
 
-      expect(facet.queryController.getEndpoint().facetSearch).toHaveBeenCalledWith(expectedRequest);
+      expect(facetSearchSpy).toHaveBeenCalledWith(expectedRequest);
+    });
+
+    it(`when calling fetchMoreResults
+    should search with the same terms but bump the number of values`, () => {
+      const query = 'my query';
+      const page = 2;
+      facetSearchController.search(query);
+      facetSearchController.fetchMoreResults();
+
+      expect(facetSearchSpy.calls.mostRecent().args[0]).toEqual(
+        jasmine.objectContaining({
+          numberOfValues: facet.values.allValues.length * facetValuesMultiplier * page,
+          query: `*${query}*`
+        })
+      );
+    });
+
+    it(`when calling search after fetchMoreResults
+    should reset the number of values and update the query`, () => {
+      const query = 'second query';
+      const page = 1;
+      facetSearchController.search('first query');
+      facetSearchController.fetchMoreResults();
+      facetSearchController.search(query);
+
+      expect(facetSearchSpy.calls.mostRecent().args[0]).toEqual(
+        jasmine.objectContaining({
+          numberOfValues: facet.values.allValues.length * facetValuesMultiplier * page,
+          query: `*${query}*`
+        })
+      );
     });
 
     function testHasTypesCaptions() {

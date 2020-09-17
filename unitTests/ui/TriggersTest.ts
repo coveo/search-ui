@@ -51,6 +51,13 @@ export function TriggersTest() {
       expect(test.cmp.notifications).toEqual([]);
     });
 
+    it("escapes the content in the 'notify' trigger to prevent XSS", () => {
+      const contentWithXSS = `<img src='x' onerror= alert(1) />`;
+      results.triggers = [<ITriggerNotify>{ type: 'notify', content: contentWithXSS }];
+      Simulate.query(test.env, { results: results });
+      expect(test.cmp.element.textContent).toBe(contentWithXSS);
+    });
+
     it("should handle multiple 'notify's properly", function() {
       results.triggers = [
         <ITriggerNotify>{ type: 'notify', content: 'foo' },

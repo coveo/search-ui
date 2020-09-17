@@ -115,7 +115,7 @@ export class ResultList extends Component {
      * If you specify no value for this option, a `div` element will be dynamically created and appended to the result
      * list. This element will then be used as a result container.
      */
-    resultsContainer: ComponentOptions.buildChildHtmlElementOption(),
+    resultsContainer: ComponentOptions.buildChildHtmlElementOption({ alias: 'resultContainerSelector' }),
     resultTemplate: TemplateComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
 
     /**
@@ -339,6 +339,7 @@ export class ResultList extends Component {
       args.layouts.push(this.options.layout)
     );
     this.setupRenderer();
+    this.makeElementFocusable();
   }
 
   /**
@@ -835,6 +836,10 @@ export class ResultList extends Component {
         this.renderer = new ResultListRenderer(this.options, autoCreateComponentsFn);
         break;
     }
+  }
+
+  private makeElementFocusable() {
+    $$(this.element).setAttribute('tabindex', '-1');
   }
 }
 

@@ -24,6 +24,7 @@ export class FacetSearchElement {
 
   private triggeredScroll = false;
   private facetSearchId = uniqueId('coveo-facet-search-results');
+  private facetValueNotFoundId = uniqueId('coveo-facet-value-not-found');
   private searchDropdownNavigator: ISearchDropdownNavigator;
 
   constructor(private facetSearch: IFacetSearch) {
@@ -181,6 +182,18 @@ export class FacetSearchElement {
   public appendToSearchResults(el: HTMLElement) {
     this.searchResults.appendChild(el);
     this.setupFacetSearchResultsEvents(el);
+  }
+
+  public emptyAndShowNoResults() {
+    $$(this.searchResults).empty();
+    this.searchResults.appendChild(
+      $$(
+        'li',
+        { id: this.facetValueNotFoundId, className: 'coveo-facet-value-not-found', role: 'option', ariaSelected: 'true', tabindex: 0 },
+        l('NoValuesFound')
+      ).el
+    );
+    this.input.setAttribute('aria-activedescendant', this.facetValueNotFoundId);
   }
 
   public focus() {

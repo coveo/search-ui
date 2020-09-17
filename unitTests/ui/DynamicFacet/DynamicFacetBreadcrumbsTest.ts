@@ -56,7 +56,7 @@ export function DynamicFacetBreadcrumbsTest() {
       initializeComponent();
 
       const [breadcrumb] = valueElements();
-      expect(breadcrumb.textContent).toBe('<img src=x onerror=alert(1)>');
+      expect(breadcrumb.childNodes[0].textContent).toBe('<img src=x onerror=alert(1)>');
     });
 
     it('should not create a "collapsed breadcrumbs" element allowing to show more values', () => {

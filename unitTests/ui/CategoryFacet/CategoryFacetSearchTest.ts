@@ -11,6 +11,22 @@ import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsAct
 import * as Globalize from 'globalize';
 import { Simulate } from '../../Simulate';
 
+function undebounce(fn: (...args: any[]) => any, time = 0): (...args: any[]) => void {
+  return (...args) => {
+    let wasClockInstalled = false;
+    try {
+      jasmine.clock().install();
+    } catch (e) {
+      wasClockInstalled = true;
+    }
+    fn(...args);
+    jasmine.clock().tick(time);
+    if (!wasClockInstalled) {
+      jasmine.clock().uninstall();
+    }
+  };
+}
+
 export function CategoryFacetSearchTest() {
   describe('CategoryFacetSearch', () => {
     const noResultsClass = 'coveo-no-results';
@@ -18,7 +34,6 @@ export function CategoryFacetSearchTest() {
     const categoryFacetTitle = 'abcdef';
     let categoryFacetMock: CategoryFacet;
     let categoryFacetSearch: CategoryFacetSearch;
-    let realDebounce;
     let fakeGroupByValues: IGroupByValue[];
 
     function getInputHandler() {
@@ -60,25 +75,18 @@ export function CategoryFacetSearchTest() {
     }
 
     beforeEach(() => {
-      realDebounce = _.debounce;
-      spyOn(_, 'debounce').and.callFake(function(func) {
-        return function() {
-          func.apply(this, arguments);
-        };
-      });
+      const facetSearchDelay = 5;
       categoryFacetMock = basicComponentSetup<CategoryFacet>(CategoryFacet, {
         field: '@field',
-        title: categoryFacetTitle
+        title: categoryFacetTitle,
+        facetSearchDelay
       }).cmp;
       fakeGroupByValues = FakeResults.createFakeGroupByResult('@field', 'value', 10).values;
       categoryFacetMock.categoryFacetQueryController = mock(CategoryFacetQueryController);
       categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => new Promise(resolve => resolve(fakeGroupByValues));
       categoryFacetSearch = new CategoryFacetSearch(categoryFacetMock);
+      categoryFacetSearch.displayNewValues = undebounce(categoryFacetSearch.displayNewValues, facetSearchDelay);
       categoryFacetSearch.build();
-    });
-
-    afterEach(() => {
-      _.debounce = realDebounce;
     });
 
     it('when building returns a container', () => {
@@ -218,17 +226,17 @@ export function CategoryFacetSearchTest() {
           const path = value.getAttribute('data-path').split('|');
 
           expect(value.getAttribute('aria-label')).toEqual(
-            l('SelectValueWithResultCount', _.last(path), l('ResultCount', formattedCount, count))
+            l('IncludeValueWithResultCount', _.last(path), l('ResultCount', formattedCount, count))
           );
         });
       });
 
-      it('sets aria-expanded to false after collapsing', done => {
+      it('keeps aria-expanded true when displaying no values', done => {
         searchWithNoValues();
         categoryFacetSearch.displayNewValues();
 
         setTimeout(() => {
-          expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('false');
+          expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('true');
           done();
         });
       });
