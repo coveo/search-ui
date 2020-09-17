@@ -1,7 +1,7 @@
 import 'styling/_Result';
 import 'styling/_ResultFrame';
 import 'styling/_ResultList';
-import { chain, compact, contains, each, flatten, map, unique, without } from 'underscore';
+import { chain, compact, contains, each, flatten, map, unique, without, uniqueId } from 'underscore';
 import {
   IBuildingQueryEventArgs,
   IDuringQueryEventArgs,
@@ -340,6 +340,7 @@ export class ResultList extends Component {
     );
     this.setupRenderer();
     this.makeElementFocusable();
+    this.ensureHasId();
   }
 
   /**
@@ -840,6 +841,13 @@ export class ResultList extends Component {
 
   private makeElementFocusable() {
     $$(this.element).setAttribute('tabindex', '-1');
+  }
+
+  private ensureHasId() {
+    const currentId = this.element.id;
+    if (currentId === '') {
+      this.element.id = uniqueId('coveo-result-list');
+    }
   }
 }
 
