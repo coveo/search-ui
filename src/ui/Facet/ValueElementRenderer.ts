@@ -270,6 +270,9 @@ export class ValueElementRenderer {
   }
 
   private get ariaPressed() {
+    if (this.facetValue.excluded) {
+      return 'mixed';
+    }
     return this.facetValue.selected ? 'true' : 'false';
   }
 }

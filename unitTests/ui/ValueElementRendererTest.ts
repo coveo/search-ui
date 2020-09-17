@@ -142,9 +142,9 @@ export function ValueElementRendererTest() {
         expect(ariaLabel.indexOf('Inclusion')).toEqual(0);
       });
 
-      it('the aria-pressed attribute of the checkbox is false', () => {
+      it('the aria-pressed attribute of the checkbox is mixed', () => {
         const ariaPressed = valueRenderer.accessibleElement.getAttribute('aria-pressed');
-        expect(ariaPressed).toEqual('false');
+        expect(ariaPressed).toEqual('mixed');
       });
 
       it('the aria-pressed attribute of the exclude button is true', () => {
