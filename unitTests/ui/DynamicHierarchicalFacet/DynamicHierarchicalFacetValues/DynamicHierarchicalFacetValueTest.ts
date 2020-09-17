@@ -40,7 +40,7 @@ export function DynamicHierarchicalFacetValueTest() {
     });
 
     it('should return the correct aria-label', () => {
-      const expectedAriaLabel = `Select ${facetValue.value} with ${facetValue.formattedCount} results`;
+      const expectedAriaLabel = `Inclusion filter on ${facetValue.value}; ${facetValue.formattedCount} results`;
       expect(facetValue.selectAriaLabel).toBe(expectedAriaLabel);
     });
 

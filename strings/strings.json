@@ -7433,13 +7433,13 @@
     "en": "{0} facet",
     "fr": "Facette {0}"
   },
-  "SelectValueWithResultCount": {
-    "en": "Select {0} with {1}",
-    "fr": "Sélectionner {0} avec {1}"
+  "IncludeValueWithResultCount": {
+    "en": "Inclusion filter on {0}; {1}",
+    "fr": "Filtre d'inclusion sur {0}; {1}"
   },
   "ExcludeValueWithResultCount": {
-    "en": "Exclude {0} with {1}",
-    "fr": "Exclure {0} avec {1}"
+    "en": "Exclusion filter on {0}; {1}",
+    "fr": "Filtre d'exclusion sur {0}; {1}"
   },
   "PageNumber": {
     "en": "Page {0}",
