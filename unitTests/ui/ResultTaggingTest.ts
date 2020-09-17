@@ -27,7 +27,7 @@ export function ResultTaggingTest() {
     });
 
     it('should display the current tags values', () => {
-      let tags = $$(test.cmp.element).findAll('.coveo-result-tagging-coveo-tag');
+      let tags = $$(test.cmp.element).findAll('.coveo-result-tagging-coveo-tag a');
       expect(tags.length).toBe(3);
       expect($$(tags[0]).text()).toBe('value1');
       expect($$(tags[1]).text()).toBe('value2');

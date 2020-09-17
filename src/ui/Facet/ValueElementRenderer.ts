@@ -266,7 +266,7 @@ export class ValueElementRenderer {
 
   private get ariaLabel() {
     const resultCount = l('ResultCount', this.count, parseInt(this.count, 10));
-    return `${l('SelectValueWithResultCount', this.caption, resultCount)}`;
+    return `${l('IncludeValueWithResultCount', this.caption, resultCount)}`;
   }
 
   private get ariaPressed() {
