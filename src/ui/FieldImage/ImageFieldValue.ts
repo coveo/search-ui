@@ -15,7 +15,7 @@ export interface IImageFieldValue {
 }
 
 /**
- * This [result template](https://docs.coveo.com/en/413/) component renders an image from a URL retrieved in a given [`field`]{@link ImageFieldValue.options.field}.
+ * This component renders an image from a URL retrieved in a given [`field`]{@link ImageFieldValue.options.field}.
  *
  * A typical use case of this component is to display product images in the context of commerce.
  *
@@ -54,7 +54,7 @@ export class ImageFieldValue extends Component {
      */
     height: ComponentOptions.buildNumberOption(),
     /**
-     * A [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals))
+     * A [Template literal](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)
      * from which to generate the `img` tag's `src` attribute value.
      *
      * This option overrides the [`field`]{@link ImageFieldValue.options.field} option value.
