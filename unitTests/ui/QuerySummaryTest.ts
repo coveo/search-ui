@@ -7,6 +7,7 @@ import { IQuerySummaryOptions } from '../../src/ui/QuerySummary/QuerySummary';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { ResultList } from '../../src/ui/ResultList/ResultList';
 import { escape } from 'underscore';
+import { l } from '../../src/Core';
 
 const queryTag = '${query}';
 
@@ -307,16 +308,16 @@ export function QuerySummaryTest() {
       });
 
       it(`when the query searched is an empty string,
-          it should replace the query tag with the query searched`, () => {
+          it should put the string NoResult instead`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
-          noResultsFoundMessage: `${queryTag}`
+          noResultsFoundMessage: `customMessage ${queryTag}`
         });
 
         test.env.queryStateModel.get = () => '';
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        expect(getCustomMessageElement().textContent).toBe('');
+        expect(getCustomMessageElement().textContent).toBe(l('NoResult'));
       });
 
       it(`when the query searched is the same as the queryTag,
