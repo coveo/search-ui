@@ -29,6 +29,11 @@ export interface IFacetResponseValue extends IRangeValue {
    * The children of this hierarchical facet value.
    */
   children?: IFacetResponseValue[];
+
+  /**
+   * When the hierarchical value has no children, this property is `true`.
+   */
+  isLeafValue?: boolean;
 }
 
 /**

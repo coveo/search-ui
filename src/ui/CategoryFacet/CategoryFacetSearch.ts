@@ -231,7 +231,7 @@ export class CategoryFacetSearch implements IFacetSearch {
     item.el.dataset.path = categoryFacetValue.value;
 
     const countLabel = l('ResultCount', this.getFormattedCount(categoryFacetValue.numberOfResults), categoryFacetValue.numberOfResults);
-    const label = l('SelectValueWithResultCount', last(path), countLabel);
+    const label = l('IncludeValueWithResultCount', last(path), countLabel);
 
     new AccessibleButton()
       .withElement(item)
@@ -249,7 +249,7 @@ export class CategoryFacetSearch implements IFacetSearch {
 
   private noFacetSearchResults() {
     this.facetSearchElement.hideFacetSearchWaitingAnimation();
-    this.facetSearchElement.hideSearchResultsElement();
+    this.facetSearchElement.emptyAndShowNoResults();
     $$(this.facetSearchElement.search).addClass('coveo-facet-search-no-results');
     $$(this.categoryFacet.element).addClass('coveo-no-results');
   }

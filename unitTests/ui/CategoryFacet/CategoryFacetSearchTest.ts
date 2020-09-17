@@ -226,17 +226,17 @@ export function CategoryFacetSearchTest() {
           const path = value.getAttribute('data-path').split('|');
 
           expect(value.getAttribute('aria-label')).toEqual(
-            l('SelectValueWithResultCount', _.last(path), l('ResultCount', formattedCount, count))
+            l('IncludeValueWithResultCount', _.last(path), l('ResultCount', formattedCount, count))
           );
         });
       });
 
-      it('sets aria-expanded to false after collapsing', done => {
+      it('keeps aria-expanded true when displaying no values', done => {
         searchWithNoValues();
         categoryFacetSearch.displayNewValues();
 
         setTimeout(() => {
-          expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('false');
+          expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('true');
           done();
         });
       });

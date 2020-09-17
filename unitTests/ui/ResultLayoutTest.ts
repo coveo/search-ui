@@ -163,13 +163,17 @@ export function ResultLayoutTest() {
         const getBtns = () => {
           return $$(test.cmp.element).findAll('.coveo-result-layout-selector');
         };
+        const getBtnsCaption = () => {
+          return $$(test.cmp.element).findAll('.coveo-result-layout-selector-caption');
+        };
 
         it('should not allow to enable layouts for which there is no result list available', () => {
           spy.and.returnValue([resultListList]);
 
           test.cmp.enableLayouts(['card']);
           const btns = getBtns();
-          expect(btns[0].textContent).toBe('Card');
+          const btnsCaption = getBtnsCaption();
+          expect(btnsCaption[0].textContent).toBe('Card');
           expect($$(btns[0]).hasClass('coveo-hidden')).toBeTruthy();
         });
 
@@ -179,7 +183,8 @@ export function ResultLayoutTest() {
 
           test.cmp.enableLayouts(['card']);
           const btns = getBtns();
-          expect(btns[0].textContent).toBe('Card');
+          const btnsCaption = getBtnsCaption();
+          expect(btnsCaption[0].textContent).toBe('Card');
           expect($$(btns[0]).hasClass('coveo-hidden')).toBeFalsy();
         });
 
@@ -188,7 +193,8 @@ export function ResultLayoutTest() {
 
           test.cmp.enableLayouts(['card']);
           const btns = getBtns();
-          expect(btns[0].textContent).toBe('Card');
+          const btnsCaption = getBtnsCaption();
+          expect(btnsCaption[0].textContent).toBe('Card');
           expect($$(btns[0]).hasClass('coveo-hidden')).toBeFalsy();
         });
       });

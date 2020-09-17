@@ -1,27 +1,15 @@
 import { $$ } from '../../utils/Dom';
-import { ComboboxInput, IComboboxAccessibilityAttributes } from './ComboboxInput';
+import { ComboboxInput } from './ComboboxInput';
 import { uniqueId, throttle } from 'underscore';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
-import { ComboboxValues, IComboboxValue } from './ComboboxValues';
+import { ComboboxValues } from './ComboboxValues';
 import 'styling/_Combobox';
 import { Utils } from '../../utils/Utils';
-import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { l } from '../../strings/Strings';
+import { IComboboxOptions, ICombobox, IComboboxAccessibilityAttributes } from './ICombobox';
 
-export interface IComboboxOptions {
-  label: string;
-  requestValues: (terms: string) => Promise<any>;
-  createValuesFromResponse: (response: any) => IComboboxValue[];
-  onSelectValue: (value: IComboboxValue) => void;
-  searchInterface: SearchInterface;
-  noValuesFoundLabel?: string;
-  placeholderText?: string;
-  wrapperClassName?: string;
-  clearOnBlur?: boolean;
-}
-
-export class Combobox {
+export class Combobox implements ICombobox {
   public element: HTMLElement;
   public id: string;
   public values: ComboboxValues;
@@ -32,8 +20,8 @@ export class Combobox {
     noValuesFoundLabel: l('NoValuesFound'),
     clearOnBlur: false
   };
-  private isThrottledRequestCancelled = false;
   private throttlingDelay = 600;
+  private isRequestCancelled = false;
 
   constructor(public options: IComboboxOptions) {
     this.options = {
@@ -85,8 +73,8 @@ export class Combobox {
 
   private cancelRequest() {
     this.toggleWaitAnimation(false);
-    this.throttledTriggerNewRequest.cancel();
-    this.isThrottledRequestCancelled = true;
+    this.throttledRequest.cancel();
+    this.isRequestCancelled = true;
   }
 
   public onInputChange(value: string) {
@@ -94,12 +82,18 @@ export class Combobox {
       return this.clearValues();
     }
 
-    this.toggleWaitAnimation(true);
-    this.throttledTriggerNewRequest(value);
+    this.throttledRequest(
+      () => this.options.requestValues(value),
+      () => this.values.resetScroll()
+    );
   }
 
   public onInputBlur() {
     if (this.values.mouseIsOverValue) {
+      return;
+    }
+
+    if (this.values.isRenderingNewValues) {
       return;
     }
 
@@ -115,21 +109,33 @@ export class Combobox {
   }
 
   public updateAriaLive(text: string) {
-    this.options.searchInterface.ariaLive.updateText(text);
+    this.options.ariaLive.updateText(text);
   }
 
-  private throttledTriggerNewRequest = throttle(this.triggerRequest, this.throttlingDelay, {
+  public onScrollEndReached() {
+    this.values.saveFocusedValue();
+    this.options.scrollable &&
+      this.throttledRequest(
+        () => this.options.scrollable.requestMoreValues(),
+        () => this.values.restoreFocusedValue()
+      );
+  }
+
+  private throttledRequest = throttle(this.triggerRequest, this.throttlingDelay, {
     leading: true,
     trailing: true
   });
 
-  private async triggerRequest(terms: string) {
-    this.isThrottledRequestCancelled = false;
-    const response = await this.options.requestValues(terms);
+  private async triggerRequest(request: () => Promise<any>, callback?: Function) {
+    this.isRequestCancelled = false;
+    this.toggleWaitAnimation(true);
+
+    const response = await request();
     this.toggleWaitAnimation(false);
 
-    if (!this.isThrottledRequestCancelled) {
+    if (!this.isRequestCancelled) {
       this.values.renderFromResponse(response);
+      callback && callback();
     }
   }
 }

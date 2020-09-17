@@ -12,6 +12,7 @@ export enum KEYBOARD {
   SPACEBAR = 32,
   PAGE_UP = 33,
   PAGE_DOWN = 34,
+  END = 35,
   HOME = 36,
   LEFT_ARROW = 37,
   UP_ARROW = 38,
