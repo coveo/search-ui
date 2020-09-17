@@ -33,33 +33,6 @@ export const AccessibleButtonTest = () => {
       expect(element.getAttribute('aria-label')).toBe('qwerty');
     });
 
-    it("should log an error if there's no label", () => {
-      const button = new AccessibleButton();
-      const logger = (button['logger'] = mock(Logger));
-      button.withElement(element).build();
-      expect(logger.error).toHaveBeenCalledTimes(1);
-    });
-
-    it("shouldn't log an error if there's a label", () => {
-      const button = new AccessibleButton();
-      const logger = (button['logger'] = mock(Logger));
-      button
-        .withElement(element)
-        .withLabel('qwerty')
-        .build();
-      expect(logger.error).not.toHaveBeenCalled();
-    });
-
-    it("shouldn't log an error if withoutLabel is specified", () => {
-      const button = new AccessibleButton();
-      const logger = (button['logger'] = mock(Logger));
-      button
-        .withElement(element)
-        .withoutLabel()
-        .build();
-      expect(logger.error).not.toHaveBeenCalled();
-    });
-
     it('should add the specified title', () => {
       const title = 'title';
 
@@ -69,6 +42,54 @@ export const AccessibleButtonTest = () => {
         .build();
 
       expect(element.getAttribute('title')).toBe(title);
+    });
+
+    it('should just add a title if there is a title and a label specified', () => {
+      const button = new AccessibleButton();
+      button
+        .withElement(element)
+        .withTitle('title')
+        .withLabel('label')
+        .build();
+      expect(element.getAttribute('aria-label')).toBeNull();
+      expect(element.getAttribute('title')).toBe('title');
+    });
+
+    it('should log an error if there no label nor title', () => {
+      const button = new AccessibleButton();
+      const logger = (button['logger'] = mock(Logger));
+      button.withElement(element).build();
+      expect(logger.error).toHaveBeenCalled();
+    });
+
+    it('should not log an error if withoutLabelOrTitle is specified', () => {
+      const button = new AccessibleButton();
+      const logger = (button['logger'] = mock(Logger));
+      button
+        .withElement(element)
+        .withoutLabelOrTitle()
+        .build();
+      expect(logger.error).not.toHaveBeenCalled();
+    });
+
+    it('should not log an error if there is a title but no label', () => {
+      const button = new AccessibleButton();
+      const logger = (button['logger'] = mock(Logger));
+      button
+        .withElement(element)
+        .withTitle('title')
+        .build();
+      expect(logger.error).not.toHaveBeenCalled();
+    });
+
+    it('should not log an error if there is a label but no title', () => {
+      const button = new AccessibleButton();
+      const logger = (button['logger'] = mock(Logger));
+      button
+        .withElement(element)
+        .withLabel('label')
+        .build();
+      expect(logger.error).not.toHaveBeenCalled();
     });
 
     it('with no specified role, should add the button role', () => {
