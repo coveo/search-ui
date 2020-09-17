@@ -91,9 +91,9 @@ export function ValueElementRendererTest() {
         valueRenderer = new ValueElementRenderer(facet, facetValue).build();
       });
 
-      it("the aria-label attribute starts with the word 'Select'", () => {
+      it("the aria-label attribute starts with the word 'Inclusion'", () => {
         const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
-        expect(ariaLabel.indexOf('Select')).toEqual(0);
+        expect(ariaLabel.indexOf('Inclusion')).toEqual(0);
       });
 
       it('the aria-pressed attribute of the checkbox is false', () => {
@@ -114,9 +114,9 @@ export function ValueElementRendererTest() {
         valueRenderer = new ValueElementRenderer(facet, facetValue).build();
       });
 
-      it("the aria-label attribute starts with the word 'Select'", () => {
+      it("the aria-label attribute starts with the word 'Inclusion'", () => {
         const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
-        expect(ariaLabel.indexOf('Select')).toEqual(0);
+        expect(ariaLabel.indexOf('Inclusion')).toEqual(0);
       });
 
       it('the aria-pressed attribute of the checkbox is true', () => {
@@ -137,14 +137,14 @@ export function ValueElementRendererTest() {
         valueRenderer = new ValueElementRenderer(facet, facetValue).build();
       });
 
-      it("the aria-label attribute starts with the word 'Select'", () => {
+      it("the aria-label attribute starts with the word 'Inclusion'", () => {
         const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
-        expect(ariaLabel.indexOf('Select')).toEqual(0);
+        expect(ariaLabel.indexOf('Inclusion')).toEqual(0);
       });
 
-      it('the aria-pressed attribute of the checkbox is false', () => {
+      it('the aria-pressed attribute of the checkbox is mixed', () => {
         const ariaPressed = valueRenderer.accessibleElement.getAttribute('aria-pressed');
-        expect(ariaPressed).toEqual('false');
+        expect(ariaPressed).toEqual('mixed');
       });
 
       it('the aria-pressed attribute of the exclude button is true', () => {

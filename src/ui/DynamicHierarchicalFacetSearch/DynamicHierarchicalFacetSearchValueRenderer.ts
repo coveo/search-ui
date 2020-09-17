@@ -48,7 +48,7 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
     return l(
       'HierarchicalFacetValueIndentedUnder',
       l(
-        'SelectValueWithResultCount',
+        'IncludeValueWithResultCount',
         this.facetValue.displayValue,
         l('ResultCount', this.facetValue.numberOfResults, this.facetValue.numberOfResults)
       ),
