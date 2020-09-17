@@ -27,6 +27,7 @@ export const AccessibilityCategoryFacet = () => {
 
     describe('with facet element', () => {
       let facetElement: Dom;
+      let facet: CategoryFacet;
 
       function getMagnifierSVG() {
         return facetElement.el.querySelector<HTMLElement>('.coveo-facet-search-magnifier-svg');
@@ -40,7 +41,13 @@ export const AccessibilityCategoryFacet = () => {
         facetElement = getFacetElement();
         getFacetColumn().appendChild(facetElement.el);
         await afterDeferredQuerySuccess();
+        facet = get(facetElement.el) as CategoryFacet;
         done();
+      });
+
+      it('should have good contrast on the facet itself', () => {
+        const borderContrast = ContrastChecker.getContrastWithBackground(facetElement.el, 'borderBottomColor');
+        expect(borderContrast).toBeGreaterThan(ContrastChecker.MinimumContrastRatio);
       });
 
       it('should have good contrast on the search button', () => {
@@ -57,7 +64,7 @@ export const AccessibilityCategoryFacet = () => {
         }
 
         beforeEach(async done => {
-          (get(facetElement.el) as CategoryFacet).categoryFacetSearch.focus();
+          facet.categoryFacetSearch.focus();
           await waitUntilSelectorIsPresent(document.body, '.coveo-facet-search-results');
           done();
         });
@@ -69,10 +76,35 @@ export const AccessibilityCategoryFacet = () => {
           done();
         });
 
+        it("should have a conformant contrast ratio on FacetSearch's border", () => {
+          expect(
+            ContrastChecker.getContrastWithBackground(facet.categoryFacetSearch.facetSearchElement.search, 'borderBottomColor')
+          ).not.toBeLessThan(ContrastChecker.MinimumContrastRatio);
+        });
+
+        it("should have a conformant contrast ratio on facet search results' border", () => {
+          expect(
+            ContrastChecker.getContrastWithBackground(facet.categoryFacetSearch.facetSearchElement.searchResults, 'borderBottomColor')
+          ).not.toBeLessThan(ContrastChecker.MinimumContrastRatio);
+        });
+
         it('should have good contrast on the search icon', async done => {
           const contrast = ContrastChecker.getContrastWithBackground(getMagnifierSVG());
           expect(contrast).toBeGreaterThan(ContrastChecker.MinimumContrastRatio);
           done();
+        });
+
+        describe('after focusing on the search button with no results', () => {
+          beforeEach(async done => {
+            facet.categoryFacetSearch.facetSearchElement.emptyAndShowNoResults();
+            done();
+          });
+
+          it("should still be accessible when there's no results", async done => {
+            const axeResults = await axe.run(getRoot());
+            expect(axeResults).toBeAccessible();
+            done();
+          });
         });
       });
     });
