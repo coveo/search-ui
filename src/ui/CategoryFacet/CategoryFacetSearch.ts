@@ -231,7 +231,7 @@ export class CategoryFacetSearch implements IFacetSearch {
     item.el.dataset.path = categoryFacetValue.value;
 
     const countLabel = l('ResultCount', this.getFormattedCount(categoryFacetValue.numberOfResults), categoryFacetValue.numberOfResults);
-    const label = l('SelectValueWithResultCount', last(path), countLabel);
+    const label = l('IncludeValueWithResultCount', last(path), countLabel);
 
     new AccessibleButton()
       .withElement(item)

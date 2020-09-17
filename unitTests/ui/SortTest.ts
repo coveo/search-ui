@@ -224,17 +224,33 @@ export function SortTest() {
         });
 
         describe('with radio buttons', () => {
+          let radioButtons: HTMLElement[];
           function getRadioButtonsState(attribute = 'aria-checked') {
             return radioButtons.map(radio => radio.getAttribute(attribute));
           }
 
-          let radioButtons: HTMLElement[];
-          beforeEach(() => {
+          function updateRadioButtons() {
             radioButtons = $$(test.cmp.element).findAll('[role="radio"]');
+          }
+
+          beforeEach(() => {
+            updateRadioButtons();
           });
 
           it('should contain two radio buttons', () => {
             expect(radioButtons.length).toEqual(2);
+          });
+
+          it('should set as aria-controls the list of result list components ids', () => {
+            (test.cmp.searchInterface.getComponents as jasmine.Spy).and.callFake(cmp => {
+              if (cmp === 'ResultList') {
+                return [{ element: $$('div', { id: 'id1' }).el }, { element: $$('div', { id: 'id2' }).el }];
+              }
+              return [];
+            });
+            test.cmp.createDom();
+            updateRadioButtons();
+            expect(getRadioButtonsState('aria-controls')).toEqual(['id1 id2', 'id1 id2']);
           });
 
           it('should give labels to its radio buttons', () => {
