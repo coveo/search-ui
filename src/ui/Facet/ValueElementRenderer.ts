@@ -262,9 +262,6 @@ export class ValueElementRenderer {
     el.setAttribute('aria-label', this.ariaLabel);
     el.setAttribute('role', 'button');
     el.setAttribute('aria-pressed', this.ariaPressed);
-
-    const elExclude = this.excludeIcon;
-    elExclude.setAttribute('aria-pressed', this.ariaPressedExcludeIcon);
   }
 
   private get ariaLabel() {
@@ -277,12 +274,5 @@ export class ValueElementRenderer {
       return 'mixed';
     }
     return this.facetValue.selected ? 'true' : 'false';
-  }
-
-  private get ariaPressedExcludeIcon() {
-    if (this.facetValue.selected) {
-      return 'mixed';
-    }
-    return this.facetValue.excluded ? 'true' : 'false';
   }
 }

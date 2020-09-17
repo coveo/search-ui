@@ -124,9 +124,9 @@ export function ValueElementRendererTest() {
         expect(ariaPressed).toEqual('true');
       });
 
-      it('the aria-pressed attribute of the exclude button is mixed', () => {
+      it('the aria-pressed attribute of the exclude button is false', () => {
         const ariaPressed = valueRenderer.excludeIcon.getAttribute('aria-pressed');
-        expect(ariaPressed).toEqual('mixed');
+        expect(ariaPressed).toEqual('false');
       });
     });
 
