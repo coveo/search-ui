@@ -380,6 +380,7 @@ export class Sort extends Component {
     const directionIsInitial = this.currentDirection === this.initialDirection;
     this.sortButton.setAttribute('aria-checked', `${this.isSelected() && directionIsInitial}`);
     if (this.isToggle()) {
+      this.directionButton.setAttribute('aria-controls', this.resultListsIds);
       this.directionButton.setAttribute('aria-checked', `${this.isSelected() && !directionIsInitial}`);
     }
   }
