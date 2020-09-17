@@ -2,12 +2,15 @@ import { FacetSearchElement } from '../../src/ui/Facet/FacetSearchElement';
 import { mock } from '../MockEnvironment';
 import { FacetSearch } from '../../src/ui/Facet/FacetSearch';
 import { $$ } from '../../src/utils/Dom';
+import { l } from '../../src/Core';
 
 export function FacetSearchElementTest() {
   describe('FacetSearchElement', () => {
+    let facetSearch: FacetSearch;
     let facetSearchElement: FacetSearchElement;
     beforeEach(() => {
-      facetSearchElement = new FacetSearchElement(mock(FacetSearch));
+      facetSearch = mock(FacetSearch);
+      facetSearchElement = new FacetSearchElement(facetSearch);
       facetSearchElement.build();
     });
 
@@ -39,6 +42,26 @@ export function FacetSearchElementTest() {
       it('selects the noResults element', () => {
         expect(facetSearchElement.input.getAttribute('aria-activedescendant')).toEqual(noResultsElement.id);
         expect(noResultsElement.getAttribute('aria-selected')).toEqual('true');
+      });
+    });
+
+    describe('when calling updateAriaLiveWithResults', () => {
+      it(`when there is a non empty query
+      should update AriaLive with the text: "{X} result(s) for {query}..."`, () => {
+        facetSearchElement.updateAriaLiveWithResults('query', 10, false);
+        expect(facetSearch.updateAriaLive).toHaveBeenCalledWith(l('ShowingResultsWithQuery', 10, 'query', 10));
+      });
+
+      it(`when there is an empty query
+      should update AriaLive with the text: "{X} result(s)..."`, () => {
+        facetSearchElement.updateAriaLiveWithResults('', 10, false);
+        expect(facetSearch.updateAriaLive).toHaveBeenCalledWith(l('ShowingResults', 10, 10));
+      });
+
+      it(`when there are more values to fetch
+      should update AriaLive with the text "(more values are available)" appended`, () => {
+        facetSearchElement.updateAriaLiveWithResults('', 10, true);
+        expect(facetSearch.updateAriaLive).toHaveBeenCalledWith(`${l('ShowingResults', 10, 10)} (${l('MoreValuesAvailable')})`);
       });
     });
   });

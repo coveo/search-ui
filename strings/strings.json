@@ -7522,6 +7522,10 @@
     "en": "in",
     "fr": "dans"
   },
+  "MoreValuesAvailable": {
+    "en": "additional values are available",
+    "fr": "des valeurs additionnelles sont disponibles"
+  },
   "Breadcrumb": {
     "en": "Active filters",
     "fr": "Filtres actifs"

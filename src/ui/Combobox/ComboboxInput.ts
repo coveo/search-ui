@@ -7,7 +7,7 @@ import { IComboboxAccessibilityAttributes, ICombobox } from './ICombobox';
 export class ComboboxInput {
   public element: HTMLElement;
   private textInput: TextInput;
-  private inputElement: HTMLElement;
+  private inputElement: HTMLInputElement;
   private inputOptions: ITextInputOptions = {
     usePlaceholder: true,
     className: 'coveo-combobox-input',
@@ -19,9 +19,13 @@ export class ComboboxInput {
   constructor(private combobox: ICombobox) {
     this.create();
     this.element = this.textInput.getElement();
-    this.inputElement = $$(this.element).find('input');
+    this.inputElement = $$(this.element).find('input') as HTMLInputElement;
     this.addEventListeners();
     this.addAccessibilityAttributes();
+  }
+
+  public get value() {
+    return this.inputElement.value;
   }
 
   private create() {

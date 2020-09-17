@@ -196,6 +196,19 @@ export class FacetSearchElement {
     this.input.setAttribute('aria-activedescendant', this.facetValueNotFoundId);
   }
 
+  public updateAriaLiveWithResults(inputValue: string, numberOfResults: number, moreValuesToFetch: boolean) {
+    let ariaLiveText =
+      inputValue === ''
+        ? l('ShowingResults', numberOfResults, inputValue, numberOfResults)
+        : l('ShowingResultsWithQuery', numberOfResults, inputValue, numberOfResults);
+
+    if (moreValuesToFetch) {
+      ariaLiveText = `${ariaLiveText} (${l('MoreValuesAvailable')})`;
+    }
+
+    this.facetSearch.updateAriaLive(ariaLiveText);
+  }
+
   public focus() {
     this.input.focus();
     this.handleFacetSearchFocus();

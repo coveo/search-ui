@@ -79,6 +79,14 @@ export function ComboboxValuesTest() {
         triggerRenderFromResponse(['hi', 'hello', 'goodbye']);
       });
 
+      it('hasValues should return true', () => {
+        expect(comboboxValues.hasValues()).toBe(true);
+      });
+
+      it('numberOfValues getter should return the correct number of values ', () => {
+        expect(comboboxValues.numberOfValues).toBe(3);
+      });
+
       it('should show the list', () => {
         expect($$(comboboxValues.element).isVisible()).toBe(true);
       });
@@ -138,13 +146,17 @@ export function ComboboxValuesTest() {
         triggerRenderFromResponse([]);
       });
 
+      it('hasValues should return false', () => {
+        expect(comboboxValues.hasValues()).toBe(false);
+      });
+
+      it('numberOfValues getter should return the correct number of values ', () => {
+        expect(comboboxValues.numberOfValues).toBe(0);
+      });
+
       it('should show the "no values found" element', () => {
         const noValuesFound = getChildren()[0];
         expect($$(noValuesFound).hasClass('coveo-combobox-value-not-found')).toBe(true);
-      });
-
-      it('should call "updateAriaLive" on the combobox with the right text', () => {
-        expect(combobox.updateAriaLive).toHaveBeenCalledWith(combobox.options.noValuesFoundLabel);
       });
 
       it('should call "updateAccessibilityAttributes" with the right attributes', () => {

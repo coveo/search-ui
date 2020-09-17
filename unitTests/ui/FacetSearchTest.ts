@@ -272,10 +272,10 @@ export function FacetSearchTest() {
             expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(true);
           });
 
-          it('pressing the up arrow once loops around and primes the last result to be excluded', () => {
+          it('pressing the up arrow once loops around and primes the last result to be selected', () => {
             Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
             expect(getSearchResult(9).hasClass('coveo-facet-search-current-result')).toBe(true);
-            expect(getSearchResult(9).hasClass('coveo-facet-value-will-exclude')).toBe(true);
+            expect(getSearchResult(9).hasClass('coveo-facet-value-will-exclude')).toBe(false);
           });
 
           describe('pressing the down arrow once twice', () => {
@@ -289,14 +289,7 @@ export function FacetSearchTest() {
               expect(getSearchResult(1).hasClass('coveo-facet-value-will-exclude')).toBe(false);
             });
 
-            it('when pressing the up arrow once, it primes the first result to be excluded', () => {
-              Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
-              expect(getSearchResult(0).hasClass('coveo-facet-search-current-result')).toBe(true);
-              expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(true);
-            });
-
-            it('when pressing the up arrow twice, it primes the first result to be selected', () => {
-              Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
+            it('when pressing the up arrow once, it primes the first result to be selected', () => {
               Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
               expect(getSearchResult(0).hasClass('coveo-facet-search-current-result')).toBe(true);
               expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(false);
