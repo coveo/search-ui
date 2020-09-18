@@ -246,13 +246,6 @@
 					<h1>Interface IClickEvent</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Describes a Coveo Cloud usage analytics <em>click</em> event.</p>
-					</div>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -312,13 +305,6 @@
 							:12</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A unique name describing the action that triggered the event.</p>
-						</div>
-						<p>See the <a href="https://coveo.github.io/search-ui/interfaces/ianalyticsactioncause.html#name"><code>name</code></a> property of the <a href="https://coveo.github.io/search-ui/interfaces/ianalyticsactioncause.html"><code>IAnalyticsActionCause</code></a> interface.</p>
-						<p><strong>Example:</strong> <code>pagerNext</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="actiontype" class="tsd-anchor"></a>
@@ -332,13 +318,6 @@
 							:20</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A name describing the category of actions to which the action that triggered the event belongs.</p>
-						</div>
-						<p>See the <a href="https://coveo.github.io/search-ui/interfaces/ianalyticsactioncause.html#type"><code>type</code></a> property of the <a href="https://coveo.github.io/search-ui/interfaces/ianalyticsactioncause.html"><code>IAnalyticsActionCause</code></a> interface.</p>
-						<p><strong>Example:</strong> <code>getMoreResults</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="anonymous" class="tsd-anchor"></a>
@@ -352,12 +331,6 @@
 							:42</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether the event should be logged anonymously to the Coveo Cloud usage analytics service.</p>
-						</div>
-						<p><strong>Note:</strong> This field is normally set to the <a href="https://coveo.github.io/search-ui/components/analytics.html#options.anonymous"><code>anonymous</code></a> option value of the <a href="https://coveo.github.io/search-ui/components/analytics.html"><code>Analytics</code></a> component.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="collectionname" class="tsd-anchor"></a>
@@ -370,13 +343,6 @@
 							:86</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The name of the collection to which the clicked query result item belongs.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by retrieving the information from the related Search API query response.</p>
-						<p><strong>Example:</strong> <code>default</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="customdata" class="tsd-anchor"></a>
@@ -390,13 +356,6 @@
 							:127</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Additional metadata to send along with the event.</p>
-						</div>
-						<p><strong>Note:</strong> This field may include custom user context information (see <a href="https://docs.coveo.com/en/399/">Sending Custom Context Information</a>).</p>
-						<p><strong>Example:</strong> <code>{ &quot;currentResultsPerPage&quot;: 25, &quot;userRole&quot;: &quot;developer&quot; }</code></p>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -418,13 +377,6 @@
 							:50</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The name of the device or browser that triggered the event.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by parsing the current <code>navigator.userAgent</code> value.</p>
-						<p><strong>Example:</strong> <code>Chrome</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="documentcategory" class="tsd-anchor"></a>
@@ -437,13 +389,6 @@
 							:78</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The type of query result item that was clicked.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by retrieving the information from the related Search API query response.</p>
-						<p><strong>Example:</strong> <code>FAQ</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="documentposition" class="tsd-anchor"></a>
@@ -456,12 +401,6 @@
 							:100</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The 1-based position of the clicked item in the query results set.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by retrieving the information from the related Search API query response.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="documenttitle" class="tsd-anchor"></a>
@@ -474,13 +413,6 @@
 							:70</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The title of the clicked query result item.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by retrieving the information from the related Search API query response.</p>
-						<p><strong>Example:</strong> <code>Coveo ML Frequently Asked Questions</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="documenturi" class="tsd-anchor"></a>
@@ -493,13 +425,6 @@
 							:46</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The URI of the clicked query result item.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by retrieving the information from the related Search API query response.</p>
-						<p><strong>Example:</strong> <code>http://www.example.com/org:organization/articletype:FAQ/article:aB1c2000000A1BcDEF/language:en_US</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="documenturihash" class="tsd-anchor"></a>
@@ -512,13 +437,6 @@
 							:54</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The hashed URI of the clicked query result item.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by retrieving the information from the related Search API query response.</p>
-						<p><strong>Example:</strong> <code>AbCñdeFghiJKLM1n</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="documenturl" class="tsd-anchor"></a>
@@ -531,13 +449,6 @@
 							:62</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The URL of the clicked query result item.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by retrieving the information from the related Search API query response.</p>
-						<p><strong>Example:</strong> <code>https://example.com/aB1c2000000A1Bc</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="language" class="tsd-anchor"></a>
@@ -551,14 +462,6 @@
 							:98</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The language of the search interface from which the event originates.</p>
-						</div>
-						<p>Must be a valid <a href="https://en.wikipedia.org/wiki/ISO_639-1">ISO-639-1 code</a>.</p>
-						<p><strong>Note:</strong> By default, the framework sets this field according to the currently loaded culture file (see <a href="https://docs.coveo.com/en/421/">Changing the Language of Your Search Interface</a>).</p>
-						<p><strong>Example:</strong> <code>en</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="mobile" class="tsd-anchor"></a>
@@ -572,12 +475,6 @@
 							:56</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether the event originates from a mobile device.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by parsing the current <code>navigator.userAgent</code> value.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="origincontext" class="tsd-anchor"></a>
@@ -591,13 +488,6 @@
 							:88</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The broad application context from which the event originates.</p>
-						</div>
-						<p><strong>Note:</strong> By default, the framework sets this field to <code>Search</code>. However, you can use the <a href="https://coveo.github.io/search-ui/components/analytics.html#setorigincontext"><code>setOriginContext</code></a> method of the <a href="https://coveo.github.io/search-ui/components/analytics.html"><code>Analytics</code></a> component to modify the default value.</p>
-						<p><strong>Example:</strong> <code>Search</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="originlevel1" class="tsd-anchor"></a>
@@ -611,13 +501,6 @@
 							:64</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The identifier of the search interface from which the event originates.</p>
-						</div>
-						<p><strong>Note:</strong> This field is normally set through the <a href="https://coveo.github.io/search-ui/components/analytics.html#options.searchhub"><code>searchHub</code></a> option of the <a href="https://coveo.github.io/search-ui/components/analytics.html"><code>Analytics</code></a> component. However, when actually recording the event, the Coveo Cloud usage analytics service may override this value with information extracted from the search token.</p>
-						<p><strong>Example:</strong> <code>PartnerPortalSearch</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="originlevel2" class="tsd-anchor"></a>
@@ -631,13 +514,6 @@
 							:72</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The identifier of the tab from which the event originates.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field to the identifier of the currently selected <a href="https://coveo.github.io/search-ui/components/tab.html"><code>Tab</code></a> in the search interface.</p>
-						<p><strong>Example:</strong> <code>All</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="originlevel3" class="tsd-anchor"></a>
@@ -651,13 +527,6 @@
 							:80</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The address of the webpage that linked to the search interface from which the event originates.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field to the current <code>document.referrer</code> value.</p>
-						<p><strong>Example:</strong> <code>http://example.com/</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="querypipeline" class="tsd-anchor"></a>
@@ -670,13 +539,6 @@
 							:22</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The name of the query pipeline to which the Search API query that returned the clicked result item was routed.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by retrieving the information from the related Search API query response.</p>
-						<p><strong>Example:</strong> <code>PartnerPortalSearchPipeline</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="rankingmodifier" class="tsd-anchor"></a>
@@ -689,13 +551,6 @@
 							:116</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The ranking modifier that was applied to the clicked query result item.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by retrieving the information from the related Search API query response.</p>
-						<p><strong>Example:</strong> <code>Reveal ART</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="responsetime" class="tsd-anchor"></a>
@@ -709,12 +564,6 @@
 							:105</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The time it took to get a response from the Search API for the query related to the event (in milliseconds).</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field to <code>0</code>, except for <a href="isearchevent.html">search events</a> in which case it sets the field by retrieving the information from the related Search API query response.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="searchqueryuid" class="tsd-anchor"></a>
@@ -727,13 +576,6 @@
 							:14</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The unique identifier of the Search API query that returned the clicked result item.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by retrieving the information from the related Search API query response.</p>
-						<p><strong>Example:</strong> <code>74682726-0e20-46eb-85ac-f37259346f57</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="sourcename" class="tsd-anchor"></a>
@@ -746,13 +588,6 @@
 							:94</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The name of the source that contains the clicked query result item.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field by retrieving the information from the related Search API query response.</p>
-						<p><strong>Example:</strong> <code>Product Documentation</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="splittestrunname" class="tsd-anchor"></a>
@@ -765,13 +600,6 @@
 							:30</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The name of the A/B test that applied to the related Search API query.</p>
-						</div>
-						<p><strong>Note:</strong> This field is normally set by the <code>splitTestRunName</code> option of the <code>Analytics</code> component. However, if this option is left undefined, the framework attempts to set this field by retrieving information from the related Search API query response.</p>
-						<p><strong>Example:</strong> <code>Testing new ART model</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="splittestrunversion" class="tsd-anchor"></a>
@@ -784,13 +612,6 @@
 							:38</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The version of the A/B test that applied to the related Search API query (i.e., version A or version B).</p>
-						</div>
-						<p><strong>Note:</strong> This field is normally set by the <code>splitTestRunVersion</code> option of the <code>Analytics</code> component. However, if this option is left undefined and the related Search API query response indicates that an A/B test was applied, the framework sets this field to the name of the query pipeline to which the query was routed.</p>
-						<p><strong>Example:</strong> <code>PartnerPortalSearchPipelineWithART</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="useragent" class="tsd-anchor"></a>
@@ -804,13 +625,6 @@
 							:113</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The software acting on behalf of the end-user whose action triggered the event.</p>
-						</div>
-						<p><strong>Note:</strong> By default, the framework sets this field to the current <code>navigator.userAgent</code> value.</p>
-						<p><strong>Example:</strong> <code>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="userdisplayname" class="tsd-anchor"></a>
@@ -824,13 +638,6 @@
 							:36</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The display name of the end-user whose action triggered the event.</p>
-						</div>
-						<p><strong>Note:</strong> This field is normally set to the <a href="https://coveo.github.io/search-ui/components/analytics.html#options.userdisplayname"><code>userDisplayName</code></a> option value of the <a href="https://coveo.github.io/search-ui/components/analytics.html"><code>Analytics</code></a> component. However, when actually recording the event, the Coveo Cloud usage analytics service may override this value with information extracted from the search token.</p>
-						<p><strong>Example:</strong> <code>Alice Smith</code></p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="usergroups" class="tsd-anchor"></a>
@@ -844,12 +651,6 @@
 							:119</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The groups the end-user whose action triggered the event belongs to.</p>
-						</div>
-						<p><strong>Note:</strong> This field is normally left undefined, and the Coveo Cloud usage analytics service attempts to extract the information from the search token when actually recording the event.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="username" class="tsd-anchor"></a>
@@ -863,13 +664,6 @@
 							:28</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The identifier of the end-user whose action triggered the event.</p>
-						</div>
-						<p><strong>Note:</strong> This field is normally set to the <a href="https://coveo.github.io/search-ui/components/analytics.html#options.user"><code>user</code></a> option value of the <a href="https://coveo.github.io/search-ui/components/analytics.html"><code>Analytics</code></a> component. However, when actually recording the event, the Coveo Cloud usage analytics service may override this value with information extracted from the search token.</p>
-						<p><strong>Example:</strong> <a href="mailto:`asmith@example.com">`asmith@example.com</a>`</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="viewmethod" class="tsd-anchor"></a>
@@ -882,13 +676,6 @@
 							:108</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The way the item was clicked.</p>
-						</div>
-						<p><strong>Note:</strong> The framework normally sets this field to the exact same value as <a href="ianalyticsevent.html#actioncause"><code>actionCause</code></a>.</p>
-						<p><strong>Example:</strong> <code>documentOpen</code></p>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

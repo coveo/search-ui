@@ -210,15 +210,6 @@
 					<h1>Class Initialization</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>The main purpose of this class is to initialize the framework (a.k.a the code executed when calling <code>Coveo.init</code>).<br/>
-							It&#39;s also in charge or registering the available components, as well as the method that we expost to the global Coveo scope.<br/>
-						For example, the <code>Coveo.executeQuery</code> function will be registed in this class by the <a href="querycontroller.html">QueryController</a>.</p>
-					</div>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -269,11 +260,6 @@
 									:434</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Scan the element and all its children for known components. Initialize every known component found.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -305,31 +291,16 @@
 									:411</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Scan the result element and all its children for known components. Initialize every known result component found.</p>
-								</div>
-								<p>See also : <a href="initialization.html#automaticallycreatecomponentsinside">Initialization.automaticallyCreateComponentsInside</a>.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>resultElement: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The root element to scan for known components</p>
-									</div>
 								</li>
 								<li>
 									<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The result which needs to be passed to each result component constructor.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> optionsToInject: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>A set of options to inject for the components found inside the resultElement. These options will be merged with any options passed during the &quot;init&quot; call of the search interface.</p>
-									</div>
 									<ul class="tsd-parameters">
 									</ul>
 								</li>
@@ -353,11 +324,6 @@
 									:213</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the list of all components that are currently eagerly loaded.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 						</li>
 					</ul>
@@ -377,11 +343,6 @@
 									:205</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the list of all known components (the list of ID for each component), whether they are actually loaded or not.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">String[]</span></h4>
 						</li>
 					</ul>
@@ -401,12 +362,6 @@
 									:225</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the component class definition, using it&#39;s ID (e.g. : &#39;CoveoFacet&#39;).</p>
-								</div>
-								<p>This means the component needs to be eagerly loaded.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -432,13 +387,6 @@
 									:183</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns all the fields that the framework currently knows should be added to the query, for a given component.</p>
-								</div>
-								<p>This is used when the <a href="../components/resultlist.html#options.autoselectfieldstoinclude"></a> is set to <code>true</code> (which is <code>true</code> by default).</p>
-								<p>The framework tries to only include the needed fields from the index, for performance reasons.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -464,13 +412,6 @@
 									:170</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns all the fields that the framework currently knows should be added to the query.</p>
-								</div>
-								<p>This is used when the <a href="../components/resultlist.html#options.autoselectfieldstoinclude"></a> is set to <code>true</code> (which is <code>true</code> by default).</p>
-								<p>The framework tries to only include the needed fields from the index, for performance reasons.</p>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 						</li>
 					</ul>
@@ -490,11 +431,6 @@
 									:388</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Create a new recommendation search interface. This is the function executed when calling <code>Coveo.initRecommendation</code>.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -523,11 +459,6 @@
 									:342</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Create a new standard search interface. This is the function executed when calling <code>Coveo.init</code>.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -556,11 +487,6 @@
 									:356</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Create a new standalone search interface (standalone search box). This is the function executed when calling <code>Coveo.initSearchbox</code>.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -589,31 +515,16 @@
 									:236</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Initialize the framework. Note that this function should not normally be called directly, but instead using a globally registered function (e.g.: Coveo.init), or <a href="initialization.html#initsearchinterface">Initialization.initSearchInterface</a> or <a href="initialization.html#initstandalonesearchinterface">Initialization.initStandaloneSearchInterface</a> <br/>
-									(e.g. : <code>Coveo.init</code> or <code>Coveo.initSearchbox</code>).</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The element on which to initialize the interface.</p>
-									</div>
 								</li>
 								<li>
 									<h5>options: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options for all components (eg: {Searchbox : {enableSearchAsYouType : true}}).</p>
-									</div>
 								</li>
 								<li>
 									<h5>initSearchInterfaceFunction: <span class="tsd-signature-type">function</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The function to execute to create the <a href="../components/searchinterface.html">SearchInterface</a> component. Different init call will create different <a href="../components/searchinterface.html">SearchInterface</a>.</p>
-									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
@@ -653,11 +564,6 @@
 									:194</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Check if a component is already registered, using it&#39;s ID (e.g. : &#39;Facet&#39;).</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -683,11 +589,6 @@
 									:500</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Check if the method is already registed.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -713,11 +614,6 @@
 									:510</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>&#39;Monkey patch&#39; (replace the function with a new one) a given method on a component instance.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -728,8 +624,6 @@
 								</li>
 								<li>
 									<h5>handler: <span class="tsd-signature-type">function</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
@@ -769,19 +663,10 @@
 									:107</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Register a new Component to be recognized by the framework.
-									This essentially mean that when we call <code>Coveo.init</code>, the Initialization class will scan the DOM for known component (which have registed themselves with this call) and create a new component on each element.</p>
-								</div>
-								<p>This is meant to register the component to be loaded &quot;eagerly&quot; (Immediately available when the UI scripts are included)</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>componentClass: <a href="../interfaces/icomponentdefinition.html" class="tsd-signature-type">IComponentDefinition</a></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -803,25 +688,13 @@
 									:142</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Set the fields that the component needs to add to the query.</p>
-								</div>
-								<p>This is used when the <a href="../components/resultlist.html#options.autoselectfieldstoinclude"></a> is set to <code>true</code> (which is <code>true</code> by default).</p>
-								<p>The framework tries to only include the needed fields from the index, for performance reasons.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>componentId: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The id for the result template component (see <a href="https://docs.coveo.com/en/413/">Result Templates</a>).</p>
-									</div>
 								</li>
 								<li>
 									<h5>fields: <span class="tsd-signature-type">string[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -843,13 +716,6 @@
 									:77</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Register a new set of options for a given element.<br/>
-										When the element is eventually initialized as a component, those options will be used / merged to create the final option set to use for this component.<br/>
-									Note that this function should not normally be called directly, but instead using the global <code>Coveo.options</code> function</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -857,8 +723,6 @@
 								</li>
 								<li>
 									<h5>options: <span class="tsd-signature-type">__type</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -880,24 +744,13 @@
 									:487</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Register a new globally available method in the Coveo namespace (e.g.: <code>Coveo.init</code>).</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>methodName: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The method name to register.</p>
-									</div>
 								</li>
 								<li>
 									<h5>handler: <span class="tsd-signature-type">function</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The function to execute when the method is called.</p>
-									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">

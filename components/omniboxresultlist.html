@@ -234,25 +234,6 @@
 					<h1>Coveo OmniboxResultList Component (CoveoOmniboxResultList)</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>The OmniboxResultList component behaves exactly like the <a href="resultlist.html">ResultList</a> component (which it extends), except that
-						it renders itself inside the <a href="omnibox.html">Omnibox</a> component.</p>
-					</div>
-					<p>This component can provide a kind of search-as-you-type functionality, allowing you to easily render complex Result
-					Templates inside the Omnibox component.</p>
-					<p><strong>Example:</strong></p>
-					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoOmniboxResultList"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/x-underscore"</span>&gt;</span><span class="handlebars"><span class="xml">
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-  </span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -331,22 +312,14 @@
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#buildresult">buildResult</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L413">ui/ResultList/ResultList.ts
-									:413</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L415">ui/ResultList/ResultList.ts
+									:415</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Builds and returns an HTMLElement for the given result.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the result to build an HTMLElement from.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -369,18 +342,10 @@
 									:182</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Builds and returns an array of <code>HTMLElement</code> from the <a href="../interfaces/iqueryresults.html">IQueryResults</a> set received as an argument.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>results: <a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The IQueryResults set to build an array of <code>HTMLElement</code> from.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -403,11 +368,6 @@
 									:41</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the debug info about this component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -428,13 +388,6 @@
 									:52</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Disable the component.
-										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Component are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -451,25 +404,14 @@
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#displaymoreresults">displayMoreResults</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L427">ui/ResultList/ResultList.ts
-									:427</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L429">ui/ResultList/ResultList.ts
+									:429</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Executes a query to fetch new results. After the query returns, renders the new results.</p>
-								</div>
-								<p>Asserts that there are more results to display by verifying whether the last query has returned as many results as
-								requested.</p>
-								<p>Asserts that the <code>ResultList</code> is not currently fetching results.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>count: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The number of results to fetch and display.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -492,13 +434,6 @@
 									:61</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Enable the component.
-										Normally this means that the component will execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -515,15 +450,10 @@
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#getautoselectedfieldstoinclude">getAutoSelectedFieldsToInclude</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L348">ui/ResultList/ResultList.ts
-									:348</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L350">ui/ResultList/ResultList.ts
+									:350</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the fields needed to be automatically included in the query for this result list.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 						</li>
 					</ul>
@@ -544,11 +474,6 @@
 									:328</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the bindings, or environment, for the current component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -565,15 +490,10 @@
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#getdisplayedresults">getDisplayedResults</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L459">ui/ResultList/ResultList.ts
-									:459</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L461">ui/ResultList/ResultList.ts
+									:461</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the list of currently displayed result.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IQueryResult[]</span></h4>
 						</li>
 					</ul>
@@ -590,15 +510,10 @@
 								<p>Inherited from <a href="resultlist.html">ResultList</a>.<a href="resultlist.html#getdisplayedresultselements">getDisplayedResultsElements</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L467">ui/ResultList/ResultList.ts
-									:467</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/ResultList/ResultList.ts#L469">ui/ResultList/ResultList.ts
+									:469</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the list of currently displayed result HTMLElement.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement[]</span></h4>
 						</li>
 					</ul>
@@ -619,25 +534,13 @@
 									:210</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates a result container and appends each element from the received <code>HTMLElement</code> array to it. For each element
-										it appends to the result container, this method triggers a <code>newResultDisplayed</code> event. Once all elements have been
-									appended to the result container, the method triggers a <code>newResultsDisplayed</code> event.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>resultElements: <span class="tsd-signature-type">HTMLElement[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The array of <code>HTMLElement</code> to render.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> append: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -660,31 +563,16 @@
 									:410</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -706,18 +594,6 @@
 							:270</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Allows the component to bind events and execute them only when it is enabled.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{Coveo.ComponentEvents}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -731,11 +607,6 @@
 							:294</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -749,11 +620,6 @@
 							:282</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -767,18 +633,6 @@
 							:23</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{boolean}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -792,11 +646,6 @@
 							:18</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Allows component to log in the dev console.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -810,11 +659,6 @@
 							:286</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the singleton that allows to trigger queries.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -828,11 +672,6 @@
 							:278</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -846,11 +685,6 @@
 							:274</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -864,11 +698,6 @@
 							:290</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -882,12 +711,6 @@
 							:28</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The static ID that each component need to be identified.<br/>
-							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-static">
 					<a name="elementstoignore" class="tsd-anchor"></a>
@@ -900,13 +723,6 @@
 							:61</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a list a css class that should be ignored when the end user click result in the omnibox</p>
-						</div>
-						<p>Any element that is specified here should normally be able to handle the standard click event.</p>
-						<p>Any element that does not match this css class and that is clicked will trigger a redirection by the OmniboxResultList.</p>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -914,27 +730,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-									:343</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
-						</li>
-					</ul>
+					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+							:343</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -950,12 +754,6 @@
 							:106</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the title to use for this section.</p>
-						</div>
-						<p>Default value is the localized string for <code>Suggested Results</code>.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-header-title&#x3D;&#x27;foo&#x27;</pre>
@@ -972,22 +770,6 @@
 							:99</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies the z-index at which to render the ResultList inside the Omnibox.</p>
-						</div>
-						<p>Default value is <code>51</code>. Minimum value is <code>16</code> (<a href="facet.html">Facet</a> components are at <code>50</code> by default)</p>
-						<dl class="tsd-comment-tags">
-							<dt>Minimum</dt>
-							<dd><p><code>16</code></p>
-							</dd>
-							<dt>Default</dt>
-							<dd><p><code>51</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-omnibox-z-index&#x3D;&#x27;10&#x27;</pre>
@@ -1004,39 +786,6 @@
 							:151</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the function to execute when the user selects a result suggestion.</p>
-						</div>
-						<p>The default function opens the corresponding result URI in the browser.</p>
-						<p>It is only possible to specify a value for this option in the <a href="../globals.html#init">init</a> call of your search interface. You
-						cannot set it directly as an HTML attribute.</p>
-						<p><strong>Example:</strong></p>
-						<pre><code class="lang-javascript"><span class="hljs-comment">// You can call the init script using "pure" JavaScript:</span>
-Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
-   <span class="hljs-attr">OmniboxResultList</span> : {
-       <span class="hljs-comment">//Close the omnibox, change the selected HTMLElement background color and alert the result title.</span>
-       onSelect : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result, resultElement, omniBoxObject</span>) </span>{
-           omniBoxObject.close();
-           resultElement.css(<span class="hljs-string">'background-color'</span>, <span class="hljs-string">'red'</span>);
-           alert(result.title);
-       }
-    }
-})
-
-<span class="hljs-comment">// Or you can call the init script using the jQuery extension:</span>
-$(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"init"</span>, {
-   <span class="hljs-attr">OmniboxResultList</span> : {
-       <span class="hljs-comment">//Close the Omnibox, change the selected HTMLElement background color and alert the result title.</span>
-       onSelect : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result, resultElement, omniBoxObject</span>) </span>{
-           omniBoxObject.close();
-           resultElement.css(<span class="hljs-string">'background-color'</span>, <span class="hljs-string">'red'</span>);
-           alert(result.title);
-       }
-    }
-})
-</code></pre>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1076,12 +825,6 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 							:113</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the override to use on the query sent to the OmniboxResultList component.</p>
-						</div>
-						<p>Default value is <code>undefined</code>, which means no default override is specified.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-query-override&#x3D;&#x27;foo&#x27;</pre>
@@ -1106,37 +849,16 @@ $(<span class="hljs-string">"#search"</span>).coveo(<span class="hljs-string">"i
 									:158</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates a new OmniboxResultList component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IOmniboxResultListOptions</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The options for the OmniboxResultList component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="omniboxresultlist.html" class="tsd-signature-type">OmniboxResultList</a></h4>

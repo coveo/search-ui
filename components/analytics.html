@@ -234,19 +234,6 @@
 					<h1>Coveo Analytics Component (CoveoAnalytics)</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>The <code>Analytics</code> component can log user actions performed in the search interface and send them to a REST web service
-						exposed through the Coveo Cloud Platform.</p>
-					</div>
-					<p>You can use analytics data to evaluate how users are interacting with your search interface, improve relevance and
-					produce analytics dashboards within the Coveo Cloud Platform.</p>
-					<p>See <a href="https://docs.coveo.com/en/347/">Step 7 - Usage Analytics</a> of the Getting Started with the JavaScript
-					Search Framework V1 tutorial for an introduction to usage analytics.</p>
-					<p>See also <a href="https://docs.coveo.com/en/2726/#logging-your-own-search-events">Logging Your Own Search Events</a> for more advanced use cases.</p>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -335,18 +322,6 @@
 									:404</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-deprecated">
-								</dl>
-								<div class="lead">
-									<p>Removes all session information stored in the browser (e.g., analytics visitor cookies, action history, etc.)</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>availablesince</dt>
-									<dd><p><a href="https://docs.coveo.com/en/3084/">October 2019 Release (v2.7219)</a></p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -367,11 +342,6 @@
 									:41</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the debug info about this component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -392,11 +362,6 @@
 									:415</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Disables the component and clears local data by running <a href="analytics.html#clearlocaldata"><code>clearLocalData</code></a>.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -417,11 +382,6 @@
 									:389</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Re-enables the component if it was previously disabled.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -442,11 +402,6 @@
 									:328</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the bindings, or environment, for the current component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -466,51 +421,19 @@
 									:363</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Logs a <code>Click</code> usage analytics event.</p>
-								</div>
-								<p>A <code>Click</code> event corresponds to an item view (e.g., clicking on a <a href="resultlink.html">ResultLink</a> or opening a
-								<a href="quickview.html">Quickview</a>).</p>
-								<p><code>Click</code> events are immediately sent to the Coveo Usage Analytics service.</p>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>When logging custom <code>Click</code> events, you should use the <code>Coveo.logClickEvent</code> top-level function rather than
-										calling this method directly from the <code>Analytics</code> component instance. See
-									<a href="https://docs.coveo.com/en/2726/#logging-your-own-click-events">Logging Your Own Click Events</a>.</p>
-								</blockquote>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>actionCause: <a href="../interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The cause of the event.</p>
-									</div>
 								</li>
 								<li>
 									<h5>meta: <a href="../interfaces/ianalyticsdocumentviewmeta.html" class="tsd-signature-type">IAnalyticsDocumentViewMeta</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
-											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
-											service automatically converts uppercase characters to lowercase characters in key names. Each value must be a
-											simple string. You do not have to pass an <a href="../interfaces/ianalyticsdocumentviewmeta.html">IAnalyticsDocumentViewMeta</a> as meta when logging a <code>Click</code> event.
-											You can actually send any arbitrary meta. If you do not need to log metadata, you can simply pass an empty JSON
-										( <code>{}</code> ).</p>
-									</div>
 								</li>
 								<li>
 									<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The result that was clicked.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> element: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> =&nbsp;this.element</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The HTMLElement that the user has clicked in the interface. Default value is the element on which
-										the <code>Analytics</code> component is bound.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -532,21 +455,6 @@
 									:335</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Logs a <code>Custom</code> usage analytics event on the service.</p>
-								</div>
-								<p>You can use <code>Custom</code> events to create custom reports, or to track events which are neither queries (see
-									<a href="analytics.html#logsearchevent"><code>logSearchEvent</code></a> and
-									<a href="analytics.html#logsearchasyoutype"><code>logSearchAsYouType</code></a>), nor item views (see
-								<a href="analytics.html#logclickevent"><code>logClickEvent</code></a>).</p>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>When logging <code>Custom</code> events, you should use the <code>Coveo.logClickEvent</code> top-level function rather than calling
-										this method directly from the <code>Analytics</code> component instance. See
-									<a href="https://docs.coveo.com/en/2726/#logging-your-own-custom-events">Logging Your Own Custom Events</a>.</p>
-								</blockquote>
-							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -557,32 +465,15 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>actionCause: <a href="../interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The cause of the event.</p>
-									</div>
 								</li>
 								<li>
 									<h5>meta: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
-											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
-											service automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
-											names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
-										( <code>{}</code> ).</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> element: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> =&nbsp;this.element</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The HTMLElement that the user has interacted with for this custom event. Default value is the
-										element on which the <code>Analytics</code> component is bound.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The IQueryResult that the custom event is linked to, if any.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -604,24 +495,6 @@
 									:308</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Logs a <code>SearchAsYouType</code> usage analytics event.</p>
-								</div>
-								<p>This method is very similar to the <a href="analytics.html#logsearchevent"><code>logSearchEvent</code></a> method, except that
-									<code>logSearchAsYouType</code> should, by definition, be called more frequently. Consequently, in order to avoid logging
-									every single partial query, the <code>PendingSearchAsYouTypeEvent</code> takes care of logging only the &quot;relevant&quot; last event:
-									an event that occurs after 5 seconds have elapsed without any event being logged, or an event that occurs after
-								another part of the interface triggers a search event.</p>
-								<p>It is important to call this method <strong>before</strong> executing the query. Otherwise, no <code>SearchAsYouType</code> event will be
-								logged, and you will get a warning message in the console.</p>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>When logging custom <code>SearchAsYouType</code> events, you should use the <code>Coveo.logSearchAsYouTypeEvent</code> top-level
-										function rather than calling this method directly from the <code>Analytics</code> component instance. See
-									<a href="https://docs.coveo.com/en/2726/#logging-your-own-search-events">Logging Your Own Search Events</a>.</p>
-								</blockquote>
-							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -632,19 +505,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>actionCause: <a href="../interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The cause of the event.</p>
-									</div>
 								</li>
 								<li>
 									<h5>meta: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The metadata which you want to use to create custom dimensions. Metadata can contain as many key-value
-											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
-											service automatically converts white spaces to underscores and uppercase characters to lowercase characters in key
-											names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
-										( <code>{}</code> ).</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -666,20 +529,6 @@
 									:279</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Logs a <code>Search</code> usage analytics event.</p>
-								</div>
-								<p>A <code>Search</code> event is actually sent to the Coveo Usage Analytics service only after the query successfully returns
-									(not immediately after calling this method). Therefore, it is important to call this method <strong>before</strong> executing
-								the query. Otherwise, the <code>Search</code> event will not be logged, and you will get a warning message in the console.</p>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>When logging custom <code>Search</code> events, you should use the <code>Coveo.logSearchEvent</code> top-level function rather than
-										calling this method directly from the <code>Analytics</code> component instance. See
-									<a href="https://docs.coveo.com/en/2726/#logging-your-own-search-events">Logging Your Own Search Events</a>.</p>
-								</blockquote>
-							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -690,19 +539,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>actionCause: <a href="../interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The cause of the event.</p>
-									</div>
 								</li>
 								<li>
 									<h5>meta: <span class="tsd-signature-type">T</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
-											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
-											service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
-											names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
-										( <code>{}</code> ).</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -724,21 +563,10 @@
 									:441</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Attempts to push data representing a single Coveo usage analytics event to the Google Tag Manager data layer.</p>
-								</div>
-								<p><strong>Note:</strong>
-								If the <a href="analytics.html#options.autopushtogtmdatalayer"><code>autoPushToGtmDataLayer</code></a> option is set to <code>true</code> and the GTM data layer has been properly initialized in the page, this method is called automatically whenever an event is about to be logged to the Coveo Cloud usage analytics service.</p>
-								<p>See also the <a href="analytics.html#options.gtmdatalayername"><code>gtmDataLayerName</code></a> option.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>data: <a href="../interfaces/ianalyticseventargs.html" class="tsd-signature-type">IAnalyticsEventArgs</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The data to push.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -760,21 +588,10 @@
 									:382</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Sets the Origin Context dimension on the analytic events.</p>
-								</div>
-								<p>You can use this dimension to specify the context of your application.
-								Suggested values are &quot;Search&quot;, &quot;InternalSearch&quot; and &quot;CommunitySearch&quot;</p>
-								<p>Default value is <code>Search</code>.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>originContext: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The origin context value</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -797,31 +614,16 @@
 									:410</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -843,18 +645,6 @@
 							:270</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Allows the component to bind events and execute them only when it is enabled.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{Coveo.ComponentEvents}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component">
 					<a name="client" class="tsd-anchor"></a>
@@ -867,12 +657,6 @@
 							:201</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the <code>AnalyticsClient</code>, which performs the heavy duty part of sending the usage analytics events to
-							the Coveo Usage Analytics service.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -886,11 +670,6 @@
 							:294</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -904,11 +683,6 @@
 							:282</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -922,18 +696,6 @@
 							:23</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{boolean}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -947,11 +709,6 @@
 							:18</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Allows component to log in the dev console.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -965,11 +722,6 @@
 							:286</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the singleton that allows to trigger queries.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -983,11 +735,6 @@
 							:278</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -1001,11 +748,6 @@
 							:274</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -1019,11 +761,6 @@
 							:290</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -1037,12 +774,6 @@
 							:28</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The static ID that each component need to be identified.<br/>
-							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
-						</div>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -1050,27 +781,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-									:343</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
-						</li>
-					</ul>
+					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+							:343</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -1086,23 +805,6 @@
 							:127</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies whether to convert search user identities to unique hash when logging analytics data, so that
-							analytics reviewers and managers will not be able to clearly identify which user is performing which query.</p>
-						</div>
-						<p>When you set this option to <code>true</code>, the Coveo Usage Analytics service can still properly differentiate sessions
-							made by anonymous users from sessions made by users authenticated in some way on the site containing the search
-						page.</p>
-						<p>Default value is <code>false</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>false</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-anonymous&#x3D;&#x27;true&#x27;
@@ -1120,22 +822,6 @@ data-anonymous&#x3D;&#x27;false&#x27;</pre>
 							:182</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether to automatically attempt to push Coveo usage analytics events to the Google Tag Manager <a href="https://developers.google.com/tag-manager/devguide#datalayer">data layer</a>.</p>
-						</div>
-						<p>See also <a href="analytics.html#options.gtmdatalayername"><code>gtmDataLayerName</code></a>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>false</code></p>
-							</dd>
-							<dt>Available since</dt>
-							<dd><p><a href="https://docs.coveo.com/en/2938/">July 2019 Release (v2.6459)</a></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-auto-push-to-gtm-data-layer&#x3D;&#x27;true&#x27;
@@ -1153,13 +839,6 @@ data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
 							:106</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the URL of the Usage Analytics service. You do not have to specify a value for this option, unless
-							the location of the service you use differs from the default Coveo Cloud Usage Analytics endpoint.</p>
-						</div>
-						<p>Default value is <code>https://platform.cloud.coveo.com/rest/ua</code>.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-endpoint&#x3D;&#x27;foo&#x27;</pre>
@@ -1176,22 +855,6 @@ data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
 							:194</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The name of the Google Tag Manager data layer initialized in the page.</p>
-						</div>
-						<p>See also <a href="analytics.html#options.autopushtogtmdatalayer"><code>autoPushToGtmDataLayer</code></a>.</p>
-						<p><strong>Note:</strong>
-						Setting this option is only useful if the <a href="https://developers.google.com/tag-manager/devguide#renaming">GTM data layer was renamed</a> in the page.</p>
-						<p><strong>Default:</strong> <code>dataLayer</code></p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>dataLayer</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-gtm-data-layer-name&#x3D;&#x27;foo&#x27;</pre>
@@ -1208,14 +871,6 @@ data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
 							:173</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the organization bound to the access token. This is necessary when using an access token, because a
-							single access token can be associated to more than one organization.</p>
-						</div>
-						<p>Default value is <code>undefined</code>, and the value of this parameter will fallback to the organization used for the
-						search endpoint.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-organization&#x3D;&#x27;foo&#x27;</pre>
@@ -1232,28 +887,6 @@ data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
 							:143</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Sets the Search Hub dimension on the search events.</p>
-						</div>
-						<p>The Search Hub dimension is typically a name that refers to a specific search page. For example, you could use
-						the <code>CommunitySite</code> value to refer to a search page on a public community site.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>If you wish to use the search hub dimension for security reasons (e.g., to provide different query suggestions
-								for internal and external users), you should specify the search hub when generating the search token for the
-								end user (in safe, server-side code), rather than setting it with this option (see
-							<a href="https://docs.coveo.com/en/56/">Search Token Authentication</a>).</p>
-						</blockquote>
-						<p>Default value is <code>default</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>default</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-search-hub&#x3D;&#x27;foo&#x27;</pre>
@@ -1270,14 +903,6 @@ data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
 							:153</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the name of the split test run that the search page is part of.</p>
-						</div>
-						<p>You can use this dimension to perform A/B testing using different search page layouts and features inside the
-						Coveo Query pipeline.</p>
-						<p>Default value is <code>undefined</code> and no split test run name is reported to the Coveo Usage Analytics service.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-split-test-run-name&#x3D;&#x27;foo&#x27;</pre>
@@ -1294,14 +919,6 @@ data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
 							:163</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the version name for the page when a split test run is active.</p>
-						</div>
-						<p>When reporting on A/B testing analytics data, this value specifies the test run version name that was
-						presented to the user.</p>
-						<p>Default value is <code>undefined</code></p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-split-test-run-version&#x3D;&#x27;foo&#x27;</pre>
@@ -1318,12 +935,6 @@ data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
 							:98</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the token to use to access the usage analytics endpoint.</p>
-						</div>
-						<p>Default value is <code>undefined</code>, and the component uses the search token.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-token&#x3D;&#x27;foo&#x27;</pre>
@@ -1340,12 +951,6 @@ data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
 							:84</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the name of the user for the usage analytics logs.</p>
-						</div>
-						<p>Default value is <code>undefined</code></p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-user&#x3D;&#x27;foo&#x27;</pre>
@@ -1362,12 +967,6 @@ data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
 							:91</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the user display name for the usage analytics logs.</p>
-						</div>
-						<p>Default value is <code>undefined</code></p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-user-display-name&#x3D;&#x27;foo&#x27;</pre>
@@ -1392,37 +991,16 @@ data-auto-push-to-gtm-data-layer&#x3D;&#x27;false&#x27;</pre>
 									:203</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates a new <code>Analytics</code> component. Creates the <a href="../interfaces/ianalyticsclient.html"><code>AnalyticsClient</code></a>.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which the component will be instantiated.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IAnalyticsOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The options for the <code>Analytics</code> component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="analytics.html" class="tsd-signature-type">Analytics</a></h4>

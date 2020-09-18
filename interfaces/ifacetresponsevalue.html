@@ -140,6 +140,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="ifacetresponsevalue.html#endinclusive" class="tsd-kind-icon">end<wbr>Inclusive</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ifacetresponsevalue.html#isleafvalue" class="tsd-kind-icon">is<wbr>Leaf<wbr>Value</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="ifacetresponsevalue.html#label" class="tsd-kind-icon">label</a>
 							</li>
@@ -183,13 +186,6 @@
 					<h1>Interface IFacetResponseValue</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>A [values]{@link IFacetRequest.values} item in a Search API <a href="ifacetrequest.html">facet response</a>.</p>
-					</div>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -203,6 +199,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetresponsevalue.html#children" class="tsd-kind-icon">children</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ifacetresponsevalue.html#end" class="tsd-kind-icon">end</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ifacetresponsevalue.html#endinclusive" class="tsd-kind-icon">end<wbr>Inclusive</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetresponsevalue.html#isleafvalue" class="tsd-kind-icon">is<wbr>Leaf<wbr>Value</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="ifacetresponsevalue.html#label" class="tsd-kind-icon">label</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetresponsevalue.html#morevaluesavailable" class="tsd-kind-icon">more<wbr>Values<wbr>Available</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ifacetresponsevalue.html#numberofresults" class="tsd-kind-icon">number<wbr>OfResults</a></li>
@@ -227,11 +224,6 @@
 							:31</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The children of this hierarchical facet value.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="end" class="tsd-anchor"></a>
@@ -245,18 +237,6 @@
 							:28</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The value to end the range at.</p>
-						</div>
-						<p><strong>Examples:</strong></p>
-						<blockquote>
-							<ul>
-								<li><code>500</code></li>
-								<li><code>2018-12-31T23:59:59.999Z</code></li>
-							</ul>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="endinclusive" class="tsd-anchor"></a>
@@ -270,11 +250,18 @@
 							:42</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether to include the <a href="irangevalue.html#end"><code>end</code></a> value in the range.</p>
-						</div>
-					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="isleafvalue" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> is<wbr>Leaf<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Leaf<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/Facet/FacetResponse.ts#L36">rest/Facet/FacetResponse.ts
+							:36</a></li>
+						</ul>
+					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="label" class="tsd-anchor"></a>
@@ -288,18 +275,6 @@
 							:37</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The label to associate with the range value.</p>
-						</div>
-						<p><strong>Examples:</strong></p>
-						<blockquote>
-							<ul>
-								<li><code>0 - 500</code></li>
-								<li><code>In 2018</code></li>
-							</ul>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="morevaluesavailable" class="tsd-anchor"></a>
@@ -312,11 +287,6 @@
 							:26</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether additional values are available for the facet.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="numberofresults" class="tsd-anchor"></a>
@@ -329,11 +299,6 @@
 							:21</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The number of query result items matching the facet value.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="start" class="tsd-anchor"></a>
@@ -347,18 +312,6 @@
 							:19</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The value to start the range at.</p>
-						</div>
-						<p><strong>Examples:</strong></p>
-						<blockquote>
-							<ul>
-								<li><code>0</code></li>
-								<li><code>2018-01-01T00:00:00.000Z</code></li>
-							</ul>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="state" class="tsd-anchor"></a>
@@ -371,11 +324,6 @@
 							:16</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The facet value state to display in the search interface.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="value" class="tsd-anchor"></a>
@@ -388,11 +336,6 @@
 							:11</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The facet value name.</p>
-						</div>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

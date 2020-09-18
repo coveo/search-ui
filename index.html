@@ -1056,11 +1056,10 @@
 			<div class="tsd-panel tsd-typography">
 				<h1 id="search-ui-build-status-coverage-status-codefactor-typescript">Search UI <a href="https://travis-ci.org/coveo/search-ui"><img src="https://travis-ci.org/coveo/search-ui.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/coveo/search-ui?branch=master"><img src="https://coveralls.io/repos/github/coveo/search-ui/badge.svg?branch=master" alt="Coverage Status"></a> <a href="https://www.codefactor.io/repository/github/coveo/search-ui"><img src="https://www.codefactor.io/repository/github/coveo/search-ui/badge" alt="CodeFactor"></a> <a href="https://github.com/ellerbrock/typescript-badges/"><img src="https://badges.frapsoft.com/typescript/code/typescript.svg?v=101" alt="TypeScript"></a></h1>
 				<p>Coveo JavaScript Search UI Framework</p>
-				<p><img id='readme-image' src='https://raw.githubusercontent.com/coveo/search-ui/master/readme.png' /></p>
+				<img id='readme-image' src='https://raw.githubusercontent.com/coveo/search-ui/master/readme.png' />
 				<h2 id="installation">Installation</h2>
 				<p>You should install the Coveo JavaScript Search UI Framework as an npm package:</p>
-				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--save coveo-search-ui</span>
-</code></pre><p>All resources will be available under <code>node_modules/coveo-search-ui/bin</code>. You can include those in your pages with <code>&lt;script&gt;</code> tags. This will make the variable <code>Coveo</code> globally available in your page.</p>
+				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--save coveo-search-ui</span></code></pre><p>All resources will be available under <code>node_modules/coveo-search-ui/bin</code>. You can include those in your pages with <code>&lt;script&gt;</code> tags. This will make the variable <code>Coveo</code> globally available in your page.</p>
 				<p>If you are using a module bundler (Browserify, Webpack, rollup, etc.), you can use <code>require(&#39;coveo-search-ui&#39;)</code> or <code>import * as Coveo from &#39;coveo-search-ui&#39;</code>.</p>
 				<p>Alternatively, you can download the Coveo JavaScript Search UI Framework (see <a href="https://docs.coveo.com/en/319/javascript-search-framework/downloading-the-javascript-search-framework">Downloading the JavaScript Search Framework</a>).</p>
 				<h2 id="including-the-resources-from-a-cdn">Including the Resources from a CDN</h2>
@@ -1084,8 +1083,7 @@
 
   [ ... ]
 
- <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
-</code></pre></blockquote>
+ <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></code></pre></blockquote>
 				<h2 id="basic-usage">Basic Usage</h2>
 				<pre><code><span class="hljs-comment">&lt;!-- Include the library scripts. --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"js/CoveoJsSearch.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
@@ -1115,8 +1113,7 @@
         <span class="hljs-comment">// It does not have to be the document body.</span>
         Coveo.init(<span class="hljs-built_in">document</span>.body);
     </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
-</code></pre><p>You can find more examples of fully configured pages in the <code>./pages</code> folder.</p>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></code></pre><p>You can find more examples of fully configured pages in the <code>./pages</code> folder.</p>
 				<p>A tutorial is available to help you get started (see
 				<a href="https://docs.coveo.com/en/361/">Coveo JavaScript Search UI Framework Getting Started Tutorial</a>).</p>
 				<h2 id="build">Build</h2>
@@ -1124,8 +1121,7 @@
 				<pre><code>npm <span class="hljs-keyword">install</span> -g yarn
 yarn <span class="hljs-keyword">global</span> <span class="hljs-keyword">add</span> gulp
 yarn <span class="hljs-keyword">install</span>
-gulp
-</code></pre><h2 id="important-gulp-tasks">Important Gulp Tasks</h2>
+gulp</code></pre><h2 id="important-gulp-tasks">Important Gulp Tasks</h2>
 				<ul>
 					<li><code>gulp default</code>: Builds the entire project (CSS, templates, TypeScript, etc.)</li>
 					<li><code>gulp compile</code>: Builds only the TypeScript code and generates its output in the <code>./bin</code> folder.</li>
@@ -1136,8 +1132,7 @@ gulp
 				</ul>
 				<h2 id="dev-server">Dev Server</h2>
 				<p>Make sure you were able to run <code>gulp</code> entirely without any errors first. Then you can start the dev-server:</p>
-				<pre><code><span class="hljs-attribute">gulp dev</span>
-</code></pre><p>This will start a webpack-dev-server instance (see
+				<pre><code><span class="hljs-attribute">gulp dev</span></code></pre><p>This will start a webpack-dev-server instance (see
 				<a href="https://webpack.github.io/docs/webpack-dev-server.html">Webpack Dev Server</a>).</p>
 				<p>You can now load <a href="http://localhost:8080/index.html">http://localhost:8080/index.html</a> in a web browser.</p>
 				<p>Any time you hit <strong>Save</strong> in a source file, the bundle will be recompiled and the dev page will reload.</p>
@@ -1146,8 +1141,7 @@ gulp
 					breaking anything. However, if you feel like you have a good reason to modify the original <code>index.html</code>, feel free to
 				do so.</p>
 				<p>You might need to assign more memory to Webpack if you see errors about <code>heap out of memory</code>. To do so, use this command :</p>
-				<pre><code><span class="hljs-keyword">node</span> <span class="hljs-title">--max_old_space_size</span>=<span class="hljs-number">8192</span> ./node_modules/gulp/bin/gulp.js dev;
-</code></pre><h3 id="tests">Tests</h3>
+				<pre><code><span class="hljs-keyword">node</span> <span class="hljs-title">--max_old_space_size</span>=<span class="hljs-number">8192</span> ./node_modules/gulp/bin/gulp.js dev;</code></pre><h3 id="tests">Tests</h3>
 				<p>Tests are written using <a href="http://jasmine.github.io/2.4/introduction.html">Jasmine</a>. You can use <code>npm run test</code> to run
 				the tests in Chrome Headless.</p>
 				<p>If you wish to write new unit tests, you can do so by starting a new webpack-dev-server instance.</p>
