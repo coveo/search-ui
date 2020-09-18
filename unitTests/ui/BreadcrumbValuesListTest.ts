@@ -132,7 +132,7 @@ export function BreadcrumbValueListTest() {
         expect($$(captions[2]).text()).toContain('foo2');
       });
 
-      it('should display a label with the right attributes for each excluded values', () => {
+      it('should display a label with the right accessibility attributes for each excluded values', () => {
         const built = new BreadcrumbValueList(facet, facetValues, BreadcrumbValueElement).build();
         const values = $$(built).findAll('.coveo-facet-breadcrumb-value')[2];
         expect($$(values).getAttribute('aria-label')).toBe('Remove exclusion filter on foo2');
