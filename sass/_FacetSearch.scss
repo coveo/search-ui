@@ -6,7 +6,7 @@
   position: absolute;
   left: $facet-value-padding;
   right: $facet-value-padding;
-  @include defaultRoundedBorder();
+  @include defaultRoundedLowContrastBorder();
   background-color: white;
   list-style: none;
   margin: 0 0 3px;
@@ -102,7 +102,7 @@
 }
 
 .coveo-facet-search {
-  @include defaultRoundedBorder();
+  @include defaultRoundedLowContrastBorder();
   position: relative;
   background: white;
   display: none;
