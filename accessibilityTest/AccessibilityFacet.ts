@@ -66,6 +66,11 @@ export const AccessibilityFacet = () => {
         done();
       });
 
+      it('should have good contrast on the facet itself', () => {
+        const borderContrast = ContrastChecker.getContrastWithBackground(facetElement.el, 'borderBottomColor');
+        expect(borderContrast).toBeGreaterThan(ContrastChecker.MinimumContrastRatio);
+      });
+
       it('should have good contrast on exclude buttons', () => {
         const borderContrast = ContrastChecker.getContrastWithBackground(getExcludeIcon(), 'borderBottomColor');
         expect(borderContrast).toBeGreaterThan(ContrastChecker.MinimumContrastRatio);
@@ -87,6 +92,18 @@ export const AccessibilityFacet = () => {
           const axeResults = await axe.run(getRoot());
           expect(axeResults).toBeAccessible();
           done();
+        });
+
+        it("should have a conformant contrast ratio on FacetSearch's border", () => {
+          expect(ContrastChecker.getContrastWithBackground(facet.facetSearch.search, 'borderBottomColor')).not.toBeLessThan(
+            ContrastChecker.MinimumContrastRatio
+          );
+        });
+
+        it("should have a conformant contrast ratio on the facet search results' border", () => {
+          expect(ContrastChecker.getContrastWithBackground(facet.facetSearch.searchResults, 'borderBottomColor')).not.toBeLessThan(
+            ContrastChecker.MinimumContrastRatio
+          );
         });
 
         it('should still be accessible when search has been dismissed', async done => {

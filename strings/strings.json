@@ -754,8 +754,8 @@
     "zh-tw": "切換到 {0}"
   },
   "Unexclude": {
-    "en": "Unexclude {0}",
-    "fr": "Réinclure {0}",
+    "en": "Remove exclusion filter on {0}",
+    "fr": "Enlever le filtre d'exclusion sur {0}",
     "cs": "Znovu zahrnout {0}",
     "da": "Udeluk ikke {0}",
     "de": "Ausschluss von {0} aufheben",
@@ -7403,8 +7403,8 @@
     "fr": "Filtrer sur {0}"
   },
   "RemoveFilterOn": {
-    "en": "Remove filter on {0}",
-    "fr": "Enlever le filtre sur {0}"
+    "en": "Remove inclusion filter on {0}",
+    "fr": "Enlever le filtre d'inclusion sur {0}"
   },
   "Enter": {
     "en": "Enter",

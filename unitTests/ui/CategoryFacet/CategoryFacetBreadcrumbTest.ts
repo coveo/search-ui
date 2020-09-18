@@ -50,7 +50,7 @@ export function CategoryFacetBreadcrumbTest() {
       it('has the right accessibility attributes', () => {
         const breadcrumb = buildCategoryFacetBreadcrumb();
         const breadcrumbValues = $$(breadcrumb).find('.coveo-category-facet-breadcrumb-values');
-        expect(breadcrumbValues.getAttribute('aria-label')).toBe('Remove filter on path_one/path_two');
+        expect(breadcrumbValues.getAttribute('aria-label')).toBe('Remove inclusion filter on path_one/path_two');
         expect(breadcrumbValues.getAttribute('role')).toBe('button');
         expect(breadcrumbValues.getAttribute('tabindex')).toBe('0');
       });
