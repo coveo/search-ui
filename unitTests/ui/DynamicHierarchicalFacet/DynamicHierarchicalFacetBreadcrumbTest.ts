@@ -71,5 +71,9 @@ export function DynamicHierarchicalFacetBreadcrumbTest() {
       $$(valueElement()).trigger('click');
       expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.breadcrumbFacet);
     });
+
+    it('should have the correct aria-label for a selected value', () => {
+      expect(valueElement().getAttribute('aria-label')).toBe('Remove inclusion filter on test / allo');
+    });
   });
 }

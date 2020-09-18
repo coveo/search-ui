@@ -46,7 +46,7 @@ export function BreadcrumbValueListTest() {
       const built = new BreadcrumbValueList(facet, facetValues, BreadcrumbValueElement).build();
       const values = $$(built).findAll('.coveo-facet-breadcrumb-value');
       expect(values.length).toBe(3);
-      expect($$(values[0]).getAttribute('aria-label')).toBe('Remove filter on foo0');
+      expect($$(values[0]).getAttribute('aria-label')).toBe('Remove inclusion filter on foo0');
       expect($$(values[0]).getAttribute('role')).toBe('button');
       expect($$(values[0]).getAttribute('tabindex')).toBe('0');
     });
@@ -130,6 +130,14 @@ export function BreadcrumbValueListTest() {
         expect($$(captions[0]).text()).toContain('foo0');
         expect($$(captions[1]).text()).toContain('foo1');
         expect($$(captions[2]).text()).toContain('foo2');
+      });
+
+      it('should display a label with the right accessibility attributes for each excluded values', () => {
+        const built = new BreadcrumbValueList(facet, facetValues, BreadcrumbValueElement).build();
+        const values = $$(built).findAll('.coveo-facet-breadcrumb-value')[2];
+        expect($$(values).getAttribute('aria-label')).toBe('Remove exclusion filter on foo2');
+        expect($$(values).getAttribute('role')).toBe('button');
+        expect($$(values).getAttribute('tabindex')).toBe('0');
       });
     });
   });
