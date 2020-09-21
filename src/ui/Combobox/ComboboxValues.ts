@@ -54,11 +54,22 @@ export class ComboboxValues implements IComboboxValues {
         { id: `${this.combobox.id}-value-${index}`, className: 'coveo-combobox-value', role: 'option', tabindex: 0 },
         value.element
       ).el;
+      this.highlightCurrentQueryInSearchResults(value.element);
       value.element = elementWrapper;
       fragment.appendChild(value.element);
     });
 
     this.element.appendChild(fragment);
+  }
+
+  private highlightCurrentQueryInSearchResults(searchResult: HTMLElement) {
+    if (this.combobox.options.highlightValueClassName) {
+      let regex = new RegExp('(' + this.combobox.element.querySelector('input').value + ')', 'ig');
+      let result = $$(searchResult).find(`.${this.combobox.options.highlightValueClassName}`);
+      result.innerHTML = $$(result)
+        .text()
+        .replace(regex, '<span class="coveo-highlight">$1</span>');
+    }
   }
 
   public hasValues() {

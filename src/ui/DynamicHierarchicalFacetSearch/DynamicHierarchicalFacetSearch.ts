@@ -35,7 +35,8 @@ export class DynamicHierarchicalFacetSearch {
         requestMoreValues: () => this.hierarchicalFacetSearchController.fetchMoreResults(),
         areMoreValuesAvailable: () => this.hierarchicalFacetSearchController.moreValuesAvailable,
         maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-hierarchical-facet-values').clientHeight
-      }
+      },
+      highlightValueClassName: 'coveo-dynamic-hierarchical-facet-search-value-label'
     });
 
     return this.combobox.element;
@@ -56,7 +57,6 @@ export class DynamicHierarchicalFacetSearch {
         },
         this.facet
       );
-      this.highlightCurrentQueryInSearchResults(facetValue.renderedElement);
       return {
         value: facetValue,
         element: facetValue.renderedElement
@@ -66,13 +66,5 @@ export class DynamicHierarchicalFacetSearch {
 
   private onSelectValue({ value }: IComboboxValue) {
     (<DynamicHierarchicalFacetSearchValueRenderer>value.renderer).selectAction();
-  }
-
-  private highlightCurrentQueryInSearchResults(searchResult: HTMLElement) {
-    let regex = new RegExp('(' + this.combobox.element.querySelector('input').value + ')', 'ig');
-    let result = $$(searchResult).find('.coveo-dynamic-hierarchical-facet-search-value-label');
-    result.innerHTML = $$(result)
-      .text()
-      .replace(regex, '<span class="coveo-highlight">$1</span>');
   }
 }
