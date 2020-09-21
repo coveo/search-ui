@@ -56,7 +56,7 @@ export class DynamicFacetSearch {
         this.facet,
         DynamicFacetSearchValueRenderer
       );
-
+      this.highlightCurrentQueryInSearchResults(facetValue.renderedElement);
       return {
         value: facetValue,
         element: facetValue.renderedElement
@@ -66,5 +66,13 @@ export class DynamicFacetSearch {
 
   private onSelectValue({ value }: IComboboxValue) {
     (<DynamicFacetSearchValueRenderer>value.renderer).selectAction();
+  }
+
+  private highlightCurrentQueryInSearchResults(searchResult: HTMLElement) {
+    let regex = new RegExp('(' + this.combobox.element.querySelector('input').value + ')', 'ig');
+    let result = $$(searchResult).find('.coveo-checkbox-span-label');
+    result.innerHTML = $$(result)
+      .text()
+      .replace(regex, '<span class="coveo-highlight">$1</span>');
   }
 }
