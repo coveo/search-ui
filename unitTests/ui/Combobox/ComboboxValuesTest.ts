@@ -8,7 +8,7 @@ function createValuesFromResponse(response: string[]) {
   return response.map(value => {
     return {
       value,
-      element: $$('div', {}, $$('li', { class: 'coveo-checkbox-span-label' }, value).el).el
+      element: $$('li', { class: 'coveo-checkbox-span-label' }, value).el
     };
   });
 }
@@ -119,13 +119,30 @@ export function ComboboxValuesTest() {
         getChildren().forEach(valueElement => expect(valueElement.tabIndex).toEqual(0));
       });
 
-      it('should highlight text that matches the input value', () => {
+      it('should highlight text that matches the input value when the parent has the right class', () => {
         combobox.element.querySelector('input').value = 'e';
-        triggerRenderFromResponse(['hi', 'hello']);
-        expect($$(comboboxValues.element).findAll('.coveo-checkbox-span-label')[0].innerHTML).toBe('hi');
-        expect($$(comboboxValues.element).findAll('.coveo-checkbox-span-label')[1].innerHTML).toBe(
-          'h<span class="coveo-highlight">e</span>llo'
-        );
+        triggerRenderFromResponse(['hello']);
+        const element = $$(comboboxValues.element).findAll('.coveo-checkbox-span-label')[0];
+        expect(element.innerHTML).toBe('h<span class="coveo-highlight">e</span>llo');
+      });
+
+      it('should highlight text that matches the input value when a child has the right class', () => {
+        const createValuesFromResponseWithWrapper = (response: string[]) => {
+          return response.map(value => {
+            return {
+              value,
+              element: $$('div', {}, $$('li', { class: 'coveo-checkbox-span-label' }, value).el).el
+            };
+          });
+        };
+        initializeComponent({
+          highlightValueClassName: 'coveo-checkbox-span-label',
+          createValuesFromResponse: createValuesFromResponseWithWrapper
+        });
+        combobox.element.querySelector('input').value = 'e';
+        triggerRenderFromResponse(['hello']);
+        const element = $$(comboboxValues.element).findAll('.coveo-checkbox-span-label')[0];
+        expect(element.innerHTML).toBe('h<span class="coveo-highlight">e</span>llo');
       });
 
       describe('when a value is clicked', () => {
