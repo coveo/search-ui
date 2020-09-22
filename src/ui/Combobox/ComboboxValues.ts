@@ -66,9 +66,11 @@ export class ComboboxValues implements IComboboxValues {
     if (this.combobox.options.highlightValueClassName) {
       let regex = new RegExp('(' + this.combobox.element.querySelector('input').value + ')', 'ig');
       let result = $$(searchResult).find(`.${this.combobox.options.highlightValueClassName}`);
-      result.innerHTML = $$(result)
-        .text()
-        .replace(regex, '<span class="coveo-highlight">$1</span>');
+      if (result) {
+        result.innerHTML = $$(result)
+          .text()
+          .replace(regex, '<span class="coveo-highlight">$1</span>');
+      }
     }
   }
 

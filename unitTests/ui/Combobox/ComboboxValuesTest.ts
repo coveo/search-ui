@@ -8,7 +8,7 @@ function createValuesFromResponse(response: string[]) {
   return response.map(value => {
     return {
       value,
-      element: $$('li', {}, value).el
+      element: $$('div', {}, $$('li', { class: 'coveo-checkbox-span-label' }, value).el).el
     };
   });
 }
@@ -20,7 +20,7 @@ export function ComboboxValuesTest() {
     let response: string[];
 
     beforeEach(() => {
-      initializeComponent();
+      initializeComponent({ highlightValueClassName: 'coveo-checkbox-span-label' });
     });
 
     function mockComboboxValuesFocusFunction() {
@@ -117,6 +117,15 @@ export function ComboboxValuesTest() {
 
       it('should add a tabindex to every value', () => {
         getChildren().forEach(valueElement => expect(valueElement.tabIndex).toEqual(0));
+      });
+
+      it('should highlight text that matches the input value', () => {
+        combobox.element.querySelector('input').value = 'e';
+        triggerRenderFromResponse(['hi', 'hello']);
+        expect($$(comboboxValues.element).findAll('.coveo-checkbox-span-label')[0].innerHTML).toBe('hi');
+        expect($$(comboboxValues.element).findAll('.coveo-checkbox-span-label')[1].innerHTML).toBe(
+          'h<span class="coveo-highlight">e</span>llo'
+        );
       });
 
       describe('when a value is clicked', () => {
