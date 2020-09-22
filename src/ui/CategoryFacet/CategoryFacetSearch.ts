@@ -193,6 +193,11 @@ export class CategoryFacetSearch implements IFacetSearch {
       this.facetSearchElement.appendToSearchResults(searchResult.el);
     }
     this.highlightCurrentQueryWithinSearchResults();
+    this.facetSearchElement.updateAriaLiveWithResults(
+      this.facetSearchElement.input.value,
+      this.currentlyDisplayedResults.length,
+      this.moreValuesToFetch
+    );
   }
 
   private getFormattedCount(count: number) {

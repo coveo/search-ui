@@ -754,8 +754,8 @@
     "zh-tw": "切換到 {0}"
   },
   "Unexclude": {
-    "en": "Unexclude {0}",
-    "fr": "Réinclure {0}",
+    "en": "Remove exclusion filter on {0}",
+    "fr": "Enlever le filtre d'exclusion sur {0}",
     "cs": "Znovu zahrnout {0}",
     "da": "Udeluk ikke {0}",
     "de": "Ausschluss von {0} aufheben",
@@ -1577,6 +1577,11 @@
     "tr": "{0} için sonuç yok",
     "zh-cn": "没有找到与 {0} 相关的结果",
     "zh-tw": "沒有找到與 {0} 相關的結果"
+  },
+  "noResult": {
+    "en": "No results",
+    "fr": "Aucun résultat",
+    "es-es": "No hay resultados"
   },
   "autoCorrectedQueryTo": {
     "en": "Query was automatically corrected to {0}",
@@ -7398,8 +7403,8 @@
     "fr": "Filtrer sur {0}"
   },
   "RemoveFilterOn": {
-    "en": "Remove filter on {0}",
-    "fr": "Enlever le filtre sur {0}"
+    "en": "Remove inclusion filter on {0}",
+    "fr": "Enlever le filtre d'inclusion sur {0}"
   },
   "Enter": {
     "en": "Enter",
@@ -7521,6 +7526,10 @@
   "HierarchicalFacetValuePathPrefix": {
     "en": "in",
     "fr": "dans"
+  },
+  "MoreValuesAvailable": {
+    "en": "additional values are available",
+    "fr": "des valeurs additionnelles sont disponibles"
   },
   "Breadcrumb": {
     "en": "Active filters",

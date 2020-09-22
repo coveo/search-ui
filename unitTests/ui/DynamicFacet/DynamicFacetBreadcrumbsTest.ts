@@ -5,6 +5,7 @@ import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
 import { IDynamicFacetOptions, IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/IDynamicFacet';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import * as _ from 'underscore';
 
 export function DynamicFacetBreadcrumbsTest() {
   describe('DynamicFacetBreadcrumbs', () => {
@@ -61,6 +62,12 @@ export function DynamicFacetBreadcrumbsTest() {
 
     it('should not create a "collapsed breadcrumbs" element allowing to show more values', () => {
       expect(collapseElement()).toBeFalsy();
+    });
+
+    it('should have the correct aria-label for every selected value', () => {
+      _.each(valueElements(), (breadcrumb, index) => {
+        expect(breadcrumb.getAttribute('aria-label')).toBe(`Remove inclusion filter on fake value ${index}`);
+      });
     });
 
     describe('when the breadcrumb has more values than the numberOfValuesInBreadcrumb option', () => {

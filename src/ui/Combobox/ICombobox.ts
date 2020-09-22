@@ -11,7 +11,6 @@ export interface IComboboxOptions {
   createValuesFromResponse: (response: any) => IComboboxValue[];
   onSelectValue: (value: IComboboxValue) => void;
   ariaLive: IAriaLive;
-  noValuesFoundLabel?: string;
   placeholderText?: string;
   wrapperClassName?: string;
   clearOnBlur?: boolean;
@@ -31,7 +30,7 @@ export interface ICombobox {
   onInputChange(value: string): void;
   onInputBlur(): void;
   updateAccessibilityAttributes(attributes: IComboboxAccessibilityAttributes): void;
-  updateAriaLive(value: string): void;
+  updateAriaLive(): void;
   onScrollEndReached(): void;
 }
 
@@ -39,6 +38,8 @@ export interface IComboboxValues {
   element: HTMLElement;
   mouseIsOverValue: boolean;
   isRenderingNewValues: boolean;
+  numberOfValues: number;
+  hasValues(): boolean;
   renderFromResponse(response: any): void;
   clearValues(): void;
   selectActiveValue(): void;

@@ -13,7 +13,7 @@ export enum ArrowDirection {
 
 export class AccessibleButton {
   private element: Dom;
-  private hasLabel = true;
+  private labelOrTitleRequired = true;
   private label: string;
   private title: string;
   private role: string;
@@ -52,8 +52,8 @@ export class AccessibleButton {
     return this;
   }
 
-  public withoutLabel() {
-    this.hasLabel = false;
+  public withoutLabelOrTitle() {
+    this.labelOrTitleRequired = false;
     return this;
   }
 
@@ -126,8 +126,7 @@ export class AccessibleButton {
     }
 
     this.ensureCorrectRole();
-    this.ensureCorrectLabel();
-    this.ensureTitle();
+    this.ensureCorrectLabelOrTitle();
     this.ensureSelectAction();
     this.ensureUnselectAction();
     this.ensureMouseenterAndFocusAction();
@@ -154,19 +153,22 @@ export class AccessibleButton {
     }
   }
 
-  private ensureCorrectLabel() {
-    if (!this.hasLabel) {
+  private ensureCorrectLabelOrTitle() {
+    if (!this.labelOrTitleRequired) {
       return;
     }
-    if (!this.label) {
-      this.logger.error(`Missing label to create an accessible button !`);
-      return;
-    }
-    this.element.setAttribute('aria-label', this.label);
-  }
 
-  private ensureTitle() {
-    this.title && this.element.setAttribute('title', this.title);
+    if (!this.label && !this.title) {
+      this.logger.error(`Missing a label or title to create an accessible button!`);
+      return;
+    }
+
+    if (this.title) {
+      this.element.setAttribute('title', this.title);
+      return;
+    }
+
+    this.element.setAttribute('aria-label', this.label);
   }
 
   private ensureTabIndex() {

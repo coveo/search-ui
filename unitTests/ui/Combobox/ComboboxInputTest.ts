@@ -34,6 +34,11 @@ export function ComboboxInputTest() {
       expect(getInput()).toBeTruthy();
     });
 
+    it('value getter should return the input value', () => {
+      simulateInputChange('hello');
+      expect(comboboxInput.value).toBe('hello');
+    });
+
     it(`when triggering change on the input
     should call the "onInputChange" method of the combobox`, () => {
       const value = 'test';

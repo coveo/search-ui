@@ -17,7 +17,6 @@ export class Combobox implements ICombobox {
   private waitAnimationElement: HTMLElement;
   private defaultOptions: Partial<IComboboxOptions> = {
     wrapperClassName: '',
-    noValuesFoundLabel: l('NoValuesFound'),
     clearOnBlur: false
   };
   private throttlingDelay = 600;
@@ -108,7 +107,17 @@ export class Combobox implements ICombobox {
     this.input.updateAccessibilityAttributes(attributes);
   }
 
-  public updateAriaLive(text: string) {
+  public updateAriaLive() {
+    if (!this.values.hasValues()) {
+      this.options.ariaLive.updateText(l('NoValuesFound'));
+      return;
+    }
+
+    let text = l('ShowingResultsWithQuery', this.values.numberOfValues, this.input.value, this.values.numberOfValues);
+    if (this.options.scrollable && this.options.scrollable.areMoreValuesAvailable()) {
+      text = `${text} (${l('MoreValuesAvailable')})`;
+    }
+
     this.options.ariaLive.updateText(text);
   }
 

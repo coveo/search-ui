@@ -1,4 +1,4 @@
-import { $$ } from '../../../src/Core';
+import { $$, l } from '../../../src/Core';
 import { Combobox } from '../../../src/ui/Combobox/Combobox';
 import { IComboboxOptions } from '../../../src/ui/Combobox/ICombobox';
 import { mockSearchInterface } from '../../MockEnvironment';
@@ -37,7 +37,7 @@ export function ComboboxTest() {
     }
 
     function getInput() {
-      return $$(combobox.element).find('input');
+      return $$(combobox.element).find('input') as HTMLInputElement;
     }
 
     function getValues() {
@@ -188,12 +188,41 @@ export function ComboboxTest() {
       });
     });
 
-    it(`when calling updateAriaLive
-    should call updateText on the searchInterface's ariaLive component`, () => {
-      spyOn(combobox.options.ariaLive, 'updateText');
-      const text = 'test';
-      combobox.updateAriaLive(text);
-      expect(combobox.options.ariaLive.updateText).toHaveBeenCalledWith(text);
+    describe('when calling updateAriaLive', () => {
+      beforeEach(() => {
+        spyOn(combobox.options.ariaLive, 'updateText');
+        getInput().value = 'query';
+      });
+
+      it(`when there are no results
+      should update the AriaLive component with "No Values found."`, () => {
+        combobox.updateAriaLive();
+        expect(combobox.options.ariaLive.updateText).toHaveBeenCalledWith(l('NoValuesFound'));
+      });
+
+      it(`when there are results
+      when there is no more values available
+      should update the AriaLive component with "{X} result(s) for {query}"`, () => {
+        spyOn(combobox.values, 'hasValues').and.returnValue(true);
+        spyOn(combobox.options.scrollable, 'areMoreValuesAvailable').and.returnValue(false);
+        combobox.updateAriaLive();
+        expect(combobox.options.ariaLive.updateText).toHaveBeenCalledWith(
+          l('ShowingResultsWithQuery', combobox.values.numberOfValues, 'query', combobox.values.numberOfValues)
+        );
+      });
+
+      it(`when there are results
+      when there are more values available
+      should update the AriaLive component with "{X} result(s) for {query}. (more values are available)"`, () => {
+        spyOn(combobox.values, 'hasValues').and.returnValue(true);
+        spyOn(combobox.options.scrollable, 'areMoreValuesAvailable').and.returnValue(true);
+        combobox.updateAriaLive();
+        expect(combobox.options.ariaLive.updateText).toHaveBeenCalledWith(
+          `${l('ShowingResultsWithQuery', combobox.values.numberOfValues, 'query', combobox.values.numberOfValues)} (${l(
+            'MoreValuesAvailable'
+          )})`
+        );
+      });
     });
   });
 }

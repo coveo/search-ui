@@ -1,6 +1,7 @@
 import { ICombobox, IComboboxValues, IComboboxValue } from './ICombobox';
 import { $$ } from '../../utils/Dom';
 import { find } from 'underscore';
+import { l } from '../../strings/Strings';
 
 export class ComboboxValues implements IComboboxValues {
   public element: HTMLElement;
@@ -29,6 +30,7 @@ export class ComboboxValues implements IComboboxValues {
     this.clearValues();
     this.values = this.combobox.options.createValuesFromResponse(response);
     this.render();
+    this.combobox.updateAriaLive();
     this.isRenderingNewValues = false;
   }
 
@@ -59,23 +61,25 @@ export class ComboboxValues implements IComboboxValues {
     this.element.appendChild(fragment);
   }
 
-  private hasValues() {
-    return !!this.values.length;
+  public hasValues() {
+    return !!this.numberOfValues;
+  }
+
+  public get numberOfValues() {
+    return this.values.length;
   }
 
   private renderNoValuesFound() {
-    const label = this.combobox.options.noValuesFoundLabel;
     const noValuesFoundElement = $$(
       'li',
       {
         role: 'option',
         className: 'coveo-combobox-value-not-found'
       },
-      label
+      l('NoValuesFound')
     ).el;
 
     this.element.appendChild(noValuesFoundElement);
-    this.combobox.updateAriaLive(label);
   }
 
   private addEventListeners() {
@@ -208,7 +212,7 @@ export class ComboboxValues implements IComboboxValues {
       return this.firstValue;
     }
 
-    const nextValueIndex = (this.values.indexOf(this.keyboardActiveValue) + 1) % this.values.length;
+    const nextValueIndex = (this.values.indexOf(this.keyboardActiveValue) + 1) % this.numberOfValues;
     return this.values[nextValueIndex];
   }
 
@@ -222,11 +226,11 @@ export class ComboboxValues implements IComboboxValues {
     }
 
     const previousValueIndex = this.values.indexOf(this.keyboardActiveValue) - 1;
-    return previousValueIndex >= 0 ? this.values[previousValueIndex] : this.values[this.values.length - 1];
+    return previousValueIndex >= 0 ? this.values[previousValueIndex] : this.values[this.numberOfValues - 1];
   }
 
   private get lastValue() {
-    const lastValueIndex = this.values.length - 1;
+    const lastValueIndex = this.numberOfValues - 1;
     return this.values[lastValueIndex];
   }
 
