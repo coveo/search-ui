@@ -27,12 +27,12 @@ before_install:
   - export HAS_RELEASE_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
   - export IS_ON_FEATURE_BRANCH=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
   - export IS_NIGHTLY=$([[ $HAS_BETA_TAG = true && $TRAVIS_EVENT_TYPE = cron ]] && echo true || echo false)
-  - "echo 'SOURCE_BRANCH: $SOURCE_BRANCH'"
-  - "echo 'IS_FORKED_PULL_REQUEST: $IS_FORKED_PULL_REQUEST'"
-  - "echo 'HAS_BETA_TAG: $HAS_BETA_TAG'"
-  - "echo 'HAS_RELEASE_TAG: $HAS_RELEASE_TAG'"
-  - "echo 'IS_ON_FEATURE_BRANCH: $IS_ON_FEATURE_BRANCH'"
-  - "echo 'IS_NIGHTLY: $IS_NIGHTLY'"
+  - echo $SOURCE_BRANCH
+  - echo $IS_FORKED_PULL_REQUEST
+  - echo $HAS_BETA_TAG
+  - echo $HAS_RELEASE_TAG
+  - echo $IS_ON_FEATURE_BRANCH
+  - echo $IS_NIGHTLY
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
