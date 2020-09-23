@@ -110,7 +110,7 @@ $arrow-svg-dimensions: 11px;
 .coveo-dynamic-hierarchical-facet-value-arrow-left {
   position: absolute;
   left: 2px;
-  top: 0px;
+  top: 0;
   svg {
     transform: rotate(90deg);
   }
