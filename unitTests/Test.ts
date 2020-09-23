@@ -848,3 +848,9 @@ FileTypesTest();
 
 import { FacetSearchElementTest } from './ui/FacetSearchElementTest';
 FacetSearchElementTest();
+
+describe('Fail', () => {
+  it('should fail', () => {
+    expect(true).toBeFalsy();
+  });
+});
