@@ -66,7 +66,7 @@ export class ComboboxValues implements IComboboxValues {
   private highlightCurrentQueryInSearchResults(searchResult: HTMLElement) {
     if (this.combobox.options.highlightValueClassName) {
       const regex = new RegExp('(' + this.combobox.element.querySelector('input').value + ')', 'ig');
-      let result = $$(searchResult).hasClass(this.combobox.options.highlightValueClassName)
+      const result = $$(searchResult).hasClass(this.combobox.options.highlightValueClassName)
         ? searchResult
         : $$(searchResult).find(`.${this.combobox.options.highlightValueClassName}`);
       if (result) {
