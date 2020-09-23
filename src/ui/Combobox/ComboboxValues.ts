@@ -2,7 +2,7 @@ import { ICombobox, IComboboxValues, IComboboxValue } from './ICombobox';
 import { $$ } from '../../utils/Dom';
 import { find } from 'underscore';
 import { l } from '../../strings/Strings';
-import _ = require('underscore');
+import { escape } from 'underscore';
 
 export class ComboboxValues implements IComboboxValues {
   public element: HTMLElement;
@@ -70,7 +70,7 @@ export class ComboboxValues implements IComboboxValues {
         ? searchResult
         : $$(searchResult).find(`.${this.combobox.options.highlightValueClassName}`);
       if (result) {
-        const text = _.escape($$(result).text());
+        const text = escape($$(result).text());
         result.innerHTML = text.replace(regex, '<span class="coveo-highlight">$1</span>');
       }
     }
