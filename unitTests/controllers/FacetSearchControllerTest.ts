@@ -30,7 +30,7 @@ export function FacetSearchControllerTest() {
 
       const expectedRequest: IFacetSearchRequest = {
         field: facet.fieldName,
-        numberOfValues: facet.values.allValues.length * facetValuesMultiplier,
+        numberOfValues: facet.options.numberOfValues * facetValuesMultiplier,
         ignoreValues: facet.values.activeValues.map(value => value.value),
         captions: {},
         searchContext: facet.queryController.getLastQuery(),
@@ -49,7 +49,7 @@ export function FacetSearchControllerTest() {
 
       expect(facetSearchSpy.calls.mostRecent().args[0]).toEqual(
         jasmine.objectContaining({
-          numberOfValues: facet.values.allValues.length * facetValuesMultiplier * page,
+          numberOfValues: facet.options.numberOfValues * facetValuesMultiplier * page,
           query: `*${query}*`
         })
       );
@@ -65,7 +65,7 @@ export function FacetSearchControllerTest() {
 
       expect(facetSearchSpy.calls.mostRecent().args[0]).toEqual(
         jasmine.objectContaining({
-          numberOfValues: facet.values.allValues.length * facetValuesMultiplier * page,
+          numberOfValues: facet.options.numberOfValues * facetValuesMultiplier * page,
           query: `*${query}*`
         })
       );
