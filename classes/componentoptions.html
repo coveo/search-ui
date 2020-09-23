@@ -204,6 +204,19 @@
 					<h1>Class ComponentOptions</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The <code>ComponentOptions</code> static class contains methods allowing the Coveo JavaScript Search Framework to initialize
+						component options.</p>
+					</div>
+					<p>Typically, each <a href="component.html"><code>Component</code></a> that exposes a set of options contains a static <code>options</code> property.</p>
+					<p>This property &quot;builds&quot; each option using the <code>ComponentOptions</code> method corresponding to its type (e.g.,
+						<a href="componentoptions.html#buildbooleanoption"><code>buildBooleanOption</code></a>,
+						<a href="componentoptions.html#buildfieldoption"><code>buildFieldOption</code></a>,
+					<a href="componentoptions.html#buildstringoption"><code>buildStringOption</code></a>, etc.)</p>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -252,10 +265,25 @@
 									:68</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds a boolean option.</p>
+								</div>
+								<p><strong>Markup Examples:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&quot;true&quot;</code></p>
+								</blockquote>
+								<blockquote>
+									<p><code>data-foo=&quot;false&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -278,10 +306,31 @@
 									:146</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds a color option.</p>
+								</div>
+								<p>Normally, this simply builds a string that matches a CSS color.</p>
+								<p><strong>Note:</strong></p>
+								<blockquote>
+									<p>In the markup, this offers no advantage over using a plain string. This is mostly useful for the Coveo JavaScript
+									Interface Editor.</p>
+								</blockquote>
+								<p><strong>Markup Examples:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&quot;coveo-sprites-user&quot;</code></p>
+								</blockquote>
+								<blockquote>
+									<p><code>data-foo=&quot;coveo-sprites-database&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -304,6 +353,17 @@
 									:401</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds a field condition option.</p>
+								</div>
+								<p>A field condition option defines a field-based condition that must be dynamically evaluated against,
+								and satisfied by a query result item in order to initialize a result template component.</p>
+								<p><strong>Markup Example:</strong></p>
+								<pre><code class="lang-html">data-condition-field-author=&quot;Alice Smith, Bob Jones&quot;
+data-condition-field-not-filetype=&quot;pdf&quot;`
+</code></pre>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IFieldConditionOption[]</span></h4>
 							<p>The resulting option value.</p>
 						</li>
@@ -324,10 +384,24 @@
 									:253</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds a field option.</p>
+								</div>
+								<p>A field option validates whether the field has a valid name. This means that the string must start with the <code>@</code>
+								character.</p>
+								<p><strong>Markup Example:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&quot;@bar&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptionsfieldoptionargs.html" class="tsd-signature-type">IComponentOptionsFieldOptionArgs</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ifieldoption.html" class="tsd-signature-type">IFieldOption</a></h4>
@@ -350,10 +424,23 @@
 									:269</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds an array of fields option.</p>
+								</div>
+								<p>As with all options that expect an array, you should use commas to delimit the different values.</p>
+								<p><strong>Markup Example:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&quot;@bar,@baz&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptionsfieldsoptionargs.html" class="tsd-signature-type">IComponentOptionsFieldsOptionArgs</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IFieldOption[]</span></h4>
@@ -376,10 +463,31 @@
 									:169</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds a helper option.</p>
+								</div>
+								<p>Normally, this simply builds a string that matches the name of a template helper.</p>
+								<p><strong>Note:</strong></p>
+								<blockquote>
+									<p>In the markup, this offers no advantage over using a plain string. This is mostly useful for the Coveo JavaScript
+									Interface Editor.</p>
+								</blockquote>
+								<p><strong>Markup Examples:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&quot;date&quot;</code></p>
+								</blockquote>
+								<blockquote>
+									<p><code>data-foo=&quot;dateTime&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -402,10 +510,26 @@
 									:123</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds an icon option.</p>
+								</div>
+								<p>This takes an SVG icon name, validates it and returns the name of the icon.
+								<strong>Markup Examples:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&quot;search&quot;</code></p>
+								</blockquote>
+								<blockquote>
+									<p><code>data-foo=&quot;facet-expand&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -428,6 +552,18 @@
 									:209</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-deprecated">
+								</dl>
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd><p>Use buildJsonOption instead</p>
+									</dd>
+									<dt>deprecatedsince</dt>
+									<dd><p><a href="https://docs.coveo.com/en/373/#december-2017-release-v236794">2017 Javascript Search Framework Releases</a></p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -459,6 +595,27 @@
 									:200</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Tries to parse a stringified JSON option.</p>
+								</div>
+								<p>If unsuccessful (because of invalid syntax), the JSON option is ignored altogether, and the console displays a warning message.</p>
+								<p><strong>Markup Example:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&#39;{&quot;bar&quot; : &quot;baz&quot;}&#39;</code></p>
+								</blockquote>
+								<p><strong>Note:</strong></p>
+								<p>A JSON option can always be set as a property in the <code>init</code> call of the framework rather than as a <code>data-</code> property in the corresponding HTMLElement markup.</p>
+								<p><strong>Initialization Example:</strong></p>
+								<pre><code><span class="hljs-selector-tag">Coveo</span><span class="hljs-selector-class">.init</span>(<span class="hljs-selector-tag">root</span>, {
+  <span class="hljs-attribute">Facet </span>: {
+    foo : {
+      <span class="hljs-string">"bar"</span> : <span class="hljs-string">"baz"</span>
+    }
+  }
+})
+</code></pre>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -469,6 +626,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <span class="tsd-signature-type">IComponentJsonObjectOption</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
@@ -491,6 +651,16 @@
 									:301</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds an array of strings option.</p>
+								</div>
+								<p>As with all options that expect an array, you should use commas to delimit the different values.</p>
+								<p><strong>Markup Example:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&quot;bar,baz&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -501,6 +671,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptionslistoptionargs.html" class="tsd-signature-type">IComponentOptionsListOptionArgs</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T[]</span>
@@ -526,10 +699,27 @@
 									:232</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds a localized string option.</p>
+								</div>
+								<p>A localized string option can be any arbitrary string.</p>
+								<p>When parsing the value, the Coveo JavaScript Search Framework tries to load the localization for that string, if it
+								is available.</p>
+								<p>If it is not available, it returns the non-localized value.</p>
+								<p>This should be used for options that will be rendered directly to the end users.</p>
+								<p><strong>Markup Example:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&quot;bar&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentlocalizedstringoptionargs.html" class="tsd-signature-type">IComponentLocalizedStringOptionArgs</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -552,10 +742,30 @@
 									:90</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds a number option.</p>
+								</div>
+								<p>A number option can be an integer or a float in the markup.</p>
+								<p><strong>Note:</strong></p>
+								<blockquote>
+									<p>To build a float option, you need to set the <code>float</code> property in the <a href="../interfaces/icomponentoptionsnumberoptionargs.html"><code>IComponentOptionsNumberOptionArgs</code></a> to <code>true</code>.</p>
+								</blockquote>
+								<p><strong>Markup Examples:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&quot;3&quot;</code></p>
+								</blockquote>
+								<blockquote>
+									<p><code>data-foo=&quot;1.5&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptionsnumberoptionargs.html" class="tsd-signature-type">IComponentOptionsNumberOptionArgs</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -578,10 +788,23 @@
 									:285</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds a query expression option.</p>
+								</div>
+								<p>The query expression option should follow the <a href="https://docs.coveo.com/en/1552/">Coveo Cloud Query Syntax Reference</a>.</p>
+								<p><strong>Markup Example:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&quot;@bar==baz&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../globals.html#iqueryexpression" class="tsd-signature-type">IQueryExpression</a></h4>
@@ -604,10 +827,27 @@
 									:320</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds an option that allow to select an HTMLElement.</p>
+								</div>
+								<p>The option accepts a CSS selector matching the required HTMLElement. This selector can either be a class, or an ID
+								selector.</p>
+								<p><strong>Markup Examples:</strong></p>
+								<blockquote>
+									<p><code>data-foo-selector=&quot;.bar&quot;</code></p>
+								</blockquote>
+								<blockquote>
+									<p><code>data-foo-selector=&quot;#bar&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
@@ -630,6 +870,16 @@
 									:106</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds a string option.</p>
+								</div>
+								<p>A string option can be any arbitrary string in the markup.</p>
+								<p><strong>Markup Example:</strong></p>
+								<blockquote>
+									<p><code>data-foo=&quot;bar&quot;</code></p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -640,6 +890,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> optionArgs: <a href="../interfaces/icomponentoptions.html" class="tsd-signature-type">IComponentOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments to apply when building the option.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
@@ -662,16 +915,32 @@
 									:440</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Loads and parses the options of the current element.</p>
+								</div>
+								<p>Each component calls this method in its constructor.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The element whose markup options the method should load and parse.</p>
+									</div>
 								</li>
 								<li>
 									<h5>component: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The class of the component whose options the method should load and parse (e.g., <code>Searchbox</code>,
+										<code>Facet</code>, etc.)</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> values: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The additional options which the method should merge with the specified markup option values.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>

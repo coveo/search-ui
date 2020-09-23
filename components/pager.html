@@ -222,6 +222,16 @@
 					<h1>Coveo Pager Component (CoveoPager)</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The Pager component attaches itself to a <code>div</code> element and renders widgets that allow the end user to navigate
+						through the different result pages.</p>
+					</div>
+					<p>This component takes care of triggering a query with the correct result range whenever the end user selects a page or
+					uses the navigation buttons (<strong>Previous</strong> and <strong>Next</strong>).</p>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -300,6 +310,11 @@
 									:41</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the debug info about this component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -320,6 +335,13 @@
 									:52</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Disable the component.
+										Normally this means that the component will not execute handlers for the framework events (query events, for example).
+									Component are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -340,6 +362,13 @@
 									:61</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Enable the component.
+										Normally this means that the component will execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -360,6 +389,11 @@
 									:328</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the bindings, or environment, for the current component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -379,6 +413,12 @@
 									:207</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Navigates to the next page, then executes a query.</p>
+								</div>
+								<p>Also logs the <code>pageNext</code> event in the usage analytics with the new current page number as meta data.</p>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -398,6 +438,12 @@
 									:198</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Navigates to the previous page, then executes a query.</p>
+								</div>
+								<p>Also logs the <code>pagePrevious</code> event in the usage analytics with the new current page number as meta data.</p>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -417,13 +463,25 @@
 									:181</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the current page, then executes a query.</p>
+								</div>
+								<p>Also logs an event in the usage analytics (<code>pageNumber</code> by default) with the new current page number as meta data.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>pageNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The page number to navigate to.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> analyticCause: <a href="../interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a><span class="tsd-signature-symbol"> =&nbsp;analyticsActionCauseList.pagerNumber</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The event to log in the usage analytics.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -446,16 +504,31 @@
 									:410</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
+									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>HTMLElement for which to get the bound component.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Boolean option to tell the method to not throw on error.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -477,6 +550,18 @@
 							:270</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Allows the component to bind events and execute them only when it is enabled.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{Coveo.ComponentEvents}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -490,6 +575,11 @@
 							:294</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -503,6 +593,11 @@
 							:282</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -516,6 +611,18 @@
 							:23</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{boolean}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -529,6 +636,11 @@
 							:18</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Allows component to log in the dev console.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -542,6 +654,11 @@
 							:286</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the singleton that allows to trigger queries.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -555,6 +672,11 @@
 							:278</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -568,6 +690,11 @@
 							:274</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -581,6 +708,11 @@
 							:290</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -594,6 +726,12 @@
 							:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The static ID that each component need to be identified.<br/>
+							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -601,27 +739,51 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component">
 					<a name="currentpage" class="tsd-anchor"></a>
 					<h3>current<wbr>Page</h3>
-					<div class="tsd-signature tsd-kind-icon">current<wbr>Page<span class="tsd-signature-symbol">:</span> </div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Pager/Pager.ts#L155">ui/Pager/Pager.ts
-							:155</a></li>
-						</ul>
-					</aside>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Pager/Pager.ts#L155">ui/Pager/Pager.ts
+									:155</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The current page (1-based index).</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-							:343</a></li>
-						</ul>
-					</aside>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+									:343</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -637,6 +799,19 @@
 							:76</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether the <strong>Previous</strong> and <strong>Next</strong> buttons should appear at each end of the pager when appropriate.</p>
+						</div>
+						<p>The default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-navigation-button&#x3D;&#x27;true&#x27;
@@ -654,6 +829,20 @@ data-enable-navigation-button&#x3D;&#x27;false&#x27;</pre>
 							:86</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the maximum number of pages to display if enough results are available.</p>
+						</div>
+						<p>This property is typically set when the default number of accessible results from the index has been changed from its default value of <code>1000</code> (10 results per page X 100 <code>maxNumberOfPages</code>).
+						Default value is <code>100</code></p>
+						<dl class="tsd-comment-tags">
+							<dt>deprecated</dt>
+							<dd><p>This is a deprecated option. The <code>Pager</code> now automatically adapts itself on each new query, so you no longer need to specify a value for this option. However, if the default maximum number of accessible results value was changed on your Coveo index, you should use the <a href="pager.html#options.maximumnumberofresultsfromindex"><code>maximumNumberOfResultsFromIndex</code></a> option to specify the new value.</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-max-number-of-pages&#x3D;&#x27;10&#x27;</pre>
@@ -670,6 +859,20 @@ data-enable-navigation-button&#x3D;&#x27;false&#x27;</pre>
 							:98</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the maximum number of results that the index can return for any query.</p>
+						</div>
+						<p>Default value is <code>1000</code> in a Coveo index.</p>
+						<p>If this value was modified in your Coveo index, you must specify the new value in this option for the Pager component to work properly</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>1000</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-maximum-number-of-results-from-index&#x3D;&#x27;10&#x27;</pre>
@@ -686,6 +889,19 @@ data-enable-navigation-button&#x3D;&#x27;false&#x27;</pre>
 							:60</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies how many page links to display in the pager.</p>
+						</div>
+						<p>Default value is <code>5</code> on a desktop computers and <code>3</code> on a mobile device. Minimum value is <code>1</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Minimum</dt>
+							<dd><p><code>1</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-number-of-pages&#x3D;&#x27;10&#x27;</pre>
@@ -710,16 +926,39 @@ data-enable-navigation-button&#x3D;&#x27;false&#x27;</pre>
 									:115</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new Pager. Binds multiple query events (<a href="../classes/queryevents.html#newquery">QueryEvents.newQuery</a>, <a href="../classes/queryevents.html#buildingquery">QueryEvents.buildingQuery</a>,
+										<a href="../classes/queryevents.html#querysuccess">QueryEvents.querySuccess</a>, <a href="../classes/queryevents.html#queryerror">QueryEvents.queryError</a> and <a href="../classes/queryevents.html#noresults">QueryEvents.noResults</a>. Renders itself
+									on every query success.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which to instantiate the component (normally a <code>div</code>).</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IPagerOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the Pager component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="pager.html" class="tsd-signature-type">Pager</a></h4>

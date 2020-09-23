@@ -240,6 +240,24 @@
 					<h1>Coveo SimpleFilter Component (CoveoSimpleFilter)</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-deprecated">
+					</dl>
+					<div class="lead">
+						<p>The <code>SimpleFilter</code> component displays a dropdown menu containing field values which the end user can select to filter
+						the query results.</p>
+					</div>
+					<p>The list of available field values in the dropdown menu can either be static (defined through the
+						<a href="simplefilter.html#options.values"><code>values</code></a> option), or dynamic (automatically obtained through a
+					<a href="../interfaces/igroupbyrequest.html"><code>GroupByRequest</code></a> operation performed at the same time as the main query).</p>
+					<dl class="tsd-comment-tags">
+						<dt>Available since</dt>
+						<dd><p><a href="https://docs.coveo.com/en/373/#november-2017-release-v234779">November 2017 Release (v2.3477.9)</a></p>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -326,6 +344,11 @@
 									:323</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Closes the <code>SimpleFilter</code> <code>valueContainer</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -346,6 +369,11 @@
 									:41</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the debug info about this component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -365,10 +393,18 @@
 									:274</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Un-selects the specified value.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value whose state the method should reset.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -391,6 +427,13 @@
 									:52</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Disable the component.
+										Normally this means that the component will not execute handlers for the framework events (query events, for example).
+									Component are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -411,6 +454,13 @@
 									:61</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Enable the component.
+										Normally this means that the component will execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -431,6 +481,11 @@
 									:328</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the bindings, or environment, for the current component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -450,6 +505,11 @@
 									:245</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the captions of the currently selected field values in the <code>SimpleFilter</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 							<p>An array containing the selected captions.</p>
 						</li>
@@ -470,10 +530,18 @@
 									:230</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the caption of a specific field value.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The field value whose caption the method should attempt to get.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -496,6 +564,11 @@
 									:221</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the <code>SimpleFilter</code> <code>valueContainer</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/dom.html" class="tsd-signature-type">Dom</a></h4>
 							<p>The <code>SimpleFilter</code> valueContainer.</p>
 						</li>
@@ -516,6 +589,11 @@
 									:310</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Opens the <code>SimpleFilter</code> <code>valueContainer</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -535,6 +613,11 @@
 									:299</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Resets the component to its original state.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -554,13 +637,24 @@
 									:261</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Selects the specified value. Also triggers a query, by default.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value to select.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> triggerQuery: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p><code>true</code> by default. If set to <code>false</code>, the method triggers no query.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -582,6 +676,11 @@
 									:252</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Opens or closes the <code>SimpleFilter</code> <code>valueContainer</code>, depending on its current state.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -601,10 +700,18 @@
 									:287</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Selects or un-selects the specified value, depending on its current state.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value whose state the method should toggle.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -627,16 +734,31 @@
 									:410</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
+									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>HTMLElement for which to get the bound component.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Boolean option to tell the method to not throw on error.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -658,6 +780,18 @@
 							:270</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Allows the component to bind events and execute them only when it is enabled.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{Coveo.ComponentEvents}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -671,6 +805,11 @@
 							:294</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -684,6 +823,11 @@
 							:282</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -697,6 +841,18 @@
 							:23</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{boolean}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -710,6 +866,11 @@
 							:18</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Allows component to log in the dev console.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -723,6 +884,11 @@
 							:286</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the singleton that allows to trigger queries.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -736,6 +902,11 @@
 							:278</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -749,6 +920,11 @@
 							:274</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -762,6 +938,11 @@
 							:290</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -775,6 +956,12 @@
 							:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The static ID that each component need to be identified.<br/>
+							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -782,15 +969,27 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-							:343</a></li>
-						</ul>
-					</aside>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+									:343</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -806,6 +1005,21 @@
 							:173</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Whether to show a button to clear all selected values.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+							<dt>Available since</dt>
+							<dd><p><a href="https://docs.coveo.com/en/3203/">March 2020 Release (v2.8521)</a></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-clear-button&#x3D;&#x27;true&#x27;
@@ -823,6 +1037,19 @@ data-enable-clear-button&#x3D;&#x27;false&#x27;</pre>
 							:85</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the field whose values the <code>SimpleFilter</code> should output result filters from.</p>
+						</div>
+						<p>Specifying a value for this option is required for the <code>SimpleFilter</code> component to work.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Required</dt>
+							<dd><p>Specifying a value for this option is required for the component to work</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -839,6 +1066,22 @@ data-enable-clear-button&#x3D;&#x27;false&#x27;</pre>
 							:70</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the maximum number of field values to display in the <code>SimpleFilter</code> dropdown menu.</p>
+						</div>
+						<p>Default value is <code>5</code>. Minimum value is <code>0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>5</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-maximum-number-of-values&#x3D;&#x27;10&#x27;</pre>
@@ -855,6 +1098,29 @@ data-enable-clear-button&#x3D;&#x27;false&#x27;</pre>
 							:154</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>string?
+							The sort criteria to use.</p>
+						</div>
+						<p><strong>Default:</strong> <code>score</code></p>
+						<p><strong>Allowed values:</strong></p>
+						<p><code>score</code>: sort using the score value which is computed from the number of occurrences of a field value, as well as from the position
+							where query result items having this field value appear in the ranked query result set. When using this sort criterion, a field value
+							with 100 occurrences might appear after one with only 10 occurrences, if the occurrences of the latter field value tend to appear higher
+						in the ranked query result set.</p>
+						<p><code>occurrences</code>: sort by number of occurrences, with field values having the highest number of occurrences appearing first.</p>
+						<p><code>alphaascending/alphadescending</code>: sort alphabetically on the field values.</p>
+						<p><code>chisquare</code>: sort based on the relative frequency of field values in the query result set compared to their frequency in the entire index. This means that a field value that does
+						not appear often in the index, but does appear often in the query result set will tend to appear higher.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Available since</dt>
+							<dd><p><a href="https://docs.coveo.com/en/2938/">July 2019 Release (v2.6459)</a></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.title" class="tsd-anchor"></a>
@@ -867,6 +1133,12 @@ data-enable-clear-button&#x3D;&#x27;false&#x27;</pre>
 							:92</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the title to display for the <code>SimpleFilter</code>.</p>
+						</div>
+						<p>Default value is the localized string for <code>NoTitle</code>.</p>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-title&#x3D;&#x27;foo&#x27;</pre>
@@ -883,6 +1155,40 @@ data-enable-clear-button&#x3D;&#x27;false&#x27;</pre>
 							:129</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a JSON object describing a mapping of <code>SimpleFilter</code> values to their desired captions.</p>
+						</div>
+						<p><strong>Examples:</strong></p>
+						<ul>
+							<li>You can set the option in the <a href="../globals.html#init">&#39;init&#39;</a> call:
+								<code>`</code>javascript
+								var myValueCaptions = {
+								&quot;txt&quot; : &quot;Text files&quot;,
+								&quot;html&quot; : &quot;Web page&quot;,
+								[ ... ]
+							};</li>
+						</ul>
+						<p>Coveo.init(document.querySelector(&quot;#search&quot;), {
+							SimpleFilter : {
+							valueCaption : myValueCaptions
+							}
+						});</p>
+						<pre><code>
+* Or before the `init` call, using the &lt;a href=<span class="hljs-string">"simplefilter.html#options"</span>&gt;<span class="hljs-string">'options'</span>&lt;/a&gt; top-level function:
+```javascript
+Coveo.options(document.querySelector(<span class="hljs-string">"#search"</span>), {
+  SimpleFilter : {
+    valueCaption : myValueCaptions
+  }
+});
+</code></pre><ul>
+							<li>Or directly in the markup:<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- Ensure that the double quotes are properly handled in `data-value-caption`. --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSimpleFilter'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-value-caption</span>=<span class="hljs-string">'{"txt":"Text files","html":"Web page"}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.values" class="tsd-anchor"></a>
@@ -895,6 +1201,13 @@ data-enable-clear-button&#x3D;&#x27;false&#x27;</pre>
 							:78</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a static list of field values to display in the <code>SimpleFilter</code> dropdown menu.</p>
+						</div>
+						<p>This option is undefined by default, which means that the component generates a dynamic list of field values
+						by performing a <a href="../interfaces/igroupbyrequest.html"><code>GroupByRequest</code></a> operation at the same time as the main query.</p>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -915,16 +1228,36 @@ data-enable-clear-button&#x3D;&#x27;false&#x27;</pre>
 									:186</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new <code>SimpleFilter</code> component. Binds multiple query events as well.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>the HTMLElement on which to instantiate the component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5>options: <span class="tsd-signature-type">ISimpleFilterOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the <code>SimpleFilter</code> component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The bindings that the component requires to function normally.</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="simplefilter.html" class="tsd-signature-type">SimpleFilter</a></h4>

@@ -240,6 +240,13 @@
 					<h1>Interface IQueryResults</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Describe a set a results returned by the Search API</p>
+					</div>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -296,6 +303,12 @@
 							:48</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The advanced expression that was executed.<br/>
+							Only sent if <a href="iquery.html#debug">IQuery.debug</a> is true</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="apiversion" class="tsd-anchor"></a>
@@ -308,6 +321,11 @@
 							:107</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The search api version that was used for this query.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="basicexpression" class="tsd-anchor"></a>
@@ -320,6 +338,12 @@
 							:43</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The basic expression that was executed.<br/>
+							Only sent if <a href="iquery.html#debug">IQuery.debug</a> is true</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="categoryfacets" class="tsd-anchor"></a>
@@ -332,6 +356,11 @@
 							:127</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Category facet results of the query</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="clientduration" class="tsd-anchor"></a>
@@ -344,6 +373,18 @@
 							:95</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>The duration of the query for the client.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>deprecated</dt>
+							<dd><p>Use searchAPIDuration instead.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="constantexpression" class="tsd-anchor"></a>
@@ -356,6 +397,12 @@
 							:53</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The constant expression that was executed.<br/>
+							Only sent if <a href="iquery.html#debug">IQuery.debug</a> is true</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="duration" class="tsd-anchor"></a>
@@ -368,6 +415,11 @@
 							:75</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The total query duration, which is the sum of the <code>indexDuration</code> and <code>searchAPIDuration</code>, including any latency incurred through the necessary network hops.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="error" class="tsd-anchor"></a>
@@ -380,17 +432,37 @@
 							:18</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>When an error occurs, and the errorsAsSuccess flag is passed, the error will be returned in the body of the response</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter">
 								<h5>execution<wbr>Report<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>A detailed execution report sent by the Search API</p>
+									</div>
+								</div>
 							</li>
 							<li class="tsd-parameter">
 								<h5>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>The error message</p>
+									</div>
+								</div>
 							</li>
 							<li class="tsd-parameter">
 								<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>The type of error</p>
+									</div>
+								</div>
 							</li>
 						</ul>
 					</div>
@@ -406,6 +478,11 @@
 							:115</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The exception that can be returned by the index if the query triggered an error</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="executionreport-1" class="tsd-anchor"></a>
@@ -418,6 +495,12 @@
 							:38</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A detailed execution report sent by the Search API.<br/>
+							Only sent if <a href="iquery.html#debug">IQuery.debug</a> is true</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="facets" class="tsd-anchor"></a>
@@ -430,6 +513,11 @@
 							:153</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Facet results of the query</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="groupbyresults" class="tsd-anchor"></a>
@@ -442,6 +530,11 @@
 							:123</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The group by results of the query</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="indexduration" class="tsd-anchor"></a>
@@ -454,6 +547,11 @@
 							:79</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The part of the total query <code>duration</code> that was spent in the index.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="phrasestohighlight" class="tsd-anchor"></a>
@@ -466,6 +564,11 @@
 							:139</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Phrases to highlight (with stemming) in the results</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -486,6 +589,11 @@
 							:103</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The pipeline that was used for this query.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="proxyduration" class="tsd-anchor"></a>
@@ -498,6 +606,18 @@
 							:89</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>The duration of the query on the proxy (not always applicable, can be optional)</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>deprecated</dt>
+							<dd><p>Use duration, indexDuration and searchAPIDuration instead.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="querycorrections" class="tsd-anchor"></a>
@@ -510,6 +630,11 @@
 							:131</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Possible query corrections (eg : <a href="../components/didyoumean.html">DidYouMean</a>)</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="rankingexpressions" class="tsd-anchor"></a>
@@ -522,6 +647,12 @@
 							:63</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A list of ranking expression that were used to tweak the relevance.<br/>
+							Only sent if <a href="iquery.html#debug">IQuery.debug</a> is true</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="refinedkeywords" class="tsd-anchor"></a>
@@ -534,6 +665,11 @@
 							:147</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The keywords selected by Coveo Machine Learning Refined Query feature</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="results" class="tsd-anchor"></a>
@@ -546,6 +682,11 @@
 							:119</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The results of the query</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="searchapiduration" class="tsd-anchor"></a>
@@ -558,6 +699,11 @@
 							:83</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The part of the total query <code>duration</code> that was spent in the Coveo Search API.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="searchuid" class="tsd-anchor"></a>
@@ -570,6 +716,11 @@
 							:99</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A unique identifier for this query, used mainly for the <a href="../components/analytics.html">Analytics</a> service.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="splittestrun" class="tsd-anchor"></a>
@@ -582,6 +733,11 @@
 							:111</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The split test run that was used for this query. (A/B tests feature of the Coveo Query Pipeline)</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="termstohighlight" class="tsd-anchor"></a>
@@ -594,6 +750,11 @@
 							:135</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Terms to highlight (with stemming) in the results</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -614,6 +775,11 @@
 							:67</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The total number of results that matched the query in the index.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="totalcountfiltered" class="tsd-anchor"></a>
@@ -626,6 +792,11 @@
 							:71</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The total number of results that matched the query in the index, but with the duplicate filtered.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="triggers" class="tsd-anchor"></a>
@@ -638,6 +809,11 @@
 							:143</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The Coveo Query Pipeline triggers, if any were configured.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="useridentities" class="tsd-anchor"></a>
@@ -650,6 +826,12 @@
 							:58</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A list of user identities that were used to perform this query.<br/>
+							Only sent if <a href="iquery.html#debug">IQuery.debug</a> is true</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

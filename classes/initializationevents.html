@@ -171,6 +171,15 @@
 					<h1>Class InitializationEvents</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>This static class is there to contain the different string definitions for all the events related to initialization.</p>
+					</div>
+					<p>Note that these events will only be triggered when the <a href="../globals.html#init">init</a> function is called.</p>
+					<p>This means these events are normally called only once when the search interface is initialized.</p>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -204,6 +213,21 @@
 							:32</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered after the components are initialized (eg: After the constructor of each component is executed)
+							but before their state is set from the hash portion of the URL (e.g., <code>http://mysearchinterface#q=myQuery</code>).</p>
+						</div>
+						<p>This is also before the first query is launched (if the <a href="../components/searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>).</p>
+						<p>The string value is <code>afterComponentsInitialization</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="afterinitialization" class="tsd-anchor"></a>
@@ -216,6 +240,21 @@
 							:52</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered right after the UI is fully initialized.</p>
+						</div>
+						<p>Concretely this means that the constructor of each component has been executed, and that the state coming for the URL (e.g., <code>http://mysearchinterface#q=myquery</code>) has been applied.</p>
+						<p>It is triggered <em>before</em> the first query is launched, and if the <a href="../components/searchinterface.html#options.autotriggerquery">SearchInterface.options.autoTriggerQuery</a> is <code>true</code>.</p>
+						<p>The string value is <code>afterInitialization</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="beforeinitialization" class="tsd-anchor"></a>
@@ -228,6 +267,19 @@
 							:22</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>This event is triggered right before each components inside the search interface get initialized (eg: Before the constructor of each component is executed).</p>
+						</div>
+						<p>The string value is <code>beforeInitialization</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="nuke" class="tsd-anchor"></a>
@@ -240,6 +292,20 @@
 							:61</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>This is triggered when the UI needs to be dynamically removed so that components can unbind any internal handlers they might have set globally on the window or the document.</p>
+						</div>
+						<p>After this event has been executed, the search interface can be dynamically removed and all handlers can be considered cleanly removed.</p>
+						<p>The string value is <code>nuke</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="restorehistorystate" class="tsd-anchor"></a>
@@ -252,6 +318,20 @@
 							:41</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered right before the state from the URL (e.g., <code>http://mysearchinterface#q=myQuery</code>) gets applied in the interface.</p>
+						</div>
+						<p>This will typically only be useful if the <a href="../components/searchinterface.html#options.enablehistory">SearchInterface.options.enableHistory</a> is set to <code>true</code>.</p>
+						<p>The string value is <code>restoreHistoryState</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

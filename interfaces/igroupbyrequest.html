@@ -189,6 +189,14 @@
 					<h1>Interface IGroupByRequest</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The <code>IGroupByRequest</code> interface describes a Group By operation to perform against the index.</p>
+					</div>
+					<p>See <a href="https://docs.coveo.com/en/1453/">Group By Operations</a>.</p>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -228,6 +236,16 @@
 							:92</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Explicitly specifies a list of values for which to generate Group By values.</p>
+						</div>
+						<p>You can use trailing wildcards to include ranges of values.</p>
+						<p><strong>Example:</strong></p>
+						<blockquote>
+							<p>The array <code>[&quot;foo&quot;, &quot;bar*&quot;]</code> would return Group By values for <code>foo</code> and any value starting with <code>bar</code>.</p>
+						</blockquote>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="allowedvaluespatterntype" class="tsd-anchor"></a>
@@ -240,6 +258,12 @@
 							:99</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The pattern type to use for the <a href="igroupbyrequest.html#allowedvalues">IGroupByRequest.allowedValues</a> property (see <a href="../enums/allowedvaluespatterntype.html">AllowedValuesPatternType</a>).</p>
+						</div>
+						<p>This option is empty by default, which makes it behave as <a href="../enums/allowedvaluespatterntype.html#legacy"><code>legacy</code></a>.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="computedfields" class="tsd-anchor"></a>
@@ -252,6 +276,14 @@
 							:108</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies an array of computed fields that should be evaluated for each Group By value that is returned.</p>
+						</div>
+						<p>Computed fields are used to perform aggregate operations on other fields for all the matching items having a
+							specific value in the Group By field in the results. See
+						<a href="https://docs.coveo.com/en/1467/">Computed Fields</a>.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="constantqueryoverride" class="tsd-anchor"></a>
@@ -264,6 +296,15 @@
 							:82</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a constant query expression on which to compute the Group By operation.</p>
+						</div>
+						<p>This feature is similar to the <a href="igroupbyrequest.html#queryoverride"><code>queryOverride</code></a> feature, except that in this
+							case, the index keeps the constant query expression in cache for faster queries. You should avoid specifying a
+						dynamic query expression for this parameter, for doing so will negatively impact performance.</p>
+						<p>By default, the constant part of the query expression being executed is used.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="field" class="tsd-anchor"></a>
@@ -276,6 +317,12 @@
 							:15</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the field on which to perform the Group By request. The Group By request returns a Group By value for
+							each distinct value of this field within the result set.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="generateautomaticranges" class="tsd-anchor"></a>
@@ -288,6 +335,12 @@
 							:120</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether to let the index calculate the ranges.</p>
+						</div>
+						<p>Default value is <code>false</code>.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="injectiondepth" class="tsd-anchor"></a>
@@ -300,6 +353,17 @@
 							:60</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies how deep the index should scan the results to identify missing Group By values.</p>
+						</div>
+						<p>When executing a Group By operation, the index uses various heuristics to try to list all of the field values that
+							appear in the result set. In some corner cases, certain values might be omitted (it is a classical example of a
+							trade-off between precision and performance). Using <code>injectionDepth</code> forces the index to explicitly scan the field
+						values of the top n results of the query, and ensure that the field values present in those results are included.</p>
+						<p>Consequently, specifying a high value for this parameter may negatively impact query performance.</p>
+						<p>Default value is <code>1000</code>. Minimum value is <code>0</code>.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="maximumnumberofvalues" class="tsd-anchor"></a>
@@ -312,6 +376,12 @@
 							:46</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the maximum number of values that the Group By operation can return.</p>
+						</div>
+						<p>Default value is <code>10</code>. Minimum value is <code>0</code>.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="queryoverride" class="tsd-anchor"></a>
@@ -324,6 +394,14 @@
 							:70</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a different query expression on which to compute the Group By operation.</p>
+						</div>
+						<p>This feature is typically used for performance reasons to retrieve Group By values on separate expressions while
+						executing a normal query in a single operation.</p>
+						<p>By default, the query expression being executed is used.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="rangevalues" class="tsd-anchor"></a>
@@ -336,6 +414,11 @@
 							:113</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Explicitly specifies a list of range values for which Group By values should be generated.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="sortcriteria" class="tsd-anchor"></a>
@@ -348,6 +431,29 @@
 							:39</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies how the indexer should sort the Group By values.</p>
+						</div>
+						<p>The possible values are:</p>
+						<ul>
+							<li><code>score</code>: Sort by score. Score is computed from the number of occurrences of a field value, as well as from the
+								position where results having this field value appear in the ranked result set. When using this sort criterion, a
+								field value with 100 occurrences might appear after one with only 10 occurrences, if the occurrences of the latter
+							tend to appear sooner in the ranked result set.</li>
+							<li><code>occurrences</code>: Sort by number of occurrences, with values having the highest number of occurrences appearing
+							first.</li>
+							<li><code>alphaascending</code> / <code>alphadescending</code>: Sort alphabetically on the field values.</li>
+							<li><code>computedfieldascending</code> / <code>computedfielddescending</code>: Sort on the values of the first computed field for each
+							Group By value (see <a href="https://docs.coveo.com/en/1467/">Computed Fields</a>).</li>
+							<li><code>chisquare</code>: Sort based on the relative frequency of values in the result set compared to the frequency in the
+								entire index. This means that a value that does not appear often in the index but does appear often in the result
+							set will tend to appear first.</li>
+							<li><code>nosort</code>: Do not sort the Group By values. When using this sort criterion, the index returns the Group By values
+							in a random order.</li>
+						</ul>
+						<p>Default value is <code>score</code>.</p>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

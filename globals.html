@@ -1420,6 +1420,11 @@
 							:11</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The basic types of form available to build an advanced search section.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="context" class="tsd-anchor"></a>
@@ -1432,6 +1437,11 @@
 							:6</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A context, as returned by <a href="components/searchinterface.html#getquerycontext">SearchInterface.getQueryContext</a> or <a href="components/pipelinecontext.html#getcontext">PipelineContext.getContext</a></p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="iqueryexpression" class="tsd-anchor"></a>
@@ -1444,6 +1454,12 @@
 							:35</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The <code>IQueryExpression</code> type is a string type dedicated to query expressions.</p>
+						</div>
+						<p>This type is used to build a specific option for query expressions.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="validlayout" class="tsd-anchor"></a>
@@ -1456,6 +1472,12 @@
 							:6</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The possible valid and supported layouts.</p>
+						</div>
+						<p>See the <a href="https://docs.coveo.com/en/360/">Result Layouts</a> documentation.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="validtooltipplacement" class="tsd-anchor"></a>
@@ -1468,6 +1490,11 @@
 							:32</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The allowed <a href="components/quickview.html"><code>Quickview</code></a> <a href="components/quickview.html#options.tooltipplacement"><code>tooltipPlacement</code></a> option values. The <code>-start</code> and <code>-end</code> variations indicate relative alignement. Horizontally (<code>top</code>, <code>bottom</code>), <code>-start</code> means <em>left</em> and <code>-end</code> means <em>right</em>. Vertically (<code>left</code>, <code>right</code>), <code>-start</code> means <em>top</em> and <code>-end</code> means <em>bottom</em>. No variation means <em>center</em>.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -1487,6 +1514,12 @@
 									:876</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Convenience wrapper for the <a href="classes/dom.html">Dom</a> class. Used to do $$(element).<br/>
+									If passed with an argument which is not an HTMLElement, it will call <a href="classes/dom.html#createelement">Dom.createElement</a>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -1512,10 +1545,23 @@
 									:548</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds a new analytics action cause to the ActionCauseList.
+									Adding a new actionCause allows to specify a custom user-action when triggering a search event.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>newActionCause: <a href="interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>(e.g.,
+											{
+											Name: &quot;newActionCause&quot;,
+											Type: &quot;exampleType&quot;
+										},</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1537,10 +1583,21 @@
 									:500</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Removes all session information stored in the browser (e.g., analytics visitor cookies, action history, etc.)</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> searchRoot: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> =&nbsp;document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The element to scan for an Analytics component.
+											This can be an element onto which a component instance is bound
+											(e.g., document.querySelector(&quot;.CoveoAnalytics&quot;),
+										or an ancestor of such an element (e.g., document.getElementById(&quot;search&quot;).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1562,10 +1619,18 @@
 									:460</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the path from where the chunks used for lazy loading will be loaded. In some cases, in IE11, we cannot automatically detect it, use this instead.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>path: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>This should be the path of the Coveo script. It should also have a trailing slash.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1587,10 +1652,28 @@
 									:524</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-deprecated">
+								</dl>
+								<div class="lead">
+									<p>Disables an <a href="components/analytics.html"><code>Analytics</code></a> component and clears local data.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>availablesince</dt>
+									<dd><p><a href="https://docs.coveo.com/en/3084/">October 2019 Release (v2.7219)</a></p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> searchRoot: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> =&nbsp;document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The element to scan for an Analytics component.
+											This can be an element onto which a component instance is bound
+											(e.g., document.querySelector(&quot;.CoveoAnalytics&quot;),
+										or an ancestor of such an element (e.g., document.getElementById(&quot;search&quot;).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1612,10 +1695,28 @@
 									:478</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-deprecated">
+								</dl>
+								<div class="lead">
+									<p>Re-enables an <a href="components/analytics.html"><code>Analytics</code></a> component if it was previously disabled.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>availablesince</dt>
+									<dd><p><a href="https://docs.coveo.com/en/3084/">October 2019 Release (v2.7219)</a></p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> searchRoot: <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol"> =&nbsp;document.querySelector(Component.computeSelectorForType(SearchInterface.ID)) as HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The element to scan for an Analytics component.
+											This can be an element onto which a component instance is bound
+											(e.g., document.querySelector(&quot;.CoveoAnalytics&quot;),
+										or an ancestor of such an element (e.g., document.getElementById(&quot;search&quot;).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1637,10 +1738,21 @@
 									:125</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Execute a standard query. Active component in the interface will react to events/ push data in the query / handle the query success or failure as needed.</p>
+								</div>
+								<p>It triggers a standard query flow for which the standard component will perform their expected behavior.</p>
+								<p>If you wish to only perform a query on the index to retrieve results (without the component reacting), look into <a href="components/searchinterface.html">SearchInterface</a> instead.</p>
+								<p>Calling this method is the same as calling <a href="classes/querycontroller.html#executequery">QueryController.executeQuery</a>.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The root of the interface to initialize.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1662,16 +1774,30 @@
 									:203</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the component bound on the given <code>HTMLElement</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The <code>HTMLElement</code> for which to get the component instance.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If multiple components are bound to a single <code>HTMLElement</code>, you need to specify which components you wish to get.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>By default, the GET method will throw if there is no component bound, or if there are multiple component and no <code>componentClass</code> is specified. This deletes the error if set to true.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -1693,13 +1819,25 @@
 									:32</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Initialize the framework with a basic search interface. Calls <a href="classes/initialization.html#initsearchinterface">Initialization.initSearchInterface</a>.</p>
+								</div>
+								<p>If using the jQuery extension, this is called using <code>$(&#39;#root&#39;).coveo(&#39;init&#39;);</code>.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The root of the interface to initialize.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType : true}}</code>).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1724,16 +1862,31 @@
 									:79</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Initialize the framework with a recommendation interface. Calls <a href="classes/initialization.html#initrecommendationinterface">Initialization.initRecommendationInterface</a>.</p>
+								</div>
+								<p>If using the jQuery extension, this is called using <code>$(&#39;#root&#39;).coveo(&#39;initRecommendation&#39;);</code>.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The root of the interface to initialize.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> mainSearchInterface: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The search interface to link with the recommendation interface (see <a href="components/recommendation.html">Recommendation</a>).</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> userContext: <span class="tsd-signature-type">object</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The user context to pass with the query generated in the recommendation interface (see <a href="components/recommendation.html">Recommendation</a>).</p>
+									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-index-signature">
 											<h5><span class="tsd-signature-symbol">[</span>name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></h5>
@@ -1742,6 +1895,9 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType: true}}</code>).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1766,16 +1922,31 @@
 									:51</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Initialize the framework with a standalone search box. Calls {@link Initialize.initStandaloneSearchInterface}.</p>
+								</div>
+								<p>If using the jQuery extension, this is called using <code>$(&#39;#root&#39;).coveo(&#39;initSearchbox&#39;);</code>.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The root of the interface to initialize.</p>
+									</div>
 								</li>
 								<li>
 									<h5>searchPageUri: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The search page on which to redirect when there is a query.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType : true}}</code>).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1800,6 +1971,33 @@
 									:602</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Asynchronously loads a module, or chunk.</p>
+								</div>
+								<p>This is especially useful when you want to extend a base component, and make sure the lazy component loading process
+								recognizes it (see <a href="https://docs.coveo.com/en/295/">Lazy Versus Eager Component Loading</a>).</p>
+								<p><strong>Example:</strong></p>
+								<pre><code class="lang-typescript"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">lazyCustomFacet</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">return</span> Coveo.load&lt;Facet&gt;<span class="hljs-function">(<span class="hljs-params">'Facet'</span>).<span class="hljs-params">then</span>(<span class="hljs-params">(<span class="hljs-params">Facet</span>) =&gt; {
+    <span class="hljs-keyword">class</span> CustomFacet <span class="hljs-keyword">extends</span> Facet {
+      [ ... ]
+    };
+    Coveo.Initialization.registerAutoCreateComponent(<span class="hljs-params">CustomFacet</span>);
+    <span class="hljs-keyword">return</span> CustomFacet;
+  }</span>);
+};
+
+<span class="hljs-params">Coveo</span>.<span class="hljs-params">LazyInitialization</span>.<span class="hljs-params">registerLazyComponent</span>(<span class="hljs-params">'CustomFacet', lazyCustomFacet</span>);</span>
+</code></pre>
+								<p>You can also use this function to assert a component is fully loaded in your page before executing any code relating
+								to it.</p>
+								<p><strong>Example:</strong></p>
+								<blockquote>
+									<p>You could do <code>Coveo.load(&#39;Searchbox&#39;).then((Searchbox) =&gt; {})</code> to load the <a href="components/searchbox.html"><code>Searchbox</code></a>
+									component, if it is not already loaded in your search page.</p>
+								</blockquote>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -1810,6 +2008,10 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>id: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The identifier of the module you wish to load. In the case of components, this identifier is the component
+										name (e.g., <code>Facet</code>, <code>Searchbox</code>).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1832,19 +2034,42 @@
 									:361</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds the <a href="components/analytics.html"><code>Analytics</code></a> component instance, and uses it to log a <code>Click</code> usage analytics event.</p>
+								</div>
+								<p>A <code>Click</code> event corresponds to an item view (e.g., clicking on a <a href="components/resultlink.html">ResultLink</a> or opening a <a href="components/quickview.html">Quickview</a>).</p>
+								<p><code>Click</code> events are immediately sent to the Coveo Usage Analytics service.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The root of the search interface which contains the <a href="components/analytics.html"><code>Analytics</code></a> component.</p>
+									</div>
 								</li>
 								<li>
 									<h5>clickEventCause: <a href="interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The cause of the event.</p>
+									</div>
 								</li>
 								<li>
 									<h5>metadata: <a href="interfaces/istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
+											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+											service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
+											names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+										( <code>{}</code> ).</p>
+									</div>
 								</li>
 								<li>
 									<h5>result: <a href="interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The result that was clicked.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1866,19 +2091,42 @@
 									:256</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds the <a href="components/analytics.html"><code>Analytics</code></a> component instance, and uses it to log a <code>Custom</code> usage analytics event.</p>
+								</div>
+								<p>You can use <code>Custom</code> events to create custom reports, or to track events which are neither queries nor item
+								views.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The root of the search interface which contains the <a href="components/analytics.html"><code>Analytics</code></a> component.</p>
+									</div>
 								</li>
 								<li>
 									<h5>customEventCause: <a href="interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The cause of the event.</p>
+									</div>
 								</li>
 								<li>
 									<h5>metadata: <a href="interfaces/istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
+											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+											service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
+											names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+										( <code>{}</code> ).</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> result: <a href="interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The query result that relates to the custom event, if applicable.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1900,16 +2148,43 @@
 									:327</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds the <a href="components/analytics.html"><code>Analytics</code></a> component instance, and uses it to log a <code>SearchAsYouType</code> usage analytics
+									event.</p>
+								</div>
+								<p>This function is very similar to the <code>logSearchEvent</code> function, except that <code>logSearchAsYouTypeEvent</code> should, by
+									definition, be called more frequently. Consequently, in order to avoid logging every single partial query, the
+									<code>PendingSearchAsYouTypeEvent</code> takes care of logging only the &quot;relevant&quot; last event: an event that occurs after 5
+									seconds have elapsed without any event being logged, or an event that occurs after another part of the interface
+								triggers a search event.</p>
+								<p>It is important to call this method <strong>before</strong> executing the query. Otherwise, no <code>SearchAsYouType</code> event will be
+									logged, and you will get a warning message in the console. See
+								<a href="https://docs.coveo.com/en/2726/#logging-your-own-search-events">Logging Your Own Search Events</a>.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The root of the search interface which contains the <a href="components/analytics.html"><code>Analytics</code></a> component.</p>
+									</div>
 								</li>
 								<li>
 									<h5>searchAsYouTypeEventCause: <a href="interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The cause of the event.</p>
+									</div>
 								</li>
 								<li>
 									<h5>metadata: <a href="interfaces/istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
+											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+											service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
+											names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+										( <code>{}</code> ).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1931,16 +2206,38 @@
 									:291</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Finds the <a href="components/analytics.html"><code>Analytics</code></a> component instance, and uses it to log a <code>Search</code> usage analytics event.</p>
+								</div>
+								<p>A <code>Search</code> event is actually sent to the Coveo Usage Analytics service only after the query successfully returns (not
+									immediately after calling this method). Therefore, it is important to call this method <strong>before</strong> executing the
+									query. Otherwise, the <code>Search</code> event will not be logged, and you will get a warning message in the console. See
+								<a href="https://docs.coveo.com/en/2726/#logging-your-own-search-events">Logging Your Own Search Events</a>.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The root of the search interface which contains the <a href="components/analytics.html"><code>Analytics</code></a> component.</p>
+									</div>
 								</li>
 								<li>
 									<h5>searchEventCause: <a href="interfaces/ianalyticsactioncause.html" class="tsd-signature-type">IAnalyticsActionCause</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The cause of the event.</p>
+									</div>
 								</li>
 								<li>
 									<h5>metadata: <a href="interfaces/istringmap.html" class="tsd-signature-type">IStringMap</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The metadata you want to use to create custom dimensions. Metadata can contain as many key-value
+											pairs as you need. Each key must contain only alphanumeric characters and underscores. The Coveo Usage Analytics
+											service automatically converts white spaces to underscores, and uppercase characters to lowercase characters in key
+											names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
+										( <code>{}</code> ).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1962,13 +2259,25 @@
 									:386</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Pass options to the framework, before it is initialized (<a href="globals.html#init">init</a>).<br/>
+									All the options passed with this calls will be merged together on initialization.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The root of the interface for which you wish to set options.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> optionsToSet: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>JSON options for the framework (e.g.: <code>{Searchbox : {enableSearchAsYouType: true}}</code>).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1990,6 +2299,11 @@
 									:400</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Patch the given <code>methodName</code> on an instance of a component bound to an <code>HTMLElement</code> with a new handler.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -2000,6 +2314,8 @@
 								</li>
 								<li>
 									<h5>handler: <span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
@@ -2039,6 +2355,12 @@
 									:22</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>IE11 equivalent of Promise.race
+									Adapted from Promise.race(iterable) polyfill on <a href="https://www.promisejs.org/api/">https://www.promisejs.org/api/</a></p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -2070,10 +2392,17 @@
 									:560</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Removes an actionCause from the ActionCauseList.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>actionCauseToRemoveName: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -2095,13 +2424,58 @@
 									:182</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Performs read and write operations on the <a href="classes/querystatemodel.html"><code>QueryStateModel</code></a> instance of the search
+									interface. See <a href="https://docs.coveo.com/en/344/">State</a>.</p>
+								</div>
+								<p>Can perform the following actions:</p>
+								<ul>
+									<li><p>Get the <code>QueryStateModel</code> instance:</p>
+										<pre><code class="lang-javascript">Coveo.state(element);
+</code></pre>
+									</li>
+									<li><p>Get the value of a single state attribute from the <code>QueryStateModel</code> instance:</p>
+										<pre><code class="lang-javascript"><span class="hljs-comment">// You can replace `q` with any registered state attribute.</span>
+Coveo.state(element, <span class="hljs-string">"q"</span>);
+</code></pre>
+									</li>
+									<li><p>Set the value of a single state attribute in the <code>QueryStateModel</code> instance:</p>
+										<pre><code class="lang-javascript"><span class="hljs-comment">// You can replace `q` with any registered state attribute.</span>
+Coveo.state(element, <span class="hljs-string">"q"</span>, <span class="hljs-string">"my new value"</span>);
+</code></pre>
+									</li>
+									<li><p>Set multiple state attribute values in the <code>QueryStateModel</code> instance:</p>
+										<pre><code class="lang-javascript"><span class="hljs-comment">// You can replace `q` and `sort` with any registered state attributes.</span>
+Coveo.state(element, {
+  <span class="hljs-string">"q"</span> : <span class="hljs-string">"my new value"</span>,
+  <span class="hljs-string">"sort"</span> : <span class="hljs-string">"relevancy"</span>
+});
+</code></pre>
+									</li>
+								</ul>
+								<p><strong>Note:</strong></p>
+								<blockquote>
+									<p>When setting one or several state attribute values with this function, you can pass an additional argument to set
+									the <code>silent</code> attribute to <code>true</code> in order to prevent the state change from triggering state change events.</p>
+									<p><strong>Example:</strong></p>
+									<pre><code class="lang-javascript">Coveo.state(element, <span class="hljs-string">"q"</span>, <span class="hljs-string">"my new value"</span>, { <span class="hljs-string">"silent"</span> : <span class="hljs-literal">true</span> });
+</code></pre>
+								</blockquote>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The root of the interface whose <code>QueryStateModel</code> instance the function should interact with.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The arguments that determine the action to perform on the <code>QueryStateModel</code> instance.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -2123,6 +2497,11 @@
 							:6</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ResponsiveFacets options</p>
+						</div>
+					</div>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 						<a name="responsivefacetoptions.dropdownheaderlabel" class="tsd-anchor"></a>
 						<h3>dropdown<wbr>Header<wbr>Label</h3>
@@ -2134,6 +2513,16 @@
 								:35</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>If the [<code>enableResponsiveMode</code>]{@link Facet.options.enableResponsiveMode} option is <code>true</code> for all facets and
+									{@link FacetSlider.options.enableResponsiveMode} is also <code>true</code> for all sliders, specifies the label of the
+								dropdown button that allows to display the facets when in responsive mode.</p>
+							</div>
+							<p>If more than one <code>Facet</code> or <a href="components/facetslider.html">FacetSlider</a> component in the search interface specifies a value for this
+							option, the framework uses the first occurrence of the option.</p>
+							<p>Default value is <code>Filters</code>.</p>
+						</div>
 					</section>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 						<a name="responsivefacetoptions.enableresponsivemode" class="tsd-anchor"></a>
@@ -2146,6 +2535,18 @@
 								:20</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies whether to enable <em>responsive mode</em> for facets. Setting this options to <code>false</code> on any <code>Facet</code>, or
+									<a href="components/facetslider.html"><code>FacetSlider</code></a> component in a search interface disables responsive mode for all other facets
+								in the search interface.</p>
+							</div>
+							<p>Responsive mode displays all facets under a single dropdown button whenever the width of the HTML element which
+								the search interface is bound to reaches or falls behind a certain threshold (see
+							<a href="components/searchinterface.html#responsivecomponents">SearchInterface.responsiveComponents</a>).</p>
+							<p>See also the [<code>dropdownHeaderLabel</code>]{@link Facet.options.dropdownHeaderLabel} option.</p>
+							<p>Default value is <code>true</code>.</p>
+						</div>
 					</section>
 				</section>
 			</section>

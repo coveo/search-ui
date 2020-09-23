@@ -171,6 +171,14 @@
 					<h1>Interface IChangeableAnalyticsDataObject</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The <code>IChangeableAnalyticsDataObject</code> interface describes the modifiable part of the object that all
+						<a href="../classes/analyticsevents.html#changeanalyticscustomdata"><code>changeAnalyticsCustomData</code></a> event handlers receive as an argument.</p>
+					</div>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -204,6 +212,17 @@
 							:164</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The language of the search interface from which the usage analytics event originates.</p>
+						</div>
+						<p>By default, the framework populates this attribute with the currently loaded localization and culture file of the
+						search interface from which the usage analytics event originates.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>External code <strong>can</strong> modify the value of this attribute.</p>
+						</blockquote>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="metaobject" class="tsd-anchor"></a>
@@ -216,6 +235,15 @@
 							:117</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The metadata to send along with the usage analytics event.</p>
+						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>External code <strong>can</strong> modify existing values, or add new key-value pairs in this attribute.</p>
+						</blockquote>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="originlevel1" class="tsd-anchor"></a>
@@ -228,6 +256,18 @@
 							:130</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The high-level origin of the usage analytics event.</p>
+						</div>
+						<p>For instance, this could be the name of the search hub, or a name that can uniquely identify the search page from
+						which the usage analytics event originates.</p>
+						<p>Default value is <code>default</code>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>External code <strong>can</strong> modify the value of this attribute.</p>
+						</blockquote>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="originlevel2" class="tsd-anchor"></a>
@@ -240,6 +280,17 @@
 							:141</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The mid-level origin of the usage analytics event.</p>
+						</div>
+						<p>By default, the framework populates this attribute with the <code>data-id</code> of the currently selected tab in the search
+						interface from which the usage analytics event originates.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>External code <strong>can</strong> modify the value of this attribute.</p>
+						</blockquote>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="originlevel3" class="tsd-anchor"></a>
@@ -252,6 +303,17 @@
 							:153</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The low-level origin of the usage analytics event.</p>
+						</div>
+						<p>For instance, this could be the HTTP identifier of the page from which the usage analytics event originates.</p>
+						<p>Default value is the empty string.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>External code <strong>can</strong> modify the value of this attribute.</p>
+						</blockquote>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

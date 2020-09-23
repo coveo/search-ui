@@ -201,6 +201,13 @@
 					<h1>Interface IFacetRequest</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A Search API facet request.</p>
+					</div>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -244,6 +251,12 @@
 							:201</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The base path shared by all values for a given hierarchical facet.</p>
+						</div>
+						<p><strong>Default (Search API):</strong> <code>[]</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="currentvalues" class="tsd-anchor"></a>
@@ -256,6 +269,14 @@
 							:155</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The values displayed by the facet in the search interface at the moment of
+							the request.</p>
+						</div>
+						<p>See <a href="ifacetrequestvalue.html">IFacetRequestValue</a>.</p>
+						<p><strong>Default (Search API):</strong> <code>[]</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="delimitingcharacter" class="tsd-anchor"></a>
@@ -268,6 +289,15 @@
 							:187</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The character to use to split field values into a hierarchical sequence.</p>
+						</div>
+						<p><strong>Example:</strong>
+							For a multi-value field containing the following values: <code>c; c&amp;gt;folder2; c&amp;gt;folder2&amp;gt;folder3;</code>
+						The delimiting character is <code>&amp;gt;</code>.</p>
+						<p><strong>Default (Search API):</strong> <code>;</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="facetid" class="tsd-anchor"></a>
@@ -280,6 +310,13 @@
 							:79</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The unique identifier of the facet in the search interface.</p>
+						</div>
+						<p><strong>Note:</strong> Must match <code>^[A-Za-z0-9-_]{1,60}$</code>.</p>
+						<p><strong>Example:</strong> <code>author-1</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="field" class="tsd-anchor"></a>
@@ -292,6 +329,14 @@
 							:89</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p><strong>Required (Search API).</strong> The name of the field on which to base the
+							facet request.</p>
+						</div>
+						<p><strong>Note:</strong> Must reference an index field whose <strong>Facet</strong> option is enabled.</p>
+						<p><strong>Example:</strong> <code>author</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="filterbybasepath" class="tsd-anchor"></a>
@@ -304,6 +349,13 @@
 							:210</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to use the [<code>basePath</code>]{@link FacetRequest.basePath} as a filter for the results.</p>
+						</div>
+						<p><strong>Note:</strong> This parameter is ignored unless the facet [<code>type</code>]{@link FacetRequest.type} is <code>hierarchical</code>.</p>
+						<p><strong>Default (Search API):</strong> <code>true</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="filterfacetcount" class="tsd-anchor"></a>
@@ -316,6 +368,12 @@
 							:194</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to exclude folded result parents when estimating result counts for facet values.</p>
+						</div>
+						<p><strong>Default (Search API):</strong> <code>true</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="freezecurrentvalues" class="tsd-anchor"></a>
@@ -328,6 +386,18 @@
 							:145</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to include the facet request&#39;s
+								<a href="ifacetrequest.html#currentvalues"><code>currentValues</code></a> in the corresponding
+								<a href="ifacetresponse.html">facet response</a>&#39;s
+							<a href="ifacetresponse.html#values"><code>values</code></a> array.</p>
+						</div>
+						<p><strong>Note:</strong> Setting this to <code>true</code> is useful to ensure that the facet does
+							not move around while the end-user is interacting with it in the search
+						interface.</p>
+						<p><strong>Default (Search API):</strong> <code>false</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="generateautomaticranges" class="tsd-anchor"></a>
@@ -340,6 +410,19 @@
 							:176</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to automatically generate range values for the facet.</p>
+						</div>
+						<p><strong>Notes:</strong></p>
+						<ul>
+							<li>Setting this to <code>true</code> is only effective when <a href="ifacetrequest.html#type"><code>type</code></a> is set to [<code>dateRange</code>]{@link FaceType.dateRange}
+							or <a href="../enums/facettype.html#numericalrange"><code>numericalRange</code></a>, and the referenced <a href="ifacetrequest.html#field"><code>field</code></a> is of a corresponding type (i.e., date or numeric).</li>
+							<li>Automatic range generation will fail if the referenced <code>field</code> is dynamically generated by a query function.</li>
+							<li>Enabling the <strong>Use cache for numeric queries</strong> option on the referenced <code>field</code> will speed up automatic range generation (see <a href="https://docs.coveo.com/en/1982/">Add or Edit Fields</a>).</li>
+						</ul>
+						<p><strong>Default (Search API):</strong> <code>false</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="injectiondepth" class="tsd-anchor"></a>
@@ -352,6 +435,14 @@
 							:131</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The maximum number of items to scan for facet values.</p>
+						</div>
+						<p><strong>Note:</strong> A high <code>injectionDepth</code> may negatively impact the facet request
+						performance.</p>
+						<p><strong>Default (Search API):</strong> <code>1000</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="isfieldexpanded" class="tsd-anchor"></a>
@@ -364,6 +455,13 @@
 							:163</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether the facet is expanded in the search interface at the moment of the
+							request.</p>
+						</div>
+						<p><strong>Default (Search API):</strong> <code>false</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="numberofvalues" class="tsd-anchor"></a>
@@ -376,6 +474,16 @@
 							:121</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The maximum number of facet values to fetch.</p>
+						</div>
+						<p><strong>Note:</strong> If
+							<a href="ifacetrequest.html#freezecurrentvalues"><code>freezeCurrentValues</code></a> is
+							<code>true</code>, <code>numberOfValues</code> must be equal to the
+						<a href="ifacetrequest.html#currentvalues"><code>currentValues</code></a> array length.</p>
+						<p><strong>Default (Search API):</strong> <code>8</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="preventautoselect" class="tsd-anchor"></a>
@@ -388,6 +496,12 @@
 							:217</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to prevent Coveo ML from automatically selecting values from that facet.</p>
+						</div>
+						<p><strong>Default:</strong> <code>false</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="sortcriteria" class="tsd-anchor"></a>
@@ -400,6 +514,20 @@
 							:109</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The sort criterion to apply to the returned facet values.</p>
+						</div>
+						<p><strong>Default behavior (Search API):</strong></p>
+						<ul>
+							<li>When <a href="ifacetrequest.html#isfieldexpanded"><code>isFieldExpanded</code></a> is <code>false</code>
+								in the facet request, and
+								<a href="ifacetresponse.html#morevaluesavailable"><code>moreValuesAvailable</code></a> is
+								<code>true</code> in the corresponding <a href="ifacetresponse.html">facet response</a>, use
+							<code>score</code>.</li>
+							<li>Otherwise, use <code>alphanumeric</code>.</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="type" class="tsd-anchor"></a>
@@ -412,6 +540,12 @@
 							:96</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The kind of values to request for the facet.</p>
+						</div>
+						<p><strong>Default (Search API):</strong> [<code>Specific</code>]{@link FacetType.Specific}</p>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
