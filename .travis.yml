@@ -27,6 +27,7 @@ before_install:
   - export HAS_RELEASE_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
   - export IS_ON_FEATURE_BRANCH=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
   - export IS_NIGHTLY=$([[ $HAS_BETA_TAG = true && $TRAVIS_EVENT_TYPE = cron ]] && echo true || echo false)
+  - export IS_PUSH_BUILD=$([[ $TRAVIS_PULL_REQUEST = false && $IS_ON_FEATURE_BRANCH = true ]] && echo true || echo false)
   - echo $TRAVIS_BRANCH
   - echo $TRAVIS_PULL_REQUEST_BRANCH
   - echo $TRAVIS_PULL_REQUEST
@@ -36,20 +37,21 @@ before_install:
   - echo $HAS_RELEASE_TAG
   - echo $IS_ON_FEATURE_BRANCH
   - echo $IS_NIGHTLY
+  - echo $IS_PUSH_BUILD
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
 - yarn run build
-- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
-- yarn run unitTests
-- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run accessibilityTests ; fi
+- if [ "x$TRAVIS_TAG" != "x" || $IS_PUSH_BUILD = true ]; then yarn run minimize ; fi
+- if [ $IS_PUSH_BUILD = false ]; then yarn run unitTests ; fi
+- if [ "x$TRAVIS_TAG" != "x" && $IS_PUSH_BUILD = false ]; then yarn run accessibilityTests ; fi
 - set +e
-- yarn run uploadCoverage
+- if [ $IS_PUSH_BUILD = false ]; then yarn run uploadCoverage ; fi
 - set -e
-- yarn run validateTypeDefinitions
+- if [ $IS_PUSH_BUILD = false ]; then yarn run validateTypeDefinitions ; fi
 after_success:
-- if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
+- if [ "x$TRAVIS_TAG" != "x" && $IS_PUSH_BUILD = false ]; then bash ./deploy.doc.sh ; fi
 - yarn run docsitemap
 - yarn run zipForGitReleases
 env:
@@ -138,7 +140,7 @@ deploy:
     on:
       repo: coveo/search-ui
       all_branches: true
-      condition: "$IS_ON_FEATURE_BRANCH == true"
+      condition: "$IS_PUSH_BUILD == true"
 
 after_deploy:
 - node invalidate.cloudfront.js
