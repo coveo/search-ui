@@ -27,6 +27,9 @@ before_install:
   - export HAS_RELEASE_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
   - export IS_ON_FEATURE_BRANCH=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
   - export IS_NIGHTLY=$([[ $HAS_BETA_TAG = true && $TRAVIS_EVENT_TYPE = cron ]] && echo true || echo false)
+  - echo $TRAVIS_BRANCH
+  - echo $TRAVIS_PULL_REQUEST_BRANCH
+  - echo $TRAVIS_PULL_REQUEST
   - echo $SOURCE_BRANCH
   - echo $IS_FORKED_PULL_REQUEST
   - echo $HAS_BETA_TAG
@@ -144,3 +147,4 @@ branches:
   - master
   - "/^.*release.*$/"
   - "/2\\.[0-9]+\\.[0-9]+/"
+  - "/^JSUI-[0-9]+/"
