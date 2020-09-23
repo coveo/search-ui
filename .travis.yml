@@ -43,15 +43,15 @@ script:
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
 - yarn run build
-- if [ "x$TRAVIS_TAG" != "x" || $IS_PUSH_BUILD = true ]; then yarn run minimize ; fi
+- if [[ "x$TRAVIS_TAG" != "x" || $IS_PUSH_BUILD = true ]]; then yarn run minimize ; fi
 - if [ $IS_PUSH_BUILD = false ]; then yarn run unitTests ; fi
-- if [ "x$TRAVIS_TAG" != "x" && $IS_PUSH_BUILD = false ]; then yarn run accessibilityTests ; fi
+- if [[ "x$TRAVIS_TAG" != "x" && $IS_PUSH_BUILD = false ]]; then yarn run accessibilityTests ; fi
 - set +e
 - if [ $IS_PUSH_BUILD = false ]; then yarn run uploadCoverage ; fi
 - set -e
 - if [ $IS_PUSH_BUILD = false ]; then yarn run validateTypeDefinitions ; fi
 after_success:
-- if [ "x$TRAVIS_TAG" != "x" && $IS_PUSH_BUILD = false ]; then bash ./deploy.doc.sh ; fi
+- if [[ "x$TRAVIS_TAG" != "x" && $IS_PUSH_BUILD = false ]]; then bash ./deploy.doc.sh ; fi
 - yarn run docsitemap
 - yarn run zipForGitReleases
 env:
