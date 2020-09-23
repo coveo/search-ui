@@ -123,6 +123,7 @@ deploy:
     bucket: coveo-ndev-binaries
     local-dir: bin
     upload-dir: proda/StaticCDN/searchui/nightly
+    acl: public_read
     skip_cleanup: true
     on:
       tags: true
@@ -136,6 +137,7 @@ deploy:
     bucket: coveo-ndev-binaries
     local-dir: bin
     upload-dir: proda/StaticCDN/searchui/pr/$TRAVIS_BRANCH
+    acl: public_read
     skip_cleanup: true
     on:
       repo: coveo/search-ui
