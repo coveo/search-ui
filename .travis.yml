@@ -43,7 +43,7 @@ script:
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
 - yarn run build
-- if [[ "x$TRAVIS_TAG" != "x" || $IS_PULL_REQUEST_PUSH_BUILD = true ]]; then yarn run minimize ; fi
+- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
 - if [ $IS_PULL_REQUEST_PUSH_BUILD = false ]; then yarn run unitTests ; fi
 - if [[ "x$TRAVIS_TAG" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then yarn run accessibilityTests ; fi
 - set +e
