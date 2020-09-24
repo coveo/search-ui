@@ -32,7 +32,8 @@ export class DynamicFacetSearch {
         requestMoreValues: () => this.facetSearchController.fetchMoreResults(),
         areMoreValuesAvailable: () => this.facetSearchController.moreValuesAvailable,
         maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-facet-values').clientHeight
-      }
+      },
+      highlightValueClassName: 'coveo-checkbox-span-label'
     });
 
     this.element = this.combobox.element;
@@ -56,7 +57,6 @@ export class DynamicFacetSearch {
         this.facet,
         DynamicFacetSearchValueRenderer
       );
-
       return {
         value: facetValue,
         element: facetValue.renderedElement

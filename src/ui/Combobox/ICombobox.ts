@@ -19,6 +19,7 @@ export interface IComboboxOptions {
     requestMoreValues: () => Promise<any>;
     areMoreValuesAvailable: () => boolean;
   };
+  highlightValueClassName?: string;
 }
 
 export interface ICombobox {
