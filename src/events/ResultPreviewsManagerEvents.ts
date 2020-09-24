@@ -1,5 +1,13 @@
 import { ISearchResultPreview } from '../magicbox/ResultPreviewsManager';
 import { Suggestion } from '../magicbox/SuggestionsManager';
+import { IQuery } from '../rest/Query';
+
+export interface IBuildingResultPreviewsQueryEventArgs {
+  /**
+   * The to be sent to Search API.
+   */
+  query: IQuery;
+}
 
 /**
  * Executed when a {@link Suggestion} is focused before {@link PopulateSearchResultPreviews} is called to fetch more options.
@@ -34,6 +42,11 @@ export interface IPopulateSearchResultPreviewsEventArgs {
  * Those events should be bound to the element returned by `resolveRoot`.
  */
 export class ResultPreviewsManagerEvents {
+  /**
+   * Executed when building a query to fetch result previews.
+   * This always receives {@link IBuildingResultPreviewsQueryEventArgs} as arguments.
+   */
+  public static buildingResultPreviewsQuery = 'buildingResultPreviewsQuery';
   /**
    * Executed when a {@link Suggestion} is focused before {@link PopulateSearchResultPreviews} is called to fetch more options.
    * This always receives {@link IUpdateResultPreviewsManagerOptionsEventArgs} as arguments.
