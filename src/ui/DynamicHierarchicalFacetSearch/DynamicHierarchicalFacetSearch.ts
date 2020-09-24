@@ -34,7 +34,7 @@ export class DynamicHierarchicalFacetSearch {
       scrollable: {
         requestMoreValues: () => this.hierarchicalFacetSearchController.fetchMoreResults(),
         areMoreValuesAvailable: () => this.hierarchicalFacetSearchController.moreValuesAvailable,
-        maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-hierarchical-facet-values').clientHeight
+        maxDropdownHeight: () => Math.min(250, $$(this.facet.element).find('.coveo-dynamic-hierarchical-facet-values').clientHeight)
       },
       highlightValueClassName: 'coveo-dynamic-hierarchical-facet-search-value-label'
     });
