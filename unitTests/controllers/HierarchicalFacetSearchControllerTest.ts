@@ -34,7 +34,7 @@ export function HierarchicalFacetSearchControllerTest() {
       const expectedRequest: IFacetSearchRequest = {
         field: facet.fieldName,
         type: FacetSearchType.hierarchical,
-        numberOfValues: facet.values.allFacetValues.length * facetValuesMultiplier,
+        numberOfValues: facet.options.numberOfValues * facetValuesMultiplier,
         ignorePaths: [flatten(facet.values.selectedPath, true)],
         basePath: facet.options.basePath,
         captions: {},
@@ -55,7 +55,7 @@ export function HierarchicalFacetSearchControllerTest() {
 
       expect(facetSearchSpy.calls.mostRecent().args[0]).toEqual(
         jasmine.objectContaining({
-          numberOfValues: facet.values.allFacetValues.length * facetValuesMultiplier * page,
+          numberOfValues: facet.options.numberOfValues * facetValuesMultiplier * page,
           query: `*${query}*`
         })
       );
@@ -71,7 +71,7 @@ export function HierarchicalFacetSearchControllerTest() {
 
       expect(facetSearchSpy.calls.mostRecent().args[0]).toEqual(
         jasmine.objectContaining({
-          numberOfValues: facet.values.allFacetValues.length * facetValuesMultiplier * page,
+          numberOfValues: facet.options.numberOfValues * facetValuesMultiplier * page,
           query: `*${query}*`
         })
       );

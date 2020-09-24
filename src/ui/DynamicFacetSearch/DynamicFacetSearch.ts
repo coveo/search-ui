@@ -31,7 +31,7 @@ export class DynamicFacetSearch {
       scrollable: {
         requestMoreValues: () => this.facetSearchController.fetchMoreResults(),
         areMoreValuesAvailable: () => this.facetSearchController.moreValuesAvailable,
-        maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-facet-values').clientHeight
+        maxDropdownHeight: () => Math.min(300, $$(this.facet.element).find('.coveo-dynamic-facet-values').clientHeight)
       }
     });
 

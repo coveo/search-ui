@@ -17,7 +17,7 @@ export class HierarchicalFacetSearchController {
   }
 
   private get numberOfValues() {
-    return this.facet.values.allFacetValues.length * this.numberOfValuesMultiplier * this.pageCount;
+    return this.facet.options.numberOfValues * this.numberOfValuesMultiplier * this.pageCount;
   }
 
   private get request(): IFacetSearchRequest {
