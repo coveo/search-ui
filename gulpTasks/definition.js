@@ -86,7 +86,7 @@ function externalDefs() {
 
 function internalDefs() {
   return require('dts-generator').default({
-    name: 'Coveo',
+    prefix: 'Coveo',
     project: './',
     out: 'bin/ts/CoveoJsSearch.d.ts',
     externs: ['Externals.d.ts'],
