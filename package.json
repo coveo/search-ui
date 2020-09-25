@@ -26,10 +26,7 @@
     "prepare": "npm run snyk-protect"
   },
   "lint-staged": {
-    "*.{js,ts,json,scss}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,ts,json,scss}": ["prettier --write", "git add"]
   },
   "prettier": {
     "printWidth": 140,
@@ -39,33 +36,13 @@
     "type": "git",
     "url": "git+https://github.com/coveo/search-ui.git"
   },
-  "keywords": [
-    "coveo",
-    "search",
-    "ui",
-    "framework",
-    "js",
-    "typescript",
-    "jssearch",
-    "jsui"
-  ],
+  "keywords": ["coveo", "search", "ui", "framework", "js", "typescript", "jssearch", "jsui"],
   "author": "Coveo <sandbox_JSUI@coveo.com> (http://source.coveo.com/)",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/coveo/search-ui/issues"
   },
-  "files": [
-    "bin",
-    "pages",
-    "gulpTasks",
-    "images",
-    "templates",
-    "strings",
-    "filetypes",
-    "lib",
-    "src",
-    "typings"
-  ],
+  "files": ["bin", "pages", "gulpTasks", "images", "templates", "strings", "filetypes", "lib", "src", "typings"],
   "homepage": "https://github.com/coveo/search-ui#readme",
   "devDependencies": {
     "@salesforce-ux/design-system": "^2.6.0",
@@ -164,10 +141,11 @@
     "moment": "~2.22.2",
     "pikaday": "^1.4.0",
     "popper.js": "^1.14.3",
-    "underscore": "^1.8.3",
+    "underscore": "^1.10.2",
     "xregexp": "^4.2.4"
   },
   "resolutions": {
+    "lodash": "^4.17.12",
     "marked": "^0.7.0",
     "minimatch": "^3.0.2",
     "minimist": "^1.2.3",
