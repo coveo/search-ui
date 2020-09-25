@@ -6,7 +6,6 @@
     "outDir": "./bin",
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
-    "strictPropertyInitialization": true,
     "noUnusedLocals": true,
     "typeRoots": ["lib", "node_modules/@types"],
     "skipLibCheck": true
