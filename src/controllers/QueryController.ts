@@ -1,4 +1,3 @@
-import { history } from 'coveo.analytics';
 import { buildHistoryStore, buildNullHistoryStore } from '../utils/HistoryStore';
 import * as _ from 'underscore';
 import {
@@ -95,7 +94,7 @@ class DefaultQueryOptions implements IQueryOptions {
  */
 export class QueryController extends RootComponent {
   static ID = 'QueryController';
-  public historyStore: history.HistoryStore;
+  public historyStore: CoveoAnalytics.HistoryStore;
   public firstQuery: boolean;
   public modalBox = ModalBox;
   public closeModalBox = true;
@@ -690,7 +689,7 @@ export class QueryController extends RootComponent {
   }
 
   private logQueryInActionsHistory(query: IQuery) {
-    let queryElement: history.HistoryElement = {
+    let queryElement: CoveoAnalytics.HistoryQueryElement = {
       name: 'Query',
       value: query.q,
       time: JSON.stringify(new Date())

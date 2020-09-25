@@ -422,7 +422,7 @@ export function QueryControllerTest() {
         });
 
         it(`setting action history stores the value in localStorage`, () => {
-          test.cmp.historyStore.setHistory([{ name: 'a', time: '', value: '1' }]);
+          test.cmp.historyStore.setHistory(['a']);
           expect(localStorage.getItem(key)).toBeTruthy();
         });
 
@@ -456,7 +456,7 @@ export function QueryControllerTest() {
           localStorage.clear();
           initQueryController();
 
-          test.cmp.historyStore.setHistory([{ name: 'a', time: '', value: '1' }]);
+          test.cmp.historyStore.setHistory(['a']);
           expect(localStorage.getItem(key)).toBeFalsy();
         });
       });
