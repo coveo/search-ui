@@ -6,6 +6,7 @@ import { FakeResults } from '../Fake';
 import * as Mock from '../MockEnvironment';
 import { ExecutionPlan } from '../../src/rest/Plan';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
+import * as HistoryStore from '../../src/utils/HistoryStore';
 
 export function QueryControllerTest() {
   describe('QueryController', () => {
@@ -413,8 +414,15 @@ export function QueryControllerTest() {
           initQueryController();
         });
 
+        it('initializes the historyStore by calling buildHistoryStore', () => {
+          const spy = spyOn(HistoryStore, 'buildHistoryStore');
+          initQueryController();
+
+          expect(spy).toHaveBeenCalledTimes(1);
+        });
+
         it(`setting action history stores the value in localStorage`, () => {
-          test.cmp.historyStore.setHistory(['a']);
+          test.cmp.historyStore.setHistory([{ name: 'a', time: '', value: '1' }]);
           expect(localStorage.getItem(key)).toBeTruthy();
         });
 
@@ -430,6 +438,13 @@ export function QueryControllerTest() {
       });
 
       describe('when disabled', () => {
+        it('initializes the historyStore by calling buildNullHistoryStore', () => {
+          const spy = spyOn(HistoryStore, 'buildNullHistoryStore');
+          initQueryController();
+
+          expect(spy).toHaveBeenCalledTimes(1);
+        });
+
         it(`it clears the action history`, () => {
           localStorage.setItem(key, 'a');
           initQueryController();
@@ -441,7 +456,7 @@ export function QueryControllerTest() {
           localStorage.clear();
           initQueryController();
 
-          test.cmp.historyStore.setHistory(['a']);
+          test.cmp.historyStore.setHistory([{ name: 'a', time: '', value: '1' }]);
           expect(localStorage.getItem(key)).toBeFalsy();
         });
       });

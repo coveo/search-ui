@@ -1,5 +1,5 @@
 import { history } from 'coveo.analytics';
-import { NullStorage } from 'coveo.analytics/dist/storage';
+import { buildHistoryStore, buildNullHistoryStore } from '../utils/HistoryStore';
 import * as _ from 'underscore';
 import {
   IBuildingCallOptionsEventArgs,
@@ -95,7 +95,7 @@ class DefaultQueryOptions implements IQueryOptions {
  */
 export class QueryController extends RootComponent {
   static ID = 'QueryController';
-  public historyStore: CoveoAnalytics.HistoryStore;
+  public historyStore: history.HistoryStore;
   public firstQuery: boolean;
   public modalBox = ModalBox;
   public closeModalBox = true;
@@ -238,7 +238,7 @@ export class QueryController extends RootComponent {
 
     let query = queryBuilder.build();
     if (options.logInActionsHistory) {
-      this.logQueryInActionsHistory(query, options.isFirstQuery);
+      this.logQueryInActionsHistory(query);
     }
 
     let endpointToUse = this.getEndpoint();
@@ -501,11 +501,11 @@ export class QueryController extends RootComponent {
   }
 
   public enableHistory() {
-    this.historyStore = new history.HistoryStore();
+    this.historyStore = buildHistoryStore();
   }
 
   public disableHistory() {
-    this.historyStore = new history.HistoryStore(new NullStorage());
+    this.historyStore = buildNullHistoryStore();
   }
 
   private initializeActionsHistory() {
@@ -689,8 +689,8 @@ export class QueryController extends RootComponent {
     return dom;
   }
 
-  private logQueryInActionsHistory(query: IQuery, isFirstQuery: boolean) {
-    let queryElement: CoveoAnalytics.HistoryQueryElement = {
+  private logQueryInActionsHistory(query: IQuery) {
+    let queryElement: history.HistoryElement = {
       name: 'Query',
       value: query.q,
       time: JSON.stringify(new Date())

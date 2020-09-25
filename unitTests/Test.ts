@@ -848,3 +848,6 @@ FileTypesTest();
 
 import { FacetSearchElementTest } from './ui/FacetSearchElementTest';
 FacetSearchElementTest();
+
+import { HistoryStoreTest } from './utils/HistoryStoreTest';
+HistoryStoreTest();
