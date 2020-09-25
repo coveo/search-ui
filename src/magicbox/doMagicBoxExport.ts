@@ -21,7 +21,7 @@ export type ExpressionImportedLocally = Expression;
 export type SuggestionImportedLocally = Suggestion;
 export type SubGrammarLocally = SubGrammar;
 export type ExpressionFunctionArgumentLocally = ExpressionFunctionArgument;
-export const GrammarsImportedLocally = Grammars;
+// export const GrammarsImportedLocally = Grammars;
 
 export function doMagicBoxExport() {
   exportGlobally({
@@ -69,19 +69,19 @@ export declare namespace MagicBox {
   export type Instance = MagicBoxInstance;
   export type Suggestion = SuggestionImportedLocally;
 
-  export namespace Grammars {
-    export const Basic: typeof GrammarsImportedLocally.Basic;
-    export const notInWord: typeof GrammarsImportedLocally.notInWord;
-    export const notWordStart: typeof GrammarsImportedLocally.notWordStart;
-    export const Complete: typeof GrammarsImportedLocally.Complete;
-    export const Date: typeof GrammarsImportedLocally.Date;
-    export const Expressions: typeof GrammarsImportedLocally.Expressions;
-    export const ExpressionsGrammar: typeof GrammarsImportedLocally.ExpressionsGrammar;
-    export const Field: typeof GrammarsImportedLocally.Field;
-    export const NestedQuery: typeof GrammarsImportedLocally.NestedQuery;
-    export const QueryExtension: typeof GrammarsImportedLocally.QueryExtension;
-    export const SubExpression: typeof GrammarsImportedLocally.SubExpression;
-  }
+  // export namespace Grammars {
+  //   export const Basic: typeof GrammarsImportedLocally.Basic;
+  //   export const notInWord: typeof GrammarsImportedLocally.notInWord;
+  //   export const notWordStart: typeof GrammarsImportedLocally.notWordStart;
+  //   export const Complete: typeof GrammarsImportedLocally.Complete;
+  //   export const Date: typeof GrammarsImportedLocally.Date;
+  //   export const Expressions: typeof GrammarsImportedLocally.Expressions;
+  //   export const ExpressionsGrammar: typeof GrammarsImportedLocally.ExpressionsGrammar;
+  //   export const Field: typeof GrammarsImportedLocally.Field;
+  //   export const NestedQuery: typeof GrammarsImportedLocally.NestedQuery;
+  //   export const QueryExtension: typeof GrammarsImportedLocally.QueryExtension;
+  //   export const SubExpression: typeof GrammarsImportedLocally.SubExpression;
+  // }
 
   export const createMagicBox;
   export const create;
