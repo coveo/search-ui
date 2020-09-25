@@ -578,7 +578,7 @@
 								<div class="lead">
 									<p>Disable the component.
 										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Component are enabled by default on creation.</p>
+									Components are enabled by default on creation.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1647,8 +1647,8 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The static ID that each component need to be identified.<br/>
-							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
 						</div>
 					</div>
 				</section>
@@ -1735,9 +1735,8 @@
 						<p>The following facet only uses the <code>Contact</code>, <code>Account</code>, and <code>File</code> values of the <code>@objecttype</code> field. Even if the
 							current result set contains other <code>@objecttype</code> values, such as <code>Message</code>, or <code>Product</code>, the facet does not use
 						those other values.</p>
-						<pre><code class="lang-html">
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@objecttype"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Object Type"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span> <span class="hljs-attr">data-allowed-values</span>=<span class="hljs-string">"Contact,Account,File"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+						<pre><code class="language-html">
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@objecttype"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Object Type"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span> <span class="hljs-attr">data-allowed-values</span>=<span class="hljs-string">"Contact,Account,File"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 						<p>Default value is <code>undefined</code>, and the facet uses all available values for its
 						<a href="facet.html#options.field"><code>field</code></a> in the current result set.</p>
 					</div>
@@ -1951,8 +1950,7 @@
 						</div>
 						<p><strong>Example:</strong></p>
 						<p>You could use this option to specify a logical order for support tickets, such as:</p>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@ticketstatus"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Ticket Status"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span> <span class="hljs-attr">data-custom-sort</span>=<span class="hljs-string">"New,Opened,Feedback,Resolved"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@ticketstatus"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Ticket Status"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span> <span class="hljs-attr">data-custom-sort</span>=<span class="hljs-string">"New,Opened,Feedback,Resolved"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 						<p><strong>Note:</strong></p>
 						<blockquote>
 							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
@@ -1979,19 +1977,17 @@
 						value.</p>
 						<p><strong>Examples:</strong></p>
 						<p>First case: the &quot;parent&quot; facet has no custom <code>id</code>:</p>
-						<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- "Parent" Facet: --&gt;</span>
+						<pre><code class="language-html"><span class="hljs-comment">&lt;!-- "Parent" Facet: --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Parent Facet'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
 <span class="hljs-comment">&lt;!-- The "dependent" Facet must refer to the default `id` of its "parent" Facet, which is the name of its field. --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Dependent Facet'</span> <span class="hljs-attr">data-depends-on</span>=<span class="hljs-string">'@myfield'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Dependent Facet'</span> <span class="hljs-attr">data-depends-on</span>=<span class="hljs-string">'@myfield'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 						<p>Second case: the &quot;parent&quot; facet has a custom <code>id</code>:</p>
-						<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- "Parent" Facet: --&gt;</span>
+						<pre><code class="language-html"><span class="hljs-comment">&lt;!-- "Parent" Facet: --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Parent Facet'</span> <span class="hljs-attr">data-id</span>=<span class="hljs-string">'myParentCustomId'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
 <span class="hljs-comment">&lt;!-- The "dependent" Facet must refer to the custom `id` of its "parent" Facet, which is 'myParentCustomId'. --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Dependent Facet'</span> <span class="hljs-attr">data-depends-on</span>=<span class="hljs-string">'myParentCustomId'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Dependent Facet'</span> <span class="hljs-attr">data-depends-on</span>=<span class="hljs-string">'myParentCustomId'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 						<p>Default value is <code>undefined</code></p>
 					</div>
 					<div class="tsd-panel">
@@ -2376,7 +2372,7 @@ data-facet-search-ignore-accents&#x3D;&#x27;false&#x27;</pre>
 						</div>
 						<p>If you have two facets with the same field on the same page, you should specify an <code>id</code> value for at least one of
 						those two facets. This <code>id</code> must be unique among the facets.</p>
-						<p>Non-word characters except - @ $ _ . + ! <em> &#39; ( ) , , ( `^a-zA-Z0-9-@$_.+!</em>&#39;(),,]+<code>) are automatically removed from the</code>id` value.</p>
+						<p>Non-word characters except - @ $ _ . + ! * &#39; ( ) , , ( <code>^a-zA-Z0-9-@$_.+!*&#39;(),,]+</code> ) are automatically removed from the <code>id</code> value.</p>
 						<p>Default value is the <a href="facet.html#options.field"><code>field</code></a> option value.</p>
 					</div>
 					<div class="tsd-panel">
@@ -2935,7 +2931,7 @@ data-use-wildcards-in-facet-search&#x3D;&#x27;false&#x27;</pre>
 						</div>
 						<p><strong>Examples:</strong></p>
 						<p>You can set the option in the <a href="../globals.html#init">&#39;init&#39;</a> call:</p>
-						<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> myValueCaptions = {
+						<pre><code class="language-javascript"><span class="hljs-keyword">var</span> myValueCaptions = {
   <span class="hljs-string">"txt"</span> : <span class="hljs-string">"Text files"</span>,
   <span class="hljs-string">"html"</span> : <span class="hljs-string">"Web page"</span>,
   [ ... ]
@@ -2945,19 +2941,16 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
   <span class="hljs-attr">Facet</span> : {
     <span class="hljs-attr">valueCaption</span> : myValueCaptions
   }
-});
-</code></pre>
+});</code></pre>
 						<p>Or before the <code>init</code> call, using the <a href="facet.html#options">&#39;options&#39;</a> top-level function:</p>
-						<pre><code class="lang-javascript">Coveo.options(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
+						<pre><code class="language-javascript">Coveo.options(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
   <span class="hljs-attr">Facet</span> : {
     <span class="hljs-attr">valueCaption</span> : myValueCaptions
   }
-});
-</code></pre>
+});</code></pre>
 						<p>Or directly in the markup:</p>
-						<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- Ensure that the double quotes are properly handled in data-value-caption. --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-value-caption</span>=<span class="hljs-string">'{"txt":"Text files","html":"Web page"}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+						<pre><code class="language-html"><span class="hljs-comment">&lt;!-- Ensure that the double quotes are properly handled in data-value-caption. --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-value-caption</span>=<span class="hljs-string">'{"txt":"Text files","html":"Web page"}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 						<p><strong>Note:</strong></p>
 						<blockquote>
 							<p>Using value captions will disable alphabetical sorts (see the <a href="facet.html#options.availablesorts">availableSorts</a> option).</p>

@@ -235,7 +235,7 @@
 						</ul>
 					</blockquote>
 					<p><strong>Example:</strong></p>
-					<pre><code class="lang-html">[ ... ]
+					<pre><code class="language-html">[ ... ]
 
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'result-template'</span> <span class="hljs-attr">type</span>=<span class="hljs-string">'text/underscore'</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'myContentTemplateId'</span>&gt;</span><span class="javascript">
   &lt;div&gt;
@@ -264,8 +264,7 @@
 
   [ ... ]
 
-<span class="hljs-comment">&lt;!-- Note that simply including `&lt;div class='CoveoQuickview'&gt;&lt;/div&gt;` in the markup will be enough most of the time, since the component includes a default template and a default button appearance. --&gt;</span>
-</code></pre>
+<span class="hljs-comment">&lt;!-- Note that simply including `&lt;div class='CoveoQuickview'&gt;&lt;/div&gt;` in the markup will be enough most of the time, since the component includes a default template and a default button appearance. --&gt;</span></code></pre>
 					<p>This component is a result template component (see <a href="https://docs.coveo.com/en/413/">Result Templates</a>).</p>
 				</div>
 			</section>
@@ -401,7 +400,7 @@
 								<div class="lead">
 									<p>Disable the component.
 										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Component are enabled by default on creation.</p>
+									Components are enabled by default on creation.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -724,8 +723,8 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The static ID that each component need to be identified.<br/>
-							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
 						</div>
 					</div>
 				</section>
@@ -821,13 +820,11 @@ data-always-show&#x3D;&#x27;false&#x27;</pre>
 						<ul>
 							<li>Specifying a previously registered template by referring to its HTML <code>id</code> attribute:</li>
 						</ul>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoQuickview"</span> <span class="hljs-attr">data-template-id</span>=<span class="hljs-string">"myContentTemplateId"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoQuickview"</span> <span class="hljs-attr">data-template-id</span>=<span class="hljs-string">"myContentTemplateId"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 						<ul>
 							<li>Specifying a previously registered template by referring to a CSS selector:</li>
 						</ul>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoQuickview'</span> <span class="hljs-attr">data-template-selector</span>=<span class="hljs-string">".myContentTemplateSelector"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoQuickview'</span> <span class="hljs-attr">data-template-selector</span>=<span class="hljs-string">".myContentTemplateSelector"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 						<p>If you do not specify a custom content template, the component uses its default template.</p>
 					</div>
 				</section>
@@ -885,13 +882,11 @@ data-enable-loading-animation&#x3D;&#x27;false&#x27;</pre>
 						<ul>
 							<li>Specifying the CSS selector of the HTML element to display:</li>
 						</ul>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoQuickview"</span> <span class="hljs-attr">data-loading-animation-selector</span>=<span class="hljs-string">".my-loading-animation"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoQuickview"</span> <span class="hljs-attr">data-loading-animation-selector</span>=<span class="hljs-string">".my-loading-animation"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 						<ul>
 							<li>Specifying the <code>id</code> of a previously registered template:</li>
 						</ul>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoQuickview"</span> <span class="hljs-attr">data-loading-animation-template-id</span>=<span class="hljs-string">"my-loading-animation-template"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoQuickview"</span> <span class="hljs-attr">data-loading-animation-template-id</span>=<span class="hljs-string">"my-loading-animation-template"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 						<p>By default, the loading animation is a Coveo animation, which you can customize with CSS (see
 						<a href="https://docs.coveo.com/en/296/#customizing-the-default-search-page-animation">Customizing the Default Loading Animation</a>.</p>
 					</div>

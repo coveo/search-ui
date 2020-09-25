@@ -341,7 +341,7 @@
 								<div class="lead">
 									<p>Disable the component.
 										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Component are enabled by default on creation.</p>
+									Components are enabled by default on creation.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -640,8 +640,8 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The static ID that each component need to be identified.<br/>
-							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
 						</div>
 					</div>
 				</section>
@@ -856,11 +856,10 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							<p>Specifies the function that manages the folding of all results.</p>
 						</div>
 						<p>Default value is:</p>
-						<pre><code class="lang-javascript">Coveo.Folding.defaultGetMoreResults = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>) </span>{
+						<pre><code class="language-javascript">Coveo.Folding.defaultGetMoreResults = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>) </span>{
    <span class="hljs-comment">// The results are flat, just do the folding.</span>
    <span class="hljs-keyword">return</span> Coveo.Folding.foldWithParent(results);
-}
-</code></pre>
+}</code></pre>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -900,7 +899,7 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							<p>Specifies the function that manages the individual folding of each result.</p>
 						</div>
 						<p>Default value is:</p>
-						<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> results = result.childResults || [];
+						<pre><code class="language-javascript"><span class="hljs-keyword">var</span> results = result.childResults || [];
 <span class="hljs-comment">// Add the top result at the top of the list.</span>
 results.unshift(result);
 <span class="hljs-comment">// Empty childResults just to clean it.</span>
@@ -911,18 +910,16 @@ results = Coveo.Folding.foldWithParent(results);
 <span class="hljs-keyword">var</span> topResult = results.shift();
 <span class="hljs-comment">// All other results are childResults.</span>
 topResult.childResults = results;
-<span class="hljs-keyword">return</span> topResult;
-</code></pre>
+<span class="hljs-keyword">return</span> topResult;</code></pre>
 						<p>You can pre-process all the result with this option in the <a href="../globals.html#init"><code>init</code></a> call of your search interface:</p>
-						<pre><code class="lang-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+						<pre><code class="language-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
    <span class="hljs-attr">Folding</span>: {
      <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
        result = Coveo.Folding.defaultGetResult(result);
        <span class="hljs-comment">// Your code here</span>
      }
    }
-})
-</code></pre>
+})</code></pre>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -1318,11 +1315,10 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								<p>Specifies the function that manages the folding of all results.</p>
 							</div>
 							<p>Default value is:</p>
-							<pre><code class="lang-javascript">Coveo.Folding.defaultGetMoreResults = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>) </span>{
+							<pre><code class="language-javascript">Coveo.Folding.defaultGetMoreResults = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>) </span>{
    <span class="hljs-comment">// The results are flat, just do the folding.</span>
    <span class="hljs-keyword">return</span> Coveo.Folding.foldWithParent(results);
-}
-</code></pre>
+}</code></pre>
 						</div>
 						<div class="tsd-type-declaration">
 							<h4>Type declaration</h4>
@@ -1362,7 +1358,7 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								<p>Specifies the function that manages the individual folding of each result.</p>
 							</div>
 							<p>Default value is:</p>
-							<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> results = result.childResults || [];
+							<pre><code class="language-javascript"><span class="hljs-keyword">var</span> results = result.childResults || [];
 <span class="hljs-comment">// Add the top result at the top of the list.</span>
 results.unshift(result);
 <span class="hljs-comment">// Empty childResults just to clean it.</span>
@@ -1373,18 +1369,16 @@ results = Coveo.Folding.foldWithParent(results);
 <span class="hljs-keyword">var</span> topResult = results.shift();
 <span class="hljs-comment">// All other results are childResults.</span>
 topResult.childResults = results;
-<span class="hljs-keyword">return</span> topResult;
-</code></pre>
+<span class="hljs-keyword">return</span> topResult;</code></pre>
 							<p>You can pre-process all the result with this option in the <a href="../globals.html#init"><code>init</code></a> call of your search interface:</p>
-							<pre><code class="lang-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+							<pre><code class="language-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
    <span class="hljs-attr">Folding</span>: {
      <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
        result = Coveo.Folding.defaultGetResult(result);
        <span class="hljs-comment">// Your code here</span>
      }
    }
-})
-</code></pre>
+})</code></pre>
 						</div>
 						<div class="tsd-type-declaration">
 							<h4>Type declaration</h4>

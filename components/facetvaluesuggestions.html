@@ -336,7 +336,7 @@
 								<div class="lead">
 									<p>Disable the component.
 										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Component are enabled by default on creation.</p>
+									Components are enabled by default on creation.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -635,8 +635,8 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The static ID that each component need to be identified.<br/>
-							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
 						</div>
 					</div>
 				</section>
@@ -869,15 +869,14 @@ data-is-category-field&#x3D;&#x27;false&#x27;</pre>
 						<p><strong>Note:</strong> You cannot set this option directly in the component markup as an HTML attribute. You must either set it:</p>
 						<ul>
 							<li>In the <a href="../globals.html#init"><code>init</code></a> call of your search interface (see <a href="https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call">Passing Component Options in the init Call</a></li>
-							<li>Before the <code>init</code> call, using the <a href="@link options"><code>options</code></a> top-level function (see <a href="https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call">Passing Component Options Before the init Call</a>).</li>
+							<li>Before the <code>init</code> call, using the [<code>options</code>](@link options) top-level function (see <a href="https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call">Passing Component Options Before the init Call</a>).</li>
 						</ul>
 						<p><strong>Example:</strong></p>
-						<pre><code class="lang-javascript">Coveo.init(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'search'</span>), {
+						<pre><code class="language-javascript">Coveo.init(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'search'</span>), {
   <span class="hljs-attr">FacetValueSuggestions</span>: {
     <span class="hljs-attr">templateHelper</span>: <span class="hljs-function">(<span class="hljs-params">row, omnibox</span>) =&gt;</span> { <span class="hljs-keyword">return</span> <span class="hljs-string">`Searching for &lt;strong&gt;<span class="hljs-subst">${row.keyword}</span>&lt;/strong&gt; in category &lt;em&gt;<span class="hljs-subst">${row.value}</span>&lt;/em&gt;`</span>; }
   }
-})
-</code></pre>
+})</code></pre>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>

@@ -333,7 +333,7 @@
 								<div class="lead">
 									<p>Disable the component.
 										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Component are enabled by default on creation.</p>
+									Components are enabled by default on creation.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -668,8 +668,8 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The static ID that each component need to be identified.<br/>
-							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
 						</div>
 					</div>
 				</section>
@@ -760,15 +760,13 @@ data-add-search-button&#x3D;&#x27;false&#x27;</pre>
 						<p>In this first case, the <code>Searchbox</code> instantiates a <code>Querybox</code> component. You can configure this <code>Querybox</code>
 							instance using any of the <code>Querybox</code> component options, such as
 						<a href="querybox.html#options.triggerqueryonclear"><code>triggerQueryOnClear</code></a>.</p>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchbox'</span> <span class="hljs-attr">data-trigger-query-on-clear</span>=<span class="hljs-string">'true'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchbox'</span> <span class="hljs-attr">data-trigger-query-on-clear</span>=<span class="hljs-string">'true'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 						<p>In this second case, the <code>Searchbox</code> instantiates an <code>Omnibox</code> component. You can configure this <code>Omnibox</code>
 							instance using any of the <code>Omnibox</code> component options, such as
 							<a href="omnibox.html#options.placeholder"><code>placeholder</code></a>.
 							Moreover, since the <code>Omnibox</code> component inherits all of the <code>Querybox</code> component options, the
 						<code>data-trigger-query-on-clear</code> option from the previous example would also work on this <code>Omnibox</code> instance.</p>
-						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchbox'</span> <span class="hljs-attr">data-enable-omnibox</span>=<span class="hljs-string">'true'</span> <span class="hljs-attr">data-placeholder</span>=<span class="hljs-string">'Please enter a query'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchbox'</span> <span class="hljs-attr">data-enable-omnibox</span>=<span class="hljs-string">'true'</span> <span class="hljs-attr">data-placeholder</span>=<span class="hljs-string">'Please enter a query'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 						<p>Default value is <code>true</code>.</p>
 						<dl class="tsd-comment-tags">
 							<dt>Default</dt>

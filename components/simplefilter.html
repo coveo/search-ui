@@ -431,7 +431,7 @@
 								<div class="lead">
 									<p>Disable the component.
 										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Component are enabled by default on creation.</p>
+									Components are enabled by default on creation.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -958,8 +958,8 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The static ID that each component need to be identified.<br/>
-							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
 						</div>
 					</div>
 				</section>
@@ -1161,13 +1161,13 @@ data-enable-clear-button&#x3D;&#x27;false&#x27;</pre>
 						</div>
 						<p><strong>Examples:</strong></p>
 						<ul>
-							<li>You can set the option in the <a href="../globals.html#init">&#39;init&#39;</a> call:
-								<code>`</code>javascript
-								var myValueCaptions = {
-								&quot;txt&quot; : &quot;Text files&quot;,
-								&quot;html&quot; : &quot;Web page&quot;,
-								[ ... ]
-							};</li>
+							<li>You can set the option in the <a href="../globals.html#init">&#39;init&#39;</a> call:<pre><code class="language-javascript"><span class="hljs-keyword">var</span> myValueCaptions = {
+<span class="hljs-string">"txt"</span> : <span class="hljs-string">"Text files"</span>,
+<span class="hljs-string">"html"</span> : <span class="hljs-string">"Web page"</span>,
+[ ... ]
+};
+</code></pre>
+							</li>
 						</ul>
 						<p>Coveo.init(document.querySelector(&quot;#search&quot;), {
 							SimpleFilter : {
@@ -1181,11 +1181,9 @@ Coveo.options(document.querySelector(<span class="hljs-string">"#search"</span>)
   SimpleFilter : {
     valueCaption : myValueCaptions
   }
-});
-</code></pre><ul>
-							<li>Or directly in the markup:<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- Ensure that the double quotes are properly handled in `data-value-caption`. --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSimpleFilter'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-value-caption</span>=<span class="hljs-string">'{"txt":"Text files","html":"Web page"}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-</code></pre>
+});</code></pre><ul>
+							<li>Or directly in the markup:<pre><code class="language-html"><span class="hljs-comment">&lt;!-- Ensure that the double quotes are properly handled in `data-value-caption`. --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSimpleFilter'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-value-caption</span>=<span class="hljs-string">'{"txt":"Text files","html":"Web page"}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 							</li>
 						</ul>
 					</div>

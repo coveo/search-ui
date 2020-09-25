@@ -238,10 +238,9 @@
 							<li><code>state:change</code> (because at least one value has changed in the <code>QueryStateModel</code>).</li>
 						</ul>
 						<p>Components or external code can attach handlers to those events:</p>
-						<pre><code class="lang-javascript">Coveo.$$(<span class="hljs-built_in">document</span>).on(<span class="hljs-string">'state:change:q'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+						<pre><code class="language-javascript">Coveo.$$(<span class="hljs-built_in">document</span>).on(<span class="hljs-string">'state:change:q'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
   [ ... ]
-});
-</code></pre>
+});</code></pre>
 					</blockquote>
 					<p><strong>Note:</strong></p>
 					<blockquote>
@@ -372,7 +371,7 @@
 								<div class="lead">
 									<p>Disable the component.
 										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Component are enabled by default on creation.</p>
+									Components are enabled by default on creation.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -876,8 +875,8 @@
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The static ID that each component need to be identified.<br/>
-							For example, SearchButton -&gt; static ID : SearchButton -&gt; className : CoveoSearchButton</p>
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
 						</div>
 					</div>
 				</section>
