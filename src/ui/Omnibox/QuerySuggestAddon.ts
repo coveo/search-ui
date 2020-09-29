@@ -12,9 +12,9 @@ import {
 import { StringUtils } from '../../utils/StringUtils';
 import { map, every, last, indexOf, find } from 'underscore';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { history } from 'coveo.analytics';
 import { Cookie } from '../../utils/CookieUtils';
 import { Utils } from '../../utils/Utils';
+import { buildHistoryStore } from '../../utils/HistoryStore';
 
 export interface IQuerySuggestAddon {
   getSuggestion(): Promise<IOmniboxSuggestion[]>;
@@ -152,7 +152,7 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
   }
 
   private get actionsHistory() {
-    const historyStore = new history.HistoryStore();
+    const historyStore = buildHistoryStore();
     const historyFromStore = historyStore.getHistory();
     if (historyFromStore == null) {
       return [];
