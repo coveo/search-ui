@@ -15,7 +15,7 @@ export interface IComboboxOptions {
   wrapperClassName?: string;
   clearOnBlur?: boolean;
   scrollable?: {
-    maxDropdownHeight: () => number;
+    maxDropdownHeight: number;
     requestMoreValues: () => Promise<any>;
     areMoreValuesAvailable: () => boolean;
   };
