@@ -13,7 +13,7 @@ export function comboboxDefaultOptions(): IComboboxOptions {
     scrollable: {
       requestMoreValues: jasmine.createSpy('requestMoreValues').and.callFake(async () => await []),
       areMoreValuesAvailable: () => true,
-      maxDropdownHeight: () => 100
+      maxDropdownHeight: 100
     }
   };
 }
