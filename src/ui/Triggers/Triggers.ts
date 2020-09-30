@@ -14,7 +14,7 @@ import {
 } from '../Analytics/AnalyticsActionListMeta';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { Initialization } from '../Base/Initialization';
-import { object, map, filter, each, take, escape } from 'underscore';
+import { object, map, filter, each, take } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_Triggers';
@@ -92,7 +92,7 @@ export class Triggers extends Component {
       );
 
       this.notifications.push(trigger.content);
-      this.element.appendChild($$('div', { className: 'coveo-trigger-notify' }, escape(trigger.content)).el);
+      this.element.appendChild($$('div', { className: 'coveo-trigger-notify' }, trigger.content).el);
 
       showElement = true;
     });
