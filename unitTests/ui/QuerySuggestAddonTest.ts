@@ -3,9 +3,9 @@ import * as Mock from '../MockEnvironment';
 import { QuerySuggestAddon } from '../../src/ui/Omnibox/QuerySuggestAddon';
 import { IQuerySuggestResponse } from '../../src/rest/QuerySuggest';
 import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
-import HistoryStore from 'coveo.analytics/dist/history';
 import { $$, OmniboxEvents } from '../../src/Core';
 import { IBuildingQuerySuggestArgs, IQuerySuggestSuccessArgs } from '../../src/events/OmniboxEvents';
+import { buildHistoryStore } from '../../src/utils/HistoryStore';
 
 export function QuerySuggestAddonTest() {
   describe('QuerySuggest', () => {
@@ -103,7 +103,7 @@ export function QuerySuggestAddonTest() {
 
       it('with actionsHistory', async done => {
         const fakeStoreEntry = { name: 'foo', value: 'foo', time: new Date().toString() };
-        const store = new HistoryStore();
+        const store = buildHistoryStore();
         store.addElement({ ...fakeStoreEntry });
         querySuggest = new QuerySuggestAddon(omnibox.cmp);
         await querySuggest.getSuggestion();
