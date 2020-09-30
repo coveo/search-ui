@@ -48,6 +48,8 @@ export function ResponsiveComponentsManagerTest() {
     it(`when registering a tab with #enableResponsiveMode false and a responsive facet,
     when triggering the #afterInitialization event,
     it calls the #register instance method to make the facet responsive`, () => {
+      ResponsiveComponentsManager['remainingComponentInitializations'] = 0;
+
       const tabOptions: ITabOptions = { enableResponsiveMode: false };
       const tab = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, tabOptions);
 
