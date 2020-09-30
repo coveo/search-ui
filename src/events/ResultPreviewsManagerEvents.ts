@@ -4,7 +4,7 @@ import { IQuery } from '../rest/Query';
 
 export interface IBuildingResultPreviewsQueryEventArgs {
   /**
-   * The to be sent to Search API.
+   * The query to be sent to Search API.
    */
   query: IQuery;
 }
