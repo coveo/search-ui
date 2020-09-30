@@ -9,7 +9,6 @@ import { IComboboxValue } from '../Combobox/ICombobox';
 import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 import { IDynamicFacet } from '../DynamicFacet/IDynamicFacet';
 import { FacetUtils } from '../Facet/FacetUtils';
-import { $$ } from '../../utils/Dom';
 
 export class DynamicFacetSearch {
   public element: HTMLElement;
@@ -31,8 +30,9 @@ export class DynamicFacetSearch {
       scrollable: {
         requestMoreValues: () => this.facetSearchController.fetchMoreResults(),
         areMoreValuesAvailable: () => this.facetSearchController.moreValuesAvailable,
-        maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-facet-values').clientHeight
-      }
+        maxDropdownHeight: 250
+      },
+      highlightValueClassName: 'coveo-checkbox-span-label'
     });
 
     this.element = this.combobox.element;
@@ -56,7 +56,6 @@ export class DynamicFacetSearch {
         this.facet,
         DynamicFacetSearchValueRenderer
       );
-
       return {
         value: facetValue,
         element: facetValue.renderedElement

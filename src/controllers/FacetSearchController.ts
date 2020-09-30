@@ -49,7 +49,7 @@ export class FacetSearchController {
   }
 
   private get numberOfValues() {
-    return this.facet.values.allValues.length * this.numberOfValuesMultiplier * this.pageCount;
+    return this.facet.options.numberOfValues * this.numberOfValuesMultiplier * this.pageCount;
   }
 
   private get request(): IFacetSearchRequest {

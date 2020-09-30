@@ -54,13 +54,19 @@ export function ComboboxInputTest() {
     });
 
     it(`when triggering blur on the input
+    when relatedTarget is outside the combobox
     should call the "onInputBlur" method of the combobox`, () => {
       const relatedTarget = document.body;
-      const eventData: Partial<FocusEvent> = {
-        relatedTarget
-      };
-      $$(combobox.element).trigger('focusout', eventData);
+      combobox.element.dispatchEvent(new FocusEvent('focusout', { relatedTarget }));
       expect(combobox.onInputBlur).toHaveBeenCalled();
+    });
+
+    it(`when triggering blur on the input
+    when relatedTarget is inside the combobox
+    should not call the "onInputBlur" method of the combobox`, () => {
+      const relatedTarget = combobox.values.element;
+      combobox.element.dispatchEvent(new FocusEvent('focusout', { relatedTarget }));
+      expect(combobox.onInputBlur).not.toHaveBeenCalled();
     });
 
     it(`when pressing the down arrow on the keyboard

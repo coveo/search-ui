@@ -38,11 +38,11 @@ export class ComboboxInput {
 
   private addEventListeners() {
     if (!this.combobox.options.clearOnBlur) {
-      $$(this.inputElement).on('focus', () => this.combobox.onInputChange(this.textInput.getValue()));
+      this.inputElement.addEventListener('focus', () => this.combobox.onInputChange(this.textInput.getValue()));
     }
-    $$(this.combobox.element).on('focusout', (e: FocusEvent) => this.handleFocusOut(e));
-    $$(this.combobox.element).on('keydown', (e: KeyboardEvent) => this.handleKeyboardDirection(e));
-    $$(this.combobox.element).on('keyup', (e: KeyboardEvent) => this.handleKeyboardEnterEscape(e));
+    this.combobox.element.addEventListener('focusout', (e: FocusEvent) => this.handleFocusOut(e));
+    this.combobox.element.addEventListener('keydown', (e: KeyboardEvent) => this.handleKeyboardDirection(e));
+    this.combobox.element.addEventListener('keyup', (e: KeyboardEvent) => this.handleKeyboardEnterEscape(e));
   }
 
   private addAccessibilityAttributes() {
@@ -73,10 +73,17 @@ export class ComboboxInput {
 
   private handleFocusOut(event: FocusEvent) {
     const newTarget = event.relatedTarget as HTMLElement;
-    const isFocusedOnInput = this.combobox.element.contains(newTarget);
-    if (isFocusedOnInput) {
+    const focusInsideCombobox = this.combobox.element.contains(newTarget);
+    if (focusInsideCombobox) {
       return;
     }
+
+    const comboboxValuesHovered = $$(this.combobox.element).find('.coveo-combobox-values:hover');
+    if (comboboxValuesHovered) {
+      this.inputElement.focus();
+      return;
+    }
+
     this.combobox.onInputBlur();
   }
 

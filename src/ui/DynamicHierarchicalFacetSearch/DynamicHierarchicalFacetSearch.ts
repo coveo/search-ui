@@ -8,7 +8,6 @@ import { DynamicHierarchicalFacetSearchValue } from './DynamicHierarchicalFacetS
 import { DynamicHierarchicalFacetSearchValueRenderer } from './DynamicHierarchicalFacetSearchValueRenderer';
 import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 import 'styling/DynamicHierarchicalFacetSearch/_DynamicHierarchicalFacetSearch';
-import { $$ } from '../../utils/Dom';
 
 export class DynamicHierarchicalFacetSearch {
   public element: HTMLElement;
@@ -34,8 +33,9 @@ export class DynamicHierarchicalFacetSearch {
       scrollable: {
         requestMoreValues: () => this.hierarchicalFacetSearchController.fetchMoreResults(),
         areMoreValuesAvailable: () => this.hierarchicalFacetSearchController.moreValuesAvailable,
-        maxDropdownHeight: () => $$(this.facet.element).find('.coveo-dynamic-hierarchical-facet-values').clientHeight
-      }
+        maxDropdownHeight: 250
+      },
+      highlightValueClassName: 'coveo-dynamic-hierarchical-facet-search-value-label'
     });
 
     return this.combobox.element;
@@ -56,7 +56,6 @@ export class DynamicHierarchicalFacetSearch {
         },
         this.facet
       );
-
       return {
         value: facetValue,
         element: facetValue.renderedElement
