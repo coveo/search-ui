@@ -14,9 +14,24 @@ const QUESTION_TITLE_CHECKBOX_CLASSNAME = `${QUESTION_TITLE_CLASSNAME}-checkbox`
 const QUESTION_SNIPPET_CLASSNAME = `${QUESTION_CLASSNAME}-snippet`;
 const QUESTION_SNIPPET_HIDDEN_CLASSNAME = `${QUESTION_SNIPPET_CLASSNAME}-hidden`;
 const SHADOW_CLASSNAME = `${QUESTION_SNIPPET_CLASSNAME}-content`;
+const RAW_CONTENT_CLASSNAME = `${SHADOW_CLASSNAME}-raw`;
 const SOURCE_CLASSNAME = `${QUESTION_CLASSNAME}-source`;
 const SOURCE_TITLE_CLASSNAME = `${SOURCE_CLASSNAME}-title`;
 const SOURCE_URL_CLASSNAME = `${SOURCE_CLASSNAME}-url`;
+
+export const SmartSnippetCollapsibleSuggestionClassNames = {
+  QUESTION_CLASSNAME,
+  QUESTION_TITLE_CLASSNAME,
+  QUESTION_TITLE_LABEL_CLASSNAME,
+  QUESTION_TITLE_CHECKBOX_CLASSNAME,
+  QUESTION_SNIPPET_CLASSNAME,
+  QUESTION_SNIPPET_HIDDEN_CLASSNAME,
+  SHADOW_CLASSNAME,
+  RAW_CONTENT_CLASSNAME,
+  SOURCE_CLASSNAME,
+  SOURCE_TITLE_CLASSNAME,
+  SOURCE_URL_CLASSNAME
+};
 
 export class SmartSnippetCollapsibleSuggestion {
   private readonly labelId = uniqueId(QUESTION_TITLE_LABEL_CLASSNAME);
@@ -101,7 +116,7 @@ export class SmartSnippetCollapsibleSuggestion {
   }
 
   private buildAnswerSnippetContent(innerHTML: string, style?: HTMLStyleElement) {
-    const snippet = $$('div', {}, innerHTML);
+    const snippet = $$('div', { className: RAW_CONTENT_CLASSNAME }, innerHTML);
     const container = $$('div', {}, snippet);
     if (style) {
       container.append(style);

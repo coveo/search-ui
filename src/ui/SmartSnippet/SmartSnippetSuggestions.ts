@@ -15,6 +15,12 @@ const HAS_QUESTIONS_CLASSNAME = `${BASE_CLASSNAME}-has-questions`;
 const QUESTIONS_LIST_CLASSNAME = `${BASE_CLASSNAME}-questions`;
 const QUESTIONS_LIST_TITLE_CLASSNAME = `${QUESTIONS_LIST_CLASSNAME}-title`;
 
+export const SmartSnippetSuggestionsClassNames = {
+  HAS_QUESTIONS_CLASSNAME,
+  QUESTIONS_LIST_CLASSNAME,
+  QUESTIONS_LIST_TITLE_CLASSNAME
+};
+
 export class SmartSnippetSuggestions extends Component {
   static ID = 'SmartSnippetSuggestions';
 
