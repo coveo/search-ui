@@ -33,7 +33,9 @@
   },
   "prettier": {
     "printWidth": 140,
-    "singleQuote": true
+    "singleQuote": true,
+    "trailingComma": "none",
+    "arrowParens": "avoid"
   },
   "repository": {
     "type": "git",
@@ -126,7 +128,7 @@
     "null-loader": "^0.1.1",
     "pg": "^7.3.0",
     "plop": "^1.5.0",
-    "prettier": "^1.6.1",
+    "prettier": "^2.1.2",
     "puppeteer": "^1.13.0",
     "q": "^1.4.1",
     "remap-istanbul": "https://github.com/coveord/remap-istanbul/tarball/master",
