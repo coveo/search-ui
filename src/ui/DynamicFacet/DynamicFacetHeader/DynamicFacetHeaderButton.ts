@@ -52,5 +52,8 @@ export class DynamicFacetHeaderButton {
 
   public toggle(shouldDisplay: boolean) {
     this.button.toggle(shouldDisplay);
+    if (shouldDisplay) {
+      this.button.el.focus();
+    }
   }
 }

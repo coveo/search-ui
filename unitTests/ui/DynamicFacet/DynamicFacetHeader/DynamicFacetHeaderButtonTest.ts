@@ -93,6 +93,18 @@ export function DynamicFacetHeaderButtonTest() {
       expect($$(buttonElement).isVisible()).toBe(false);
     });
 
+    it('when "toggle" is called with "true", element should be focused', () => {
+      spyOn(button.element, 'focus');
+      button.toggle(true);
+      expect(button.element.focus).toHaveBeenCalledTimes(1);
+    });
+
+    it('when "toggle" is called with "false", element should not be focused', () => {
+      spyOn(button.element, 'focus');
+      button.toggle(false);
+      expect(button.element.focus).not.toHaveBeenCalled();
+    });
+
     describe('when the icon options ("iconSVG" & "iconClassName") are passed', () => {
       let svg: HTMLElement;
 
