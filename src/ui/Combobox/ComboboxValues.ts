@@ -184,7 +184,7 @@ export class ComboboxValues implements IComboboxValues {
     if (!this.isScrollable) {
       return;
     }
-    this.element.style.maxHeight = `${this.combobox.options.scrollable.maxDropdownHeight()}px`;
+    this.element.style.maxHeight = `${this.combobox.options.scrollable.maxDropdownHeight}px`;
     this.element.scrollTop = 0;
   }
 

@@ -31,7 +31,7 @@ import { QueryUtils } from '../utils/QueryUtils';
 import { QueryError } from '../rest/QueryError';
 import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
-import { history } from 'coveo.analytics';
+import { buildHistoryStore } from '../utils/HistoryStore';
 import { Cookie } from '../utils/CookieUtils';
 import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
@@ -1372,7 +1372,7 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
   };
 }
 
-function includeActionsHistory(historyStore: CoveoAnalytics.HistoryStore = new history.HistoryStore()) {
+function includeActionsHistory(historyStore = buildHistoryStore()) {
   return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 

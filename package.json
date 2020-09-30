@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.0.710",
+  "version": "2.0.716",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -166,10 +166,11 @@
     "moment": "~2.22.2",
     "pikaday": "^1.4.0",
     "popper.js": "^1.14.3",
-    "underscore": "^1.8.3",
+    "underscore": "^1.10.2",
     "xregexp": "^4.2.4"
   },
   "resolutions": {
+    "lodash": "^4.17.12",
     "marked": "^0.7.0",
     "minimatch": "^3.0.2",
     "minimist": "^1.2.3",
