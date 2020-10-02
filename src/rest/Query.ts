@@ -6,6 +6,11 @@ import { ICategoryFacetRequest } from './CategoryFacetRequest';
 import { IFacetRequest } from './Facet/FacetRequest';
 
 /**
+ * The format of a successful response.
+ */
+type ResponseFormat = 'json' | 'opensearch-atom' | 'opensearch-rss' | 'xlsx';
+
+/**
  * The available global configuration options when requesting facets through the [facets]{IQuery.facets} array.
  */
 export interface IFacetOptions {
@@ -299,4 +304,9 @@ export interface IQuery {
    * The commerce request to execute.
    */
   commerce?: ICommerceRequest;
+  /**
+   * The format of a successful response.
+   * If not specified, this parameter defaults to 'json'.
+   */
+  format?: ResponseFormat;
 }

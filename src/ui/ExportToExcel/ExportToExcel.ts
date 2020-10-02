@@ -13,6 +13,8 @@ import 'styling/_ExportToExcel';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SearchInterface } from '../SearchInterface/SearchInterface';
 import { get } from '../Base/RegisteredNamedMethods';
+import * as moment from 'moment';
+import { IQuery } from '../../rest/Query';
 
 export interface IExportToExcelOptions {
   numberOfResults?: number;
@@ -97,21 +99,52 @@ export class ExportToExcel extends Component {
    * Also logs an `exportToExcel` event in the usage analytics.
    */
   public download() {
+    const query = this.buildExcelQuery();
+    this.logger.debug("Performing query following 'Export to Excel' click");
+
+    const endpoint = this.queryController.getEndpoint();
+    this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.exportToExcel, {}, this.element);
+
+    endpoint.downloadBinary(query).then(this.generateExcelFile);
+  }
+
+  private buildExcelQuery(): IQuery {
     let query = this.queryController.getLastQuery();
+    query = _.omit(query, ['numberOfResults', 'fieldsToInclude']);
 
-    if (query) {
-      // Remove number of results and fields to include from the last query, because those 2 parameters
-      // should be controlled/modified by the export to excel component.
-      query = _.omit(query, ['numberOfResults', 'fieldsToInclude']);
-      if (this.options.fieldsToInclude) {
-        query.fieldsToInclude = <string[]>this.options.fieldsToInclude;
-      }
-      this.logger.debug("Performing query following 'Export to Excel' click");
-
-      const endpoint = this.queryController.getEndpoint();
-      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.exportToExcel, {}, this.element);
-      this._window.location.replace(endpoint.getExportToExcelLink(query, this.options.numberOfResults));
+    if (this.options.fieldsToInclude) {
+      query.fieldsToInclude = <string[]>this.options.fieldsToInclude;
     }
+
+    return {
+      ...query,
+      format: 'xlsx',
+      numberOfResults: this.options.numberOfResults
+    };
+  }
+
+  private generateExcelFile(content: ArrayBuffer) {
+    const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = this.buildExcelFileName();
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  private buildExcelFileName() {
+    const utc = moment().utc();
+    const year = utc.format('YYYY');
+    const month = utc.format('MM');
+    const day = utc.format('DD');
+    const hour = utc.format('HH');
+    const minute = utc.format('mm');
+    const second = utc.format('ss');
+
+    return `query--${year}-${month}-${day}--${hour}-${minute}-${second}.xlsx`;
   }
 
   static create(element: HTMLElement, options?: IExportToExcelOptions, root?: HTMLElement): ExportToExcel {

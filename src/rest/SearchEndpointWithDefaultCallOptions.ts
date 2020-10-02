@@ -51,6 +51,10 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.search(query, this.enrichCallOptions(callOptions));
   }
 
+  public downloadBinary(query: IQuery, callOptions?: IEndpointCallOptions) {
+    return this.endpoint.downloadBinary(query, this.enrichCallOptions(callOptions));
+  }
+
   public plan(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ExecutionPlan> {
     return this.endpoint.plan(query, this.enrichCallOptions(callOptions));
   }

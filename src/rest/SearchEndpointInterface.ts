@@ -94,6 +94,7 @@ export interface ISearchEndpoint {
   getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string;
   isJsonp(): boolean;
   search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults>;
+  downloadBinary(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ArrayBuffer>;
   plan(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ExecutionPlan>;
   getExportToExcelLink(query: IQuery, numberOfResults: number, callOptions?: IEndpointCallOptions): string;
   getRawDataStream(documentUniqueId: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions): Promise<ArrayBuffer>;
