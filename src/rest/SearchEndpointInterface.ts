@@ -96,7 +96,6 @@ export interface ISearchEndpoint {
   search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults>;
   downloadBinary(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ArrayBuffer>;
   plan(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ExecutionPlan>;
-  getExportToExcelLink(query: IQuery, numberOfResults: number, callOptions?: IEndpointCallOptions): string;
   getRawDataStream(documentUniqueId: string, dataStreamType: string, callOptions?: IViewAsHtmlOptions): Promise<ArrayBuffer>;
   getDocument(documentUniqueID: string, callOptions?: IGetDocumentOptions): Promise<IQueryResult>;
   getDocumentText(documentUniqueID: string, callOptions?: IEndpointCallOptions): Promise<string>;

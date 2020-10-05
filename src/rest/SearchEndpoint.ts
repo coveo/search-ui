@@ -438,6 +438,9 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * @deprecated getExportToExcelLink does not factor in all query parameters (e.g. dynamic facets) due to GET request url length limitations.
+   * Please use `downloadBinary` instead to ensure all query parameters are used.
+   *
    * Gets a link / URI to download a query result set to the XLSX format.
    *
    * **Note:**
