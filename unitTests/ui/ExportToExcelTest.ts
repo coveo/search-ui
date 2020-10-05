@@ -3,64 +3,70 @@ import { ExportToExcel } from '../../src/ui/ExportToExcel/ExportToExcel';
 import { IExportToExcelOptions } from '../../src/ui/ExportToExcel/ExportToExcel';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import _ = require('underscore');
 
 export function ExportToExcelTest() {
   describe('ExportToExcel', function() {
+    let options: IExportToExcelOptions = {};
     let test: Mock.IBasicComponentSetup<ExportToExcel>;
 
-    beforeEach(function() {
-      test = Mock.basicComponentSetup<ExportToExcel>(ExportToExcel);
+    function initExportToExcel() {
+      test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, options);
       test.cmp._window = Mock.mockWindow();
+    }
+
+    function buildDownloadBinarySpy() {
+      const spy = jasmine.createSpy('searchEndpoint');
+      spy.and.returnValue(Promise.resolve({}));
+      return spy;
+    }
+
+    beforeEach(function() {
+      options = {};
+      initExportToExcel();
     });
 
     describe('exposes options', function() {
       it('numberOfResults calls search endpoint with appropriate number of results', function() {
-        test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, <IExportToExcelOptions>{
-          numberOfResults: 200
-        });
-        test.cmp._window = Mock.mockWindow();
-        const searchEndpointSpy = jasmine.createSpy('searchEndpoint');
-        test.env.searchEndpoint.getExportToExcelLink = searchEndpointSpy;
-        const fakeQuery = new QueryBuilder().build();
-        test.env.queryController.getLastQuery = () => fakeQuery;
+        options.numberOfResults = 200;
+        initExportToExcel();
+
+        const spy = buildDownloadBinarySpy();
+        test.env.searchEndpoint.downloadBinary = spy;
+
         test.cmp.download();
-        expect(searchEndpointSpy).toHaveBeenCalledWith(_.omit(fakeQuery, ['numberOfResults', 'fieldsToInclude']), 200);
+
+        expect(spy).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 200 }));
       });
 
       it('fieldsToInclude allows to specify the needed fields to download', () => {
-        test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, <IExportToExcelOptions>{
-          fieldsToInclude: ['@foo', '@bar']
-        });
-        test.cmp._window = Mock.mockWindow();
-        const searchEndpointSpy = jasmine.createSpy('searchEndpoint');
-        test.env.searchEndpoint.getExportToExcelLink = searchEndpointSpy;
-        const fakeQuery = new QueryBuilder().build();
-        test.env.queryController.getLastQuery = () => fakeQuery;
+        options.fieldsToInclude = ['@foo', '@bar'];
+        initExportToExcel();
+
+        const spy = buildDownloadBinarySpy();
+        test.env.searchEndpoint.downloadBinary = spy;
+
         test.cmp.download();
-        expect(searchEndpointSpy).toHaveBeenCalledWith(
+
+        expect(spy).toHaveBeenCalledWith(
           jasmine.objectContaining({
             fieldsToInclude: jasmine.arrayContaining(['@foo', '@bar'])
-          }),
-          100
+          })
         );
       });
 
       it('fieldsToInclude not being specified means the fields to include will be "null" in the query', () => {
-        test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, <IExportToExcelOptions>{
-          fieldsToInclude: null
-        });
-        test.cmp._window = Mock.mockWindow();
-        const searchEndpointSpy = jasmine.createSpy('searchEndpoint');
-        test.env.searchEndpoint.getExportToExcelLink = searchEndpointSpy;
-        const fakeQuery = new QueryBuilder().build();
-        test.env.queryController.getLastQuery = () => fakeQuery;
+        options.fieldsToInclude = null;
+        initExportToExcel();
+
+        const spy = buildDownloadBinarySpy();
+        test.env.searchEndpoint.downloadBinary = spy;
+
         test.cmp.download();
-        expect(searchEndpointSpy).not.toHaveBeenCalledWith(
+
+        expect(spy).not.toHaveBeenCalledWith(
           jasmine.objectContaining({
             fieldsToInclude: jasmine.anything()
-          }),
-          100
+          })
         );
       });
     });
@@ -68,7 +74,7 @@ export function ExportToExcelTest() {
     describe('when query was made', function() {
       beforeEach(function() {
         test.env.queryController.getLastQuery = () => new QueryBuilder().build();
-        test.env.searchEndpoint.getExportToExcelLink = () => 'http://www.excellink.com';
+        test.env.searchEndpoint.downloadBinary = buildDownloadBinarySpy();
       });
 
       it('download should call exportToExcel event if query was made', function() {
