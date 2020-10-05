@@ -16,7 +16,7 @@ export function ExportToExcelTest() {
 
     function buildDownloadBinarySpy() {
       const spy = jasmine.createSpy('searchEndpoint');
-      spy.and.returnValue(Promise.resolve({}));
+      spy.and.returnValue(Promise.resolve(new ArrayBuffer(0)));
       return spy;
     }
 
@@ -84,11 +84,19 @@ export function ExportToExcelTest() {
         expect(excelSpy).toHaveBeenCalledWith(analyticsActionCauseList.exportToExcel, {}, test.env.element);
       });
 
-      it('download should redirect to the link provided by the search endpoint', function() {
-        const windowLocationReplaceSpy = jasmine.createSpy('windowLocationReplaceSpy');
-        test.cmp._window.location.replace = windowLocationReplaceSpy;
+      it('download should create an object url and revoke it', async () => {
+        const createObjectUrlSpy = jasmine.createSpy('createObjectUrl');
+        const revokeObjectUrlSpy = jasmine.createSpy('revokeObjectUrl');
+
+        window.URL.createObjectURL = createObjectUrlSpy;
+        window.URL.revokeObjectURL = revokeObjectUrlSpy;
+
         test.cmp.download();
-        expect(test.cmp._window.location.replace).toHaveBeenCalledWith('http://www.excellink.com');
+
+        await Promise.resolve({});
+
+        expect(createObjectUrlSpy).toHaveBeenCalled();
+        expect(revokeObjectUrlSpy).toHaveBeenCalled();
       });
     });
   });
