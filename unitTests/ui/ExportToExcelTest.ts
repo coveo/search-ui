@@ -25,6 +25,26 @@ export function ExportToExcelTest() {
       initExportToExcel();
     });
 
+    describe('calling #download', () => {
+      it(`calls downloadBinary with format set to 'xlsx'`, () => {
+        const spy = buildDownloadBinarySpy();
+        test.env.searchEndpoint.downloadBinary = spy;
+
+        test.cmp.download();
+
+        expect(spy).toHaveBeenCalledWith(jasmine.objectContaining({ format: 'xlsx' }));
+      });
+
+      it('calls downloadBinary with the default number of results', () => {
+        const spy = buildDownloadBinarySpy();
+        test.env.searchEndpoint.downloadBinary = spy;
+
+        test.cmp.download();
+
+        expect(spy).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 100 }));
+      });
+    });
+
     describe('exposes options', function() {
       it('numberOfResults calls search endpoint with appropriate number of results', function() {
         options.numberOfResults = 200;
