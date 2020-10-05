@@ -23,11 +23,12 @@ import * as _ from 'underscore';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 import { ExecutionPlan } from './Plan';
+import { SearchEndpoint } from '../Core';
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;
 
-  constructor(private endpoint: ISearchEndpoint, private callOptions?: IEndpointCallOptions) {
+  constructor(private endpoint: SearchEndpoint, private callOptions?: IEndpointCallOptions) {
     this.options = endpoint.options;
   }
 
