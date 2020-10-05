@@ -1,5 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import { ExportToExcel } from '../../src/ui/ExportToExcel/ExportToExcel';
+import { ExportToExcel, setCreateAnchor } from '../../src/ui/ExportToExcel/ExportToExcel';
 import { IExportToExcelOptions } from '../../src/ui/ExportToExcel/ExportToExcel';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
@@ -13,8 +13,16 @@ export function ExportToExcelTest() {
       test.cmp._window = Mock.mockWindow();
     }
 
+    function buildAnchorWithClickSpy() {
+      const a = document.createElement('a');
+      spyOn(a, 'click');
+      return a;
+    }
+
     beforeEach(function() {
       options = {};
+      setCreateAnchor(() => buildAnchorWithClickSpy());
+
       initExportToExcel();
     });
 
@@ -38,18 +46,48 @@ export function ExportToExcelTest() {
         expect(excelSpy).toHaveBeenCalledWith(analyticsActionCauseList.exportToExcel, {}, test.env.element);
       });
 
-      it('download should create an object url and revoke it', async done => {
-        const createObjectUrlSpy = jasmine.createSpy('createObjectUrl');
-        const revokeObjectUrlSpy = jasmine.createSpy('revokeObjectUrl');
-
-        window.URL.createObjectURL = createObjectUrlSpy;
-        window.URL.revokeObjectURL = revokeObjectUrlSpy;
+      it('sets on an achor element href attribute the blob url', async done => {
+        const a = buildAnchorWithClickSpy();
+        setCreateAnchor(() => a);
 
         test.cmp.download();
         await Promise.resolve({});
 
-        expect(createObjectUrlSpy).toHaveBeenCalled();
-        expect(revokeObjectUrlSpy).toHaveBeenCalled();
+        expect(a.href).toContain('blob:http://localhost:8081/');
+        done();
+      });
+
+      it('sets on an achor element the download attribute', async done => {
+        const a = buildAnchorWithClickSpy();
+        setCreateAnchor(() => a);
+
+        test.cmp.download();
+        await Promise.resolve({});
+
+        expect(a.download).toBeTruthy();
+        done();
+      });
+
+      it('clicks the anchor element', async done => {
+        const a = buildAnchorWithClickSpy();
+        setCreateAnchor(() => a);
+
+        test.cmp.download();
+        await Promise.resolve({});
+
+        expect(a.click).toHaveBeenCalledTimes(1);
+        done();
+      });
+
+      it('revokes the blob object url', async done => {
+        const spy = jasmine.createSpy('revokeObjectUrl');
+
+        window.URL.revokeObjectURL = spy;
+
+        test.cmp.download();
+        await Promise.resolve({});
+
+        expect(spy).toHaveBeenCalledTimes(1);
         done();
       });
     });

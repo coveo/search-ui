@@ -16,6 +16,12 @@ import { get } from '../Base/RegisteredNamedMethods';
 import * as moment from 'moment';
 import { IQuery } from '../../rest/Query';
 
+let createAnchor = () => document.createElement('a');
+
+export function setCreateAnchor(fn: () => HTMLAnchorElement) {
+  createAnchor = fn;
+}
+
 export interface IExportToExcelOptions {
   numberOfResults?: number;
   fieldsToInclude?: IFieldOption[];
@@ -105,7 +111,7 @@ export class ExportToExcel extends Component {
     const endpoint = this.queryController.getEndpoint();
     this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.exportToExcel, {}, this.element);
 
-    endpoint.downloadBinary(query).then(this.generateExcelFile);
+    endpoint.downloadBinary(query).then(content => this.generateExcelFile(content));
   }
 
   private buildExcelQuery(): IQuery {
@@ -127,7 +133,7 @@ export class ExportToExcel extends Component {
     const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const url = URL.createObjectURL(blob);
 
-    const a = document.createElement('a');
+    const a = createAnchor();
     a.href = url;
     a.download = this.buildExcelFileName();
     a.click();
