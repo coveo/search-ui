@@ -53,7 +53,7 @@ export function ExportToExcelTest() {
         test.cmp.download();
         await Promise.resolve({});
 
-        expect(a.href).toContain('blob:http://localhost:8081/');
+        expect(a.href).toContain('blob:http://localhost');
         done();
       });
 
