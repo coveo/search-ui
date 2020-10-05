@@ -1,7 +1,6 @@
 import * as Mock from '../MockEnvironment';
 import { ExportToExcel } from '../../src/ui/ExportToExcel/ExportToExcel';
 import { IExportToExcelOptions } from '../../src/ui/ExportToExcel/ExportToExcel';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function ExportToExcelTest() {
@@ -14,12 +13,6 @@ export function ExportToExcelTest() {
       test.cmp._window = Mock.mockWindow();
     }
 
-    function buildDownloadBinarySpy() {
-      const spy = jasmine.createSpy('searchEndpoint');
-      spy.and.returnValue(Promise.resolve(new ArrayBuffer(0)));
-      return spy;
-    }
-
     beforeEach(function() {
       options = {};
       initExportToExcel();
@@ -27,21 +20,37 @@ export function ExportToExcelTest() {
 
     describe('calling #download', () => {
       it(`calls downloadBinary with format set to 'xlsx'`, () => {
-        const spy = buildDownloadBinarySpy();
-        test.env.searchEndpoint.downloadBinary = spy;
-
         test.cmp.download();
 
-        expect(spy).toHaveBeenCalledWith(jasmine.objectContaining({ format: 'xlsx' }));
+        expect(test.env.searchEndpoint.downloadBinary).toHaveBeenCalledWith(jasmine.objectContaining({ format: 'xlsx' }));
       });
 
       it('calls downloadBinary with the default number of results', () => {
-        const spy = buildDownloadBinarySpy();
-        test.env.searchEndpoint.downloadBinary = spy;
-
         test.cmp.download();
 
-        expect(spy).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 100 }));
+        expect(test.env.searchEndpoint.downloadBinary).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 100 }));
+      });
+
+      it('should call exportToExcel event if query was made', () => {
+        const excelSpy = jasmine.createSpy('excelSpy');
+        test.env.usageAnalytics.logCustomEvent = excelSpy;
+        test.cmp.download();
+        expect(excelSpy).toHaveBeenCalledWith(analyticsActionCauseList.exportToExcel, {}, test.env.element);
+      });
+
+      it('download should create an object url and revoke it', async done => {
+        const createObjectUrlSpy = jasmine.createSpy('createObjectUrl');
+        const revokeObjectUrlSpy = jasmine.createSpy('revokeObjectUrl');
+
+        window.URL.createObjectURL = createObjectUrlSpy;
+        window.URL.revokeObjectURL = revokeObjectUrlSpy;
+
+        test.cmp.download();
+        await Promise.resolve({});
+
+        expect(createObjectUrlSpy).toHaveBeenCalled();
+        expect(revokeObjectUrlSpy).toHaveBeenCalled();
+        done();
       });
     });
 
@@ -50,24 +59,18 @@ export function ExportToExcelTest() {
         options.numberOfResults = 200;
         initExportToExcel();
 
-        const spy = buildDownloadBinarySpy();
-        test.env.searchEndpoint.downloadBinary = spy;
-
         test.cmp.download();
 
-        expect(spy).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 200 }));
+        expect(test.env.searchEndpoint.downloadBinary).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 200 }));
       });
 
       it('fieldsToInclude allows to specify the needed fields to download', () => {
         options.fieldsToInclude = ['@foo', '@bar'];
         initExportToExcel();
 
-        const spy = buildDownloadBinarySpy();
-        test.env.searchEndpoint.downloadBinary = spy;
-
         test.cmp.download();
 
-        expect(spy).toHaveBeenCalledWith(
+        expect(test.env.searchEndpoint.downloadBinary).toHaveBeenCalledWith(
           jasmine.objectContaining({
             fieldsToInclude: jasmine.arrayContaining(['@foo', '@bar'])
           })
@@ -78,45 +81,13 @@ export function ExportToExcelTest() {
         options.fieldsToInclude = null;
         initExportToExcel();
 
-        const spy = buildDownloadBinarySpy();
-        test.env.searchEndpoint.downloadBinary = spy;
-
         test.cmp.download();
 
-        expect(spy).not.toHaveBeenCalledWith(
+        expect(test.env.searchEndpoint.downloadBinary).not.toHaveBeenCalledWith(
           jasmine.objectContaining({
             fieldsToInclude: jasmine.anything()
           })
         );
-      });
-    });
-
-    describe('when query was made', function() {
-      beforeEach(function() {
-        test.env.queryController.getLastQuery = () => new QueryBuilder().build();
-        test.env.searchEndpoint.downloadBinary = buildDownloadBinarySpy();
-      });
-
-      it('download should call exportToExcel event if query was made', function() {
-        const excelSpy = jasmine.createSpy('excelSpy');
-        test.env.usageAnalytics.logCustomEvent = excelSpy;
-        test.cmp.download();
-        expect(excelSpy).toHaveBeenCalledWith(analyticsActionCauseList.exportToExcel, {}, test.env.element);
-      });
-
-      it('download should create an object url and revoke it', async () => {
-        const createObjectUrlSpy = jasmine.createSpy('createObjectUrl');
-        const revokeObjectUrlSpy = jasmine.createSpy('revokeObjectUrl');
-
-        window.URL.createObjectURL = createObjectUrlSpy;
-        window.URL.revokeObjectURL = revokeObjectUrlSpy;
-
-        test.cmp.download();
-
-        await Promise.resolve({});
-
-        expect(createObjectUrlSpy).toHaveBeenCalled();
-        expect(revokeObjectUrlSpy).toHaveBeenCalled();
       });
     });
   });
