@@ -8,7 +8,7 @@ import { IFacetRequest } from './Facet/FacetRequest';
 /**
  * The format of a successful response.
  */
-type ResponseFormat = 'json' | 'opensearch-atom' | 'opensearch-rss' | 'xlsx';
+export type ResponseFormat = 'json' | 'opensearch-atom' | 'opensearch-rss' | 'xlsx';
 
 /**
  * The available global configuration options when requesting facets through the [facets]{IQuery.facets} array.
