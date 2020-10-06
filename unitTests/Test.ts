@@ -857,3 +857,6 @@ UserFeedbackBannerTest();
 
 import { ExplanationModalTest } from './ui/ExplanationModalTest';
 ExplanationModalTest();
+
+import { SmartSnippetSuggestionsTest } from './ui/SmartSnippetSuggestionsTest';
+SmartSnippetSuggestionsTest();

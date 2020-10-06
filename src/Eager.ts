@@ -408,6 +408,11 @@ export { SortDropdown };
 
 import { SmartSnippet } from './ui/SmartSnippet/SmartSnippet';
 SmartSnippet.doExport();
+export { SmartSnippet };
+
+import { SmartSnippetSuggestions } from './ui/SmartSnippet/SmartSnippetSuggestions';
+SmartSnippetSuggestions.doExport();
+export { SmartSnippetSuggestions };
 
 import { FacetsMobileMode } from './ui/FacetsMobileMode/FacetsMobileMode';
 FacetsMobileMode.doExport();

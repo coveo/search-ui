@@ -1,4 +1,4 @@
-export interface IQuestionAnswerResponse {
+export interface IPartialQuestionAnswerResponse {
   question: string;
   answerSnippet: string;
   documentId: {
@@ -6,5 +6,8 @@ export interface IQuestionAnswerResponse {
     contentIdValue: string;
   };
   score: number;
-  relatedQuestions: any[];
+}
+
+export interface IQuestionAnswerResponse extends IPartialQuestionAnswerResponse {
+  relatedQuestions: IPartialQuestionAnswerResponse[];
 }
