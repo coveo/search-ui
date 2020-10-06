@@ -412,7 +412,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     const call = this.buildCompleteCall(query, callOptions, callParams);
     this.logger.info('Performing REST query', query);
 
-    return await this.performOneCall<ArrayBuffer>(call.params, call.options);
+    return this.performOneCall<ArrayBuffer>(call.params, call.options);
   }
 
   /**
