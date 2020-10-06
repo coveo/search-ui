@@ -199,11 +199,7 @@ export class FacetSettings extends FacetSort {
 
   public getSortItem(sortName: string): HTMLElement {
     return find(this.sortSection.sortItems, sortItem => {
-      return (
-        $$(sortItem)
-          .getAttribute('data-sort-name')
-          .toLowerCase() == sortName.replace('ascending|descending', '').toLowerCase()
-      );
+      return $$(sortItem).getAttribute('data-sort-name').toLowerCase() == sortName.replace('ascending|descending', '').toLowerCase();
     });
   }
 
@@ -331,7 +327,7 @@ export class FacetSettings extends FacetSort {
     directionAscendingSection.appendChild(directionItemsAscending);
     new AccessibleButton()
       .withElement(ascending)
-      .withoutLabel()
+      .withoutLabelOrTitle()
       .withSelectAction(() => this.handleDirectionClick(ascending, 'ascending'))
       .build();
     this.unselectSection(directionAscendingSection);
@@ -345,7 +341,7 @@ export class FacetSettings extends FacetSort {
     directionDescendingSection.appendChild(directionItemsDescending);
     new AccessibleButton()
       .withElement(descending)
-      .withoutLabel()
+      .withoutLabelOrTitle()
       .withSelectAction(() => this.handleDirectionClick(descending, 'descending'))
       .build();
     this.unselectSection(directionDescendingSection);
@@ -380,7 +376,7 @@ export class FacetSettings extends FacetSort {
     new AccessibleButton()
       .withElement(saveStateSection)
       .withSelectAction(() => this.handleSaveStateClick())
-      .withoutLabel()
+      .withoutLabelOrTitle()
       .build();
 
     return saveStateSection;
@@ -397,7 +393,7 @@ export class FacetSettings extends FacetSort {
     new AccessibleButton()
       .withElement(clearStateSection)
       .withSelectAction(() => this.handleClearStateClick())
-      .withoutLabel()
+      .withoutLabelOrTitle()
       .build();
 
     return clearStateSection;
@@ -569,9 +565,7 @@ export class FacetSettings extends FacetSort {
   private activateDirectionSection() {
     each(this.directionSection, direction => {
       $$(direction).removeClass('coveo-facet-settings-disabled');
-      $$(direction)
-        .find('.coveo-facet-settings-item')
-        .setAttribute('aria-disabled', 'false');
+      $$(direction).find('.coveo-facet-settings-item').setAttribute('aria-disabled', 'false');
       this.unselectSection(direction);
     });
     this.selectItem(this.getCurrentDirectionItem());
@@ -580,9 +574,7 @@ export class FacetSettings extends FacetSort {
   private disableDirectionSection() {
     each(this.directionSection, direction => {
       $$(direction).addClass('coveo-facet-settings-disabled');
-      $$(direction)
-        .find('.coveo-facet-settings-item')
-        .setAttribute('aria-disabled', 'true');
+      $$(direction).find('.coveo-facet-settings-item').setAttribute('aria-disabled', 'true');
       this.unselectSection(direction);
     });
   }

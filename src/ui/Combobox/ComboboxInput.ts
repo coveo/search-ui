@@ -1,18 +1,13 @@
 import { TextInput, ITextInputOptions } from '../FormWidgets/TextInput';
 import { $$ } from '../../utils/Dom';
-import { Combobox } from './Combobox';
 import { KEYBOARD } from '../../utils/KeyboardUtils';
 import { Utils } from '../../utils/Utils';
-
-export interface IComboboxAccessibilityAttributes {
-  activeDescendant: string;
-  expanded: boolean;
-}
+import { IComboboxAccessibilityAttributes, ICombobox } from './ICombobox';
 
 export class ComboboxInput {
   public element: HTMLElement;
   private textInput: TextInput;
-  private inputElement: HTMLElement;
+  private inputElement: HTMLInputElement;
   private inputOptions: ITextInputOptions = {
     usePlaceholder: true,
     className: 'coveo-combobox-input',
@@ -21,12 +16,16 @@ export class ComboboxInput {
     icon: 'search'
   };
 
-  constructor(private combobox: Combobox) {
+  constructor(private combobox: ICombobox) {
     this.create();
     this.element = this.textInput.getElement();
-    this.inputElement = $$(this.element).find('input');
+    this.inputElement = $$(this.element).find('input') as HTMLInputElement;
     this.addEventListeners();
     this.addAccessibilityAttributes();
+  }
+
+  public get value() {
+    return this.inputElement.value;
   }
 
   private create() {
@@ -39,11 +38,11 @@ export class ComboboxInput {
 
   private addEventListeners() {
     if (!this.combobox.options.clearOnBlur) {
-      $$(this.inputElement).on('focus', () => this.combobox.onInputChange(this.textInput.getValue()));
+      this.inputElement.addEventListener('focus', () => this.combobox.onInputChange(this.textInput.getValue()));
     }
-    $$(this.combobox.element).on('focusout', (e: FocusEvent) => this.handleFocusOut(e));
-    $$(this.combobox.element).on('keydown', (e: KeyboardEvent) => this.handleKeyboardUpDownArrows(e));
-    $$(this.combobox.element).on('keyup', (e: KeyboardEvent) => this.handleKeyboardEnterEscape(e));
+    this.combobox.element.addEventListener('focusout', (e: FocusEvent) => this.handleFocusOut(e));
+    this.combobox.element.addEventListener('keydown', (e: KeyboardEvent) => this.handleKeyboardDirection(e));
+    this.combobox.element.addEventListener('keyup', (e: KeyboardEvent) => this.handleKeyboardEnterEscape(e));
   }
 
   private addAccessibilityAttributes() {
@@ -74,22 +73,37 @@ export class ComboboxInput {
 
   private handleFocusOut(event: FocusEvent) {
     const newTarget = event.relatedTarget as HTMLElement;
-    const isFocusedOnInput = this.combobox.element.contains(newTarget);
-    if (isFocusedOnInput) {
+    const focusInsideCombobox = this.combobox.element.contains(newTarget);
+    if (focusInsideCombobox) {
       return;
     }
+
+    const comboboxValuesHovered = $$(this.combobox.element).find('.coveo-combobox-values:hover');
+    if (comboboxValuesHovered) {
+      this.inputElement.focus();
+      return;
+    }
+
     this.combobox.onInputBlur();
   }
 
-  private handleKeyboardUpDownArrows(event: KeyboardEvent) {
+  private handleKeyboardDirection(event: KeyboardEvent) {
     switch (event.which) {
       case KEYBOARD.DOWN_ARROW:
         event.preventDefault();
-        this.combobox.values.moveActiveValueDown();
+        this.combobox.values.focusNextValue();
         break;
       case KEYBOARD.UP_ARROW:
         event.preventDefault();
-        this.combobox.values.moveActiveValueUp();
+        this.combobox.values.focusPreviousValue();
+        break;
+      case KEYBOARD.HOME:
+        event.preventDefault();
+        this.combobox.values.focusFirstValue();
+        break;
+      case KEYBOARD.END:
+        event.preventDefault();
+        this.combobox.values.focusLastValue();
         break;
     }
   }

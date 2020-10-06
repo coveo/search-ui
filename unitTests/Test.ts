@@ -860,3 +860,9 @@ ExplanationModalTest();
 
 import { SmartSnippetSuggestionsTest } from './ui/SmartSnippetSuggestionsTest';
 SmartSnippetSuggestionsTest();
+
+import { FacetSearchElementTest } from './ui/FacetSearchElementTest';
+FacetSearchElementTest();
+
+import { HistoryStoreTest } from './utils/HistoryStoreTest';
+HistoryStoreTest();

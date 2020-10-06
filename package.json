@@ -1,6 +1,6 @@
 {
   "name": "coveo-search-ui",
-  "version": "2.0.695",
+  "version": "2.0.722",
   "description": "Coveo JavaScript Search Framework",
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
@@ -33,7 +33,9 @@
   },
   "prettier": {
     "printWidth": 140,
-    "singleQuote": true
+    "singleQuote": true,
+    "trailingComma": "none",
+    "arrowParens": "avoid"
   },
   "repository": {
     "type": "git",
@@ -120,13 +122,13 @@
     "karma-jasmine": "^1.0.2",
     "karma-spec-reporter": "0.0.26",
     "lint-staged": "^4.1.3",
-    "node-fetch": "^1.5.3",
+    "node-fetch": "^2.6.1",
     "node-sass": "^4.14.1",
-    "npm-cli-login": "0.0.10",
+    "npm-cli-login": "0.1.1",
     "null-loader": "^0.1.1",
     "pg": "^7.3.0",
     "plop": "^1.5.0",
-    "prettier": "^1.6.1",
+    "prettier": "^2.1.2",
     "puppeteer": "^1.13.0",
     "q": "^1.4.1",
     "remap-istanbul": "https://github.com/coveord/remap-istanbul/tarball/master",
@@ -164,10 +166,11 @@
     "moment": "~2.22.2",
     "pikaday": "^1.4.0",
     "popper.js": "^1.14.3",
-    "underscore": "^1.8.3",
+    "underscore": "^1.10.2",
     "xregexp": "^4.2.4"
   },
   "resolutions": {
+    "lodash": "^4.17.12",
     "marked": "^0.7.0",
     "minimatch": "^3.0.2",
     "minimist": "^1.2.3",

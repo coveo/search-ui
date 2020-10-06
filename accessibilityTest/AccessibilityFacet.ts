@@ -27,6 +27,7 @@ export const AccessibilityFacet = () => {
 
     describe('with facet element', () => {
       let facetElement: Dom;
+      let facet: Facet;
 
       function getMagnifierSVG() {
         return facetElement.el.querySelector<HTMLElement>('.coveo-facet-search-magnifier-svg');
@@ -44,6 +45,7 @@ export const AccessibilityFacet = () => {
         facetElement = getFacetElement();
         getFacetColumn().appendChild(facetElement.el);
         await afterDeferredQuerySuccess();
+        facet = get(facetElement.el) as Facet;
         done();
       });
 
@@ -64,6 +66,11 @@ export const AccessibilityFacet = () => {
         done();
       });
 
+      it('should have good contrast on the facet itself', () => {
+        const borderContrast = ContrastChecker.getContrastWithBackground(facetElement.el, 'borderBottomColor');
+        expect(borderContrast).toBeGreaterThan(ContrastChecker.MinimumContrastRatio);
+      });
+
       it('should have good contrast on exclude buttons', () => {
         const borderContrast = ContrastChecker.getContrastWithBackground(getExcludeIcon(), 'borderBottomColor');
         expect(borderContrast).toBeGreaterThan(ContrastChecker.MinimumContrastRatio);
@@ -76,7 +83,7 @@ export const AccessibilityFacet = () => {
 
       describe('after focusing on the search button', () => {
         beforeEach(async done => {
-          (get(facetElement.el) as Facet).facetSearch.focus();
+          facet.facetSearch.focus();
           await waitUntilSelectorIsPresent(document.body, '.coveo-facet-search-results');
           done();
         });
@@ -87,8 +94,20 @@ export const AccessibilityFacet = () => {
           done();
         });
 
-        it('should still be accessible when search has been opened', async done => {
-          (get(facetElement.el) as Facet).facetSearch.dismissSearchResults();
+        it("should have a conformant contrast ratio on FacetSearch's border", () => {
+          expect(ContrastChecker.getContrastWithBackground(facet.facetSearch.search, 'borderBottomColor')).not.toBeLessThan(
+            ContrastChecker.MinimumContrastRatio
+          );
+        });
+
+        it("should have a conformant contrast ratio on the facet search results' border", () => {
+          expect(ContrastChecker.getContrastWithBackground(facet.facetSearch.searchResults, 'borderBottomColor')).not.toBeLessThan(
+            ContrastChecker.MinimumContrastRatio
+          );
+        });
+
+        it('should still be accessible when search has been dismissed', async done => {
+          facet.facetSearch.dismissSearchResults();
           const axeResults = await axe.run(getRoot());
           expect(axeResults).toBeAccessible();
           done();
@@ -98,6 +117,19 @@ export const AccessibilityFacet = () => {
           const contrast = ContrastChecker.getContrastWithBackground(getMagnifierSVG());
           expect(contrast).toBeGreaterThan(ContrastChecker.MinimumContrastRatio);
           done();
+        });
+
+        describe('after focusing on the search button with no results', () => {
+          beforeEach(async done => {
+            facet.facetSearch.facetSearchElement.emptyAndShowNoResults();
+            done();
+          });
+
+          it("should still be accessible when there's no results", async done => {
+            const axeResults = await axe.run(getRoot());
+            expect(axeResults).toBeAccessible();
+            done();
+          });
         });
       });
     });

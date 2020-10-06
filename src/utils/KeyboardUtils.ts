@@ -12,6 +12,7 @@ export enum KEYBOARD {
   SPACEBAR = 32,
   PAGE_UP = 33,
   PAGE_DOWN = 34,
+  END = 35,
   HOME = 36,
   LEFT_ARROW = 37,
   UP_ARROW = 38,
@@ -35,12 +36,14 @@ export class KeyboardUtils {
     var keycode = e.keyCode;
     var valid =
       KeyboardUtils.isNumberKeyPushed(keycode) ||
-      (keycode == 32 || keycode == 13) || // spacebar & return key(s)
+      keycode == 32 ||
+      keycode == 13 || // spacebar & return key(s)
       KeyboardUtils.isLetterKeyPushed(keycode) ||
       (keycode > 95 && keycode < 112) || // numpad keys
       (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
       (keycode > 218 && keycode < 223) || // [\]' (in order)
-      (keycode == KEYBOARD.BACKSPACE || keycode == KEYBOARD.DELETE) ||
+      keycode == KEYBOARD.BACKSPACE ||
+      keycode == KEYBOARD.DELETE ||
       KeyboardUtils.isArrowKeyPushed(keycode);
 
     return valid;

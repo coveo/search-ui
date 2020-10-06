@@ -37,9 +37,7 @@ export function CategoryFacetBreadcrumbTest() {
       const clickHandler = jasmine.createSpy('handler');
       const breadcrumb = new CategoryFacetBreadcrumb(categoryFacet, clickHandler, categoryValueDescriptor).build();
 
-      $$(breadcrumb)
-        .find('.coveo-category-facet-breadcrumb-values')
-        .click();
+      $$(breadcrumb).find('.coveo-category-facet-breadcrumb-values').click();
 
       expect(clickHandler).toHaveBeenCalled();
     });
@@ -50,7 +48,7 @@ export function CategoryFacetBreadcrumbTest() {
       it('has the right accessibility attributes', () => {
         const breadcrumb = buildCategoryFacetBreadcrumb();
         const breadcrumbValues = $$(breadcrumb).find('.coveo-category-facet-breadcrumb-values');
-        expect(breadcrumbValues.getAttribute('aria-label')).toBe('Remove filter on path_one/path_two');
+        expect(breadcrumbValues.getAttribute('aria-label')).toBe('Remove inclusion filter on path_one/path_two');
         expect(breadcrumbValues.getAttribute('role')).toBe('button');
         expect(breadcrumbValues.getAttribute('tabindex')).toBe('0');
       });
@@ -58,7 +56,7 @@ export function CategoryFacetBreadcrumbTest() {
       it('build a breadcrumb with the full path if there is no base path', () => {
         const breadcrumb = buildCategoryFacetBreadcrumb();
         const values = $$(breadcrumb).find('.coveo-category-facet-breadcrumb-values');
-        expect($$(values).text()).toEqual('path_one/path_two');
+        expect(values.childNodes[0].nodeValue).toEqual('path_one/path_two');
       });
 
       it('build a breadcrumb without the full path if there is a base path', () => {
@@ -66,7 +64,7 @@ export function CategoryFacetBreadcrumbTest() {
 
         const breadcrumb = buildCategoryFacetBreadcrumb();
         const values = $$(breadcrumb).find('.coveo-category-facet-breadcrumb-values');
-        expect($$(values).text()).toEqual('path_two');
+        expect(values.childNodes[0].nodeValue).toEqual('path_two');
       });
 
       it(`when the categoryFacet has the valueCaption option configured,

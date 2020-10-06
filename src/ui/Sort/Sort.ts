@@ -376,11 +376,18 @@ export class Sort extends Component {
   }
 
   private updateAccessibilityProperties() {
+    this.sortButton.setAttribute('aria-controls', this.resultListsIds);
     const directionIsInitial = this.currentDirection === this.initialDirection;
     this.sortButton.setAttribute('aria-checked', `${this.isSelected() && directionIsInitial}`);
     if (this.isToggle()) {
+      this.directionButton.setAttribute('aria-controls', this.resultListsIds);
       this.directionButton.setAttribute('aria-checked', `${this.isSelected() && !directionIsInitial}`);
     }
+  }
+
+  private get resultListsIds() {
+    const resultLists = this.searchInterface.getComponents('ResultList') as Component[];
+    return resultLists.map(resultList => resultList.element.id).join(' ');
   }
 
   private getDirectionalLabel(direction: VALID_DIRECTION) {

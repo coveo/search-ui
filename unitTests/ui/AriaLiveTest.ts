@@ -30,6 +30,16 @@ export const AriaLiveTest = () => {
       expect(ariaLiveEl().textContent).toBe(text);
     });
 
+    it(`when calling #updateText with the same value multiple times,
+    it should append a non-breaking space character to the value
+    so the screen reader says it again`, () => {
+      const text = 'text';
+      ariaLive.updateText(text);
+      ariaLive.updateText(text);
+
+      expect(ariaLiveEl().textContent).toBe(`${text}\u00A0`);
+    });
+
     it(`when triggering a successful query with results,
     it updates the text with the number of results`, () => {
       Simulate.query(env);

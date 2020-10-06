@@ -91,7 +91,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
           const expectedLabel = l(
             'HierarchicalFacetValueIndentedUnder',
             l(
-              'SelectValueWithResultCount',
+              'IncludeValueWithResultCount',
               facetValue.displayValue,
               l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
             ),
@@ -144,7 +144,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
         const expectedLabel = l(
           'HierarchicalFacetValueIndentedUnder',
           l(
-            'SelectValueWithResultCount',
+            'IncludeValueWithResultCount',
             facetValue.displayValue,
             l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
           ),
@@ -173,7 +173,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
         const expectedLabel = l(
           'HierarchicalFacetValueIndentedUnder',
           l(
-            'SelectValueWithResultCount',
+            'IncludeValueWithResultCount',
             facetValue.displayValue,
             l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
           ),
@@ -225,7 +225,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
         const expectedLabel = l(
           'HierarchicalFacetValueIndentedUnder',
           l(
-            'SelectValueWithResultCount',
+            'IncludeValueWithResultCount',
             facetValue.displayValue,
             l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
           ),

@@ -1,7 +1,6 @@
 import { ISearchDropdownNavigator, DefaultSearchDropdownNavigator, ISearchDropdownConfig } from './DefaultSearchDropdownNavigator';
 import { $$, Dom } from '../../../utils/Dom';
 import { IFacetSearch } from '../IFacetSearch';
-import { debounce } from 'underscore';
 
 export interface IFacetSearchDropdownConfig extends ISearchDropdownConfig {
   facetSearch: IFacetSearch;
@@ -9,7 +8,6 @@ export interface IFacetSearchDropdownConfig extends ISearchDropdownConfig {
 
 export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
   private defaultDropdownNavigator: DefaultSearchDropdownNavigator;
-  private debounceAnnounceCurrentResultAction = debounce(() => this.announceCurrentResultAction(), 500);
 
   constructor(private config: IFacetSearchDropdownConfig) {
     this.defaultDropdownNavigator = new DefaultSearchDropdownNavigator(config);
@@ -17,7 +15,6 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
 
   public setAsCurrentResult(dom: Dom) {
     this.defaultDropdownNavigator.setAsCurrentResult(dom);
-    this.debounceAnnounceCurrentResultAction();
   }
 
   public get currentResult() {
@@ -25,74 +22,58 @@ export class FacetSearchDropdownNavigator implements ISearchDropdownNavigator {
   }
 
   public focusNextElement() {
-    if (this.isCurrentResultSelectAllButton) {
-      this.moveResultDownAndAnnounce();
-    } else if (this.canExcludeCurrentResult) {
-      this.toggleCanExcludeCurrentResult();
-      this.moveResultDownAndAnnounce();
-    } else {
-      this.toggleCanExcludeCurrentResult();
+    this.toggleCanExcludeCurrentResult();
+
+    if (this.willExcludeCurrentResult) {
       this.announceCurrentResultCanBeExcluded();
+      return;
     }
+
+    this.defaultDropdownNavigator.moveCurrentResultDown();
   }
 
   public focusPreviousElement() {
-    if (!this.canExcludeCurrentResult) {
-      this.moveResultUpAndAnnounce();
-    } else {
+    if (this.willExcludeCurrentResult) {
       this.toggleCanExcludeCurrentResult();
-      this.announceCurrentResultCanBeSelected();
+      return;
     }
+
+    this.moveResultUp();
+    this.toggleCanExcludeCurrentResult();
   }
 
-  private moveResultDownAndAnnounce() {
-    this.defaultDropdownNavigator.moveCurrentResultDown();
-    this.announceCurrentResultCanBeSelected();
-  }
+  private moveResultUp() {
+    if (this.willExcludeCurrentResult) {
+      this.toggleCanExcludeCurrentResult();
+      return;
+    }
 
-  private moveResultUpAndAnnounce() {
     this.defaultDropdownNavigator.moveCurrentResultUp();
-
-    if (this.isCurrentResultSelectAllButton) {
-      this.announceCurrentResultCanBeSelected();
-    } else {
-      this.toggleCanExcludeCurrentResult();
-      this.announceCurrentResultCanBeExcluded();
-    }
+    this.toggleCanExcludeCurrentResult();
   }
 
-  private get isCurrentResultSelectAllButton() {
-    return this.currentResult.hasClass('coveo-facet-search-select-all');
+  private get isCurrentResultNotAFacetValue() {
+    return this.currentResult.hasClass('coveo-facet-search-select-all') || this.currentResult.hasClass('coveo-facet-value-not-found');
   }
 
-  private get canExcludeCurrentResult() {
+  private get willExcludeCurrentResult() {
     return this.currentResult.hasClass('coveo-facet-value-will-exclude');
   }
 
   private toggleCanExcludeCurrentResult() {
-    this.currentResult.toggleClass('coveo-facet-value-will-exclude', !this.canExcludeCurrentResult);
-  }
+    if (this.isCurrentResultNotAFacetValue) {
+      return;
+    }
 
-  private announceCurrentResultAction() {
-    this.canExcludeCurrentResult ? this.announceCurrentResultCanBeExcluded() : this.announceCurrentResultCanBeSelected();
+    this.currentResult.toggleClass('coveo-facet-value-will-exclude', !this.willExcludeCurrentResult);
   }
 
   private announceCurrentResultCanBeExcluded() {
-    const excludeIconTitle = $$(this.currentResult).find('.coveo-facet-value-exclude').title;
-    this.config.facetSearch.updateAriaLive(excludeIconTitle);
-  }
-
-  private announceCurrentResultCanBeSelected() {
-    const message = this.currentResultSelectMessage;
-    this.config.facetSearch.updateAriaLive(message);
-  }
-
-  private get currentResultSelectMessage() {
-    if (this.isCurrentResultSelectAllButton) {
-      return this.currentResult.text();
+    if (this.isCurrentResultNotAFacetValue) {
+      return;
     }
 
-    const checkbox = this.currentResult.find('.coveo-facet-value-checkbox');
-    return checkbox.getAttribute('aria-label');
+    const excludeIcon = $$(this.currentResult).find('.coveo-facet-value-exclude');
+    this.config.facetSearch.updateAriaLive(excludeIcon.getAttribute('aria-label'));
   }
 }
