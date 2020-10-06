@@ -68,12 +68,8 @@ export const SmartSnippetClassNames = {
   SOURCE_URL_CLASSNAME
 };
 
-export interface ISmartSnippetOptions {}
-
 export class SmartSnippet extends Component {
   static ID = 'SmartSnippet';
-
-  static options: ISmartSnippetOptions = {};
 
   static doExport = () => {
     exportGlobally({
@@ -91,12 +87,7 @@ export class SmartSnippet extends Component {
   private feedbackBanner: UserFeedbackBanner;
   private shadowLoading: Promise<HTMLElement>;
 
-  constructor(
-    public element: HTMLElement,
-    public options?: ISmartSnippetOptions,
-    bindings?: IComponentBindings,
-    private ModalBox = ModalBoxModule
-  ) {
+  constructor(public element: HTMLElement, public options?: {}, bindings?: IComponentBindings, private ModalBox = ModalBoxModule) {
     super(element, SmartSnippet.ID, bindings);
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
