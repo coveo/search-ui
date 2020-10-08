@@ -4,9 +4,10 @@ import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { ValueElement } from '../../src/ui/Facet/ValueElement';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { ValueElementRenderer } from '../../src/ui/Facet/ValueElementRenderer';
-import { Dom, $$ } from '../../src/Core';
+import { Dom } from '../../src/Core';
 import { mapObject, Dictionary } from 'underscore';
 import { MockHTMLElement } from '../MockElement';
+import { FacetSearch } from '../../src/ui/Facet/FacetSearch';
 
 function countValues<T>(dictionaryToCount: Dictionary<T[]>) {
   return mapObject(dictionaryToCount, listeners => listeners.length);
@@ -42,6 +43,8 @@ export function ValueElementTest() {
       facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
         field: '@field'
       }).cmp;
+      facet.ensureDom();
+      facet.facetSearch = Mock.mock(FacetSearch);
       facetValue = Mock.mock(FacetValue);
       facetValue.excluded = false;
       facetValue.selected = false;
@@ -118,8 +121,43 @@ export function ValueElementTest() {
 
       it('when the click event on the label is triggered, triggers the change event on the checkbox', () => {
         expect(mockCheckbox.manualEventTriggers).toEqual({});
-        $$(mockLabel.element).trigger('click');
+        mockLabel.element.click();
         expect(countValues(mockCheckbox.manualEventTriggers)).toEqual({ change: 1 });
+      });
+
+      it('when the click event on the label is triggered, dismisses search results', () => {
+        const { dismissSearchResults } = facet.facetSearch;
+        expect(dismissSearchResults).not.toHaveBeenCalled();
+        mockLabel.element.click();
+        expect(dismissSearchResults).toHaveBeenCalledTimes(1);
+      });
+
+      it('when the click event on the exclude icon is triggered, dismisses search results', () => {
+        const { dismissSearchResults } = facet.facetSearch;
+        expect(dismissSearchResults).not.toHaveBeenCalled();
+        mockExcludeIcon.element.click();
+        expect(dismissSearchResults).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('selected and unexcluded', () => {
+      beforeEach(() => {
+        valueElement.select();
+        bindEvents();
+      });
+
+      it('when the click event on the label is triggered, dismisses search results', () => {
+        const { dismissSearchResults } = facet.facetSearch;
+        expect(dismissSearchResults).not.toHaveBeenCalled();
+        mockLabel.element.click();
+        expect(dismissSearchResults).toHaveBeenCalledTimes(1);
+      });
+
+      it('when the click event on the exclude icon is triggered, dismisses search results', () => {
+        const { dismissSearchResults } = facet.facetSearch;
+        expect(dismissSearchResults).not.toHaveBeenCalled();
+        mockExcludeIcon.element.click();
+        expect(dismissSearchResults).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -146,8 +184,22 @@ export function ValueElementTest() {
       });
 
       it('when the click event on the label is triggered, does not trigger the change event on the checkbox', () => {
-        $$(mockLabel.element).trigger('click');
+        mockLabel.element.click();
         expect(mockCheckbox.manualEventTriggers).toEqual({});
+      });
+
+      it('when the click event on the label is triggered, dismisses search results', () => {
+        const { dismissSearchResults } = facet.facetSearch;
+        expect(dismissSearchResults).not.toHaveBeenCalled();
+        mockLabel.element.click();
+        expect(dismissSearchResults).toHaveBeenCalledTimes(1);
+      });
+
+      it('when the click event on the exclude icon is triggered, dismisses search results', () => {
+        const { dismissSearchResults } = facet.facetSearch;
+        expect(dismissSearchResults).not.toHaveBeenCalled();
+        mockExcludeIcon.element.click();
+        expect(dismissSearchResults).toHaveBeenCalledTimes(1);
       });
     });
   });
