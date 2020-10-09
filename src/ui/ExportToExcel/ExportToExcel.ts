@@ -111,7 +111,7 @@ export class ExportToExcel extends Component {
     const endpoint = this.queryController.getEndpoint();
     this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.exportToExcel, {}, this.element);
 
-    endpoint.fetchBinary(query).then(content => this.generateExcelFile(content));
+    endpoint.fetchBinary(query).then(content => this.downloadExcelFile(content));
   }
 
   private buildExcelQuery(): IQuery {
@@ -129,7 +129,7 @@ export class ExportToExcel extends Component {
     };
   }
 
-  private generateExcelFile(content: ArrayBuffer) {
+  private downloadExcelFile(content: ArrayBuffer) {
     const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const url = URL.createObjectURL(blob);
 
