@@ -44,56 +44,25 @@ export function ThumbnailTest() {
     beforeEach(() => {
       thumbnailEl = buildThumbnailEl();
       endpoint = Mock.mockSearchEndpoint();
-      getRawDataStreamPromise = new Promise<ArrayBuffer>((resolve, reject) => {});
+      getRawDataStreamPromise = new Promise<ArrayBuffer>(resolve => resolve(new ArrayBuffer(0)));
       endpoint.getRawDataStream = () => getRawDataStreamPromise;
       initThumbnail();
     });
 
-    describe('without JSONP', () => {
-      beforeEach(function() {
-        endpoint.isJsonp = () => false;
-        endpoint.getRawDataStream = () => new Promise<ArrayBuffer>(resolve => resolve(new ArrayBuffer(0)));
-
-        initThumbnail();
-      });
-
-      it('should use async call by default', async done => {
-        await Promise.resolve();
-        expect(test.cmp.element.getAttribute('src')).toBe('data:image/png;base64, ');
-        done();
-      });
-
-      it("should try to resize the FieldTable if it's contained in one", async done => {
-        const fieldTable = buildFieldTable();
-        const spy = spyOn(fieldTable, 'updateToggleHeight');
-        fieldTable.element.appendChild(test.cmp.element);
-
-        await Promise.resolve();
-        expect(spy).toHaveBeenCalledTimes(1);
-        done();
-      });
+    it('should use async call by default', async done => {
+      await Promise.resolve();
+      expect(test.cmp.element.getAttribute('src')).toBe('data:image/png;base64, ');
+      done();
     });
 
-    describe('with JSONP', () => {
-      beforeEach(() => {
-        endpoint.isJsonp = () => true;
-        initThumbnail();
-      });
+    it("should try to resize the FieldTable if it's contained in one", async done => {
+      const fieldTable = buildFieldTable();
+      const spy = spyOn(fieldTable, 'updateToggleHeight');
+      fieldTable.element.appendChild(test.cmp.element);
 
-      it('should use direct url', () => {
-        expect(test.cmp.element.getAttribute('src')).toEqual('http://datastream.uri');
-      });
-
-      it("should try to resize the FieldTable if it's contained in one", () => {
-        const fieldTable = buildFieldTable();
-        const spy = spyOn(fieldTable, 'updateToggleHeight');
-
-        thumbnailEl = buildThumbnailEl();
-        fieldTable.element.appendChild(thumbnailEl);
-        initThumbnail();
-
-        expect(spy).toHaveBeenCalledTimes(1);
-      });
+      await Promise.resolve();
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
     });
 
     it('should instanciate an icon when no thumnail is available', () => {

@@ -4,7 +4,6 @@ import { Assert } from '../misc/Assert';
 import { TimeSpan } from '../utils/TimeSpanUtils';
 import { DeviceUtils } from '../utils/DeviceUtils';
 import { Utils } from '../utils/Utils';
-import { JQueryUtils } from '../utils/JQueryutils';
 import * as _ from 'underscore';
 import { UrlUtils } from '../utils/UrlUtils';
 
@@ -179,27 +178,13 @@ enum XMLHttpRequestStatus {
 /**
  * This class is in charge of calling an endpoint (eg: a {@link SearchEndpoint}).
  *
- * This means it's only uses to execute an XMLHttpRequest (for example), massage the response and check if there are errors.
+ * This means it's only used to execute an XMLHttpRequest, massage the response and check if there are errors.
  *
  * Will execute the call and return a Promise.
- *
- * Call using one of those options :
- *
- * * XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.
- * * Jsonp if all else fails, or is explicitly enabled.
- */
+ * */
 export class EndpointCaller implements IEndpointCaller {
   public logger: Logger;
 
-  /**
-   * Set this property to true to enable Jsonp call to the endpoint.<br/>
-   * Be aware that jsonp is "easier" to setup endpoint wise, but has a lot of drawback and limitation for the client code.<br/>
-   * Default to false.
-   * @type {boolean}
-   */
-  public useJsonp = false;
-
-  private static JSONP_ERROR_TIMEOUT = 10000;
   /**
    * Create a new EndpointCaller.
    * @param options Specify the authentication that will be used for this endpoint. Not needed if the endpoint is public and has no authentication
@@ -229,9 +214,7 @@ export class EndpointCaller implements IEndpointCaller {
 
   /**
    * Generic call to the endpoint using the provided {@link IEndpointCallParameters}.<br/>
-   * Internally, will decide which method to use to call the endpoint :<br/>
-   * -- XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.<br/>
-   * -- Jsonp if all else fails, or is explicitly enabled.
+   * Internally, will use XMLHttpRequest to call the endpoint :<br/>
    * @param params The parameters to use for the call
    * @returns {any} A promise of the given type
    */
@@ -251,22 +234,7 @@ export class EndpointCaller implements IEndpointCaller {
     }
 
     this.logger.trace('Performing REST request', requestInfo);
-    const urlObject = this.parseURL(requestInfo.url);
-    // In IE8, hostname and port return "" when we are on the same domain.
-    const isLocalHost = window.location.hostname === urlObject.hostname || urlObject.hostname === '';
-
-    const currentPort = window.location.port != '' ? window.location.port : window.location.protocol == 'https:' ? '443' : '80';
-    const isSamePort = currentPort == urlObject.port;
-    const isCrossOrigin = !(isLocalHost && isSamePort);
-    if (!this.useJsonp) {
-      if (this.isCORSSupported() || !isCrossOrigin) {
-        return this.callUsingXMLHttpRequest(requestInfo, params.responseType);
-      } else {
-        return this.callUsingAjaxJsonP(requestInfo);
-      }
-    } else {
-      return this.callUsingAjaxJsonP(requestInfo);
-    }
+    return this.callUsingXMLHttpRequest(requestInfo, params.responseType);
   }
 
   /**
@@ -365,42 +333,6 @@ export class EndpointCaller implements IEndpointCaller {
     });
   }
 
-  /**
-   * Call the endpoint using Jsonp https://en.wikipedia.org/wiki/JSONP<br/>
-   * Should be used for dev only, or for very special setup as using jsonp has a lot of drawbacks.
-   * @param requestInfo The info about the request
-   * @returns {Promise<T>|Promise}
-   */
-  public callUsingAjaxJsonP<T>(requestInfo: IRequestInfo<T>): Promise<ISuccessResponse<T>> {
-    let jQuery = JQueryUtils.getJQuery();
-    Assert.check(jQuery, 'Using jsonp without having included jQuery is not supported.');
-    return new Promise((resolve, reject) => {
-      const queryString = requestInfo.queryString.concat(EndpointCaller.convertJsonToQueryString(requestInfo.requestData));
-
-      // JSONP don't support including stuff in the header, so we must
-      // put the access token in the query string if we have one.
-      if (this.options.accessToken) {
-        queryString.push('access_token=' + Utils.safeEncodeURIComponent(this.options.accessToken));
-      }
-
-      queryString.push('callback=?');
-
-      jQuery.ajax({
-        url: this.combineUrlAndQueryString(requestInfo.url, queryString),
-        dataType: 'jsonp',
-        success: (data: any) => this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject),
-        timeout: EndpointCaller.JSONP_ERROR_TIMEOUT,
-        error: () => this.handleError(requestInfo, 0, undefined, reject)
-      });
-    });
-  }
-
-  private parseURL(url: string) {
-    const urlObject = document.createElement('a');
-    urlObject.href = url;
-    return urlObject;
-  }
-
   private getXmlHttpRequest(): XMLHttpRequest {
     const newXmlHttpRequest = this.options.xmlHttpRequest || XMLHttpRequest;
     return new newXmlHttpRequest();
@@ -438,10 +370,6 @@ export class EndpointCaller implements IEndpointCaller {
       paths: [url],
       queryAsString: queryString
     });
-  }
-
-  private isCORSSupported(): boolean {
-    return 'withCredentials' in this.getXmlHttpRequest();
   }
 
   private isSuccessHttpStatus(status: number): boolean {

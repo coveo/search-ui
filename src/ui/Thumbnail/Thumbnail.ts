@@ -115,25 +115,11 @@ export class Thumbnail extends Component {
   private buildThumbnailImage() {
     let endpoint = this.bindings.queryController.getEndpoint();
 
-    if (endpoint.isJsonp()) {
-      // For jsonp we can't GET/POST for binary data. We are limited
-      // to only setting the src attribute directly on the img.
-      this.buildImageWithDirectSrcAttribute(endpoint);
-    } else {
-      // Base 64 img allows us to GET/POST the image as raw binary, so that we can also
-      // pass the credential of the user. Useful for phonegap among others.
-      this.buildImageWithBase64SrcAttribute(endpoint);
-    }
+    // Base 64 img allows us to GET/POST the image as raw binary, so that we can also
+    // pass the credential of the user. Useful for phonegap among others.
+    this.buildImageWithBase64SrcAttribute(endpoint);
 
     this.makeAccessible();
-  }
-
-  private buildImageWithDirectSrcAttribute(endpoint: ISearchEndpoint) {
-    let dataStreamUri = endpoint.getViewAsDatastreamUri(this.result.uniqueId, '$Thumbnail$', {
-      contentType: 'image/png'
-    });
-    this.img.setAttribute('src', dataStreamUri);
-    this.resizeContainingFieldTable();
   }
 
   private buildImageWithBase64SrcAttribute(endpoint: ISearchEndpoint) {

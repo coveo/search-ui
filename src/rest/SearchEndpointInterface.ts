@@ -92,7 +92,6 @@ export interface ISearchEndpoint {
   getBaseUri(): string;
   getBaseAlertsUri(): string;
   getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string;
-  isJsonp(): boolean;
   search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults>;
   fetchBinary(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ArrayBuffer>;
   plan(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ExecutionPlan>;

@@ -197,10 +197,6 @@ export function SearchEndpointTest() {
         expect(ep.getAuthenticationProviderUri('troll', undefined, 'msg')).toContain('message=msg');
       });
 
-      it('allow to check if endpoint is jsonp', () => {
-        expect(ep.isJsonp()).toBe(false);
-      });
-
       it('allow to get an export to excel link', () => {
         const qbuilder = new QueryBuilder();
         qbuilder.expression.add('batman');

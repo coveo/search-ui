@@ -322,14 +322,6 @@ export class SearchEndpoint implements ISearchEndpoint {
     });
   }
 
-  /**
-   * Indicates whether the search endpoint is using JSONP internally to communicate with the Search API.
-   * @returns {boolean} `true` in the search enpoint is using JSONP; `false` otherwise.
-   */
-  public isJsonp(): boolean {
-    return this.caller.useJsonp;
-  }
-
   @includeActionsHistory()
   @includeReferrer()
   @includeVisitorId()
