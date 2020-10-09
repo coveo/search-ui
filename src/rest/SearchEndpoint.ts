@@ -408,7 +408,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   @path('/')
   @method('POST')
   @responseType('arraybuffer')
-  public async downloadBinary(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
+  public async fetchBinary(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
     const call = this.buildCompleteCall(query, callOptions, callParams);
     this.logger.info('Performing REST query', query);
 
@@ -439,7 +439,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   /**
    * @deprecated getExportToExcelLink does not factor in all query parameters (e.g. dynamic facets) due to GET request url length limitations.
-   * Please use `downloadBinary` instead to ensure all query parameters are used.
+   * Please use `fetchBinary` instead to ensure all query parameters are used.
    *
    * Gets a link / URI to download a query result set to the XLSX format.
    *

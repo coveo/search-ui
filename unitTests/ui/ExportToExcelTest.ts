@@ -27,16 +27,16 @@ export function ExportToExcelTest() {
     });
 
     describe('calling #download', () => {
-      it(`calls downloadBinary with format set to 'xlsx'`, () => {
+      it(`calls fetchBinary with format set to 'xlsx'`, () => {
         test.cmp.download();
 
-        expect(test.env.searchEndpoint.downloadBinary).toHaveBeenCalledWith(jasmine.objectContaining({ format: 'xlsx' }));
+        expect(test.env.searchEndpoint.fetchBinary).toHaveBeenCalledWith(jasmine.objectContaining({ format: 'xlsx' }));
       });
 
-      it('calls downloadBinary with the default number of results', () => {
+      it('calls fetchBinary with the default number of results', () => {
         test.cmp.download();
 
-        expect(test.env.searchEndpoint.downloadBinary).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 100 }));
+        expect(test.env.searchEndpoint.fetchBinary).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 100 }));
       });
 
       it('should call exportToExcel event if query was made', () => {
@@ -99,7 +99,7 @@ export function ExportToExcelTest() {
 
         test.cmp.download();
 
-        expect(test.env.searchEndpoint.downloadBinary).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 200 }));
+        expect(test.env.searchEndpoint.fetchBinary).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 200 }));
       });
 
       it('fieldsToInclude allows to specify the needed fields to download', () => {
@@ -108,7 +108,7 @@ export function ExportToExcelTest() {
 
         test.cmp.download();
 
-        expect(test.env.searchEndpoint.downloadBinary).toHaveBeenCalledWith(
+        expect(test.env.searchEndpoint.fetchBinary).toHaveBeenCalledWith(
           jasmine.objectContaining({
             fieldsToInclude: jasmine.arrayContaining(['@foo', '@bar'])
           })
@@ -121,7 +121,7 @@ export function ExportToExcelTest() {
 
         test.cmp.download();
 
-        expect(test.env.searchEndpoint.downloadBinary).not.toHaveBeenCalledWith(
+        expect(test.env.searchEndpoint.fetchBinary).not.toHaveBeenCalledWith(
           jasmine.objectContaining({
             fieldsToInclude: jasmine.anything()
           })

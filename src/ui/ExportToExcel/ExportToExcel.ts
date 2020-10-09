@@ -111,7 +111,7 @@ export class ExportToExcel extends Component {
     const endpoint = this.queryController.getEndpoint();
     this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.exportToExcel, {}, this.element);
 
-    endpoint.downloadBinary(query).then(content => this.generateExcelFile(content));
+    endpoint.fetchBinary(query).then(content => this.generateExcelFile(content));
   }
 
   private buildExcelQuery(): IQuery {
