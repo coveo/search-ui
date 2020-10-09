@@ -8,8 +8,6 @@ import { JQueryUtils } from '../utils/JQueryutils';
 import * as _ from 'underscore';
 import { UrlUtils } from '../utils/UrlUtils';
 
-declare const XDomainRequest;
-
 export interface IEndpointCaller {
   call<T>(params: IEndpointCallParameters): Promise<ISuccessResponse<T>>;
   options: IEndpointCallerOptions;
@@ -188,7 +186,6 @@ enum XMLHttpRequestStatus {
  * Call using one of those options :
  *
  * * XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.
- * * XDomainRequest for older IE browser that do not support CORS.
  * * Jsonp if all else fails, or is explicitly enabled.
  */
 export class EndpointCaller implements IEndpointCaller {
@@ -234,7 +231,6 @@ export class EndpointCaller implements IEndpointCaller {
    * Generic call to the endpoint using the provided {@link IEndpointCallParameters}.<br/>
    * Internally, will decide which method to use to call the endpoint :<br/>
    * -- XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.<br/>
-   * -- XDomainRequest for older IE browser that do not support CORS.<br/>
    * -- Jsonp if all else fails, or is explicitly enabled.
    * @param params The parameters to use for the call
    * @returns {any} A promise of the given type
@@ -265,8 +261,6 @@ export class EndpointCaller implements IEndpointCaller {
     if (!this.useJsonp) {
       if (this.isCORSSupported() || !isCrossOrigin) {
         return this.callUsingXMLHttpRequest(requestInfo, params.responseType);
-      } else if (this.isXDomainRequestSupported()) {
-        return this.callUsingXDomainRequest(requestInfo);
       } else {
         return this.callUsingAjaxJsonP(requestInfo);
       }
@@ -372,53 +366,6 @@ export class EndpointCaller implements IEndpointCaller {
   }
 
   /**
-   * Call the endpoint using XDomainRequest https://msdn.microsoft.com/en-us/library/cc288060(v=vs.85).aspx<br/>
-   * Used for IE8/9
-   * @param requestInfo The info about the request
-   * @returns {Promise<T>|Promise}
-   */
-  public callUsingXDomainRequest<T>(requestInfo: IRequestInfo<T>): Promise<ISuccessResponse<T>> {
-    return new Promise((resolve, reject) => {
-      let queryString = requestInfo.queryString.concat([]);
-
-      // XDomainRequest don't support including stuff in the header, so we must
-      // put the access token in the query string if we have one.
-      if (this.options.accessToken) {
-        queryString.push('access_token=' + Utils.safeEncodeURIComponent(this.options.accessToken));
-      }
-
-      const xDomainRequest = new XDomainRequest();
-      if (requestInfo.method == 'GET') {
-        queryString = queryString.concat(EndpointCaller.convertJsonToQueryString(requestInfo.requestData));
-      }
-      xDomainRequest.open(requestInfo.method, this.combineUrlAndQueryString(requestInfo.url, queryString));
-
-      xDomainRequest.onload = () => {
-        const data = this.tryParseResponseText(xDomainRequest.responseText, xDomainRequest.contentType);
-        this.handleSuccessfulResponseThatMightBeAnError(requestInfo, data, resolve, reject);
-      };
-
-      xDomainRequest.onerror = () => {
-        const data = this.tryParseResponseText(xDomainRequest.responseText, xDomainRequest.contentType);
-        this.handleError(requestInfo, 0, data, reject);
-      };
-
-      // We must set those functions otherwise it will sometime fail in IE
-      xDomainRequest.ontimeout = () => this.logger.error('Request timeout', xDomainRequest, requestInfo.requestData);
-      xDomainRequest.onprogress = () => this.logger.trace('Request progress', xDomainRequest, requestInfo.requestData);
-
-      // We must open the request in a separate thread, for obscure reasons
-      _.defer(() => {
-        if (requestInfo.method == 'GET') {
-          xDomainRequest.send();
-        } else {
-          xDomainRequest.send(EndpointCaller.convertJsonToFormBody(requestInfo.requestData));
-        }
-      });
-    });
-  }
-
-  /**
    * Call the endpoint using Jsonp https://en.wikipedia.org/wiki/JSONP<br/>
    * Should be used for dev only, or for very special setup as using jsonp has a lot of drawbacks.
    * @param requestInfo The info about the request
@@ -491,10 +438,6 @@ export class EndpointCaller implements IEndpointCaller {
       paths: [url],
       queryAsString: queryString
     });
-  }
-
-  private isXDomainRequestSupported(): boolean {
-    return 'XDomainRequest' in window;
   }
 
   private isCORSSupported(): boolean {
