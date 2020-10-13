@@ -79,8 +79,6 @@ export function MissingTermsManagerTest() {
         const unEscaped = `<script>1+1</script>`;
         setMissingTerms(unEscaped);
         const breadcrumb = populateBreadcrumb();
-        expect(breadcrumb.length).toBe(1);
-        expect($$(breadcrumb[0].element).find('.coveo-missing-term-breadcrumb-title').innerHTML).toBe(l('MustContain'));
         expect($$(breadcrumb[0].element).find('.coveo-missing-term-breadcrumb-caption').innerHTML).toBe(escape(unEscaped));
       });
 
