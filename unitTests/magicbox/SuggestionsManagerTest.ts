@@ -1,6 +1,6 @@
 import { InputManager } from '../../src/magicbox/InputManager';
 import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
-import { SuggestionsManager, Suggestion, suggestionListboxID } from '../../src/magicbox/SuggestionsManager';
+import { SuggestionsManager, Suggestion } from '../../src/magicbox/SuggestionsManager';
 import { $$, Dom } from '../../src/utils/Dom';
 import { Utils } from '../../src/utils/Utils';
 import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
@@ -329,11 +329,11 @@ export function SuggestionsManagerTest() {
       });
 
       it("sets aria-owns of InputManager to the id of SuggestionManager's listbox", () => {
-        expect(inputManager.input.getAttribute('aria-owns')).toEqual(suggestionListboxID);
+        expect(inputManager.input.getAttribute('aria-owns')).toMatch(/coveo-magicbox-suggestions/);
       });
 
       it("sets aria-controls of InputManager to the id of SuggestionManager's listbox", () => {
-        expect(inputManager.input.getAttribute('aria-controls')).toEqual(suggestionListboxID);
+        expect(inputManager.input.getAttribute('aria-controls')).toMatch(/coveo-magicbox-suggestions/);
       });
 
       it('sets aria-expanded of InputManager to false', () => {
@@ -486,11 +486,11 @@ export function SuggestionsManagerTest() {
 
           const displayAfterDuration = 150;
           function setDisplayAfterDuration() {
-            spyOn(suggestionsManager['resultPreviewsManager'], 'getExternalOptions' as any).and.returnValue(
-              <IUpdateResultPreviewsManagerOptionsEventArgs>{
-                displayAfterDuration
-              }
-            );
+            spyOn(suggestionsManager['resultPreviewsManager'], 'getExternalOptions' as any).and.returnValue(<
+              IUpdateResultPreviewsManagerOptionsEventArgs
+            >{
+              displayAfterDuration
+            });
           }
 
           let populateSpy: jasmine.Spy;
@@ -566,7 +566,10 @@ export function SuggestionsManagerTest() {
 
           describe('within timeout delay', () => {
             let previewsBySuggestion: ISearchResultPreview[][];
-            const textPreviews = [['4K TV', 'Set of 4 pairs of socks'], ['The right spoon', '🔶', 'Right angle SATA cable']];
+            const textPreviews = [
+              ['4K TV', 'Set of 4 pairs of socks'],
+              ['The right spoon', '🔶', 'Right angle SATA cable']
+            ];
             function buildPreviews() {
               previewsBySuggestion = textPreviews.map(previewTextsForSuggestion => previewTextsForSuggestion.map(buildPreview));
             }
