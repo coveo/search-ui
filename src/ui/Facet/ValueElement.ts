@@ -129,6 +129,7 @@ export class ValueElement {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
       this.handleSelectValue(eventBindings);
+      this.tryDismissSearchResults();
       return false;
     };
 
@@ -148,9 +149,7 @@ export class ValueElement {
 
       this.handleExcludeClick(eventBindings);
 
-      if (this.facet && this.facet.facetSearch && this.facet.facetSearch.dismissSearchResults) {
-        this.facet.facetSearch.dismissSearchResults();
-      }
+      this.tryDismissSearchResults();
       event.stopPropagation();
       event.preventDefault();
     };
@@ -165,6 +164,7 @@ export class ValueElement {
         this.facet.pinFacetPosition();
       }
 
+      this.tryDismissSearchResults();
       $$(this.renderer.checkbox).trigger('change');
       event.preventDefault();
     };
@@ -196,6 +196,12 @@ export class ValueElement {
   protected omniboxCloseEvent(eventArg: IPopulateOmniboxObject) {
     eventArg.closeOmnibox();
     eventArg.clear();
+  }
+
+  private tryDismissSearchResults() {
+    if (this.facet && this.facet.facetSearch && this.facet.facetSearch.dismissSearchResults) {
+      this.facet.facetSearch.dismissSearchResults();
+    }
   }
 
   private getAnalyticsFacetMeta(): IAnalyticsFacetMeta {
