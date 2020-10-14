@@ -397,6 +397,25 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * Performs a search on the index and returns a Promise of `ArrayBuffer`.
+   *
+   * @param query The query to execute. Typically, the query object is built using a
+   * [`QueryBuilder`]{@link QueryBuilder}.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<ArrayBuffer>} A Promise of query results.
+   */
+  @path('/')
+  @method('POST')
+  @responseType('arraybuffer')
+  public async fetchBinary(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
+    const call = this.buildCompleteCall(query, callOptions, callParams);
+    this.logger.info('Performing REST query', query);
+
+    return this.performOneCall<ArrayBuffer>(call.params, call.options);
+  }
+
+  /**
    * Gets the plan of execution of a search request, without performing it.
    *
    * @param query The query to execute. Typically, the query object is built using a
@@ -419,6 +438,9 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * @deprecated getExportToExcelLink does not factor in all query parameters (e.g. dynamic facets) due to GET request url length limitations.
+   * Please use `fetchBinary` instead to ensure all query parameters are used.
+   *
    * Gets a link / URI to download a query result set to the XLSX format.
    *
    * **Note:**

@@ -51,11 +51,13 @@ export function TriggersTest() {
       expect(test.cmp.notifications).toEqual([]);
     });
 
-    it("escapes the content in the 'notify' trigger to prevent XSS", () => {
-      const contentWithXSS = `<img src='x' onerror= alert(1) />`;
-      results.triggers = [<ITriggerNotify>{ type: 'notify', content: contentWithXSS }];
+    it("renders the content in the 'notify' trigger as html, and does not escape it (XSS is possible)", () => {
+      // Escaping the content breaks the 'notify' feature which clients are using to
+      // send HTML, and possibly javascript, from the AdminUI.
+      const htmlContent = `<div/>`;
+      results.triggers = [<ITriggerNotify>{ type: 'notify', content: htmlContent }];
       Simulate.query(test.env, { results: results });
-      expect(test.cmp.element.textContent).toBe(contentWithXSS);
+      expect(test.cmp.element.textContent).toBe('');
     });
 
     it("should handle multiple 'notify's properly", function() {
