@@ -185,8 +185,9 @@ export function ResultLinkTest() {
       }
 
       it('should set the title attribute to the text version of the displayed title', () => {
-        titleTemplate = 'foo ${title}';
-        expect(test.cmp.element.title).toEqual(`foo ${fakeResult.title}`);
+        titleTemplate = 'foo ${clickUri}';
+        initResultLinkWithTitleTemplate();
+        expect(test.cmp.element.title).toEqual(`foo ${fakeResult.clickUri}`);
       });
 
       it('should replaces fields in the title template by the results equivalent', () => {
