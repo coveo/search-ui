@@ -4,6 +4,7 @@ import { Simulate } from '../Simulate';
 import { $$, l } from '../Test';
 import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
 import { IMissingTermManagerArgs } from '../../src/ui/SearchInterface/SearchInterface';
+import { escape } from 'underscore';
 
 export function MissingTermsManagerTest() {
   describe('MissingTermManager', () => {
@@ -72,6 +73,13 @@ export function MissingTermsManagerTest() {
         expect(breadcrumb.length).toBe(1);
         expect($$(breadcrumb[0].element).find('.coveo-missing-term-breadcrumb-title').innerHTML).toBe(l('MustContain'));
         expect($$(breadcrumb[0].element).find('.coveo-missing-term-breadcrumb-caption').innerHTML).toBe(aMissingTerm);
+      });
+
+      it('should escape content', () => {
+        const unEscaped = `<script>1+1</script>`;
+        setMissingTerms(unEscaped);
+        const breadcrumb = populateBreadcrumb();
+        expect($$(breadcrumb[0].element).find('.coveo-missing-term-breadcrumb-caption').innerHTML).toBe(escape(unEscaped));
       });
 
       it('should empty when the event is triggered', () => {

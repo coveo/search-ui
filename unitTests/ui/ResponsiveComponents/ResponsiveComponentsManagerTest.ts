@@ -31,7 +31,7 @@ export function ResponsiveComponentsManagerTest() {
       root = $$(searchInterfaceMock.cmp.root);
       handleResizeEvent = jasmine.createSpy('handleResizeEvent');
       registerComponent = jasmine.createSpy('registerComponent');
-      responsiveComponent = function() {
+      responsiveComponent = function () {
         this.needDrodpownWrapper = () => {};
         this.handleResizeEvent = handleResizeEvent;
         this.registerComponent = registerComponent;

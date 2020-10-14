@@ -118,7 +118,7 @@ export class HiddenQuery extends Component {
       $$(title).text(this.options.title);
       elem.appendChild(title);
 
-      const value = $$('span', { className: 'coveo-hidden-query-breadcrumb-value' }, description).el;
+      const value = $$('span', { className: 'coveo-hidden-query-breadcrumb-value' }, _.escape(description)).el;
       elem.appendChild(value);
 
       const clear = $$('span', { className: 'coveo-hidden-query-breadcrumb-clear' }, SVGIcons.icons.mainClear);

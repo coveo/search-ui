@@ -39,6 +39,7 @@ function cleanDefs() {
       .pipe(replace(/moment\.[a-zA-Z]+/g, 'any'))
       .pipe(replace(/Partial<[A-z]*>/g, 'any'))
       .pipe(replace(/<\s?([a-z]+)\s?=\s?[a-z]+\s?>/gi, '<$1>'))
+      .pipe(replace(/ShadowRootInit/, 'any'))
       .pipe(gulp.dest('bin/ts/'))
   );
 }
