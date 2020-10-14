@@ -37,9 +37,7 @@ export function CategoryFacetBreadcrumbTest() {
       const clickHandler = jasmine.createSpy('handler');
       const breadcrumb = new CategoryFacetBreadcrumb(categoryFacet, clickHandler, categoryValueDescriptor).build();
 
-      $$(breadcrumb)
-        .find('.coveo-category-facet-breadcrumb-values')
-        .click();
+      $$(breadcrumb).find('.coveo-category-facet-breadcrumb-values').click();
 
       expect(clickHandler).toHaveBeenCalled();
     });

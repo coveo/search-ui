@@ -173,9 +173,7 @@ export class FacetSearchElement {
   public highlightCurrentQueryInSearchResults(regex: RegExp) {
     const captions = this.facetSearch.getCaptions();
     captions.forEach(caption => {
-      caption.innerHTML = $$(caption)
-        .text()
-        .replace(regex, '<span class="coveo-highlight">$1</span>');
+      caption.innerHTML = $$(caption).text().replace(regex, '<span class="coveo-highlight">$1</span>');
     });
   }
 

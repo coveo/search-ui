@@ -15,6 +15,7 @@ export class MockElement<T extends Element> {
       this.addEventListener(name, listener)
     );
     (this.element.dispatchEvent as jasmine.Spy).and.callFake((event: Event) => this.dispatchEvent(event));
+    this.element['click'] = () => this.dispatchEvent(new Event('click'));
   }
 
   private addEventListener(name: string, listener: (e: Event) => any) {

@@ -158,7 +158,7 @@ export const isInit = () => {
 export const waitUntilSelectorIsPresent = <T extends Element = Element>(parentNode: HTMLElement, selector: string) => {
   const alreadyExistingElement = parentNode.querySelector<T>(selector);
   if (alreadyExistingElement) {
-    return alreadyExistingElement;
+    return Promise.resolve(alreadyExistingElement);
   }
   return observeUntil(
     parentNode,

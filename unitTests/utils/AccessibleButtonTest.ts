@@ -25,10 +25,7 @@ export const AccessibleButtonTest = () => {
     });
 
     it('should add the specified label as the aria-label attribute', () => {
-      new AccessibleButton()
-        .withElement(element)
-        .withLabel('qwerty')
-        .build();
+      new AccessibleButton().withElement(element).withLabel('qwerty').build();
 
       expect(element.getAttribute('aria-label')).toBe('qwerty');
     });
@@ -36,21 +33,14 @@ export const AccessibleButtonTest = () => {
     it('should add the specified title', () => {
       const title = 'title';
 
-      new AccessibleButton()
-        .withElement(element)
-        .withTitle(title)
-        .build();
+      new AccessibleButton().withElement(element).withTitle(title).build();
 
       expect(element.getAttribute('title')).toBe(title);
     });
 
     it('should just add a title if there is a title and a label specified', () => {
       const button = new AccessibleButton();
-      button
-        .withElement(element)
-        .withTitle('title')
-        .withLabel('label')
-        .build();
+      button.withElement(element).withTitle('title').withLabel('label').build();
       expect(element.getAttribute('aria-label')).toBeNull();
       expect(element.getAttribute('title')).toBe('title');
     });
@@ -65,30 +55,21 @@ export const AccessibleButtonTest = () => {
     it('should not log an error if withoutLabelOrTitle is specified', () => {
       const button = new AccessibleButton();
       const logger = (button['logger'] = mock(Logger));
-      button
-        .withElement(element)
-        .withoutLabelOrTitle()
-        .build();
+      button.withElement(element).withoutLabelOrTitle().build();
       expect(logger.error).not.toHaveBeenCalled();
     });
 
     it('should not log an error if there is a title but no label', () => {
       const button = new AccessibleButton();
       const logger = (button['logger'] = mock(Logger));
-      button
-        .withElement(element)
-        .withTitle('title')
-        .build();
+      button.withElement(element).withTitle('title').build();
       expect(logger.error).not.toHaveBeenCalled();
     });
 
     it('should not log an error if there is a label but no title', () => {
       const button = new AccessibleButton();
       const logger = (button['logger'] = mock(Logger));
-      button
-        .withElement(element)
-        .withLabel('label')
-        .build();
+      button.withElement(element).withLabel('label').build();
       expect(logger.error).not.toHaveBeenCalled();
     });
 
@@ -99,10 +80,7 @@ export const AccessibleButtonTest = () => {
     });
 
     it('with a specified role, should add the specified role', () => {
-      new AccessibleButton()
-        .withElement(element)
-        .withRole('search')
-        .build();
+      new AccessibleButton().withElement(element).withRole('search').build();
 
       expect(element.getAttribute('role')).toBe('search');
     });
@@ -116,10 +94,7 @@ export const AccessibleButtonTest = () => {
 
       describe('configured as select', () => {
         beforeEach(() => {
-          new AccessibleButton()
-            .withElement(element)
-            .withSelectAction(action)
-            .build();
+          new AccessibleButton().withElement(element).withSelectAction(action).build();
         });
 
         it('should be called on click', () => {
@@ -160,10 +135,7 @@ export const AccessibleButtonTest = () => {
 
       describe('configured as click', () => {
         beforeEach(() => {
-          new AccessibleButton()
-            .withElement(element)
-            .withClickAction(action)
-            .build();
+          new AccessibleButton().withElement(element).withClickAction(action).build();
         });
 
         it('should be called on click', () => {
@@ -179,10 +151,7 @@ export const AccessibleButtonTest = () => {
 
       describe('configured as keyboard enter keypress', () => {
         beforeEach(() => {
-          new AccessibleButton()
-            .withElement(element)
-            .withEnterKeyboardAction(action)
-            .build();
+          new AccessibleButton().withElement(element).withEnterKeyboardAction(action).build();
         });
 
         it('should not be called on click', () => {
@@ -203,10 +172,7 @@ export const AccessibleButtonTest = () => {
 
       describe('configured as focus and mouseenter', () => {
         beforeEach(() => {
-          new AccessibleButton()
-            .withElement(element)
-            .withFocusAndMouseEnterAction(action)
-            .build();
+          new AccessibleButton().withElement(element).withFocusAndMouseEnterAction(action).build();
         });
 
         it('should be called on focus', () => {
@@ -222,10 +188,7 @@ export const AccessibleButtonTest = () => {
 
       describe('configured as focus', () => {
         beforeEach(() => {
-          new AccessibleButton()
-            .withElement(element)
-            .withFocusAction(action)
-            .build();
+          new AccessibleButton().withElement(element).withFocusAction(action).build();
         });
 
         it('should be called on focus', () => {
@@ -241,10 +204,7 @@ export const AccessibleButtonTest = () => {
 
       describe('configured as mouseenter', () => {
         beforeEach(() => {
-          new AccessibleButton()
-            .withElement(element)
-            .withMouseEnterAction(action)
-            .build();
+          new AccessibleButton().withElement(element).withMouseEnterAction(action).build();
         });
 
         it('should not be called on focus', () => {
@@ -260,10 +220,7 @@ export const AccessibleButtonTest = () => {
 
       describe('configured as blur and mouseleave', () => {
         beforeEach(() => {
-          new AccessibleButton()
-            .withElement(element)
-            .withBlurAndMouseLeaveAction(action)
-            .build();
+          new AccessibleButton().withElement(element).withBlurAndMouseLeaveAction(action).build();
         });
 
         it('should be called on blur', () => {
@@ -279,10 +236,7 @@ export const AccessibleButtonTest = () => {
 
       describe('configured as blur', () => {
         beforeEach(() => {
-          new AccessibleButton()
-            .withElement(element)
-            .withBlurAction(action)
-            .build();
+          new AccessibleButton().withElement(element).withBlurAction(action).build();
         });
 
         it('should be called on blur', () => {
@@ -298,10 +252,7 @@ export const AccessibleButtonTest = () => {
 
       describe('configured as mouseleave', () => {
         beforeEach(() => {
-          new AccessibleButton()
-            .withElement(element)
-            .withMouseLeaveAction(action)
-            .build();
+          new AccessibleButton().withElement(element).withMouseLeaveAction(action).build();
         });
 
         it('should not be called on blur', () => {
@@ -324,10 +275,7 @@ export const AccessibleButtonTest = () => {
         }
 
         beforeEach(() => {
-          new AccessibleButton()
-            .withElement(element)
-            .withArrowsAction(action)
-            .build();
+          new AccessibleButton().withElement(element).withArrowsAction(action).build();
         });
 
         it('should be called on keyboard up arrow keypress', () => {
@@ -359,11 +307,7 @@ export const AccessibleButtonTest = () => {
           component = new Component(element.el, 'Foo');
           owner = new ComponentEvents(component);
 
-          new AccessibleButton()
-            .withElement(element)
-            .withOwner(owner)
-            .withSelectAction(action)
-            .build();
+          new AccessibleButton().withElement(element).withOwner(owner).withSelectAction(action).build();
         });
 
         it('should not call the action if the component is disabled', () => {
