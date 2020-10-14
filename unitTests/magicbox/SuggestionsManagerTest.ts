@@ -329,11 +329,11 @@ export function SuggestionsManagerTest() {
       });
 
       it("sets aria-owns of InputManager to the id of SuggestionManager's listbox", () => {
-        expect(inputManager.input.getAttribute('aria-owns')).toMatch(/coveo-magicbox-suggestions/);
+        expect(inputManager.input.getAttribute('aria-owns')).toEqual(suggestionsManager.suggestionsListbox.getAttribute('id'));
       });
 
       it("sets aria-controls of InputManager to the id of SuggestionManager's listbox", () => {
-        expect(inputManager.input.getAttribute('aria-controls')).toMatch(/coveo-magicbox-suggestions/);
+        expect(inputManager.input.getAttribute('aria-controls')).toEqual(suggestionsManager.suggestionsListbox.getAttribute('id'));
       });
 
       it('sets aria-expanded of InputManager to false', () => {

@@ -32,11 +32,11 @@ export enum Direction {
 }
 
 export class SuggestionsManager {
+  public suggestionsListbox: Dom;
   private suggestionsProcessor: QueryProcessor<Suggestion>;
   private currentSuggestions: Suggestion[];
   private options: SuggestionsManagerOptions;
   private keyboardFocusedElement: HTMLElement;
-  private suggestionsListbox: Dom;
   private resultPreviewsManager: ResultPreviewsManager;
   private root: HTMLElement;
   private suggestionListboxID = `coveo-magicbox-suggestions-${QueryUtils.createGuid()}`;
