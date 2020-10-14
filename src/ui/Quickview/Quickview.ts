@@ -132,6 +132,8 @@ export class Quickview extends Component {
      * `contentTemplate`, otherwise the component will throw an error when opened.
      *
      * Default value is `false`.
+     *
+     * @availablesince [September 2015 Release (v1.0.59)](https://docs.coveo.com/en/289/#september-2015-release-v1059)
      */
     alwaysShow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
@@ -254,8 +256,6 @@ export class Quickview extends Component {
 
   private modalbox: AccessibleModal;
 
-  private lastFocusedElement: HTMLElement;
-
   /**
    * Creates a new `Quickview` component.
    * @param element The HTMLElement on which to instantiate the component.
@@ -293,7 +293,7 @@ export class Quickview extends Component {
       });
     }
 
-    this.modalbox = new AccessibleModal('coveo-quick-view', element.ownerDocument.body as HTMLBodyElement, ModalBox);
+    this.modalbox = new AccessibleModal('coveo-quick-view', this.searchInterface.options.modalContainer, ModalBox);
   }
 
   private buildContent() {
@@ -315,7 +315,7 @@ export class Quickview extends Component {
   }
 
   private buildCaption() {
-    return $$('div', { className: 'coveo-caption-for-icon', tabindex: 0 }, 'Quickview'.toLocaleString()).el;
+    return $$('div', { className: 'coveo-caption-for-icon' }, 'Quickview'.toLocaleString()).el;
   }
 
   private buildTooltipIfNotInCardLayout(icon: HTMLElement, caption: HTMLElement) {
@@ -347,7 +347,8 @@ export class Quickview extends Component {
         offset: {
           offset: '0,8'
         }
-      }
+      },
+      eventsEnabled: false
     });
 
     $$(this.element).on('mouseover', () => {
@@ -364,10 +365,7 @@ export class Quickview extends Component {
       Quickview.resultCurrentlyBeingRendered = this.result;
       // activeElement does not exist in LockerService
       if (document.activeElement && document.activeElement instanceof HTMLElement) {
-        this.lastFocusedElement = document.activeElement;
         $$(document.activeElement as HTMLElement).trigger('blur');
-      } else {
-        this.lastFocusedElement = null;
       }
 
       const openerObject = this.prepareOpenQuickviewObject();
@@ -387,9 +385,6 @@ export class Quickview extends Component {
   public close() {
     if (this.modalbox.isOpen) {
       this.modalbox.close();
-      if (this.lastFocusedElement && this.lastFocusedElement.parentElement) {
-        this.lastFocusedElement.focus();
-      }
     }
   }
 
@@ -444,18 +439,19 @@ export class Quickview extends Component {
     computedModalBoxContent.addClass('coveo-computed-modal-box-content');
     return openerObject.content.then(builtContent => {
       computedModalBoxContent.append(builtContent.el);
-      const title = DomUtils.getQuickviewHeader(
-        this.result,
-        {
+      this.modalbox.openResult({
+        result: this.result,
+        options: {
           showDate: this.options.showDate,
           title: this.options.title
         },
-        this.bindings
-      ).el;
-
-      this.modalbox.open(title, computedModalBoxContent.el, () => {
-        this.closeQuickview();
-        return true;
+        bindings: this.bindings,
+        content: computedModalBoxContent.el,
+        validation: () => {
+          this.closeQuickview();
+          return true;
+        },
+        origin: this.element
       });
       return computedModalBoxContent;
     });

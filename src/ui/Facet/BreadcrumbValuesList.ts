@@ -5,7 +5,8 @@ import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
 import { IBreadcrumbValueElementKlass } from './BreadcrumbValueElement';
 import { Facet } from './Facet';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export class BreadcrumbValueList {
   private expanded: FacetValue[];
@@ -24,7 +25,7 @@ export class BreadcrumbValueList {
     title.text(this.facet.options.title + ':');
     this.elem.appendChild(title.el);
 
-    this.valueContainer = $$('span', {
+    this.valueContainer = $$('ul', {
       className: 'coveo-facet-breadcrumb-values'
     }).el;
 
@@ -64,6 +65,10 @@ export class BreadcrumbValueList {
     const numberOfExcluded = filter(this.collapsed, (value: FacetValue) => value.excluded).length;
     Assert.check(numberOfSelected + numberOfExcluded == this.collapsed.length);
 
+    const listContainer = $$('li', {
+      className: 'coveo-facet-breadcrumb-value-list-item'
+    });
+
     const elem = $$('div', {
       className: 'coveo-facet-breadcrumb-value'
     });
@@ -83,19 +88,23 @@ export class BreadcrumbValueList {
       return valueElement.getBreadcrumbTooltip();
     });
 
-    elem.el.setAttribute('title', toolTips.join('\n'));
-    elem.on('click', () => {
-      const elements: HTMLElement[] = [];
-      each(valueElements, valueElement => {
-        elements.push(valueElement.build().el);
-      });
-      each(elements, el => {
-        $$(el).insertBefore(elem.el);
-      });
-      elem.detach();
-    });
+    new AccessibleButton()
+      .withElement(elem)
+      .withTitle(toolTips.join('\n'))
+      .withSelectAction(() => {
+        const elements: HTMLElement[] = [];
+        each(valueElements, valueElement => {
+          elements.push(valueElement.build().el);
+        });
+        each(elements, el => {
+          $$(el).insertBefore(elem.el);
+        });
+        elem.detach();
+      })
+      .build();
 
-    this.valueContainer.appendChild(elem.el);
+    listContainer.append(elem.el);
+    this.valueContainer.appendChild(listContainer.el);
   }
 
   private setExpandedAndCollapsed() {

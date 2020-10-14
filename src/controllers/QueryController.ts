@@ -1,5 +1,4 @@
-import { history } from 'coveo.analytics';
-import { NullStorage } from 'coveo.analytics/dist/storage';
+import { buildHistoryStore, buildNullHistoryStore } from '../utils/HistoryStore';
 import * as _ from 'underscore';
 import {
   IBuildingCallOptionsEventArgs,
@@ -32,6 +31,7 @@ import { QueryUtils } from '../utils/QueryUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { Utils } from '../utils/Utils';
 import { IAnalyticsClient } from '../ui/Analytics/AnalyticsClient';
+import { ExecutionPlan } from '../rest/Plan';
 
 /**
  * Possible options when performing a query with the query controller
@@ -129,7 +129,7 @@ export class QueryController extends RootComponent {
     Assert.exists(element);
     Assert.exists(options);
     this.firstQuery = true;
-    this.enableHistory();
+    this.initializeActionsHistory();
   }
 
   public get usageAnalytics(): IAnalyticsClient {
@@ -172,6 +172,20 @@ export class QueryController extends RootComponent {
    */
   public getLastResults() {
     return this.lastQueryResults;
+  }
+
+  /**
+   * Returns the plan of execution of a search request, without executing it.
+   * @returns {ExecutionPlan}
+   */
+  public async fetchQueryExecutionPlan(): Promise<ExecutionPlan> {
+    const query = this.createQueryBuilder(new DefaultQueryOptions()).build();
+    this.logger.debug('Fetching query execution plan');
+    try {
+      return await this.getEndpoint().plan(query);
+    } catch (error) {
+      return null;
+    }
   }
 
   /**
@@ -223,7 +237,7 @@ export class QueryController extends RootComponent {
 
     let query = queryBuilder.build();
     if (options.logInActionsHistory) {
-      this.logQueryInActionsHistory(query, options.isFirstQuery);
+      this.logQueryInActionsHistory(query);
     }
 
     let endpointToUse = this.getEndpoint();
@@ -486,11 +500,22 @@ export class QueryController extends RootComponent {
   }
 
   public enableHistory() {
-    this.historyStore = new history.HistoryStore();
+    this.historyStore = buildHistoryStore();
   }
 
   public disableHistory() {
-    this.historyStore = new history.HistoryStore(new NullStorage());
+    this.historyStore = buildNullHistoryStore();
+  }
+
+  private initializeActionsHistory() {
+    this.enableHistory();
+
+    if (this.usageAnalytics.isActivated()) {
+      return;
+    }
+
+    this.historyStore.clear();
+    this.disableHistory();
   }
 
   private closeModalBoxIfNeeded(needed?: boolean) {
@@ -663,7 +688,7 @@ export class QueryController extends RootComponent {
     return dom;
   }
 
-  private logQueryInActionsHistory(query: IQuery, isFirstQuery: boolean) {
+  private logQueryInActionsHistory(query: IQuery) {
     let queryElement: CoveoAnalytics.HistoryQueryElement = {
       name: 'Query',
       value: query.q,

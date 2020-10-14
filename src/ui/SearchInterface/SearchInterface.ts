@@ -29,7 +29,7 @@ import { SearchEndpoint } from '../../rest/SearchEndpoint';
 import { $$ } from '../../utils/Dom';
 import { HashUtils } from '../../utils/HashUtils';
 import { Utils } from '../../utils/Utils';
-import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsTriggerRedirect } from '../Analytics/AnalyticsActionListMeta';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { NoopAnalyticsClient } from '../Analytics/NoopAnalyticsClient';
 import { AriaLive, IAriaLive } from '../AriaLive/AriaLive';
@@ -81,6 +81,7 @@ export interface ISearchInterfaceOptions {
   responsiveSmallBreakpoint?: number;
   responsiveMode?: ValidResponsiveMode;
   enableScrollRestoration?: boolean;
+  modalContainer?: HTMLElement;
 }
 
 export interface IMissingTermManagerArgs {
@@ -481,8 +482,32 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     /**
      * Specifies whether to restore the last scroll position when navigating back
      * to the search interface.
+     *
+     * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
      */
-    enableScrollRestoration: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    enableScrollRestoration: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    /**
+     * Specifies the HTMLElement to which Modals components of the search interface will be attached to. You can
+     * either specify a CSS selector or pass an HTMLElement in the options when calling Coveo.init.
+     *
+     * Default value is `element.ownerDocument.body`.
+     *
+     * **Example in attribute:**
+     * ```html
+     * <div class="CoveoSearchInterface" data-modal-container="#my-modal-container"></div>
+     * ```
+     *
+     * **Example in init options:**
+     * ```javascript
+     * var myContainer = document.getElementById('my-modal-container');
+     * Coveo.init(root, {
+     *   SearchInterface: {
+     *     modalContainer: myContainer
+     *   }
+     * });
+     * ```
+     */
+    modalContainer: ComponentOptions.buildSelectorOption({ defaultFunction: element => element.ownerDocument.body })
   };
 
   public static SMALL_INTERFACE_CLASS_NAME = 'coveo-small-search-interface';
@@ -536,7 +561,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.componentOptionsModel = new ComponentOptionsModel(element);
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
-    this.facetValueStateHandler = new FacetValueStateHandler(this.element);
+    this.facetValueStateHandler = new FacetValueStateHandler(this);
     new SentryLogger(this.queryController);
 
     const missingTermManagerArgs: IMissingTermManagerArgs = {
@@ -1054,7 +1079,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
 
   private get duplicatesFacets() {
     const duplicate = [];
-    const facets = ComponentsTypes.getAllFacetsInstance(this.root);
+    const facets = ComponentsTypes.getAllFacetsFromSearchInterface(this);
 
     facets.forEach(facet => {
       facets.forEach(cmp => {
@@ -1179,27 +1204,34 @@ export class StandaloneSearchInterface extends SearchInterface {
     data.cancel = true;
 
     if (!this.searchboxIsEmpty() || this.options.redirectIfEmpty) {
-      this.redirectToSearchPage(dataToSendOnBeforeRedirect.searchPageUri);
+      this.doRedirect(dataToSendOnBeforeRedirect.searchPageUri);
     }
   }
 
+  private async doRedirect(searchPage: string) {
+    const executionPlan = await this.queryController.fetchQueryExecutionPlan();
+    const redirectionURL = executionPlan && executionPlan.redirectionURL;
+    if (!redirectionURL) {
+      return this.redirectToSearchPage(searchPage);
+    }
+
+    this.redirectToURL(redirectionURL);
+  }
+
+  public redirectToURL(url: string) {
+    this.usageAnalytics.logCustomEvent<IAnalyticsTriggerRedirect>(
+      analyticsActionCauseList.triggerRedirect,
+      {
+        redirectedTo: url,
+        query: this.queryStateModel.get(QueryStateModel.attributesEnum.q)
+      },
+      this.element
+    );
+
+    this._window.location.assign(url);
+  }
+
   public redirectToSearchPage(searchPage: string) {
-    const stateValues = this.queryStateModel.getAttributes();
-    let uaCausedBy = this.usageAnalytics.getCurrentEventCause();
-
-    if (uaCausedBy != null) {
-      // for legacy reason, searchbox submit were always logged a search from link in an external search box.
-      // transform them if that's what we hit.
-      if (uaCausedBy == analyticsActionCauseList.searchboxSubmit.name) {
-        uaCausedBy = analyticsActionCauseList.searchFromLink.name;
-      }
-      stateValues['firstQueryCause'] = uaCausedBy;
-    }
-    const uaMeta = this.usageAnalytics.getCurrentEventMeta();
-    if (uaMeta != null && !isEmpty(uaMeta)) {
-      stateValues['firstQueryMeta'] = uaMeta;
-    }
-
     const link = document.createElement('a');
     link.href = searchPage;
     link.href = link.href; // IE11 needs this to correctly fill the properties that are used below.
@@ -1210,8 +1242,40 @@ export class StandaloneSearchInterface extends SearchInterface {
     // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
     // eg: onblur of the magic box.
     setTimeout(() => {
-      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${HashUtils.encodeValues(stateValues)}`;
+      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${this.encodedHashValues}`;
     }, 0);
+  }
+
+  private get encodedHashValues() {
+    const values = {
+      ...this.modelAttributesToIncludeInUrl,
+      ...this.uaCausedByAttribute,
+      ...this.uaMetadataAttribute
+    };
+
+    return HashUtils.encodeValues(values);
+  }
+
+  private get modelAttributesToIncludeInUrl() {
+    const usingLocalStorageHistory = this.historyManager instanceof LocalStorageHistoryController;
+    return usingLocalStorageHistory ? {} : this.queryStateModel.getAttributes();
+  }
+
+  private get uaCausedByAttribute() {
+    const uaCausedBy = this.uaCausedBy;
+    return uaCausedBy ? { firstQueryCause: uaCausedBy } : {};
+  }
+
+  private get uaCausedBy() {
+    const uaCausedBy = this.usageAnalytics.getCurrentEventCause();
+    const isSearchboxSubmit = uaCausedBy === analyticsActionCauseList.searchboxSubmit.name;
+    // For legacy reasons, searchbox submit were always logged as a search from link in an external search box.
+    return isSearchboxSubmit ? analyticsActionCauseList.searchFromLink.name : uaCausedBy;
+  }
+
+  private get uaMetadataAttribute() {
+    const uaMeta = this.usageAnalytics.getCurrentEventMeta();
+    return uaMeta && !isEmpty(uaMeta) ? { firstQueryMeta: uaMeta } : {};
   }
 
   private searchboxIsEmpty(): boolean {

@@ -43,6 +43,8 @@ interface ILabeledCheckbox {
  * The list of available field values in the dropdown menu can either be static (defined through the
  * [`values`]{@link SimpleFilter.options.values} option), or dynamic (automatically obtained through a
  * [`GroupByRequest`]{@link IGroupByRequest} operation performed at the same time as the main query).
+ *
+ * @availablesince [November 2017 Release (v2.3477.9)](https://docs.coveo.com/en/373/#november-2017-release-v234779)
  */
 export class SimpleFilter extends Component {
   static ID = 'SimpleFilter';
@@ -166,6 +168,7 @@ export class SimpleFilter extends Component {
     /**
      * Whether to show a button to clear all selected values.
      *
+     * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
      */
     enableClearButton: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };

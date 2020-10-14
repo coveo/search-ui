@@ -18,7 +18,8 @@ import { ImageFieldValue } from '../FieldImage/ImageFieldValue';
 import {
   ResultPreviewsManagerEvents,
   IPopulateSearchResultPreviewsEventArgs,
-  IUpdateResultPreviewsManagerOptionsEventArgs
+  IUpdateResultPreviewsManagerOptionsEventArgs,
+  IBuildingResultPreviewsQueryEventArgs
 } from '../../events/ResultPreviewsManagerEvents';
 import { IQuery } from '../../rest/Query';
 import { Suggestion } from '../../magicbox/SuggestionsManager';
@@ -157,8 +158,14 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     return this.buildResultsPreview(suggestion, results);
   }
 
-  private buildQuery(suggestion: Suggestion): IQuery {
-    const { searchHub, pipeline, tab, locale, timezone, context } = this.queryController.getLastQuery();
+  private buildQuery(suggestion: Suggestion) {
+    const query = this.buildDefaultQuery(suggestion);
+    $$(this.root).trigger(ResultPreviewsManagerEvents.buildingResultPreviewsQuery, <IBuildingResultPreviewsQueryEventArgs>{ query });
+    return query;
+  }
+
+  private buildDefaultQuery(suggestion: Suggestion): IQuery {
+    const { searchHub, pipeline, tab, locale, timezone, context, cq } = this.queryController.getLastQuery();
     return {
       firstResult: 0,
       searchHub,
@@ -167,6 +174,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
       locale,
       timezone,
       context,
+      cq,
       numberOfResults: this.options.numberOfPreviewResults,
       q: suggestion.text || suggestion.dom.innerText,
       ...(suggestion.advancedQuery && { aq: suggestion.advancedQuery })

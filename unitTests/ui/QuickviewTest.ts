@@ -52,6 +52,10 @@ export function QuickviewTest() {
       done();
     });
 
+    it('should not give the caption a tabindex', () => {
+      expect(quickview.element.querySelector('.coveo-caption-for-icon').getAttribute('tabindex')).toBeNull();
+    });
+
     it('when the layout is list, the caption should be positioned (i.e. appear as a tooltip)', done => {
       expect(
         $$(quickview.element)

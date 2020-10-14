@@ -16,9 +16,7 @@ export function RecommendationTest() {
     let mainSearchInterface: Mock.IBasicComponentSetup<SearchInterface>;
     let test: Mock.IBasicComponentSetup<Recommendation>;
     let options: IRecommendationOptions;
-    let actionsHistory = [1, 2, 3];
     let userId = '123';
-    let store: CoveoAnalytics.HistoryStore;
 
     const isHidden = (test: Mock.IBasicComponentSetup<Recommendation>): boolean => {
       return $$(test.cmp.element).hasClass('coveo-hidden');
@@ -32,9 +30,8 @@ export function RecommendationTest() {
           user_id: userId
         }
       };
-      store = Simulate.analyticsStoreModule(actionsHistory);
+
       test = Mock.optionsSearchInterfaceSetup<Recommendation, IRecommendationOptions>(Recommendation, options);
-      test.cmp.historyStore = store;
     });
 
     afterEach(() => {

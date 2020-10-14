@@ -177,16 +177,16 @@ export class Omnibox extends Component {
     /**
      * Whether to display Coveo Machine Learning (Coveo ML) query suggestions in the `Omnibox`.
      *
-     * The corresponding Coveo ML model must be properly configured in your Coveo Cloud organization, otherwise this
+     * A Coveo ML query suggestions (QS) model must be properly configured in your Coveo Cloud organization, otherwise this
      * option has no effect (see
-     * [Managing Machine Learning Query Suggestions in a Query Pipeline](https://docs.coveo.com/en/1838/)).
+     * [Create a QS Model](https://docs.coveo.com/en/1832/#create-a-qs-model)).
      *
      * **Note:**
      * > When you set this option and the [`enableSearchAsYouType`]{@link Omnibox.options.enableSearchAsYouType} option
      * > to `true`, the query suggestion feature returns the auto-completion of the currently typed keyword as its first
      * > query suggestion.
      *
-     * Default value is `true`.
+     * @availablesince [December 2015 Release (v1.0.273)](https://docs.coveo.com/en/289/#december-2015-release-v10273)
      */
     enableQuerySuggestAddon: ComponentOptions.buildBooleanOption({
       defaultValue: true,
@@ -214,6 +214,8 @@ export class Omnibox extends Component {
 
     /**
      * Specifies a placeholder for the input.
+     *
+     * @availablesince [July 2016 Release (v1.667.24)](https://docs.coveo.com/en/309/#july-2016-release-v166724)
      */
     placeholder: ComponentOptions.buildLocalizedStringOption(),
 
@@ -435,7 +437,7 @@ export class Omnibox extends Component {
     const input = $$(this.magicBox.element).find('input');
 
     if (input) {
-      $$(input).setAttribute('aria-label', l('SubmitSearch'));
+      $$(input).setAttribute('aria-label', l('Search'));
     }
 
     this.setupMagicBox();

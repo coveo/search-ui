@@ -9,6 +9,7 @@ import { Utils } from '../../../utils/Utils';
 import { l } from '../../../strings/Strings';
 import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicFacetValues/DynamicFacetValueMoreLessButton';
 import { IDynamicHierarchicalFacetValues, IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../IDynamicHierarchicalFacet';
+import { SVGIcons } from '../../../utils/SVGIcons';
 
 export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacetValues {
   private facetValues: IDynamicHierarchicalFacetValue[] = [];
@@ -23,6 +24,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
   }
 
   public createFromResponse(response: IFacetResponse) {
+    this.clearPath();
     this.facetValues = response.values.map(responseValue => this.createFacetValueFromResponse(responseValue));
   }
 
@@ -48,6 +50,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
         state: responseValue.state,
         moreValuesAvailable: responseValue.moreValuesAvailable,
         path: newPath,
+        isLeafValue: responseValue.isLeafValue,
         displayValue,
         children
       },
@@ -69,7 +72,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
 
   public resetValues() {
     this.facetValues = [];
-    this._selectedPath = [];
+    this.clearPath();
   }
 
   public clearPath() {
@@ -103,6 +106,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
         displayValue: this.formatDisplayValue(value),
         numberOfResults: 0,
         state: FacetValueState.idle,
+        isLeafValue: !children.length,
         moreValuesAvailable: false,
         children
       },
@@ -154,6 +158,9 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
       this.facet.options.clearLabel
     );
     clearButton.toggleClass('coveo-show-when-collapsed', this.facet.values.selectedPath.length === 1);
+
+    const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow-left' }, SVGIcons.icons.arrowDown);
+    clearButton.prepend(arrowIcon.el);
 
     const clear = $$('li', {}, clearButton);
     clear.on('click', () => this.facet.header.options.clear());

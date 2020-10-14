@@ -69,6 +69,13 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
     basicExpression: 'testt',
     element: new SearchSectionBuilder().withComponent('CoveoDidYouMean').build()
   },
+  DynamicHierarchicalFacet: {
+    show: true,
+    options: {
+      field: '@atlgeographicalhierarchy',
+      title: 'Geographic position'
+    }
+  },
   DynamicFacet: {
     show: true,
     options: {
@@ -508,6 +515,43 @@ export const PlaygroundConfiguration: IStringMap<IComponentPlaygroundConfigurati
               'data-caption': 'Date'
             },
             'span'
+          )
+          .build()
+      )
+      .withComponent('CoveoResultList')
+      .build(),
+    toExecute: () => {
+      getSearchInterfaceElement().style.padding = '20px';
+      $$(getSearchInterfaceElement()).on('buildingQuery', function(e, args) {
+        args.queryBuilder.numberOfResults = 3;
+      });
+    }
+  },
+  SortDropdown: {
+    show: true,
+    element: new SectionBuilder()
+      .withDomElement(
+        new SectionBuilder($$('div', { className: 'coveo-sort-section' }))
+          .withDomElement(
+            $$(
+              'div',
+              { className: 'CoveoSortDropdown' },
+              $$('span', {
+                className: 'CoveoSort',
+                'data-sort-criteria': 'relevancy',
+                'data-caption': 'relevancy'
+              }),
+              $$('span', {
+                className: 'CoveoSort',
+                'data-sort-criteria': 'date descending',
+                'data-caption': 'Newest'
+              }),
+              $$('span', {
+                className: 'CoveoSort',
+                'data-sort-criteria': 'date ascending',
+                'data-caption': 'Oldest'
+              })
+            )
           )
           .build()
       )

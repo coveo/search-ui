@@ -51,6 +51,8 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
       expect(facetRequest().type).toBe(facet.facetType);
       expect(facetRequest().delimitingCharacter).toBe(facet.options.delimitingCharacter);
       expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
+      expect(facetRequest().basePath).toBe(facet.options.basePath);
+      expect(facetRequest().filterByBasePath).toBe(false);
     });
 
     it('the facet option freezeFacetOrder should not be defined by default', () => {
@@ -214,7 +216,5 @@ export function DynamicHierarchicalFacetQueryControllerTest() {
         );
       });
     });
-
-    // TODO: add tests for dependsOnManager when feature is reworked
   });
 }

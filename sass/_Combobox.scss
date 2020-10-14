@@ -26,6 +26,30 @@ $input-padding: 5px;
     padding: 0 5px;
     font-size: $font-size-smaller;
     border: $default-border;
+
+    &:-moz-placeholder,
+    &::-moz-placeholder {
+      opacity: 1;
+    }
+  }
+
+  .coveo-combobox-input-icon {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-left: 10px;
+    pointer-events: none;
+
+    & + input {
+      padding-left: 35px;
+    }
+
+    svg {
+      width: 1em;
+      height: 1em;
+    }
   }
 }
 
@@ -46,6 +70,7 @@ $input-padding: 5px;
   top: $input-height;
   z-index: 1;
   box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.1);
+  overflow: auto;
 }
 
 .coveo-combobox-value,

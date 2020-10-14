@@ -1,6 +1,6 @@
 /// <reference path="Facet.ts" />
 import { Facet } from './Facet';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { IPopulateOmniboxObject } from '../Omnibox/OmniboxInterface';
 import { ValueElementRenderer } from './ValueElementRenderer';
 import { Utils } from '../../utils/Utils';
@@ -120,8 +120,8 @@ export class ValueElement {
     this.toggleExcludeWithUA();
   }
 
-  protected handleEventForExcludedValueElement(eventBindings: IValueElementEventsBinding) {
-    let clickEvent = (event: Event) => {
+  protected handleSelectEventForExcludedValueElement(eventBindings: IValueElementEventsBinding) {
+    const clickEvent = () => {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
       }
@@ -129,40 +129,42 @@ export class ValueElement {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
       this.handleSelectValue(eventBindings);
+      this.tryDismissSearchResults();
       return false;
     };
 
     $$(this.renderer.label).on('click', e => {
       e.stopPropagation();
-      clickEvent(e);
+      clickEvent();
     });
 
     $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([KEYBOARD.SPACEBAR, KEYBOARD.ENTER], clickEvent));
   }
 
-  protected handleEventForValueElement(eventBindings: IValueElementEventsBinding) {
-    let excludeAction = (event: Event) => {
+  protected handleExcludeEventForValueElement(eventBindings: IValueElementEventsBinding) {
+    const excludeAction = (event: Event) => {
       if (eventBindings.omniboxObject) {
         this.omniboxCloseEvent(eventBindings.omniboxObject);
       }
 
       this.handleExcludeClick(eventBindings);
 
-      if (this.facet && this.facet.facetSearch && this.facet.facetSearch.dismissSearchResults) {
-        this.facet.facetSearch.dismissSearchResults();
-      }
+      this.tryDismissSearchResults();
       event.stopPropagation();
       event.preventDefault();
     };
     $$(this.renderer.excludeIcon).on('click', excludeAction);
 
     $$(this.renderer.excludeIcon).on('keydown', KeyboardUtils.keypressAction([KEYBOARD.SPACEBAR, KEYBOARD.ENTER], excludeAction));
+  }
 
-    let selectAction = (event: Event) => {
+  protected handleSelectEventForValueElement(eventBindings: IValueElementEventsBinding) {
+    const selectAction = (event: Event) => {
       if (eventBindings.pinFacet) {
         this.facet.pinFacetPosition();
       }
 
+      this.tryDismissSearchResults();
       $$(this.renderer.checkbox).trigger('change');
       event.preventDefault();
     };
@@ -170,6 +172,16 @@ export class ValueElement {
     $$(this.renderer.label).on('click', selectAction);
 
     $$(this.renderer.stylishCheckbox).on('keydown', KeyboardUtils.keypressAction([KEYBOARD.SPACEBAR, KEYBOARD.ENTER], selectAction));
+  }
+
+  protected handleEventForExcludedValueElement(eventBindings: IValueElementEventsBinding) {
+    this.handleSelectEventForExcludedValueElement(eventBindings);
+    this.handleExcludeEventForValueElement(eventBindings);
+  }
+
+  protected handleEventForValueElement(eventBindings: IValueElementEventsBinding) {
+    this.handleSelectEventForValueElement(eventBindings);
+    this.handleExcludeEventForValueElement(eventBindings);
   }
 
   protected handleEventForCheckboxChange(eventBindings: IValueElementEventsBinding) {
@@ -184,6 +196,12 @@ export class ValueElement {
   protected omniboxCloseEvent(eventArg: IPopulateOmniboxObject) {
     eventArg.closeOmnibox();
     eventArg.clear();
+  }
+
+  private tryDismissSearchResults() {
+    if (this.facet && this.facet.facetSearch && this.facet.facetSearch.dismissSearchResults) {
+      this.facet.facetSearch.dismissSearchResults();
+    }
   }
 
   private getAnalyticsFacetMeta(): IAnalyticsFacetMeta {

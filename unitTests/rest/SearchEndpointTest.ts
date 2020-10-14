@@ -14,7 +14,7 @@ import { AjaxError } from '../../src/rest/AjaxError';
 import _ = require('underscore');
 import { Utils } from '../../src/utils/Utils';
 import { IFacetSearchResponse } from '../../src/rest/Facet/FacetSearchResponse';
-import { IPlan } from '../../src/rest/Plan';
+import { ExecutionPlan } from '../../src/rest/Plan';
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', () => {
@@ -32,6 +32,44 @@ export function SearchEndpointTest() {
       expect(ep).toBeDefined();
       expect(ep.options.accessToken).toBeDefined();
       expect(ep.options.restUri).toBeDefined();
+    });
+
+    it('allows to get the default endpoint if there is only one endpoint set to default', () => {
+      SearchEndpoint.configureSampleEndpointV2();
+
+      expect(SearchEndpoint.endpoints['default']).toBe(SearchEndpoint.defaultEndpoint);
+    });
+
+    it('allows to get the default endpoint if there is only one endpoint set to something else than default', () => {
+      SearchEndpoint.endpoints['foo'] = new SearchEndpoint({
+        restUri: 'https://platform-eu.cloud.coveo.com/rest/search'
+      });
+
+      expect(SearchEndpoint.endpoints['foo']).toBe(SearchEndpoint.defaultEndpoint);
+    });
+
+    it('allows to get the default endpoint if there is multiple endpoint set with at least one set to default', () => {
+      SearchEndpoint.endpoints['foo'] = new SearchEndpoint({
+        restUri: 'https://platform-eu.cloud.coveo.com/rest/search'
+      });
+
+      SearchEndpoint.endpoints['default'] = new SearchEndpoint({
+        restUri: 'https://platform.cloud.coveo.com/rest/search'
+      });
+
+      expect(SearchEndpoint.endpoints['default']).toBe(SearchEndpoint.defaultEndpoint);
+    });
+
+    it('allows to get the default endpoint if there is multiple endpoint set with none of them being default', () => {
+      SearchEndpoint.endpoints['foo'] = new SearchEndpoint({
+        restUri: 'https://platform-eu.cloud.coveo.com/rest/search'
+      });
+
+      SearchEndpoint.endpoints['bar'] = new SearchEndpoint({
+        restUri: 'https://platform.cloud.coveo.com/rest/search'
+      });
+
+      expect(SearchEndpoint.defaultEndpoint).toBeDefined();
     });
 
     it('allow to setup easily a cloud endpoint', () => {
@@ -313,7 +351,7 @@ export function SearchEndpointTest() {
 
         describe('for /plan', () => {
           let qbuilder: QueryBuilder;
-          let promise: Promise<IPlan>;
+          let promise: Promise<ExecutionPlan>;
           beforeEach(() => {
             qbuilder = new QueryBuilder();
             qbuilder.expression.add('batman');
@@ -353,7 +391,7 @@ export function SearchEndpointTest() {
           it('contains the right request headers', done => {
             expect(jasmine.Ajax.requests.mostRecent().requestHeaders).toEqual(
               jasmine.objectContaining({
-                'Content-Type': 'application/json; charset="UTF-8"'
+                'Content-Type': 'application/json; charset=UTF-8'
               })
             );
 

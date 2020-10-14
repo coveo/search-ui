@@ -5,9 +5,27 @@ import { CategoryFacetSearch } from '../../../src/ui/CategoryFacet/CategoryFacet
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import _ = require('underscore');
 import { IGroupByValue } from '../../../src/rest/GroupByValue';
-import { $$ } from '../../../src/Core';
+import { $$, l } from '../../../src/Core';
 import { KEYBOARD } from '../../../src/utils/KeyboardUtils';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import * as Globalize from 'globalize';
+import { Simulate } from '../../Simulate';
+
+function undebounce(fn: (...args: any[]) => any, time = 0): (...args: any[]) => void {
+  return (...args) => {
+    let wasClockInstalled = false;
+    try {
+      jasmine.clock().install();
+    } catch (e) {
+      wasClockInstalled = true;
+    }
+    fn(...args);
+    jasmine.clock().tick(time);
+    if (!wasClockInstalled) {
+      jasmine.clock().uninstall();
+    }
+  };
+}
 
 export function CategoryFacetSearchTest() {
   describe('CategoryFacetSearch', () => {
@@ -16,7 +34,6 @@ export function CategoryFacetSearchTest() {
     const categoryFacetTitle = 'abcdef';
     let categoryFacetMock: CategoryFacet;
     let categoryFacetSearch: CategoryFacetSearch;
-    let realDebounce;
     let fakeGroupByValues: IGroupByValue[];
 
     function getInputHandler() {
@@ -58,25 +75,18 @@ export function CategoryFacetSearchTest() {
     }
 
     beforeEach(() => {
-      realDebounce = _.debounce;
-      spyOn(_, 'debounce').and.callFake(function(func) {
-        return function() {
-          func.apply(this, arguments);
-        };
-      });
+      const facetSearchDelay = 5;
       categoryFacetMock = basicComponentSetup<CategoryFacet>(CategoryFacet, {
         field: '@field',
-        title: categoryFacetTitle
+        title: categoryFacetTitle,
+        facetSearchDelay
       }).cmp;
       fakeGroupByValues = FakeResults.createFakeGroupByResult('@field', 'value', 10).values;
       categoryFacetMock.categoryFacetQueryController = mock(CategoryFacetQueryController);
       categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => new Promise(resolve => resolve(fakeGroupByValues));
       categoryFacetSearch = new CategoryFacetSearch(categoryFacetMock);
+      categoryFacetSearch.displayNewValues = undebounce(categoryFacetSearch.displayNewValues, facetSearchDelay);
       categoryFacetSearch.build();
-    });
-
-    afterEach(() => {
-      _.debounce = realDebounce;
     });
 
     it('when building returns a container', () => {
@@ -94,6 +104,11 @@ export function CategoryFacetSearchTest() {
       expect(container.getAttribute('aria-label')).toContain(categoryFacetTitle);
     });
 
+    it("builds an input with the category facet's title in the label", () => {
+      const input = categoryFacetSearch.build().find('input');
+      expect(input.getAttribute('aria-label')).toContain(categoryFacetTitle);
+    });
+
     it('focus moves the focus to the input element', () => {
       spyOn(getInput(), 'focus');
 
@@ -106,6 +121,16 @@ export function CategoryFacetSearchTest() {
       categoryFacetSearch.focus();
       setTimeout(() => {
         expect(getSearchResults().innerHTML).not.toEqual('');
+        done();
+      });
+    });
+
+    it('should call updateAriaLiveWithResults', done => {
+      spyOn(categoryFacetSearch.facetSearchElement, 'updateAriaLiveWithResults');
+      categoryFacetSearch.displayNewValues();
+
+      setTimeout(() => {
+        expect(categoryFacetSearch.facetSearchElement.updateAriaLiveWithResults).toHaveBeenCalled();
         done();
       });
     });
@@ -194,6 +219,39 @@ export function CategoryFacetSearchTest() {
       });
     });
 
+    describe('when expanding', () => {
+      beforeEach(done => {
+        categoryFacetSearch.displayNewValues();
+        setTimeout(done);
+      });
+
+      it('sets aria-expanded to true', () => {
+        expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('true');
+      });
+
+      it('has accessible labels on each value', () => {
+        getFacetSearchValues().forEach(value => {
+          const count = parseInt(value.getElementsByClassName('coveo-category-facet-search-value-number').item(0).textContent, 10);
+          const formattedCount = Globalize.format(count, 'n0');
+          const path = value.getAttribute('data-path').split('|');
+
+          expect(value.getAttribute('aria-label')).toEqual(
+            l('IncludeValueWithResultCount', _.last(path), l('ResultCount', formattedCount, count))
+          );
+        });
+      });
+
+      it('keeps aria-expanded true when displaying no values', done => {
+        searchWithNoValues();
+        categoryFacetSearch.displayNewValues();
+
+        setTimeout(() => {
+          expect(categoryFacetSearch.container.getAttribute('aria-expanded')).toEqual('true');
+          done();
+        });
+      });
+    });
+
     describe('when selecting with the keyboard (using ENTER)', () => {
       let keyboardEvent: KeyboardEvent;
 
@@ -230,7 +288,7 @@ export function CategoryFacetSearchTest() {
       });
     });
 
-    it('pressing down arrow moves current result down', done => {
+    it('pressing down arrow while on the input  moves current result down', done => {
       const keyboardEvent = { which: KEYBOARD.DOWN_ARROW } as KeyboardEvent;
       categoryFacetSearch.displayNewValues();
 
@@ -241,7 +299,7 @@ export function CategoryFacetSearchTest() {
       });
     });
 
-    it('pressing up arrow moves current result up', done => {
+    it('pressing up arrow while on the input moves current result up', done => {
       const keyboardEvent = { which: KEYBOARD.UP_ARROW } as KeyboardEvent;
       categoryFacetSearch.displayNewValues();
 
@@ -252,7 +310,7 @@ export function CategoryFacetSearchTest() {
       });
     });
 
-    it('pressing escape closes the search input', done => {
+    it('pressing escape while on the input closes the search input', done => {
       const keyboardEvent = { which: KEYBOARD.ESCAPE } as KeyboardEvent;
       spyOn(categoryFacetSearch.facetSearchElement, 'clearSearchInput');
       categoryFacetSearch.displayNewValues();
@@ -264,12 +322,56 @@ export function CategoryFacetSearchTest() {
       });
     });
 
-    it('pressing any other key displays new values', done => {
+    it('pressing any other key while on the input displays new values', done => {
       const keyboardEvent = { which: 1337 } as KeyboardEvent;
       getInputHandler().handleKeyboardEvent(keyboardEvent);
       setTimeout(() => {
         expect(getSearchResults().innerHTML).not.toEqual('');
         done();
+      });
+    });
+
+    it('pressing escape while on the results closes the search input', done => {
+      spyOn(categoryFacetSearch.facetSearchElement, 'clearSearchInput');
+      categoryFacetSearch.displayNewValues();
+
+      setTimeout(() => {
+        Simulate.keyUp(getSearchResults(), KEYBOARD.ESCAPE);
+        expect(categoryFacetSearch.facetSearchElement.clearSearchInput).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    describe('when displayButton is true (default', () => {
+      it('container should not have the class coveo-category-facet-search-without-button', () => {
+        expect(categoryFacetSearch.container.hasClass('coveo-category-facet-search-without-button')).toBe(false);
+      });
+
+      it("facetSearchElement's search should not have the class without-animation", () => {
+        expect($$(categoryFacetSearch.facetSearchElement.search).hasClass('without-animation')).toBe(false);
+      });
+
+      it('should have a search placeholder', () => {
+        expect(categoryFacetSearch.container.find('.coveo-category-facet-search-placeholder')).toBeTruthy();
+      });
+    });
+
+    describe('when displayButton is false', () => {
+      beforeEach(() => {
+        categoryFacetSearch = new CategoryFacetSearch(categoryFacetMock, false);
+        categoryFacetSearch.build();
+      });
+
+      it('container should have the class coveo-category-facet-search-without-button', () => {
+        expect(categoryFacetSearch.container.hasClass('coveo-category-facet-search-without-button')).toBe(true);
+      });
+
+      it("facetSearchElement's search should have the class without-animation", () => {
+        expect($$(categoryFacetSearch.facetSearchElement.search).hasClass('without-animation')).toBe(true);
+      });
+
+      it('should have no search placeholder', () => {
+        expect(categoryFacetSearch.container.find('.coveo-category-facet-search-placeholder')).toBeFalsy();
       });
     });
   });

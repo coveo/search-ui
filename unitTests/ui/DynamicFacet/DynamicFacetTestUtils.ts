@@ -31,12 +31,14 @@ export class DynamicFacetTestUtils {
     return Mock.advancedComponentSetup<DynamicFacet>(DynamicFacet, <Mock.AdvancedComponentSetupOptions>{
       modifyBuilder: builder => {
         if (!env) {
-          builder = builder.withLiveQueryStateModel();
+          builder.withLiveQueryStateModel();
           return builder;
         }
 
-        builder = builder.withRoot(env.root);
-        builder = builder.withQueryStateModel(env.queryStateModel);
+        builder
+          .withRoot(env.root)
+          .withQueryStateModel(env.queryStateModel)
+          .withSearchInterface(env.searchInterface);
         return builder;
       },
 
@@ -49,18 +51,30 @@ export class DynamicFacetTestUtils {
 
     for (let index = 0; index < count; index++) {
       const value = `fake value ${index}`;
-      const fakeValue: IDynamicFacetValueProperties = {
+
+      const fakeValue = this.createFakeFacetValue({
         displayValue: value,
         numberOfResults: Math.ceil(Math.random() * 100000),
         value,
         state,
         position: index + 1
-      };
+      });
 
       fakeValues.push(fakeValue);
     }
 
     return fakeValues;
+  }
+
+  static createFakeFacetValue(config: Partial<IDynamicFacetValueProperties> = {}): IDynamicFacetValueProperties {
+    return {
+      displayValue: '',
+      numberOfResults: 0,
+      value: '',
+      state: FacetValueState.idle,
+      position: 0,
+      ...config
+    };
   }
 
   static getCompleteFacetResponse(facet: DynamicFacet, partialResponse?: Partial<IFacetResponse>): IFacetResponse {

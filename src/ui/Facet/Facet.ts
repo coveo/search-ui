@@ -20,7 +20,12 @@ import { ISearchEndpoint } from '../../rest/SearchEndpointInterface';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
-import { DependsOnManager, IDependentFacet } from '../../utils/DependsOnManager';
+import {
+  DependsOnManager,
+  IDependentFacet,
+  IDependsOnCompatibleFacetOptions,
+  IDependentFacetCondition
+} from '../../utils/DependsOnManager';
 import { DeviceUtils } from '../../utils/DeviceUtils';
 import { $$, Win } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
@@ -52,18 +57,20 @@ import { FacetSort } from './FacetSort';
 import { FacetSortCriterion } from './FacetSortCriterion';
 import { FacetUtils } from './FacetUtils';
 import { FacetValueElement } from './FacetValueElement';
-import { FacetValue, FacetValues } from './FacetValues';
+import { FacetValue } from './FacetValue';
+import { FacetValues, ISortFacetValuesOptions } from './FacetValues';
 import { FacetValuesList } from './FacetValuesList';
 import { FacetValuesOrder } from './FacetValuesOrder';
 import { OmniboxValueElement } from './OmniboxValueElement';
 import { OmniboxValuesList } from './OmniboxValuesList';
 import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
+import { IFieldValueCompatibleFacet } from '../FieldValue/IFieldValueCompatibleFacet';
 
 type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
 type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
 
-export interface IFacetOptions extends IResponsiveComponentOptions {
+export interface IFacetOptions extends IResponsiveComponentOptions, IDependsOnCompatibleFacetOptions {
   title?: string;
   field?: IFieldOption;
   isMultiValueField?: boolean;
@@ -87,7 +94,6 @@ export interface IFacetOptions extends IResponsiveComponentOptions {
   includeInOmnibox?: boolean;
   numberOfValuesInOmnibox?: number;
   numberOfValuesInBreadcrumb?: number;
-  id?: string;
   computedField?: IFieldOption;
   computedFieldOperation?: string;
   computedFieldFormat?: string;
@@ -102,7 +108,6 @@ export interface IFacetOptions extends IResponsiveComponentOptions {
   headerIcon?: string;
   valueIcon?: (facetValue: FacetValue) => string;
   additionalFilter?: IQueryExpression;
-  dependsOn?: string;
   useWildcardsInFacetSearch?: boolean;
 }
 
@@ -124,7 +129,7 @@ export interface IFacetOptions extends IResponsiveComponentOptions {
  * extend this component), and the [`FacetSlider`]{@link FacetSlider} and [`CategoryFacet`]{@link CategoryFacet} components (which do not extend this
  * component, but are very similar).
  */
-export class Facet extends Component {
+export class Facet extends Component implements IFieldValueCompatibleFacet {
   static ID = 'Facet';
   static omniboxIndex = 50;
 
@@ -648,6 +653,22 @@ export class Facet extends Component {
      */
     dependsOn: ComponentOptions.buildStringOption(),
     /**
+     * A function that verifies whether the current state of the `dependsOn` facet allows the dependent facet to be displayed.
+     *
+     * If specified, the function receives a reference to the resolved `dependsOn` facet component instance as an argument, and must return a boolean.
+     * The function's argument should typically be treated as read-only.
+     *
+     * By default, the dependent facet is displayed whenever one or more values are selected in its `dependsOn` facet.
+     *
+     * @externaldocs [Defining Dependent Facets](https://docs.coveo.com/3210/)
+     */
+    dependsOnCondition: ComponentOptions.buildCustomOption<IDependentFacetCondition>(
+      () => {
+        return null;
+      },
+      { depend: 'dependsOn', section: 'CommonOptions' }
+    ),
+    /**
      * Specifies a JSON object describing a mapping of facet values to their desired captions. See
      * [Normalizing Facet Value Captions](https://docs.coveo.com/en/368/).
      *
@@ -697,6 +718,7 @@ export class Facet extends Component {
   public numberOfValues: number;
   public firstQuery = true;
   public operatorAttributeId: string;
+  public isFieldValueCompatible = true;
 
   /**
    * Renders and handles the facet **Search** part of the component.
@@ -782,7 +804,6 @@ export class Facet extends Component {
     }
     Assert.exists(searchResultsElement);
     const { accessibleElement } = this.searchContainer;
-    accessibleElement.setAttribute('aria-controls', searchResultsElement.id);
     accessibleElement.setAttribute('aria-expanded', true.toString());
   }
 
@@ -1008,6 +1029,15 @@ export class Facet extends Component {
   }
 
   /**
+   * Determines whether the specified value is selected in the facet.
+   * @param value The name of the facet value to verify.
+   */
+  public hasSelectedValue(value: string) {
+    const facetValue = this.values.get(value);
+    return facetValue && facetValue.selected;
+  }
+
+  /**
    * Returns the currently excluded values as an array of strings.
    * @returns {string[]} The currently excluded values.
    */
@@ -1128,10 +1158,6 @@ export class Facet extends Component {
     const valuesThatStays = this.values.getSelected().concat(this.values.getExcluded());
     this.numberOfValues = valuesThatStays.length + _.difference(valuesThatStays, facetValues).length;
     this.numberOfValues = Math.max(this.numberOfValues, this.options.numberOfValues);
-    // Then, we set current page as the last "full" page (math.floor)
-    // This is so there is no additional values displayed requested to fill the current page
-    // Also, when the user hit more, it will request the current page and fill it with more values
-    this.currentPage = Math.floor((this.numberOfValues - this.options.numberOfValues) / this.options.pageSize);
 
     this.updateQueryStateModel();
     this.triggerNewQuery(() =>
@@ -1154,22 +1180,32 @@ export class Facet extends Component {
    *
    * @param facetValue The `FacetValue` whose caption the method should return.
    */
-  public getValueCaption(facetValue: IIndexFieldValue | FacetValue): string {
+  public getValueCaption(facetValue: IIndexFieldValue | FacetValue | string): string {
     Assert.exists(facetValue);
-    const lookupValue = facetValue.lookupValue || facetValue.value;
-    let ret = lookupValue;
-    ret = FacetUtils.tryToGetTranslatedCaption(<string>this.options.field, lookupValue);
+    const lookupValue = typeof facetValue === 'string' ? facetValue : facetValue.lookupValue || facetValue.value;
+    let ret = FacetUtils.tryToGetTranslatedCaption(<string>this.options.field, lookupValue);
 
     if (Utils.exists(this.options.valueCaption)) {
       if (typeof this.options.valueCaption == 'object') {
         ret = this.options.valueCaption[lookupValue] || ret;
       }
       if (typeof this.options.valueCaption == 'function') {
-        this.values.get(lookupValue);
-        ret = this.options.valueCaption.call(this, this.facetValuesList.get(lookupValue).facetValue);
+        const fv = facetValue instanceof FacetValue ? facetValue : FacetValue.create(facetValue);
+        const valueFromList = this.facetValuesList.get(fv).facetValue;
+        ret = this.options.valueCaption.call(this, valueFromList);
       }
     }
     return ret;
+  }
+
+  /**
+   * Returns the configured caption for a desired facet value.
+   *
+   * @param value The string facet value whose caption the method should return.
+   */
+  public getCaptionForStringValue(value: string) {
+    Assert.exists(value);
+    return this.getValueCaption(value);
   }
 
   /**
@@ -1181,7 +1217,7 @@ export class Facet extends Component {
    * Triggers a query if needed, or displays the already available values.
    */
   public showMore() {
-    this.currentPage++;
+    this.currentPage = Math.floor((this.numberOfValues - this.options.numberOfValues) / this.options.pageSize) + 1;
     this.updateNumberOfValues();
     if (this.nbAvailableValues >= this.numberOfValues || !this.canFetchMore) {
       this.rebuildValueElements();
@@ -1318,7 +1354,6 @@ export class Facet extends Component {
   protected updateAppearanceDependingOnState() {
     $$(this.element).toggleClass('coveo-active', this.values.hasSelectedOrExcludedValues());
     $$(this.element).toggleClass('coveo-facet-empty', !this.isAnyValueCurrentlyDisplayed());
-    this.dependsOnManager.updateVisibilityBasedOnDependsOn();
     $$(this.facetHeader.eraserElement).toggleClass('coveo-facet-header-eraser-visible', this.values.hasSelectedOrExcludedValues());
   }
 
@@ -1342,7 +1377,6 @@ export class Facet extends Component {
     this.queryStateModel.registerNewAttribute(this.lookupValueAttributeId, {});
 
     this.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, (args: IAttributesChangedEventArg) => this.handleQueryStateChanged(args));
-    this.dependsOnManager.listenToParentIfDependentFacet();
   }
 
   protected initComponentStateEvents() {
@@ -1542,19 +1576,9 @@ export class Facet extends Component {
   private initDependsOnManager() {
     const facetInfo: IDependentFacet = {
       reset: () => this.reset(),
-      toggleDependentFacet: dependentFacet => this.toggleDependentFacet(dependentFacet),
-      element: this.element,
-      root: this.root,
-      dependsOn: this.options.dependsOn,
-      id: this.options.id,
-      queryStateModel: this.queryStateModel,
-      bind: this.bind
+      ref: this
     };
     this.dependsOnManager = new DependsOnManager(facetInfo);
-  }
-
-  private toggleDependentFacet(dependentFacet: Component) {
-    this.getSelectedValues().length ? dependentFacet.enable() : dependentFacet.disable();
   }
 
   private dependsOnUpdateParentDisplayValue() {
@@ -1562,7 +1586,7 @@ export class Facet extends Component {
       return;
     }
 
-    const masterFacetComponent = ComponentsTypes.getAllFacetsInstance(this.root).filter((cmp: Facet) => {
+    const masterFacetComponent = ComponentsTypes.getAllFacetInstancesFromElement(this.root).filter((cmp: Facet) => {
       const idFacet = cmp instanceof Facet;
       return idFacet && cmp.options.id === this.options.dependsOn;
     }) as Facet[];
@@ -1778,12 +1802,27 @@ export class Facet extends Component {
     if (this.keepDisplayedValuesNextTime) {
       this.values.updateCountsFromNewValues(facetValues);
     } else {
-      facetValues.importActiveValuesFromOtherList(this.values);
-      facetValues.sortValuesDependingOnStatus(this.numberOfValues);
-      this.values = facetValues;
+      this.values = this.consolidateAndSortNewFacetValues(facetValues);
     }
 
     this.updateNumberOfValues();
+  }
+
+  private consolidateAndSortNewFacetValues(newValues: FacetValues) {
+    newValues.importActiveValuesFromOtherList(this.values);
+    newValues.sort(this.optionsToSortFacetValues);
+    return newValues;
+  }
+
+  private get optionsToSortFacetValues(): ISortFacetValuesOptions {
+    return {
+      facetValuesOrder: this.facetValuesOrder,
+      numberOfValues: this.numberOfValues
+    };
+  }
+
+  private get facetValuesOrder() {
+    return new FacetValuesOrder(this, this.facetSort);
   }
 
   private ensureFacetValueIsInList(facetValue: FacetValue) {
@@ -1936,10 +1975,7 @@ export class Facet extends Component {
       .then((queryResults: IQueryResults) => {
         this.logAnalyticsFacetShowMoreLess(analyticsActionCauseList.facetShowMore);
         const facetValues = new FacetValues(queryResults.groupByResults[0]);
-
-        facetValues.importActiveValuesFromOtherList(this.values);
-        facetValues.sortValuesDependingOnStatus(this.numberOfValues);
-        this.values = facetValues;
+        this.values = this.consolidateAndSortNewFacetValues(facetValues);
 
         this.nbAvailableValues = this.values.size();
 
@@ -1980,6 +2016,10 @@ export class Facet extends Component {
   }
 
   protected updateNumberOfValues() {
+    if (this.keepDisplayedValuesNextTime) {
+      return;
+    }
+
     if (this.currentPage <= 0) {
       // We're on the first page, let's reset the number of values to a minimum.
       this.currentPage = 0;

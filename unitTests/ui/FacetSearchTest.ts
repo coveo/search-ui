@@ -9,6 +9,7 @@ import { FacetSearchParameters } from '../../src/ui/Facet/FacetSearchParameters'
 import { IIndexFieldValue } from '../../src/rest/FieldValue';
 import { Simulate } from '../Simulate';
 import { KEYBOARD } from '../../src/utils/KeyboardUtils';
+import { l } from '../../src/strings/Strings';
 
 export function FacetSearchTest() {
   describe('FacetSearch', () => {
@@ -22,6 +23,18 @@ export function FacetSearchTest() {
     function getSearchResult(index: number) {
       const listItem = allSearchResults()[index];
       return $$(listItem);
+    }
+
+    function searchWithValues(values: IIndexFieldValue[]) {
+      const promise = Promise.resolve(values);
+      (mockFacet.facetQueryController.search as jasmine.Spy).and.returnValue(promise);
+      return promise;
+    }
+
+    function searchWithError(error: Error) {
+      const promise = Promise.reject(error);
+      (mockFacet.facetQueryController.search as jasmine.Spy).and.returnValue(promise);
+      return promise;
     }
 
     beforeEach(() => {
@@ -40,21 +53,9 @@ export function FacetSearchTest() {
 
     it('input should have correct attributes', () => {
       var built = facetSearch.build();
-      expect(
-        $$(built)
-          .find('input')
-          .getAttribute('autocapitalize')
-      ).toBe('off');
-      expect(
-        $$(built)
-          .find('input')
-          .getAttribute('autocorrect')
-      ).toBe('off');
-      expect(
-        $$(built)
-          .find('input')
-          .getAttribute('form')
-      ).toBe('coveo-dummy-form');
+      expect($$(built).find('input').getAttribute('autocapitalize')).toBe('off');
+      expect($$(built).find('input').getAttribute('autocorrect')).toBe('off');
+      expect($$(built).find('input').getAttribute('form')).toBe('coveo-dummy-form');
     });
 
     describe('perform search on the index', () => {
@@ -69,12 +70,7 @@ export function FacetSearchTest() {
       });
 
       it('should display facet search results', done => {
-        var pr = new Promise((resolve, reject) => {
-          var results = FakeResults.createFakeFieldValues('foo', 10);
-          resolve(results);
-        });
-
-        (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
+        const pr = searchWithValues(FakeResults.createFakeFieldValues('foo', 10));
 
         var params = new FacetSearchParameters(mockFacet);
         expect(allSearchResults().length).toBe(0);
@@ -88,23 +84,41 @@ export function FacetSearchTest() {
       });
 
       describe('when calling focus', () => {
-        it("should update the accessible element's accessibility properties", () => {
-          const setExpandedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setExpandedFacetSearchAccessibilityAttributes');
+        let setExpandedFacetSearchAccessibilityAttributes: jasmine.Spy;
+        let facetSearchId: string;
+        beforeEach(() => {
+          setExpandedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setExpandedFacetSearchAccessibilityAttributes');
+          facetSearchId = facetSearch.facetSearchElement['facetSearchId'];
           facetSearch.focus();
+        });
+
+        it("should update the accessible element's accessibility properties", () => {
           expect(setExpandedFacetSearchAccessibilityAttributes).toHaveBeenCalledTimes(1);
           expect(setExpandedFacetSearchAccessibilityAttributes).toHaveBeenCalledWith(facetSearch.facetSearchElement['searchResults']);
+        });
+
+        it('should give the "combobox" role to the combobox', () => {
+          expect(facetSearch.facetSearchElement.combobox.getAttribute('role')).toEqual('combobox');
+        });
+
+        it('should give the combobox the aria-owns attribute', () => {
+          expect(facetSearch.facetSearchElement.combobox.getAttribute('aria-owns')).toEqual(facetSearchId);
+        });
+
+        it('should give the input the aria-controls attribute', () => {
+          expect(facetSearch.facetSearchElement.input.getAttribute('aria-controls')).toEqual(facetSearchId);
+        });
+
+        it("should set aria-expanded to true on the input's element", () => {
+          expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual('true');
         });
       });
 
       describe('when triggering a query', () => {
         beforeEach(async done => {
-          const pr = new Promise((resolve, reject) => {
-            const results = FakeResults.createFakeFieldValues('foo', 10);
-            resolve(results);
-          });
+          const pr = searchWithValues(FakeResults.createFakeFieldValues('foo', 10));
 
-          (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
-
+          $$('div').append(facetSearch.search);
           var params = new FacetSearchParameters(mockFacet);
           expect(allSearchResults().length).toBe(0);
           expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
@@ -113,30 +127,75 @@ export function FacetSearchTest() {
           done();
         });
 
+        it('should have displayed results', () => {
+          expect(allSearchResults().length).toBe(10);
+          expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
+        });
+
+        it('should append search results immediately after the search box', () => {
+          const { search, searchResults } = facetSearch.facetSearchElement;
+          expect(search.nextSibling).toBe(searchResults);
+        });
+
         describe('and calling dismissSearchResults', () => {
-          it('should hide facet search results', done => {
-            expect(allSearchResults().length).toBe(10);
-            expect(facetSearch.currentlyDisplayedResults.length).toBe(10);
+          let setCollapsedFacetSearchAccessibilityAttributes: jasmine.Spy;
+          beforeEach(() => {
+            setCollapsedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setCollapsedFacetSearchAccessibilityAttributes');
             facetSearch.dismissSearchResults();
+          });
+
+          it('should hide facet search results', done => {
             expect(allSearchResults().length).toBe(0);
             expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
             done();
           });
 
           it("should update the accessible element's accessibility properties", () => {
-            const setCollapsedFacetSearchAccessibilityAttributes = spyOn(facetSearch, 'setCollapsedFacetSearchAccessibilityAttributes');
-            facetSearch.dismissSearchResults();
             expect(setCollapsedFacetSearchAccessibilityAttributes).toHaveBeenCalledTimes(1);
+          });
+
+          it("should remove the combobox's aria-owns attribute", () => {
+            expect(facetSearch.facetSearchElement.combobox.getAttribute('aria-owns')).toBeNull();
+          });
+
+          it("should remove the input's aria-controls attribute", () => {
+            expect(facetSearch.facetSearchElement.input.getAttribute('aria-controls')).toBeNull();
+          });
+
+          it("should set aria-expanded to false on the input's element", () => {
+            expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual('false');
           });
         });
       });
 
-      it('should handle error', done => {
-        var pr = new Promise((resolve, reject) => {
-          reject(new Error('woops !'));
+      describe('when triggering a query with no results', () => {
+        beforeEach(async done => {
+          const pr = searchWithValues([]);
+
+          $$('div').append(facetSearch.search);
+          var params = new FacetSearchParameters(mockFacet);
+          expect(allSearchResults().length).toBe(0);
+          expect(facetSearch.currentlyDisplayedResults).toBeUndefined();
+          facetSearch.triggerNewFacetSearch(params);
+          await pr;
+          done();
         });
 
-        (<jasmine.Spy>mockFacet.facetQueryController.search).and.returnValue(pr);
+        it("should set aria-expanded to true on the input's element", () => {
+          expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual('true');
+        });
+
+        it('should contain only a "no values found" element', () => {
+          expect(
+            $$(facetSearch.searchResults)
+              .children()
+              .map(result => result.innerText)
+          ).toEqual([l('NoValuesFound')]);
+        });
+      });
+
+      it('should handle error', done => {
+        const pr = searchWithError(new Error('woops !'));
 
         var params = new FacetSearchParameters(mockFacet);
         facetSearch.triggerNewFacetSearch(params);
@@ -201,10 +260,10 @@ export function FacetSearchTest() {
             expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(true);
           });
 
-          it('pressing the up arrow once loops around and primes the last result to be excluded', () => {
+          it('pressing the up arrow once loops around and primes the last result to be selected', () => {
             Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
             expect(getSearchResult(9).hasClass('coveo-facet-search-current-result')).toBe(true);
-            expect(getSearchResult(9).hasClass('coveo-facet-value-will-exclude')).toBe(true);
+            expect(getSearchResult(9).hasClass('coveo-facet-value-will-exclude')).toBe(false);
           });
 
           describe('pressing the down arrow once twice', () => {
@@ -218,14 +277,7 @@ export function FacetSearchTest() {
               expect(getSearchResult(1).hasClass('coveo-facet-value-will-exclude')).toBe(false);
             });
 
-            it('when pressing the up arrow once, it primes the first result to be excluded', () => {
-              Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
-              expect(getSearchResult(0).hasClass('coveo-facet-search-current-result')).toBe(true);
-              expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(true);
-            });
-
-            it('when pressing the up arrow twice, it primes the first result to be selected', () => {
-              Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
+            it('when pressing the up arrow once, it primes the first result to be selected', () => {
               Simulate.keyUp($$(built).find('input'), KEYBOARD.UP_ARROW);
               expect(getSearchResult(0).hasClass('coveo-facet-search-current-result')).toBe(true);
               expect(getSearchResult(0).hasClass('coveo-facet-value-will-exclude')).toBe(false);

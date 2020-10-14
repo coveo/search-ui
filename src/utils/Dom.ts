@@ -1,4 +1,4 @@
-import * as _ from 'underscore';
+import { each, isString, isArray, contains } from 'underscore';
 import { Assert } from '../misc/Assert';
 import { Logger } from '../misc/Logger';
 import { IStringMap } from '../rest/GenericParam';
@@ -58,10 +58,10 @@ export class Dom {
       }
     }
 
-    _.each(children, (child: string | HTMLElement | Dom) => {
+    each(children, (child: string | HTMLElement | Dom) => {
       if (child instanceof HTMLElement) {
         elem.appendChild(child);
-      } else if (_.isString(child)) {
+      } else if (isString(child)) {
         elem.innerHTML += child;
       } else if (child instanceof Dom) {
         elem.appendChild(child.el);
@@ -387,8 +387,8 @@ export class Dom {
   public addClass(classNames: string[]): void;
   public addClass(className: string): void;
   public addClass(className: any): void {
-    if (_.isArray(className)) {
-      _.each(className, (name: string) => {
+    if (isArray(className)) {
+      each(className, (name: string) => {
         this.addClass(name);
       });
     } else {
@@ -459,7 +459,7 @@ export class Dom {
    * @returns {boolean}
    */
   public hasClass(className: string): boolean {
-    return _.contains(this.getClass(), className);
+    return contains(this.getClass(), className);
   }
 
   /**
@@ -505,8 +505,8 @@ export class Dom {
   public on(types: string[], eventHandle: (evt: Event, data: any) => void): void;
   public on(type: string, eventHandle: (evt: Event, data: any) => void): void;
   public on(type: any, eventHandle: (evt: Event, data: any) => void): void {
-    if (_.isArray(type)) {
-      _.each(type, (t: string) => {
+    if (isArray(type)) {
+      each(type, (t: string) => {
         this.on(t, eventHandle);
       });
     } else {
@@ -541,8 +541,8 @@ export class Dom {
   public one(types: string[], eventHandle: (evt: Event, args?: any) => void): void;
   public one(type: string, eventHandle: (evt: Event, args?: any) => void): void;
   public one(type: any, eventHandle: (evt: Event, args?: any) => void): void {
-    if (_.isArray(type)) {
-      _.each(type, (t: string) => {
+    if (isArray(type)) {
+      each(type, (t: string) => {
         this.one(t, eventHandle);
       });
     } else {
@@ -563,8 +563,8 @@ export class Dom {
   public off(types: string[], eventHandle: (evt: Event, arg?: any) => void): void;
   public off(type: string, eventHandle: (evt: Event, arg?: any) => void): void;
   public off(type: any, eventHandle: (evt: Event, arg?: any) => void): void {
-    if (_.isArray(type)) {
-      _.each(type, (t: string) => {
+    if (isArray(type)) {
+      each(type, (t: string) => {
         this.off(t, eventHandle);
       });
     } else {
@@ -879,7 +879,7 @@ export function $$(type: string, props?: IStringMap<any>, ...children: Array<str
 export function $$(...args: any[]): Dom {
   if (args.length === 1 && args[0] instanceof Dom) {
     return args[0];
-  } else if (args.length === 1 && !_.isString(args[0])) {
+  } else if (args.length === 1 && !isString(args[0])) {
     return new Dom(<HTMLElement>args[0]);
   } else {
     return new Dom(Dom.createElement.apply(Dom, args));

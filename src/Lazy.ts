@@ -311,3 +311,12 @@ lazyCommerceQuery();
 
 import { lazySortDropdown } from './ui/SortDropdown/LazySortDropdown';
 lazySortDropdown();
+
+import { lazySmartSnippet } from './ui/SmartSnippet/LazySmartSnippet';
+lazySmartSnippet();
+
+import { lazySmartSnippetSuggestions } from './ui/SmartSnippet/LazySmartSnippetSuggestions';
+lazySmartSnippetSuggestions();
+
+import { lazyFacetsMobileMode } from './ui/FacetsMobileMode/LazyFacetsMobileMode';
+lazyFacetsMobileMode();

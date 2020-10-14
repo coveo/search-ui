@@ -40,7 +40,8 @@ $page-width: 1000px;
   }
   .coveo-facet-column {
     @include span-columns(3);
-    padding: 5px 15px;
+    margin-right: 0;
+    padding: 13px 10px 5px;
     &.coveo-no-results {
       display: none;
     }
@@ -72,6 +73,17 @@ $page-width: 1000px;
     .CoveoLogo,
     .CoveoResultsPerPage {
       display: none;
+    }
+  }
+  .coveo-results-footer {
+    &,
+    .coveo-results-footer-left,
+    .coveo-results-footer-right {
+      display: flex;
+      align-items: center;
+    }
+    .coveo-results-footer-left {
+      flex-grow: 1;
     }
   }
 }

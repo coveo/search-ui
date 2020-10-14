@@ -5,6 +5,7 @@ import { DynamicFacet } from '../../../src/ui/DynamicFacet/DynamicFacet';
 import { IDynamicFacetOptions, IDynamicFacetValueProperties } from '../../../src/ui/DynamicFacet/IDynamicFacet';
 import { FacetValueState } from '../../../src/rest/Facet/FacetValueState';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
+import * as _ from 'underscore';
 
 export function DynamicFacetBreadcrumbsTest() {
   describe('DynamicFacetBreadcrumbs', () => {
@@ -46,8 +47,27 @@ export function DynamicFacetBreadcrumbsTest() {
       expect(valueElements().length).toBe(mockFacetValues.length);
     });
 
+    it('should escape facet values to prevent XSS', () => {
+      const facetValueWithXSS = DynamicFacetTestUtils.createFakeFacetValue({
+        value: '<img src=x onerror=alert(1)>',
+        state: FacetValueState.selected
+      });
+
+      mockFacetValues = [facetValueWithXSS];
+      initializeComponent();
+
+      const [breadcrumb] = valueElements();
+      expect(breadcrumb.childNodes[0].textContent).toBe('<img src=x onerror=alert(1)>');
+    });
+
     it('should not create a "collapsed breadcrumbs" element allowing to show more values', () => {
       expect(collapseElement()).toBeFalsy();
+    });
+
+    it('should have the correct aria-label for every selected value', () => {
+      _.each(valueElements(), (breadcrumb, index) => {
+        expect(breadcrumb.getAttribute('aria-label')).toBe(`Remove inclusion filter on fake value ${index}`);
+      });
     });
 
     describe('when the breadcrumb has more values than the numberOfValuesInBreadcrumb option', () => {

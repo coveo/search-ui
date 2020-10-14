@@ -2,12 +2,15 @@ import { KEYBOARD } from '../../src/Core';
 import { Facet, IFacetOptions } from '../../src/ui/Facet/Facet';
 import { FacetSettings } from '../../src/ui/Facet/FacetSettings';
 import { $$ } from '../../src/utils/Dom';
+import { l } from '../../src/strings/Strings';
 import { registerCustomMatcher } from '../CustomMatchers';
 import * as Mock from '../MockEnvironment';
 import { Simulate } from '../Simulate';
+import { FacetHeader } from '../../src/ui/Facet/FacetHeader';
 
 export function FacetSettingsTest() {
   describe('FacetSettings', () => {
+    let test: Mock.IBasicComponentSetup<Facet>;
     let facet: Facet;
     let facetSettings: FacetSettings;
     let sorts: string[];
@@ -21,10 +24,19 @@ export function FacetSettingsTest() {
       return Promise.resolve(resolve => setTimeout(() => resolve(true), 100));
     };
 
+    function fakeFacet() {
+      facet.element = $$('div').el;
+      facet.facetHeader = Mock.mock(FacetHeader);
+      facet.facetHeader.collapseFacet = () => facet.element.classList.add('coveo-facet-collapsed');
+      facet.facetHeader.expandFacet = () => facet.element.classList.remove('coveo-facet-collapsed');
+    }
+
     beforeEach(() => {
-      facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+      test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
         field: '@field'
-      }).cmp;
+      });
+      facet = test.cmp;
+      fakeFacet();
       sorts = ['foo', 'bar'];
       const container = document.createElement('div');
       container.appendChild(facet.element);
@@ -252,6 +264,239 @@ export function FacetSettingsTest() {
         $$(facetSettings.button).trigger('mouseenter');
         jasmine.clock().tick(400);
         expect(facetSettings.close).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('with all sections', () => {
+      const sections = {
+        sort: 'coveo-facet-settings-section-sort',
+        ascending: 'coveo-facet-settings-section-direction-ascending',
+        descending: 'coveo-facet-settings-section-direction-descending',
+        save: 'coveo-facet-settings-section-save-state',
+        clear: 'coveo-facet-settings-section-clear-state',
+        hide: 'coveo-facet-settings-section-hide',
+        show: 'coveo-facet-settings-section-show'
+      };
+
+      const sectionClassesInOrder = [
+        sections.sort,
+        sections.ascending,
+        sections.descending,
+        sections.save,
+        sections.clear,
+        sections.hide,
+        sections.show
+      ];
+
+      function getSection(className: string) {
+        return $$(facetSettings.settingsPopup).findClass(className)[0];
+      }
+
+      function getItems(className: string) {
+        return $$(getSection(className)).findAll('.coveo-facet-settings-item');
+      }
+
+      beforeEach(() => {
+        sorts = ['occurrences', 'score', 'alphaascending', 'alphadescending'];
+        facet.options.enableCollapse = true;
+        facet.options.enableSettingsFacetState = true;
+        initFacetSettings();
+        facet.root.appendChild(facetSettings.settingsButton);
+        facetSettings.open();
+        document.body.appendChild(test.env.root);
+      });
+
+      afterEach(() => {
+        test.env.root.remove();
+      });
+
+      it('should render the sections: sort, ascending, descending, save, clear, hide and show', () => {
+        const renderedSections = $$(facetSettings.settingsPopup).children();
+        expect(renderedSections.length).toEqual(sectionClassesInOrder.length);
+        sectionClassesInOrder.forEach((expectedSectionClass, index) =>
+          expect(renderedSections[index]).toBe(getSection(expectedSectionClass))
+        );
+      });
+
+      it("doesn't make the sort section a button", () => {
+        expect(getSection(sections.sort).getAttribute('role')).not.toEqual('button');
+      });
+
+      it('renders the sort items', () => {
+        expect(getItems(sections.sort).map(item => item.innerText)).toEqual([l('Occurrences'), l('Score'), l('Label')]);
+      });
+
+      it('should make the sort items toggleable buttons', () => {
+        const selectedIndex = 0;
+        getItems(sections.sort).forEach((sortItem, index) => {
+          expect(sortItem.getAttribute('role')).toEqual('button');
+          expect(sortItem.getAttribute('aria-pressed')).toEqual((index === selectedIndex).toString());
+        });
+      });
+
+      it("doesn't make the ascending section a button", () => {
+        expect(getSection(sections.ascending).getAttribute('role')).not.toEqual('button');
+      });
+
+      it("doesn't make the descending section a button", () => {
+        expect(getSection(sections.descending).getAttribute('role')).not.toEqual('button');
+      });
+
+      it('renders a single item in the ascending section', () => {
+        expect(getItems(sections.ascending).length).toEqual(1);
+      });
+
+      it('renders a single item in the descending section', () => {
+        expect(getItems(sections.descending).length).toEqual(1);
+      });
+
+      it('makes the ascending item a toggled off button', () => {
+        const [item] = getItems(sections.ascending);
+        expect(item.getAttribute('role')).toEqual('button');
+        expect(item.getAttribute('aria-pressed')).toEqual('false');
+      });
+
+      it('makes the descending item a toggled off button', () => {
+        const [item] = getItems(sections.descending);
+        expect(item.getAttribute('role')).toEqual('button');
+        expect(item.getAttribute('aria-pressed')).toEqual('false');
+      });
+
+      it('makes the save section a non-toggleable button', () => {
+        const section = getSection(sections.save);
+        expect(section.getAttribute('role')).toEqual('button');
+        expect(section.getAttribute('aria-pressed')).toBeNull();
+      });
+
+      it('makes the clear section a non-toggleable button', () => {
+        const section = getSection(sections.clear);
+        expect(section.getAttribute('role')).toEqual('button');
+        expect(section.getAttribute('aria-pressed')).toBeNull();
+      });
+
+      it('renders a single item in the save section', () => {
+        expect(getItems(sections.save).length).toEqual(1);
+      });
+
+      it('renders a single item in the clear section', () => {
+        expect(getItems(sections.clear).length).toEqual(1);
+      });
+
+      it("doesn't make the save item a button", () => {
+        expect(getItems(sections.save)[0].getAttribute('role')).not.toEqual('button');
+      });
+
+      it("doesn't make the clear item a button", () => {
+        expect(getItems(sections.clear)[0].getAttribute('role')).not.toEqual('button');
+      });
+
+      it('makes the hide section a non-toggleable button', () => {
+        const section = getSection(sections.hide);
+        expect(section.getAttribute('role')).toEqual('button');
+        expect(section.getAttribute('aria-pressed')).toBeNull();
+      });
+
+      it('makes the show section a non-toggleable button', () => {
+        const section = getSection(sections.show);
+        expect(section.getAttribute('role')).toEqual('button');
+        expect(section.getAttribute('aria-pressed')).toBeNull();
+      });
+
+      it('renders a single item in the hide section', () => {
+        expect(getItems(sections.hide).length).toEqual(1);
+      });
+
+      it('renders a single item in the show section', () => {
+        expect(getItems(sections.show).length).toEqual(1);
+      });
+
+      it("doesn't make the hide item a button", () => {
+        expect(getItems(sections.hide)[0].getAttribute('role')).not.toEqual('button');
+      });
+
+      it("doesn't make the show item a button", () => {
+        expect(getItems(sections.show)[0].getAttribute('role')).not.toEqual('button');
+      });
+
+      it('hides the show button and shows the hide button', () => {
+        const showButton = getSection(sections.show);
+        const hideButton = getSection(sections.hide);
+        expect(showButton.getAttribute('aria-hidden')).toEqual('true');
+        expect(window.getComputedStyle(showButton).display).toEqual('none');
+        expect(hideButton.getAttribute('aria-hidden')).not.toEqual('true');
+        expect(window.getComputedStyle(hideButton).display).not.toEqual('none');
+      });
+
+      it('after pressing the hide button, shows the show button and hides the hide button', () => {
+        const showButton = getSection(sections.show);
+        const hideButton = getSection(sections.hide);
+        hideButton.click();
+        facetSettings.open();
+        expect(showButton.getAttribute('aria-hidden')).not.toEqual('true');
+        expect(window.getComputedStyle(showButton).display).not.toEqual('none');
+        expect(hideButton.getAttribute('aria-hidden')).toEqual('true');
+        expect(window.getComputedStyle(hideButton).display).toEqual('none');
+      });
+
+      it('disables the ascending button', () => {
+        expect(getItems(sections.ascending)[0].getAttribute('aria-disabled')).toEqual('true');
+      });
+
+      it('disables the descending button', () => {
+        expect(getItems(sections.descending)[0].getAttribute('aria-disabled')).toEqual('true');
+      });
+
+      describe('after selecting a sort with directions', () => {
+        const selectedIndex = 2;
+        beforeEach(() => {
+          getItems(sections.sort)[selectedIndex].click();
+        });
+
+        it('should toggle the old and new pressed sort buttons', () => {
+          getItems(sections.sort).forEach((sortItem, index) =>
+            expect(sortItem.getAttribute('aria-pressed')).toEqual((index === selectedIndex).toString())
+          );
+        });
+
+        it('enables the ascending button', () => {
+          expect(getItems(sections.ascending)[0].getAttribute('aria-disabled')).toEqual('false');
+        });
+
+        it('enables the descending button', () => {
+          expect(getItems(sections.descending)[0].getAttribute('aria-disabled')).toEqual('false');
+        });
+
+        it('represents the current sort direction', () => {
+          expect(
+            [getItems(sections.ascending)[0], getItems(sections.descending)[0]].map(item => item.getAttribute('aria-pressed'))
+          ).toEqual(['true', 'false']);
+        });
+
+        describe('then selecting another direction', () => {
+          beforeEach(() => {
+            getItems(sections.descending)[0].click();
+          });
+
+          it('represents the current sort direction', () => {
+            expect(
+              [getItems(sections.ascending)[0], getItems(sections.descending)[0]].map(item => item.getAttribute('aria-pressed'))
+            ).toEqual(['false', 'true']);
+          });
+        });
+
+        describe('then selecting a sort without directions', () => {
+          beforeEach(() => {
+            getItems(sections.sort)[0].click();
+          });
+
+          it('disables the ascending button', () => {
+            expect(getItems(sections.ascending)[0].getAttribute('aria-disabled')).toEqual('true');
+          });
+
+          it('disables the descending button', () => {
+            expect(getItems(sections.descending)[0].getAttribute('aria-disabled')).toEqual('true');
+          });
+        });
       });
     });
   });

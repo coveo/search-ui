@@ -19,7 +19,7 @@ export class DynamicHierarchicalFacetTestUtils {
       numberOfValues: 5,
       pageSize: 10,
       enableMoreLess: true,
-      basePath: [],
+      basePath: ['hello', 'world'],
       ...options
     };
   }
@@ -33,6 +33,7 @@ export class DynamicHierarchicalFacetTestUtils {
       displayValue: value,
       moreValuesAvailable: false,
       numberOfResults: Math.ceil(Math.random() * 100000),
+      isLeafValue: false,
       path: [value]
     };
   }
@@ -120,12 +121,11 @@ export class DynamicHierarchicalFacetTestUtils {
     return Mock.advancedComponentSetup<DynamicHierarchicalFacet>(DynamicHierarchicalFacet, <Mock.AdvancedComponentSetupOptions>{
       modifyBuilder: builder => {
         if (!env) {
-          builder = builder.withLiveQueryStateModel();
+          builder.withLiveQueryStateModel();
           return builder;
         }
 
-        builder = builder.withRoot(env.root);
-        builder = builder.withQueryStateModel(env.queryStateModel);
+        builder.withRoot(env.root).withQueryStateModel(env.queryStateModel).withSearchInterface(env.searchInterface);
         return builder;
       },
 

@@ -1,5 +1,5 @@
 import 'styling/_Breadcrumb';
-import { each } from 'underscore';
+import { each, find, isEmpty } from 'underscore';
 import { BreadcrumbEvents, IBreadcrumbItem, IClearBreadcrumbEventArgs, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { QueryEvents } from '../../events/QueryEvents';
@@ -58,6 +58,8 @@ export class Breadcrumb extends Component {
     this.bind.oneRootElement(InitializationEvents.afterInitialization, () => this.handleAfterInitialization());
     this.bind.onRootElement(BreadcrumbEvents.redrawBreadcrumb, () => this.redrawBreadcrumb());
     this.element.style.display = 'none';
+    this.element.setAttribute('tabindex', '-1');
+    this.addDefaultAccessibilityAttributes();
   }
 
   /**
@@ -71,6 +73,14 @@ export class Breadcrumb extends Component {
     const args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
     this.bind.trigger(this.root, BreadcrumbEvents.populateBreadcrumb, args);
     this.logger.debug('Retrieved breadcrumbs', args.breadcrumbs);
+
+    // If newly received breadcrumbs are empty, and last breadcrumbs were not.
+    // this means end user removed the last filter:
+    // We want to shift keyboard focus to the result list container in that case, for ease of use of the interface
+    // https://coveord.atlassian.net/browse/JSUI-3078
+    if (isEmpty(args.breadcrumbs) && !isEmpty(this.lastBreadcrumbs)) {
+      this.focusFirstEnabledResultList();
+    }
     this.lastBreadcrumbs = args.breadcrumbs;
     return args.breadcrumbs;
   }
@@ -146,6 +156,26 @@ export class Breadcrumb extends Component {
     // is made with updated components. (E.G facet, facetrange, ...)
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => this.handleDeferredQuerySuccess());
     this.bind.onRootElement(QueryEvents.queryError, () => this.handleQueryError());
+  }
+
+  private focusFirstEnabledResultList() {
+    const resultLists = this.searchInterface.getComponents<Component>('ResultList');
+    const firstEnabledResultList = find(resultLists, resultList => resultList.disabled === false);
+    if (firstEnabledResultList) {
+      // Problem with types definition of TypeScript 2.8
+      // default .focus() definition is incomplete.
+      // force cast to any
+      (firstEnabledResultList.element as any).focus({ preventScroll: true });
+    }
+  }
+
+  private addDefaultAccessibilityAttributes() {
+    if (!this.element.getAttribute('role')) {
+      this.element.setAttribute('role', 'navigation');
+    }
+    if (!this.element.getAttribute('aria-label')) {
+      this.element.setAttribute('aria-label', l('Breadcrumb'));
+    }
   }
 }
 

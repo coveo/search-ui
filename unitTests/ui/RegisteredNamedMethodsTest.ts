@@ -20,8 +20,6 @@ import { Analytics } from '../../src/ui/Analytics/Analytics';
 import * as SharedAnalyticsCalls from '../../src/ui/Analytics/SharedAnalyticsCalls';
 import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
-import HistoryStore from 'coveo.analytics/dist/history';
-import { NullStorage } from 'coveo.analytics/dist/storage';
 
 export function RegisteredNamedMethodsTest() {
   describe('RegisteredNamedMethods', () => {
@@ -273,7 +271,7 @@ export function RegisteredNamedMethodsTest() {
               queryStringArguments: { organizationId: 'another organization' },
               restUri: 'another/uri'
             });
-            env.queryController.historyStore = new HistoryStore(new NullStorage());
+            env.queryController.disableHistory();
             return env;
           })
         );

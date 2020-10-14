@@ -1,6 +1,6 @@
 import { InputManager } from '../../src/magicbox/InputManager';
 import { MagicBoxInstance } from '../../src/magicbox/MagicBox';
-import { SuggestionsManager, Suggestion, suggestionListboxID } from '../../src/magicbox/SuggestionsManager';
+import { SuggestionsManager, Suggestion } from '../../src/magicbox/SuggestionsManager';
 import { $$, Dom } from '../../src/utils/Dom';
 import { Utils } from '../../src/utils/Utils';
 import { IMockEnvironment, MockEnvironmentBuilder } from '../MockEnvironment';
@@ -329,11 +329,11 @@ export function SuggestionsManagerTest() {
       });
 
       it("sets aria-owns of InputManager to the id of SuggestionManager's listbox", () => {
-        expect(inputManager.input.getAttribute('aria-owns')).toEqual(suggestionListboxID);
+        expect(inputManager.input.getAttribute('aria-owns')).toEqual(suggestionsManager.suggestionsListbox.getAttribute('id'));
       });
 
       it("sets aria-controls of InputManager to the id of SuggestionManager's listbox", () => {
-        expect(inputManager.input.getAttribute('aria-controls')).toEqual(suggestionListboxID);
+        expect(inputManager.input.getAttribute('aria-controls')).toEqual(suggestionsManager.suggestionsListbox.getAttribute('id'));
       });
 
       it('sets aria-expanded of InputManager to false', () => {
@@ -344,17 +344,18 @@ export function SuggestionsManagerTest() {
         expect(inputManager.activeDescendant).toBeNull();
       });
 
-      describe('calling mergeSuggestions', () => {
+      describe('calling receiveSuggestions', () => {
         const textSuggestions = ['4', 'right'];
         let suggestionOnSelects: { [text: string]: jasmine.Spy };
         let suggestions: Suggestion[];
+
         function createSuggestions() {
           suggestionOnSelects = textSuggestions.reduce((obj, text) => ({ ...obj, [text]: jasmine.createSpy(text) }), {});
-          return (suggestions = textSuggestions.map(text => <Suggestion>{ text, onSelect: suggestionOnSelects[text] }));
+          suggestions = textSuggestions.map(text => <Suggestion>{ text, onSelect: suggestionOnSelects[text] });
         }
 
         async function receiveSuggestions() {
-          await suggestionsManager.receiveSuggestions([Promise.resolve(createSuggestions())]);
+          await suggestionsManager.receiveSuggestions([Promise.resolve(suggestions)]);
         }
 
         function waitForQuerySuggestRendered() {
@@ -368,10 +369,16 @@ export function SuggestionsManagerTest() {
         }
 
         let suggestionElements: HTMLElement[];
-        beforeEach(async done => {
+
+        async function renderSuggestions() {
           receiveSuggestions();
           await waitForQuerySuggestRendered();
           suggestionElements = $$(env.root).findClass(suggestionClass);
+        }
+
+        beforeEach(async done => {
+          createSuggestions();
+          await renderSuggestions();
           done();
         });
 
@@ -390,6 +397,22 @@ export function SuggestionsManagerTest() {
 
         it('renders suggestions', () => {
           expect(suggestionElements.map(element => element.innerText)).toEqual(textSuggestions);
+        });
+
+        it('sorts suggestions by descending index value', async done => {
+          suggestions[0].index = 100;
+          suggestions[1].index = 200;
+          await renderSuggestions();
+          expect(suggestionElements[0].innerText).toEqual(textSuggestions[1]);
+          done();
+        });
+
+        it('sorts suggestions by descending index index even with undefined values', async done => {
+          suggestions[0].index = undefined;
+          suggestions[1].index = 100;
+          await renderSuggestions();
+          expect(suggestionElements[0].innerText).toEqual(textSuggestions[1]);
+          done();
         });
 
         it("doesn't have a previews container after focusing a suggestion", () => {
@@ -463,11 +486,11 @@ export function SuggestionsManagerTest() {
 
           const displayAfterDuration = 150;
           function setDisplayAfterDuration() {
-            spyOn(suggestionsManager['resultPreviewsManager'], 'getExternalOptions' as any).and.returnValue(
-              <IUpdateResultPreviewsManagerOptionsEventArgs>{
-                displayAfterDuration
-              }
-            );
+            spyOn(suggestionsManager['resultPreviewsManager'], 'getExternalOptions' as any).and.returnValue(<
+              IUpdateResultPreviewsManagerOptionsEventArgs
+            >{
+              displayAfterDuration
+            });
           }
 
           let populateSpy: jasmine.Spy;
@@ -543,7 +566,10 @@ export function SuggestionsManagerTest() {
 
           describe('within timeout delay', () => {
             let previewsBySuggestion: ISearchResultPreview[][];
-            const textPreviews = [['4K TV', 'Set of 4 pairs of socks'], ['The right spoon', '🔶', 'Right angle SATA cable']];
+            const textPreviews = [
+              ['4K TV', 'Set of 4 pairs of socks'],
+              ['The right spoon', '🔶', 'Right angle SATA cable']
+            ];
             function buildPreviews() {
               previewsBySuggestion = textPreviews.map(previewTextsForSuggestion => previewTextsForSuggestion.map(buildPreview));
             }

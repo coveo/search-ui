@@ -170,15 +170,30 @@ export function QuerySummaryTest() {
         expect($$(test.cmp.element).find('.coveo-query-summary-no-results-string')).toBeNull();
       });
 
-      it(`when enableCancelLastAction is set to true,
-          it should display the cancel last action link on no results`, () => {
-        test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
-          enableCancelLastAction: true
+      describe('when enableCancelLastAction is set to true, on no results', () => {
+        function getCancelLastActionLink() {
+          return $$(test.cmp.element).find('.coveo-query-summary-cancel-last');
+        }
+
+        beforeEach(() => {
+          test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
+            enableCancelLastAction: true
+          });
+
+          Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
         });
 
-        Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
+        it('should display the cancel last action link', () => {
+          expect(getCancelLastActionLink()).not.toBeNull();
+        });
 
-        expect($$(test.cmp.element).find('.coveo-query-summary-cancel-last')).not.toBeNull();
+        it('should give a tabindex to the cancel last action link', () => {
+          expect(getCancelLastActionLink().getAttribute('tabindex')).toEqual('0');
+        });
+
+        it('should give a role to the cancel last action link', () => {
+          expect(getCancelLastActionLink().getAttribute('role')).toEqual('button');
+        });
       });
 
       it(`when enableCancelLastAction is set to false,
@@ -292,16 +307,16 @@ export function QuerySummaryTest() {
       });
 
       it(`when the query searched is an empty string,
-          it should replace the query tag with the query searched`, () => {
+          it should put the string NoResult instead`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
-          noResultsFoundMessage: `${queryTag}`
+          noResultsFoundMessage: `customMessage ${queryTag}`
         });
 
         test.env.queryStateModel.get = () => '';
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        expect(getCustomMessageElement().textContent).toBe('');
+        expect(getCustomMessageElement().textContent).toBe('No results');
       });
 
       it(`when the query searched is the same as the queryTag,
@@ -390,17 +405,17 @@ export function QuerySummaryTest() {
         test.env.queryStateModel.get = () => 'querySearched';
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        const parsedCustomNoResultsPage: string = '<div><a href="&lt;span class=" coveo-highlight"="">querySearched"&gt;</a></div>';
+        const parsedCustomNoResultsPage: string = '<div><a href="<span class=" coveo-highlight"="">querySearched"&gt;</a></div>';
         expect(getcustomNoResultsPageElement().innerHTML).toBe(parsedCustomNoResultsPage);
       });
 
       it(`when the query searched is an empty string,
-          it should replace the query tag with the query searched`, () => {
+        it should put the string NoResult instead`, () => {
         test.env.queryStateModel.get = () => '';
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        expect(getcustomNoResultsPageElement().textContent).toBe('');
+        expect(getcustomNoResultsPageElement().textContent).toBe('No results');
       });
 
       it(`when the query searched is the same as the queryTag,

@@ -1,16 +1,18 @@
 import { range, last } from 'underscore';
-import { Component } from '../../../src/Core';
+import { Component, KEYBOARD } from '../../../src/Core';
 import { ResponsiveComponents } from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
 import { ResponsiveComponentsUtils } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsUtils';
 import { ResponsiveTabs } from '../../../src/ui/ResponsiveComponents/ResponsiveTabs';
 import { Tab } from '../../../src/ui/Tab/Tab';
 import { $$, Dom } from '../../../src/utils/Dom';
 import { SearchInterface } from '../../../src/ui/SearchInterface/SearchInterface';
+import { Simulate } from '../../Simulate';
 
 export function ResponsiveTabsTest() {
   let root: Dom;
   let responsiveTabs: ResponsiveTabs;
   let tabSection: Dom;
+  let navigableSection: Dom;
   let tabs: Dom[];
 
   describe('ResponsiveTabs', () => {
@@ -18,6 +20,8 @@ export function ResponsiveTabsTest() {
       root = $$('div');
       tabSection = $$('div', { className: 'coveo-tab-section' });
       root.append(tabSection.el);
+      navigableSection = $$('div', { tabIndex: 20 });
+      root.append(navigableSection.el);
       tabs = [];
       range(0, 5).forEach(tabNumber => {
         const tab = $$('div', {
@@ -239,6 +243,36 @@ export function ResponsiveTabsTest() {
 
           const selectedTabInDropdown = container.find(`div[data-id="${lastId}"]`);
           expect(selectedTabInDropdown).toBeNull();
+        });
+      });
+    });
+
+    describe('When tabs are overflowing', () => {
+      describe('When the dropdown header is clicked', () => {
+        beforeEach(() => {
+          responsiveTabs.handleResizeEvent();
+          $$(root.find('.coveo-dropdown-header')).trigger('click');
+        });
+
+        it('should open the dropdown content', () => {
+          expect(root.find('.coveo-tab-list-container')).not.toBeNull();
+        });
+
+        it('should close the dropdown content when the dropdown header is clicked again', () => {
+          $$(root.find('.coveo-dropdown-header')).trigger('click');
+          expect(root.find('.coveo-tab-list-container')).toBeNull();
+        });
+      });
+
+      describe('When the dropdown header is focused with keyboard navigation', () => {
+        beforeEach(() => {
+          responsiveTabs.handleResizeEvent();
+          $$(root.find('.coveo-dropdown-header')).trigger('focus');
+          Simulate.keyUp(root.find('.coveo-dropdown-header'), KEYBOARD.ENTER);
+        });
+
+        it('should open the dropdown content', () => {
+          expect(root.find('.coveo-tab-list-container')).not.toBeNull();
         });
       });
     });

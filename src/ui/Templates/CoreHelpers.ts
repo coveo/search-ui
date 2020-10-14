@@ -21,22 +21,24 @@ import { IStringMap } from '../../rest/GenericParam';
 import * as _ from 'underscore';
 import { Component } from '../Base/Component';
 import { TemplateCache } from './TemplateCache';
+import { INumberFormatOptions } from '../../utils/NumberUtils';
 
 /**
  * The core template helpers provided by default.
  *
- * **Usage Examples:**
+ * **Examples:**
  *
- * >**HTML**
- * >
- * > ```html
- * > <div class="CoveoFieldValue" data-helper="helperName" data-helper-options-optionName="option-value"></div>
- * > ```
- * >**Underscore**
- * >
- * > ```erb
- * > <%= helperName(argument1, argument2) %>
- * > ```
+ * **HTML**
+ *
+ * ```html
+ * <div class="CoveoFieldValue" data-field="@videoduration" data-helper="timeSpan" data-helper-options-is-milliseconds="false"></div>
+ * ```
+ *
+ * **Underscore**
+ *
+ * ```erb
+ * <%= timeSpan(raw.videoduration, { isMilliseconds: false }) %>
+ * ```
  */
 export interface ICoreHelpers {
   /**
@@ -135,22 +137,29 @@ export interface ICoreHelpers {
    * Formats a numeric value using the format string.
    *
    * - `content`: The numeric value to format.
-   * - `format`: The format string to use. The options available are defined by
-   *   the [Globalize](https://github.com/klaaspieter/jquery-global#numbers) library.
+   * - `format` Optional. The string format to use. See the <a href="https://github.com/klaaspieter/jquery-global#numbers" target="_blank">Globalize</a> library for the list of available formats.
+   *
+   * When the helper is used in a [`FieldValue`]{@link FieldValue} component, this value is automatically retrieved from the specified [`field`]{@link FieldValue.options.field}.
+   *
+   * **Example:**
+   *
+   *  ```html
+   *  <div class="CoveoFieldValue" data-field="@viewcount" data-text-caption="Views" data-helper="number" data-helper-options-format="n0"></div>
+   *  ```
    */
-  number: (content: string, format: string) => string;
+  number: (content: string, format: string | INumberFormatOptions) => string;
   /**
    * Formats a date value to a date-only string using the specified options.
    *
    * - `content`: The Date value to format.
-   * - `options`: Optional. The options to use (see IDateToStringOptions).
+   * - `options`: Optional. The options to use (see {@link IDateToStringOptions}).
    */
   date: (content: any, options?: IDateToStringOptions) => string;
   /**
    * Formats a date value to a time-only string using the specified options.
    *
    * - `content`: The Date value to format.
-   * - `options`: Optional. The options to use (see IDateToStringOptions).
+   * - `options`: Optional. The options to use (see {@link IDateToStringOptions}).
    */
   time: (content: any, options?: IDateToStringOptions) => string;
   /**
@@ -158,14 +167,14 @@ export interface ICoreHelpers {
    * options.
    *
    * - `content`: The Date value to format.
-   * - `options`: Optional. The options to use (see IDateToStringOptions).
+   * - `options`: Optional. The options to use (see {@link IDateToStringOptions}).
    */
   dateTime: (content: any, options?: IDateToStringOptions) => string;
   /**
    * Formats a currency value to a string using the specified options.
    *
    * - `content`: The number value to format.
-   * - `options`: Optional. The options to use (see ICurrencyToStringOptions).
+   * - `options`: Optional. The options to use (see {@link ICurrencyToStringOptions}).
    */
   currency: (content: any, options?: ICurrencyToStringOptions) => string;
   /**
@@ -173,7 +182,7 @@ export interface ICoreHelpers {
    * email dates
    *
    * - `content`: The Date value to format.
-   * - `options`: Optional. The options to use (see IDateToStringOptions).
+   * - `options`: Optional. The options to use (see {@link IDateToStringOptions}).
    */
   emailDateTime: (content: any, options?: IDateToStringOptions) => string;
   /**
@@ -284,7 +293,7 @@ export interface ICoreHelpers {
    * >
    * >`size(10240) => 10 KB`
    *
-   * **Usage Examples:**
+   * **Examples:**
    *
    * >**HTML**
    * >
@@ -577,17 +586,18 @@ TemplateHelpers.registerTemplateHelper('highlightStreamHTMLv2', (content: string
   return executeHighlightStreamHTML(content, mergedOptions);
 });
 
-TemplateHelpers.registerFieldHelper('number', (value: any, options?: any) => {
-  var numberValue = Number(value);
-  if (Utils.exists(value)) {
-    if (_.isString(options)) {
-      return StringUtils.htmlEncode(Globalize.format(numberValue, <string>options));
-    } else {
-      return StringUtils.htmlEncode(numberValue.toString());
-    }
-  } else {
+TemplateHelpers.registerFieldHelper('number', (value: any, options?: INumberFormatOptions | string) => {
+  if (!Utils.exists(value)) {
     return undefined;
   }
+
+  const numberValue = Number(value);
+  const format = _.isString(options) ? options : options && options.format;
+  if (!format) {
+    return StringUtils.htmlEncode(numberValue.toString());
+  }
+
+  return StringUtils.htmlEncode(Globalize.format(numberValue, <string>format));
 });
 
 TemplateHelpers.registerFieldHelper('date', (value: any, options?: IDateToStringOptions) => {

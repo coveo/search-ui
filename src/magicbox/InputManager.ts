@@ -35,10 +35,8 @@ export class InputManager {
   public set activeDescendant(element: HTMLElement) {
     if (element) {
       this.input.setAttribute('aria-activedescendant', element.id);
-      this.input.setAttribute('aria-active-option', element.id);
     } else {
       this.input.removeAttribute('aria-activedescendant');
-      this.input.removeAttribute('aria-active-option');
     }
   }
 
@@ -214,6 +212,7 @@ export class InputManager {
   }
 
   private addAccessibilitiesProperties() {
+    this.input.setAttribute('autocomplete', 'off');
     this.input.setAttribute('type', 'text');
     this.input.setAttribute('role', 'combobox');
     this.input.setAttribute('form', 'coveo-dummy-form');
@@ -222,7 +221,6 @@ export class InputManager {
   }
 
   public focus() {
-    this.hasFocus = true;
     // neet a timeout for IE8-9
     setTimeout(() => {
       this.input.focus();

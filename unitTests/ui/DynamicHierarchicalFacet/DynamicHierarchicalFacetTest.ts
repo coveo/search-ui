@@ -4,7 +4,7 @@ import { DynamicFacetTestUtils } from '../DynamicFacet/DynamicFacetTestUtils';
 import { DynamicHierarchicalFacet } from '../../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacet';
 import { FacetType } from '../../../src/rest/Facet/FacetRequest';
 import { IPopulateBreadcrumbEventArgs, BreadcrumbEvents } from '../../../src/events/BreadcrumbEvents';
-import { $$, QueryBuilder, QueryEvents } from '../../../src/Core';
+import { $$, QueryBuilder, QueryEvents, InitializationEvents } from '../../../src/Core';
 import { FakeResults } from '../../Fake';
 import { Simulate } from '../../Simulate';
 import { IFacetResponseValue } from '../../../src/rest/Facet/FacetResponse';
@@ -17,7 +17,6 @@ import {
 import { DynamicFacetManager } from '../../../src/ui/DynamicFacetManager/DynamicFacetManager';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
-import { ComponentsTypes } from '../../../src/utils/ComponentsTypes';
 
 export function DynamicHierarchicalFacetTest() {
   describe('DynamicHierarchicalFacet', () => {
@@ -65,6 +64,14 @@ export function DynamicHierarchicalFacetTest() {
       const args: IPopulateBreadcrumbEventArgs = { breadcrumbs: [] };
       $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, args);
       return args.breadcrumbs;
+    }
+
+    function searchFeatureActive() {
+      return !!$$(test.cmp.element).find('.coveo-dynamic-facet-search');
+    }
+
+    function searchFeatureDisplayed() {
+      return $$($$(test.cmp.element).find('.coveo-dynamic-facet-search')).isVisible();
     }
 
     function testQueryStateModelValues(path: string[]) {
@@ -291,6 +298,49 @@ export function DynamicHierarchicalFacetTest() {
       expect(test.cmp.values.render).toHaveBeenCalled();
     });
 
+    describe('when "enableFacetSearch" option is false', () => {
+      beforeEach(() => {
+        options.enableFacetSearch = false;
+        initializeComponent();
+        test.cmp.ensureDom();
+      });
+
+      it(`it should not render the search element`, () => {
+        expect(searchFeatureActive()).toBe(false);
+      });
+
+      it(`it should not throw when collapsing`, () => {
+        expect(() => test.cmp.collapse()).not.toThrow();
+      });
+    });
+
+    describe('when "enableFacetSearch" option is true', () => {
+      beforeEach(() => {
+        options.enableFacetSearch = true;
+        initializeComponent();
+        test.cmp.ensureDom();
+      });
+
+      it(`it should show the search element`, () => {
+        expect(searchFeatureDisplayed()).toBe(true);
+      });
+
+      it(`when collapsing the facet
+      it should hide the search element`, () => {
+        test.cmp.collapse();
+
+        expect(searchFeatureDisplayed()).toBe(false);
+      });
+
+      it(`when expanding a collapsed facet
+      it should show the search element`, () => {
+        test.cmp.collapse();
+        test.cmp.expand();
+
+        expect(searchFeatureDisplayed()).toBe(true);
+      });
+    });
+
     describe('testing showMoreValues/showLessValues', () => {
       it('showMoreValues adds by the numberOfValues option by default', () => {
         const additionalNumberOfValues = test.cmp.options.numberOfValues;
@@ -421,44 +471,28 @@ export function DynamicHierarchicalFacetTest() {
       let dependentFacet: DynamicHierarchicalFacet;
 
       beforeEach(() => {
-        dependentFacet = DynamicHierarchicalFacetTestUtils.createAdvancedFakeFacet({
-          field: '@dependentField',
-          dependsOn: test.cmp.options.id
-        }).cmp;
-        spyOn(ComponentsTypes, 'getAllFacetsInstance').and.returnValue([test.cmp, dependentFacet]);
-        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
+        dependentFacet = DynamicHierarchicalFacetTestUtils.createAdvancedFakeFacet(
+          { field: '@dependentField', dependsOn: test.cmp.options.id },
+          test.env
+        ).cmp;
+        $$(dependentFacet.root).trigger(InitializationEvents.afterComponentsInitialization);
+        spyOn(dependentFacet, 'reset');
       });
 
       it('should initialize the dependsOnManager', () => {
-        expect(test.cmp.dependsOnManager).toBeTruthy();
+        expect(dependentFacet.dependsOnManager).toBeTruthy();
       });
 
-      it(`when facet appearance is updated (e.g. after a successful query)
-      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
-        Simulate.query(test.env, { results: fakeResultsWithFacets() });
-        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      it(`when query state changes so that parent has selected values (default condition fulfilled)
+      should not call "reset" on the dependent facet`, () => {
+        test.cmp.selectPath(['test']);
+        expect(dependentFacet.reset).not.toHaveBeenCalled();
       });
 
-      it(`when facet has no selected values
-        when triggering a newQuery
-        dependent facet should be disabled`, () => {
-        $$(test.env.root).trigger(QueryEvents.newQuery);
-        expect(dependentFacet.disabled).toBe(true);
-      });
-
-      it(`when facet has selected values
-        when triggering a newQuery
-        dependent facet should be enabled`, () => {
-        test.cmp.selectPath(['value']);
-        $$(test.env.root).trigger(QueryEvents.newQuery);
-        expect(dependentFacet.disabled).toBe(false);
-      });
-
-      it(`when there is a query state change
-        when parent has no selected value  
-        reset should be called on the dependent facet`, () => {
-        spyOn(dependentFacet, 'reset');
-        $$(dependentFacet.root).trigger('state:change', { attributes: test.env.queryStateModel.attributes });
+      it(`when query state changes so that parent has no selected values (default condition not fulfilled)
+      should call "reset" on the dependent facet`, () => {
+        test.cmp.selectPath(['test']);
+        test.cmp.reset();
         expect(dependentFacet.reset).toHaveBeenCalledTimes(1);
       });
     });

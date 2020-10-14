@@ -1,10 +1,11 @@
-import { defaults, each, indexOf, find } from 'underscore';
+import { defaults, indexOf, find } from 'underscore';
 import { IQuerySuggestSelection, OmniboxEvents } from '../events/OmniboxEvents';
 import { Component } from '../ui/Base/Component';
 import { $$, Dom } from '../utils/Dom';
 import { InputManager } from './InputManager';
 import { ResultPreviewsManager } from './ResultPreviewsManager';
 import { QueryProcessor, ProcessingStatus } from './QueryProcessor';
+import { QueryUtils } from '../utils/QueryUtils';
 
 export interface Suggestion {
   text?: string;
@@ -30,16 +31,16 @@ export enum Direction {
   Right = 'Right'
 }
 
-export const suggestionListboxID = 'coveo-magicbox-suggestions';
-
 export class SuggestionsManager {
+  public suggestionsListbox: Dom;
   private suggestionsProcessor: QueryProcessor<Suggestion>;
   private currentSuggestions: Suggestion[];
   private options: SuggestionsManagerOptions;
   private keyboardFocusedElement: HTMLElement;
-  private suggestionsListbox: Dom;
   private resultPreviewsManager: ResultPreviewsManager;
   private root: HTMLElement;
+  private suggestionListboxID = `coveo-magicbox-suggestions-${QueryUtils.createGuid()}`;
+  private suggestionListboxClassName = `coveo-magicbox-suggestions`;
 
   public get hasSuggestions() {
     return this.currentSuggestions && this.currentSuggestions.length > 0;
@@ -186,17 +187,19 @@ export class SuggestionsManager {
       return;
     }
 
-    each(suggestions, (suggestion: Suggestion) => {
-      const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
+    suggestions
+      .sort((a, b) => (b.index || 0) - (a.index || 0))
+      .forEach(suggestion => {
+        const dom = suggestion.dom ? this.modifyDomFromExistingSuggestion(suggestion.dom) : this.createDomFromSuggestion(suggestion);
 
-      dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
-      dom.setAttribute('role', 'option');
-      dom.setAttribute('aria-selected', 'false');
-      dom.setAttribute('aria-label', dom.text());
+        dom.setAttribute('id', `magic-box-suggestion-${indexOf(suggestions, suggestion)}`);
+        dom.setAttribute('role', 'option');
+        dom.setAttribute('aria-selected', 'false');
+        dom.setAttribute('aria-label', dom.text());
 
-      dom['suggestion'] = suggestion;
-      this.suggestionsListbox.append(dom.el);
-    });
+        dom['suggestion'] = suggestion;
+        this.suggestionsListbox.append(dom.el);
+      });
 
     $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
   }
@@ -227,8 +230,8 @@ export class SuggestionsManager {
 
   private buildSuggestionsContainer() {
     return $$('div', {
-      className: suggestionListboxID,
-      id: suggestionListboxID,
+      className: this.suggestionListboxClassName,
+      id: this.suggestionListboxID,
       role: 'listbox'
     });
   }
@@ -403,8 +406,8 @@ export class SuggestionsManager {
 
     this.inputManager.activeDescendant = null;
     this.inputManager.expanded = false;
-    input.setAttribute('aria-owns', suggestionListboxID);
-    input.setAttribute('aria-controls', suggestionListboxID);
+    input.setAttribute('aria-owns', this.suggestionListboxID);
+    input.setAttribute('aria-controls', this.suggestionListboxID);
   }
 
   private htmlElementIsSuggestion(selected: HTMLElement) {

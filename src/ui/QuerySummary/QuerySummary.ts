@@ -13,6 +13,7 @@ import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IQuerySummaryOptions {
   onlyDisplaySearchTips?: boolean;
@@ -59,6 +60,8 @@ export class QuerySummary extends Component {
      * Specifies whether to display the {@link QuerySummary.options.noResultsFoundMessage} message when there are no search results.
      *
      * Default value is `true`.
+     *
+     * @availablesince [August 2018 Release (v2.4609.6)](https://docs.coveo.com/410/#august-2018-release-v246096)
      */
     enableNoResultsFoundMessage: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
@@ -73,6 +76,11 @@ export class QuerySummary extends Component {
      * > On your page, they see this message: `There were no results found for "query without results"`.
      *
      * Default value is `No results for ${query}`.
+     *
+     * **Note**
+     * > If there is no query, the value will fallback to `No results`.
+     *
+     * @availablesince [August 2018 Release (v2.4609.6)](https://docs.coveo.com/410/#august-2018-release-v246096)
      */
     noResultsFoundMessage: ComponentOptions.buildLocalizedStringOption({
       localizedString: () => l('noResultFor', '${query}'),
@@ -182,6 +190,10 @@ export class QuerySummary extends Component {
   }
 
   private replaceQueryTagsWithHighlightedQuery(template: string) {
+    if (this.sanitizedQuery.trim() === '') {
+      return l('noResult');
+    }
+
     const highlightedQuery = `<span class="coveo-highlight">${this.sanitizedQuery}</span>`;
     return QuerySummaryUtils.replaceQueryTags(template, highlightedQuery);
   }
@@ -256,18 +268,22 @@ export class QuerySummary extends Component {
       l('CancelLastAction')
     );
 
-    cancelLastAction.on('click', () => {
-      this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
-      this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
-      if (this.lastKnownGoodState) {
-        this.queryStateModel.reset();
-        this.queryStateModel.setMultiple(this.lastKnownGoodState);
-        $$(this.root).trigger(QuerySummaryEvents.cancelLastAction);
-        this.queryController.executeQuery();
-      } else {
-        history.back();
-      }
-    });
+    new AccessibleButton()
+      .withLabel(l('CancelLastAction'))
+      .withElement(cancelLastAction)
+      .withSelectAction(() => {
+        this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
+        this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {});
+        if (this.lastKnownGoodState) {
+          this.queryStateModel.reset();
+          this.queryStateModel.setMultiple(this.lastKnownGoodState);
+          $$(this.root).trigger(QuerySummaryEvents.cancelLastAction);
+          this.queryController.executeQuery();
+        } else {
+          history.back();
+        }
+      })
+      .build();
 
     return cancelLastAction;
   }

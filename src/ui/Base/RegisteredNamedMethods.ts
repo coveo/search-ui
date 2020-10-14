@@ -17,6 +17,7 @@ import * as _ from 'underscore';
 import { PublicPathUtils } from '../../utils/PublicPathUtils';
 import { Logger } from '../../misc/Logger';
 import { Analytics } from '../Analytics/Analytics';
+import { AnalyticsUtils } from '../../utils/AnalyticsUtils';
 
 let registeredNamedMethodsLogger = new Logger('RegisteredNamedMethods');
 
@@ -53,6 +54,8 @@ export function initSearchbox(element: HTMLElement, searchPageUri: string, optio
   searchInterfaceOptions.searchPageUri = searchPageUri;
   searchInterfaceOptions.autoTriggerQuery = false;
   searchInterfaceOptions.enableHistory = false;
+  searchInterfaceOptions = { ...searchInterfaceOptions, ...options.StandaloneSearchInterface };
+
   options = _.extend({}, options, { StandaloneSearchInterface: searchInterfaceOptions });
   return Initialization.initializeFramework(element, options, () => {
     return Initialization.initStandaloneSearchInterface(element, options);
@@ -530,6 +533,36 @@ export function disableAnalytics(searchRoot = document.querySelector(Component.c
 
 Initialization.registerNamedMethod('disableAnalytics', () => {
   disableAnalytics();
+});
+
+/**
+ * Adds a new analytics action cause to the ActionCauseList.
+ * Adding a new actionCause allows to specify a custom user-action when triggering a search event.
+ * @param newActionCause
+ * (e.g.,
+ * {
+ *  Name: "newActionCause",
+ *  Type: "exampleType"
+ * },
+ */
+export function addActionCauseToList(newActionCause: IAnalyticsActionCause) {
+  AnalyticsUtils.addActionCauseToList(newActionCause);
+}
+
+Initialization.registerNamedMethod('addActionCauseToList', (newActionCause: IAnalyticsActionCause) => {
+  addActionCauseToList(newActionCause);
+});
+
+/**
+ * Removes an actionCause from the ActionCauseList.
+ * @param actionCauseToRemoveName
+ */
+export function removeActionCauseFromList(actionCauseToRemoveName: string) {
+  AnalyticsUtils.removeActionCauseFromList(actionCauseToRemoveName);
+}
+
+Initialization.registerNamedMethod('removeActionCauseFromList', (actionCauseToRemoveName: string) => {
+  removeActionCauseFromList(actionCauseToRemoveName);
 });
 
 /**

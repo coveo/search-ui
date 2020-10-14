@@ -191,6 +191,7 @@ export interface IAnalyticsTriggerNotify {
 
 export interface IAnalyticsTriggerRedirect {
   redirectedTo: string;
+  query?: string;
 }
 
 export interface IAnalyticsTriggerQuery {
@@ -222,6 +223,18 @@ export interface IAnalyticsResultsLayoutChange {
 
 export interface IAnalyticsMissingTerm {
   missingTerm: string;
+}
+
+export enum AnalyticsSmartSnippetFeedbackReason {
+  DoesNotAnswer = 'does_not_answer',
+  PartiallyAnswers = 'partially_answers',
+  WasNotAQuestion = 'was_not_a_question',
+  Other = 'other'
+}
+
+export interface IAnalyticsSmartSnippetFeedbackMeta {
+  reason: AnalyticsSmartSnippetFeedbackReason;
+  details?: string;
 }
 
 /**
@@ -1326,5 +1339,133 @@ export var analyticsActionCauseList = {
   clickQuerySuggestPreview: <IAnalyticsActionCause>{
     name: 'clickQuerySuggestPreview',
     type: 'querySuggestPreview'
+  },
+  /**
+   * The custom event logged when the "Yes" button is pressed in a [SmartSnippet]{@link SmartSnippet}'s feedback banner.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "likeSmartSnippet",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  likeSmartSnippet: <IAnalyticsActionCause>{
+    name: 'likeSmartSnippet',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when the "No" button is pressed in a [SmartSnippet]{@link SmartSnippet}'s feedback banner.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "dislikeSmartSnippet",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  dislikeSmartSnippet: <IAnalyticsActionCause>{
+    name: 'dislikeSmartSnippet',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when the "Show more" button is pressed in a [SmartSnippet]{@link SmartSnippet}.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "expandSmartSnippet",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  expandSmartSnippet: <IAnalyticsActionCause>{
+    name: 'expandSmartSnippet',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when the "Show less" button is pressed in a [SmartSnippet]{@link SmartSnippet}.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "collapseSmartSnippet",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  collapseSmartSnippet: <IAnalyticsActionCause>{
+    name: 'collapseSmartSnippet',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when the source of a [SmartSnippet]{@link SmartSnippet} is opened.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "openSmartSnippetSource",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  openSmartSnippetSource: <IAnalyticsActionCause>{
+    name: 'openSmartSnippetSource',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when the "Explain why" button in a [SmartSnippet]{@link SmartSnippet} is pressed.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "openSmartSnippetFeedbackModal",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  openSmartSnippetFeedbackModal: <IAnalyticsActionCause>{
+    name: 'openSmartSnippetFeedbackModal',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when the modal opened by clicking the "Explain why" button in a [SmartSnippet]{@link SmartSnippet} is closed.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "closeSmartSnippetFeedbackModal",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  closeSmartSnippetFeedbackModal: <IAnalyticsActionCause>{
+    name: 'closeSmartSnippetFeedbackModal',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when a generic reason was sent from the modal opened when clicking the "Explain why" button in a [SmartSnippet]{@link SmartSnippet}.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "sendSmartSnippetReason",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  sendSmartSnippetReason: <IAnalyticsActionCause>{
+    name: 'sendSmartSnippetReason',
+    type: 'smartSnippet'
   }
 };

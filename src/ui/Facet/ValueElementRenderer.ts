@@ -1,5 +1,5 @@
 import { Facet } from './Facet';
-import { FacetValue } from './FacetValues';
+import { FacetValue } from './FacetValue';
 import { $$ } from '../../utils/Dom';
 import { Utils } from '../../utils/Utils';
 import { l } from '../../strings/Strings';
@@ -58,15 +58,18 @@ export class ValueElementRenderer {
   }
 
   protected buildExcludeIcon(): HTMLElement {
+    const isExcluded = this.facetValue.excluded;
     const excludeIcon = $$('div', {
-      title: l('ExcludeValueWithResultCount', this.caption, l('ResultCount', this.count)),
+      ariaLabel: l('ExcludeValueWithResultCount', this.caption, l('ResultCount', this.count, parseInt(this.count, 10))),
       className: 'coveo-facet-value-exclude',
       tabindex: 0,
-      role: 'button'
+      role: 'button',
+      ariaPressed: isExcluded.toString()
     }).el;
     this.addFocusAndBlurEventListeners(excludeIcon);
-    excludeIcon.innerHTML = SVGIcons.icons.checkboxHookExclusionMore;
-    SVGDom.addClassToSVGInContainer(excludeIcon, 'coveo-facet-value-exclude-svg');
+    excludeIcon.innerHTML = isExcluded ? SVGIcons.icons.plus : SVGIcons.icons.checkboxHookExclusionMore;
+    SVGDom.addClassToSVGInContainer(excludeIcon, isExcluded ? 'coveo-facet-value-unexclude-svg' : 'coveo-facet-value-exclude-svg');
+    SVGDom.addAttributesToSVGInContainer(excludeIcon, { 'aria-hidden': 'true' });
     return excludeIcon;
   }
 
@@ -86,8 +89,8 @@ export class ValueElementRenderer {
   protected buildValueCheckbox(): HTMLElement {
     const checkbox = $$('input', {
       type: 'checkbox',
-      'aria-hidden': true,
-      'aria-label': this.ariaLabel
+      ariaHidden: true,
+      ariaLabel: this.ariaLabel
     }).el;
 
     this.facetValue.selected ? checkbox.setAttribute('checked', 'checked') : checkbox.removeAttribute('checked');
@@ -171,7 +174,7 @@ export class ValueElementRenderer {
   }
 
   private buildListItem() {
-    this.listItem = $$('li', { className: 'coveo-facet-value coveo-facet-selectable' }).el;
+    this.listItem = $$('li', { className: 'coveo-facet-value coveo-facet-selectable', ariaLabel: this.ariaLabel }).el;
 
     if (!$$(this.listItem).canHandleEvent('touchstart')) {
       $$(this.listItem).addClass('coveo-with-hover');
@@ -181,7 +184,7 @@ export class ValueElementRenderer {
   }
 
   private initAndAppendLabel() {
-    this.label = $$('label', { className: 'coveo-facet-value-label' }).el;
+    this.label = $$('label', { className: 'coveo-facet-value-label', role: 'group' }).el;
     this.tryToInitAndAppendComputedField();
     this.initAndAppendFacetValueLabelWrapper();
     this.listItem.appendChild(this.label);
@@ -223,8 +226,8 @@ export class ValueElementRenderer {
 
     this.initAndAppendCheckbox();
     this.initAndAppendStylishCheckbox();
-    this.initAndAppendValueCount();
     this.initAndAppendValueCaption();
+    this.initAndAppendValueCount();
 
     this.label.appendChild(this.facetValueLabelWrapper);
   }
@@ -258,22 +261,18 @@ export class ValueElementRenderer {
     const el = this.accessibleElement;
     el.setAttribute('aria-label', this.ariaLabel);
     el.setAttribute('role', 'button');
-  }
-
-  private get actionLabel() {
-    if (this.facetValue.excluded) {
-      return 'UnexcludeValueWithResultCount';
-    }
-
-    if (this.facetValue.selected) {
-      return 'UnselectValueWithResultCount';
-    }
-
-    return 'SelectValueWithResultCount';
+    el.setAttribute('aria-pressed', this.ariaPressed);
   }
 
   private get ariaLabel() {
-    const resultCount = l('ResultCount', this.count);
-    return `${l(this.actionLabel, this.caption, resultCount)}`;
+    const resultCount = l('ResultCount', this.count, parseInt(this.count, 10));
+    return `${l('IncludeValueWithResultCount', this.caption, resultCount)}`;
+  }
+
+  private get ariaPressed() {
+    if (this.facetValue.excluded) {
+      return 'mixed';
+    }
+    return this.facetValue.selected ? 'true' : 'false';
   }
 }

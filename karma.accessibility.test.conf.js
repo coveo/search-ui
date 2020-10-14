@@ -1,12 +1,10 @@
-const ChromiumRevision = require('puppeteer/package.json').puppeteer.chromium_revision;
-const Downloader = require('puppeteer/utils/ChromiumDownloader');
-const revisionInfo = Downloader.revisionInfo(Downloader.currentPlatform(), ChromiumRevision);
+const puppeteer = require('puppeteer');
 
-process.env.CHROME_BIN = revisionInfo.executablePath;
+process.env.CHROME_BIN = puppeteer.executablePath();
 
-var configuration = {
+const configuration = {
   singleRun: true,
-  browsers: ['ChromeHeadless'],
+  browsers: ['ChromeHeadless-Accessibility'],
   frameworks: ['jasmine'],
   browserNoActivityTimeout: 90000,
   browserDisconnectTolerance: 10,
@@ -30,7 +28,13 @@ var configuration = {
     }
   ],
   reporters: ['spec'],
-  plugins: ['karma-jasmine', 'karma-chrome-launcher', 'karma-spec-reporter']
+  plugins: ['karma-jasmine', 'karma-chrome-launcher', 'karma-spec-reporter'],
+  customLaunchers: {
+    'ChromeHeadless-Accessibility': {
+      base: 'Chrome',
+      flags: ['--headless', '--remote-debugging-port=9222', '--no-sandbox', '--max_old_space_size=4096']
+    }
+  }
 };
 
 module.exports = function(config) {

@@ -105,8 +105,8 @@ export function DynamicFacetValueTest() {
     });
 
     it(`should return the correct analyticsFacetMeta for a range value`, () => {
-      const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet();
-      rangeFacet.values.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges());
+      const ranges = DynamicFacetRangeTestUtils.createFakeRanges();
+      const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet({ ranges });
       dynamicFacetValue = rangeFacet.values.allFacetValues[0];
 
       expect(dynamicFacetValue.analyticsFacetMeta).toEqual({
@@ -129,8 +129,8 @@ export function DynamicFacetValueTest() {
     });
 
     it(`should return the correct analyticsFacetState for a range value`, () => {
-      const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet();
-      rangeFacet.values.createFromRanges(DynamicFacetRangeTestUtils.createFakeRanges());
+      const ranges = DynamicFacetRangeTestUtils.createFakeRanges();
+      const rangeFacet = DynamicFacetRangeTestUtils.createFakeFacet({ ranges });
       dynamicFacetValue = rangeFacet.values.allFacetValues[0];
 
       expect(dynamicFacetValue.analyticsFacetState).toEqual({
@@ -147,7 +147,7 @@ export function DynamicFacetValueTest() {
 
     describe('when the value has the state "idle"', () => {
       it('should return the correct aria-label', () => {
-        const expectedAriaLabel = `Select ${dynamicFacetValue.value} with ${dynamicFacetValue.formattedCount} results`;
+        const expectedAriaLabel = `Inclusion filter on ${dynamicFacetValue.value}; ${dynamicFacetValue.formattedCount} results`;
         expect(dynamicFacetValue.selectAriaLabel).toBe(expectedAriaLabel);
       });
 
@@ -166,7 +166,7 @@ export function DynamicFacetValueTest() {
       });
 
       it('should return the correct aria-label', () => {
-        const expectedAriaLabel = `Unselect ${dynamicFacetValue.value} with ${dynamicFacetValue.formattedCount} results`;
+        const expectedAriaLabel = `Inclusion filter on ${dynamicFacetValue.value}; ${dynamicFacetValue.formattedCount} results`;
         expect(dynamicFacetValue.selectAriaLabel).toBe(expectedAriaLabel);
       });
 

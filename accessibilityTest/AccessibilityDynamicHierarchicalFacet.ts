@@ -1,20 +1,29 @@
 import * as axe from 'axe-core';
 import { $$, Component, DynamicHierarchicalFacet } from 'coveo-search-ui';
-import { afterQuerySuccess, getFacetColumn, getRoot, inDesktopMode, resetMode } from './Testing';
+import { afterDeferredQuerySuccess, getFacetColumn, getRoot, inDesktopMode, resetMode, waitUntilSelectorIsPresent } from './Testing';
 
 export const AccessibilityDynamicHierarchicalFacet = () => {
   describe('DynamicHierarchicalFacet', () => {
-    let dynamicHierarchicalFacet: HTMLElement;
+    let dynamicHierarchicalFacet: DynamicHierarchicalFacet;
 
-    beforeEach(() => {
-      dynamicHierarchicalFacet = $$('div', {
+    async function initializeHierarchicalFacet() {
+      const dynamicHierarchicalFacetElement = $$('div', {
         className: Component.computeCssClassName(DynamicHierarchicalFacet),
         dataTitle: 'My Facet',
-        dataField: '@champion_categories',
+        dataField: '@geographicalhierarchy',
         dataEnableCollapse: true
       }).el;
+      getFacetColumn().appendChild(dynamicHierarchicalFacetElement);
+      await afterDeferredQuerySuccess();
+      dynamicHierarchicalFacet = Component.get(dynamicHierarchicalFacetElement, DynamicHierarchicalFacet) as DynamicHierarchicalFacet;
+      dynamicHierarchicalFacet.ensureDom();
+    }
 
+    beforeEach(async done => {
       inDesktopMode();
+
+      await initializeHierarchicalFacet();
+      done();
     });
 
     afterEach(() => {
@@ -22,12 +31,8 @@ export const AccessibilityDynamicHierarchicalFacet = () => {
     });
 
     it('should be accessible', async done => {
-      getFacetColumn().appendChild(dynamicHierarchicalFacet);
-      await afterQuerySuccess();
-      $$(dynamicHierarchicalFacet)
-        .find('.coveo-dynamic-hierarchical-facet-value')
-        .click();
-      await afterQuerySuccess();
+      (await waitUntilSelectorIsPresent<HTMLElement>(dynamicHierarchicalFacet.element, '.coveo-dynamic-hierarchical-facet-value')).click();
+      await afterDeferredQuerySuccess();
       const axeResults = await axe.run(getRoot());
       expect(axeResults).toBeAccessible();
       done();

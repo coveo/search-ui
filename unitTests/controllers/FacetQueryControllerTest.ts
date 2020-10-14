@@ -2,7 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { FacetQueryController } from '../../src/controllers/FacetQueryController';
 import { FacetValues } from '../../src/ui/Facet/FacetValues';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { ExpressionBuilder } from '../../src/ui/Base/ExpressionBuilder';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';

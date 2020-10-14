@@ -4,13 +4,11 @@ const gulp = require('gulp');
 const Promise = require('bluebird');
 const glob = Promise.promisify(require('glob'));
 const read = Promise.promisify(require('fs').readFile);
-const write = Promise.promisify(require('fs').write);
-const exists = Promise.promisify(require('fs').exists);
 const _ = require('underscore');
 const xmlParser = Promise.promisify(new require('xml2js').Parser({ async: false }).parseString);
 const utilities = require('./buildUtilities');
 
-gulp.task('fileTypes', async done => {
+async function fileTypes() {
   gulp.src('./image/svg/filetypes/*.svg').pipe(gulp.dest('./bin/image'));
 
   const svgFiles = await glob('./image/svg/filetypes/*.svg');
@@ -54,7 +52,7 @@ gulp.task('fileTypes', async done => {
 
   require('fs').writeFileSync('bin/sass/_GeneratedIconsNew.scss', sass);
   require('fs').writeFileSync('bin/strings/filetypesNew.json', JSON.stringify(stringsForFileTypesAndObjecttypes));
-});
+}
 
 const generateSassForStandaloneImages = async svgFiles => {
   const extractFileSize = smallVersion =>
@@ -173,3 +171,5 @@ const svgTemplateForUrl = svgName => {
 const capitalizeAndTrim = rawValue => {
   return `${rawValue.charAt(0).toUpperCase()}${rawValue.slice(1)}`.replace(' ', '-');
 };
+
+module.exports = { fileTypes };

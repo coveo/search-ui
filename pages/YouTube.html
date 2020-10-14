@@ -49,7 +49,7 @@
         <div class="coveo-result-layout-section">
           <span class="CoveoResultLayoutSelector"></span>
         </div>
-        <div class="coveo-sort-section">
+        <div class="coveo-sort-section" role="radiogroup">
           <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
           <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
         </div>
@@ -60,9 +60,15 @@
         data-auto-select-fields-to-include="true"></div>
       <div class="CoveoResultList" data-layout="card" data-wait-animation="fade"
         data-auto-select-fields-to-include="true"></div>
-      <div class="CoveoPager"></div>
-      <div class="CoveoLogo"></div>
-      <div class="CoveoResultsPerPage"></div>
+      <div class="coveo-results-footer">
+        <div class="coveo-results-footer-left">
+          <div class="CoveoPager"></div>
+        </div>
+        <div class="coveo-results-footer-right">
+          <div class="CoveoResultsPerPage"></div>
+          <div class="CoveoLogo"></div>
+        </div>
+      </div>
     </div>
   </div>
 </body>

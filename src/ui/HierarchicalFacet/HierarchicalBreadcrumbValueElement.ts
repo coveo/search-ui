@@ -1,5 +1,5 @@
 import { BreadcrumbValueElement } from '../Facet/BreadcrumbValueElement';
-import { FacetValue } from '../Facet/FacetValues';
+import { FacetValue } from '../Facet/FacetValue';
 import { HierarchicalFacet } from './HierarchicalFacet';
 import { Dom } from '../../utils/Dom';
 import * as _ from 'underscore';

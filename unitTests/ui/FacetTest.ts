@@ -2,7 +2,7 @@
 import * as Mock from '../MockEnvironment';
 import { Facet, IFacetOptions } from '../../src/ui/Facet/Facet';
 import { $$ } from '../../src/utils/Dom';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { Simulate } from '../Simulate';
 import { FakeResults } from '../Fake';
 import { OmniboxEvents } from '../../src/events/OmniboxEvents';
@@ -10,7 +10,7 @@ import { BreadcrumbEvents } from '../../src/events/BreadcrumbEvents';
 import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents';
 import { IPopulateOmniboxEventArgs } from '../../src/events/OmniboxEvents';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { KEYBOARD } from '../../src/Core';
+import { KEYBOARD, InitializationEvents } from '../../src/Core';
 
 export function FacetTest() {
   describe('Facet', () => {
@@ -26,6 +26,29 @@ export function FacetTest() {
     function initializeComponent() {
       test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, <IFacetOptions>{
         field: '@field'
+      });
+    }
+
+    function initializeComponentWithQSM() {
+      test = Mock.advancedComponentSetup<Facet>(Facet, <Mock.AdvancedComponentSetupOptions>{
+        modifyBuilder: builder => {
+          return builder.withLiveQueryStateModel();
+        },
+        cmpOptions: {
+          field: '@field'
+        }
+      });
+      test.env.queryStateModel.registerNewAttribute('f:@field', []);
+      test.env.queryStateModel.registerNewAttribute('f:@field:not', []);
+      test.env.queryStateModel.registerNewAttribute('f:@field:operator', 'or');
+    }
+
+    function simulateQueryWithResults(numberOfValues = 10) {
+      const results = FakeResults.createFakeResults();
+      results.groupByResults = [FakeResults.createFakeGroupByResult('@field', 'foo', numberOfValues)];
+
+      Simulate.query(test.env, {
+        results: results
       });
     }
 
@@ -251,19 +274,79 @@ export function FacetTest() {
       expect(test.cmp.getValueCaption(FacetValue.createFromValue('txt'))).toBe('Text');
     });
 
+    it('allows to getCaptionForStringValue', () => {
+      test.cmp.options.field = '@filetype';
+      test.cmp.options.valueCaption = {
+        abc: 'Pancakes',
+        def: 'Waffles'
+      };
+
+      test.cmp.createDom();
+
+      expect(test.cmp.getCaptionForStringValue('abc')).toBe('Pancakes');
+      expect(test.cmp.getCaptionForStringValue('def')).toBe('Waffles');
+      expect(test.cmp.getCaptionForStringValue('ghi')).toBe('ghi');
+    });
+
+    it(`when the valueCaption option is a function, when calling getValueCaption,
+    it gets the value from the list using the passed FacetValue object`, () => {
+      test.cmp.options.valueCaption = () => '';
+      test.cmp.createDom();
+
+      const facetValue = FacetValue.createFromValue('foo');
+      const spy = spyOn(test.cmp.facetValuesList, 'get').and.returnValue({ facetValue });
+      test.cmp.getValueCaption(facetValue);
+
+      expect(spy).toHaveBeenCalledWith(facetValue);
+    });
+
+    it(`when the valueCaption option is a function, when calling getCaptionForStringValue,
+    it gets the value from the list using the passed FacetValue object`, () => {
+      test.cmp.options.valueCaption = () => '';
+      test.cmp.createDom();
+
+      const facetValue = FacetValue.createFromValue('foo');
+      const spy = spyOn(test.cmp.facetValuesList, 'get').and.returnValue({ facetValue });
+      test.cmp.getCaptionForStringValue('foo');
+
+      expect(spy).toHaveBeenCalledWith(facetValue);
+    });
+
+    it('calling #showMore increases the currentPage by 1', () => {
+      expect(test.cmp.currentPage).toBe(0);
+      test.cmp.showMore();
+      expect(test.cmp.currentPage).toBe(1);
+    });
+
+    describe('calling #processFacetSearchAllResultsSelected', () => {
+      beforeEach(() => {
+        test.cmp.options.numberOfValues = 1;
+        test.cmp.options.pageSize = 1;
+
+        expect(test.cmp.currentPage).toBe(0);
+
+        const values = ['a', 'b'].map(v => {
+          const value = FacetValue.createFromValue(v);
+          value.selected = true;
+          return value;
+        });
+
+        test.cmp.processFacetSearchAllResultsSelected(values);
+      });
+
+      it('does not change the current page', () => {
+        expect(test.cmp.currentPage).toBe(0);
+      });
+
+      it(`calling #showMore increases the page enough to show the next results`, () => {
+        test.cmp.showMore();
+        expect(test.cmp.currentPage).toBe(2);
+      });
+    });
+
     describe('with a live query state model', () => {
       beforeEach(() => {
-        test = Mock.advancedComponentSetup<Facet>(Facet, <Mock.AdvancedComponentSetupOptions>{
-          modifyBuilder: builder => {
-            return builder.withLiveQueryStateModel();
-          },
-          cmpOptions: {
-            field: '@field'
-          }
-        });
-        test.env.queryStateModel.registerNewAttribute('f:@field', []);
-        test.env.queryStateModel.registerNewAttribute('f:@field:not', []);
-        test.env.queryStateModel.registerNewAttribute('f:@field:operator', 'or');
+        initializeComponentWithQSM();
       });
 
       it('should select the needed values', () => {
@@ -390,12 +473,7 @@ export function FacetTest() {
         });
         test.cmp.selectValue('foo1');
 
-        var results = FakeResults.createFakeResults();
-        results.groupByResults = [FakeResults.createFakeGroupByResult('@field', 'foo', 10)];
-
-        Simulate.query(test.env, {
-          results: results
-        });
+        simulateQueryWithResults();
 
         expect(test.cmp.getEndpoint().search).not.toHaveBeenCalled();
 
@@ -405,9 +483,7 @@ export function FacetTest() {
         });
         test.cmp.selectValue('foo1');
 
-        Simulate.query(test.env, {
-          results: results
-        });
+        simulateQueryWithResults();
 
         expect(test.cmp.getEndpoint().search).toHaveBeenCalled();
       });
@@ -426,6 +502,34 @@ export function FacetTest() {
             })
           ])
         );
+      });
+
+      it('when numberOfValues is 0, it does not hide the facet', () => {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@field',
+          numberOfValues: 0
+        });
+
+        Simulate.query(test.env);
+        expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
+      });
+
+      it(`when a query is successful and "keepDisplayedValuesNextTime" is false
+      the number of value should update`, () => {
+        test.cmp.numberOfValues = 13;
+        test.cmp.keepDisplayedValuesNextTime = false;
+
+        simulateQueryWithResults(test.cmp.options.numberOfValues);
+        expect(test.cmp.numberOfValues).toBe(test.cmp.options.numberOfValues);
+      });
+
+      it(`when a query is successful and "keepDisplayedValuesNextTime" is true
+      the number of value should not change`, () => {
+        test.cmp.numberOfValues = 13;
+        test.cmp.keepDisplayedValuesNextTime = true;
+
+        simulateQueryWithResults(test.cmp.options.numberOfValues);
+        expect(test.cmp.numberOfValues).toBe(13);
       });
 
       it('pageSize should specify the number of values for the more option', () => {
@@ -543,11 +647,7 @@ export function FacetTest() {
           field: '@field',
           customSort: ['foo3', 'foo1']
         });
-        var results = FakeResults.createFakeResults();
-        results.groupByResults = [FakeResults.createFakeGroupByResult('@field', 'foo', 10)];
-        Simulate.query(test.env, {
-          results: results
-        });
+        simulateQueryWithResults();
         expect(test.cmp.getDisplayedFacetValues()[0].value).toBe('foo3');
         expect(test.cmp.getDisplayedFacetValues()[1].value).toBe('foo1');
         expect(test.cmp.getDisplayedFacetValues()[2].value).toBe('foo0');
@@ -679,10 +779,6 @@ export function FacetTest() {
 
             it('should set aria-expanded to true', () => {
               expect(accessibleElement.getAttribute('aria-expanded')).toEqual(true.toString());
-            });
-
-            it('should set aria-controls to the given id', () => {
-              expect(accessibleElement.getAttribute('aria-controls')).toEqual(searchResultsElement.id);
             });
           });
 
@@ -873,11 +969,7 @@ export function FacetTest() {
           field: '@field',
           enableMoreLess: true
         });
-        var results = FakeResults.createFakeResults();
-        results.groupByResults = [FakeResults.createFakeGroupByResult('@field', 'foo', 15)];
-        Simulate.query(test.env, {
-          results: results
-        });
+        simulateQueryWithResults(15);
 
         var more = $$(test.cmp.element).find('.coveo-facet-more');
         var less = $$(test.cmp.element).find('.coveo-facet-less');
@@ -956,19 +1048,46 @@ export function FacetTest() {
     });
 
     describe('testing the DependsOnManager', () => {
+      let dependentFacet: Facet;
       beforeEach(() => {
-        spyOn(test.cmp.dependsOnManager, 'updateVisibilityBasedOnDependsOn');
-        spyOn(test.cmp.dependsOnManager, 'listenToParentIfDependentFacet');
+        initializeComponentWithQSM();
+
+        dependentFacet = Mock.advancedComponentSetup<Facet>(
+          Facet,
+          new Mock.AdvancedComponentSetupOptions(
+            undefined,
+            <IFacetOptions>{
+              field: '@anotherField',
+              dependsOn: test.cmp.options.id
+            },
+            (builder: Mock.MockEnvironmentBuilder) => {
+              builder.withQueryStateModel(test.env.queryStateModel);
+              builder.withRoot(test.env.root);
+              builder.withSearchInterface(test.env.searchInterface);
+              return builder;
+            }
+          )
+        ).cmp;
+
+        $$(dependentFacet.root).trigger(InitializationEvents.afterComponentsInitialization);
+        spyOn(dependentFacet, 'reset');
       });
 
       it('should initialize the dependsOnManager', () => {
         expect(test.cmp.dependsOnManager).toBeTruthy();
       });
 
-      it(`when facet appearance is updated (e.g. when createDom is called)
-      should call the "updateVisibilityBasedOnDependsOn" method of the DependsOnManager`, () => {
-        test.cmp.createDom();
-        expect(test.cmp.dependsOnManager.updateVisibilityBasedOnDependsOn).toHaveBeenCalled();
+      it(`when query state changes so that parent has selected values (default condition fulfilled)
+      should not call "reset" on the dependent facet`, () => {
+        test.cmp.selectValue('test');
+        expect(dependentFacet.reset).not.toHaveBeenCalled();
+      });
+
+      it(`when query state changes so that parent has no selected values (default condition not fulfilled)
+      should call "reset" on the dependent facet`, () => {
+        test.cmp.selectValue('test');
+        test.cmp.deselectValue('test');
+        expect(dependentFacet.reset).toHaveBeenCalledTimes(1);
       });
     });
   });

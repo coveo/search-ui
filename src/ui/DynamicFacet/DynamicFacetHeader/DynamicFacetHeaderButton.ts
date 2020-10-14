@@ -24,7 +24,10 @@ export class DynamicFacetHeaderButton {
 
     this.button = $$(
       'button',
-      { className: `coveo-dynamic-facet-header-btn ${this.rootOptions.className || ''}`.trim() },
+      {
+        className: `coveo-dynamic-facet-header-btn ${this.rootOptions.className || ''}`.trim(),
+        type: 'button'
+      },
       hasIcon ? this.rootOptions.iconSVG : this.rootOptions.label
     );
 
@@ -49,5 +52,8 @@ export class DynamicFacetHeaderButton {
 
   public toggle(shouldDisplay: boolean) {
     this.button.toggle(shouldDisplay);
+    if (shouldDisplay) {
+      this.button.el.focus();
+    }
   }
 }

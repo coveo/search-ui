@@ -10,10 +10,13 @@ import { ResponsiveComponents } from './ResponsiveComponents';
 import { IResponsiveComponent, IResponsiveComponentOptions, ResponsiveComponentsManager } from './ResponsiveComponentsManager';
 import { ResponsiveComponentsUtils } from './ResponsiveComponentsUtils';
 import { ResponsiveDropdown } from './ResponsiveDropdown/ResponsiveDropdown';
-import { ResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
+import { ResponsiveDropdownContent, IResponsiveDropdownContent } from './ResponsiveDropdown/ResponsiveDropdownContent';
 import { ResponsiveDropdownHeader } from './ResponsiveDropdown/ResponsiveDropdownHeader';
 import { each, debounce } from 'underscore';
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
+import { ResponsiveDropdownModalContent } from './ResponsiveDropdown/ResponsiveDropdownModalContent';
+import { FacetsMobileMode, IFacetsMobileModeOptions } from '../FacetsMobileMode/FacetsMobileMode';
+import { FacetsMobileModeEvents } from '../../events/FacetsMobileModeEvents';
 
 export class ResponsiveFacetColumn implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
@@ -49,13 +52,30 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   }
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {
+    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
     this.dropdownHeaderLabel = this.getDropdownHeaderLabel();
     this.dropdown = this.buildDropdown(responsiveDropdown);
-    this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
     this.bindDropdownContentEvents();
+    this.bindFacetsMobileModeEvents();
     this.registerOnCloseHandler();
     this.registerQueryEvents();
-    this.breakpoint = options.responsiveBreakpoint;
+    this.initializeBreakpoint(options.responsiveBreakpoint);
+  }
+
+  private get facetsMobileModeComponent() {
+    return this.searchInterface ? this.searchInterface.getComponents<FacetsMobileMode>(FacetsMobileMode.ID)[0] : null;
+  }
+
+  private get facetsMobileModeOptions(): IFacetsMobileModeOptions {
+    const facetsMobileModeComponent = this.facetsMobileModeComponent;
+    if (!facetsMobileModeComponent) {
+      return {
+        isModal: false,
+        preventScrolling: false,
+        displayOverlayWhileOpen: true
+      };
+    }
+    return facetsMobileModeComponent.options;
   }
 
   public registerComponent(accept: Component) {
@@ -127,33 +147,46 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
     let dropdown = responsiveDropdown ? responsiveDropdown : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
+    if (!this.facetsMobileModeOptions.displayOverlayWhileOpen) {
+      dropdown.disablePopupBackground();
+    }
+    if (this.facetsMobileModeOptions.preventScrolling) {
+      dropdown.enableScrollLocking(this.facetsMobileModeOptions.scrollContainer);
+    }
     return dropdown;
   }
 
-  private buildDropdownContent(): ResponsiveDropdownContent {
+  private buildDropdownContent(): IResponsiveDropdownContent {
     let dropdownContentElement = $$(this.coveoRoot.find('.coveo-facet-column'));
     let filterByContainer = $$('div', { className: 'coveo-facet-header-filter-by-container', style: 'display: none' });
     let filterBy = $$('div', { className: 'coveo-facet-header-filter-by' });
     filterBy.text(l('Filter by:'));
     filterByContainer.append(filterBy.el);
     dropdownContentElement.prepend(filterByContainer.el);
-    let dropdownContent = new ResponsiveDropdownContent(
+    if (this.facetsMobileModeOptions.isModal) {
+      return new ResponsiveDropdownModalContent('facet', dropdownContentElement, l('CloseFiltersDropdown'), () => this.dropdown.close());
+    }
+    return new ResponsiveDropdownContent(
       'facet',
       dropdownContentElement,
       this.coveoRoot,
       ResponsiveFacetColumn.DROPDOWN_MIN_WIDTH,
       ResponsiveFacetColumn.DROPDOWN_WIDTH_RATIO
     );
-    return dropdownContent;
   }
 
-  private buildDropdownHeader(): ResponsiveDropdownHeader {
+  private buildDropdownHeader() {
     let dropdownHeaderElement = $$('a');
     let content = $$('p');
     content.text(this.dropdownHeaderLabel);
     dropdownHeaderElement.el.appendChild(content.el);
     let dropdownHeader = new ResponsiveDropdownHeader('facet', dropdownHeaderElement);
     return dropdownHeader;
+  }
+
+  private initializeBreakpoint(defaultBreakpoint: number) {
+    const facetsMobileModeBreakpoint = this.facetsMobileModeOptions.breakpoint;
+    this.breakpoint = Utils.isNullOrUndefined(facetsMobileModeBreakpoint) ? defaultBreakpoint : facetsMobileModeBreakpoint;
   }
 
   private registerOnCloseHandler() {
@@ -180,6 +213,20 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
         });
       }, ResponsiveFacetColumn.DEBOUNCE_SCROLL_WAIT)
     );
+  }
+
+  private bindFacetsMobileModeEvents() {
+    const facetsMobileModeComponent = this.facetsMobileModeComponent;
+    if (facetsMobileModeComponent) {
+      this.dropdown.registerOnOpenHandler(
+        () => $$(facetsMobileModeComponent.element).trigger(FacetsMobileModeEvents.popupOpened),
+        facetsMobileModeComponent
+      );
+      this.dropdown.registerOnCloseHandler(
+        () => $$(facetsMobileModeComponent.element).trigger(FacetsMobileModeEvents.popupClosed),
+        facetsMobileModeComponent
+      );
+    }
   }
 
   private restoreFacetPreservePositionValue() {
@@ -211,7 +258,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
 
   private getDropdownHeaderLabel() {
     let dropdownHeaderLabel: string;
-    ComponentsTypes.getAllFacetsInstance(this.coveoRoot.find('.coveo-facet-column')).forEach(facet => {
+    ComponentsTypes.getAllFacetInstancesFromElement(this.coveoRoot.find('.coveo-facet-column')).forEach(facet => {
       const options = facet.options as IResponsiveComponentOptions;
 
       if (!dropdownHeaderLabel && options.dropdownHeaderLabel) {

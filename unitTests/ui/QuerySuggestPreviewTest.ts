@@ -11,7 +11,11 @@ import {
 } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { last } from 'underscore';
-import { IPopulateSearchResultPreviewsEventArgs, ResultPreviewsManagerEvents } from '../../src/events/ResultPreviewsManagerEvents';
+import {
+  IBuildingResultPreviewsQueryEventArgs,
+  IPopulateSearchResultPreviewsEventArgs,
+  ResultPreviewsManagerEvents
+} from '../../src/events/ResultPreviewsManagerEvents';
 import { IQuery } from '../../src/rest/Query';
 import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
 
@@ -84,6 +88,10 @@ export function QuerySuggestPreviewTest() {
       return Promise.resolve(query);
     }
 
+    function getLastQuery() {
+      return (test.cmp.queryController.getEndpoint().search as jasmine.Spy).calls.mostRecent().args[0] as IQuery;
+    }
+
     beforeEach(() => {
       testEnv = new Mock.MockEnvironmentBuilder();
       omniboxAnalytics = this.initOmniboxAnalyticsMock(omniboxAnalytics);
@@ -106,15 +114,25 @@ export function QuerySuggestPreviewTest() {
         context: {
           'the first key': 'the first value',
           'the second key': 'the second value'
-        }
+        },
+        cq: 'some constant query'
       };
       setupQuerySuggestPreview();
       (test.cmp.queryController.getLastQuery as jasmine.Spy).and.returnValue(optionsToTest);
       await triggerPopulateSearchResultPreviewsAndPassTime();
-      const lastSearchQuery = (test.cmp.queryController.getEndpoint().search as jasmine.Spy).calls.mostRecent().args[0] as IQuery;
+      const lastSearchQuery = getLastQuery();
       for (let optionName of Object.keys(optionsToTest)) {
         expect(lastSearchQuery[optionName]).toEqual(optionsToTest[optionName]);
       }
+      done();
+    });
+
+    it('uses the suggestion text in its search', async done => {
+      setupQuerySuggestPreview();
+      const suggestionText = 'Hello, World!';
+      await triggerPopulateSearchResultPreviewsAndPassTime(suggestionText);
+      const lastSearchQuery = (test.cmp.queryController.getEndpoint().search as jasmine.Spy).calls.mostRecent().args[0] as IQuery;
+      expect(lastSearchQuery.q).toEqual(suggestionText);
       done();
     });
 
@@ -143,6 +161,37 @@ export function QuerySuggestPreviewTest() {
       const template = test.cmp['buildDefaultSearchResultPreviewTemplate']();
       // A div tag is used instead of a script tag because Firefox doesn't support appending elements to a script tag.
       expect(template.element.tagName.toLowerCase()).toEqual('div');
+    });
+
+    it('triggers a building query event immediately when populating', async done => {
+      const onBuildingQuery = jasmine.createSpy(ResultPreviewsManagerEvents.buildingResultPreviewsQuery);
+      $$(testEnv.root).on(ResultPreviewsManagerEvents.buildingResultPreviewsQuery, onBuildingQuery);
+      setupQuerySuggestPreview();
+      await triggerPopulateSearchResultPreviewsAndPassTime();
+      expect(onBuildingQuery).toHaveBeenCalledTimes(1);
+      done();
+    });
+
+    it('allows the query to be changed with the building query event', async done => {
+      const testQuery = 'abc';
+      $$(testEnv.root).on(ResultPreviewsManagerEvents.buildingResultPreviewsQuery, (_, data: IBuildingResultPreviewsQueryEventArgs) => {
+        data.query.q = testQuery;
+      });
+      setupQuerySuggestPreview();
+      await triggerPopulateSearchResultPreviewsAndPassTime();
+      expect(getLastQuery().q).toEqual(testQuery);
+      done();
+    });
+
+    it('triggers the building query event with the same query used for search', async done => {
+      let builtQuery: IQuery;
+      $$(testEnv.root).on(ResultPreviewsManagerEvents.buildingResultPreviewsQuery, (_, data: IBuildingResultPreviewsQueryEventArgs) => {
+        builtQuery = data.query;
+      });
+      setupQuerySuggestPreview();
+      await triggerPopulateSearchResultPreviewsAndPassTime();
+      expect(getLastQuery()).toEqual(builtQuery);
+      done();
     });
 
     describe('with accessibility', () => {

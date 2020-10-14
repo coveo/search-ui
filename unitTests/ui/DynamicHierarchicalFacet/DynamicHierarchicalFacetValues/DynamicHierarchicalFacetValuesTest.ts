@@ -124,11 +124,19 @@ export function DynamicHierarchicalFacetValuesTest() {
         it('should have the right selectedPath', () => {
           expect(facet.values.selectedPath).toEqual(facet.values.allFacetValues[0].path);
         });
+
+        it('should clear the path if a query with no selected value is returned', () => {
+          response.values = [];
+          facet.values.createFromResponse(response);
+          expect(facet.values.selectedPath).toEqual([]);
+        });
       });
     });
 
     it('resetValues should empty the values and clear the path', () => {
-      facet.values.createFromResponse(DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet));
+      const response = DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet);
+      facet.values.createFromResponse(response);
+      facet.values.selectPath([response.values[0].value]);
       facet.values.resetValues();
 
       expect(facet.values.allFacetValues.length).toBe(0);
@@ -136,7 +144,9 @@ export function DynamicHierarchicalFacetValuesTest() {
     });
 
     it('clearPath should clear the path', () => {
-      facet.values.createFromResponse(DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet));
+      const response = DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet);
+      facet.values.createFromResponse(response);
+      facet.values.selectPath([response.values[0].value]);
       facet.values.clearPath();
 
       expect(facet.values.allFacetValues.length).not.toBe(0);
@@ -197,6 +207,7 @@ export function DynamicHierarchicalFacetValuesTest() {
         });
 
         it('clicking on the "All Categories" button should call "clear" on the facet header', () => {
+          facet.ensureDom();
           spyOn(facet.header.options, 'clear');
           $$(getAllCategoriesElement()).trigger('click');
           expect(facet.header.options.clear).toHaveBeenCalled();
@@ -207,7 +218,7 @@ export function DynamicHierarchicalFacetValuesTest() {
         });
 
         it('the "All Categories" button should be defined by the "clearLabel" facet option', () => {
-          expect($$(getAllCategoriesElement()).text()).toBe(facet.options.clearLabel);
+          expect(getAllCategoriesElement().childNodes[1].nodeValue).toBe(facet.options.clearLabel);
         });
       });
 

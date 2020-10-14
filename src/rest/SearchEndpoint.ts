@@ -31,17 +31,16 @@ import { QueryUtils } from '../utils/QueryUtils';
 import { QueryError } from '../rest/QueryError';
 import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
-import { history } from 'coveo.analytics';
+import { buildHistoryStore } from '../utils/HistoryStore';
 import { Cookie } from '../utils/CookieUtils';
 import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
 import { AccessToken } from './AccessToken';
-import { BackOffRequest } from './BackOffRequest';
-import { IBackOffRequest } from 'exponential-backoff';
+import { BackOffRequest, IBackOffRequest } from './BackOffRequest';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
-import { IPlan } from './Plan';
+import { IPlanResponse, ExecutionPlan } from './Plan';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -59,9 +58,13 @@ export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
 /**
  * The `SearchEndpoint` class allows the framework to perform HTTP requests against the Search API (e.g., searching, getting query suggestions, getting the HTML preview of an item, etc.).
  *
- * @externaldocumentation https://docs.coveo.com/331/
+ * **Note:**
  *
- * **Note:** When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will _not_ trigger any [query events](https://docs.coveo.com/417/#query-events). In some cases, this may be what you want. However, if you _do_ want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the [`queryController`]{@link QueryController} instance instead.
+ * When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will *not* trigger any [query events](https://docs.coveo.com/en/417/#query-events).
+ *
+ * In some cases, this may be what you want. However, if you *do* want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the [`queryController`]{@link QueryController} instance instead.
+ *
+ * @externaldocs [JavaScript Search Framework Endpoint](https://docs.coveo.com/en/331/)
  */
 export class SearchEndpoint implements ISearchEndpoint {
   /**
@@ -196,6 +199,10 @@ export class SearchEndpoint implements ISearchEndpoint {
     );
 
     SearchEndpoint.endpoints['default'] = new SearchEndpoint(SearchEndpoint.removeUndefinedConfigOption(merged));
+  }
+
+  static get defaultEndpoint(): SearchEndpoint {
+    return this.endpoints['default'] || _.find(SearchEndpoint.endpoints, endpoint => endpoint != null);
   }
 
   static removeUndefinedConfigOption(config: ISearchEndpointOptions) {
@@ -390,29 +397,50 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Gets the plan of execution of a search, without performing it.
+   * Performs a search on the index and returns a Promise of `ArrayBuffer`.
    *
    * @param query The query to execute. Typically, the query object is built using a
    * [`QueryBuilder`]{@link QueryBuilder}.
    * @param callOptions An additional set of options to use for this call.
    * @param callParams The options injected by the applied decorators.
-   * @returns {Promise<IPlan>} A Promise of plan results.
+   * @returns {Promise<ArrayBuffer>} A Promise of query results.
+   */
+  @path('/')
+  @method('POST')
+  @responseType('arraybuffer')
+  public async fetchBinary(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
+    const call = this.buildCompleteCall(query, callOptions, callParams);
+    this.logger.info('Performing REST query', query);
+
+    return this.performOneCall<ArrayBuffer>(call.params, call.options);
+  }
+
+  /**
+   * Gets the plan of execution of a search request, without performing it.
+   *
+   * @param query The query to execute. Typically, the query object is built using a
+   * [`QueryBuilder`]{@link QueryBuilder}.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<ExecutionPlan>} A Promise of plan results.
    */
   @path('/plan')
   @method('POST')
   @requestDataType('application/json')
   @responseType('json')
-  public plan(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<IPlan> {
+  public async plan(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters): Promise<ExecutionPlan> {
     const call = this.buildCompleteCall(query, callOptions, callParams);
     this.logger.info('Performing REST query PLAN', query);
 
-    return this.performOneCall<IPlan>(call.params, call.options).then(results => {
-      this.logger.info('REST query successful', results, query);
-      return results;
-    });
+    const planResponse = await this.performOneCall<IPlanResponse>(call.params, call.options);
+    this.logger.info('REST query successful', planResponse, query);
+    return new ExecutionPlan(planResponse);
   }
 
   /**
+   * @deprecated getExportToExcelLink does not factor in all query parameters (e.g. dynamic facets) due to GET request url length limitations.
+   * Please use `fetchBinary` instead to ensure all query parameters are used.
+   *
    * Gets a link / URI to download a query result set to the XLSX format.
    *
    * **Note:**
@@ -1177,11 +1205,10 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   private async backOffThrottledRequest<T>(request: () => Promise<T>) {
     try {
-      const backOffRequest: IBackOffRequest<T> = {
-        fn: () => request(),
-        retry: (e, attempt) => this.retryIf429Error(e, attempt)
-      };
-      return await BackOffRequest.enqueue<T>(backOffRequest);
+      const options = { retry: (e, attempt) => this.retryIf429Error(e, attempt) };
+      const backoffRequest: IBackOffRequest<T> = { fn: request, options };
+
+      return await BackOffRequest.enqueue<T>(backoffRequest);
     } catch (e) {
       throw this.handleErrorResponse(e);
     }
@@ -1249,10 +1276,10 @@ function defaultDecoratorEndpointCallParameters() {
 }
 
 function path(path: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       const url = this.buildBaseUri(path);
       if (args[nbParams - 1]) {
         args[nbParams - 1].url = url;
@@ -1268,10 +1295,10 @@ function path(path: string) {
 }
 
 function alertsPath(path: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       const url = this.buildSearchAlertsUri(path);
       if (args[nbParams - 1]) {
         args[nbParams - 1].url = url;
@@ -1287,10 +1314,10 @@ function alertsPath(path: string) {
 }
 
 function requestDataType(type: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].requestDataType = type;
       } else {
@@ -1304,10 +1331,10 @@ function requestDataType(type: string) {
 }
 
 function method(met: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].method = met;
       } else {
@@ -1322,10 +1349,10 @@ function method(met: string) {
 }
 
 function responseType(resp: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].responseType = resp;
       } else {
@@ -1340,7 +1367,7 @@ function responseType(resp: string) {
 }
 
 function accessTokenInUrl(tokenKey: string = 'access_token') {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     const buildAccessToken = (tokenKey: string, endpointInstance: SearchEndpoint): string[] => {
       let queryString: string[] = [];
@@ -1352,7 +1379,7 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
       return queryString;
     };
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       const queryString = buildAccessToken(tokenKey, this);
       if (args[nbParams - 1]) {
         args[nbParams - 1].queryString = args[nbParams - 1].queryString.concat(queryString);
@@ -1367,11 +1394,11 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
   };
 }
 
-function includeActionsHistory(historyStore: CoveoAnalytics.HistoryStore = new history.HistoryStore()) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+function includeActionsHistory(historyStore = buildHistoryStore()) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let historyFromStore = historyStore.getHistory();
       if (historyFromStore == null) {
         historyFromStore = [];
@@ -1393,9 +1420,9 @@ function includeActionsHistory(historyStore: CoveoAnalytics.HistoryStore = new h
 }
 
 function includeReferrer() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let referrer = document.referrer;
       if (referrer == null) {
         referrer = '';
@@ -1417,9 +1444,9 @@ function includeReferrer() {
 }
 
 function includeVisitorId() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let visitorId = Cookie.get('visitorId');
       if (visitorId == null) {
         visitorId = '';
@@ -1441,9 +1468,9 @@ function includeVisitorId() {
 }
 
 function includeIsGuestUser() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let isGuestUser = this.options.isGuestUser;
 
       if (args[nbParams - 1]) {

@@ -12,6 +12,8 @@ export interface ICommerceQueryOptions {
 
 /**
  * This component exposes options to handle commerce-related queries.
+ *
+ * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
  */
 export class CommerceQuery extends Component {
   static ID = 'CommerceQuery';

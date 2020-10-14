@@ -2,12 +2,13 @@ import * as Mock from '../MockEnvironment';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { ValueElementRenderer } from '../../src/ui/Facet/ValueElementRenderer';
 import { IFacetOptions } from '../../src/ui/Facet/Facet';
-import { FacetValue } from '../../src/ui/Facet/FacetValues';
+import { FacetValue } from '../../src/ui/Facet/FacetValue';
 import { FakeResults } from '../Fake';
 import { $$ } from '../../src/utils/Dom';
+import { findLastIndex } from 'underscore';
 
 export function ValueElementRendererTest() {
-  describe('ValueElementRenderer', function() {
+  describe('ValueElementRenderer', function () {
     var facet: Facet;
     var valueRenderer: ValueElementRenderer;
 
@@ -17,7 +18,7 @@ export function ValueElementRendererTest() {
       }).cmp;
     });
 
-    afterEach(function() {
+    afterEach(function () {
       facet = null;
       valueRenderer = null;
     });
@@ -26,6 +27,11 @@ export function ValueElementRendererTest() {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1234)));
       expect(valueRenderer.build().listItem).toBeDefined();
       expect(valueRenderer.build().listItem.getAttribute('data-value')).toBe('foo');
+    });
+
+    it('should give the label the "group" role to avoid overriding child labels', () => {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1234)));
+      expect(valueRenderer.build().label.getAttribute('role')).toEqual('group');
     });
 
     it('should add a hover class for the list element', () => {
@@ -62,6 +68,12 @@ export function ValueElementRendererTest() {
       expect(valueRenderer.checkbox.getAttribute('aria-label')).toBeTruthy();
     });
 
+    it('the list item has an aria-label', () => {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
+      valueRenderer.build();
+      expect(valueRenderer.listItem.getAttribute('aria-label')).toBeTruthy();
+    });
+
     it('should put the tabindex attribute to 0 on a stylish checkbox', () => {
       valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123)));
       expect(valueRenderer.build().stylishCheckbox.getAttribute('tabindex')).toBe('0');
@@ -72,34 +84,73 @@ export function ValueElementRendererTest() {
       expect(valueRenderer.build().stylishCheckbox).toBeDefined();
     });
 
-    it(`when the facetValue is not selected,
-    the aria-label attribute contains the word 'Select'`, () => {
-      const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
-      facetValue.selected = false;
-      valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+    describe('when the facetValue is not selected', () => {
+      beforeEach(() => {
+        const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
+        facetValue.selected = false;
+        valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+      });
 
-      const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
-      expect(ariaLabel).toContain('Select');
+      it("the aria-label attribute starts with the word 'Inclusion'", () => {
+        const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
+        expect(ariaLabel.indexOf('Inclusion')).toEqual(0);
+      });
+
+      it('the aria-pressed attribute of the checkbox is false', () => {
+        const ariaPressed = valueRenderer.accessibleElement.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('false');
+      });
+
+      it('the aria-pressed attribute of the exclude button is false', () => {
+        const ariaPressed = valueRenderer.excludeIcon.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('false');
+      });
     });
 
-    it(`when the facetValue is selected,
-    the aria-label attribute contains the word 'Unselect'`, () => {
-      const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
-      facetValue.selected = true;
-      valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+    describe('when the facetValue is selected', () => {
+      beforeEach(() => {
+        const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
+        facetValue.selected = true;
+        valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+      });
 
-      const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
-      expect(ariaLabel).toContain('Unselect');
+      it("the aria-label attribute starts with the word 'Inclusion'", () => {
+        const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
+        expect(ariaLabel.indexOf('Inclusion')).toEqual(0);
+      });
+
+      it('the aria-pressed attribute of the checkbox is true', () => {
+        const ariaPressed = valueRenderer.accessibleElement.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('true');
+      });
+
+      it('the aria-pressed attribute of the exclude button is false', () => {
+        const ariaPressed = valueRenderer.excludeIcon.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('false');
+      });
     });
 
-    it(`when the facetValue is excluded,
-    the aria-label attribute contains the word 'Unexclude'`, () => {
-      const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
-      facetValue.excluded = true;
-      valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+    describe('when the facetValue is excluded', () => {
+      beforeEach(() => {
+        const facetValue = FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 123));
+        facetValue.excluded = true;
+        valueRenderer = new ValueElementRenderer(facet, facetValue).build();
+      });
 
-      const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
-      expect(ariaLabel).toContain('Unexclude');
+      it("the aria-label attribute starts with the word 'Inclusion'", () => {
+        const ariaLabel = valueRenderer.accessibleElement.getAttribute('aria-label');
+        expect(ariaLabel.indexOf('Inclusion')).toEqual(0);
+      });
+
+      it('the aria-pressed attribute of the checkbox is mixed', () => {
+        const ariaPressed = valueRenderer.accessibleElement.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('mixed');
+      });
+
+      it('the aria-pressed attribute of the exclude button is true', () => {
+        const ariaPressed = valueRenderer.excludeIcon.getAttribute('aria-pressed');
+        expect(ariaPressed).toEqual('true');
+      });
     });
 
     it('should build a caption', () => {
@@ -119,6 +170,21 @@ export function ValueElementRendererTest() {
       // Should format big number
       valueRenderer.facetValue.occurrences = 31416;
       expect($$(valueRenderer.build().valueCount).text()).toBe('31,416');
+    });
+
+    it('should build either checkbox, the caption then the count in that order', () => {
+      valueRenderer = new ValueElementRenderer(facet, FacetValue.createFromFieldValue(FakeResults.createFakeFieldValue('foo', 1)));
+      const buildResult = valueRenderer.build();
+      const wrapper = buildResult['facetValueLabelWrapper'];
+      const wrapperChildren = $$(wrapper).children();
+      const lastCheckboxIndex = findLastIndex(
+        wrapperChildren,
+        child => [buildResult.stylishCheckbox, buildResult.checkbox].indexOf(child) !== -1
+      );
+      expect(wrapperChildren.slice(lastCheckboxIndex + 1, lastCheckboxIndex + 3)).toEqual([
+        buildResult.valueCaption,
+        buildResult.valueCount
+      ]);
     });
 
     it('should build an exclude icon', () => {

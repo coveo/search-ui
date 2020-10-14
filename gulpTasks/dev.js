@@ -5,10 +5,11 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const buildUtilities = require('../gulpTasks/buildUtilities.js');
 const _ = require('underscore');
-const path = require('path');
 const fs = require('fs');
 const glob = require('glob');
 const args = require('yargs').argv;
+const { setup } = require('./setup.js');
+const { setupTests } = require('./test.js');
 
 const port = args.port || 8080;
 const unitTestsPort = args.port || 8081;
@@ -50,7 +51,9 @@ compiler.plugin('done', () => {
   watchHtmlPagesOnce();
 });
 
-gulp.task('dev', ['setup'], done => {
+const dev = gulp.series(setup, startDevServer);
+
+function startDevServer(cb) {
   server = new WebpackDevServer(compiler, {
     compress: true,
     contentBase: 'bin/',
@@ -63,25 +66,31 @@ gulp.task('dev', ['setup'], done => {
     }
   });
   server.listen(port, 'localhost', () => {});
-  done();
-});
+  cb();
+}
 
-gulp.task('devTest', ['setupTests'], function(done) {
+const devTest = gulp.series(setupTests, startTestServer);
+
+function startTestServer(cb) {
   var serverTests = new WebpackDevServer(compilerUnitTest, {
     contentBase: 'bin/',
     publicPath: '/tests/',
     compress: true
   });
   serverTests.listen(unitTestsPort, 'localhost', () => {});
-  done();
-});
+  cb();
+}
 
-gulp.task('devAccessibilityTest', ['setupTests'], done => {
+const devAccessibilityTest = gulp.series(setupTests, startAccessibilityTestServer);
+
+function startAccessibilityTestServer(cb) {
   var serverTests = new WebpackDevServer(compilerAccessibilityTest, {
     contentBase: 'bin/',
     publicPath: '/tests/',
     compress: true
   });
   serverTests.listen(accessibilityTestsPort, 'localhost', () => {});
-  done();
-});
+  cb();
+}
+
+module.exports = { dev, devTest, devAccessibilityTest };

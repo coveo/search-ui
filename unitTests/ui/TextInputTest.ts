@@ -64,6 +64,16 @@ export function TextInputTest() {
       expect(labelHTML).toBeNull();
     });
 
+    it('should contain an icon if specified', () => {
+      initializeComponentWithOptions(undefined, { icon: 'arrowDown' });
+      expect(getElement().querySelector('svg')).not.toBeNull();
+    });
+
+    it('should not contain an icon if not specified', () => {
+      initializeComponentWithOptions();
+      expect(getElement().querySelector('svg')).toBeNull();
+    });
+
     it(`when name is specified and the options "usePlaceholder" is true
     should contain a placeholder instead of a label`, () => {
       const placeholder = 'A Placeholder';
@@ -183,6 +193,10 @@ export function TextInputTest() {
         simulateKeyUp();
         expect(spy).toHaveBeenCalledTimes(1);
       });
+    });
+
+    it(`should have the "autocomplete" attribute set to "off"`, () => {
+      expect(getInput().getAttribute('autocomplete')).toBe('off');
     });
 
     it(`when the "ariaLabel" option is not defined (default)

@@ -1,7 +1,6 @@
 import { contains, each, escape, extend, filter, find, isArray, isObject, isString, keys, map, omit } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
-import { QueryStateModel } from '../../models/QueryStateModel';
 import { IQueryResult } from '../../rest/QueryResult';
 import { l } from '../../strings/Strings';
 import { AccessibleButton } from '../../utils/AccessibleButton';
@@ -15,11 +14,11 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { IComponentOptionsObjectOptionArgs, IFieldConditionOption, IFieldOption } from '../Base/IComponentOptions';
 import { Initialization } from '../Base/Initialization';
-import { DynamicFacet } from '../DynamicFacet/DynamicFacet';
-import { Facet } from '../Facet/Facet';
 import { FacetUtils } from '../Facet/FacetUtils';
 import { TemplateFieldsEvaluator } from '../Templates/TemplateFieldsEvaluator';
 import { TemplateHelpers } from '../Templates/TemplateHelpers';
+import { IFieldValueCompatibleFacet, isFacetFieldValueCompatible } from './IFieldValueCompatibleFacet';
+import { ComponentsTypes } from '../../utils/ComponentsTypes';
 
 export interface IFieldValueOptions {
   field?: IFieldOption;
@@ -148,6 +147,8 @@ export class FieldValue extends Component {
         target: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
         class: ComponentOptions.buildStringOption(showOnlyWithHelper(['anchor'])),
 
+        format: ComponentOptions.buildStringOption(showOnlyWithHelper(['number'])),
+
         decimals: ComponentOptions.buildNumberOption(showOnlyWithHelper(['currency'], { min: 0 })),
         symbol: ComponentOptions.buildStringOption(showOnlyWithHelper(['currency'])),
 
@@ -196,6 +197,8 @@ export class FieldValue extends Component {
      * Specifies a caption to display before the value.
      *
      * Default value is `undefined`.
+     *
+     * @availablesince [January 2017 Release (v1.1865.9)](https://docs.coveo.com/en/396/#january-2017-release-v118659)
      */
     textCaption: ComponentOptions.buildLocalizedStringOption(),
 
@@ -303,7 +306,7 @@ export class FieldValue extends Component {
    */
   public renderOneValue(value: string): HTMLElement {
     const element = $$('span').el;
-    let toRender = FacetUtils.tryToGetTranslatedCaption(this.options.field as string, value);
+    let toRender = this.getCaption(value);
 
     if (this.options.helper) {
       // Try to resolve and execute version 2 of each helper function if available
@@ -405,73 +408,45 @@ export class FieldValue extends Component {
 
   private bindEventOnValue(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
     this.bindFacets(element, originalFacetValue, renderedFacetValue);
-    this.bindDynamicFacets(element, originalFacetValue, renderedFacetValue);
+  }
+
+  private getCaption(value: string) {
+    for (let facet of this.getFacets()) {
+      const caption = facet.getCaptionForStringValue(value);
+      if (caption) {
+        return caption;
+      }
+    }
+    return FacetUtils.tryToGetTranslatedCaption(this.options.field as string, value);
+  }
+
+  private getFacets() {
+    const facets = ComponentsTypes.getAllFacetsFromSearchInterface(this.searchInterface)
+      .filter(isFacetFieldValueCompatible)
+      .filter(facet => !facet.disabled);
+
+    const facetsWithMatchingId = facets.filter(facet => facet.options.id === this.options.facet);
+    if (facetsWithMatchingId.length) {
+      return facetsWithMatchingId;
+    }
+    return facets.filter(facet => facet.options.field === this.options.field);
   }
 
   private bindFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
-    const facetAttributeName = QueryStateModel.getFacetId(this.options.facet);
-    const facets = filter<Facet>(this.componentStateModel.get(facetAttributeName), (possibleFacetComponent: Component) => {
-      // Here, we need to check if a potential facet component (as returned by the component state model) is a "standard" facet.
-      // It's also possible that the FacetRange and FacetSlider constructor are not available (lazy loading mode)
-      // For that reason we also need to check that the constructor event exist before calling the instanceof operator or an exception would explode (cannot use instanceof "undefined")
-      let componentIsAStandardFacet = true;
-      const isDynamicFacet = possibleFacetComponent.type.indexOf('Dynamic') !== -1;
-      const facetRangeConstructorExists = Component.getComponentRef('FacetRange');
-      const facetSliderConstructorExists = Component.getComponentRef('FacetSlider');
+    const facets = this.getFacets();
 
-      if (possibleFacetComponent.disabled || isDynamicFacet) {
-        return false;
-      }
-
-      if (componentIsAStandardFacet && facetRangeConstructorExists) {
-        componentIsAStandardFacet = !(possibleFacetComponent instanceof facetRangeConstructorExists);
-      }
-
-      if (componentIsAStandardFacet && facetSliderConstructorExists) {
-        componentIsAStandardFacet = !(possibleFacetComponent instanceof facetSliderConstructorExists);
-      }
-
-      return componentIsAStandardFacet;
-    });
-
-    if (facets.length) {
-      const isValueSelected = !!find<Facet>(facets, facet => {
-        const facetValue = facet.values.get(originalFacetValue);
-        return facetValue && facetValue.selected;
-      });
-
-      const selectAction = () => this.handleFacetSelection(isValueSelected, facets, originalFacetValue);
-      this.buildClickableElement(element, !!isValueSelected, renderedFacetValue, selectAction);
+    if (!facets.length) {
+      return;
     }
-  }
 
-  private getDynamicFacets() {
-    const dynamicFacetAttributeName = QueryStateModel.getFacetId(this.options.facet);
-    return filter<DynamicFacet>(
-      this.componentStateModel.get(dynamicFacetAttributeName),
-      (component: Component) => component.type === DynamicFacet.ID && !component.disabled
-    );
-  }
-
-  private bindDynamicFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {
-    const dynamicFacets = this.getDynamicFacets();
-
-    if (dynamicFacets.length) {
-      const isValueSelected = !!find<DynamicFacet>(dynamicFacets, dynamicFacet => dynamicFacet.values.hasSelectedValue(originalFacetValue));
-
-      const selectAction = () => this.handleDynamicFacetSelection(isValueSelected, dynamicFacets, originalFacetValue);
-      this.buildClickableElement(element, isValueSelected, renderedFacetValue, selectAction);
-    }
+    const isValueSelected = !!find(facets, facet => facet.hasSelectedValue(originalFacetValue));
+    const selectAction = () => this.handleFacetSelection(isValueSelected, facets, originalFacetValue);
+    this.buildClickableElement(element, isValueSelected, renderedFacetValue, selectAction);
   }
 
   private buildClickableElement(element: HTMLElement, isSelected: boolean, value: string, selectAction: () => void) {
     const label = isSelected ? l('RemoveFilterOn', value) : l('FilterOn', value);
-    new AccessibleButton()
-      .withTitle(label)
-      .withLabel(label)
-      .withElement(element)
-      .withSelectAction(selectAction)
-      .build();
+    new AccessibleButton().withTitle(label).withElement(element).withSelectAction(selectAction).build();
 
     if (isSelected) {
       $$(element).addClass('coveo-selected');
@@ -479,15 +454,7 @@ export class FieldValue extends Component {
     $$(element).addClass('coveo-clickable');
   }
 
-  private handleFacetSelection(isValueSelected: boolean, facets: Facet[], value: string) {
-    facets.forEach(facet => {
-      isValueSelected ? facet.deselectValue(value) : facet.selectValue(value);
-    });
-
-    this.executeQuery(value);
-  }
-
-  private handleDynamicFacetSelection(isValueSelected: boolean, facets: DynamicFacet[], value: string) {
+  private handleFacetSelection(isValueSelected: boolean, facets: IFieldValueCompatibleFacet[], value: string) {
     facets.forEach(facet => {
       isValueSelected ? facet.deselectValue(value) : facet.selectValue(value);
     });
