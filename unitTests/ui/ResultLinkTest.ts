@@ -10,7 +10,7 @@ import { FakeResults } from '../Fake';
 import { Initialization } from '../../src/Core';
 
 export function ResultLinkTest() {
-  describe('ResultLink', function() {
+  describe('ResultLink', function () {
     let test: Mock.IBasicComponentSetup<ResultLink>;
     let fakeResult: IQueryResult;
 
@@ -37,7 +37,7 @@ export function ResultLinkTest() {
       spyOn(window, 'open');
     });
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
       fakeResult = null;
     });
@@ -83,10 +83,13 @@ export function ResultLinkTest() {
       );
     });
 
-    it('should set the title attribute to the displayed title', () => {
-      expect(test.cmp.element.title).toEqual(
-        HighlightUtils.highlightString(fakeResult.title, fakeResult.titleHighlights, null, 'coveo-highlight')
-      );
+    it('should set the title attribute to the displayed title as text', () => {
+      const expectedTitleAsHTML = HighlightUtils.highlightString(fakeResult.title, fakeResult.titleHighlights, null, 'coveo-highlight');
+      const container = $$('div');
+      container.setHtml(expectedTitleAsHTML);
+      const expectedTitleAsString = container.text();
+
+      expect(test.cmp.element.title).toEqual(expectedTitleAsString);
     });
 
     it('should contain the clickUri if the result has no title', () => {
