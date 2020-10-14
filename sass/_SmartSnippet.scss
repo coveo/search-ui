@@ -1,0 +1,239 @@
+@import 'Variables';
+
+@mixin pointer($size, $offsetY) {
+  position: relative;
+  &::before {
+    content: ' ';
+    display: inline-block;
+    position: absolute;
+    top: $size / 2 + $offsetY;
+    @include triangle($size, $color-blue-background, up);
+  }
+}
+
+.CoveoSmartSnippet {
+  margin-top: 30px;
+
+  display: none;
+  &.coveo-smart-snippet-has-answer {
+    display: block;
+  }
+
+  @at-root .coveo-smart-snippet-question {
+    font-size: 18px;
+    border-bottom: $default-medium-border;
+    padding-bottom: 10px;
+  }
+
+  @at-root .coveo-smart-snippet-answer {
+    display: flex;
+    flex-direction: column;
+
+    @include defaultMediumRoundedBorder();
+    padding: 16px;
+
+    @at-root .coveo-smart-snippet-content {
+      transition: height ease-in-out 0.5s;
+      overflow: hidden;
+
+      @at-root .coveo-height-limiter-container-active {
+        position: relative;
+
+        &::after {
+          content: '';
+          @include linear-gradient(top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+          pointer-events: none;
+          display: inline-block;
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 64px;
+          bottom: 0;
+          z-index: 1;
+
+          opacity: 1;
+          transition: opacity ease-in-out 0.5s;
+        }
+
+        &.coveo-height-limiter-container-expanded::after {
+          opacity: 0;
+        }
+      }
+    }
+
+    .coveo-height-limiter-button {
+      display: none;
+      justify-content: center;
+      align-items: center;
+
+      &.coveo-height-limiter-button-active {
+        display: flex;
+      }
+
+      @at-root & {
+        border: none;
+        align-self: center;
+        padding: 8px;
+        background: none;
+        color: $coveo-blue;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+        }
+
+        &-label {
+          font-size: 16px;
+          margin-right: 16px;
+        }
+
+        &-icon {
+          display: inline-block;
+          width: 24px;
+          height: 14px;
+        }
+      }
+    }
+
+    @at-root .coveo-smart-snippet-source {
+      margin-top: 24px;
+
+      &-url {
+        display: block;
+        color: $color-strong-contrast-grey;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+        }
+      }
+
+      &-title {
+        margin-top: 8px;
+        display: block;
+        font-size: 22px;
+        color: $coveo-blue;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.coveo-user-feedback-banner {
+  @at-root .coveo-user-feedback-banner-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 6px 8px 8px;
+    overflow: hidden;
+    font-size: 12px;
+
+    @at-root .coveo-user-feedback-banner-buttons {
+      display: flex;
+      overflow: visible;
+
+      button {
+        border: none;
+        background: none;
+        padding: 0;
+        margin-left: 18px;
+        display: inline-flex;
+        align-items: center;
+        fill: $color-dark-grey;
+        color: $color-dark-grey;
+        overflow: visible;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+        }
+
+        &.coveo-user-feedback-banner-button-active {
+          cursor: default;
+
+          &:hover,
+          &:focus {
+            text-decoration: none;
+          }
+        }
+
+        $icon-size: 14px;
+        @at-root .coveo-user-feedback-banner-thanks-icon {
+          display: inline-block;
+          width: $icon-size;
+          height: $icon-size;
+          margin-right: 3px;
+        }
+
+        @at-root .coveo-user-feedback-banner-button-active {
+          .coveo-user-feedback-banner-thanks-icon {
+            overflow: visible;
+            @include pointer($icon-size, 3px);
+          }
+
+          &.coveo-user-feedback-banner-yes-button {
+            color: $color-green;
+            fill: $color-green;
+          }
+
+          &.coveo-user-feedback-banner-no-button {
+            color: $color-red;
+            fill: $color-red;
+          }
+        }
+      }
+    }
+  }
+
+  @at-root .coveo-user-feedback-banner-thanks {
+    overflow: hidden;
+    box-sizing: border-box;
+    height: 0;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: $color-blue-background;
+    border-radius: 2px;
+    color: white;
+    font-size: 14px;
+    font-weight: lighter;
+
+    &-active {
+      height: auto;
+    }
+
+    > * {
+      margin: 8px 16px 8px 0;
+    }
+
+    @at-root button.coveo-user-feedback-banner-explain-why {
+      border: none;
+      background: none;
+      padding: 0;
+      color: white;
+      font-weight: normal;
+      font-size: 12px;
+      cursor: pointer;
+
+      text-decoration: underline;
+      &:hover,
+      &:focus {
+        text-decoration: none;
+      }
+
+      display: none;
+      &-active {
+        display: inline;
+      }
+    }
+  }
+}
