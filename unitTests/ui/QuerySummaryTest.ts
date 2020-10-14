@@ -307,16 +307,16 @@ export function QuerySummaryTest() {
       });
 
       it(`when the query searched is an empty string,
-          it should replace the query tag with the query searched`, () => {
+          it should put the string NoResult instead`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
-          noResultsFoundMessage: `${queryTag}`
+          noResultsFoundMessage: `customMessage ${queryTag}`
         });
 
         test.env.queryStateModel.get = () => '';
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        expect(getCustomMessageElement().textContent).toBe('');
+        expect(getCustomMessageElement().textContent).toBe('No results');
       });
 
       it(`when the query searched is the same as the queryTag,
@@ -405,17 +405,17 @@ export function QuerySummaryTest() {
         test.env.queryStateModel.get = () => 'querySearched';
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        const parsedCustomNoResultsPage: string = '<div><a href="&lt;span class=" coveo-highlight"="">querySearched"&gt;</a></div>';
+        const parsedCustomNoResultsPage: string = '<div><a href="<span class=" coveo-highlight"="">querySearched"&gt;</a></div>';
         expect(getcustomNoResultsPageElement().innerHTML).toBe(parsedCustomNoResultsPage);
       });
 
       it(`when the query searched is an empty string,
-          it should replace the query tag with the query searched`, () => {
+        it should put the string NoResult instead`, () => {
         test.env.queryStateModel.get = () => '';
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        expect(getcustomNoResultsPageElement().textContent).toBe('');
+        expect(getcustomNoResultsPageElement().textContent).toBe('No results');
       });
 
       it(`when the query searched is the same as the queryTag,

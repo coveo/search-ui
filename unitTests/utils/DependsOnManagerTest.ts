@@ -50,7 +50,7 @@ export function DependsOnManagerTest() {
     }
 
     function assignCustomCondition() {
-      dependentMock.facet.ref.options.dependsOnCondition = <IDependentFacetCondition>function(facet) {
+      dependentMock.facet.ref.options.dependsOnCondition = <IDependentFacetCondition>function (facet) {
         const currentValues = facet.queryStateModel.get(QueryStateModel.getFacetId(facet.options.id));
         return currentValues && currentValues.indexOf('the right value') !== -1;
       };
@@ -77,23 +77,41 @@ export function DependsOnManagerTest() {
       expect($$(parentMock.facet.ref.element).isVisible()).toBe(true);
     });
 
-    it(`when a parent facet has selected value(s) (default condition fulfilled)
-      when triggering "building query"
-      should enable the dependent facet`, () => {
-      queryStateModel.registerNewAttribute(parentStateAttribute(), ['a value']);
-      spyOn(dependentMock.facet.ref, 'enable');
+    describe(`when a parent facet has selected value(s) (default condition fulfilled),
+    when triggering "building query"`, () => {
+      beforeEach(() => {
+        queryStateModel.registerNewAttribute(parentStateAttribute(), ['a value']);
+        spyOn(dependentMock.facet.ref, 'enable');
 
-      $$(root).trigger(QueryEvents.buildingQuery);
-      expect(dependentMock.facet.ref.enable).toHaveBeenCalledTimes(1);
+        $$(root).trigger(QueryEvents.buildingQuery);
+      });
+
+      it('should enable the dependent facet', () => {
+        expect(dependentMock.facet.ref.enable).toHaveBeenCalledTimes(1);
+      });
+
+      it('shows the facet', () => {
+        const facet = $$(dependentMock.facet.ref.element);
+        expect(facet.hasClass('coveo-hidden')).toBe(false);
+      });
     });
 
-    it(`when a parent facet has no selected value (default condition not fulfilled)
-      when triggering "building query"
-      should disable the dependent facet`, () => {
-      spyOn(dependentMock.facet.ref, 'disable');
+    describe(`when a parent facet has no selected value (default condition not fulfilled),
+    when triggering "building query"`, () => {
+      it('should disable the dependent facet', () => {
+        spyOn(dependentMock.facet.ref, 'disable');
 
-      $$(root).trigger(QueryEvents.buildingQuery);
-      expect(dependentMock.facet.ref.disable).toHaveBeenCalledTimes(1);
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(dependentMock.facet.ref.disable).toHaveBeenCalledTimes(1);
+      });
+
+      it('hides the facet', () => {
+        const facet = $$(dependentMock.facet.ref.element);
+        facet.removeClass('coveo-hidden');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(facet.hasClass('coveo-hidden')).toBe(true);
+      });
     });
 
     it(`when a parent facet fulfills the custom condition

@@ -1,6 +1,5 @@
 import { $$, Dom } from '../../../utils/Dom';
 import { SVGIcons } from '../../../utils/SVGIcons';
-import { SVGDom } from '../../../utils/SVGDom';
 import { IDynamicHierarchicalFacetValue, IDynamicHierarchicalFacet } from '../IDynamicHierarchicalFacet';
 import { Utils } from '../../../utils/Utils';
 
@@ -39,21 +38,30 @@ export class DynamicHierarchicalFacetValueRenderer {
     this.button.toggleClass('coveo-with-space', this.shouldHaveMargin);
     this.button.toggleClass('coveo-show-when-collapsed', this.shouldShowWhenCollapsed);
     this.facetValue.isSelected && this.button.setAttribute('disabled', 'true');
-    this.shouldHaveArrow && this.prependArrow();
+    this.shouldHaveBackArrow && this.prependBackArrow();
+    this.shouldHaveForwardArrow && this.appendForwardArrow();
   }
 
-  private prependArrow() {
-    const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow' }, SVGIcons.icons.arrowDown);
-    SVGDom.addClassToSVGInContainer(arrowIcon.el, 'coveo-dynamic-hierarchical-facet-value-arrow-svg');
+  private prependBackArrow() {
+    const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow-left' }, SVGIcons.icons.arrowDown);
     this.button.prepend(arrowIcon.el);
+  }
+
+  private appendForwardArrow() {
+    const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow-right' }, SVGIcons.icons.arrowDown);
+    this.button.append(arrowIcon.el);
   }
 
   private get shouldHaveMargin() {
     return !this.facetValue.isSelected && this.facetValue.path.length > 1 && !this.facetValue.children.length;
   }
 
-  private get shouldHaveArrow() {
+  private get shouldHaveBackArrow() {
     return this.facet.values.hasSelectedValue && !this.facetValue.isSelected && !!this.facetValue.children.length;
+  }
+
+  private get shouldHaveForwardArrow() {
+    return !this.facetValue.isLeafValue && !this.facetValue.isSelected && !this.facetValue.children.length;
   }
 
   private get shouldShowWhenCollapsed() {

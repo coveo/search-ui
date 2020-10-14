@@ -472,11 +472,11 @@ export class ResultLink extends Component {
   );
 
   private filterProtocol(uri: string) {
-    if (/^javascript:/i.test(uri)) {
-      return '';
+    if (/^(https?|ftp|file|mailto|tel):/i.test(uri)) {
+      return uri;
     }
 
-    return uri;
+    return '';
   }
 
   private getResultUri(): string {
@@ -492,7 +492,7 @@ export class ResultLink extends Component {
       return this.filterProtocol(Utils.getFieldValue(this.result, <string>this.options.field));
     }
 
-    return this.filterProtocol(this.escapedClickUri);
+    return this.filterProtocol(this.result.clickUri);
   }
 
   private elementIsAnAnchor() {

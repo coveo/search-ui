@@ -124,6 +124,8 @@ export class CardActionBar extends Component {
   private bindEvents() {
     $$(this.parentResult).on('click', () => this.show());
     $$(this.parentResult).on('mouseleave', () => this.hide());
+    $$(this.element).on('focusin', () => this.show());
+    $$(this.element).on('focusout', () => this.hide());
     if (this.options.openOnMouseOver) {
       $$(this.arrowContainer).on('mouseenter', () => this.show());
     }
@@ -131,7 +133,11 @@ export class CardActionBar extends Component {
 
   private appendArrow() {
     this.arrowContainer = $$('div', { className: 'coveo-card-action-bar-arrow-container', tabindex: 0 }).el;
-    this.bind.on(this.arrowContainer, 'keyup', KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.show()));
+    this.bind.on(
+      this.arrowContainer,
+      'keyup',
+      KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => this.show())
+    );
     const arrowUp = $$('span', { className: 'coveo-icon coveo-card-action-bar-arrow-icon' }, SVGIcons.icons.arrowUp);
     SVGDom.addClassToSVGInContainer(arrowUp.el, 'coveo-card-action-bar-arrow-svg');
     this.arrowContainer.appendChild(arrowUp.el);

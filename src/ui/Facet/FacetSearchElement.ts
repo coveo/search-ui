@@ -24,6 +24,7 @@ export class FacetSearchElement {
 
   private triggeredScroll = false;
   private facetSearchId = uniqueId('coveo-facet-search-results');
+  private facetValueNotFoundId = uniqueId('coveo-facet-value-not-found');
   private searchDropdownNavigator: ISearchDropdownNavigator;
 
   constructor(private facetSearch: IFacetSearch) {
@@ -172,15 +173,38 @@ export class FacetSearchElement {
   public highlightCurrentQueryInSearchResults(regex: RegExp) {
     const captions = this.facetSearch.getCaptions();
     captions.forEach(caption => {
-      caption.innerHTML = $$(caption)
-        .text()
-        .replace(regex, '<span class="coveo-highlight">$1</span>');
+      caption.innerHTML = $$(caption).text().replace(regex, '<span class="coveo-highlight">$1</span>');
     });
   }
 
   public appendToSearchResults(el: HTMLElement) {
     this.searchResults.appendChild(el);
     this.setupFacetSearchResultsEvents(el);
+  }
+
+  public emptyAndShowNoResults() {
+    $$(this.searchResults).empty();
+    this.searchResults.appendChild(
+      $$(
+        'li',
+        { id: this.facetValueNotFoundId, className: 'coveo-facet-value-not-found', role: 'option', ariaSelected: 'true', tabindex: 0 },
+        l('NoValuesFound')
+      ).el
+    );
+    this.input.setAttribute('aria-activedescendant', this.facetValueNotFoundId);
+  }
+
+  public updateAriaLiveWithResults(inputValue: string, numberOfResults: number, moreValuesToFetch: boolean) {
+    let ariaLiveText =
+      inputValue === ''
+        ? l('ShowingResults', numberOfResults, inputValue, numberOfResults)
+        : l('ShowingResultsWithQuery', numberOfResults, inputValue, numberOfResults);
+
+    if (moreValuesToFetch) {
+      ariaLiveText = `${ariaLiveText} (${l('MoreValuesAvailable')})`;
+    }
+
+    this.facetSearch.updateAriaLive(ariaLiveText);
   }
 
   public focus() {

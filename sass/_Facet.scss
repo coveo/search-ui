@@ -3,7 +3,7 @@
 #{$allFacetsType} {
   margin: 10px 0;
   padding: 0;
-  @include defaultRoundedBorder();
+  @include defaultRoundedLowContrastBorder();
   background: white;
   position: relative;
 }

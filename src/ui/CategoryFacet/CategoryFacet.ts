@@ -800,6 +800,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   private addAllCategoriesButton() {
     const allCategories = this.categoryFacetTemplates.buildAllCategoriesButton();
     new AccessibleButton()
+      .withLabel(l('AllCategories'))
       .withElement(allCategories)
       .withSelectAction(() => {
         this.reset();

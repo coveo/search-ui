@@ -4,6 +4,11 @@ import * as Mock from '../../MockEnvironment';
 import { SearchInterface, ISearchInterfaceOptions } from '../../../src/ui/SearchInterface/SearchInterface';
 import { Component } from '../../../src/ui/Base/Component';
 import { ValidResponsiveMode } from '../../../src/ui/ResponsiveComponents/ResponsiveComponents';
+import { ResponsiveTabs } from '../../../src/ui/ResponsiveComponents/ResponsiveTabs';
+import { ITabOptions, Tab } from '../../../src/ui/Tab/Tab';
+import { InitializationEvents } from '../../../src/Core';
+import { ResponsiveFacets } from '../../../src/ui/ResponsiveComponents/ResponsiveFacets';
+import { Facet, IFacetOptions } from '../../../src/ui/Facet/Facet';
 
 export function ResponsiveComponentsManagerTest() {
   const SMALL_RESPONSIVE_MODE = 'small';
@@ -26,7 +31,7 @@ export function ResponsiveComponentsManagerTest() {
       root = $$(searchInterfaceMock.cmp.root);
       handleResizeEvent = jasmine.createSpy('handleResizeEvent');
       registerComponent = jasmine.createSpy('registerComponent');
-      responsiveComponent = function() {
+      responsiveComponent = function () {
         this.needDrodpownWrapper = () => {};
         this.handleResizeEvent = handleResizeEvent;
         this.registerComponent = registerComponent;
@@ -38,6 +43,27 @@ export function ResponsiveComponentsManagerTest() {
 
     afterEach(() => {
       jasmine.clock().uninstall();
+    });
+
+    it(`when registering a tab with #enableResponsiveMode false and a responsive facet,
+    when triggering the #afterInitialization event,
+    it calls the #register instance method to make the facet responsive`, () => {
+      ResponsiveComponentsManager['remainingComponentInitializations'] = 0;
+
+      const tabOptions: ITabOptions = { enableResponsiveMode: false };
+      const tab = Mock.optionsComponentSetup<Tab, ITabOptions>(Tab, tabOptions);
+
+      ResponsiveComponentsManager.register(ResponsiveTabs, root, Tab.ID, tab.cmp, tabOptions);
+
+      const facetOptions: IFacetOptions = {};
+      const facet = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, facetOptions);
+
+      ResponsiveComponentsManager.register(ResponsiveFacets, root, Facet.ID, facet.cmp, facetOptions);
+
+      const spy = spyOn(responsiveComponentsManager, 'register');
+      root.trigger(InitializationEvents.afterInitialization);
+
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     describe('when the search interface responsive mode is set to *auto*', () => {

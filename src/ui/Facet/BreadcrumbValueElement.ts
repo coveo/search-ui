@@ -1,7 +1,7 @@
 /// <reference path="Facet.ts" />
 
 import 'styling/_FacetBreadcrumb';
-import { compact } from 'underscore';
+import { compact, first } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$, Dom } from '../../utils/Dom';
@@ -10,6 +10,7 @@ import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/Anal
 import { Facet } from './Facet';
 import { FacetValue } from './FacetValue';
 import { l } from '../../strings/Strings';
+import { Component } from '../Base/Component';
 
 export interface IBreadcrumbValueElementKlass {
   new (facet: Facet, facetValue: FacetValue): BreadcrumbValueElement;
@@ -21,12 +22,13 @@ export class BreadcrumbValueElement {
   public build(): Dom {
     Assert.exists(this.facetValue);
 
-    const { container, caption, clear } = this.buildElements();
+    const { container, caption, clear, listContainer } = this.buildElements();
 
     container.append(caption.el);
     container.append(clear.el);
+    listContainer.append(container.el);
 
-    return container;
+    return listContainer;
   }
 
   public getBreadcrumbTooltip(): string {
@@ -42,7 +44,8 @@ export class BreadcrumbValueElement {
     return {
       container: this.buildContainer(),
       clear: this.buildClear(),
-      caption: this.buildCaption()
+      caption: this.buildCaption(),
+      listContainer: this.buildListContainer()
     };
   }
 
@@ -64,6 +67,12 @@ export class BreadcrumbValueElement {
       .build();
 
     return container;
+  }
+
+  private buildListContainer() {
+    return $$('li', {
+      className: 'coveo-facet-breadcrumb-value-list-item'
+    });
   }
 
   private buildClear() {
@@ -100,5 +109,12 @@ export class BreadcrumbValueElement {
         facetTitle: this.facet.options.title
       })
     );
+
+    this.focusOnContainer();
+  }
+
+  private focusOnContainer() {
+    const breadcrumb = first(this.facet.searchInterface.getComponents<Component>('Breadcrumb'));
+    breadcrumb ? breadcrumb.element.focus() : null;
   }
 }

@@ -10,6 +10,8 @@ export class SVGIcons {
     arrowDown: require(`svg/arrow-down`),
 
     mainClear: require(`svg/main-clear`),
+    clearSmall: require(`svg/clear-small`),
+    checkYes: require(`svg/check-yes`),
     orAnd: require(`svg/or-and`),
     sort: require(`svg/sort`),
     ascending: require(`svg/ascending`),
@@ -36,6 +38,7 @@ export class SVGIcons {
     star: require(`svg/star`),
     listLayout: require(`svg/list-layout`),
     cardLayout: require(`svg/card-layout`),
-    tableLayout: require(`svg/table-layout`)
+    tableLayout: require(`svg/table-layout`),
+    plus: require(`svg/plus`)
   };
 }

@@ -1,7 +1,7 @@
 import 'styling/_Result';
 import 'styling/_ResultFrame';
 import 'styling/_ResultList';
-import { chain, compact, contains, each, flatten, map, unique, without } from 'underscore';
+import { chain, compact, contains, each, flatten, map, unique, without, uniqueId } from 'underscore';
 import {
   IBuildingQueryEventArgs,
   IDuringQueryEventArgs,
@@ -115,7 +115,7 @@ export class ResultList extends Component {
      * If you specify no value for this option, a `div` element will be dynamically created and appended to the result
      * list. This element will then be used as a result container.
      */
-    resultsContainer: ComponentOptions.buildChildHtmlElementOption(),
+    resultsContainer: ComponentOptions.buildChildHtmlElementOption({ alias: 'resultContainerSelector' }),
     resultTemplate: TemplateComponentOptions.buildTemplateOption({ defaultFunction: ResultList.getDefaultTemplate }),
 
     /**
@@ -339,6 +339,8 @@ export class ResultList extends Component {
       args.layouts.push(this.options.layout)
     );
     this.setupRenderer();
+    this.makeElementFocusable();
+    this.ensureHasId();
   }
 
   /**
@@ -346,11 +348,7 @@ export class ResultList extends Component {
    * @returns {string[]}
    */
   public getAutoSelectedFieldsToInclude(): string[] {
-    return chain(this.options.resultTemplate.getFields())
-      .concat(this.getMinimalFieldsToInclude())
-      .compact()
-      .unique()
-      .value();
+    return chain(this.options.resultTemplate.getFields()).concat(this.getMinimalFieldsToInclude()).compact().unique().value();
   }
 
   private setupTemplatesVersusLayouts() {
@@ -834,6 +832,17 @@ export class ResultList extends Component {
       default:
         this.renderer = new ResultListRenderer(this.options, autoCreateComponentsFn);
         break;
+    }
+  }
+
+  private makeElementFocusable() {
+    $$(this.element).setAttribute('tabindex', '-1');
+  }
+
+  private ensureHasId() {
+    const currentId = this.element.id;
+    if (currentId === '') {
+      this.element.id = uniqueId('coveo-result-list');
     }
   }
 }

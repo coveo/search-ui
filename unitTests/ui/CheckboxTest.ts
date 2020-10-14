@@ -5,10 +5,14 @@ export function CheckboxTest() {
   describe('Checkbox', () => {
     let spyChange: jasmine.Spy;
     let checkbox: Checkbox;
+    const label = 'hello';
+    const ariaLabel = 'goodbye';
 
+    let button: HTMLElement;
     beforeEach(() => {
       spyChange = jasmine.createSpy('change');
-      checkbox = new Checkbox(spyChange, 'hello');
+      checkbox = new Checkbox(spyChange, label, ariaLabel);
+      button = checkbox.getElement().querySelector('button');
     });
 
     afterEach(() => {
@@ -34,36 +38,69 @@ export function CheckboxTest() {
     });
 
     it('the checkbox input has an aria-hidden equal to true', () => {
-      expect(
-        $$(checkbox.getElement())
-          .find('input')
-          .getAttribute('aria-hidden')
-      ).toBe('true');
+      expect($$(checkbox.getElement()).find('input').getAttribute('aria-hidden')).toBe('true');
     });
 
     it('the checkbox input has an aria-label', () => {
-      expect(
-        $$(checkbox.getElement())
-          .find('input')
-          .getAttribute('aria-label')
-      ).toBeTruthy();
+      expect($$(checkbox.getElement()).find('input').getAttribute('aria-label')).toEqual(ariaLabel);
     });
 
-    describe('select', () => {
-      it('should allow to select', () => {
+    it("the button's aria-label is its ariaLabel parameter", () => {
+      expect(button.getAttribute('aria-label')).toEqual(ariaLabel);
+    });
+
+    it("the button's aria-pressed should be false", () => {
+      expect(button.getAttribute('aria-pressed')).toEqual('false');
+    });
+
+    describe('after being selected', () => {
+      beforeEach(() => {
         checkbox.select();
+      });
+
+      it('isSelected should return true', () => {
         expect(checkbox.isSelected()).toBe(true);
       });
 
       it('should call on change', () => {
-        checkbox.select();
         expect(spyChange).toHaveBeenCalledWith(checkbox);
       });
 
       it('should call on change only once', () => {
         checkbox.select();
-        checkbox.select();
         expect(spyChange).toHaveBeenCalledTimes(1);
+      });
+
+      it("the button's aria-pressed should be true", () => {
+        expect(button.getAttribute('aria-pressed')).toEqual('true');
+      });
+
+      describe('then toggled', () => {
+        beforeEach(() => {
+          checkbox.toggle();
+        });
+
+        it('isSelected should return false', () => {
+          expect(checkbox.isSelected()).toBe(false);
+        });
+
+        it("the button's aria-pressed should be false", () => {
+          expect(button.getAttribute('aria-pressed')).toEqual('false');
+        });
+      });
+    });
+
+    describe('after being selected with triggerChange false', () => {
+      beforeEach(() => {
+        checkbox.select(false);
+      });
+
+      it('should not call on change', () => {
+        expect(spyChange).not.toHaveBeenCalled();
+      });
+
+      it("the button's aria-pressed should be true", () => {
+        expect(button.getAttribute('aria-pressed')).toEqual('true');
       });
     });
 

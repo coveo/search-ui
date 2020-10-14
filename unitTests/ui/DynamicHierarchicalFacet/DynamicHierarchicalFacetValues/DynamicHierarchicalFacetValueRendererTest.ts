@@ -151,19 +151,19 @@ export function DynamicHierarchicalFacetValueRendererTest() {
       });
     });
 
-    describe(`testing the arrow`, () => {
-      function getArrow() {
-        return !!$$(element).find('.coveo-dynamic-hierarchical-facet-value-arrow');
+    describe(`testing the back arrow`, () => {
+      function getBackArrow() {
+        return !!$$(element).find('.coveo-dynamic-hierarchical-facet-value-arrow-left');
       }
 
       it('should not prepend an arrow by default', () => {
-        expect(getArrow()).toBe(false);
+        expect(getBackArrow()).toBe(false);
       });
 
-      it(`when value is selected
+      it(`when a value is selected
       should not prepend an arrow`, () => {
         selectValue();
-        expect(getArrow()).toBe(false);
+        expect(getBackArrow()).toBe(false);
       });
 
       describe('when value is not at the first level and has children', () => {
@@ -173,7 +173,7 @@ export function DynamicHierarchicalFacetValueRendererTest() {
 
         it(`when facet has no selected value
           should not prepend an arrow`, () => {
-          expect(getArrow()).toBe(false);
+          expect(getBackArrow()).toBe(false);
         });
 
         it(`when facet has a selected value
@@ -181,8 +181,40 @@ export function DynamicHierarchicalFacetValueRendererTest() {
           facet.values.selectPath(['random value']);
           element = facetValueRenderer.render();
 
-          expect(getArrow()).toBe(true);
+          expect(getBackArrow()).toBe(true);
         });
+      });
+    });
+
+    describe(`testing the forward arrow`, () => {
+      function getForwardArrow() {
+        return !!$$(element).find('.coveo-dynamic-hierarchical-facet-value-arrow-right');
+      }
+
+      it(`when isLeafValue is false
+      should append an arrow`, () => {
+        expect(getForwardArrow()).toBe(true);
+      });
+
+      it(`when isLeafValue is true
+      should not append an arrow `, () => {
+        const value = DynamicHierarchicalFacetTestUtils.createFakeFacetValue();
+        value.isLeafValue = true;
+        initFacetValue(value);
+        expect(getForwardArrow()).toBe(false);
+      });
+
+      it(`when a value has children
+      should not append an arrow`, () => {
+        facetValue.children = [new DynamicHierarchicalFacetValue(DynamicHierarchicalFacetTestUtils.createFakeFacetValue(), facet)];
+        render();
+        expect(getForwardArrow()).toBe(false);
+      });
+
+      it(`when value is selected
+      should not append an arrow`, () => {
+        selectValue();
+        expect(getForwardArrow()).toBe(false);
       });
     });
 

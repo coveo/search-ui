@@ -1,7 +1,7 @@
 'use strict';
 const login = require('npm-cli-login');
 const exec = require('child_process').exec;
-login('coveo', process.env.NPM_PW, 'sandbox_JSUI@coveo.com');
+login(process.env.NPM_USERNAME, process.env.NPM_PW, 'sandbox_JSUI@coveo.com');
 
 const travisBranchName = process.env.TRAVIS_BRANCH || '';
 let branchToTag = '';
@@ -19,8 +19,8 @@ if (travisBranchName) {
 }
 
 console.log('executing deploy script beta');
-setTimeout(function() {
-  exec(`npm publish --tag beta${branchToTag}`, function(error, stdout, stderr) {
+setTimeout(function () {
+  exec(`npm publish --tag beta${branchToTag}`, function (error, stdout, stderr) {
     if (error) {
       console.log(error, stdout, stderr);
       process.exit(1);

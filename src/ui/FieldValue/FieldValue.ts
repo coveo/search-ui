@@ -446,12 +446,7 @@ export class FieldValue extends Component {
 
   private buildClickableElement(element: HTMLElement, isSelected: boolean, value: string, selectAction: () => void) {
     const label = isSelected ? l('RemoveFilterOn', value) : l('FilterOn', value);
-    new AccessibleButton()
-      .withTitle(label)
-      .withLabel(label)
-      .withElement(element)
-      .withSelectAction(selectAction)
-      .build();
+    new AccessibleButton().withTitle(label).withElement(element).withSelectAction(selectAction).build();
 
     if (isSelected) {
       $$(element).addClass('coveo-selected');

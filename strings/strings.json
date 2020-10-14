@@ -754,8 +754,8 @@
     "zh-tw": "切換到 {0}"
   },
   "Unexclude": {
-    "en": "Unexclude {0}",
-    "fr": "Réinclure {0}",
+    "en": "Remove exclusion filter on {0}",
+    "fr": "Enlever le filtre d'exclusion sur {0}",
     "cs": "Znovu zahrnout {0}",
     "da": "Udeluk ikke {0}",
     "de": "Ausschluss von {0} aufheben",
@@ -1577,6 +1577,11 @@
     "tr": "{0} için sonuç yok",
     "zh-cn": "没有找到与 {0} 相关的结果",
     "zh-tw": "沒有找到與 {0} 相關的結果"
+  },
+  "noResult": {
+    "en": "No results",
+    "fr": "Aucun résultat",
+    "es-es": "No hay resultados"
   },
   "autoCorrectedQueryTo": {
     "en": "Query was automatically corrected to {0}",
@@ -3282,48 +3287,27 @@
     "zh-tw": "在從您的設備讀取資訊時出錯"
   },
   "AppIntro": {
-    "en":
-      "Speak with a product specialist who can answer your questions about Coveo and help you decide which Coveo solution is right for you. Or, try a live demo !",
-    "fr":
-      "Contactez-nous pour parler avec un spécialiste de produit qui pourra répondre à vos questions a propos de Coveo. Ou bien, essayer une demonstration !",
-    "cs":
-      "Promluvte si s produktovým specialistou, který vám pomůže vybrat nejvhodnější řešení Coveo a zodpoví vaše dotazy týkající se této platformy. Vyzkoušet můžete rovněž živou ukázku!",
-    "da":
-      "Tal med en produktspecialist, der kan besvare dine spørgsmål om Coveo og hjælpe dig med at beslutte hvilken Coveo-løsning, der passer til dig. Eller prøv en live demo!",
-    "de":
-      "Sprechen Sie mit einem Produktspezialisten, der Ihre Fragen zu Coveo beantworten und Ihnen helfen kann, die für Sie am besten geeignete Coveo-Lösung zu finden. Oder probieren Sie eine Testversion aus!",
-    "el":
-      "Επικοινωνήστε με άτομο εξειδικευμένο στο προϊόν, το οποίο μπορεί να απαντήσει στις ερωτήσεις σας σχετικά με την πλατφόρμα Coveo, το οποίο θα σας βοηθήσει να αποφασίσετε ποια λύση Coveo είναι η κατάλληλη για εσάς. Ή δοκιμάστε μία ζωντανή επίδειξη!",
-    "es-es":
-      "Hable con un especialista en el producto que pueda responder a sus preguntas sobre Coveo y le ayude a decidir qué solución Coveo se adapta a sus necesidades. O pruebe una versión de prueba.",
-    "fi":
-      "Puhu tuoteasiantuntijan kanssa, joka pystyy vastaamaan kysymyksiisi   Coveosta ja auttamaan sinua päättämään, mikä Coveo-ratkaisu on oikea sinulle. Kokeile live-demoa!",
-    "hu":
-      "Beszéljen egy termékszakértővel, aki örömmel válaszol a Coveóval kapcsolatos kérdéseire, és segít Önnek megtalálni az ideális Coveo-megoldást. Vagy próbálja ki az élő demót!",
-    "id":
-      "Bicaralah dengan spesialis produk yang dapat menjawab pertanyaan Anda tentang Coveo dan membantu Anda menentukan solusi Coveo mana yang tepat untuk Anda. Atau, coba demo langsung!",
-    "it":
-      "Rivolgersi a uno specialista del prodotto in grado di rispondere a domande relative a Coveo e di assistere nella scelta della soluzione Coveo più adatta. In alternativa, provare una demo dal vivo,",
-    "ja":
-      "Coveoに関するご質問にお答えし、お客様に合ったCoveoソリューションの選択をお手伝いする製品スペシャリストと話す。または、実践デモをお試しください！",
-    "ko":
-      "Coveo에 관한 질문에 답하고 Coveo 솔루션이 사용자에게 적합한지 알아보는 데 도움을 줄 수 있는 제품 전문가와 상담하십시오. 또는 실제 시연을 이용하십시오!",
-    "nl":
-      "Een productspecialist spreken die uw vragen over Coveo kan beantwoorden en u helpen te beslissen welke Coveo-oplossing geschikt is voor u. Of probeer een live demo!",
-    "no":
-      "Snakk med en produktspesialist som kan besvare dine spørsmål om Coveo og hjelpe deg å avgjøre hvilken Coveo-løsning som er riktig for deg. Eller prøv en live demo!",
-    "pl":
-      "Skontaktuj się ze specjalistą ds. produktów, który odpowie na pytania dotyczące Coveo i pomoże Ci w wyborze odpowiedniego rozwiązania Coveo. Możesz też wypróbować interaktywne demo!",
-    "pt-br":
-      "Fale com um especialista de produto que possa responder suas dúvidas sobre a Coveo e ajudá-lo a decidir qual solução Coveo é adequada para você. Ou experimente uma demonstração ao vivo!",
-    "ru":
-      "Пообщайтесь со специалистом по продукции, который сможет ответить на ваши вопросы о Conveo и поможет решить, какое решение Coveo вам подойдет. Или попробуйте демоверсию с автоматическим обновлением!",
-    "sv":
-      "Tala med en produktspecialist som kan svara på dina frågor om Coveo och hjälpa dig välja vilken Coveolösning som passar dig. Eller, prova en live demo",
-    "th":
-      "พูดคุยกับผู้เชี่ยวชาญด้านผลิตภัณฑ์ซึ่งสามารถตอบคำถามของคุณเกี่ยวกับ Coveo และช่วยคุณตัดสินใจว่าโซลูชัน Coveo ใดที่เหมาะสมกับคุณ หรือทดลองใช้ผลิตภัณฑ์ตัวอย่าง!",
-    "tr":
-      "Coveo hakkındaki sorularınıza cevap verebilecek ve hangi Coveo çözümünün sizin için doğru olduğu konusunda size yardımcı olabilecek bir ürün uzmanıyla konuşun. Veya bir canlı demoyu deneyin!",
+    "en": "Speak with a product specialist who can answer your questions about Coveo and help you decide which Coveo solution is right for you. Or, try a live demo !",
+    "fr": "Contactez-nous pour parler avec un spécialiste de produit qui pourra répondre à vos questions a propos de Coveo. Ou bien, essayer une demonstration !",
+    "cs": "Promluvte si s produktovým specialistou, který vám pomůže vybrat nejvhodnější řešení Coveo a zodpoví vaše dotazy týkající se této platformy. Vyzkoušet můžete rovněž živou ukázku!",
+    "da": "Tal med en produktspecialist, der kan besvare dine spørgsmål om Coveo og hjælpe dig med at beslutte hvilken Coveo-løsning, der passer til dig. Eller prøv en live demo!",
+    "de": "Sprechen Sie mit einem Produktspezialisten, der Ihre Fragen zu Coveo beantworten und Ihnen helfen kann, die für Sie am besten geeignete Coveo-Lösung zu finden. Oder probieren Sie eine Testversion aus!",
+    "el": "Επικοινωνήστε με άτομο εξειδικευμένο στο προϊόν, το οποίο μπορεί να απαντήσει στις ερωτήσεις σας σχετικά με την πλατφόρμα Coveo, το οποίο θα σας βοηθήσει να αποφασίσετε ποια λύση Coveo είναι η κατάλληλη για εσάς. Ή δοκιμάστε μία ζωντανή επίδειξη!",
+    "es-es": "Hable con un especialista en el producto que pueda responder a sus preguntas sobre Coveo y le ayude a decidir qué solución Coveo se adapta a sus necesidades. O pruebe una versión de prueba.",
+    "fi": "Puhu tuoteasiantuntijan kanssa, joka pystyy vastaamaan kysymyksiisi   Coveosta ja auttamaan sinua päättämään, mikä Coveo-ratkaisu on oikea sinulle. Kokeile live-demoa!",
+    "hu": "Beszéljen egy termékszakértővel, aki örömmel válaszol a Coveóval kapcsolatos kérdéseire, és segít Önnek megtalálni az ideális Coveo-megoldást. Vagy próbálja ki az élő demót!",
+    "id": "Bicaralah dengan spesialis produk yang dapat menjawab pertanyaan Anda tentang Coveo dan membantu Anda menentukan solusi Coveo mana yang tepat untuk Anda. Atau, coba demo langsung!",
+    "it": "Rivolgersi a uno specialista del prodotto in grado di rispondere a domande relative a Coveo e di assistere nella scelta della soluzione Coveo più adatta. In alternativa, provare una demo dal vivo,",
+    "ja": "Coveoに関するご質問にお答えし、お客様に合ったCoveoソリューションの選択をお手伝いする製品スペシャリストと話す。または、実践デモをお試しください！",
+    "ko": "Coveo에 관한 질문에 답하고 Coveo 솔루션이 사용자에게 적합한지 알아보는 데 도움을 줄 수 있는 제품 전문가와 상담하십시오. 또는 실제 시연을 이용하십시오!",
+    "nl": "Een productspecialist spreken die uw vragen over Coveo kan beantwoorden en u helpen te beslissen welke Coveo-oplossing geschikt is voor u. Of probeer een live demo!",
+    "no": "Snakk med en produktspesialist som kan besvare dine spørsmål om Coveo og hjelpe deg å avgjøre hvilken Coveo-løsning som er riktig for deg. Eller prøv en live demo!",
+    "pl": "Skontaktuj się ze specjalistą ds. produktów, który odpowie na pytania dotyczące Coveo i pomoże Ci w wyborze odpowiedniego rozwiązania Coveo. Możesz też wypróbować interaktywne demo!",
+    "pt-br": "Fale com um especialista de produto que possa responder suas dúvidas sobre a Coveo e ajudá-lo a decidir qual solução Coveo é adequada para você. Ou experimente uma demonstração ao vivo!",
+    "ru": "Пообщайтесь со специалистом по продукции, который сможет ответить на ваши вопросы о Conveo и поможет решить, какое решение Coveo вам подойдет. Или попробуйте демоверсию с автоматическим обновлением!",
+    "sv": "Tala med en produktspecialist som kan svara på dina frågor om Coveo och hjälpa dig välja vilken Coveolösning som passar dig. Eller, prova en live demo",
+    "th": "พูดคุยกับผู้เชี่ยวชาญด้านผลิตภัณฑ์ซึ่งสามารถตอบคำถามของคุณเกี่ยวกับ Coveo และช่วยคุณตัดสินใจว่าโซลูชัน Coveo ใดที่เหมาะสมกับคุณ หรือทดลองใช้ผลิตภัณฑ์ตัวอย่าง!",
+    "tr": "Coveo hakkındaki sorularınıza cevap verebilecek ve hangi Coveo çözümünün sizin için doğru olduğu konusunda size yardımcı olabilecek bir ürün uzmanıyla konuşun. Veya bir canlı demoyu deneyin!",
     "zh-cn": "咨询能够回答您有关 Coveo 的问题的产品专家，并帮助您确定哪个 Coveo 解决方案适合您。或者，尝试现场演示！",
     "zh-tw": "諮詢能夠回答您有關 Coveo 的問題的產品專家，並幫助您確定哪個 Coveo 解決方案適合您。或者，嘗試現場示範！"
   },
@@ -7419,8 +7403,8 @@
     "fr": "Filtrer sur {0}"
   },
   "RemoveFilterOn": {
-    "en": "Remove filter on {0}",
-    "fr": "Enlever le filtre sur {0}"
+    "en": "Remove inclusion filter on {0}",
+    "fr": "Enlever le filtre d'inclusion sur {0}"
   },
   "Enter": {
     "en": "Enter",
@@ -7454,21 +7438,13 @@
     "en": "{0} facet",
     "fr": "Facette {0}"
   },
-  "SelectValueWithResultCount": {
-    "en": "Select {0} with {1}",
-    "fr": "Sélectionner {0} avec {1}"
-  },
-  "UnselectValueWithResultCount": {
-    "en": "Unselect {0} with {1}",
-    "fr": "Désélectionner {0} avec {1}"
+  "IncludeValueWithResultCount": {
+    "en": "Inclusion filter on {0}; {1}",
+    "fr": "Filtre d'inclusion sur {0}; {1}"
   },
   "ExcludeValueWithResultCount": {
-    "en": "Exclude {0} with {1}",
-    "fr": "Exclure {0} avec {1}"
-  },
-  "UnexcludeValueWithResultCount": {
-    "en": "Unexclude {0} with {1}",
-    "fr": "Réinclure {0} avec {1}"
+    "en": "Exclusion filter on {0}; {1}",
+    "fr": "Filtre d'exclusion sur {0}; {1}"
   },
   "PageNumber": {
     "en": "Page {0}",
@@ -7479,10 +7455,8 @@
     "fr": "Afficher {0} résultats par page"
   },
   "GroupByAndFacetRequestsCannotCoexist": {
-    "en":
-      "The query is invalid because it contains both Group By and Facet requests. Ensure that the search interface does not initialize DynamicFacet components alongside Facet components (or alongside any component extending the Facet component, such as FacetRange or FacetSlider).",
-    "fr":
-      "La requête n'est pas valide car elle contient les requêtes Group By et Facet. Assurez-vous que l'interface de recherche n'initialise pas les composants DynamicFacet aux côtés des composants Facet (ou de tout composant d'extension du composant Facet, tel que FacetRange ou FacetSlider)."
+    "en": "The query is invalid because it contains both Group By and Facet requests. Ensure that the search interface does not initialize DynamicFacet components alongside Facet components (or alongside any component extending the Facet component, such as FacetRange or FacetSlider).",
+    "fr": "La requête n'est pas valide car elle contient les requêtes Group By et Facet. Assurez-vous que l'interface de recherche n'initialise pas les composants DynamicFacet aux côtés des composants Facet (ou de tout composant d'extension du composant Facet, tel que FacetRange ou FacetSlider)."
   },
   "MustContain": {
     "en": "Must contain:",
@@ -7552,5 +7526,77 @@
   "HierarchicalFacetValuePathPrefix": {
     "en": "in",
     "fr": "dans"
+  },
+  "UsefulnessFeedbackRequest": {
+    "en": "Was this useful?",
+    "fr": "Était-ce utile?"
+  },
+  "UsefulnessFeedbackThankYou": {
+    "en": "Thanks for your feedback!",
+    "fr": "Merci pour votre rétroaction!"
+  },
+  "UsefulnessFeedbackExplainWhy": {
+    "en": "Explain why",
+    "fr": "Expliquer pourquoi"
+  },
+  "UsefulnessFeedbackExplainWhyImperative": {
+    "en": "Explain why",
+    "fr": "Expliquez pourquoi"
+  },
+  "UsefulnessFeedbackDoesNotAnswer": {
+    "en": "This didn't answer my question at all",
+    "fr": "Ceci n'a pas répondu à ma question du tout"
+  },
+  "UsefulnessFeedbackPartiallyAnswers": {
+    "en": "This only partially answered my question",
+    "fr": "Ceci a seulement partiellement répondu à ma question"
+  },
+  "UsefulnessFeedbackWasNotAQuestion": {
+    "en": "My request wasn't meant to be perceived as a question",
+    "fr": "Ma requête n'était pas sensée être perçue comme une question"
+  },
+  "Yes": {
+    "en": "Yes",
+    "fr": "Oui"
+  },
+  "No": {
+    "en": "No",
+    "fr": "Non"
+  },
+  "Other": {
+    "en": "Other",
+    "fr": "Autre"
+  },
+  "Send": {
+    "en": "Send",
+    "fr": "Envoyer"
+  },
+  "UsefulnessFeedbackReason": {
+    "en": "Reason",
+    "fr": "Raison"
+  },
+  "AnswerSnippet": {
+    "en": "Answer to your question",
+    "fr": "Réponse à votre question"
+  },
+  "AnswerSpecificSnippet": {
+    "en": "Answer to \"{0}\"",
+    "fr": "Réponse à « {0} »"
+  },
+  "SuggestedQuestions": {
+    "en": "People also ask",
+    "fr": "Autres questions posées"
+  },
+  "ExpandQuestionAnswer": {
+    "en": "View answer for \"{0}\"",
+    "fr": "Regarder la réponse à « {0} »"
+  },
+  "MoreValuesAvailable": {
+    "en": "additional values are available",
+    "fr": "des valeurs additionnelles sont disponibles"
+  },
+  "Breadcrumb": {
+    "en": "Active filters",
+    "fr": "Filtres actifs"
   }
 }

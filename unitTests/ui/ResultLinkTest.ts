@@ -10,7 +10,7 @@ import { FakeResults } from '../Fake';
 import { Initialization } from '../../src/Core';
 
 export function ResultLinkTest() {
-  describe('ResultLink', function() {
+  describe('ResultLink', function () {
     let test: Mock.IBasicComponentSetup<ResultLink>;
     let fakeResult: IQueryResult;
 
@@ -18,7 +18,7 @@ export function ResultLinkTest() {
       let fakeResult = FakeResults.createFakeResult();
       fakeResult.title = 'A test title';
       fakeResult.titleHighlights = [{ offset: 2, length: 4 }];
-      fakeResult.clickUri = 'uri';
+      fakeResult.clickUri = 'http://www.coveo.com';
       return fakeResult;
     }
 
@@ -37,7 +37,7 @@ export function ResultLinkTest() {
       spyOn(window, 'open');
     });
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
       fakeResult = null;
     });
@@ -340,6 +340,14 @@ export function ResultLinkTest() {
         expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
       });
 
+      it(`when the href contains "&" characters,
+        should set the href the unescaped the result click uri`, () => {
+        fakeResult.clickUri =
+          'https://testing.com/supportcenter/portal?DataSource=Solutions&eventSubmit_doNavigate=&PageNumber=Prev&tab=Solutions&ts=6';
+        initHyperLink();
+        expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
+      });
+
       it(`when the uri (clickUri) defined in the results contains the javascript protocol,
         it clears the value to prevent XSS`, () => {
         fakeResult.clickUri = 'JavaScript:void(0)';
@@ -365,8 +373,8 @@ export function ResultLinkTest() {
 
       describe('and the result has the outlookfield', () => {
         beforeEach(() => {
-          fakeResult.raw['outlookuri'] = 'uri.for.outlook';
-          fakeResult.raw['outlookformacuri'] = 'uri.for.outlook.for.mac';
+          fakeResult.raw['outlookuri'] = 'mailto:test@coveo.comm';
+          fakeResult.raw['outlookformacuri'] = 'mailto:test.mac@coveo.comm';
         });
 
         it('should generate the correct href if the os is windows and the option is openInOutlook', () => {

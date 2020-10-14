@@ -347,7 +347,8 @@ export class Quickview extends Component {
         offset: {
           offset: '0,8'
         }
-      }
+      },
+      eventsEnabled: false
     });
 
     $$(this.element).on('mouseover', () => {
@@ -408,12 +409,7 @@ export class Quickview extends Component {
     if (typeof result.hasHtmlVersion == 'undefined' || result.hasHtmlVersion || this.options.alwaysShow) {
       const clickAction = () => this.open();
 
-      new AccessibleButton()
-        .withElement(this.element)
-        .withSelectAction(clickAction)
-        .withLabel(l('Quickview'))
-        .withOwner(this.bind)
-        .build();
+      new AccessibleButton().withElement(this.element).withSelectAction(clickAction).withLabel(l('Quickview')).withOwner(this.bind).build();
     } else {
       this.element.style.display = 'none';
     }

@@ -312,6 +312,38 @@ export function FacetTest() {
       expect(spy).toHaveBeenCalledWith(facetValue);
     });
 
+    it('calling #showMore increases the currentPage by 1', () => {
+      expect(test.cmp.currentPage).toBe(0);
+      test.cmp.showMore();
+      expect(test.cmp.currentPage).toBe(1);
+    });
+
+    describe('calling #processFacetSearchAllResultsSelected', () => {
+      beforeEach(() => {
+        test.cmp.options.numberOfValues = 1;
+        test.cmp.options.pageSize = 1;
+
+        expect(test.cmp.currentPage).toBe(0);
+
+        const values = ['a', 'b'].map(v => {
+          const value = FacetValue.createFromValue(v);
+          value.selected = true;
+          return value;
+        });
+
+        test.cmp.processFacetSearchAllResultsSelected(values);
+      });
+
+      it('does not change the current page', () => {
+        expect(test.cmp.currentPage).toBe(0);
+      });
+
+      it(`calling #showMore increases the page enough to show the next results`, () => {
+        test.cmp.showMore();
+        expect(test.cmp.currentPage).toBe(2);
+      });
+    });
+
     describe('with a live query state model', () => {
       beforeEach(() => {
         initializeComponentWithQSM();
@@ -470,6 +502,16 @@ export function FacetTest() {
             })
           ])
         );
+      });
+
+      it('when numberOfValues is 0, it does not hide the facet', () => {
+        test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
+          field: '@field',
+          numberOfValues: 0
+        });
+
+        Simulate.query(test.env);
+        expect($$(test.cmp.element).hasClass('coveo-hidden')).toBe(false);
       });
 
       it(`when a query is successful and "keepDisplayedValuesNextTime" is false
@@ -801,7 +843,7 @@ export function FacetTest() {
         });
       });
 
-      it('facetSearchDelay should be passed to the facet search component', function(done) {
+      it('facetSearchDelay should be passed to the facet search component', function (done) {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           facetSearchDelay: 5
@@ -814,7 +856,7 @@ export function FacetTest() {
         }, 6); // one more ms then facetSearchDelay
       });
 
-      it('numberOfValuesInFacetSearch should be passed to the facet search component', function(done) {
+      it('numberOfValuesInFacetSearch should be passed to the facet search component', function (done) {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           numberOfValuesInFacetSearch: 13
