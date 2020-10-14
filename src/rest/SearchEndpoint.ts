@@ -397,6 +397,25 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * Performs a search on the index and returns a Promise of `ArrayBuffer`.
+   *
+   * @param query The query to execute. Typically, the query object is built using a
+   * [`QueryBuilder`]{@link QueryBuilder}.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<ArrayBuffer>} A Promise of query results.
+   */
+  @path('/')
+  @method('POST')
+  @responseType('arraybuffer')
+  public async fetchBinary(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
+    const call = this.buildCompleteCall(query, callOptions, callParams);
+    this.logger.info('Performing REST query', query);
+
+    return this.performOneCall<ArrayBuffer>(call.params, call.options);
+  }
+
+  /**
    * Gets the plan of execution of a search request, without performing it.
    *
    * @param query The query to execute. Typically, the query object is built using a
@@ -419,6 +438,9 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * @deprecated getExportToExcelLink does not factor in all query parameters (e.g. dynamic facets) due to GET request url length limitations.
+   * Please use `fetchBinary` instead to ensure all query parameters are used.
+   *
    * Gets a link / URI to download a query result set to the XLSX format.
    *
    * **Note:**
@@ -1254,10 +1276,10 @@ function defaultDecoratorEndpointCallParameters() {
 }
 
 function path(path: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       const url = this.buildBaseUri(path);
       if (args[nbParams - 1]) {
         args[nbParams - 1].url = url;
@@ -1273,10 +1295,10 @@ function path(path: string) {
 }
 
 function alertsPath(path: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       const url = this.buildSearchAlertsUri(path);
       if (args[nbParams - 1]) {
         args[nbParams - 1].url = url;
@@ -1292,10 +1314,10 @@ function alertsPath(path: string) {
 }
 
 function requestDataType(type: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].requestDataType = type;
       } else {
@@ -1309,10 +1331,10 @@ function requestDataType(type: string) {
 }
 
 function method(met: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].method = met;
       } else {
@@ -1327,10 +1349,10 @@ function method(met: string) {
 }
 
 function responseType(resp: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       if (args[nbParams - 1]) {
         args[nbParams - 1].responseType = resp;
       } else {
@@ -1345,7 +1367,7 @@ function responseType(resp: string) {
 }
 
 function accessTokenInUrl(tokenKey: string = 'access_token') {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     const buildAccessToken = (tokenKey: string, endpointInstance: SearchEndpoint): string[] => {
       let queryString: string[] = [];
@@ -1357,7 +1379,7 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
       return queryString;
     };
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       const queryString = buildAccessToken(tokenKey, this);
       if (args[nbParams - 1]) {
         args[nbParams - 1].queryString = args[nbParams - 1].queryString.concat(queryString);
@@ -1373,10 +1395,10 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
 }
 
 function includeActionsHistory(historyStore = buildHistoryStore()) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let historyFromStore = historyStore.getHistory();
       if (historyFromStore == null) {
         historyFromStore = [];
@@ -1398,9 +1420,9 @@ function includeActionsHistory(historyStore = buildHistoryStore()) {
 }
 
 function includeReferrer() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let referrer = document.referrer;
       if (referrer == null) {
         referrer = '';
@@ -1422,9 +1444,9 @@ function includeReferrer() {
 }
 
 function includeVisitorId() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let visitorId = Cookie.get('visitorId');
       if (visitorId == null) {
         visitorId = '';
@@ -1446,9 +1468,9 @@ function includeVisitorId() {
 }
 
 function includeIsGuestUser() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (...args: any[]) {
       let isGuestUser = this.options.isGuestUser;
 
       if (args[nbParams - 1]) {
