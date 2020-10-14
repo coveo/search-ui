@@ -205,18 +205,24 @@ export function get(element: HTMLElement, componentClass?, noThrow?: boolean): B
   return Component.get(element, componentClass, noThrow);
 }
 
-Initialization.registerNamedMethod('get', (element: HTMLElement, componentClass?: any, noThrow?: boolean): BaseComponent => {
-  return get(element, componentClass, noThrow);
-});
+Initialization.registerNamedMethod(
+  'get',
+  (element: HTMLElement, componentClass?: any, noThrow?: boolean): BaseComponent => {
+    return get(element, componentClass, noThrow);
+  }
+);
 
 export function result(element: HTMLElement, noThrow?: boolean): IQueryResult {
   Assert.exists(element);
   return Component.getResult(element, noThrow);
 }
 
-Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: boolean): IQueryResult => {
-  return result(element, noThrow);
-});
+Initialization.registerNamedMethod(
+  'result',
+  (element: HTMLElement, noThrow?: boolean): IQueryResult => {
+    return result(element, noThrow);
+  }
+);
 
 function getCoveoAnalyticsClient(element: HTMLElement): IAnalyticsClient {
   var analytics = getCoveoAnalytics(element);
@@ -546,7 +552,7 @@ Initialization.registerNamedMethod('disableAnalytics', () => {
  * },
  */
 export function addActionCauseToList(newActionCause: IAnalyticsActionCause) {
-  AnalyticsUtils.addActionCauseToList(newActionCause);
+  AnalyticsUtils.instance.addActionCauseToList(newActionCause);
 }
 
 Initialization.registerNamedMethod('addActionCauseToList', (newActionCause: IAnalyticsActionCause) => {
@@ -558,7 +564,7 @@ Initialization.registerNamedMethod('addActionCauseToList', (newActionCause: IAna
  * @param actionCauseToRemoveName
  */
 export function removeActionCauseFromList(actionCauseToRemoveName: string) {
-  AnalyticsUtils.removeActionCauseFromList(actionCauseToRemoveName);
+  AnalyticsUtils.instance.removeActionCauseFromList(actionCauseToRemoveName);
 }
 
 Initialization.registerNamedMethod('removeActionCauseFromList', (actionCauseToRemoveName: string) => {

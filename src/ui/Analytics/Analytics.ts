@@ -258,7 +258,7 @@ export class Analytics extends Component implements IClientInformationProvider {
       this.bind.onRootElement(event, (args: IAttributeChangedEventArg) => this.handleSearchHubChanged(args));
     }
 
-    AnalyticsUtils.setClientIdProvider(this);
+    AnalyticsUtils.instance.setClientInformationProvider(this);
   }
 
   public get visitorId() {

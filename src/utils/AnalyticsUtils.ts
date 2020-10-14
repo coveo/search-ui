@@ -9,17 +9,24 @@ export interface IClientInformationProvider {
 }
 
 export class AnalyticsUtils {
-  private static clientInformationProvider: IClientInformationProvider;
+  private static currentInstance: AnalyticsUtils;
+  private clientInformationProvider: IClientInformationProvider = null;
 
-  static get visitorId() {
-    return this.analyticsEnabled ? this.clientInformationProvider.visitorId : null;
+  public static get instance() {
+    return this.currentInstance || (this.currentInstance = new AnalyticsUtils());
   }
 
-  static get clientId() {
-    return this.analyticsEnabled ? this.clientInformationProvider.clientId : null;
+  private constructor() {}
+
+  public get visitorId() {
+    return this.trackingEnabled ? this.clientInformationProvider.visitorId : null;
   }
 
-  static get pageId() {
+  public get clientId() {
+    return this.trackingEnabled ? this.clientInformationProvider.clientId : null;
+  }
+
+  public get pageId() {
     const store = new history.HistoryStore();
     const actions = store.getHistory() as { name: string; value?: string }[];
     const pageViewActionId = findLastIndex(actions, action => action.name === 'PageView');
@@ -29,29 +36,29 @@ export class AnalyticsUtils {
     return actions[pageViewActionId].value;
   }
 
-  static get location() {
+  public get location() {
     return document.location.href;
   }
 
-  static get referrer() {
+  public get referrer() {
     return document.referrer;
   }
 
-  private static get analyticsEnabled() {
+  private get trackingEnabled() {
     return !!this.clientInformationProvider && !this.clientInformationProvider.disabled;
   }
 
-  static setClientIdProvider(provider: IClientInformationProvider) {
-    this.clientInformationProvider = provider;
+  public setClientInformationProvider(clientInformationProvider: IClientInformationProvider) {
+    this.clientInformationProvider = clientInformationProvider;
   }
 
-  static addActionCauseToList(newActionCause: IAnalyticsActionCause) {
+  public addActionCauseToList(newActionCause: IAnalyticsActionCause) {
     if (newActionCause.name && newActionCause.type) {
       analyticsActionCauseList[newActionCause.name] = newActionCause;
     }
   }
 
-  static removeActionCauseFromList(actionCauseToRemoveName: string) {
+  public removeActionCauseFromList(actionCauseToRemoveName: string) {
     delete analyticsActionCauseList[actionCauseToRemoveName];
   }
 }

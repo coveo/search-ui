@@ -1391,7 +1391,7 @@ function includeReferrer() {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      let referrer = AnalyticsUtils.referrer;
+      let referrer = AnalyticsUtils.instance.referrer;
       if (referrer == null) {
         referrer = '';
       }
@@ -1408,7 +1408,7 @@ function includeClientId() {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      let clientId = AnalyticsUtils.clientId;
+      let clientId = AnalyticsUtils.instance.clientId;
       if (clientId == null) {
         clientId = '';
       }
@@ -1425,7 +1425,7 @@ function includePageId() {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      let pageId = AnalyticsUtils.pageId;
+      let pageId = AnalyticsUtils.instance.pageId;
       if (pageId == null) {
         pageId = '';
       }
@@ -1442,7 +1442,7 @@ function includeLocation() {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      let location = AnalyticsUtils.location;
+      let location = AnalyticsUtils.instance.location;
       if (location == null) {
         location = '';
       }
@@ -1459,7 +1459,7 @@ function includeVisitorId() {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      let visitorId = AnalyticsUtils.visitorId;
+      let visitorId = AnalyticsUtils.instance.visitorId;
       if (visitorId == null) {
         visitorId = '';
       }
