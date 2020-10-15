@@ -21,20 +21,37 @@ cache:
 before_install:
   - npm install -g npm@6.14.7
   - sudo apt-get install libgconf2-4
+  - export SOURCE_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+  - export IS_FORKED_PULL_REQUEST=$([[ $TRAVIS_PULL_REQUEST != false && $TRAVIS_PULL_REQUEST_SLUG != $TRAVIS_REPO_SLUG ]] && echo true || echo false)
+  - export HAS_BETA_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+-beta$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
+  - export HAS_RELEASE_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
+  - export IS_ON_FEATURE_BRANCH=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)
+  - export IS_NIGHTLY=$([[ $HAS_BETA_TAG = true && $TRAVIS_EVENT_TYPE = cron ]] && echo true || echo false)
+  - export IS_PULL_REQUEST_PUSH_BUILD=$([[ $TRAVIS_PULL_REQUEST = false && $IS_ON_FEATURE_BRANCH = true ]] && echo true || echo false)
+  - echo $TRAVIS_BRANCH
+  - echo $TRAVIS_PULL_REQUEST_BRANCH
+  - echo $TRAVIS_PULL_REQUEST
+  - echo $SOURCE_BRANCH
+  - echo $IS_FORKED_PULL_REQUEST
+  - echo $HAS_BETA_TAG
+  - echo $HAS_RELEASE_TAG
+  - echo $IS_ON_FEATURE_BRANCH
+  - echo $IS_NIGHTLY
+  - echo $IS_PULL_REQUEST_PUSH_BUILD
 script:
 - source read.version.sh
 - echo $PACKAGE_JSON_VERSION
 - yarn run injectTag
 - yarn run build
 - if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi
-- yarn run unitTests
-- if [ "x$TRAVIS_TAG" != "x" ]; then yarn run accessibilityTests ; fi
+- if [ $IS_PULL_REQUEST_PUSH_BUILD = false ]; then yarn run unitTests ; fi
+- if [[ "x$TRAVIS_TAG" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then yarn run accessibilityTests ; fi
 - set +e
-- yarn run uploadCoverage
+- if [ $IS_PULL_REQUEST_PUSH_BUILD = false ]; then yarn run uploadCoverage ; fi
 - set -e
-- yarn run validateTypeDefinitions
+- if [ $IS_PULL_REQUEST_PUSH_BUILD = false ]; then yarn run validateTypeDefinitions ; fi
 after_success:
-- if [ "x$TRAVIS_TAG" != "x" ]; then bash ./deploy.doc.sh ; fi
+- if [[ "x$TRAVIS_TAG" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then bash ./deploy.doc.sh ; fi
 - yarn run docsitemap
 - yarn run zipForGitReleases
 env:
@@ -50,7 +67,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "! $TRAVIS_TAG =~ .*beta.*"
+      condition: "$HAS_RELEASE_TAG == true"
   - provider: script
     script: node deploy.beta.js
     skip_cleanup: true
@@ -58,7 +75,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "$TRAVIS_TAG =~ .*beta.*"
+      condition: "$HAS_BETA_TAG == true"
   - provider: releases
     api_key:
       secure: jKNS2mWnLUP5kQkjApoIFxQVXAr8ed3nsTIltY6gOvf1/2kbkS0WbzR7Km9lewFA2ZEBSFAu/ek+ewXjEx8FVQAe3CeCS1sS5RVqU/2YvFGBPYzzVw1l3FOJkQsvruRc7UzkznXbLvk+7LerHDpsy3p6ut8stMokztiq8QyWN+GHhrB/QgBQV/swPx40QknAIXndtLEPQfttukLowAdH9ml2BgrgE0/3iitmja/8eIQxVT6dlFyXYV+iU44kPyS595wM7eakUGXNFB2W9sUZ9IY/8lUqPz85G3FkKyiPv3SZJRs158/32+vvdXAtT/wtHjP5PqESPv/pL31M9IpQYYIdTSPwUZtOdRZ6JrxV/xusQ2Nm5p3qNrKgtkEZ921BGHJEMK9xs0yAhMuT39JLhoZE30g8SXokWQWi6WzrRELODYubVMaXTmfgv2ZZN4T3B8xNSabmE3Jm7Gj5Lb9wdR+pbWxPlB475i4H7grOHAN9xRIWokAIIN9RuTPRx1XuxhLUI9BH/GrJXNZbv1800rqF15W9Yuw1RqMfrSWq2snyDalXW3gLHYeAFAP1hfD2mU1zySjP/HQ6VkCwmgCjlAg4W5xK4NlXX0C/EIkoLKhSefxLdhquMZQTION+v0fOvl7Kdz17vt231dEIjNZxsBlLL+JZoxOZA5tVRDMNbko=
@@ -70,6 +87,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
+      condition: "$HAS_RELEASE_TAG == true || $HAS_BETA_TAG == true"
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
@@ -83,7 +101,7 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "! $TRAVIS_TAG =~ .*beta.*"
+      condition: "$HAS_RELEASE_TAG == true"
   - provider: s3
     access_key_id: AKIAYKDJLZIT462WODCI
     secret_access_key:
@@ -97,7 +115,34 @@ deploy:
       tags: true
       repo: coveo/search-ui
       all_branches: true
-      condition: "! $TRAVIS_TAG =~ .*beta.*"
+      condition: "$HAS_RELEASE_TAG == true"
+  - provider: s3
+    access_key_id: AKIAQ6FOLK5RDONGHVBY
+    secret_access_key:
+      secure: XL74wJ5088h082Ev6ZwPdEInliIF7/Dqvqz4rJYaXS3CU/KpsoeDhtV4wnF7Dr6P61AF6x8B4Q4uJKnOYBpg7oBjY7efsCDTJo2FeGxqM7j58Trdmh+kfDLmo9Rt06mTyvhKA/DC9tb7/Didnqs4/zDW0NUTqWu5ggnu0GO54kqoZon776ZCVrLzvSPpDh1VLqNTK5Z2ozIlO3XJc3y+QZeeG/yJBb3RcOnhv91+EIHib5y+HU5SoBIq71m2dbrR3q+V80mX+b9RAJDyb6wRjF8lDnrybaMF6Vf+FfzDj3fu1Z+juro8LN8afwMwKCZ4t8UHEB5n5/eD3oD6NwIkOQEPWMshbJr3UdM524dFrtcKQ5F7nvY8ZCE1a6zMGofmzINOb+qpiR5hlvIP375TaTVt7wIe7MM1CIuBferIqjL9fPmaMqcNRAxDt1HpI9HKOJ5ETSVXEpxviaBqYJjACwXgaXU4+5GsmcSprBSaBuBGJTVWQ5N7ewsxRP/2c3XmtMkB9lc+exwpF8/FvsJ6RbzNi1RhbA78r67XJcuK/2xD4aVYByd6PETVM1I7Bq0+LrECeEDqsTMcGHfAwc6ir69Lw0t/KVG/yHwbWyfwiYbkajfcQWYU669rD6ikY1B87assrqPDXneu65FxmoCYDMwBGRp8/w2gS7HSZmom5zA=
+    bucket: coveo-ndev-binaries
+    local-dir: bin
+    upload-dir: proda/StaticCDN/searchui/nightly
+    acl: public_read
+    skip_cleanup: true
+    on:
+      tags: true
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "$IS_NIGHTLY == true"
+  - provider: s3
+    access_key_id: AKIAQ6FOLK5RDONGHVBY
+    secret_access_key:
+      secure: XL74wJ5088h082Ev6ZwPdEInliIF7/Dqvqz4rJYaXS3CU/KpsoeDhtV4wnF7Dr6P61AF6x8B4Q4uJKnOYBpg7oBjY7efsCDTJo2FeGxqM7j58Trdmh+kfDLmo9Rt06mTyvhKA/DC9tb7/Didnqs4/zDW0NUTqWu5ggnu0GO54kqoZon776ZCVrLzvSPpDh1VLqNTK5Z2ozIlO3XJc3y+QZeeG/yJBb3RcOnhv91+EIHib5y+HU5SoBIq71m2dbrR3q+V80mX+b9RAJDyb6wRjF8lDnrybaMF6Vf+FfzDj3fu1Z+juro8LN8afwMwKCZ4t8UHEB5n5/eD3oD6NwIkOQEPWMshbJr3UdM524dFrtcKQ5F7nvY8ZCE1a6zMGofmzINOb+qpiR5hlvIP375TaTVt7wIe7MM1CIuBferIqjL9fPmaMqcNRAxDt1HpI9HKOJ5ETSVXEpxviaBqYJjACwXgaXU4+5GsmcSprBSaBuBGJTVWQ5N7ewsxRP/2c3XmtMkB9lc+exwpF8/FvsJ6RbzNi1RhbA78r67XJcuK/2xD4aVYByd6PETVM1I7Bq0+LrECeEDqsTMcGHfAwc6ir69Lw0t/KVG/yHwbWyfwiYbkajfcQWYU669rD6ikY1B87assrqPDXneu65FxmoCYDMwBGRp8/w2gS7HSZmom5zA=
+    bucket: coveo-ndev-binaries
+    local-dir: bin
+    upload-dir: proda/StaticCDN/searchui/pr/$TRAVIS_BRANCH
+    acl: public_read
+    skip_cleanup: true
+    on:
+      repo: coveo/search-ui
+      all_branches: true
+      condition: "$IS_PULL_REQUEST_PUSH_BUILD == true"
 
 after_deploy:
 - node invalidate.cloudfront.js
@@ -106,3 +151,4 @@ branches:
   - master
   - "/^.*release.*$/"
   - "/2\\.[0-9]+\\.[0-9]+/"
+  - "/^JSUI-[0-9]+/"
