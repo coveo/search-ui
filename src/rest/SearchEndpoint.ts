@@ -41,6 +41,7 @@ import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 import { IPlanResponse, ExecutionPlan } from './Plan';
 import { AnalyticsUtils } from '../utils/AnalyticsUtils';
+import { mapObject } from 'underscore';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -332,9 +333,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   @includeActionsHistory()
   @includeReferrer()
-  @includeLocation()
-  @includeClientId()
-  @includePageId()
+  @includeAnalytics()
   @includeVisitorId()
   @includeIsGuestUser()
   private buildCompleteCall(request: any, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
@@ -1404,50 +1403,18 @@ function includeReferrer() {
   };
 }
 
-function includeClientId() {
+function includeAnalytics() {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      let clientId = AnalyticsUtils.instance.clientId;
-      if (clientId == null) {
-        clientId = '';
-      }
-
-      getEndpointCallParameters(nbParams, args).requestData.clientId = clientId;
-      return originalMethod.apply(this, args);
-    };
-
-    return descriptor;
-  };
-}
-
-function includePageId() {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
-    const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      let pageId = AnalyticsUtils.instance.pageId;
-      if (pageId == null) {
-        pageId = '';
-      }
-
-      getEndpointCallParameters(nbParams, args).requestData.pageId = pageId;
-      return originalMethod.apply(this, args);
-    };
-
-    return descriptor;
-  };
-}
-
-function includeLocation() {
-  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
-    const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      let location = AnalyticsUtils.instance.location;
-      if (location == null) {
-        location = '';
-      }
-
-      getEndpointCallParameters(nbParams, args).requestData.location = location;
+      const analyticsInstance = AnalyticsUtils.instance;
+      const analytics = {
+        clientId: analyticsInstance.clientId,
+        documentLocation: analyticsInstance.location,
+        documentReferrer: analyticsInstance.referrer,
+        pageId: analyticsInstance.pageId
+      };
+      getEndpointCallParameters(nbParams, args).requestData.analytics = mapObject(analytics, value => value || '');
       return originalMethod.apply(this, args);
     };
 
