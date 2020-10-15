@@ -7,10 +7,10 @@ import { IPopulateBreadcrumbEventArgs } from '../../src/events/BreadcrumbEvents'
 import _ = require('underscore');
 
 export function HiddenQueryTest() {
-  describe('HiddenQuery', function() {
+  describe('HiddenQuery', function () {
     var test: Mock.IBasicComponentSetup<HiddenQuery>;
 
-    beforeEach(function() {
+    beforeEach(function () {
       test = Mock.advancedComponentSetup<HiddenQuery>(
         HiddenQuery,
         new Mock.AdvancedComponentSetupOptions(undefined, undefined, (env: Mock.MockEnvironmentBuilder) => {
@@ -19,11 +19,11 @@ export function HiddenQueryTest() {
       );
     });
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
     });
 
-    it('should populate breadcrumb if hd and hq is set', function() {
+    it('should populate breadcrumb if hd and hq is set', function () {
       var breadcrumbMatcher = jasmine.arrayContaining([jasmine.objectContaining({ element: jasmine.any(HTMLElement) })]);
       var matcher = jasmine.objectContaining({ breadcrumbs: breadcrumbMatcher });
       var spy = jasmine.createSpy('onPopulate');
@@ -55,19 +55,27 @@ export function HiddenQueryTest() {
       expect(spy).toHaveBeenCalledWith(jasmine.anything(), matcher);
     });
 
-    it('should push hq in the query if it is set', function() {
+    it('should populate breadcrumb with escaped content from hd', function () {
+      const unEscaped = `<script>1+1</script>`;
+      test.env.queryStateModel.set('hd', unEscaped);
+      test.env.queryStateModel.set('hq', unEscaped);
+      const breadcrumb = Simulate.breadcrumb(test.env);
+      expect($$(breadcrumb[0].element).find('.coveo-hidden-query-breadcrumb-value').innerHTML).toContain(_.escape(unEscaped));
+    });
+
+    it('should push hq in the query if it is set', function () {
       test.env.queryStateModel.set('hq', 'test');
       var simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBe('test');
     });
 
-    it('should not push hq in the query if not set', function() {
+    it('should not push hq in the query if not set', function () {
       test.env.queryStateModel.set('hq', '');
       var simulation = Simulate.query(test.env);
       expect(simulation.queryBuilder.build().aq).toBe(undefined);
     });
 
-    it('clear should clear the query state', function() {
+    it('clear should clear the query state', function () {
       test.env.queryStateModel.set('hq', 'test');
       test.env.queryStateModel.set('hd', 'test');
       test.cmp.clear();
@@ -75,8 +83,8 @@ export function HiddenQueryTest() {
       expect(test.env.queryStateModel.get('hd')).toBe('');
     });
 
-    describe('exposes options', function() {
-      it('maximumDescriptionLength should splice the description in the breadcrumb', function() {
+    describe('exposes options', function () {
+      it('maximumDescriptionLength should splice the description in the breadcrumb', function () {
         test = Mock.advancedComponentSetup<HiddenQuery>(
           HiddenQuery,
           new Mock.AdvancedComponentSetupOptions(
@@ -100,7 +108,7 @@ export function HiddenQueryTest() {
         $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: [] });
       });
 
-      it('title allows to specify a breadcrumb title', function() {
+      it('title allows to specify a breadcrumb title', function () {
         test = Mock.advancedComponentSetup<HiddenQuery>(
           HiddenQuery,
           new Mock.AdvancedComponentSetupOptions(
