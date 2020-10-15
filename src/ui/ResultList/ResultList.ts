@@ -348,11 +348,7 @@ export class ResultList extends Component {
    * @returns {string[]}
    */
   public getAutoSelectedFieldsToInclude(): string[] {
-    return chain(this.options.resultTemplate.getFields())
-      .concat(this.getMinimalFieldsToInclude())
-      .compact()
-      .unique()
-      .value();
+    return chain(this.options.resultTemplate.getFields()).concat(this.getMinimalFieldsToInclude()).compact().unique().value();
   }
 
   private setupTemplatesVersusLayouts() {

@@ -66,8 +66,8 @@ export function QuerySuggestAddonTest() {
       });
 
       it('with the tab', async done => {
-        (omnibox.env.queryStateModel.get as jasmine.Spy).and.callFake(
-          (param: string) => (param == QUERY_STATE_ATTRIBUTES.T ? 'a tab' : 'something else')
+        (omnibox.env.queryStateModel.get as jasmine.Spy).and.callFake((param: string) =>
+          param == QUERY_STATE_ATTRIBUTES.T ? 'a tab' : 'something else'
         );
         querySuggest = new QuerySuggestAddon(omnibox.cmp);
         await querySuggest.getSuggestion();
@@ -76,8 +76,8 @@ export function QuerySuggestAddonTest() {
       });
 
       it("without the tab if it's empty", async done => {
-        (omnibox.env.queryStateModel.get as jasmine.Spy).and.callFake(
-          (param: string) => (param == QUERY_STATE_ATTRIBUTES.T ? '' : 'something else')
+        (omnibox.env.queryStateModel.get as jasmine.Spy).and.callFake((param: string) =>
+          param == QUERY_STATE_ATTRIBUTES.T ? '' : 'something else'
         );
         querySuggest = new QuerySuggestAddon(omnibox.cmp);
         await querySuggest.getSuggestion();

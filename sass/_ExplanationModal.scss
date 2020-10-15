@@ -1,0 +1,150 @@
+@import 'Variables';
+
+.coveo-user-explanation-modal {
+  $modal: &;
+
+  &-explanation-section {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 24px;
+
+    #{$modal}-explanations,
+    #{$modal}-details {
+      margin: 16px;
+
+      &-label {
+        padding: 0;
+        margin-bottom: 12px;
+      }
+    }
+
+    #{$modal}-explanations {
+      border: none;
+      padding: 0;
+
+      .coveo-radio {
+        $radio-size: 24px;
+
+        input[type='radio'] + .coveo-radio-input-label {
+          line-height: $radio-size;
+          height: $radio-size;
+
+          &::before,
+          &::after {
+            width: $radio-size;
+            height: $radio-size;
+          }
+
+          &::before {
+            border-color: $color-strong-contrast-grey;
+          }
+        }
+
+        input[type='radio']:checked + .coveo-radio-input-label {
+          &::before {
+            border-color: $color-orange;
+          }
+
+          &::after {
+            background-color: $color-orange;
+          }
+        }
+      }
+    }
+
+    #{$modal}-details {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex-grow: 1;
+
+      &-textarea {
+        @include defaultRoundedLowContrastBorder();
+        min-width: 256px;
+        min-height: 128px;
+        resize: none;
+        flex-grow: 1;
+        align-self: stretch;
+        padding: 8px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: black;
+        font-size: 1em;
+
+        &[disabled] {
+          background-color: #ddd;
+          color: #616161;
+        }
+
+        &:focus {
+          border-color: $color-active-orange;
+        }
+      }
+    }
+  }
+
+  &-buttons-section {
+    display: flex;
+    justify-content: flex-end;
+    border-top: thin solid #d8d8d8;
+    padding: 24px 32px;
+
+    button {
+      border-radius: $default-border-radius;
+      font-size: 1em;
+      margin: 0;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    #{$modal}-send-button {
+      background-color: $color-orange;
+      color: white;
+      border: none;
+      &:hover,
+      &:focus {
+        background-color: $color-active-orange;
+      }
+    }
+
+    #{$modal}-cancel-button {
+      background: none;
+      color: $color-strong-contrast-grey;
+      border: thin solid $color-strong-contrast-grey;
+      margin-left: 24px;
+      &:hover,
+      &:focus {
+        background-color: #0000001a;
+      }
+    }
+  }
+
+  &.coveo-modal-container > .coveo-modal-content {
+    width: auto;
+    height: auto;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: #00000040 2px 2px 5px;
+  }
+
+  .coveo-modal-body {
+    padding: 0;
+    flex-basis: auto;
+  }
+
+  .coveo-modal-header {
+    height: auto;
+    padding: 0;
+    border: none;
+
+    h1 {
+      color: black;
+      margin: 40px 40px 24px;
+      font-size: 1.25em;
+    }
+  }
+
+  + .coveo-modal-backdrop {
+    background-color: black;
+    opacity: 0.3;
+  }
+}

@@ -10,6 +10,7 @@ import { MODEL_EVENTS, IAttributeChangedEventArg } from '../../models/Model';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import XRegExp = require('xregexp');
 import { Breadcrumb } from '../Breadcrumb/Breadcrumb';
+import { escape } from 'underscore';
 
 export class MissingTermManager {
   static ID = 'MissingTermManager';
@@ -71,7 +72,7 @@ export class MissingTermManager {
         {
           className: 'coveo-missing-term-breadcrumb-value coveo-accessible-button'
         },
-        $$('span', { className: 'coveo-missing-term-breadcrumb-caption' }, term),
+        $$('span', { className: 'coveo-missing-term-breadcrumb-caption' }, escape(term)),
         $$('span', { className: 'coveo-missing-term-breadcrumb-clear' }, SVGIcons.icons.mainClear)
       );
 

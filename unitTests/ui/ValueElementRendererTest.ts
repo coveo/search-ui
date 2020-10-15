@@ -8,7 +8,7 @@ import { $$ } from '../../src/utils/Dom';
 import { findLastIndex } from 'underscore';
 
 export function ValueElementRendererTest() {
-  describe('ValueElementRenderer', function() {
+  describe('ValueElementRenderer', function () {
     var facet: Facet;
     var valueRenderer: ValueElementRenderer;
 
@@ -18,7 +18,7 @@ export function ValueElementRendererTest() {
       }).cmp;
     });
 
-    afterEach(function() {
+    afterEach(function () {
       facet = null;
       valueRenderer = null;
     });
