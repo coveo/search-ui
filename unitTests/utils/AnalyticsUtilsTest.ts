@@ -1,8 +1,10 @@
-import { history } from 'coveo.analytics';
 import { IAnalyticsActionCause, analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { AnalyticsUtils, IClientInformationProvider } from '../../src/utils/AnalyticsUtils';
+import { buildHistoryStore } from '../../src/utils/HistoryStore';
 
 type Writable<T> = { -readonly [P in keyof T]: T[P] };
+
+type HistoryStore = ReturnType<typeof buildHistoryStore>;
 
 export function AnalyticsUtilsTest() {
   function replaceInstance(newInstance: AnalyticsUtils) {
@@ -10,20 +12,19 @@ export function AnalyticsUtilsTest() {
   }
 
   describe('AnalyticsUtils', () => {
-    let historyStore: history.HistoryStore;
+    let historyStore: HistoryStore;
     function addHistoryElement(name: string, value: string) {
-      const element: history.HistoryElement = {
+      historyStore.addElement({
         time: new Date().toTimeString(),
         internalTime: Date.now(),
         name,
         value
-      };
-      historyStore.addElement(element);
+      });
     }
 
     beforeEach(() => {
       replaceInstance(null);
-      historyStore = new history.HistoryStore();
+      historyStore = buildHistoryStore();
       historyStore.clear();
     });
 
