@@ -7527,6 +7527,70 @@
     "en": "in",
     "fr": "dans"
   },
+  "UsefulnessFeedbackRequest": {
+    "en": "Was this useful?",
+    "fr": "Était-ce utile?"
+  },
+  "UsefulnessFeedbackThankYou": {
+    "en": "Thanks for your feedback!",
+    "fr": "Merci pour votre rétroaction!"
+  },
+  "UsefulnessFeedbackExplainWhy": {
+    "en": "Explain why",
+    "fr": "Expliquer pourquoi"
+  },
+  "UsefulnessFeedbackExplainWhyImperative": {
+    "en": "Explain why",
+    "fr": "Expliquez pourquoi"
+  },
+  "UsefulnessFeedbackDoesNotAnswer": {
+    "en": "This didn't answer my question at all",
+    "fr": "Ceci n'a pas répondu à ma question du tout"
+  },
+  "UsefulnessFeedbackPartiallyAnswers": {
+    "en": "This only partially answered my question",
+    "fr": "Ceci a seulement partiellement répondu à ma question"
+  },
+  "UsefulnessFeedbackWasNotAQuestion": {
+    "en": "My request wasn't meant to be perceived as a question",
+    "fr": "Ma requête n'était pas sensée être perçue comme une question"
+  },
+  "Yes": {
+    "en": "Yes",
+    "fr": "Oui"
+  },
+  "No": {
+    "en": "No",
+    "fr": "Non"
+  },
+  "Other": {
+    "en": "Other",
+    "fr": "Autre"
+  },
+  "Send": {
+    "en": "Send",
+    "fr": "Envoyer"
+  },
+  "UsefulnessFeedbackReason": {
+    "en": "Reason",
+    "fr": "Raison"
+  },
+  "AnswerSnippet": {
+    "en": "Answer to your question",
+    "fr": "Réponse à votre question"
+  },
+  "AnswerSpecificSnippet": {
+    "en": "Answer to \"{0}\"",
+    "fr": "Réponse à « {0} »"
+  },
+  "SuggestedQuestions": {
+    "en": "People also ask",
+    "fr": "Autres questions posées"
+  },
+  "ExpandQuestionAnswer": {
+    "en": "View answer for \"{0}\"",
+    "fr": "Regarder la réponse à « {0} »"
+  },
   "MoreValuesAvailable": {
     "en": "additional values are available",
     "fr": "des valeurs additionnelles sont disponibles"

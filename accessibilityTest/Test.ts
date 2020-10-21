@@ -56,6 +56,8 @@ import { AccessibilityQuerySummary } from './AccessibilityQuerySummary';
 import { AccessibilityThumbnail } from './AccessibilityThumbnail';
 import { AccessibilityCategoryFacet } from './AccessibilityCategoryFacet';
 import { AccessibilityDynamicHierarchicalFacetSearch } from './AccessibilityDynamicHierarchicalFacetSearch';
+import { AccessibilitySmartSnippet } from './AccessibilitySmartSnippet';
+import { AccessibilitySmartSnippetSuggestions } from './AccessibilitySmartSnippetSuggestions';
 
 const getFilename = (path: string) => /\/([^\/]*$)/.exec(path)[1];
 
@@ -176,4 +178,6 @@ describe('Testing ...', () => {
   AccessibilityThumbnail();
   AccessibilityCategoryFacet();
   AccessibilityDynamicHierarchicalFacetSearch();
+  AccessibilitySmartSnippet();
+  AccessibilitySmartSnippetSuggestions();
 });

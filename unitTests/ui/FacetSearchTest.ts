@@ -53,21 +53,9 @@ export function FacetSearchTest() {
 
     it('input should have correct attributes', () => {
       var built = facetSearch.build();
-      expect(
-        $$(built)
-          .find('input')
-          .getAttribute('autocapitalize')
-      ).toBe('off');
-      expect(
-        $$(built)
-          .find('input')
-          .getAttribute('autocorrect')
-      ).toBe('off');
-      expect(
-        $$(built)
-          .find('input')
-          .getAttribute('form')
-      ).toBe('coveo-dummy-form');
+      expect($$(built).find('input').getAttribute('autocapitalize')).toBe('off');
+      expect($$(built).find('input').getAttribute('autocorrect')).toBe('off');
+      expect($$(built).find('input').getAttribute('form')).toBe('coveo-dummy-form');
     });
 
     describe('perform search on the index', () => {

@@ -290,7 +290,7 @@ export class ResultLink extends Component {
       const title = this.getDisplayedTitle();
       this.element.innerHTML = title;
       if (!this.element.title) {
-        this.element.title = title;
+        this.element.title = this.getDisplayedTitleAsText();
       }
     }
   }
@@ -369,6 +369,12 @@ export class ResultLink extends Component {
         ? StreamHighlightUtils.highlightStreamText(newTitle, this.result.termsToHighlight, this.result.phrasesToHighlight)
         : this.escapedClickUri;
     }
+  }
+
+  private getDisplayedTitleAsText() {
+    const container = $$('div');
+    container.setHtml(this.getDisplayedTitle());
+    return container.text();
   }
 
   private get escapedClickUri() {

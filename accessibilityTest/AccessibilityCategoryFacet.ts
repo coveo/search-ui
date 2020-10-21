@@ -58,9 +58,7 @@ export const AccessibilityCategoryFacet = () => {
       describe('after focusing on the search button', () => {
         function hideFocusedSearchFacetValueStyle() {
           const focusedClass = 'coveo-facet-search-current-result';
-          $$(getRoot())
-            .findClass(focusedClass)[0]
-            .classList.remove(focusedClass);
+          $$(getRoot()).findClass(focusedClass)[0].classList.remove(focusedClass);
         }
 
         beforeEach(async done => {
