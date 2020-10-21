@@ -4869,6 +4869,25 @@ var SearchEndpoint = /** @class */ (function () {
         });
     };
     /**
+     * Performs a search on the index and returns a Promise of `ArrayBuffer`.
+     *
+     * @param query The query to execute. Typically, the query object is built using a
+     * [`QueryBuilder`]{@link QueryBuilder}.
+     * @param callOptions An additional set of options to use for this call.
+     * @param callParams The options injected by the applied decorators.
+     * @returns {Promise<ArrayBuffer>} A Promise of query results.
+     */
+    SearchEndpoint.prototype.fetchBinary = function (query, callOptions, callParams) {
+        return __awaiter(this, void 0, void 0, function () {
+            var call;
+            return __generator(this, function (_a) {
+                call = this.buildCompleteCall(query, callOptions, callParams);
+                this.logger.info('Performing REST query', query);
+                return [2 /*return*/, this.performOneCall(call.params, call.options)];
+            });
+        });
+    };
+    /**
      * Gets the plan of execution of a search request, without performing it.
      *
      * @param query The query to execute. Typically, the query object is built using a
@@ -4895,6 +4914,9 @@ var SearchEndpoint = /** @class */ (function () {
         });
     };
     /**
+     * @deprecated getExportToExcelLink does not factor in all query parameters (e.g. dynamic facets) due to GET request url length limitations.
+     * Please use `fetchBinary` instead to ensure all query parameters are used.
+     *
      * Gets a link / URI to download a query result set to the XLSX format.
      *
      * **Note:**
@@ -5471,6 +5493,11 @@ var SearchEndpoint = /** @class */ (function () {
         method('POST'),
         responseType('text')
     ], SearchEndpoint.prototype, "search", null);
+    __decorate([
+        path('/'),
+        method('POST'),
+        responseType('arraybuffer')
+    ], SearchEndpoint.prototype, "fetchBinary", null);
     __decorate([
         path('/plan'),
         method('POST'),
@@ -7244,8 +7271,8 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.9856.8',
-    product: '2.9856.8',
+    lib: '2.10081.0-beta',
+    product: '2.10081.0-beta',
     supportedApiVersion: 2
 };
 
@@ -9869,12 +9896,6 @@ var dict = {
     "filetype_incident": "Incident",
     "kb_knowledge": "Knowledge Article",
     "filetype_kb_knowledge": "Knowledge Article",
-    "youtubevideo": "YouTube video",
-    "filetype_youtubevideo": "YouTube video",
-    "youtubeplaylistitem": "YouTube playlist item",
-    "filetype_youtubeplaylistitem": "YouTube playlist item",
-    "youtubeplaylist": "YouTube playlist",
-    "filetype_youtubeplaylist": "YouTube playlist",
     "spportal": "Portal",
     "filetype_spportal": "Portal",
     "spsite": "SharePoint Site",
@@ -10101,6 +10122,12 @@ var dict = {
     "filetype_spmicrofeedlist": "Microfeed",
     "splistfolder": "List Folder",
     "filetype_splistfolder": "List Folder",
+    "youtubevideo": "YouTube video",
+    "filetype_youtubevideo": "YouTube video",
+    "youtubeplaylistitem": "YouTube playlist item",
+    "filetype_youtubeplaylistitem": "YouTube playlist item",
+    "youtubeplaylist": "YouTube playlist",
+    "filetype_youtubeplaylist": "YouTube playlist",
     "Unknown": "Unknown",
     "And": "AND",
     "Authenticating": "Authenticating {0}...",
@@ -10459,6 +10486,22 @@ var dict = {
     "CollapsedUriParts": "Collapsed URI parts",
     "HierarchicalFacetValueIndentedUnder": "{0} under {1}",
     "HierarchicalFacetValuePathPrefix": "in",
+    "UsefulnessFeedbackRequest": "Was this useful?",
+    "UsefulnessFeedbackThankYou": "Thanks for your feedback!",
+    "UsefulnessFeedbackExplainWhy": "Explain why",
+    "UsefulnessFeedbackExplainWhyImperative": "Explain why",
+    "UsefulnessFeedbackDoesNotAnswer": "This didn't answer my question at all",
+    "UsefulnessFeedbackPartiallyAnswers": "This only partially answered my question",
+    "UsefulnessFeedbackWasNotAQuestion": "My request wasn't meant to be perceived as a question",
+    "Yes": "Yes",
+    "No": "No",
+    "Other": "Other",
+    "Send": "Send",
+    "UsefulnessFeedbackReason": "Reason",
+    "AnswerSnippet": "Answer to your question",
+    "AnswerSpecificSnippet": "Answer to \"{0}\"",
+    "SuggestedQuestions": "People also ask",
+    "ExpandQuestionAnswer": "View answer for \"{0}\"",
     "MoreValuesAvailable": "additional values are available",
     "Breadcrumb": "Active filters",
 };
