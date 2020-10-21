@@ -43,6 +43,10 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.getAuthenticationProviderUri(provider, returnUri, message);
   }
 
+  public isJsonp(): boolean {
+    return this.endpoint.isJsonp();
+  }
+
   public search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults> {
     return this.endpoint.search(query, this.enrichCallOptions(callOptions));
   }

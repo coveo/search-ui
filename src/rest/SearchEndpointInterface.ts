@@ -91,6 +91,8 @@ export interface ISearchEndpoint {
   options?: ISearchEndpointOptions;
   getBaseUri(): string;
   getBaseAlertsUri(): string;
+  /** @deprecated jsonP is no longer supported. This method will always return `false`. */
+  isJsonp(): boolean;
   getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string;
   search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults>;
   fetchBinary(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ArrayBuffer>;
