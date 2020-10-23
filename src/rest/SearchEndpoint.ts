@@ -167,8 +167,9 @@ export class SearchEndpoint implements ISearchEndpoint {
    * **Allowed values:**
    *
    * - `https://platform.cloud.coveo.com/rest/search` (for organizations in the standard Coveo Cloud V2 environment)
+   * - `https://platform-eu.cloud.coveo.com/rest/search` (for organizations with European [data residency](https://docs.coveo.com/en/2976/#data-residency-configuration))
+   * - `https://platform-au.cloud.coveo.com/rest/search` (for organizations with Australian data residency)
    * - `https://platformhipaa.cloud.coveo.com/rest/search` (for [HIPAA](https://docs.coveo.com/1853/) organizations)
-   * - `https://globalplatform.cloud.coveo.com/rest/search` (for [multi-region](https://docs.coveo.com/2976/) organizations)
    *
    * **Default:** `https://platform.cloud.coveo.com/rest/search`
    * @param otherOptions Additional options to apply for this endpoint (e.g., a [`renewAccessToken`]{@link ISearchEndpointOptions.renewAccessToken} function).
