@@ -258,21 +258,7 @@ export class Analytics extends Component implements IClientInformationProvider {
       this.bind.onRootElement(event, (args: IAttributeChangedEventArg) => this.handleSearchHubChanged(args));
     }
 
-    AnalyticsUtils.instance.setClientInformationProvider(this);
-  }
-
-  public get visitorId() {
-    return Cookie.get('visitorId');
-  }
-
-  public get clientId() {
-    const clientId = Cookie.get('clientId');
-    if (clientId) {
-      return clientId;
-    }
-    const newclientId = QueryUtils.createGuid();
-    Cookie.set('clientId', newclientId);
-    return newclientId;
+    this.provideClientInformation();
   }
 
   /**
@@ -472,6 +458,17 @@ export class Analytics extends Component implements IClientInformationProvider {
       serviceUrl: this.options.endpoint,
       organization: this.options.organization
     });
+  }
+
+  private provideClientInformation() {
+    AnalyticsUtils.instance.setClientInformationProvider(this);
+    this.createClientId();
+  }
+
+  private createClientId() {
+    if (!AnalyticsUtils.instance.clientId) {
+      Cookie.set('clientId', QueryUtils.createGuid());
+    }
   }
 
   private initializeAnalyticsClient() {

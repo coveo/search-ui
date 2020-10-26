@@ -1,10 +1,9 @@
 import { history } from 'coveo.analytics';
 import { IAnalyticsActionCause, analyticsActionCauseList } from '../ui/Analytics/AnalyticsActionListMeta';
 import { findLastIndex } from 'underscore';
+import { Cookie } from './CookieUtils';
 
 export interface IClientInformationProvider {
-  readonly visitorId: string;
-  readonly clientId: string;
   readonly disabled: boolean;
 }
 
@@ -19,11 +18,11 @@ export class AnalyticsUtils {
   private constructor() {}
 
   public get visitorId() {
-    return this.trackingEnabled ? this.clientInformationProvider.visitorId : null;
+    return this.trackingEnabled ? Cookie.get('visitorId') : null;
   }
 
   public get clientId() {
-    return this.trackingEnabled ? this.clientInformationProvider.clientId : null;
+    return this.trackingEnabled ? Cookie.get('clientId') : null;
   }
 
   public get pageId() {
