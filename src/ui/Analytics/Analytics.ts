@@ -424,7 +424,7 @@ export class Analytics extends Component implements IClientInformationProvider {
     if (this.disabled || this.client instanceof NoopAnalyticsClient) {
       return this.logger.warn('Could not clear local data while analytics are disabled.');
     }
-    this.clearCookies();
+    this.client.endpoint.clearCookies();
     this.resolveQueryController().resetHistory();
   }
 
@@ -521,12 +521,6 @@ export class Analytics extends Component implements IClientInformationProvider {
         this.getBindings()
       );
     }
-  }
-
-  private clearCookies() {
-    Cookie.erase('visitorId');
-    Cookie.erase('clientId');
-    Cookie.erase('visitId');
   }
 
   private setupAccessToken() {
