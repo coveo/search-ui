@@ -1,9 +1,11 @@
 @import '../Variables';
 @import '../mixins/_facetHeaderAnimation';
 
+$header-height: 35px;
+
 .coveo-dynamic-facet-header {
-  padding: 8px 0;
   border-bottom: $default-border;
+  height: $header-height;
   @include display(flex);
 }
 
@@ -16,6 +18,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   text-transform: capitalize;
+  line-height: $header-height;
 
   @include flex-grow(1);
 
@@ -42,6 +45,11 @@ $header-svg-dimensions: 15px;
 .coveo-dynamic-facet-header-wait-animation-svg {
   @include coveo-dynamic-facet-header-svg;
   @include facet-header-animation;
+}
+
+.coveo-dynamic-facet-header-collapse,
+.coveo-dynamic-facet-header-expand {
+  height: 100%;
 }
 
 .coveo-dynamic-facet-collapse-toggle-svg {
