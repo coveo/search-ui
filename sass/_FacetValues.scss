@@ -20,6 +20,7 @@
     background: white;
     position: relative;
     top: 2px;
+    flex-shrink: 0;
     > svg {
       position: relative;
       background: none;
