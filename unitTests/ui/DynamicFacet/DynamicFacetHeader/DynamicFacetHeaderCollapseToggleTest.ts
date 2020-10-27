@@ -51,10 +51,26 @@ export function DynamicFacetHeaderCollapseToggleTest() {
     });
 
     it(`when clicking on the collapse button
+      should focus on the expand button`, () => {
+      spyOn(expandBtnElement, 'focus');
+      $$(collapseBtnElement).trigger('click');
+
+      expect(expandBtnElement.focus).toHaveBeenCalledTimes(1);
+    });
+
+    it(`when clicking on the collapse button
       should call collapse on the DynamicFacet component`, () => {
       $$(collapseBtnElement).trigger('click');
 
       expect(options.collapse).toHaveBeenCalled();
+    });
+
+    it(`when clicking on the expand button
+    should focus on the collapse button`, () => {
+      spyOn(collapseBtnElement, 'focus');
+      $$(expandBtnElement).trigger('click');
+
+      expect(collapseBtnElement.focus).toHaveBeenCalledTimes(1);
     });
 
     it(`when clicking on the expand button
