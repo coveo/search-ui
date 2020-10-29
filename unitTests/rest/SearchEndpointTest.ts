@@ -15,8 +15,8 @@ import _ = require('underscore');
 import { Utils } from '../../src/utils/Utils';
 import { IFacetSearchResponse } from '../../src/rest/Facet/FacetSearchResponse';
 import { ExecutionPlan } from '../../src/rest/Plan';
-import { AnalyticsUtils } from '../../src/utils/AnalyticsUtils';
-import { mock } from '../MockEnvironment';
+import { buildHistoryStore } from '../../src/utils/HistoryStore';
+import { Cookie } from '../../src/Core';
 
 interface ILastSentAnalytics {
   visitorId: string;
@@ -30,26 +30,30 @@ export function SearchEndpointTest() {
   describe('SearchEndpoint', () => {
     const visitorId = 'the imposter';
     const clientId = 'some random uuid';
-    const referrer = 'some other website';
-    const location = 'fake location';
     const pageId = 'some pretty home page';
+
+    function fakeHistoryStore() {
+      const store = buildHistoryStore();
+      store.clear();
+      store.addElement({ time: new Date().toTimeString(), internalTime: Date.now(), name: 'PageView', value: pageId });
+      store.addElement({ time: new Date().toTimeString(), internalTime: Date.now(), name: 'PageVieww', value: 'abc' });
+    }
+
+    function fakeCookies() {
+      Cookie.set('visitorId', visitorId);
+      Cookie.set('clientId', clientId);
+    }
+
     function fakeClientInformation() {
-      const analyticsUtilsMock: Partial<AnalyticsUtils> = {
-        ...mock(AnalyticsUtils),
-        visitorId,
-        clientId,
-        referrer,
-        location,
-        pageId
-      };
-      AnalyticsUtils['currentInstance'] = analyticsUtilsMock as AnalyticsUtils;
+      fakeHistoryStore();
+      fakeCookies();
     }
 
     const expectedAnalytics: ILastSentAnalytics = {
       visitorId,
       clientId,
-      documentReferrer: referrer,
-      documentLocation: location,
+      documentReferrer: document.referrer,
+      documentLocation: document.location.href,
       pageId
     };
     function getLastSentAnalyticsFromURI(): ILastSentAnalytics {
@@ -460,7 +464,7 @@ export function SearchEndpointTest() {
                 q: 'batman',
                 numberOfResults: 153,
                 enableCollaborativeRating: true,
-                actionsHistory: []
+                actionsHistory: buildHistoryStore().getHistory()
               })
             );
 

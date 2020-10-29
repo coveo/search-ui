@@ -552,7 +552,7 @@ Initialization.registerNamedMethod('disableAnalytics', () => {
  * },
  */
 export function addActionCauseToList(newActionCause: IAnalyticsActionCause) {
-  AnalyticsUtils.instance.addActionCauseToList(newActionCause);
+  AnalyticsUtils.addActionCauseToList(newActionCause);
 }
 
 Initialization.registerNamedMethod('addActionCauseToList', (newActionCause: IAnalyticsActionCause) => {
@@ -564,7 +564,7 @@ Initialization.registerNamedMethod('addActionCauseToList', (newActionCause: IAna
  * @param actionCauseToRemoveName
  */
 export function removeActionCauseFromList(actionCauseToRemoveName: string) {
-  AnalyticsUtils.instance.removeActionCauseFromList(actionCauseToRemoveName);
+  AnalyticsUtils.removeActionCauseFromList(actionCauseToRemoveName);
 }
 
 Initialization.registerNamedMethod('removeActionCauseFromList', (actionCauseToRemoveName: string) => {

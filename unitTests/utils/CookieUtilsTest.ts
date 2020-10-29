@@ -2,27 +2,7 @@ import { Cookie } from '../../src/utils/CookieUtils';
 import { Simulate } from '../Simulate';
 
 export function CookieUtilsTest() {
-  describe('CookieUtils', function() {
-    var mockDocument = {
-      cookie: ''
-    };
-    var cookieDesc =
-      Object.getOwnPropertyDescriptor(Document.prototype, 'cookie') || Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
-    if (cookieDesc && cookieDesc.configurable) {
-      Object.defineProperty(document, 'cookie', {
-        get: function() {
-          return mockDocument.cookie;
-        },
-        set: function(val) {
-          mockDocument.cookie = val;
-        }
-      });
-    }
-
-    afterEach(function() {
-      mockDocument.cookie = '';
-    });
-
+  describe('CookieUtils', function () {
     it('sets a cookie accordingly', () => {
       Cookie.set('foo', 'bar');
       expect(document.cookie.indexOf('foo=bar')).not.toBe(-1);

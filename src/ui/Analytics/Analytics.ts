@@ -23,9 +23,9 @@ import { PendingSearchEvent } from './PendingSearchEvent';
 import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 import { AccessToken } from '../../rest/AccessToken';
 import { AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
-import { IClientInformationProvider, AnalyticsUtils } from '../../utils/AnalyticsUtils';
 import { Cookie } from '../../utils/CookieUtils';
 import { QueryUtils } from '../../utils/QueryUtils';
+import { AnalyticsInformation } from './AnalyticsInformation';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -56,7 +56,7 @@ export interface IAnalyticsOptions {
  * See also [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events) for more advanced use cases.
  */
 
-export class Analytics extends Component implements IClientInformationProvider {
+export class Analytics extends Component {
   static ID = 'Analytics';
 
   static doExport() {
@@ -258,7 +258,7 @@ export class Analytics extends Component implements IClientInformationProvider {
       this.bind.onRootElement(event, (args: IAttributeChangedEventArg) => this.handleSearchHubChanged(args));
     }
 
-    this.provideClientInformation();
+    this.createClientId();
   }
 
   /**
@@ -410,7 +410,7 @@ export class Analytics extends Component implements IClientInformationProvider {
     if (this.disabled || this.client instanceof NoopAnalyticsClient) {
       return this.logger.warn('Could not clear local data while analytics are disabled.');
     }
-    this.client.endpoint.clearCookies();
+    new AnalyticsInformation().clearCookies();
     this.resolveQueryController().resetHistory();
   }
 
@@ -460,13 +460,8 @@ export class Analytics extends Component implements IClientInformationProvider {
     });
   }
 
-  private provideClientInformation() {
-    AnalyticsUtils.instance.setClientInformationProvider(this);
-    this.createClientId();
-  }
-
   private createClientId() {
-    if (!AnalyticsUtils.instance.clientId) {
+    if (!new AnalyticsInformation().clientId) {
       Cookie.set('clientId', QueryUtils.createGuid());
     }
   }

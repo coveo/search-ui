@@ -40,8 +40,8 @@ import { BackOffRequest, IBackOffRequest } from './BackOffRequest';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 import { IPlanResponse, ExecutionPlan } from './Plan';
-import { AnalyticsUtils } from '../utils/AnalyticsUtils';
 import { mapObject } from 'underscore';
+import { AnalyticsInformation } from '../ui/Analytics/AnalyticsInformation';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -1390,7 +1390,7 @@ function includeReferrer() {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      let referrer = AnalyticsUtils.instance.referrer;
+      let referrer = document.referrer;
       if (referrer == null) {
         referrer = '';
       }
@@ -1407,12 +1407,12 @@ function includeAnalytics() {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      const analyticsInstance = AnalyticsUtils.instance;
+      const analyticsInstance = new AnalyticsInformation();
       const analytics = {
         clientId: analyticsInstance.clientId,
         documentLocation: analyticsInstance.location,
         documentReferrer: analyticsInstance.referrer,
-        pageId: analyticsInstance.pageId
+        pageId: analyticsInstance.lastPageId
       };
       getEndpointCallParameters(nbParams, args).requestData.analytics = mapObject(analytics, value => value || '');
       return originalMethod.apply(this, args);
@@ -1426,7 +1426,7 @@ function includeVisitorId() {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      let visitorId = AnalyticsUtils.instance.visitorId;
+      let visitorId = new AnalyticsInformation().visitorId;
       if (visitorId == null) {
         visitorId = '';
       }

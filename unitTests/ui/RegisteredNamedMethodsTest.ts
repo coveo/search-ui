@@ -313,10 +313,10 @@ export function RegisteredNamedMethodsTest() {
         expect(setup.env.queryController.resetHistory).toHaveBeenCalled();
       });
 
-      it('should clear visitor cookie when disabling analytics', () => {
-        const clearCookiesFunction = (setup.cmp['clearCookies'] = jasmine.createSpy('clearCookies'));
+      it('should call clear local data on analytics when disabling analytics', () => {
+        const clearLocalDataSpy = (setup.cmp['clearLocalData'] = jasmine.createSpy('clearLocalData'));
         RegisteredNamedMethod.disableAnalytics(setup.env.root);
-        expect(clearCookiesFunction).toHaveBeenCalled();
+        expect(clearLocalDataSpy).toHaveBeenCalled();
       });
 
       it('should clear actions history when clearing local data', () => {
@@ -324,10 +324,10 @@ export function RegisteredNamedMethodsTest() {
         expect(setup.env.queryController.resetHistory).toHaveBeenCalled();
       });
 
-      it('should clear visitor cookie when clearing local data', () => {
-        const clearCookiesFunction = (setup.cmp['clearCookies'] = jasmine.createSpy('clearCookies'));
+      it('should call clear local data on analytics when clearing local data', () => {
+        const clearLocalDataSpy = (setup.cmp['clearLocalData'] = jasmine.createSpy('clearLocalData'));
         RegisteredNamedMethod.clearLocalData(setup.env.root);
-        expect(clearCookiesFunction).toHaveBeenCalled();
+        expect(clearLocalDataSpy).toHaveBeenCalled();
       });
 
       describe('with an Analytics component and a Searchbox component', () => {
