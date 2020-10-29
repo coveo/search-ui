@@ -1079,7 +1079,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     this.isRedirecting = true;
   }
 
-  private buildBaseUri(path: string): string {
+  public buildBaseUri(path: string): string {
     Assert.isString(path);
 
     return UrlUtils.normalizeAsString({
@@ -1285,7 +1285,7 @@ function path(path: string) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      getEndpointCallParameters(nbParams, args).url = this['buildBaseUri'](path);
+      getEndpointCallParameters(nbParams, args).url = this.buildBaseUri(path);
       return originalMethod.apply(this, args);
     };
 
