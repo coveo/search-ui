@@ -83,10 +83,8 @@ export function ResultLinkTest() {
       );
     });
 
-    it('should set the title attribute to the displayed title', () => {
-      expect(test.cmp.element.title).toEqual(
-        HighlightUtils.highlightString(fakeResult.title, fakeResult.titleHighlights, null, 'coveo-highlight')
-      );
+    it('should set the title attribute to the result title when no options are provided', () => {
+      expect(test.cmp.element.title).toEqual(fakeResult.title);
     });
 
     it('should contain the clickUri if the result has no title', () => {
@@ -185,6 +183,12 @@ export function ResultLinkTest() {
       function initResultLinkWithTitleTemplate() {
         test = Mock.optionsResultComponentSetup<ResultLink, IResultLinkOptions>(ResultLink, { titleTemplate }, fakeResult);
       }
+
+      it('should set the title attribute to the text version of the displayed title', () => {
+        titleTemplate = 'foo ${clickUri}';
+        initResultLinkWithTitleTemplate();
+        expect(test.cmp.element.title).toEqual(`foo ${fakeResult.clickUri}`);
+      });
 
       it('should replaces fields in the title template by the results equivalent', () => {
         titleTemplate = '${clickUri}';
