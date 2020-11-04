@@ -35,7 +35,7 @@ const longParents: IParent[] = range(longParentsCount).map(index => ({ name: ind
 const longParentsXml = generateParentsXMLFromList(longParents);
 
 export function PrintableUriTest() {
-  describe('PrintableUri', function() {
+  describe('PrintableUri', function () {
     let test: Mock.IBasicComponentSetup<PrintableUri>;
     let fakeResult: IQueryResult;
 
@@ -56,7 +56,7 @@ export function PrintableUriTest() {
       spyOn(window, 'open');
     });
 
-    afterEach(function() {
+    afterEach(function () {
       test = null;
       fakeResult = null;
     });
@@ -243,7 +243,7 @@ export function PrintableUriTest() {
 
     describe('exposes hrefTemplate', () => {
       it('should not modify the href template if there are no field specified', () => {
-        let hrefTemplate = 'test';
+        let hrefTemplate = 'http://test';
         test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
           PrintableUri,
           { hrefTemplate: hrefTemplate },
@@ -254,61 +254,61 @@ export function PrintableUriTest() {
       });
 
       it('should replace fields in the href template by the results equivalent', () => {
-        let hrefTemplate = '${summary}';
+        let hrefTemplate = 'http://${summary}';
         test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
           PrintableUri,
           { hrefTemplate: hrefTemplate },
           fakeResult
         );
         test.cmp.openLinkInNewWindow();
-        expect(window.open).toHaveBeenCalledWith(fakeResult.summary, jasmine.anything());
+        expect(window.open).toHaveBeenCalledWith(`http://${fakeResult.summary}`, jasmine.anything());
       });
 
       it('should support nested values in result', () => {
-        let hrefTemplate = '${raw.number}';
+        let hrefTemplate = 'http://${raw.number}';
         test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
           PrintableUri,
           { hrefTemplate: hrefTemplate },
           fakeResult
         );
         test.cmp.openLinkInNewWindow();
-        expect(window.open).toHaveBeenCalledWith(fakeResult.raw['number'].toString(), jasmine.anything());
+        expect(window.open).toHaveBeenCalledWith(`http://${fakeResult.raw['number'].toString()}`, jasmine.anything());
       });
 
       it('should not parse standalone accolades', () => {
-        let hrefTemplate = '${raw.number}{test}';
+        let hrefTemplate = 'http://${raw.number}{test}';
         test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
           PrintableUri,
           { hrefTemplate: hrefTemplate },
           fakeResult
         );
         test.cmp.openLinkInNewWindow();
-        expect(window.open).toHaveBeenCalledWith(fakeResult.raw['number'] + '{test}', jasmine.anything());
+        expect(window.open).toHaveBeenCalledWith(`http://${fakeResult.raw['number']}{test}`, jasmine.anything());
       });
 
       it('should support external fields', () => {
         window['Coveo']['test'] = 'testExternal';
-        let hrefTemplate = '${Coveo.test}';
+        let hrefTemplate = 'http://${Coveo.test}';
         test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
           PrintableUri,
           { hrefTemplate: hrefTemplate },
           fakeResult
         );
         test.cmp.openLinkInNewWindow();
-        expect(window.open).toHaveBeenCalledWith('testExternal', jasmine.anything());
+        expect(window.open).toHaveBeenCalledWith('http://testExternal', jasmine.anything());
         window['Coveo']['test'] = undefined;
       });
 
       it('should support nested external fields with more than 2 keys', () => {
         window['Coveo']['test'] = { key: 'testExternal' };
-        let hrefTemplate = '${Coveo.test.key}';
+        let hrefTemplate = 'http://${Coveo.test.key}';
         test = Mock.optionsResultComponentSetup<PrintableUri, IPrintableUriOptions>(
           PrintableUri,
           { hrefTemplate: hrefTemplate },
           fakeResult
         );
         test.cmp.openLinkInNewWindow();
-        expect(window.open).toHaveBeenCalledWith('testExternal', jasmine.anything());
+        expect(window.open).toHaveBeenCalledWith('http://testExternal', jasmine.anything());
         window['Coveo']['test'] = undefined;
       });
     });
