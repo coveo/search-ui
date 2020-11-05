@@ -487,7 +487,8 @@ export class ResultLink extends Component {
 
   private getResultUri(): string {
     if (this.options.hrefTemplate) {
-      return StringUtils.buildStringTemplateFromResult(this.options.hrefTemplate, this.result);
+      const uri = StringUtils.buildStringTemplateFromResult(this.options.hrefTemplate, this.result);
+      return this.filterProtocol(uri);
     }
 
     if (this.options.field == undefined && this.options.openInOutlook) {
