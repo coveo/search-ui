@@ -15,11 +15,68 @@ import _ = require('underscore');
 import { Utils } from '../../src/utils/Utils';
 import { IFacetSearchResponse } from '../../src/rest/Facet/FacetSearchResponse';
 import { ExecutionPlan } from '../../src/rest/Plan';
+import { buildHistoryStore } from '../../src/utils/HistoryStore';
+import { Cookie } from '../../src/Core';
+
+interface ILastSentAnalytics {
+  visitorId: string;
+  clientId: string;
+  documentLocation: string;
+  documentReferrer: string;
+  pageId: string;
+}
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', () => {
+    const visitorId = 'the imposter';
+    const clientId = 'some random uuid';
+    const pageId = 'some pretty home page';
+
+    function fakeHistoryStore() {
+      const store = buildHistoryStore();
+      store.clear();
+      store.addElement({ time: new Date().toTimeString(), internalTime: Date.now(), name: 'PageView', value: pageId });
+      store.addElement({ time: new Date().toTimeString(), internalTime: Date.now(), name: 'PageVieww', value: 'abc' });
+    }
+
+    function fakeCookies() {
+      Cookie.set('visitorId', visitorId);
+      Cookie.set('clientId', clientId);
+    }
+
+    function fakeClientInformation() {
+      fakeHistoryStore();
+      fakeCookies();
+    }
+
+    const expectedAnalytics: ILastSentAnalytics = {
+      visitorId,
+      clientId,
+      documentReferrer: document.referrer,
+      documentLocation: document.location.href,
+      pageId
+    };
+    function getLastSentAnalyticsFromURI(): ILastSentAnalytics {
+      const lastParams = jasmine.Ajax.requests.mostRecent().params;
+      const analyticsMatch = /analytics=([^&]*)&/.exec(lastParams);
+      const visitorIdMatch = /visitorId=([^&]*)&/.exec(lastParams);
+      return {
+        ...JSON.parse(decodeURIComponent(analyticsMatch[1])),
+        visitorId: decodeURIComponent(visitorIdMatch[1])
+      };
+    }
+
+    function getLastSentAnalyticsFromJSON(): ILastSentAnalytics {
+      const lastParams = JSON.parse(jasmine.Ajax.requests.mostRecent().params);
+      return {
+        ...lastParams.analytics,
+        visitorId: lastParams.visitorId
+      };
+    }
+
     beforeEach(() => {
       SearchEndpoint.endpoints = {};
+      fakeClientInformation();
     });
 
     afterEach(() => {
@@ -323,6 +380,9 @@ export function SearchEndpointTest() {
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('numberOfResults=153');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('enableCollaborativeRating=true');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('actionsHistory=');
+          const analytics = getLastSentAnalyticsFromURI();
+          expect(analytics).toEqual(expectedAnalytics);
+          expect(jasmine.Ajax.requests.mostRecent().params);
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           promiseSuccess.then((data: IQueryResults) => {
             expect(data.results.length).toBe(10);
@@ -404,9 +464,12 @@ export function SearchEndpointTest() {
                 q: 'batman',
                 numberOfResults: 153,
                 enableCollaborativeRating: true,
-                actionsHistory: []
+                actionsHistory: buildHistoryStore().getHistory()
               })
             );
+
+            const analytics = getLastSentAnalyticsFromJSON();
+            expect(analytics).toEqual(expectedAnalytics);
 
             mockResponse(done);
           });
@@ -697,6 +760,9 @@ export function SearchEndpointTest() {
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('actionsHistory=');
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
 
+          const analytics = getLastSentAnalyticsFromURI();
+          expect(analytics).toEqual(expectedAnalytics);
+
           // Not real extensions, but will suffice for test purpose
           promiseSuccess
             .then((response: IQuerySuggestResponse) => {
@@ -753,6 +819,9 @@ export function SearchEndpointTest() {
 
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           expect(JSON.parse(jasmine.Ajax.requests.mostRecent().params)).toEqual(jasmine.objectContaining({ field: 'test' }));
+
+          const analytics = getLastSentAnalyticsFromJSON();
+          expect(analytics).toEqual(expectedAnalytics);
 
           // Not real extensions, but will suffice for test purpose
           promiseSuccess

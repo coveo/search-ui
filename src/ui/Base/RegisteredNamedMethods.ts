@@ -205,18 +205,24 @@ export function get(element: HTMLElement, componentClass?, noThrow?: boolean): B
   return Component.get(element, componentClass, noThrow);
 }
 
-Initialization.registerNamedMethod('get', (element: HTMLElement, componentClass?: any, noThrow?: boolean): BaseComponent => {
-  return get(element, componentClass, noThrow);
-});
+Initialization.registerNamedMethod(
+  'get',
+  (element: HTMLElement, componentClass?: any, noThrow?: boolean): BaseComponent => {
+    return get(element, componentClass, noThrow);
+  }
+);
 
 export function result(element: HTMLElement, noThrow?: boolean): IQueryResult {
   Assert.exists(element);
   return Component.getResult(element, noThrow);
 }
 
-Initialization.registerNamedMethod('result', (element: HTMLElement, noThrow?: boolean): IQueryResult => {
-  return result(element, noThrow);
-});
+Initialization.registerNamedMethod(
+  'result',
+  (element: HTMLElement, noThrow?: boolean): IQueryResult => {
+    return result(element, noThrow);
+  }
+);
 
 function getCoveoAnalyticsClient(element: HTMLElement): IAnalyticsClient {
   var analytics = getCoveoAnalytics(element);

@@ -40,9 +40,9 @@ export function ExplanationModalTest() {
 
   function initializeModal(firstReasonHasDetails = true) {
     explanationModal = new ExplanationModal({
-      reasons: (reasons = createReason(firstReasonHasDetails)),
-      onClosed: (onClosed = jasmine.createSpy('onClosed')),
-      ownerElement: (ownerElement = $$('div').el),
+      reasons: reasons = createReason(firstReasonHasDetails),
+      onClosed: onClosed = jasmine.createSpy('onClosed'),
+      ownerElement: ownerElement = $$('div').el,
       modalBoxModule: Simulate.modalBoxModule()
     });
     explanationModal['modal'] = accessibleModal = mock(AccessibleModal);

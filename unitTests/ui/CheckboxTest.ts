@@ -38,19 +38,11 @@ export function CheckboxTest() {
     });
 
     it('the checkbox input has an aria-hidden equal to true', () => {
-      expect(
-        $$(checkbox.getElement())
-          .find('input')
-          .getAttribute('aria-hidden')
-      ).toBe('true');
+      expect($$(checkbox.getElement()).find('input').getAttribute('aria-hidden')).toBe('true');
     });
 
     it('the checkbox input has an aria-label', () => {
-      expect(
-        $$(checkbox.getElement())
-          .find('input')
-          .getAttribute('aria-label')
-      ).toEqual(ariaLabel);
+      expect($$(checkbox.getElement()).find('input').getAttribute('aria-label')).toEqual(ariaLabel);
     });
 
     it("the button's aria-label is its ariaLabel parameter", () => {

@@ -23,6 +23,9 @@ import { PendingSearchEvent } from './PendingSearchEvent';
 import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 import { AccessToken } from '../../rest/AccessToken';
 import { AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
+import { Cookie } from '../../utils/CookieUtils';
+import { QueryUtils } from '../../utils/QueryUtils';
+import { AnalyticsInformation } from './AnalyticsInformation';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -257,6 +260,8 @@ export class Analytics extends Component {
       let event = this.componentOptionsModel.getEventName(Model.eventTypes.changeOne + ComponentOptionsModel.attributesEnum.searchHub);
       this.bind.onRootElement(event, (args: IAttributeChangedEventArg) => this.handleSearchHubChanged(args));
     }
+
+    this.createClientId();
   }
 
   /**
@@ -408,7 +413,7 @@ export class Analytics extends Component {
     if (this.disabled || this.client instanceof NoopAnalyticsClient) {
       return this.logger.warn('Could not clear local data while analytics are disabled.');
     }
-    this.client.endpoint.clearCookies();
+    new AnalyticsInformation().clearCookies();
     this.resolveQueryController().resetHistory();
   }
 
@@ -456,6 +461,12 @@ export class Analytics extends Component {
       serviceUrl: this.options.endpoint,
       organization: this.options.organization
     });
+  }
+
+  private createClientId() {
+    if (!new AnalyticsInformation().clientId) {
+      Cookie.set('clientId', QueryUtils.createGuid());
+    }
   }
 
   private initializeAnalyticsClient() {

@@ -365,7 +365,8 @@ export class FakeResults {
       pageNumber: 0,
       advancedQuery: token + 'advancedQuery',
       didYouMean: false,
-      contextual: false
+      contextual: false,
+      clientId: token + 'clientId'
     };
   }
 
@@ -393,7 +394,8 @@ export class FakeResults {
       sourceName: token + 'sourceName',
       documentPosition: 0,
       viewMethod: token + 'viewMethod',
-      rankingModifier: token + 'rankingModifier'
+      rankingModifier: token + 'rankingModifier',
+      clientId: token + 'clientId'
     };
   }
 
