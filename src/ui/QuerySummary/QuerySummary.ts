@@ -190,10 +190,6 @@ export class QuerySummary extends Component {
   }
 
   private replaceQueryTagsWithHighlightedQuery(template: string) {
-    if (this.sanitizedQuery.trim() === '') {
-      return l('noResult');
-    }
-
     const highlightedQuery = `<span class="coveo-highlight">${this.sanitizedQuery}</span>`;
     return QuerySummaryUtils.replaceQueryTags(template, highlightedQuery);
   }
@@ -245,15 +241,21 @@ export class QuerySummary extends Component {
     return $$(this.element).findAll(`.${noResultsCssClass}`);
   }
 
-  private getNoResultsFoundMessageElement() {
-    const parsedNoResultsFoundMessage = this.replaceQueryTagsWithHighlightedQuery(this.options.noResultsFoundMessage);
+  private get parsedNoResultsFoundMessage() {
+    if (this.sanitizedQuery.trim() === '') {
+      return l('noResult');
+    }
 
+    return this.replaceQueryTagsWithHighlightedQuery(this.options.noResultsFoundMessage);
+  }
+
+  private getNoResultsFoundMessageElement() {
     const noResultsFoundMessage = $$(
       'div',
       {
         className: 'coveo-query-summary-no-results-string'
       },
-      parsedNoResultsFoundMessage
+      this.parsedNoResultsFoundMessage
     );
 
     return noResultsFoundMessage;
