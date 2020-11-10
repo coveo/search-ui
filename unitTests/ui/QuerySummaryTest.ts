@@ -274,7 +274,7 @@ export function QuerySummaryTest() {
         expect(getCustomMessageElement().textContent).toBe('custom querySearched Message querySearched');
       });
 
-      it(`when mutiple no results page are triggered consicutively with different querySearched,
+      it(`when mutiple no results page are triggered consecutively with different querySearched,
           it should update the query tags with the new query searched`, () => {
         test = Mock.optionsComponentSetup<QuerySummary, IQuerySummaryOptions>(QuerySummary, {
           enableNoResultsFoundMessage: true,
@@ -384,7 +384,7 @@ export function QuerySummaryTest() {
         expect(getcustomNoResultsPageElement().textContent).toBe('querySearched querySearched');
       });
 
-      it(`when mutiple no results page are triggered consicutively with different querySearched,
+      it(`when mutiple no results page are triggered consecutively with different querySearched,
           it should update the query tags with the new query searched`, () => {
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
 
@@ -410,12 +410,12 @@ export function QuerySummaryTest() {
       });
 
       it(`when the query searched is an empty string,
-        it should put the string NoResult instead`, () => {
+        it should replace the query tag with the query searched`, () => {
         test.env.queryStateModel.get = () => '';
         test.cmp.element.innerHTML = `<div class="${noResultsCssClass}">${queryTag}</div>`;
         Simulate.query(test.env, { results: FakeResults.createFakeResults(0) });
 
-        expect(getcustomNoResultsPageElement().textContent).toBe('No results');
+        expect(getcustomNoResultsPageElement().textContent).toBe('');
       });
 
       it(`when the query searched is the same as the queryTag,
