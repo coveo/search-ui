@@ -97,10 +97,13 @@
       #{$allDynamicFacetsType} {
         margin: 0;
 
-        .coveo-dynamic-facet-header,
         .coveo-dynamic-facet-values,
         .coveo-dynamic-hierarchical-facet-values {
           padding: 5px;
+        }
+
+        .coveo-dynamic-facet-header {
+          padding: 0 5px;
         }
 
         .coveo-dynamic-facet-search {
