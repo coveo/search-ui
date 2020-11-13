@@ -359,6 +359,18 @@ export function ResultLinkTest() {
         expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
       });
 
+      it('when the clickUri is a relative url (starts with slash), it sets the href to the uri', () => {
+        fakeResult.clickUri = '/casemgmt/sc_KnowledgeArticle?sfdcid=ka32C0000009t9CQAQ&type=Solution';
+        initHyperLink();
+        expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
+      });
+
+      it('when the clickUri is a string containing but not starting with a slash, it sets the href to an empty string', () => {
+        fakeResult.clickUri = 'casemgmt/sc_KnowledgeArticle';
+        initHyperLink();
+        expect(test.cmp.element.getAttribute('href')).toEqual('');
+      });
+
       it(`when the uri (clickUri) defined in the results contains the javascript protocol,
         it clears the value to prevent XSS`, () => {
         fakeResult.clickUri = 'JavaScript:void(0)';
