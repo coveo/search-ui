@@ -33,7 +33,7 @@ export function DynamicHierarchicalFacetBreadcrumbTest() {
     });
 
     it('should create a value with the right path', () => {
-      expect(valueElement().innerText).toBe('test / allo');
+      expect(valueElement().childNodes[0].nodeValue).toBe('test / allo');
     });
 
     it(`when clicking on a breadcrumb value element
@@ -70,6 +70,10 @@ export function DynamicHierarchicalFacetBreadcrumbTest() {
 
       $$(valueElement()).trigger('click');
       expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.breadcrumbFacet);
+    });
+
+    it('should have the correct aria-label for a selected value', () => {
+      expect(valueElement().getAttribute('aria-label')).toBe('Remove inclusion filter on test / allo');
     });
   });
 }

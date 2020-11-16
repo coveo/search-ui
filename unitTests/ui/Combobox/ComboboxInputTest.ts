@@ -34,6 +34,11 @@ export function ComboboxInputTest() {
       expect(getInput()).toBeTruthy();
     });
 
+    it('value getter should return the input value', () => {
+      simulateInputChange('hello');
+      expect(comboboxInput.value).toBe('hello');
+    });
+
     it(`when triggering change on the input
     should call the "onInputChange" method of the combobox`, () => {
       const value = 'test';
@@ -49,27 +54,47 @@ export function ComboboxInputTest() {
     });
 
     it(`when triggering blur on the input
+    when relatedTarget is outside the combobox
     should call the "onInputBlur" method of the combobox`, () => {
       const relatedTarget = document.body;
-      const eventData: Partial<FocusEvent> = {
-        relatedTarget
-      };
-      $$(combobox.element).trigger('focusout', eventData);
+      combobox.element.dispatchEvent(new FocusEvent('focusout', { relatedTarget }));
       expect(combobox.onInputBlur).toHaveBeenCalled();
     });
 
+    it(`when triggering blur on the input
+    when relatedTarget is inside the combobox
+    should not call the "onInputBlur" method of the combobox`, () => {
+      const relatedTarget = combobox.values.element;
+      combobox.element.dispatchEvent(new FocusEvent('focusout', { relatedTarget }));
+      expect(combobox.onInputBlur).not.toHaveBeenCalled();
+    });
+
     it(`when pressing the down arrow on the keyboard
-    should call the "moveActiveValueDown" method of the combobox values`, () => {
-      spyOn(combobox.values, 'moveActiveValueDown');
+    should call the "focusNextValue" method of the combobox values`, () => {
+      spyOn(combobox.values, 'focusNextValue');
       Simulate.keyDown(combobox.element, KEYBOARD.DOWN_ARROW);
-      expect(combobox.values.moveActiveValueDown).toHaveBeenCalled();
+      expect(combobox.values.focusNextValue).toHaveBeenCalled();
     });
 
     it(`when pressing the up arrow on the keyboard
-    should call the "moveActiveValueUp" method of the combobox values`, () => {
-      spyOn(combobox.values, 'moveActiveValueUp');
+    should call the "focusPreviousValue" method of the combobox values`, () => {
+      spyOn(combobox.values, 'focusPreviousValue');
       Simulate.keyDown(combobox.element, KEYBOARD.UP_ARROW);
-      expect(combobox.values.moveActiveValueUp).toHaveBeenCalled();
+      expect(combobox.values.focusPreviousValue).toHaveBeenCalled();
+    });
+
+    it(`when pressing the home button on the keyboard
+    should call the "focusFirstValue" method of the combobox values`, () => {
+      spyOn(combobox.values, 'focusFirstValue');
+      Simulate.keyDown(combobox.element, KEYBOARD.HOME);
+      expect(combobox.values.focusFirstValue).toHaveBeenCalled();
+    });
+
+    it(`when pressing the end button on the keyboard
+    should call the "focusLastValue" method of the combobox values`, () => {
+      spyOn(combobox.values, 'focusLastValue');
+      Simulate.keyDown(combobox.element, KEYBOARD.END);
+      expect(combobox.values.focusLastValue).toHaveBeenCalled();
     });
 
     it(`when pressing enter button of the keyboard

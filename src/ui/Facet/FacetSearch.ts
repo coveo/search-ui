@@ -295,12 +295,14 @@ export class FacetSearch implements IFacetSearch {
       }
       this.highlightCurrentQueryWithinSearchResults();
       this.makeFirstSearchResultTheCurrentOne();
+      this.facetSearchElement.updateAriaLiveWithResults(this.input.value, this.currentlyDisplayedResults.length, this.moreValuesToFetch);
     } else {
       if (facetSearchParameters.fetchMore) {
         this.moreValuesToFetch = false;
       } else {
-        this.facetSearchElement.hideSearchResultsElement();
         $$(this.search).addClass('coveo-facet-search-no-results');
+        this.showSearchResultsElement();
+        this.facetSearchElement.emptyAndShowNoResults();
       }
     }
   }
@@ -341,7 +343,6 @@ export class FacetSearch implements IFacetSearch {
     const selectAll = document.createElement('li');
     $$(selectAll).addClass(['coveo-facet-selectable', 'coveo-facet-search-selectable', 'coveo-facet-search-select-all']);
     $$(selectAll).text(l('SelectAll'));
-    $$(selectAll).setAttribute('aria-hidden', 'true');
     $$(selectAll).on('click', () => this.selectAllValuesMatchingSearch());
     this.facetSearchElement.appendToSearchResults(selectAll);
   }

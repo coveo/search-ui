@@ -843,7 +843,7 @@ export function FacetTest() {
         });
       });
 
-      it('facetSearchDelay should be passed to the facet search component', function(done) {
+      it('facetSearchDelay should be passed to the facet search component', function (done) {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           facetSearchDelay: 5
@@ -856,7 +856,7 @@ export function FacetTest() {
         }, 6); // one more ms then facetSearchDelay
       });
 
-      it('numberOfValuesInFacetSearch should be passed to the facet search component', function(done) {
+      it('numberOfValuesInFacetSearch should be passed to the facet search component', function (done) {
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
           numberOfValuesInFacetSearch: 13

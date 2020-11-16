@@ -22,10 +22,6 @@ export interface IFacetSearchResultValue {
    * the filter expression that would get generated if the facet value were selected.
    */
   count: number;
-  /**
-   * Whether additional facet values matching the request are available.
-   */
-  moreValuesAvailable: boolean;
 }
 
 /**
@@ -36,4 +32,8 @@ export interface IFacetSearchResponse {
    * The facet values.
    */
   values: IFacetSearchResultValue[];
+  /**
+   * Whether additional facet values matching the request are available.
+   */
+  moreValuesAvailable: boolean;
 }

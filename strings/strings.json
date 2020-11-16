@@ -754,8 +754,8 @@
     "zh-tw": "切換到 {0}"
   },
   "Unexclude": {
-    "en": "Unexclude {0}",
-    "fr": "Réinclure {0}",
+    "en": "Remove exclusion filter on {0}",
+    "fr": "Enlever le filtre d'exclusion sur {0}",
     "cs": "Znovu zahrnout {0}",
     "da": "Udeluk ikke {0}",
     "de": "Ausschluss von {0} aufheben",
@@ -1577,6 +1577,11 @@
     "tr": "{0} için sonuç yok",
     "zh-cn": "没有找到与 {0} 相关的结果",
     "zh-tw": "沒有找到與 {0} 相關的結果"
+  },
+  "noResult": {
+    "en": "No results",
+    "fr": "Aucun résultat",
+    "es-es": "No hay resultados"
   },
   "autoCorrectedQueryTo": {
     "en": "Query was automatically corrected to {0}",
@@ -7398,8 +7403,8 @@
     "fr": "Filtrer sur {0}"
   },
   "RemoveFilterOn": {
-    "en": "Remove filter on {0}",
-    "fr": "Enlever le filtre sur {0}"
+    "en": "Remove inclusion filter on {0}",
+    "fr": "Enlever le filtre d'inclusion sur {0}"
   },
   "Enter": {
     "en": "Enter",
@@ -7433,13 +7438,13 @@
     "en": "{0} facet",
     "fr": "Facette {0}"
   },
-  "SelectValueWithResultCount": {
-    "en": "Select {0} with {1}",
-    "fr": "Sélectionner {0} avec {1}"
+  "IncludeValueWithResultCount": {
+    "en": "Inclusion filter on {0}; {1}",
+    "fr": "Filtre d'inclusion sur {0}; {1}"
   },
   "ExcludeValueWithResultCount": {
-    "en": "Exclude {0} with {1}",
-    "fr": "Exclure {0} avec {1}"
+    "en": "Exclusion filter on {0}; {1}",
+    "fr": "Filtre d'exclusion sur {0}; {1}"
   },
   "PageNumber": {
     "en": "Page {0}",
@@ -7521,5 +7526,77 @@
   "HierarchicalFacetValuePathPrefix": {
     "en": "in",
     "fr": "dans"
+  },
+  "UsefulnessFeedbackRequest": {
+    "en": "Was this useful?",
+    "fr": "Était-ce utile?"
+  },
+  "UsefulnessFeedbackThankYou": {
+    "en": "Thanks for your feedback!",
+    "fr": "Merci pour votre rétroaction!"
+  },
+  "UsefulnessFeedbackExplainWhy": {
+    "en": "Explain why",
+    "fr": "Expliquer pourquoi"
+  },
+  "UsefulnessFeedbackExplainWhyImperative": {
+    "en": "Explain why",
+    "fr": "Expliquez pourquoi"
+  },
+  "UsefulnessFeedbackDoesNotAnswer": {
+    "en": "This didn't answer my question at all",
+    "fr": "Ceci n'a pas répondu à ma question du tout"
+  },
+  "UsefulnessFeedbackPartiallyAnswers": {
+    "en": "This only partially answered my question",
+    "fr": "Ceci a seulement partiellement répondu à ma question"
+  },
+  "UsefulnessFeedbackWasNotAQuestion": {
+    "en": "My request wasn't meant to be perceived as a question",
+    "fr": "Ma requête n'était pas sensée être perçue comme une question"
+  },
+  "Yes": {
+    "en": "Yes",
+    "fr": "Oui"
+  },
+  "No": {
+    "en": "No",
+    "fr": "Non"
+  },
+  "Other": {
+    "en": "Other",
+    "fr": "Autre"
+  },
+  "Send": {
+    "en": "Send",
+    "fr": "Envoyer"
+  },
+  "UsefulnessFeedbackReason": {
+    "en": "Reason",
+    "fr": "Raison"
+  },
+  "AnswerSnippet": {
+    "en": "Answer to your question",
+    "fr": "Réponse à votre question"
+  },
+  "AnswerSpecificSnippet": {
+    "en": "Answer to \"{0}\"",
+    "fr": "Réponse à « {0} »"
+  },
+  "SuggestedQuestions": {
+    "en": "People also ask",
+    "fr": "Autres questions posées"
+  },
+  "ExpandQuestionAnswer": {
+    "en": "View answer for \"{0}\"",
+    "fr": "Regarder la réponse à « {0} »"
+  },
+  "MoreValuesAvailable": {
+    "en": "additional values are available",
+    "fr": "des valeurs additionnelles sont disponibles"
+  },
+  "Breadcrumb": {
+    "en": "Active filters",
+    "fr": "Filtres actifs"
   }
 }

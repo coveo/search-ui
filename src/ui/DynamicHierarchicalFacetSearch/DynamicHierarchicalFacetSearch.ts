@@ -3,9 +3,10 @@ import { HierarchicalFacetSearchController } from '../../controllers/Hierarchica
 import { Combobox } from '../Combobox/Combobox';
 import { l } from '../../strings/Strings';
 import { IFacetSearchResponse } from '../../rest/Facet/FacetSearchResponse';
-import { IComboboxValue } from '../Combobox/ComboboxValues';
+import { IComboboxValue } from '../Combobox/ICombobox';
 import { DynamicHierarchicalFacetSearchValue } from './DynamicHierarchicalFacetSearchValue';
 import { DynamicHierarchicalFacetSearchValueRenderer } from './DynamicHierarchicalFacetSearchValueRenderer';
+import 'styling/DynamicFacetSearch/_DynamicFacetSearch';
 import 'styling/DynamicHierarchicalFacetSearch/_DynamicHierarchicalFacetSearch';
 
 export class DynamicHierarchicalFacetSearch {
@@ -22,20 +23,22 @@ export class DynamicHierarchicalFacetSearch {
   private build(): HTMLElement {
     this.combobox = new Combobox({
       label: l('SearchFacetResults', this.facet.options.title),
-      searchInterface: this.facet.searchInterface,
-      requestValues: terms => this.facetSearch(terms),
+      ariaLive: this.facet.searchInterface.ariaLive,
+      requestValues: terms => this.hierarchicalFacetSearchController.search(terms),
       createValuesFromResponse: (response: IFacetSearchResponse) => this.createValuesFromResponse(response),
       onSelectValue: this.onSelectValue,
       placeholderText: l('Search'),
       wrapperClassName: 'coveo-dynamic-facet-search',
-      clearOnBlur: true
+      clearOnBlur: true,
+      scrollable: {
+        requestMoreValues: () => this.hierarchicalFacetSearchController.fetchMoreResults(),
+        areMoreValuesAvailable: () => this.hierarchicalFacetSearchController.moreValuesAvailable,
+        maxDropdownHeight: 250
+      },
+      highlightValueClassName: 'coveo-dynamic-hierarchical-facet-search-value-label'
     });
 
     return this.combobox.element;
-  }
-
-  private async facetSearch(terms: string) {
-    return this.hierarchicalFacetSearchController.search(terms);
   }
 
   private getDisplayValue(value: string) {
@@ -53,7 +56,6 @@ export class DynamicHierarchicalFacetSearch {
         },
         this.facet
       );
-
       return {
         value: facetValue,
         element: facetValue.renderedElement

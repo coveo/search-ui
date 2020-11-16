@@ -29,6 +29,7 @@ import { version } from '../../misc/Version';
 import { QueryUtils } from '../../utils/QueryUtils';
 import * as _ from 'underscore';
 import { IComponentBindings } from '../Base/ComponentBindings';
+import { AnalyticsInformation } from './AnalyticsInformation';
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
@@ -275,7 +276,8 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       originLevel3: document.referrer,
       originContext: this.originContext,
       customData: _.keys(metaObject).length > 0 ? metaObject : undefined,
-      userAgent: navigator.userAgent
+      userAgent: navigator.userAgent,
+      clientId: new AnalyticsInformation().clientId
     };
   }
 

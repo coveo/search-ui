@@ -85,7 +85,7 @@ export class CategoryValue implements CategoryValueParent {
 
     const count = this.categoryValueDescriptor.count;
     const countLabel = l('ResultCount', count.toString(), count);
-    const label = l('SelectValueWithResultCount', this.captionedValueDescriptorValue, countLabel);
+    const label = l('IncludeValueWithResultCount', this.captionedValueDescriptorValue, countLabel);
 
     new AccessibleButton()
       .withElement(element)

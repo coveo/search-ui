@@ -1,9 +1,15 @@
 import * as axe from 'axe-core';
-import { $$, Component, Sort } from 'coveo-search-ui';
-import { afterQuerySuccess, getRoot, getSortSection } from './Testing';
+import { $$, Component, Sort, ResultList } from 'coveo-search-ui';
+import { afterQuerySuccess, getRoot, getSortSection, getResultsColumn } from './Testing';
 
 export const AccessibilitySort = () => {
   describe('Sort', () => {
+    const getResultListStandardElement = () => {
+      return $$('div', {
+        className: Component.computeCssClassName(ResultList)
+      });
+    };
+
     it('should be accessible', async done => {
       const sortElement = $$('span', {
         className: Component.computeCssClassName(Sort),
@@ -11,6 +17,7 @@ export const AccessibilitySort = () => {
         'data-caption': 'Relevance'
       });
 
+      getResultsColumn().appendChild(getResultListStandardElement().el);
       getSortSection().appendChild(sortElement.el);
 
       await afterQuerySuccess();
@@ -32,6 +39,7 @@ export const AccessibilitySort = () => {
         'data-caption': 'Date'
       });
 
+      getResultsColumn().appendChild(getResultListStandardElement().el);
       getSortSection().appendChild(firstSortElement.el);
       getSortSection().appendChild(secondSortElement.el);
 

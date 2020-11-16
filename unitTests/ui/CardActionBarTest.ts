@@ -7,7 +7,7 @@ export function CardActionBarTest() {
     let test: Mock.IBasicComponentSetup<CardActionBar>;
     let parentResult: HTMLElement;
 
-    beforeEach(function() {
+    beforeEach(function () {
       test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: b => {
           parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
@@ -17,9 +17,9 @@ export function CardActionBarTest() {
     });
     afterEach(() => (parentResult = null));
 
-    describe('exposes option', function() {
-      describe('hidden set to true', function() {
-        beforeEach(function() {
+    describe('exposes option', function () {
+      describe('hidden set to true', function () {
+        beforeEach(function () {
           test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
             modifyBuilder: b => {
               parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
@@ -31,37 +31,37 @@ export function CardActionBarTest() {
           });
         });
 
-        it('should show when parent result is clicked', function() {
+        it('should show when parent result is clicked', function () {
           spyOn(test.cmp, 'show');
           $$(parentResult).trigger('click');
           expect(test.cmp.show).toHaveBeenCalledTimes(1);
         });
 
-        it('should hide when mouse leaves parent result', function() {
+        it('should hide when mouse leaves parent result', function () {
           spyOn(test.cmp, 'hide');
           $$(parentResult).trigger('mouseleave');
           expect(test.cmp.hide).toHaveBeenCalledTimes(1);
         });
 
-        it('should display an arrow indicator in its parent CoveoResult', function() {
+        it('should display an arrow indicator in its parent CoveoResult', function () {
           expect($$(parentResult).find('.coveo-card-action-bar-arrow-container')).not.toBeNull();
         });
 
-        it('should show when action bar is focused in', function() {
+        it('should show when action bar is focused in', function () {
           spyOn(test.cmp, 'show');
           $$(test.cmp.element).trigger('focusin');
           expect(test.cmp.show).toHaveBeenCalledTimes(1);
         });
 
-        it('should hide when action bar is focused out', function() {
+        it('should hide when action bar is focused out', function () {
           spyOn(test.cmp, 'hide');
           $$(test.cmp.element).trigger('focusout');
           expect(test.cmp.hide).toHaveBeenCalledTimes(1);
         });
       });
 
-      describe('hidden set to false', function() {
-        beforeEach(function() {
+      describe('hidden set to false', function () {
+        beforeEach(function () {
           test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
             modifyBuilder: b => {
               parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
@@ -73,18 +73,18 @@ export function CardActionBarTest() {
           });
         });
 
-        it('should always be shown', function() {
+        it('should always be shown', function () {
           spyOn(test.cmp, 'show');
           $$(parentResult).trigger('click');
           expect(test.cmp.show).not.toHaveBeenCalled();
         });
 
-        it('should not display an arrow indicator in its parent CoveoResult', function() {
+        it('should not display an arrow indicator in its parent CoveoResult', function () {
           expect($$(parentResult).find('.coveo-card-action-bar-arrow-container')).toBeNull();
         });
       });
 
-      it('openOnMouseOver set to true should call open when mouseentering the arrow container', function() {
+      it('openOnMouseOver set to true should call open when mouseentering the arrow container', function () {
         test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: b => {
             parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
@@ -100,7 +100,7 @@ export function CardActionBarTest() {
         expect(test.cmp.show).toHaveBeenCalledTimes(1);
       });
 
-      it('openOnMouseOver set to false should not call open when mouseentering the arrow container', function() {
+      it('openOnMouseOver set to false should not call open when mouseentering the arrow container', function () {
         test = Mock.advancedComponentSetup<CardActionBar>(CardActionBar, <Mock.AdvancedComponentSetupOptions>{
           modifyBuilder: b => {
             parentResult = $$('div', { className: 'CoveoResult' }, $$('div')).el;
@@ -117,12 +117,12 @@ export function CardActionBarTest() {
       });
     });
 
-    it('show should add coveo-opened class', function() {
+    it('show should add coveo-opened class', function () {
       test.cmp.show();
       expect($$(test.cmp.element).hasClass('coveo-opened')).toBe(true);
     });
 
-    it('hide should remove coveo-opened class', function() {
+    it('hide should remove coveo-opened class', function () {
       test.cmp.show();
       test.cmp.hide();
       expect($$(test.cmp.element).hasClass('coveo-opened')).toBe(false);

@@ -240,7 +240,6 @@ export class Tab extends Component {
     new AccessibleButton()
       .withElement(element)
       .withSelectAction(() => this.select())
-      .withLabel(this.options.caption)
       .withTitle(this.options.caption)
       .withOwner(this.bind)
       .build();

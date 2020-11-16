@@ -50,7 +50,7 @@ export function DependsOnManagerTest() {
     }
 
     function assignCustomCondition() {
-      dependentMock.facet.ref.options.dependsOnCondition = <IDependentFacetCondition>function(facet) {
+      dependentMock.facet.ref.options.dependsOnCondition = <IDependentFacetCondition>function (facet) {
         const currentValues = facet.queryStateModel.get(QueryStateModel.getFacetId(facet.options.id));
         return currentValues && currentValues.indexOf('the right value') !== -1;
       };

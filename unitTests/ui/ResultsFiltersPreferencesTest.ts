@@ -96,7 +96,7 @@ export function ResultsFiltersPreferencesTest() {
         $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: breadcrumbItems });
 
         const breadcrumbValue = $$(breadcrumbItems[0].element).find('.coveo-value');
-        expect(breadcrumbValue.getAttribute('aria-label')).toBe('Remove filter on Test filter');
+        expect(breadcrumbValue.getAttribute('aria-label')).toBe('Remove inclusion filter on Test filter');
         expect(breadcrumbValue.getAttribute('role')).toBe('button');
         expect(breadcrumbValue.getAttribute('tabindex')).toBe('0');
       });

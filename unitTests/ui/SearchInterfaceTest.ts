@@ -463,7 +463,7 @@ export function SearchInterfaceTest() {
           expect(simulation.queryBuilder.timezone).toBe('aa-bb');
         });
 
-        it('enableDebugInfo should create a debug component', function(done) {
+        it('enableDebugInfo should create a debug component', function (done) {
           const cmp = new SearchInterface(
             div,
             {
@@ -478,7 +478,7 @@ export function SearchInterfaceTest() {
           });
         });
 
-        it('enableDebugInfo disabled should not create a debug component', function(done) {
+        it('enableDebugInfo disabled should not create a debug component', function (done) {
           const cmp = new SearchInterface(
             div,
             {

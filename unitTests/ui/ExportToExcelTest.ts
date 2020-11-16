@@ -1,88 +1,131 @@
 import * as Mock from '../MockEnvironment';
-import { ExportToExcel } from '../../src/ui/ExportToExcel/ExportToExcel';
+import { ExportToExcel, setCreateAnchor } from '../../src/ui/ExportToExcel/ExportToExcel';
 import { IExportToExcelOptions } from '../../src/ui/ExportToExcel/ExportToExcel';
-import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import _ = require('underscore');
 
 export function ExportToExcelTest() {
-  describe('ExportToExcel', function() {
+  describe('ExportToExcel', function () {
+    let options: IExportToExcelOptions = {};
     let test: Mock.IBasicComponentSetup<ExportToExcel>;
 
-    beforeEach(function() {
-      test = Mock.basicComponentSetup<ExportToExcel>(ExportToExcel);
+    function initExportToExcel() {
+      test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, options);
       test.cmp._window = Mock.mockWindow();
+    }
+
+    function buildAnchorWithClickSpy() {
+      const a = document.createElement('a');
+      spyOn(a, 'click');
+      return a;
+    }
+
+    beforeEach(function () {
+      options = {};
+      setCreateAnchor(() => buildAnchorWithClickSpy());
+
+      initExportToExcel();
     });
 
-    describe('exposes options', function() {
-      it('numberOfResults calls search endpoint with appropriate number of results', function() {
-        test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, <IExportToExcelOptions>{
-          numberOfResults: 200
-        });
-        test.cmp._window = Mock.mockWindow();
-        const searchEndpointSpy = jasmine.createSpy('searchEndpoint');
-        test.env.searchEndpoint.getExportToExcelLink = searchEndpointSpy;
-        const fakeQuery = new QueryBuilder().build();
-        test.env.queryController.getLastQuery = () => fakeQuery;
+    describe('calling #download', () => {
+      it(`calls fetchBinary with format set to 'xlsx'`, () => {
         test.cmp.download();
-        expect(searchEndpointSpy).toHaveBeenCalledWith(_.omit(fakeQuery, ['numberOfResults', 'fieldsToInclude']), 200);
+
+        expect(test.env.searchEndpoint.fetchBinary).toHaveBeenCalledWith(jasmine.objectContaining({ format: 'xlsx' }));
       });
 
-      it('fieldsToInclude allows to specify the needed fields to download', () => {
-        test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, <IExportToExcelOptions>{
-          fieldsToInclude: ['@foo', '@bar']
-        });
-        test.cmp._window = Mock.mockWindow();
-        const searchEndpointSpy = jasmine.createSpy('searchEndpoint');
-        test.env.searchEndpoint.getExportToExcelLink = searchEndpointSpy;
-        const fakeQuery = new QueryBuilder().build();
-        test.env.queryController.getLastQuery = () => fakeQuery;
+      it('calls fetchBinary with the default number of results', () => {
         test.cmp.download();
-        expect(searchEndpointSpy).toHaveBeenCalledWith(
-          jasmine.objectContaining({
-            fieldsToInclude: jasmine.arrayContaining(['@foo', '@bar'])
-          }),
-          100
-        );
+
+        expect(test.env.searchEndpoint.fetchBinary).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 100 }));
       });
 
-      it('fieldsToInclude not being specified means the fields to include will be "null" in the query', () => {
-        test = Mock.optionsComponentSetup<ExportToExcel, IExportToExcelOptions>(ExportToExcel, <IExportToExcelOptions>{
-          fieldsToInclude: null
-        });
-        test.cmp._window = Mock.mockWindow();
-        const searchEndpointSpy = jasmine.createSpy('searchEndpoint');
-        test.env.searchEndpoint.getExportToExcelLink = searchEndpointSpy;
-        const fakeQuery = new QueryBuilder().build();
-        test.env.queryController.getLastQuery = () => fakeQuery;
-        test.cmp.download();
-        expect(searchEndpointSpy).not.toHaveBeenCalledWith(
-          jasmine.objectContaining({
-            fieldsToInclude: jasmine.anything()
-          }),
-          100
-        );
-      });
-    });
-
-    describe('when query was made', function() {
-      beforeEach(function() {
-        test.env.queryController.getLastQuery = () => new QueryBuilder().build();
-        test.env.searchEndpoint.getExportToExcelLink = () => 'http://www.excellink.com';
-      });
-
-      it('download should call exportToExcel event if query was made', function() {
+      it('should call exportToExcel event if query was made', () => {
         const excelSpy = jasmine.createSpy('excelSpy');
         test.env.usageAnalytics.logCustomEvent = excelSpy;
         test.cmp.download();
         expect(excelSpy).toHaveBeenCalledWith(analyticsActionCauseList.exportToExcel, {}, test.env.element);
       });
 
-      it('download should redirect to the link provided by the search endpoint', function() {
-        const windowLocationReplaceSpy = jasmine.createSpy('windowLocationReplaceSpy');
-        test.cmp._window.location.replace = windowLocationReplaceSpy;
+      it('sets on an achor element href attribute the blob url', async done => {
+        const a = buildAnchorWithClickSpy();
+        setCreateAnchor(() => a);
+
         test.cmp.download();
-        expect(test.cmp._window.location.replace).toHaveBeenCalledWith('http://www.excellink.com');
+        await Promise.resolve({});
+
+        expect(a.href).toContain('blob:http://localhost');
+        done();
+      });
+
+      it('sets on an achor element the download attribute', async done => {
+        const a = buildAnchorWithClickSpy();
+        setCreateAnchor(() => a);
+
+        test.cmp.download();
+        await Promise.resolve({});
+
+        expect(a.download).toBeTruthy();
+        done();
+      });
+
+      it('clicks the anchor element', async done => {
+        const a = buildAnchorWithClickSpy();
+        setCreateAnchor(() => a);
+
+        test.cmp.download();
+        await Promise.resolve({});
+
+        expect(a.click).toHaveBeenCalledTimes(1);
+        done();
+      });
+
+      it('revokes the blob object url', async done => {
+        const spy = jasmine.createSpy('revokeObjectUrl');
+
+        window.URL.revokeObjectURL = spy;
+
+        test.cmp.download();
+        await Promise.resolve({});
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
+
+    describe('exposes options', function () {
+      it('numberOfResults calls search endpoint with appropriate number of results', function () {
+        options.numberOfResults = 200;
+        initExportToExcel();
+
+        test.cmp.download();
+
+        expect(test.env.searchEndpoint.fetchBinary).toHaveBeenCalledWith(jasmine.objectContaining({ numberOfResults: 200 }));
+      });
+
+      it('fieldsToInclude allows to specify the needed fields to download', () => {
+        options.fieldsToInclude = ['@foo', '@bar'];
+        initExportToExcel();
+
+        test.cmp.download();
+
+        expect(test.env.searchEndpoint.fetchBinary).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            fieldsToInclude: jasmine.arrayContaining(['@foo', '@bar'])
+          })
+        );
+      });
+
+      it('fieldsToInclude not being specified means the fields to include will be "null" in the query', () => {
+        options.fieldsToInclude = null;
+        initExportToExcel();
+
+        test.cmp.download();
+
+        expect(test.env.searchEndpoint.fetchBinary).not.toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            fieldsToInclude: jasmine.anything()
+          })
+        );
       });
     });
   });

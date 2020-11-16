@@ -62,20 +62,7 @@ export class ResponsiveComponentsManager {
     const initEventRoot = options.initializationEventRoot || root;
     initEventRoot.on(InitializationEvents.afterInitialization, () => {
       if (this.shouldEnableResponsiveMode(root)) {
-        let responsiveComponentsManager = _.find(this.componentManagers, componentManager => root.el == componentManager.coveoRoot.el);
-        if (!responsiveComponentsManager) {
-          responsiveComponentsManager = new ResponsiveComponentsManager(root);
-        }
-
-        if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
-          responsiveComponentsManager.disableComponent(ID);
-          return;
-        }
-
-        this.componentInitializations.push({
-          responsiveComponentsManager: responsiveComponentsManager,
-          arguments: [responsiveComponentConstructor, root, ID, component, options]
-        });
+        this.registerComponentIfResponsiveModeEnabled(responsiveComponentConstructor, root, ID, component, options);
       }
 
       this.remainingComponentInitializations--;
@@ -94,6 +81,29 @@ export class ResponsiveComponentsManager {
       }
     });
     this.remainingComponentInitializations++;
+  }
+
+  private static registerComponentIfResponsiveModeEnabled(
+    responsiveComponentConstructor: IResponsiveComponentConstructor,
+    root: Dom,
+    ID: string,
+    component: Component,
+    options: IResponsiveComponentOptions
+  ) {
+    let responsiveComponentsManager = _.find(this.componentManagers, componentManager => root.el == componentManager.coveoRoot.el);
+    if (!responsiveComponentsManager) {
+      responsiveComponentsManager = new ResponsiveComponentsManager(root);
+    }
+
+    if (!Utils.isNullOrUndefined(options.enableResponsiveMode) && !options.enableResponsiveMode) {
+      responsiveComponentsManager.disableComponent(ID);
+      return;
+    }
+
+    this.componentInitializations.push({
+      responsiveComponentsManager: responsiveComponentsManager,
+      arguments: [responsiveComponentConstructor, root, ID, component, options]
+    });
   }
 
   private static shouldEnableResponsiveMode(root: Dom): boolean {
@@ -147,6 +157,8 @@ export class ResponsiveComponentsManager {
     // Since on a mobile device resizing the page is not something that should really happen, we disable it here.
     if (!DeviceUtils.isMobileDevice()) {
       window.addEventListener('resize', this.resizeListener);
+    } else {
+      window.addEventListener('orientationchange', this.resizeListener);
     }
 
     this.bindNukeEvents();

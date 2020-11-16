@@ -12,11 +12,13 @@ $color-greyish-dark-blue: #263e55;
 $color-greyish-teal-blue: #1d4f76;
 $color-blueish-gray: #67768b;
 $color-vibrant-blue: #009ddc;
+$color-blue-background: #486fc7;
 // Complementary Colors Set 2
 $color-teal: #296896;
 $color-greyish-cyan: #cddee9;
 $color-greyish-light-cyan: #cddee9;
 $color-light-contrast-grey: #7e8c9a;
+$color-very-light-grey: #dee1e4;
 $color-strong-contrast-grey: #657381;
 $color-light-grey: #bcc3ca;
 $color-blueish-white-grey: #e6ecf0;
@@ -25,8 +27,10 @@ $color-light-greyish-blue: #9cb4cb;
 // Coveo Partners Colors
 $color-coveo-for-sitecore: #dc291e;
 $color-coveo-for-salesforce: #009ddc;
-$color-green: #4caf50;
+$color-green: #3a833c;
 $color-red: #cc0d00;
+$color-orange: #c65306;
+$color-active-orange: #943e05;
 $color-active-yellow: #ecad00;
 $color-transparent-background: rgba(255, 255, 255, 0.85);
 $color-white-transparent: rgba(255, 255, 255, 0.5);
@@ -43,6 +47,7 @@ $default-border-radius: 2px;
 $small-border-radius: 1px;
 $default-border: thin solid $color-light-grey;
 $default-low-contrast-border: thin solid $color-light-contrast-grey;
+$default-medium-border: 2px solid $color-very-light-grey;
 @mixin defaultRoundedBorder {
   border: $default-border;
   border-radius: $default-border-radius;
@@ -50,6 +55,10 @@ $default-low-contrast-border: thin solid $color-light-contrast-grey;
 @mixin defaultRoundedLowContrastBorder {
   border: $default-low-contrast-border;
   border-radius: $default-border-radius;
+}
+@mixin defaultMediumRoundedBorder {
+  border: $default-medium-border;
+  border-radius: 4px;
 }
 @mixin highContrastModeOutline {
   outline: 1px solid transparent;

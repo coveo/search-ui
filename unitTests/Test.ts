@@ -6,6 +6,9 @@ if (Simulate.isChromeHeadless()) {
   Logger.disable();
 }
 
+import { MockCookie } from './MockCookie';
+MockCookie.mockBrowserCookies();
+
 import { defaultLanguage } from '../src/strings/DefaultLanguage';
 defaultLanguage();
 
@@ -845,3 +848,27 @@ ResponsiveDropdownModalContentTest();
 
 import { FileTypesTest } from './ui/FileTypesTest';
 FileTypesTest();
+
+import { SmartSnippetTest } from './ui/SmartSnippetTest';
+SmartSnippetTest();
+
+import { HeightLimiterTest } from './ui/HeightLimiterTest';
+HeightLimiterTest();
+
+import { UserFeedbackBannerTest } from './ui/UserFeedbackBannerTest';
+UserFeedbackBannerTest();
+
+import { ExplanationModalTest } from './ui/ExplanationModalTest';
+ExplanationModalTest();
+
+import { SmartSnippetSuggestionsTest } from './ui/SmartSnippetSuggestionsTest';
+SmartSnippetSuggestionsTest();
+
+import { FacetSearchElementTest } from './ui/FacetSearchElementTest';
+FacetSearchElementTest();
+
+import { HistoryStoreTest } from './utils/HistoryStoreTest';
+HistoryStoreTest();
+
+import { AnalyticsInformationTest } from './ui/AnalyticsInformationTest';
+AnalyticsInformationTest();

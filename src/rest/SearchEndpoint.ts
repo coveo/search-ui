@@ -31,8 +31,7 @@ import { QueryUtils } from '../utils/QueryUtils';
 import { QueryError } from '../rest/QueryError';
 import { Utils } from '../utils/Utils';
 import * as _ from 'underscore';
-import { history } from 'coveo.analytics';
-import { Cookie } from '../utils/CookieUtils';
+import { buildHistoryStore } from '../utils/HistoryStore';
 import { TimeSpan } from '../utils/TimeSpanUtils';
 import { UrlUtils } from '../utils/UrlUtils';
 import { IGroupByResult } from './GroupByResult';
@@ -41,6 +40,8 @@ import { BackOffRequest, IBackOffRequest } from './BackOffRequest';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 import { IPlanResponse, ExecutionPlan } from './Plan';
+import { mapObject } from 'underscore';
+import { AnalyticsInformation } from '../ui/Analytics/AnalyticsInformation';
 
 export class DefaultSearchEndpointOptions implements ISearchEndpointOptions {
   restUri: string;
@@ -167,8 +168,9 @@ export class SearchEndpoint implements ISearchEndpoint {
    * **Allowed values:**
    *
    * - `https://platform.cloud.coveo.com/rest/search` (for organizations in the standard Coveo Cloud V2 environment)
+   * - `https://platform-eu.cloud.coveo.com/rest/search` (for organizations with European [data residency](https://docs.coveo.com/en/2976/#data-residency-configuration))
+   * - `https://platform-au.cloud.coveo.com/rest/search` (for organizations with Australian data residency)
    * - `https://platformhipaa.cloud.coveo.com/rest/search` (for [HIPAA](https://docs.coveo.com/1853/) organizations)
-   * - `https://globalplatform.cloud.coveo.com/rest/search` (for [multi-region](https://docs.coveo.com/2976/) organizations)
    *
    * **Default:** `https://platform.cloud.coveo.com/rest/search`
    * @param otherOptions Additional options to apply for this endpoint (e.g., a [`renewAccessToken`]{@link ISearchEndpointOptions.renewAccessToken} function).
@@ -332,6 +334,7 @@ export class SearchEndpoint implements ISearchEndpoint {
 
   @includeActionsHistory()
   @includeReferrer()
+  @includeAnalytics()
   @includeVisitorId()
   @includeIsGuestUser()
   private buildCompleteCall(request: any, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
@@ -397,6 +400,25 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * Performs a search on the index and returns a Promise of `ArrayBuffer`.
+   *
+   * @param query The query to execute. Typically, the query object is built using a
+   * [`QueryBuilder`]{@link QueryBuilder}.
+   * @param callOptions An additional set of options to use for this call.
+   * @param callParams The options injected by the applied decorators.
+   * @returns {Promise<ArrayBuffer>} A Promise of query results.
+   */
+  @path('/')
+  @method('POST')
+  @responseType('arraybuffer')
+  public async fetchBinary(query: IQuery, callOptions?: IEndpointCallOptions, callParams?: IEndpointCallParameters) {
+    const call = this.buildCompleteCall(query, callOptions, callParams);
+    this.logger.info('Performing REST query', query);
+
+    return this.performOneCall<ArrayBuffer>(call.params, call.options);
+  }
+
+  /**
    * Gets the plan of execution of a search request, without performing it.
    *
    * @param query The query to execute. Typically, the query object is built using a
@@ -419,6 +441,9 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * @deprecated getExportToExcelLink does not factor in all query parameters (e.g. dynamic facets) due to GET request url length limitations.
+   * Please use `fetchBinary` instead to ensure all query parameters are used.
+   *
    * Gets a link / URI to download a query result set to the XLSX format.
    *
    * **Note:**
@@ -854,10 +879,6 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('POST')
   @requestDataType('application/json')
   @responseType('text')
-  @includeActionsHistory()
-  @includeReferrer()
-  @includeVisitorId()
-  @includeIsGuestUser()
   public async facetSearch(
     request: IFacetSearchRequest,
     callOptions?: IEndpointCallOptions,
@@ -1059,7 +1080,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     this.isRedirecting = true;
   }
 
-  private buildBaseUri(path: string): string {
+  public buildBaseUri(path: string): string {
     Assert.isString(path);
 
     return UrlUtils.normalizeAsString({
@@ -1253,18 +1274,19 @@ function defaultDecoratorEndpointCallParameters() {
   return params;
 }
 
+function getEndpointCallParameters(nbParams: number, args: any[]) {
+  if (!args[nbParams - 1]) {
+    args[nbParams - 1] = defaultDecoratorEndpointCallParameters();
+  }
+  return args[nbParams - 1] as IEndpointCallParameters;
+}
+
 function path(path: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
-      const url = this.buildBaseUri(path);
-      if (args[nbParams - 1]) {
-        args[nbParams - 1].url = url;
-      } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { url: url });
-        args[nbParams - 1] = endpointCallParams;
-      }
+    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
+      getEndpointCallParameters(nbParams, args).url = this.buildBaseUri(path);
       return originalMethod.apply(this, args);
     };
 
@@ -1273,17 +1295,11 @@ function path(path: string) {
 }
 
 function alertsPath(path: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
-      const url = this.buildSearchAlertsUri(path);
-      if (args[nbParams - 1]) {
-        args[nbParams - 1].url = url;
-      } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { url: url });
-        args[nbParams - 1] = endpointCallParams;
-      }
+    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
+      getEndpointCallParameters(nbParams, args).url = this.buildSearchAlertsUri(path);
       return originalMethod.apply(this, args);
     };
 
@@ -1292,16 +1308,11 @@ function alertsPath(path: string) {
 }
 
 function requestDataType(type: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
-      if (args[nbParams - 1]) {
-        args[nbParams - 1].requestDataType = type;
-      } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { requestDataType: type });
-        args[nbParams - 1] = endpointCallParams;
-      }
+    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
+      getEndpointCallParameters(nbParams, args).requestDataType = type;
       return originalMethod.apply(this, args);
     };
     return descriptor;
@@ -1309,16 +1320,11 @@ function requestDataType(type: string) {
 }
 
 function method(met: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
-      if (args[nbParams - 1]) {
-        args[nbParams - 1].method = met;
-      } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { method: met });
-        args[nbParams - 1] = endpointCallParams;
-      }
+    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
+      getEndpointCallParameters(nbParams, args).method = met;
       return originalMethod.apply(this, args);
     };
 
@@ -1327,16 +1333,11 @@ function method(met: string) {
 }
 
 function responseType(resp: string) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
-      if (args[nbParams - 1]) {
-        args[nbParams - 1].responseType = resp;
-      } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { responseType: resp });
-        args[nbParams - 1] = endpointCallParams;
-      }
+    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
+      getEndpointCallParameters(nbParams, args).responseType = resp;
       return originalMethod.apply(this, args);
     };
 
@@ -1345,7 +1346,7 @@ function responseType(resp: string) {
 }
 
 function accessTokenInUrl(tokenKey: string = 'access_token') {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     const buildAccessToken = (tokenKey: string, endpointInstance: SearchEndpoint): string[] => {
       let queryString: string[] = [];
@@ -1357,14 +1358,10 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
       return queryString;
     };
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
       const queryString = buildAccessToken(tokenKey, this);
-      if (args[nbParams - 1]) {
-        args[nbParams - 1].queryString = args[nbParams - 1].queryString.concat(queryString);
-      } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), { queryString: queryString });
-        args[nbParams - 1] = endpointCallParams;
-      }
+      const params = getEndpointCallParameters(nbParams, args);
+      params.queryString = [...(params.queryString || []), ...queryString];
       return originalMethod.apply(this, args);
     };
 
@@ -1372,24 +1369,17 @@ function accessTokenInUrl(tokenKey: string = 'access_token') {
   };
 }
 
-function includeActionsHistory(historyStore: CoveoAnalytics.HistoryStore = new history.HistoryStore()) {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+function includeActionsHistory(historyStore = buildHistoryStore()) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
 
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
       let historyFromStore = historyStore.getHistory();
       if (historyFromStore == null) {
         historyFromStore = [];
       }
 
-      if (args[nbParams - 1]) {
-        args[nbParams - 1].requestData.actionsHistory = historyFromStore;
-      } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
-          requestData: { actionsHistory: historyFromStore }
-        });
-        args[nbParams - 1] = endpointCallParams;
-      }
+      getEndpointCallParameters(nbParams, args).requestData.actionsHistory = historyFromStore;
       return originalMethod.apply(this, args);
     };
 
@@ -1398,22 +1388,34 @@ function includeActionsHistory(historyStore: CoveoAnalytics.HistoryStore = new h
 }
 
 function includeReferrer() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
       let referrer = document.referrer;
       if (referrer == null) {
         referrer = '';
       }
 
-      if (args[nbParams - 1]) {
-        args[nbParams - 1].requestData.referrer = referrer;
-      } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
-          requestData: { referrer: referrer }
-        });
-        args[nbParams - 1] = endpointCallParams;
-      }
+      getEndpointCallParameters(nbParams, args).requestData.referrer = referrer;
+      return originalMethod.apply(this, args);
+    };
+
+    return descriptor;
+  };
+}
+
+function includeAnalytics() {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+    const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
+    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
+      const analyticsInstance = new AnalyticsInformation();
+      const analytics = {
+        clientId: analyticsInstance.clientId,
+        documentLocation: analyticsInstance.location,
+        documentReferrer: analyticsInstance.referrer,
+        pageId: analyticsInstance.lastPageId
+      };
+      getEndpointCallParameters(nbParams, args).requestData.analytics = mapObject(analytics, value => value || '');
       return originalMethod.apply(this, args);
     };
 
@@ -1422,22 +1424,15 @@ function includeReferrer() {
 }
 
 function includeVisitorId() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
-      let visitorId = Cookie.get('visitorId');
+    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
+      let visitorId = new AnalyticsInformation().visitorId;
       if (visitorId == null) {
         visitorId = '';
       }
 
-      if (args[nbParams - 1]) {
-        args[nbParams - 1].requestData.visitorId = visitorId;
-      } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
-          requestData: { visitorId: visitorId }
-        });
-        args[nbParams - 1] = endpointCallParams;
-      }
+      getEndpointCallParameters(nbParams, args).requestData.visitorId = visitorId;
       return originalMethod.apply(this, args);
     };
 
@@ -1446,19 +1441,12 @@ function includeVisitorId() {
 }
 
 function includeIsGuestUser() {
-  return function(target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
-    descriptor.value = function(...args: any[]) {
+    descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
       let isGuestUser = this.options.isGuestUser;
 
-      if (args[nbParams - 1]) {
-        args[nbParams - 1].requestData.isGuestUser = isGuestUser;
-      } else {
-        const endpointCallParams = _.extend(defaultDecoratorEndpointCallParameters(), {
-          requestData: { isGuestUser: isGuestUser }
-        });
-        args[nbParams - 1] = endpointCallParams;
-      }
+      getEndpointCallParameters(nbParams, args).requestData.isGuestUser = isGuestUser;
       return originalMethod.apply(this, args);
     };
 

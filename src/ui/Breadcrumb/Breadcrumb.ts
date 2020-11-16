@@ -59,6 +59,7 @@ export class Breadcrumb extends Component {
     this.bind.onRootElement(BreadcrumbEvents.redrawBreadcrumb, () => this.redrawBreadcrumb());
     this.element.style.display = 'none';
     this.element.setAttribute('tabindex', '-1');
+    this.addDefaultAccessibilityAttributes();
   }
 
   /**
@@ -165,6 +166,15 @@ export class Breadcrumb extends Component {
       // default .focus() definition is incomplete.
       // force cast to any
       (firstEnabledResultList.element as any).focus({ preventScroll: true });
+    }
+  }
+
+  private addDefaultAccessibilityAttributes() {
+    if (!this.element.getAttribute('role')) {
+      this.element.setAttribute('role', 'navigation');
+    }
+    if (!this.element.getAttribute('aria-label')) {
+      this.element.setAttribute('aria-label', l('Breadcrumb'));
     }
   }
 }

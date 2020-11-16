@@ -16,6 +16,7 @@ import { IAPIAnalyticsVisitResponseRest } from './APIAnalyticsVisitResponse';
 import { ICustomEvent } from './CustomEvent';
 import { ITopQueries } from './TopQueries';
 import { SearchEndpoint } from '../rest/SearchEndpoint';
+import { AnalyticsInformation } from '../ui/Analytics/AnalyticsInformation';
 
 export interface IAnalyticsEndpointOptions {
   accessToken: AccessToken;
@@ -104,8 +105,7 @@ export class AnalyticsEndpoint {
   }
 
   public clearCookies() {
-    Cookie.erase('visitorId');
-    Cookie.erase('visitId');
+    new AnalyticsInformation().clearCookies();
   }
 
   private async sendToService(data: Record<string, any>, path: string, paramName: string): Promise<any> {

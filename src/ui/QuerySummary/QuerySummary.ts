@@ -77,6 +77,9 @@ export class QuerySummary extends Component {
      *
      * Default value is `No results for ${query}`.
      *
+     * **Note**
+     * > If there is no query, the value will fallback to `No results`.
+     *
      * @availablesince [August 2018 Release (v2.4609.6)](https://docs.coveo.com/410/#august-2018-release-v246096)
      */
     noResultsFoundMessage: ComponentOptions.buildLocalizedStringOption({
@@ -238,15 +241,21 @@ export class QuerySummary extends Component {
     return $$(this.element).findAll(`.${noResultsCssClass}`);
   }
 
-  private getNoResultsFoundMessageElement() {
-    const parsedNoResultsFoundMessage = this.replaceQueryTagsWithHighlightedQuery(this.options.noResultsFoundMessage);
+  private get parsedNoResultsFoundMessage() {
+    if (this.sanitizedQuery.trim() === '') {
+      return l('noResult');
+    }
 
+    return this.replaceQueryTagsWithHighlightedQuery(this.options.noResultsFoundMessage);
+  }
+
+  private getNoResultsFoundMessageElement() {
     const noResultsFoundMessage = $$(
       'div',
       {
         className: 'coveo-query-summary-no-results-string'
       },
-      parsedNoResultsFoundMessage
+      this.parsedNoResultsFoundMessage
     );
 
     return noResultsFoundMessage;
@@ -262,6 +271,7 @@ export class QuerySummary extends Component {
     );
 
     new AccessibleButton()
+      .withLabel(l('CancelLastAction'))
       .withElement(cancelLastAction)
       .withSelectAction(() => {
         this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.noResultsBack, {}, this.root);
