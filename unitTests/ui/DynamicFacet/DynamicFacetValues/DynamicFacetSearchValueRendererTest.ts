@@ -2,6 +2,7 @@ import { DynamicFacetSearchValueRenderer } from '../../../../src/ui/DynamicFacet
 import { DynamicFacetValue } from '../../../../src/ui/DynamicFacet/DynamicFacetValues/DynamicFacetValue';
 import { DynamicFacetTestUtils } from '../DynamicFacetTestUtils';
 import { DynamicFacet } from '../../../../src/ui/DynamicFacet/DynamicFacet';
+import { analyticsActionCauseList } from '../../../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function DynamicFacetSearchValueRendererTest() {
   describe('DynamicFacetValueRenderer', () => {
@@ -36,6 +37,7 @@ export function DynamicFacetSearchValueRendererTest() {
       expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
       expect(facet.scrollToTop).toHaveBeenCalledTimes(1);
       expect(dynamicFacetValue.logSelectActionToAnalytics).toHaveBeenCalledTimes(1);
+      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, facet.basicAnalyticsFacetMeta);
     });
   });
 }
