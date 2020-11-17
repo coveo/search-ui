@@ -4,7 +4,7 @@ import { IExportToExcelOptions } from '../../src/ui/ExportToExcel/ExportToExcel'
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 
 export function ExportToExcelTest() {
-  describe('ExportToExcel', function() {
+  describe('ExportToExcel', function () {
     let options: IExportToExcelOptions = {};
     let test: Mock.IBasicComponentSetup<ExportToExcel>;
 
@@ -19,7 +19,7 @@ export function ExportToExcelTest() {
       return a;
     }
 
-    beforeEach(function() {
+    beforeEach(function () {
       options = {};
       setCreateAnchor(() => buildAnchorWithClickSpy());
 
@@ -92,8 +92,8 @@ export function ExportToExcelTest() {
       });
     });
 
-    describe('exposes options', function() {
-      it('numberOfResults calls search endpoint with appropriate number of results', function() {
+    describe('exposes options', function () {
+      it('numberOfResults calls search endpoint with appropriate number of results', function () {
         options.numberOfResults = 200;
         initExportToExcel();
 

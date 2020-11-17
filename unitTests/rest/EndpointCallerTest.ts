@@ -3,17 +3,17 @@ import { IQueryResults } from '../../src/rest/QueryResults';
 import { FakeResults } from '../Fake';
 
 export function EndpointCallerTest() {
-  describe('EndpointCaller', function() {
-    describe('using generic call', function() {
-      beforeEach(function() {
+  describe('EndpointCaller', function () {
+    describe('using generic call', function () {
+      beforeEach(function () {
         jasmine.Ajax.install();
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it('should use XMLHTTPRequest by default', function() {
+      it('should use XMLHTTPRequest by default', function () {
         var endpointCaller = new EndpointCaller();
         endpointCaller.call({
           method: 'POST',
@@ -26,7 +26,7 @@ export function EndpointCallerTest() {
         expect(jasmine.Ajax.requests.mostRecent().url).toBe('this is an XMLHTTPRequest');
       });
 
-      it('should use the provided XMLHTTPRequest', function() {
+      it('should use the provided XMLHTTPRequest', function () {
         class CustomXMLHttpRequest extends XMLHttpRequest {}
 
         var endpointCaller = new EndpointCaller({ xmlHttpRequest: CustomXMLHttpRequest });
@@ -41,7 +41,7 @@ export function EndpointCallerTest() {
         expect(jasmine.Ajax.requests.mostRecent() instanceof CustomXMLHttpRequest).toBe(true);
       });
 
-      it('should set the auth if provided', function() {
+      it('should set the auth if provided', function () {
         var endpointCaller = new EndpointCaller({
           accessToken: 'myToken'
         });
@@ -71,16 +71,16 @@ export function EndpointCallerTest() {
       });
     });
 
-    describe('using XMLHTTPRequest', function() {
-      beforeEach(function() {
+    describe('using XMLHTTPRequest', function () {
+      beforeEach(function () {
         jasmine.Ajax.install();
       });
 
-      afterEach(function() {
+      afterEach(function () {
         jasmine.Ajax.uninstall();
       });
 
-      it('should set the correct requested params on the XMLHTTPRequest', function() {
+      it('should set the correct requested params on the XMLHTTPRequest', function () {
         var endpointCaller = new EndpointCaller();
         endpointCaller.call({
           method: 'POST',
@@ -132,8 +132,8 @@ export function EndpointCallerTest() {
         expect(Object.keys(fakeRequest.requestHeaders).length).toBe(0);
       });
 
-      describe('using response type text', function() {
-        beforeEach(function() {
+      describe('using response type text', function () {
+        beforeEach(function () {
           this.endpointCaller = new EndpointCaller();
           this.promise = this.endpointCaller.call({
             method: 'POST',
@@ -149,12 +149,12 @@ export function EndpointCallerTest() {
           });
         });
 
-        afterEach(function() {
+        afterEach(function () {
           this.endpointCaller = undefined;
           this.promise = undefined;
         });
 
-        it('should work if responseContentType is text', function(done) {
+        it('should work if responseContentType is text', function (done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               expect(response.data.results.length).toBe(10);
@@ -171,7 +171,7 @@ export function EndpointCallerTest() {
           });
         });
 
-        it('should work if responseContentType is application/json', function(done) {
+        it('should work if responseContentType is application/json', function (done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               expect(response.data.results.length).toBe(10);
@@ -188,7 +188,7 @@ export function EndpointCallerTest() {
           });
         });
 
-        it('should behave properly if there is an error', function(done) {
+        it('should behave properly if there is an error', function (done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               // This should never execute, and always go to the catch statement
@@ -207,7 +207,7 @@ export function EndpointCallerTest() {
           });
         });
 
-        it('should behave properly if there is an error in the body', function(done) {
+        it('should behave properly if there is an error in the body', function (done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               // This should never execute, and always go to the catch statement
@@ -231,8 +231,8 @@ export function EndpointCallerTest() {
         });
       });
 
-      describe('using response type json', function() {
-        beforeEach(function() {
+      describe('using response type json', function () {
+        beforeEach(function () {
           this.endpointCaller = new EndpointCaller();
           this.promise = this.endpointCaller.call({
             method: 'POST',
@@ -247,12 +247,12 @@ export function EndpointCallerTest() {
             errorsAsSuccess: false
           });
         });
-        afterEach(function() {
+        afterEach(function () {
           this.endpointCaller = undefined;
           this.promise = undefined;
         });
 
-        it('should work if responseContentType is text', function(done) {
+        it('should work if responseContentType is text', function (done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               expect(response.data.results.length).toBe(10);
@@ -270,7 +270,7 @@ export function EndpointCallerTest() {
           });
         });
 
-        it('should work if responseContentType is application/json', function(done) {
+        it('should work if responseContentType is application/json', function (done) {
           this.promise
             .then((response: ISuccessResponse<IQueryResults>) => {
               expect(response.data.results.length).toBe(10);
@@ -289,7 +289,7 @@ export function EndpointCallerTest() {
           });
         });
 
-        it('should allow to modify the request with an option', function() {
+        it('should allow to modify the request with an option', function () {
           let endpointCaller = new EndpointCaller({
             accessToken: 'myToken',
             requestModifier: requestInfo => {

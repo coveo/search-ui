@@ -409,12 +409,7 @@ export class Quickview extends Component {
     if (typeof result.hasHtmlVersion == 'undefined' || result.hasHtmlVersion || this.options.alwaysShow) {
       const clickAction = () => this.open();
 
-      new AccessibleButton()
-        .withElement(this.element)
-        .withSelectAction(clickAction)
-        .withLabel(l('Quickview'))
-        .withOwner(this.bind)
-        .build();
+      new AccessibleButton().withElement(this.element).withSelectAction(clickAction).withLabel(l('Quickview')).withOwner(this.bind).build();
     } else {
       this.element.style.display = 'none';
     }

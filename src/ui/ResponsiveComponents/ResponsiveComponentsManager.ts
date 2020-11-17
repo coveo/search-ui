@@ -157,6 +157,8 @@ export class ResponsiveComponentsManager {
     // Since on a mobile device resizing the page is not something that should really happen, we disable it here.
     if (!DeviceUtils.isMobileDevice()) {
       window.addEventListener('resize', this.resizeListener);
+    } else {
+      window.addEventListener('orientationchange', this.resizeListener);
     }
 
     this.bindNukeEvents();

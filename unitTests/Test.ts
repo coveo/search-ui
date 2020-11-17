@@ -6,6 +6,9 @@ if (Simulate.isChromeHeadless()) {
   Logger.disable();
 }
 
+import { MockCookie } from './MockCookie';
+MockCookie.mockBrowserCookies();
+
 import { defaultLanguage } from '../src/strings/DefaultLanguage';
 defaultLanguage();
 
@@ -866,3 +869,6 @@ FacetSearchElementTest();
 
 import { HistoryStoreTest } from './utils/HistoryStoreTest';
 HistoryStoreTest();
+
+import { AnalyticsInformationTest } from './ui/AnalyticsInformationTest';
+AnalyticsInformationTest();

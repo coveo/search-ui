@@ -125,4 +125,8 @@ export interface IAnalyticsEvent {
    * **Example:** `{ "currentResultsPerPage": 25, "userRole": "developer" }`
    */
   customData?: { [key: string]: any };
+  /**
+   * A GUID representing the current user. This GUID is generated locally and stored in a non-expiring browser cookie.
+   */
+  clientId: string;
 }
