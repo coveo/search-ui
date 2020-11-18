@@ -19,7 +19,7 @@ export function DynamicFacetSearchValueRendererTest() {
       dynamicFacetValue = new DynamicFacetValue(DynamicFacetTestUtils.createFakeFacetValues(1)[0], facet, DynamicFacetSearchValueRenderer);
       dynamicFacetSearchValueRenderer = new DynamicFacetSearchValueRenderer(dynamicFacetValue, facet);
 
-      spyOn(dynamicFacetValue, 'logSelectActionToAnalytics');
+      spyOn(dynamicFacetValue, 'logSelectActionToAnalytics').and.callThrough();
     }
 
     it('should render without errors', () => {
@@ -37,7 +37,7 @@ export function DynamicFacetSearchValueRendererTest() {
       expect(facet.enableFreezeFacetOrderFlag).toHaveBeenCalledTimes(1);
       expect(facet.scrollToTop).toHaveBeenCalledTimes(1);
       expect(dynamicFacetValue.logSelectActionToAnalytics).toHaveBeenCalledTimes(1);
-      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, facet.basicAnalyticsFacetMeta);
+      expect(facet.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.dynamicFacetSelect, jasmine.anything());
     });
   });
 }
