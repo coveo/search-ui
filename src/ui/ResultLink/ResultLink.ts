@@ -478,11 +478,10 @@ export class ResultLink extends Component {
   );
 
   private filterProtocol(uri: string) {
-    if (/^(https?|ftp|file|mailto|tel):/i.test(uri)) {
-      return uri;
-    }
+    const isAbsolute = /^(https?|ftp|file|mailto|tel):/i.test(uri);
+    const isRelative = /^\//.test(uri);
 
-    return '';
+    return isAbsolute || isRelative ? uri : '';
   }
 
   private getResultUri(): string {

@@ -17,6 +17,10 @@ export class QuickviewDocumentWords {
       const quickviewWord = new QuickviewDocumentWord(this.result);
       quickviewWord.doCompleteInitialScanForKeywordInDocument(element);
 
+      if (!quickviewWord.text) {
+        return;
+      }
+
       const alreadyScannedKeyword = this.words[quickviewWord.indexIdentifier];
 
       if (!alreadyScannedKeyword) {
