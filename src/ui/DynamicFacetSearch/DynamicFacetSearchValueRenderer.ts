@@ -21,9 +21,7 @@ export class DynamicFacetSearchValueRenderer implements IValueRenderer {
 
   private renderCheckbox() {
     this.valueCheckbox = new DynamicFacetValueCheckbox(this.facetValue);
-    $$(this.valueCheckbox.element)
-      .find('button')
-      .setAttribute('tabindex', '-1');
+    $$(this.valueCheckbox.element).find('button').setAttribute('tabindex', '-1');
 
     this.dom.append(this.valueCheckbox.element);
   }
@@ -31,6 +29,7 @@ export class DynamicFacetSearchValueRenderer implements IValueRenderer {
   public selectAction() {
     this.facet.enableFreezeFacetOrderFlag();
     this.facet.toggleSelectValue(this.facetValue.value);
+    this.facetValue.select();
     this.facet.scrollToTop();
     this.facet.triggerNewQuery(() => this.facetValue.logSelectActionToAnalytics());
   }
