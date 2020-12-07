@@ -62,7 +62,7 @@ export class Querybox extends Component {
     /**
      * Whether to enable the search-as-you-type feature.
      *
-     * **Note:** Enabling this feature can consume lots of queries per month (QPM), especially if the [`searchAsYouTypeDelay`] {@link Querybox.options.searchAsYouTypeDelay} option is set to a low value.
+     * **Note:** Enabling this feature can consume lots of queries per month (QPM), especially if the [`searchAsYouTypeDelay`]{@link Querybox.options.searchAsYouTypeDelay} option is set to a low value.
      *
      * Default value is `false`.
      */
