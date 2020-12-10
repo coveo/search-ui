@@ -143,17 +143,17 @@ export class SearchInterface extends RootComponent implements IComponentBindings
    */
   static options: ISearchInterfaceOptions = {
     /**
-     * Specifies whether to allow the end user to navigate search history using the **Back** and **Forward** buttons
+     * Whether to allow the end user to navigate search history using the **Back** and **Forward** buttons
      * of the browser.
      *
-     * If this options is `true`, the SearchInterface component saves the state of the current query in the hash portion
+     * If this option is set to `true`, the state of the current query will be saved in the hash portion
      * of the URL when the user submits the query.
      *
      * **Example:**
      * > If the `enableHistory` option is `true` and the current query is `foobar`, the SearchInterface component
      * > saves `q=foobar` in the URL hash when the user submits the query.
      *
-     * Default value is `false`.
+     * **Note:** Avoid setting this option to `true` on a search interface that relates to a Coveo for Salesforce Full Search or Insight Panel component, otherwise the component won't initialize correctly.
      */
     enableHistory: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
