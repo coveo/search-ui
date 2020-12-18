@@ -60,6 +60,7 @@ export function SuggestionsManagerTest() {
         expect(suggestionsElement).toBeTruthy();
         expect(suggestionsElement.children.length).toBe(1);
         expect(suggestionsElement.getAttribute('role')).toBe('listbox');
+        expect(suggestionsElement.getAttribute('aria-label')).toBe('Search Suggestions');
       });
 
       it('adds an empty option child to the suggestions parent when emptying sugggestions', () => {
