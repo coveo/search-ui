@@ -7,8 +7,16 @@ export class AnalyticsInformation {
     return Cookie.get('visitorId') || null;
   }
 
+  public set visitorId(id: string) {
+    Cookie.set('visitorId', id);
+  }
+
   public get clientId() {
     return Cookie.get('clientId') || null;
+  }
+
+  public set clientId(id: string) {
+    Cookie.set('clientId', id);
   }
 
   public get lastPageId() {

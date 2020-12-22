@@ -7,7 +7,6 @@ import { IEndpointCallerOptions, IErrorResponse, ISuccessResponse } from '../res
 import { AnalyticsEndpointCaller } from '../rest/AnalyticsEndpointCaller';
 import { IStringMap } from '../rest/GenericParam';
 import { ISearchEvent } from '../rest/SearchEvent';
-import { Cookie } from '../utils/CookieUtils';
 import { UrlUtils, IUrlNormalizedParts } from '../utils/UrlUtils';
 import { Utils } from '../utils/Utils';
 import { AccessToken } from './AccessToken';
@@ -30,7 +29,6 @@ export class AnalyticsEndpoint {
   static DEFAULT_ANALYTICS_URI = 'https://platform.cloud.coveo.com/rest/ua';
   static DEFAULT_ANALYTICS_VERSION = 'v15';
   static CUSTOM_ANALYTICS_VERSION = undefined;
-  static VISITOR_COOKIE_TIME = 365 * 24 * 60 * 60 * 1000;
 
   static pendingRequest: Promise<any>;
 
@@ -176,7 +174,7 @@ export class AnalyticsEndpoint {
       paths: [this.options.serviceUrl, versionToCall, '/analytics/', path],
       query: {
         org: this.organization,
-        visitor: Cookie.get('visitorId'),
+        visitor: new AnalyticsInformation().visitorId,
         prioritizeVisitorParameter: true
       }
     });
@@ -215,7 +213,7 @@ export class AnalyticsEndpoint {
       this.visitId = visitId;
     }
     if (visitorId) {
-      Cookie.set('visitorId', visitorId, AnalyticsEndpoint.VISITOR_COOKIE_TIME);
+      new AnalyticsInformation().visitorId = visitorId;
     }
 
     return response;

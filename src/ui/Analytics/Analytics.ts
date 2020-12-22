@@ -23,7 +23,6 @@ import { PendingSearchEvent } from './PendingSearchEvent';
 import { PendingSearchAsYouTypeSearchEvent } from './PendingSearchAsYouTypeSearchEvent';
 import { AccessToken } from '../../rest/AccessToken';
 import { AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
-import { Cookie } from '../../utils/CookieUtils';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { AnalyticsInformation } from './AnalyticsInformation';
 
@@ -464,8 +463,10 @@ export class Analytics extends Component {
   }
 
   private createClientId() {
-    if (!new AnalyticsInformation().clientId) {
-      Cookie.set('clientId', QueryUtils.createGuid());
+    const info = new AnalyticsInformation();
+
+    if (!info.clientId) {
+      info.clientId = QueryUtils.createGuid();
     }
   }
 
