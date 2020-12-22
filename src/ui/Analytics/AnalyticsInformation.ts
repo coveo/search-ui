@@ -1,12 +1,13 @@
 import { history } from 'coveo.analytics';
 import { findLastIndex } from 'underscore';
+import { Cookie } from '../../utils/CookieUtils';
 
 export class AnalyticsInformation {
   private readonly visitorIdKey = 'visitorId';
   private readonly clientIdKey = 'clientId';
 
   public get visitorId() {
-    return localStorage.getItem(this.visitorIdKey);
+    return localStorage.getItem(this.visitorIdKey) || Cookie.get(this.visitorIdKey) || null;
   }
 
   public set visitorId(id: string) {
@@ -14,7 +15,7 @@ export class AnalyticsInformation {
   }
 
   public get clientId() {
-    return localStorage.getItem(this.clientIdKey);
+    return localStorage.getItem(this.clientIdKey) || Cookie.get(this.clientIdKey) || null;
   }
 
   public set clientId(id: string) {
@@ -40,7 +41,17 @@ export class AnalyticsInformation {
   }
 
   public clear() {
+    this.clearLocalStorage();
+    this.clearCookies();
+  }
+
+  private clearLocalStorage() {
     localStorage.removeItem(this.visitorIdKey);
     localStorage.removeItem(this.clientIdKey);
+  }
+
+  private clearCookies() {
+    Cookie.erase(this.visitorIdKey);
+    Cookie.erase(this.clientIdKey);
   }
 }
