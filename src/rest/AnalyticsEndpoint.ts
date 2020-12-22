@@ -176,7 +176,8 @@ export class AnalyticsEndpoint {
       paths: [this.options.serviceUrl, versionToCall, '/analytics/', path],
       query: {
         org: this.organization,
-        visitor: Cookie.get('visitorId')
+        visitor: Cookie.get('visitorId'),
+        prioritizeVisitorParameter: true
       }
     });
     return urlNormalized;

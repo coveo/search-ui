@@ -127,6 +127,13 @@ export function AnalyticsEndpointTest() {
       expect(jasmine.Ajax.requests.mostRecent().url.indexOf('visitor=') == -1).toBe(true);
     });
 
+    it('sends prioritizes the visitorId query string parameter over the http-cookie when sending a search event', () => {
+      let fakeSearchEvent = FakeResults.createFakeSearchEvent();
+      endpoint.sendSearchEvents([fakeSearchEvent]);
+
+      expect(jasmine.Ajax.requests.mostRecent().url.indexOf('prioritizeVisitorParameter=true') != -1).toBe(true);
+    });
+
     it('allow to getTopQueries', done => {
       endpoint
         .getTopQueries({ pageSize: 10, queryText: 'foobar' })
