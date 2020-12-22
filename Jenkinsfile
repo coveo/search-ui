@@ -7,9 +7,7 @@ node('linux && docker') {
   ]){
     withDockerContainer(image: 'node:14', args: '-u=root') {
       stage('Setup') {
-        sh 'npm install -g npm@6.14.7'
-        sh 'sudo apt-get install libgconf2-4'
-        sh 'export SOURCE_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}'
+        sh 'export SOURCE_BRANCH=${BRANCH_NAME}'
         sh 'export IS_FORKED_PULL_REQUEST=$([[ $TRAVIS_PULL_REQUEST != false && $TRAVIS_PULL_REQUEST_SLUG != $TRAVIS_REPO_SLUG ]] && echo true || echo false)'
         sh 'export HAS_BETA_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\\.[0-9]+\\.[0-9]+-beta$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)'
         sh 'export HAS_RELEASE_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\\.[0-9]+\\.[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)'
@@ -28,12 +26,19 @@ node('linux && docker') {
         sh 'echo $IS_PULL_REQUEST_PUSH_BUILD'
       }
 
+      stage('Install') {
+          sh 'yarn install'
+      }
+
       stage('Build') {
-        sh 'source read.version.sh'
+        // sh 'source read.version.sh'
         sh 'echo $PACKAGE_JSON_VERSION'
         sh 'yarn run injectTag'
         sh 'yarn run build'
         sh 'if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi'
+      }
+
+      stage('Test') {
         sh 'if [ $IS_PULL_REQUEST_PUSH_BUILD = false ]; then yarn run unitTests ; fi'
         sh 'if [[ "x$TRAVIS_TAG" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then yarn run accessibilityTests ; fi'
         sh 'set +e'
@@ -57,8 +62,8 @@ node('linux && docker') {
       stage('Veracode package') {
         sh 'rm -rf veracode && mkdir veracode'
 
-        sh 'mkdir veracode/headless'
-        sh 'cp -R packages/headless/src packages/headless/package.json packages/headless/package-lock.json veracode/headless'
+        sh 'mkdir veracode/search-ui'
+        sh 'cp -R src package.json yarn.lock veracode/search-ui'
       }
 
       stage('Deployment pipeline upload') {
