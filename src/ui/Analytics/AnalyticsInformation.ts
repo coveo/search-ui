@@ -3,12 +3,14 @@ import { findLastIndex } from 'underscore';
 import { Cookie } from '../../utils/CookieUtils';
 
 export class AnalyticsInformation {
+  private readonly visitorIdKey = 'visitorId';
+
   public get visitorId() {
-    return Cookie.get('visitorId') || null;
+    return localStorage.getItem(this.visitorIdKey);
   }
 
   public set visitorId(id: string) {
-    Cookie.set('visitorId', id);
+    localStorage.setItem(this.visitorIdKey, id);
   }
 
   public get clientId() {
@@ -38,7 +40,7 @@ export class AnalyticsInformation {
   }
 
   public clearCookies() {
-    Cookie.erase('visitorId');
+    localStorage.removeItem(this.visitorIdKey);
     Cookie.erase('clientId');
     Cookie.erase('visitId');
   }

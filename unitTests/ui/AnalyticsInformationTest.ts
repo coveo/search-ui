@@ -46,12 +46,11 @@ export function AnalyticsInformationTest() {
       const visitorId = 'def';
       const clientId = 'abc';
       beforeEach(() => {
-        Cookie.set('visitorId', visitorId);
+        localStorage.setItem('visitorId', visitorId);
         Cookie.set('clientId', clientId);
       });
 
       it('has a visitorId', () => {
-        console.log(`Current visitorId D: "${Cookie.get('visitorId')}"`);
         expect(analyticsInformation.visitorId).toEqual(visitorId);
       });
 
