@@ -4,6 +4,7 @@ import { Cookie } from '../../utils/CookieUtils';
 
 export class AnalyticsInformation {
   private readonly visitorIdKey = 'visitorId';
+  private readonly clientIdKey = 'clientId';
 
   public get visitorId() {
     return localStorage.getItem(this.visitorIdKey);
@@ -14,11 +15,11 @@ export class AnalyticsInformation {
   }
 
   public get clientId() {
-    return Cookie.get('clientId') || null;
+    return localStorage.getItem(this.clientIdKey);
   }
 
   public set clientId(id: string) {
-    Cookie.set('clientId', id);
+    localStorage.setItem(this.clientIdKey, id);
   }
 
   public get lastPageId() {
@@ -41,7 +42,7 @@ export class AnalyticsInformation {
 
   public clearCookies() {
     localStorage.removeItem(this.visitorIdKey);
-    Cookie.erase('clientId');
+    localStorage.removeItem(this.clientIdKey);
     Cookie.erase('visitId');
   }
 }

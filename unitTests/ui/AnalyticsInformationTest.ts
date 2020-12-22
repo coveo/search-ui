@@ -1,4 +1,3 @@
-import { Cookie } from '../../src/Core';
 import { AnalyticsInformation } from '../../src/ui/Analytics/AnalyticsInformation';
 import { buildHistoryStore } from '../../src/utils/HistoryStore';
 
@@ -47,7 +46,7 @@ export function AnalyticsInformationTest() {
       const clientId = 'abc';
       beforeEach(() => {
         localStorage.setItem('visitorId', visitorId);
-        Cookie.set('clientId', clientId);
+        localStorage.setItem('clientId', clientId);
       });
 
       it('has a visitorId', () => {
