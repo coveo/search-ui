@@ -1,6 +1,5 @@
 import { history } from 'coveo.analytics';
 import { findLastIndex } from 'underscore';
-import { Cookie } from '../../utils/CookieUtils';
 
 export class AnalyticsInformation {
   private readonly visitorIdKey = 'visitorId';
@@ -43,6 +42,5 @@ export class AnalyticsInformation {
   public clearCookies() {
     localStorage.removeItem(this.visitorIdKey);
     localStorage.removeItem(this.clientIdKey);
-    Cookie.erase('visitId');
   }
 }
