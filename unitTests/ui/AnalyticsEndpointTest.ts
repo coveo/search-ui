@@ -121,7 +121,7 @@ export function AnalyticsEndpointTest() {
 
     it('does not send visitor as parameter when sending a search event and there is no cookie value', () => {
       const fakeSearchEvent = FakeResults.createFakeSearchEvent();
-      new AnalyticsInformation().clearCookies();
+      new AnalyticsInformation().clear();
       endpoint.sendSearchEvents([fakeSearchEvent]);
 
       expect(jasmine.Ajax.requests.mostRecent().url.indexOf('visitor=') == -1).toBe(true);

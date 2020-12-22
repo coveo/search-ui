@@ -103,7 +103,7 @@ export class AnalyticsEndpoint {
   }
 
   public clearCookies() {
-    new AnalyticsInformation().clearCookies();
+    new AnalyticsInformation().clear();
   }
 
   private async sendToService(data: Record<string, any>, path: string, paramName: string): Promise<any> {

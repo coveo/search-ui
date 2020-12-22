@@ -412,7 +412,7 @@ export class Analytics extends Component {
     if (this.disabled || this.client instanceof NoopAnalyticsClient) {
       return this.logger.warn('Could not clear local data while analytics are disabled.');
     }
-    new AnalyticsInformation().clearCookies();
+    new AnalyticsInformation().clear();
     this.resolveQueryController().resetHistory();
   }
 

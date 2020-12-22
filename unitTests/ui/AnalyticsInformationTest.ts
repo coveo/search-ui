@@ -20,7 +20,7 @@ export function AnalyticsInformationTest() {
       analyticsInformation = new AnalyticsInformation();
       historyStore = buildHistoryStore();
       historyStore.clear();
-      analyticsInformation.clearCookies();
+      analyticsInformation.clear();
     });
 
     describe('without cookies', () => {

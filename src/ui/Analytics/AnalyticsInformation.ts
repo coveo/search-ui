@@ -39,7 +39,7 @@ export class AnalyticsInformation {
     return document.referrer;
   }
 
-  public clearCookies() {
+  public clear() {
     localStorage.removeItem(this.visitorIdKey);
     localStorage.removeItem(this.clientIdKey);
   }
