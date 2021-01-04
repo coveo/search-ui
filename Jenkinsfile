@@ -31,7 +31,7 @@ node('linux && docker') {
       }
 
       stage('Build') {
-        // sh 'source read.version.sh'
+        sh '. ./read.version.sh'
         sh 'echo $PACKAGE_JSON_VERSION'
         sh 'yarn run injectTag'
         sh 'yarn run build'
@@ -39,15 +39,15 @@ node('linux && docker') {
       }
 
       stage('Test') {
-        sh 'if [ $IS_PULL_REQUEST_PUSH_BUILD = false ]; then yarn run unitTests ; fi'
-        sh 'if [[ "x$TRAVIS_TAG" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then yarn run accessibilityTests ; fi'
+        sh 'yarn run unitTests'
+        sh 'yarn run accessibilityTests'
         sh 'set +e'
-        sh 'if [ $IS_PULL_REQUEST_PUSH_BUILD = false ]; then yarn run uploadCoverage ; fi'
+        sh 'yarn run uploadCoverage'
         sh 'set -e'
-        sh 'if [ $IS_PULL_REQUEST_PUSH_BUILD = false ]; then yarn run validateTypeDefinitions ; fi'
+        sh 'yarn run validateTypeDefinitions'
       }
 
-      stage('After success') {
+      stage('Docs') {
         sh 'if [[ "x$TRAVIS_TAG" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then bash ./deploy.doc.sh ; fi'
         sh 'yarn run docsitemap'
         sh 'yarn run zipForGitReleases'
