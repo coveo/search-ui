@@ -9,8 +9,8 @@ node('linux && docker') {
       stage('Setup') {
         sh 'export SOURCE_BRANCH=${BRANCH_NAME}'
         sh 'export IS_FORKED_PULL_REQUEST=$([[ $TRAVIS_PULL_REQUEST != false && $TRAVIS_PULL_REQUEST_SLUG != $TRAVIS_REPO_SLUG ]] && echo true || echo false)'
-        sh 'export HAS_BETA_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\\.[0-9]+\\.[0-9]+-beta$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)'
-        sh 'export HAS_RELEASE_TAG=$([[ $TRAVIS_TAG =~ ^[0-9]+\\.[0-9]+\\.[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)'
+        sh 'export HAS_BETA_TAG=$([[ $GIT_TAG_NAME =~ ^[0-9]+\\.[0-9]+\\.[0-9]+-beta$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)'
+        sh 'export HAS_RELEASE_TAG=$([[ $GIT_TAG_NAME =~ ^[0-9]+\\.[0-9]+\\.[0-9]+$ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)'
         sh 'export IS_ON_FEATURE_BRANCH=$([[ $SOURCE_BRANCH =~ ^JSUI-[0-9]+ && $IS_FORKED_PULL_REQUEST = false ]] && echo true || echo false)'
         sh 'export IS_NIGHTLY=$([[ $HAS_BETA_TAG = true && $TRAVIS_EVENT_TYPE = cron ]] && echo true || echo false)'
         sh 'export IS_PULL_REQUEST_PUSH_BUILD=$([[ $TRAVIS_PULL_REQUEST = false && $IS_ON_FEATURE_BRANCH = true ]] && echo true || echo false)'
@@ -35,7 +35,7 @@ node('linux && docker') {
         sh 'echo $PACKAGE_JSON_VERSION'
         sh 'yarn run injectTag'
         sh 'yarn run build'
-        sh 'if [ "x$TRAVIS_TAG" != "x" ]; then yarn run minimize ; fi'
+        sh 'if [ "x$GIT_TAG_NAME" != "x" ]; then yarn run minimize ; fi'
       }
 
       stage('Test') {
@@ -48,7 +48,7 @@ node('linux && docker') {
       }
 
       stage('Docs') {
-        sh 'if [[ "x$TRAVIS_TAG" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then bash ./deploy.doc.sh ; fi'
+        sh 'if [[ "x$GIT_TAG_NAME" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then bash ./deploy.doc.sh ; fi'
         sh 'yarn run docsitemap'
         sh 'yarn run zipForGitReleases'
       }
