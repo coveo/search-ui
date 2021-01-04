@@ -7,7 +7,7 @@ const remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 const event_stream = require('event-stream');
 const shell = require('gulp-shell');
 const replace = require('gulp-replace');
-const COVERAGE_DIR = path.resolve('bin/coverage');
+const COVERAGE_DIR = path.resolve(__dirname, 'bin/coverage');
 require('coveralls');
 
 function setupTests() {
@@ -52,7 +52,7 @@ function configureTestServer(configPath, cb) {
 
 const coverage = gulp.series(remapCoverage, convertCoverageToLcovFormat);
 
-const uploadCoverage = gulp.series(coverage, shell.task(['npx coveralls < bin/coverage/lcov.info']));
+const uploadCoverage = gulp.series(coverage, shell.task(['cat ./bin/coverage/lcov.info | npx coveralls']));
 
 function remapCoverage() {
   return gulp
