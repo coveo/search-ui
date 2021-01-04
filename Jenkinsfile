@@ -16,7 +16,7 @@ node('linux && docker') {
         sh 'yarn run injectTag'
         sh 'yarn run build'
 
-        if (env.GIT_TAG_NAME != '') {
+        if (env.GIT_TAG_NAME) {
           sh 'yarn run minimize'
         }
       }
@@ -31,7 +31,11 @@ node('linux && docker') {
 
       stage('Test') {
         sh 'yarn run unitTests'
-        sh 'yarn run accessibilityTests'
+        
+        if (env.GIT_TAG_NAME) {
+          sh 'yarn run accessibilityTests'
+        }
+
         sh 'set +e'
         sh 'yarn run uploadCoverage'
         sh 'set -e'
