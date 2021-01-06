@@ -1,6 +1,5 @@
 node('linux && docker') {
   checkout scm
-  def isMaster = env.BRANCH_NAME == 'master'
 
   withEnv([
     'npm_config_cache=npm-cache'
@@ -37,7 +36,7 @@ node('linux && docker') {
         }
 
         sh 'set +e'
-        sh 'yarn run uploadCoverage'
+        // sh 'yarn run uploadCoverage'
         sh 'set -e'
         sh 'yarn run validateTypeDefinitions'
       }
@@ -49,8 +48,16 @@ node('linux && docker') {
       }
     }
 
-    if (!isMaster) {
+    if (!env.GIT_TAG_NAME) {
       return
+    }
+
+    stage('Deploy') {
+      withCredentials([
+          string(credentialsId: 'NPM_TOKEN', variable: 'NPM_TOKEN')
+      ]) {
+          sh(script: 'node ./build/npm.deploy.js')
+      }
     }
 
     withDockerContainer(image: '458176070654.dkr.ecr.us-east-1.amazonaws.com/jenkins/deployment_package:v7') {
