@@ -56,7 +56,7 @@ node('linux && docker') {
       withCredentials([
           string(credentialsId: 'NPM_TOKEN', variable: 'NPM_TOKEN')
       ]) {
-          sh(script: 'node ./build/npm.deploy.js')
+          sh 'node ./build/npm.deploy.js'
       }
 
       withDockerContainer(image: '458176070654.dkr.ecr.us-east-1.amazonaws.com/jenkins/deployment_package:v7') {
@@ -67,9 +67,7 @@ node('linux && docker') {
           sh 'cp -R src package.json yarn.lock veracode/search-ui'
         }
 
-        stage('Deployment pipeline upload') {
-          sh 'deployment-package package create --with-deploy || true'
-        }
+        sh 'node ./build/deployment-pipeline.deploy.js || true'
       }
     }
 
