@@ -4,7 +4,7 @@ node('linux && docker') {
   withEnv([
     'npm_config_cache=npm-cache'
   ]){
-    withDockerContainer(image: 'node:14', args: '-u=root') {
+    withDockerContainer(image: 'node:12', args: '-u=root') {
       stage('Install') {
         sh 'yarn install'
       }
