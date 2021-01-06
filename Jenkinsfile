@@ -15,7 +15,7 @@ node('linux && docker') {
         sh 'yarn run injectTag'
         sh 'yarn run build'
 
-        if (env.GIT_TAG_NAME) {
+        if (env.TAG_NAME) {
           sh 'yarn run minimize'
         }
       }
@@ -31,7 +31,7 @@ node('linux && docker') {
       stage('Test') {
         sh 'yarn run unitTests'
         
-        if (env.GIT_TAG_NAME) {
+        if (env.TAG_NAME) {
           sh 'yarn run accessibilityTests'
         }
 
@@ -42,13 +42,13 @@ node('linux && docker') {
       }
 
       stage('Docs') {
-        sh 'if [[ "x$GIT_TAG_NAME" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then bash ./deploy.doc.sh ; fi'
+        sh 'if [[ "x$TAG_NAME" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then bash ./deploy.doc.sh ; fi'
         sh 'yarn run docsitemap'
         sh 'yarn run zipForGitReleases'
       }
     }
 
-    if (!env.GIT_TAG_NAME) {
+    if (!env.TAG_NAME) {
       return
     }
 

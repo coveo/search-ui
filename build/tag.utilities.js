@@ -1,6 +1,6 @@
 // Bitbucket populates this environment varibale ONLY on tag pipelines.
 // It will not be set on the "default" pipeline.
-const tag = process.env.GITHUB_REF || '';
+const tag = process.env.TAG_NAME || '';
 
 function isTagged() {
   return tag && tag !== '';
