@@ -237,6 +237,10 @@ export interface IAnalyticsSmartSnippetFeedbackMeta {
   details?: string;
 }
 
+export interface IAnalyticsSmartSnippetSuggestionMeta {
+  documentId: { contentIdKey: string; contentIdValue: string };
+}
+
 /**
  * Describes the object sent as metadata along with [`clickQuerySuggestPreview`]{@link analyticsActionCauseList.clickQuerySuggestPreview} usage analytics events.
  */
@@ -1467,5 +1471,53 @@ export var analyticsActionCauseList = {
   sendSmartSnippetReason: <IAnalyticsActionCause>{
     name: 'sendSmartSnippetReason',
     type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is expanded.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "expandSmartSnippetSuggestion",
+   *  actionType: "smartSnippetSuggestions"
+   * }
+   * ```
+   */
+  expandSmartSnippetSuggestion: <IAnalyticsActionCause>{
+    name: 'expandSmartSnippetSuggestion',
+    type: 'smartSnippetSuggestions'
+  },
+  /**
+   * The custom event logged when a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is collapsed.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "collapseSmartSnippetSuggestion",
+   *  actionType: "smartSnippetSuggestions"
+   * }
+   * ```
+   */
+  collapseSmartSnippetSuggestion: <IAnalyticsActionCause>{
+    name: 'collapseSmartSnippetSuggestion',
+    type: 'smartSnippetSuggestions'
+  },
+  /**
+   * The custom event logged when the source of a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is opened.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "openSmartSnippetSuggestionSource",
+   *  actionType: "smartSnippetSuggestions"
+   * }
+   * ```
+   */
+  openSmartSnippetSuggestionSource: <IAnalyticsActionCause>{
+    name: 'openSmartSnippetSuggestionSource',
+    type: 'smartSnippetSuggestions'
   }
 };

@@ -6,6 +6,8 @@ import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { $$, Dom } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { IQueryResult } from '../../rest/QueryResult';
+import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
+import { analyticsActionCauseList, IAnalyticsSmartSnippetSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
 
 const QUESTION_CLASSNAME = `coveo-smart-snippet-suggestions-question`;
 const QUESTION_TITLE_CLASSNAME = `${QUESTION_CLASSNAME}-title`;
@@ -43,6 +45,7 @@ export class SmartSnippetCollapsibleSuggestion {
   private expanded = false;
 
   constructor(
+    private readonly usageAnalytics: IAnalyticsClient,
     private readonly questionAnswer: IPartialQuestionAnswerResponse,
     private readonly innerCSS?: string,
     private readonly source?: IQueryResult
@@ -135,12 +138,34 @@ export class SmartSnippetCollapsibleSuggestion {
   private buildLink(text: string, href: string, className: string) {
     const element = $$('a', { className, href }).el as HTMLAnchorElement;
     element.innerText = text;
+    this.enableAnalyticsOnLink(element, () => this.sendOpenSourceAnalytics());
     return element;
+  }
+
+  private enableAnalyticsOnLink(link: HTMLAnchorElement, sendAnalytics: () => Promise<any>) {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      this.openLink(link.href, e.ctrlKey, sendAnalytics);
+    });
+  }
+
+  private openLink(href: string, newTab: boolean, sendAnalytics: () => Promise<any>) {
+    sendAnalytics();
+    if (newTab) {
+      window.open(href);
+    } else {
+      window.location.href = href;
+    }
   }
 
   private toggle() {
     this.expanded = !this.expanded;
     this.updateExpanded();
+    if (this.expanded) {
+      this.sendExpandAnalytics();
+    } else {
+      this.sendCollapseAnalytics();
+    }
   }
 
   private updateExpanded() {
@@ -149,5 +174,35 @@ export class SmartSnippetCollapsibleSuggestion {
     this.collapsibleContainer.setAttribute('tabindex', `${this.expanded ? 0 : -1}`);
     this.collapsibleContainer.setAttribute('aria-hidden', (!this.expanded).toString());
     this.collapsibleContainer.toggleClass(QUESTION_SNIPPET_HIDDEN_CLASSNAME, !this.expanded);
+  }
+
+  private sendExpandAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
+      analyticsActionCauseList.expandSmartSnippetSuggestion,
+      {
+        documentId: this.questionAnswer.documentId
+      },
+      this.checkbox.el
+    );
+  }
+
+  private sendCollapseAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
+      analyticsActionCauseList.collapseSmartSnippetSuggestion,
+      {
+        documentId: this.questionAnswer.documentId
+      },
+      this.checkbox.el
+    );
+  }
+
+  private sendOpenSourceAnalytics() {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
+      analyticsActionCauseList.openSmartSnippetSuggestionSource,
+      {
+        documentId: this.questionAnswer.documentId
+      },
+      this.collapsibleContainer.el
+    );
   }
 }
