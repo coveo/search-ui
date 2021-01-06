@@ -5,7 +5,7 @@ node('linux && docker') {
   withEnv([
     'npm_config_cache=npm-cache'
   ]){
-    withDockerContainer(image: 'node:12', args: '-u=root') {
+    withDockerContainer(image: 'nikolaik/python-nodejs:python3.8-nodejs10', args: '-u=root') {
       stage('Install') {
         sh 'yarn install'
       }
@@ -47,26 +47,21 @@ node('linux && docker') {
         sh 'yarn run docsitemap'
         sh 'yarn run zipForGitReleases'
       }
-    }
 
-    if (!tag) {
-      return
-    }
-
-    stage('Deploy') {
-      withCredentials([
-          string(credentialsId: 'NPM_TOKEN', variable: 'NPM_TOKEN')
-      ]) {
-          sh 'node ./build/npm.deploy.js'
+      if (!tag) {
+        return
       }
 
-      withDockerContainer(image: '458176070654.dkr.ecr.us-east-1.amazonaws.com/jenkins/deployment_package:v7') {
-        stage('Veracode package') {
-          sh 'rm -rf veracode && mkdir veracode'
-
-          sh 'mkdir veracode/search-ui'
-          sh 'cp -R src package.json yarn.lock veracode/search-ui'
+      stage('Deploy') {
+        withCredentials([
+            string(credentialsId: 'NPM_TOKEN', variable: 'NPM_TOKEN')
+        ]) {
+            sh 'node ./build/npm.deploy.js'
         }
+
+        sh 'rm -rf veracode && mkdir veracode'
+        sh 'mkdir veracode/search-ui'
+        sh 'cp -R src package.json yarn.lock veracode/search-ui'
 
         sh 'node ./build/deployment-pipeline.deploy.js || true'
       }

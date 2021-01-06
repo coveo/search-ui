@@ -4,6 +4,12 @@ const compareVersions = require('compare-versions');
 const { getMajorMinorVersion, getVersion } = require('./tag.utilities');
 const { getLatestVersionOnNpm } = require('./npm.utilities');
 
+async function installDeploymentPipeLineCli() {
+  const command = 'pip install deployment_package==7.* --index-url https://pypi.dev.cloud.coveo.com/simple';
+  console.log('installing deployment pipeline cli');
+  await exec(command);
+}
+
 async function createAndDeployPackage() {
   const paramString = await getResolvedParamString();
   const command = `deployment-package package create ${paramString} --for-spinnaker --with-deploy`;
@@ -28,6 +34,7 @@ async function getLatestNpmVersion() {
 
 async function main() {
   try {
+    await installDeploymentPipeLineCli();
     await createAndDeployPackage();
     console.log('Successfully uploaded package to deployment pipeline');
     process.exit(0);
