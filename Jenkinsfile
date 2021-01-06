@@ -1,5 +1,6 @@
 node('linux && docker') {
   checkout scm
+  def tag = env.TAG_NAME
 
   withEnv([
     'npm_config_cache=npm-cache'
@@ -15,7 +16,7 @@ node('linux && docker') {
         sh 'yarn run injectTag'
         sh 'yarn run build'
 
-        if (env.TAG_NAME) {
+        if (tag) {
           sh 'yarn run minimize'
         }
       }
@@ -31,7 +32,7 @@ node('linux && docker') {
       stage('Test') {
         sh 'yarn run unitTests'
         
-        if (env.TAG_NAME) {
+        if (tag) {
           sh 'yarn run accessibilityTests'
         }
 
@@ -48,7 +49,7 @@ node('linux && docker') {
       }
     }
 
-    if (!env.TAG_NAME) {
+    if (!tag) {
       return
     }
 
