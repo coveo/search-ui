@@ -58,19 +58,20 @@ node('linux && docker') {
       ]) {
           sh(script: 'node ./build/npm.deploy.js')
       }
+
+      withDockerContainer(image: '458176070654.dkr.ecr.us-east-1.amazonaws.com/jenkins/deployment_package:v7') {
+        stage('Veracode package') {
+          sh 'rm -rf veracode && mkdir veracode'
+
+          sh 'mkdir veracode/search-ui'
+          sh 'cp -R src package.json yarn.lock veracode/search-ui'
+        }
+
+        stage('Deployment pipeline upload') {
+          sh 'deployment-package package create --with-deploy || true'
+        }
+      }
     }
 
-    withDockerContainer(image: '458176070654.dkr.ecr.us-east-1.amazonaws.com/jenkins/deployment_package:v7') {
-      stage('Veracode package') {
-        sh 'rm -rf veracode && mkdir veracode'
-
-        sh 'mkdir veracode/search-ui'
-        sh 'cp -R src package.json yarn.lock veracode/search-ui'
-      }
-
-      stage('Deployment pipeline upload') {
-        sh 'deployment-package package create --with-deploy || true'
-      }
-    }
   }
 }
