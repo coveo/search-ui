@@ -3,11 +3,11 @@ const replace = require('gulp-replace');
 const colors = require('colors');
 
 function injectTag() {
-  if (process.env.GIT_TAG_NAME) {
-    console.log(`Injecting ${process.env.GIT_TAG_NAME} in Coveo.version ...`.black.bgGreen);
+  if (process.env.TAG_NAME) {
+    console.log(`Injecting ${process.env.TAG_NAME} in Coveo.version ...`.black.bgGreen);
     return gulp
       .src('./src/misc/Version.ts')
-      .pipe(replace(/0\.0\.0\.0/g, process.env.GIT_TAG_NAME))
+      .pipe(replace(/0\.0\.0\.0/g, process.env.TAG_NAME))
       .pipe(gulp.dest('./src/misc/'));
   }
 

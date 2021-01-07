@@ -3,12 +3,7 @@ const { promisify } = require('util');
 const exec = promisify(require('child_process').exec);
 const fs = require('fs');
 const os = require('os');
-
-const tag = process.env.GIT_TAG_NAME;
-
-function isTagged() {
-  return tag && tag !== '';
-}
+const { isTagged } = require('./tag.utilities');
 
 async function deployTaggedVersion() {
   const suffix = 'beta';
