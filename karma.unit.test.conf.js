@@ -4,7 +4,13 @@ process.env.CHROME_BIN = puppeteer.executablePath();
 
 const configuration = {
   singleRun: true,
-  browsers: ['ChromeHeadless'],
+  browsers: ['ChromeHeadlessNoSandbox'],
+  customLaunchers: {
+    ChromeHeadlessNoSandbox: {
+      base: 'ChromeHeadless',
+      flags: ['--no-sandbox']
+    }
+  },
   frameworks: ['jasmine'],
   browserDisconnectTimeout: 120000,
   browserNoActivityTimeout: 120000,
