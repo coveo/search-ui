@@ -145,7 +145,7 @@ export class SmartSnippetCollapsibleSuggestion {
   private enableAnalyticsOnLink(link: HTMLAnchorElement, sendAnalytics: () => Promise<any>) {
     link.addEventListener('click', e => {
       e.preventDefault();
-      this.openLink(link.href, e.ctrlKey, sendAnalytics);
+      this.openLink(link.href, e.ctrlKey || e.metaKey, sendAnalytics);
     });
   }
 
