@@ -87,6 +87,7 @@
     "body-parser": "^1.18.2",
     "cheerio": "^0.20.0",
     "colors": "^1.1.2",
+    "compare-versions": "^3.6.0",
     "coveralls": "3.0.2",
     "css-loader": "^0.23.1",
     "del": "^3.0.0",

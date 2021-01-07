@@ -1,10 +1,11 @@
 node('linux && docker') {
   checkout scm
+  def tag = env.TAG_NAME
 
   withEnv([
     'npm_config_cache=npm-cache'
   ]){
-    withDockerContainer(image: 'node:12', args: '-u=root') {
+    withDockerContainer(image: 'nikolaik/python-nodejs:python3.8-nodejs10', args: '-u=root') {
       stage('Install') {
         sh 'yarn install'
       }
@@ -15,7 +16,7 @@ node('linux && docker') {
         sh 'yarn run injectTag'
         sh 'yarn run build'
 
-        if (env.GIT_TAG_NAME) {
+        if (tag) {
           sh 'yarn run minimize'
         }
       }
@@ -31,7 +32,7 @@ node('linux && docker') {
       stage('Test') {
         sh 'yarn run unitTests'
         
-        if (env.GIT_TAG_NAME) {
+        if (tag) {
           sh 'yarn run accessibilityTests'
         }
 
@@ -42,34 +43,27 @@ node('linux && docker') {
       }
 
       stage('Docs') {
-        sh 'if [[ "x$GIT_TAG_NAME" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then bash ./deploy.doc.sh ; fi'
+        sh 'if [[ "x$TAG_NAME" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then bash ./deploy.doc.sh ; fi'
         sh 'yarn run docsitemap'
         sh 'yarn run zipForGitReleases'
       }
-    }
 
-    if (!env.GIT_TAG_NAME) {
-      return
-    }
-
-    stage('Deploy') {
-      withCredentials([
-          string(credentialsId: 'NPM_TOKEN', variable: 'NPM_TOKEN')
-      ]) {
-          sh(script: 'node ./build/npm.deploy.js')
+      if (!tag) {
+        return
       }
 
-      withDockerContainer(image: '458176070654.dkr.ecr.us-east-1.amazonaws.com/jenkins/deployment_package:v7') {
-        stage('Veracode package') {
-          sh 'rm -rf veracode && mkdir veracode'
-
-          sh 'mkdir veracode/search-ui'
-          sh 'cp -R src package.json yarn.lock veracode/search-ui'
+      stage('Deploy') {
+        withCredentials([
+            string(credentialsId: 'NPM_TOKEN', variable: 'NPM_TOKEN')
+        ]) {
+            sh 'node ./build/npm.deploy.js'
         }
 
-        stage('Deployment pipeline upload') {
-          sh 'deployment-package package create --with-deploy || true'
-        }
+        sh 'rm -rf veracode && mkdir veracode'
+        sh 'mkdir veracode/search-ui'
+        sh 'cp -R src package.json yarn.lock veracode/search-ui'
+
+        sh 'node ./build/deployment-pipeline.deploy.js || true'
       }
     }
 
