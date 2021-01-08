@@ -17,7 +17,7 @@ if (analyze) {
   plugins.push(new analyzer());
 }
 if (minimize) {
-  plugins.push(new webpack.optimize.UglifyJsPlugin());
+  plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true }));
 }
 
 plugins.push(
