@@ -56,6 +56,23 @@ export function DeviceUtilsTest() {
       ).toEqual('iPad');
     });
 
+    it('should detect iPad, when using Safari', () => {
+      const maxTouchPoints = window.navigator.maxTouchPoints;
+      window.navigator['__defineGetter__']('maxTouchPoints', function () {
+        return 5;
+      });
+
+      expect(
+        DeviceUtils.getDeviceName(
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
+        )
+      ).toEqual('iPad');
+
+      window.navigator['__defineGetter__']('maxTouchPoints', function () {
+        return maxTouchPoints;
+      });
+    });
+
     it('should detect Opera Mini', () => {
       expect(
         DeviceUtils.getDeviceName('User-Agent: Opera/9.80 (Android; Opera Mini/8.0.1807/36.1609; U; en) Presto/2.12.423 Version/12.16')
