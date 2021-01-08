@@ -11,8 +11,6 @@ node('linux && docker') {
       }
 
       stage('Build') {
-        sh './read.version.sh'
-        sh 'echo $PACKAGE_JSON_VERSION'
         sh 'yarn run injectTag'
         sh 'yarn run build'
 
