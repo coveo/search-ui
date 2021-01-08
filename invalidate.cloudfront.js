@@ -9,10 +9,10 @@ const shouldDoInvalidation = () => {
   if (!process.env.TRAVIS) {
     return false;
   }
-  if (!process.env.TRAVIS_TAG) {
+  if (!process.env.TAG_NAME) {
     return false;
   }
-  if (process.env.TRAVIS_TAG.indexOf('beta') != -1) {
+  if (process.env.TAG_NAME.indexOf('beta') != -1) {
     return false;
   }
   return true;
