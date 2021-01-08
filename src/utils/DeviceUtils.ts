@@ -19,7 +19,7 @@ export class DeviceUtils {
     if (userAgent.match(/iPhone/i)) {
       return 'iPhone';
     }
-    if (userAgent.match(/iPad/i)) {
+    if (userAgent.match(/iPad/i) || this.isSafariIPadOS(userAgent)) {
       return 'iPad';
     }
     if (userAgent.match(/iPod/i)) {
@@ -53,7 +53,16 @@ export class DeviceUtils {
   }
 
   static isMobileDevice() {
+    if (this.isSafariIPadOS()) {
+      return true;
+    }
+
     return mobile;
+  }
+
+  // Workaround for Safari on iPadOS https://developer.apple.com/forums/thread/119186
+  private static isSafariIPadOS(userAgent = navigator.userAgent) {
+    return userAgent.match(/Macintosh/i) && navigator.maxTouchPoints && navigator.maxTouchPoints > 2;
   }
 
   /**
