@@ -11,8 +11,6 @@ node('linux && docker') {
       }
 
       stage('Build') {
-        sh '. ./read.version.sh'
-        sh 'echo $PACKAGE_JSON_VERSION'
         sh 'yarn run injectTag'
         sh 'yarn run build'
 
@@ -42,14 +40,14 @@ node('linux && docker') {
         sh 'yarn run validateTypeDefinitions'
       }
 
-      stage('Docs') {
-        // sh 'if [[ "x$GIT_TAG_NAME" != "x" && $IS_PULL_REQUEST_PUSH_BUILD = false ]]; then bash ./deploy.doc.sh ; fi'
-        sh 'yarn run docsitemap'
-        sh 'yarn run zipForGitReleases'
-      }
-
       if (!tag) {
         return
+      }
+
+      stage('Docs') {
+        sh './deploy.doc.sh'
+        sh 'yarn run docsitemap'
+        sh 'yarn run zipForGitReleases'
       }
 
       stage('Deploy') {
