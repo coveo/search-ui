@@ -69,9 +69,10 @@ export function AnalyticsInformationTest() {
     describe('with localstorage', () => {
       const visitorId = 'def';
       const clientId = 'abc';
+
       beforeEach(() => {
-        localStorage.setItem('visitorId', visitorId);
-        localStorage.setItem('clientId', clientId);
+        localStorage.setItem('coveo-visitorId', JSON.stringify(visitorId));
+        localStorage.setItem('coveo-clientId', JSON.stringify(clientId));
       });
 
       it('has a visitorId', () => {

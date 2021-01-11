@@ -1,5 +1,6 @@
 import { history } from 'coveo.analytics';
 import { findLastIndex } from 'underscore';
+import { LocalStorageUtils } from '../../Core';
 import { Cookie } from '../../utils/CookieUtils';
 
 export class AnalyticsInformation {
@@ -7,19 +8,21 @@ export class AnalyticsInformation {
   private readonly clientIdKey = 'clientId';
 
   public get visitorId() {
-    return localStorage.getItem(this.visitorIdKey) || Cookie.get(this.visitorIdKey) || null;
+    const ls = new LocalStorageUtils<string>(this.visitorIdKey);
+    return ls.load() || Cookie.get(this.visitorIdKey) || null;
   }
 
   public set visitorId(id: string) {
-    localStorage.setItem(this.visitorIdKey, id);
+    new LocalStorageUtils(this.visitorIdKey).save(id);
   }
 
   public get clientId() {
-    return localStorage.getItem(this.clientIdKey) || Cookie.get(this.clientIdKey) || null;
+    const ls = new LocalStorageUtils<string>(this.clientIdKey);
+    return ls.load() || Cookie.get(this.clientIdKey) || null;
   }
 
   public set clientId(id: string) {
-    localStorage.setItem(this.clientIdKey, id);
+    new LocalStorageUtils(this.clientIdKey).save(id);
   }
 
   public get lastPageId() {
@@ -46,8 +49,8 @@ export class AnalyticsInformation {
   }
 
   private clearLocalStorage() {
-    localStorage.removeItem(this.visitorIdKey);
-    localStorage.removeItem(this.clientIdKey);
+    new LocalStorageUtils(this.visitorIdKey).remove();
+    new LocalStorageUtils(this.clientIdKey).remove();
   }
 
   private clearCookies() {
