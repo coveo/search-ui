@@ -1,14 +1,28 @@
 import { history } from 'coveo.analytics';
 import { findLastIndex } from 'underscore';
+import { LocalStorageUtils } from '../../Core';
 import { Cookie } from '../../utils/CookieUtils';
 
 export class AnalyticsInformation {
+  private readonly visitorIdKey = 'visitorId';
+  private readonly clientIdKey = 'clientId';
+
   public get visitorId() {
-    return Cookie.get('visitorId') || null;
+    const ls = new LocalStorageUtils<string>(this.visitorIdKey);
+    return ls.load() || Cookie.get(this.visitorIdKey) || null;
+  }
+
+  public set visitorId(id: string) {
+    new LocalStorageUtils(this.visitorIdKey).save(id);
   }
 
   public get clientId() {
-    return Cookie.get('clientId') || null;
+    const ls = new LocalStorageUtils<string>(this.clientIdKey);
+    return ls.load() || Cookie.get(this.clientIdKey) || null;
+  }
+
+  public set clientId(id: string) {
+    new LocalStorageUtils(this.clientIdKey).save(id);
   }
 
   public get lastPageId() {
@@ -29,9 +43,18 @@ export class AnalyticsInformation {
     return document.referrer;
   }
 
-  public clearCookies() {
-    Cookie.erase('visitorId');
-    Cookie.erase('clientId');
-    Cookie.erase('visitId');
+  public clear() {
+    this.clearLocalStorage();
+    this.clearCookies();
+  }
+
+  private clearLocalStorage() {
+    new LocalStorageUtils(this.visitorIdKey).remove();
+    new LocalStorageUtils(this.clientIdKey).remove();
+  }
+
+  private clearCookies() {
+    Cookie.erase(this.visitorIdKey);
+    Cookie.erase(this.clientIdKey);
   }
 }
