@@ -232,7 +232,8 @@ export class SuggestionsManager {
     return $$('div', {
       className: this.suggestionListboxClassName,
       id: this.suggestionListboxID,
-      role: 'listbox'
+      role: 'listbox',
+      ariaLabel: 'Search Suggestions'
     });
   }
 
