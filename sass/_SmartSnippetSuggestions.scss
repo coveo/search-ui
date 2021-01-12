@@ -66,9 +66,7 @@
         }
       }
 
-      &-source {
-        margin-top: 24px;
-
+      @at-root a.CoveoResultLink.coveo-smart-snippet-suggestions-question-source {
         &-url,
         &-title {
           padding: 0 $inner-padding;

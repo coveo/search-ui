@@ -1409,22 +1409,6 @@ export var analyticsActionCauseList = {
     type: 'smartSnippet'
   },
   /**
-   * The custom event logged when the source of a [SmartSnippet]{@link SmartSnippet} is opened.
-   *
-   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
-   *
-   * ```javascript
-   * {
-   *  actionCause: "openSmartSnippetSource",
-   *  actionType: "smartSnippet"
-   * }
-   * ```
-   */
-  openSmartSnippetSource: <IAnalyticsActionCause>{
-    name: 'openSmartSnippetSource',
-    type: 'smartSnippet'
-  },
-  /**
    * The custom event logged when the "Explain why" button in a [SmartSnippet]{@link SmartSnippet} is pressed.
    *
    * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
@@ -1502,22 +1486,6 @@ export var analyticsActionCauseList = {
    */
   collapseSmartSnippetSuggestion: <IAnalyticsActionCause>{
     name: 'collapseSmartSnippetSuggestion',
-    type: 'smartSnippetSuggestions'
-  },
-  /**
-   * The custom event logged when the source of a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is opened.
-   *
-   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
-   *
-   * ```javascript
-   * {
-   *  actionCause: "openSmartSnippetSuggestionSource",
-   *  actionType: "smartSnippetSuggestions"
-   * }
-   * ```
-   */
-  openSmartSnippetSuggestionSource: <IAnalyticsActionCause>{
-    name: 'openSmartSnippetSuggestionSource',
     type: 'smartSnippetSuggestions'
   }
 };
