@@ -1,6 +1,6 @@
-import { Cookie } from '../../src/Core';
 import { AnalyticsInformation } from '../../src/ui/Analytics/AnalyticsInformation';
 import { buildHistoryStore } from '../../src/utils/HistoryStore';
+import { Cookie } from '../../src/utils/CookieUtils';
 
 type HistoryStore = ReturnType<typeof buildHistoryStore>;
 
@@ -21,10 +21,10 @@ export function AnalyticsInformationTest() {
       analyticsInformation = new AnalyticsInformation();
       historyStore = buildHistoryStore();
       historyStore.clear();
-      analyticsInformation.clearCookies();
+      analyticsInformation.clear();
     });
 
-    describe('without cookies', () => {
+    describe('without localstorage', () => {
       it("doesn't have a visitorId", () => {
         expect(analyticsInformation.visitorId).toBeNull();
       });
@@ -42,16 +42,40 @@ export function AnalyticsInformationTest() {
       });
     });
 
-    describe('with cookies', () => {
+    describe('with legacy cookies, but without localstorage', () => {
       const visitorId = 'def';
       const clientId = 'abc';
+
       beforeEach(() => {
         Cookie.set('visitorId', visitorId);
         Cookie.set('clientId', clientId);
       });
 
       it('has a visitorId', () => {
-        console.log(`Current visitorId D: "${Cookie.get('visitorId')}"`);
+        expect(analyticsInformation.visitorId).toBe(visitorId);
+      });
+
+      it('has a clientId', () => {
+        expect(analyticsInformation.clientId).toBe(clientId);
+      });
+
+      it('calling #clear removes the cookies', () => {
+        analyticsInformation.clear();
+        expect(analyticsInformation.visitorId).toBeNull();
+        expect(analyticsInformation.clientId).toBeNull();
+      });
+    });
+
+    describe('with localstorage', () => {
+      const visitorId = 'def';
+      const clientId = 'abc';
+
+      beforeEach(() => {
+        localStorage.setItem('coveo-visitorId', JSON.stringify(visitorId));
+        localStorage.setItem('coveo-clientId', JSON.stringify(clientId));
+      });
+
+      it('has a visitorId', () => {
         expect(analyticsInformation.visitorId).toEqual(visitorId);
       });
 

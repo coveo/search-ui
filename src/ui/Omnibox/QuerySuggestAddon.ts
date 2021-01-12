@@ -12,9 +12,9 @@ import {
 import { StringUtils } from '../../utils/StringUtils';
 import { map, every, last, indexOf, find } from 'underscore';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
-import { Cookie } from '../../utils/CookieUtils';
 import { Utils } from '../../utils/Utils';
 import { buildHistoryStore } from '../../utils/HistoryStore';
+import { AnalyticsInformation } from '../Analytics/AnalyticsInformation';
 
 export interface IQuerySuggestAddon {
   getSuggestion(): Promise<IOmniboxSuggestion[]>;
@@ -165,7 +165,7 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
   }
 
   private get visitorId() {
-    return Cookie.get('visitorId');
+    return new AnalyticsInformation().visitorId;
   }
 
   private get isGuestUser() {
