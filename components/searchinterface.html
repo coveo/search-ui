@@ -914,17 +914,17 @@ data-enable-duplicate-filtering&#x3D;&#x27;false&#x27;</pre>
 						<dl class="tsd-deprecated">
 						</dl>
 						<div class="lead">
-							<p>Specifies whether to allow the end user to navigate search history using the <strong>Back</strong> and <strong>Forward</strong> buttons
+							<p>Whether to allow the end user to navigate search history using the <strong>Back</strong> and <strong>Forward</strong> buttons
 							of the browser.</p>
 						</div>
-						<p>If this options is <code>true</code>, the SearchInterface component saves the state of the current query in the hash portion
+						<p>If this option is set to <code>true</code>, the state of the current query will be saved in the hash portion
 						of the URL when the user submits the query.</p>
 						<p><strong>Example:</strong></p>
 						<blockquote>
 							<p>If the <code>enableHistory</code> option is <code>true</code> and the current query is <code>foobar</code>, the SearchInterface component
 							saves <code>q=foobar</code> in the URL hash when the user submits the query.</p>
 						</blockquote>
-						<p>Default value is <code>false</code>.</p>
+						<p><strong>Note:</strong> Avoid setting this option to <code>true</code> on a search interface that relates to a Coveo for Salesforce Full Search or Insight Panel component, otherwise the component won&#39;t initialize correctly.</p>
 						<dl class="tsd-comment-tags">
 							<dt>Default</dt>
 							<dd><p><code>false</code></p>

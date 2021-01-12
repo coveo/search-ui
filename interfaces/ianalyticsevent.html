@@ -141,6 +141,9 @@
 								<a href="ianalyticsevent.html#anonymous" class="tsd-kind-icon">anonymous</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ianalyticsevent.html#clientid" class="tsd-kind-icon">client<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="ianalyticsevent.html#customdata" class="tsd-kind-icon">custom<wbr>Data</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -224,6 +227,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsevent.html#actioncause" class="tsd-kind-icon">action<wbr>Cause</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsevent.html#actiontype" class="tsd-kind-icon">action<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsevent.html#anonymous" class="tsd-kind-icon">anonymous</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsevent.html#clientid" class="tsd-kind-icon">client<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsevent.html#customdata" class="tsd-kind-icon">custom<wbr>Data</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsevent.html#device" class="tsd-kind-icon">device</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ianalyticsevent.html#language" class="tsd-kind-icon">language</a></li>
@@ -298,6 +302,23 @@
 							<p>Whether the event should be logged anonymously to the Coveo Cloud usage analytics service.</p>
 						</div>
 						<p><strong>Note:</strong> This field is normally set to the <a href="https://coveo.github.io/search-ui/components/analytics.html#options.anonymous"><code>anonymous</code></a> option value of the <a href="https://coveo.github.io/search-ui/components/analytics.html"><code>Analytics</code></a> component.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="clientid" class="tsd-anchor"></a>
+					<h3>client<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">client<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/AnalyticsEvent.ts#L131">rest/AnalyticsEvent.ts
+							:131</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A GUID representing the current user. This GUID is generated locally and stored in a non-expiring browser cookie.</p>
+						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
