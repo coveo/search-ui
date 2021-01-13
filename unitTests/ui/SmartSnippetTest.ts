@@ -1,4 +1,4 @@
-import { IPartialQuestionAnswerResponse, IQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
+import { IQuestionAnswerResponse, IRelatedQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { $$ } from '../../src/utils/Dom';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
@@ -65,7 +65,7 @@ export function SmartSnippetTest() {
   }
 
   function mockQuestionAnswer() {
-    return <IPartialQuestionAnswerResponse>{
+    return <IRelatedQuestionAnswerResponse>{
       question: 'abc',
       answerSnippet: mockSnippet().innerHTML,
       documentId: sourceId

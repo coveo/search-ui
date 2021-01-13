@@ -1,6 +1,4 @@
-export interface IPartialQuestionAnswerResponse {
-  question: string;
-  answerSnippet: string;
+export interface IQuestionAnswerMeta {
   documentId: {
     contentIdKey: string;
     contentIdValue: string;
@@ -8,6 +6,13 @@ export interface IPartialQuestionAnswerResponse {
   score: number;
 }
 
-export interface IQuestionAnswerResponse extends Partial<IPartialQuestionAnswerResponse> {
-  relatedQuestions: IPartialQuestionAnswerResponse[];
+export interface IRelatedQuestionAnswerResponse extends IQuestionAnswerMeta {
+  question: string;
+  answerSnippet: string;
+}
+
+export interface IQuestionAnswerResponse extends IQuestionAnswerMeta {
+  question?: string;
+  answerSnippet?: string;
+  relatedQuestions: IRelatedQuestionAnswerResponse[];
 }

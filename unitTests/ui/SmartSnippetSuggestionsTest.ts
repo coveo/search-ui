@@ -1,6 +1,6 @@
 import { IQuerySuccessEventArgs, QueryEvents } from '../../src/events/QueryEvents';
 import { IQueryResult } from '../../src/rest/QueryResult';
-import { IPartialQuestionAnswerResponse, IQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
+import { IQuestionAnswerResponse, IRelatedQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
 import { SmartSnippetSuggestions, SmartSnippetSuggestionsClassNames } from '../../src/ui/SmartSnippet/SmartSnippetSuggestions';
 import { SmartSnippetCollapsibleSuggestionClassNames } from '../../src/ui/SmartSnippet/SmartSnippetCollapsibleSuggestion';
 import { $$, Dom } from '../../src/utils/Dom';
@@ -96,7 +96,7 @@ export function SmartSnippetSuggestionsTest() {
   function mockRelatedQuestions() {
     return sources.map(
       (source, i) =>
-        <IPartialQuestionAnswerResponse>{
+        <IRelatedQuestionAnswerResponse>{
           question: questions[i],
           answerSnippet: mockSnippet(i).innerHTML,
           documentId: source.id,
