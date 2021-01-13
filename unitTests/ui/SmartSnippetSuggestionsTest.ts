@@ -220,30 +220,6 @@ export function SmartSnippetSuggestionsTest() {
           ]);
         });
 
-        it('when a source title is clicked, sends analytics', () => {
-          findClass(ClassNames.QUESTION_SNIPPET_CLASSNAME).forEach((snippet, i) => {
-            resetAnalyticsSpyHistory();
-            $$(snippet).findClass(ClassNames.SOURCE_TITLE_CLASSNAME)[0].click();
-            expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-              analyticsActionCauseList.openSmartSnippetSuggestionSource,
-              { documentId: sources[i].id },
-              snippet
-            );
-          });
-        });
-
-        it('when a source url is clicked, sends analytics', () => {
-          findClass(ClassNames.QUESTION_SNIPPET_CLASSNAME).forEach((snippet, i) => {
-            resetAnalyticsSpyHistory();
-            $$(snippet).findClass(ClassNames.SOURCE_URL_CLASSNAME)[0].click();
-            expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-              analyticsActionCauseList.openSmartSnippetSuggestionSource,
-              { documentId: sources[i].id },
-              snippet
-            );
-          });
-        });
-
         describe('each SmartSnippetCollapsibleSuggestion', () => {
           it('renders a title and a collapsible container', () => {
             findClass(ClassNames.QUESTION_CLASSNAME).forEach(question =>
