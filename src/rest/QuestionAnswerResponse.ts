@@ -8,6 +8,6 @@ export interface IPartialQuestionAnswerResponse {
   score: number;
 }
 
-export interface IQuestionAnswerResponse extends IPartialQuestionAnswerResponse {
+export interface IQuestionAnswerResponse extends Partial<IPartialQuestionAnswerResponse> {
   relatedQuestions: IPartialQuestionAnswerResponse[];
 }
