@@ -37,15 +37,15 @@ export function DynamicFacetHeaderCollapseToggleTest() {
 
     it(`when calling toggleButtons with isCollapsed to true
       should display the expand button and hide the collapse button`, () => {
-      collapseToggle.toggleButtons(true);
+      collapseToggle.toggleButton(true);
       expect($$(collapseBtnElement).isVisible()).toBe(false);
       expect($$(expandBtnElement).isVisible()).toBe(true);
     });
 
     it(`when calling toggleButtons with isCollapsed to false
       should display the collapse button and hide the expand button`, () => {
-      collapseToggle.toggleButtons(true);
-      collapseToggle.toggleButtons(false);
+      collapseToggle.toggleButton(true);
+      collapseToggle.toggleButton(false);
       expect($$(collapseBtnElement).isVisible()).toBe(true);
       expect($$(expandBtnElement).isVisible()).toBe(false);
     });
@@ -75,7 +75,7 @@ export function DynamicFacetHeaderCollapseToggleTest() {
 
     it(`when clicking on the expand button
     should call expand on the DynamicFacet component`, () => {
-      collapseToggle.toggleButtons(true);
+      collapseToggle.toggleButton(true);
       $$(expandBtnElement).trigger('click');
 
       expect(options.expand).toHaveBeenCalled();

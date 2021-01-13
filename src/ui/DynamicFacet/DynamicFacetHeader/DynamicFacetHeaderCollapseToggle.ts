@@ -33,7 +33,7 @@ export class DynamicFacetHeaderCollapseToggle {
     this.element = parent.el;
   }
 
-  public toggleButtons(isCollapsed: boolean) {
+  public toggleButton(isCollapsed: boolean) {
     const node = $$(this.button.element);
     const label = isCollapsed ? l('ExpandFacet', this.options.title) : l('CollapseFacet', this.options.title);
     const icon = isCollapsed ? SVGIcons.icons.arrowDown : SVGIcons.icons.arrowUp;
