@@ -16,7 +16,7 @@ import { Utils } from '../../src/utils/Utils';
 import { IFacetSearchResponse } from '../../src/rest/Facet/FacetSearchResponse';
 import { ExecutionPlan } from '../../src/rest/Plan';
 import { buildHistoryStore } from '../../src/utils/HistoryStore';
-import { Cookie } from '../../src/Core';
+import { AnalyticsInformation } from '../../src/ui/Analytics/AnalyticsInformation';
 
 interface ILastSentAnalytics {
   visitorId: string;
@@ -39,14 +39,15 @@ export function SearchEndpointTest() {
       store.addElement({ time: new Date().toTimeString(), internalTime: Date.now(), name: 'PageVieww', value: 'abc' });
     }
 
-    function fakeCookies() {
-      Cookie.set('visitorId', visitorId);
-      Cookie.set('clientId', clientId);
+    function fakeAnalyticsInformation() {
+      const info = new AnalyticsInformation();
+      info.visitorId = visitorId;
+      info.clientId = clientId;
     }
 
     function fakeClientInformation() {
       fakeHistoryStore();
-      fakeCookies();
+      fakeAnalyticsInformation();
     }
 
     const expectedAnalytics: ILastSentAnalytics = {
