@@ -45,7 +45,11 @@ node('linux && docker') {
       }
 
       stage('Docs') {
-        sh './deploy.doc.sh'
+        withCredentials([
+            usernameColonPassword(credentialsId: 'github-commit-token', variable: 'GITHUB_TOKEN')
+        ]) {
+            sh './deploy.doc.sh'
+        }
         sh 'yarn run docsitemap'
         sh 'yarn run zipForGitReleases'
       }
