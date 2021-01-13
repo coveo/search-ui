@@ -1,6 +1,6 @@
 import { AccessibleModal } from '../../utils/AccessibleModal';
 import { l } from '../../strings/Strings';
-import { $$ } from '../../utils/Dom';
+import { $$, Dom } from '../../utils/Dom';
 import { RadioButton } from '../FormWidgets/RadioButton';
 import 'styling/_ExplanationModal';
 
@@ -49,6 +49,7 @@ export class ExplanationModal {
   private modal: AccessibleModal;
   private reasons: RadioButton[];
   private selectedReason: IReason;
+  private detailsSection: Dom;
   private detailsTextArea: HTMLTextAreaElement;
   private shouldCallCloseEvent = false;
 
@@ -126,13 +127,13 @@ export class ExplanationModal {
   }
 
   private buildDetailsSection() {
-    return $$(
+    return (this.detailsSection = $$(
       'div',
-      { className: DETAILS_SECTION_CLASSNAME },
+      { className: `disabled ${DETAILS_SECTION_CLASSNAME}` },
       $$('label', { className: DETAILS_LABEL_CLASSNAME, for: DETAILS_ID }, l('Details')).el,
       (this.detailsTextArea = $$('textarea', { className: DETAILS_TEXTAREA_CLASSNAME, id: DETAILS_ID, disabled: true })
         .el as HTMLTextAreaElement)
-    );
+    ));
   }
 
   private buildSendButton() {
@@ -157,6 +158,7 @@ export class ExplanationModal {
         if (!radioButton.isSelected()) {
           return;
         }
+        this.detailsSection.toggleClass('disabled', !reason.hasDetails);
         this.detailsTextArea.disabled = !reason.hasDetails;
         this.selectedReason = reason;
       },
