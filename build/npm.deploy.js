@@ -13,7 +13,9 @@ async function deployTaggedVersion() {
 
 async function publishToNpm(publishArgs = [], successMessage) {
   const args = ['publish', ...publishArgs].join(' ');
-  await exec(`npm ${args}`);
+  const defaultBufferSize = 1024 * 200;
+
+  await exec(`npm ${args}`, { maxBuffer: defaultBufferSize * 10 });
   console.log(successMessage);
 }
 
