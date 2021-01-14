@@ -362,6 +362,7 @@ export class FieldValue extends Component {
   private getHelperOptions() {
     const inlineOptions = ComponentOptions.loadStringOption(this.element, 'helperOptions', {});
     if (Utils.isNonEmptyString(inlineOptions)) {
+      // Eval
       return extend({}, this.options.helperOptions, eval('(' + inlineOptions + ')'));
     }
     return this.options.helperOptions;

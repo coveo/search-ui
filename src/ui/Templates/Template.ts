@@ -212,6 +212,7 @@ export class Template implements ITemplateProperties {
     // In some circumstances (eg: locker service in SF), with strict Content-Security-Policy, eval / new Function are not allowed by the browser.
     // Try to use the eval method, if possible. Otherwise fallback to a mechanism where we will try to parse/evaluate the condition as a simple string.
     try {
+      // Eval
       this.condition = new Function('obj', 'with(obj||{}){return ' + condition + '}');
     } catch (e) {
       this.conditionToParse = condition;

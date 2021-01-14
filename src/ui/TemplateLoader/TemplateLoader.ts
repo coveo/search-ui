@@ -117,6 +117,7 @@ export class TemplateLoader extends Component {
     Assert.exists(this.result);
 
     if (this.options.condition != null) {
+      // Eval
       var conditionFunction = new Function('obj', 'with(obj||{}){return ' + this.options.condition + '}');
       if (conditionFunction(this.result)) {
         this.initialize();
