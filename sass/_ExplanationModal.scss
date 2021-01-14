@@ -58,6 +58,10 @@
       align-items: flex-start;
       flex-grow: 1;
 
+      &.coveo-hidden {
+        visibility: hidden;
+      }
+
       &-textarea {
         @include defaultRoundedLowContrastBorder();
         min-width: 256px;
@@ -69,11 +73,6 @@
         font-family: Arial, Helvetica, sans-serif;
         color: black;
         font-size: 1em;
-
-        &[disabled] {
-          background-color: #ddd;
-          color: #616161;
-        }
 
         &:focus {
           border-color: $color-active-orange;
