@@ -131,7 +131,7 @@ export function ExplanationModalTest() {
       });
 
       it("doesn't disable the details section", () => {
-        expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('disabled')).toBeFalsy();
+        expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('coveo-hidden')).toBeFalsy();
       });
 
       it('builds a send button with the right text', () => {
@@ -148,7 +148,7 @@ export function ExplanationModalTest() {
         });
 
         it('should disable the details section', () => {
-          expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('disabled')).toBeTruthy();
+          expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('coveo-hidden')).toBeTruthy();
         });
 
         describe('then pressing the send button', () => {
@@ -177,7 +177,7 @@ export function ExplanationModalTest() {
         });
 
         it('should disable the details section', () => {
-          expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('disabled')).toBeTruthy();
+          expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('coveo-hidden')).toBeTruthy();
         });
 
         describe('then pressing the send button', () => {
@@ -241,7 +241,7 @@ export function ExplanationModalTest() {
       });
 
       it('disables the details section', () => {
-        expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('disabled')).toBeTruthy();
+        expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('coveo-hidden')).toBeTruthy();
       });
     });
   });

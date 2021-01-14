@@ -129,7 +129,7 @@ export class ExplanationModal {
   private buildDetailsSection() {
     return (this.detailsSection = $$(
       'div',
-      { className: `disabled ${DETAILS_SECTION_CLASSNAME}` },
+      { className: `coveo-hidden ${DETAILS_SECTION_CLASSNAME}` },
       $$('label', { className: DETAILS_LABEL_CLASSNAME, for: DETAILS_ID }, l('Details')).el,
       (this.detailsTextArea = $$('textarea', { className: DETAILS_TEXTAREA_CLASSNAME, id: DETAILS_ID, disabled: true })
         .el as HTMLTextAreaElement)
@@ -158,7 +158,7 @@ export class ExplanationModal {
         if (!radioButton.isSelected()) {
           return;
         }
-        this.detailsSection.toggleClass('disabled', !reason.hasDetails);
+        this.detailsSection.toggleClass('coveo-hidden', !reason.hasDetails);
         this.detailsTextArea.disabled = !reason.hasDetails;
         this.selectedReason = reason;
       },
