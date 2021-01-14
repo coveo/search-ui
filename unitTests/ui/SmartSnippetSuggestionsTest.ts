@@ -1,12 +1,13 @@
 import { IQuerySuccessEventArgs, QueryEvents } from '../../src/events/QueryEvents';
 import { IQueryResult } from '../../src/rest/QueryResult';
-import { IPartialQuestionAnswerResponse, IQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
+import { IQuestionAnswerResponse, IRelatedQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
 import { SmartSnippetSuggestions, SmartSnippetSuggestionsClassNames } from '../../src/ui/SmartSnippet/SmartSnippetSuggestions';
 import { SmartSnippetCollapsibleSuggestionClassNames } from '../../src/ui/SmartSnippet/SmartSnippetCollapsibleSuggestion';
 import { $$, Dom } from '../../src/utils/Dom';
 import { advancedComponentSetup, AdvancedComponentSetupOptions, IBasicComponentSetup } from '../MockEnvironment';
 import { expectChildren } from '../TestUtils';
 import { flatten } from 'underscore';
+import { IQueryResults } from '../../src/rest/QueryResults';
 
 const ClassNames = {
   ...SmartSnippetSuggestionsClassNames,
@@ -92,17 +93,21 @@ export function SmartSnippetSuggestionsTest() {
     return $$('script', { type: 'text/css' }, style).el;
   }
 
+  function mockRelatedQuestions() {
+    return sources.map(
+      (source, i) =>
+        <IRelatedQuestionAnswerResponse>{
+          question: questions[i],
+          answerSnippet: mockSnippet(i).innerHTML,
+          documentId: source.id,
+          score: 0
+        }
+    );
+  }
+
   function mockQuestionAnswer() {
     return <IQuestionAnswerResponse>{
-      relatedQuestions: sources.map(
-        (source, i) =>
-          <IPartialQuestionAnswerResponse>{
-            question: questions[i],
-            answerSnippet: mockSnippet(i).innerHTML,
-            documentId: source.id,
-            score: 0
-          }
-      )
+      relatedQuestions: mockRelatedQuestions()
     };
   }
 
@@ -119,16 +124,20 @@ export function SmartSnippetSuggestionsTest() {
         .and.callFake((href: string, newTab: boolean, sendAnalytics: () => void) => sendAnalytics());
     }
 
-    async function triggerQuerySuccess(withSource: boolean) {
+    async function triggerQuerySuccess(args: Partial<IQuerySuccessEventArgs>) {
+      (test.env.queryController.getLastResults as jasmine.Spy).and.returnValue(args.results);
+      $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, args);
+      await test.cmp.loading;
+    }
+
+    async function triggerQuestionAnswerQuery(withSource: boolean) {
       const results = withSource ? mockResults() : [];
-      (test.env.queryController.getLastResults as jasmine.Spy).and.returnValue({ results });
-      $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, <IQuerySuccessEventArgs>{
-        results: {
+      await triggerQuerySuccess({
+        results: <IQueryResults>{
           results,
           questionAnswer: mockQuestionAnswer()
         }
       });
-      await test.cmp['shadowLoading'];
     }
 
     function findClass<T extends HTMLElement = HTMLElement>(className: string, inShadowRoot = false): T[] {
@@ -146,7 +155,7 @@ export function SmartSnippetSuggestionsTest() {
       beforeEach(async done => {
         instantiateSmartSnippetSuggestions(true);
         document.body.appendChild(test.env.root);
-        await triggerQuerySuccess(false);
+        await triggerQuestionAnswerQuery(false);
         await test.cmp['contentLoaded'];
         done();
       });
@@ -183,9 +192,33 @@ export function SmartSnippetSuggestionsTest() {
         expect(test.cmp.element.children.length).toEqual(0);
       });
 
+      it('with only a question answer, does not render', async done => {
+        await triggerQuerySuccess({
+          results: <IQueryResults>{ questionAnswer: { question: 'abc', answerSnippet: 'def', relatedQuestions: [] } }
+        });
+        expect(test.cmp.element.classList.contains(ClassNames.HAS_QUESTIONS_CLASSNAME)).toBeFalsy();
+        done();
+      });
+
+      it('with only related questions, renders', async done => {
+        await triggerQuerySuccess({
+          results: <IQueryResults>{ questionAnswer: { relatedQuestions: mockRelatedQuestions() } }
+        });
+        expect(test.cmp.element.classList.contains(ClassNames.HAS_QUESTIONS_CLASSNAME)).toBeTruthy();
+        done();
+      });
+
+      it('with both a question answer and related questions, renders', async done => {
+        await triggerQuerySuccess({
+          results: <IQueryResults>{ questionAnswer: { question: 'abc', answerSnippet: 'def', relatedQuestions: mockRelatedQuestions() } }
+        });
+        expect(test.cmp.element.classList.contains(ClassNames.HAS_QUESTIONS_CLASSNAME)).toBeTruthy();
+        done();
+      });
+
       describe('with a source', () => {
         beforeEach(async done => {
-          await triggerQuerySuccess(true);
+          await triggerQuestionAnswerQuery(true);
           await test.cmp['contentLoaded'];
           done();
         });
