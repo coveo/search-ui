@@ -1,5 +1,6 @@
 const { Octokit } = require('@octokit/rest');
 const fs = require('fs');
+const { isAlphaVersion } = require('./tag.utilities');
 
 const token = process.env.GITHUB_TOKEN || '';
 const tag_name = process.env.TAG_NAME || '';
@@ -39,6 +40,10 @@ async function uploadAsset(release_id) {
 }
 
 async function main() {
+  if (isAlphaVersion()) {
+    return console.log('skipping Github Release for alpha version');
+  }
+
   try {
     const releaseId = await getReleaseId();
     const res = await uploadAsset(releaseId);
