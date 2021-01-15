@@ -4,25 +4,49 @@ const fs = require('fs');
 const token = process.env.GITHUB_TOKEN || '';
 const tag_name = process.env.TAG_NAME || '';
 
+const github = new Octokit({ auth: token });
+
+const owner = 'coveo';
+const repo = 'search-ui';
+const fileName = 'search-ui.zip';
+
+async function createRelease() {
+  const res = await github.repos.createRelease({ owner, repo, tag_name });
+  console.log(`created release`);
+
+  return res.data.id;
+}
+
+async function getReleaseIdByTag() {
+  const res = await github.repos.getReleaseByTag({ owner, repo, tag: tag_name });
+  console.log(`found existing release for tag: ${tag_name}`);
+
+  return res.data.id;
+}
+
+async function getReleaseId() {
+  try {
+    return await createRelease();
+  } catch (e) {
+    console.log(`failed to create release`, e.errors);
+    return await getReleaseIdByTag();
+  }
+}
+
+async function uploadAsset(release_id) {
+  const data = fs.readFileSync(fileName);
+  return github.repos.uploadReleaseAsset({ owner, repo, data, release_id, name: fileName });
+}
+
 async function main() {
   try {
-    const github = new Octokit({ auth: token });
-
-    const owner = 'coveo';
-    const repo = 'search-ui';
-    const fileName = 'search-ui.zip';
-    const data = fs.readFileSync(fileName);
-
-    // https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-a-release
-    const createReleaseResponse = await github.repos.createRelease({ owner, repo, tag_name });
-    const release_id = createReleaseResponse.data.id;
-
-    const uploadAssetResponse = await github.repos.uploadReleaseAsset({ owner, repo, data, release_id, name: fileName });
-    const browserDownloadUrl = uploadAssetResponse.data.browser_download_url;
+    const releaseId = await getReleaseId();
+    const res = await uploadAsset(releaseId);
+    const browserDownloadUrl = res.data.browser_download_url;
 
     console.log('successfully uploaded asset', browserDownloadUrl);
-  } catch (error) {
-    console.log('failed to upload asset', error);
+  } catch (e) {
+    console.log('failed to upload asset', e.errors);
   }
 }
 
