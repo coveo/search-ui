@@ -221,13 +221,13 @@ export function SmartSnippetTest() {
         });
 
         it('should wrap the snippet in a container in a shadow DOM', () => {
-          const [shadowContainer, _] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
+          const [shadowContainer] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
 
           expect(shadowContainer.innerHTML).toEqual(mockSnippet().innerHTML);
         });
 
         it('should render the default style', () => {
-          const [_, styleElement] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
+          const [, styleElement] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
 
           expect(styleElement.innerHTML).toEqual(getDefaultSnippetStyle(ClassNames.CONTENT_CLASSNAME));
         });
@@ -251,7 +251,7 @@ export function SmartSnippetTest() {
       });
 
       it('should render an empty style', () => {
-        const [_, styleElement] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
+        const [, styleElement] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
 
         expect(styleElement.innerHTML).toEqual('');
       });

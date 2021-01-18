@@ -298,7 +298,7 @@ export function SmartSnippetSuggestionsTest() {
 
           it('should wrap the snippet in a container in a shadow DOM', () => {
             getShadowRoots().forEach((shadowRoot, i) => {
-              const [shadowContainer, _] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
+              const [shadowContainer] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
 
               expect(shadowContainer.innerHTML).toEqual(mockSnippet(i).innerHTML);
             });
@@ -306,7 +306,7 @@ export function SmartSnippetSuggestionsTest() {
 
           it('should render the default style', () => {
             getShadowRoots().forEach(shadowRoot => {
-              const [_, styleElement] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
+              const [, styleElement] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
 
               expect(styleElement.innerHTML).toEqual(getDefaultSnippetStyle(ClassNames.RAW_CONTENT_CLASSNAME));
             });
@@ -329,7 +329,7 @@ export function SmartSnippetSuggestionsTest() {
 
       it('should render the no style', () => {
         getShadowRoots().forEach(shadowRoot => {
-          const [_, styleElement] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
+          const [, styleElement] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
 
           expect(styleElement.innerHTML).toEqual('');
         });
