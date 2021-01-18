@@ -44,7 +44,7 @@ export class SmartSnippetCollapsibleSuggestion {
 
   constructor(
     private readonly questionAnswer: IRelatedQuestionAnswerResponse,
-    private readonly innerCSS?: string,
+    private readonly innerCSS: string,
     private readonly source?: IQueryResult
   ) {}
 
@@ -56,7 +56,7 @@ export class SmartSnippetCollapsibleSuggestion {
     const collapsibleContainer = this.buildCollapsibleContainer(
       this.questionAnswer.answerSnippet,
       this.questionAnswer.question,
-      this.innerCSS && this.buildStyle(this.innerCSS)
+      this.buildStyle(this.innerCSS)
     );
     const title = this.buildTitle(this.questionAnswer.question);
     this.updateExpanded();
@@ -102,7 +102,7 @@ export class SmartSnippetCollapsibleSuggestion {
     return this.checkbox;
   }
 
-  private buildCollapsibleContainer(innerHTML: string, title: string, style?: HTMLStyleElement) {
+  private buildCollapsibleContainer(innerHTML: string, title: string, style: HTMLStyleElement) {
     const shadowContainer = $$('div', { className: SHADOW_CLASSNAME });
     this.collapsibleContainer = $$('div', { className: QUESTION_SNIPPET_CLASSNAME, id: this.snippetId }, shadowContainer);
     this.contentLoaded = attachShadow(shadowContainer.el, { mode: 'open', title: l('AnswerSpecificSnippet', title) }).then(shadowRoot => {
@@ -115,12 +115,10 @@ export class SmartSnippetCollapsibleSuggestion {
     return this.collapsibleContainer;
   }
 
-  private buildAnswerSnippetContent(innerHTML: string, style?: HTMLStyleElement) {
+  private buildAnswerSnippetContent(innerHTML: string, style: HTMLStyleElement) {
     const snippet = $$('div', { className: RAW_CONTENT_CLASSNAME }, innerHTML);
     const container = $$('div', {}, snippet);
-    if (style) {
-      container.append(style);
-    }
+    container.append(style);
     return container;
   }
 

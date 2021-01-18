@@ -35,6 +35,7 @@
     @at-root .coveo-smart-snippet-content {
       transition: height ease-in-out 0.5s;
       overflow: hidden;
+      margin-top: 16px;
 
       @at-root .coveo-height-limiter-container-active {
         position: relative;

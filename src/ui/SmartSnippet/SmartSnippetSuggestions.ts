@@ -6,9 +6,11 @@ import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IRelatedQuestionAnswerResponse, IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import { $$, Dom } from '../../utils/Dom';
 import { uniqueId, isEqual, find } from 'underscore';
-import { SmartSnippetCollapsibleSuggestion } from './SmartSnippetCollapsibleSuggestion';
+import { SmartSnippetCollapsibleSuggestion, SmartSnippetCollapsibleSuggestionClassNames } from './SmartSnippetCollapsibleSuggestion';
 import { l } from '../../strings/Strings';
 import { Initialization } from '../Base/Initialization';
+import { Utils } from '../../utils/Utils';
+import { getDefaultSnippetStyle } from './SmartSnippetCommon';
 
 const BASE_CLASSNAME = 'coveo-smart-snippet-suggestions';
 const HAS_QUESTIONS_CLASSNAME = `${BASE_CLASSNAME}-has-questions`;
@@ -85,7 +87,14 @@ export class SmartSnippetSuggestions extends Component {
   private buildQuestionAnswers(questionAnswers: IRelatedQuestionAnswerResponse[]) {
     const innerCSS = this.getInnerCSS();
     const answers = questionAnswers.map(
-      questionAnswer => new SmartSnippetCollapsibleSuggestion(questionAnswer, innerCSS, this.getCorrespondingResult(questionAnswer))
+      questionAnswer =>
+        new SmartSnippetCollapsibleSuggestion(
+          questionAnswer,
+          Utils.isNullOrUndefined(innerCSS)
+            ? getDefaultSnippetStyle(SmartSnippetCollapsibleSuggestionClassNames.RAW_CONTENT_CLASSNAME)
+            : innerCSS,
+          this.getCorrespondingResult(questionAnswer)
+        )
     );
     const container = $$(
       'ul',
@@ -97,11 +106,11 @@ export class SmartSnippetSuggestions extends Component {
   }
 
   private getInnerCSS() {
-    return $$(this.element)
+    const styles = $$(this.element)
       .children()
       .filter(element => element instanceof HTMLScriptElement && element.type.toLowerCase() === 'text/css')
-      .map(element => element.innerHTML)
-      .join('\n');
+      .map(element => element.innerHTML);
+    return styles.length ? styles.join('\n') : null;
   }
 }
 
