@@ -1,5 +1,8 @@
 const tag = process.env.TAG_NAME || '';
 
+const number = '[0-9]+';
+const dot = '[.]';
+
 function isTagged() {
   return tag && tag !== '';
 }
@@ -19,14 +22,10 @@ function isBetaTag() {
 }
 
 function semanticVersionForm() {
-  const number = '[0-9]+';
-  const dot = '[.]';
   return `${number}${dot}${number}${dot}${number}`;
 }
 
 function majorMinorForm() {
-  const number = '[0-9]+';
-  const dot = '[.]';
   return `${number}${dot}${number}`;
 }
 
@@ -62,6 +61,14 @@ function getMajorMinorVersion() {
   return majorMinorRegex.exec(version)[0];
 }
 
+function getPatchVersion() {
+  const version = getVersion();
+  const patchForm = `${number}$`;
+  const regex = new RegExp(patchForm);
+
+  return regex.exec(version)[0];
+}
+
 function getHerokuVersion() {
   const version = getVersion();
   return version ? version.replace(/\./g, '-') : 'unknown-version';
@@ -75,5 +82,6 @@ module.exports = {
   getAlphabeticSuffix,
   getVersion,
   getHerokuVersion,
-  getMajorMinorVersion
+  getMajorMinorVersion,
+  getPatchVersion
 };

@@ -3,7 +3,7 @@ import { Component } from '../Base/Component';
 import { exportGlobally } from '../../GlobalExports';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../events/QueryEvents';
-import { IPartialQuestionAnswerResponse, IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
+import { IRelatedQuestionAnswerResponse, IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import { $$, Dom } from '../../utils/Dom';
 import { uniqueId, isEqual, find } from 'underscore';
 import { SmartSnippetCollapsibleSuggestion } from './SmartSnippetCollapsibleSuggestion';
@@ -48,7 +48,7 @@ export class SmartSnippetSuggestions extends Component {
   /**
    * @warning This method only works for the demo. In practice, the source of the answer will not always be part of the results.
    */
-  private getCorrespondingResult(questionAnswer: IPartialQuestionAnswerResponse) {
+  private getCorrespondingResult(questionAnswer: IRelatedQuestionAnswerResponse) {
     return find(
       this.queryController.getLastResults().results,
       result => result.raw[questionAnswer.documentId.contentIdKey] === questionAnswer.documentId.contentIdValue
@@ -82,7 +82,7 @@ export class SmartSnippetSuggestions extends Component {
     return $$('span', { className: QUESTIONS_LIST_TITLE_CLASSNAME, id: this.titleId }, l('SuggestedQuestions'));
   }
 
-  private buildQuestionAnswers(questionAnswers: IPartialQuestionAnswerResponse[]) {
+  private buildQuestionAnswers(questionAnswers: IRelatedQuestionAnswerResponse[]) {
     const innerCSS = this.getInnerCSS();
     const answers = questionAnswers.map(
       questionAnswer =>

@@ -191,12 +191,16 @@ export class SmartSnippet extends Component {
 
   private async handleQuerySuccess(data: IQuerySuccessEventArgs) {
     const { questionAnswer } = data.results;
-    if (!questionAnswer) {
+    if (!this.containsQuestionAnswer(questionAnswer)) {
       this.hasAnswer = false;
       return;
     }
     this.hasAnswer = true;
     await this.render(questionAnswer);
+  }
+
+  private containsQuestionAnswer(questionAnswer: IQuestionAnswerResponse) {
+    return questionAnswer && questionAnswer.question && questionAnswer.answerSnippet;
   }
 
   private async render(questionAnswer: IQuestionAnswerResponse) {

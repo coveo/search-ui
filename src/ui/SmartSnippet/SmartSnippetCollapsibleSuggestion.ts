@@ -1,4 +1,4 @@
-import { IPartialQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
+import { IRelatedQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import { uniqueId } from 'underscore';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -48,7 +48,7 @@ export class SmartSnippetCollapsibleSuggestion {
 
   constructor(
     private readonly usageAnalytics: IAnalyticsClient,
-    private readonly questionAnswer: IPartialQuestionAnswerResponse,
+    private readonly questionAnswer: IRelatedQuestionAnswerResponse,
     private readonly bindings: IComponentBindings,
     private readonly innerCSS?: string,
     private readonly source?: IQueryResult
