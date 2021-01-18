@@ -47,7 +47,6 @@ export class SmartSnippetCollapsibleSuggestion {
   private expanded = false;
 
   constructor(
-    private readonly usageAnalytics: IAnalyticsClient,
     private readonly questionAnswer: IRelatedQuestionAnswerResponse,
     private readonly bindings: IComponentBindings,
     private readonly innerCSS?: string,
@@ -164,7 +163,7 @@ export class SmartSnippetCollapsibleSuggestion {
   }
 
   private sendExpandAnalytics() {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
+    return this.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
       analyticsActionCauseList.expandSmartSnippetSuggestion,
       {
         documentId: this.questionAnswer.documentId
@@ -174,7 +173,7 @@ export class SmartSnippetCollapsibleSuggestion {
   }
 
   private sendCollapseAnalytics() {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
+    return this.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
       analyticsActionCauseList.collapseSmartSnippetSuggestion,
       {
         documentId: this.questionAnswer.documentId

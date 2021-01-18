@@ -86,13 +86,7 @@ export class SmartSnippetSuggestions extends Component {
     const innerCSS = this.getInnerCSS();
     const answers = questionAnswers.map(
       questionAnswer =>
-        new SmartSnippetCollapsibleSuggestion(
-          this.usageAnalytics,
-          questionAnswer,
-          this.getBindings(),
-          innerCSS,
-          this.getCorrespondingResult(questionAnswer)
-        )
+        new SmartSnippetCollapsibleSuggestion(questionAnswer, this.getBindings(), innerCSS, this.getCorrespondingResult(questionAnswer))
     );
     const container = $$(
       'ul',
