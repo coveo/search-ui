@@ -88,9 +88,9 @@ export class SmartSnippet extends Component {
    */
   static options: ISmartSnippetOptions = {
     /**
-     * The maximum height a question answer can have in pixels.
-     * Any part of a question answering exceeding this height will be hidden.
-     * A "show more" button is added underneath an answer when some part of it is hidden.
+     * The maximum height an answer can have in pixels.
+     * Any part of an answer exceeding this height will be hidden by default and expendable via a "show more" button.
+     * Default value is `250`.
      */
     maximumSnippetHeight: ComponentOptions.buildNumberOption({ defaultValue: 250, min: 0 })
   };
