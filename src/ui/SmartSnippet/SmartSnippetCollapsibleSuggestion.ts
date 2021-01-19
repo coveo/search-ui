@@ -6,6 +6,9 @@ import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { $$, Dom } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { IQueryResult } from '../../rest/QueryResult';
+import { analyticsActionCauseList, IAnalyticsSmartSnippetSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
+import { ResultLink } from '../ResultLink/ResultLink';
+import { IComponentBindings } from '../Base/ComponentBindings';
 
 const QUESTION_CLASSNAME = `coveo-smart-snippet-suggestions-question`;
 const QUESTION_TITLE_CLASSNAME = `${QUESTION_CLASSNAME}-title`;
@@ -44,6 +47,7 @@ export class SmartSnippetCollapsibleSuggestion {
 
   constructor(
     private readonly questionAnswer: IRelatedQuestionAnswerResponse,
+    private readonly bindings: IComponentBindings,
     private readonly innerCSS?: string,
     private readonly source?: IQueryResult
   ) {}
@@ -109,8 +113,8 @@ export class SmartSnippetCollapsibleSuggestion {
       shadowRoot.appendChild(this.buildAnswerSnippetContent(innerHTML, style).el);
     });
     if (this.source) {
-      this.collapsibleContainer.append(this.buildSourceUrl(this.source.clickUri));
-      this.collapsibleContainer.append(this.buildSourceTitle(this.source.title, this.source.clickUri));
+      this.collapsibleContainer.append(this.buildSourceUrl());
+      this.collapsibleContainer.append(this.buildSourceTitle());
     }
     return this.collapsibleContainer;
   }
@@ -124,23 +128,29 @@ export class SmartSnippetCollapsibleSuggestion {
     return container;
   }
 
-  private buildSourceTitle(title: string, clickUri: string) {
-    return this.buildLink(title, clickUri, SOURCE_TITLE_CLASSNAME);
+  private buildSourceTitle() {
+    return this.buildLink(this.source.title, SOURCE_TITLE_CLASSNAME);
   }
 
-  private buildSourceUrl(url: string) {
-    return this.buildLink(url, url, SOURCE_URL_CLASSNAME);
+  private buildSourceUrl() {
+    return this.buildLink(this.source.clickUri, SOURCE_URL_CLASSNAME);
   }
 
-  private buildLink(text: string, href: string, className: string) {
-    const element = $$('a', { className, href }).el as HTMLAnchorElement;
+  private buildLink(text: string, className: string) {
+    const element = $$('a', { className: `CoveoResultLink ${className}` }).el as HTMLAnchorElement;
     element.innerText = text;
+    new ResultLink(element, {}, { ...this.bindings, resultElement: this.collapsibleContainer.el }, this.source);
     return element;
   }
 
   private toggle() {
     this.expanded = !this.expanded;
     this.updateExpanded();
+    if (this.expanded) {
+      this.sendExpandAnalytics();
+    } else {
+      this.sendCollapseAnalytics();
+    }
   }
 
   private updateExpanded() {
@@ -149,5 +159,25 @@ export class SmartSnippetCollapsibleSuggestion {
     this.collapsibleContainer.setAttribute('tabindex', `${this.expanded ? 0 : -1}`);
     this.collapsibleContainer.setAttribute('aria-hidden', (!this.expanded).toString());
     this.collapsibleContainer.toggleClass(QUESTION_SNIPPET_HIDDEN_CLASSNAME, !this.expanded);
+  }
+
+  private sendExpandAnalytics() {
+    return this.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
+      analyticsActionCauseList.expandSmartSnippetSuggestion,
+      {
+        documentId: this.questionAnswer.documentId
+      },
+      this.checkbox.el
+    );
+  }
+
+  private sendCollapseAnalytics() {
+    return this.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
+      analyticsActionCauseList.collapseSmartSnippetSuggestion,
+      {
+        documentId: this.questionAnswer.documentId
+      },
+      this.checkbox.el
+    );
   }
 }

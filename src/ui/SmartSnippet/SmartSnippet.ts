@@ -20,6 +20,7 @@ import { ExplanationModal, IReason } from './ExplanationModal';
 import { l } from '../../strings/Strings';
 import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { Utils } from '../../utils/Utils';
+import { ResultLink } from '../ResultLink/ResultLink';
 
 interface ISmartSnippetReason {
   analytics: AnalyticsSmartSnippetFeedbackReason;
@@ -221,39 +222,23 @@ export class SmartSnippet extends Component {
 
   private renderSource(source: IQueryResult) {
     $$(this.sourceContainer).empty();
-    this.sourceContainer.appendChild(this.renderSourceUrl(source.clickUri));
-    this.sourceContainer.appendChild(this.renderSourceTitle(source.title, source.clickUri));
+    this.sourceContainer.appendChild(this.renderSourceUrl(source));
+    this.sourceContainer.appendChild(this.renderSourceTitle(source));
   }
 
-  private renderSourceTitle(title: string, clickUri: string) {
-    return this.renderLink(title, clickUri, SOURCE_TITLE_CLASSNAME);
+  private renderSourceTitle(source: IQueryResult) {
+    return this.buildLink(source, source.title, SOURCE_TITLE_CLASSNAME);
   }
 
-  private renderSourceUrl(url: string) {
-    return this.renderLink(url, url, SOURCE_URL_CLASSNAME);
+  private renderSourceUrl(source: IQueryResult) {
+    return this.buildLink(source, source.clickUri, SOURCE_URL_CLASSNAME);
   }
 
-  private renderLink(text: string, href: string, className: string) {
-    const element = $$('a', { className, href }).el as HTMLAnchorElement;
+  private buildLink(source: IQueryResult, text: string, className: string) {
+    const element = $$('a', { className: `CoveoResultLink ${className}` }).el as HTMLAnchorElement;
     element.innerText = text;
-    this.enableAnalyticsOnLink(element, () => this.sendOpenSourceAnalytics());
+    new ResultLink(element, {}, { ...this.getBindings(), resultElement: this.element }, source);
     return element;
-  }
-
-  private enableAnalyticsOnLink(link: HTMLAnchorElement, sendAnalytics: () => Promise<any>) {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      this.openLink(link.href, e.ctrlKey, sendAnalytics);
-    });
-  }
-
-  private openLink(href: string, newTab: boolean, sendAnalytics: () => Promise<any>) {
-    sendAnalytics();
-    if (newTab) {
-      window.open(href);
-    } else {
-      window.location.href = href;
-    }
   }
 
   private openExplanationModal() {
@@ -291,15 +276,6 @@ export class SmartSnippet extends Component {
   private sendCollapseSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.collapseSmartSnippet,
-      {},
-      this.element,
-      this.lastRenderedResult
-    );
-  }
-
-  private sendOpenSourceAnalytics() {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
-      analyticsActionCauseList.openSmartSnippetSource,
       {},
       this.element,
       this.lastRenderedResult
