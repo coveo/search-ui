@@ -129,12 +129,6 @@ export function SmartSnippetSuggestionsTest() {
 
     async function waitForCollapsibleSuggestions() {
       collapsibleSuggestions = await test.cmp['contentLoaded'];
-      collapsibleSuggestions.forEach(
-        suggestion =>
-          (suggestion['openLink'] = jasmine
-            .createSpy('openLink')
-            .and.callFake((href: string, newTab: boolean, sendAnalytics: () => void) => sendAnalytics()))
-      );
     }
 
     async function triggerQuerySuccess(args: Partial<IQuerySuccessEventArgs>) {

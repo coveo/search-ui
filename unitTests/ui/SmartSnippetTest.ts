@@ -2,7 +2,7 @@ import { IQuestionAnswerResponse, IRelatedQuestionAnswerResponse } from '../../s
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { $$ } from '../../src/utils/Dom';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
-import { SmartSnippet, SmartSnippetClassNames as ClassNames } from '../../src/ui/SmartSnippet/SmartSnippet';
+import { ISmartSnippetOptions, SmartSnippet, SmartSnippetClassNames as ClassNames } from '../../src/ui/SmartSnippet/SmartSnippet';
 import { expectChildren } from '../TestUtils';
 import { UserFeedbackBannerClassNames } from '../../src/ui/SmartSnippet/UserFeedbackBanner';
 import { IBasicComponentSetup, advancedComponentSetup, AdvancedComponentSetupOptions } from '../MockEnvironment';
@@ -77,14 +77,11 @@ export function SmartSnippetTest() {
   describe('SmartSnippet', () => {
     let test: IBasicComponentSetup<SmartSnippet>;
 
-    function instantiateSmartSnippet(styling: string | null) {
+    function instantiateSmartSnippet(styling: string | null, options: Partial<ISmartSnippetOptions> = {}) {
       test = advancedComponentSetup<SmartSnippet>(
         SmartSnippet,
-        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling)])).el)
+        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling)])).el, options)
       );
-      test.cmp['openLink'] = jasmine
-        .createSpy('openLink')
-        .and.callFake((href: string, newTab: boolean, sendAnalytics: () => void) => sendAnalytics());
     }
 
     async function triggerQuerySuccess(args: Partial<IQuerySuccessEventArgs>) {
@@ -110,6 +107,17 @@ export function SmartSnippetTest() {
     function getShadowRoot() {
       return getFirstChild(ClassNames.SHADOW_CLASSNAME).shadowRoot;
     }
+
+    it('instantiates the heightLimiter using the maximumSnippetHeight option', () => {
+      let maximumSnippetHeight = 123;
+      instantiateSmartSnippet(null, { maximumSnippetHeight });
+      test.cmp.ensureDom();
+      expect(test.cmp['heightLimiter']['heightLimit']).toEqual(maximumSnippetHeight);
+      maximumSnippetHeight = 321;
+      instantiateSmartSnippet(null, { maximumSnippetHeight });
+      test.cmp.ensureDom();
+      expect(test.cmp['heightLimiter']['heightLimit']).toEqual(maximumSnippetHeight);
+    });
 
     describe('with styling without a source', () => {
       beforeEach(async done => {
