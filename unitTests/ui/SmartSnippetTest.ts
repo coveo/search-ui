@@ -8,6 +8,8 @@ import { UserFeedbackBannerClassNames } from '../../src/ui/SmartSnippet/UserFeed
 import { IBasicComponentSetup, advancedComponentSetup, AdvancedComponentSetupOptions } from '../MockEnvironment';
 import { HeightLimiterClassNames } from '../../src/ui/SmartSnippet/HeightLimiter';
 import { IQueryResults } from '../../src/rest/QueryResults';
+import { Utils } from '../../src/Core';
+import { getDefaultSnippetStyle } from '../../src/ui/SmartSnippet/SmartSnippetCommon';
 
 export function SmartSnippetTest() {
   const sourceTitle = 'Google!';
@@ -60,8 +62,8 @@ export function SmartSnippetTest() {
     ).el;
   }
 
-  function mockStyling() {
-    return $$('script', { type: 'text/css' }, style).el;
+  function mockStyling(content: string) {
+    return $$('script', { type: 'text/css' }, content).el;
   }
 
   function mockQuestionAnswer() {
@@ -75,10 +77,10 @@ export function SmartSnippetTest() {
   describe('SmartSnippet', () => {
     let test: IBasicComponentSetup<SmartSnippet>;
 
-    function instantiateSmartSnippet(hasStyling: boolean) {
+    function instantiateSmartSnippet(styling: string | null) {
       test = advancedComponentSetup<SmartSnippet>(
         SmartSnippet,
-        new AdvancedComponentSetupOptions($$('div', {}, ...(hasStyling ? [mockStyling()] : [])).el)
+        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling)])).el)
       );
       test.cmp['openLink'] = jasmine
         .createSpy('openLink')
@@ -111,7 +113,7 @@ export function SmartSnippetTest() {
 
     describe('with styling without a source', () => {
       beforeEach(async done => {
-        instantiateSmartSnippet(true);
+        instantiateSmartSnippet(style);
         document.body.appendChild(test.env.root);
         await triggerQuestionAnswerQuery(false);
         done();
@@ -127,9 +129,9 @@ export function SmartSnippetTest() {
       });
     });
 
-    describe('without styling', () => {
+    describe('with default styling', () => {
       beforeEach(() => {
-        instantiateSmartSnippet(false);
+        instantiateSmartSnippet(null);
         document.body.appendChild(test.env.root);
       });
 
@@ -219,14 +221,39 @@ export function SmartSnippetTest() {
         });
 
         it('should wrap the snippet in a container in a shadow DOM', () => {
-          const [shadowContainer] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME]);
+          const [shadowContainer] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
 
           expect(shadowContainer.innerHTML).toEqual(mockSnippet().innerHTML);
+        });
+
+        it('should render the default style', () => {
+          const [, styleElement] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
+
+          expect(styleElement.innerHTML).toEqual(getDefaultSnippetStyle(ClassNames.CONTENT_CLASSNAME));
         });
 
         it('should not render any source', () => {
           expect(getFirstChild(ClassNames.SOURCE_CLASSNAME).children.length).toEqual(0);
         });
+      });
+    });
+
+    describe('with no styling, without a source', () => {
+      beforeEach(async done => {
+        instantiateSmartSnippet('');
+        document.body.appendChild(test.env.root);
+        await triggerQuestionAnswerQuery(false);
+        done();
+      });
+
+      afterEach(() => {
+        test.env.root.remove();
+      });
+
+      it('should render an empty style', () => {
+        const [, styleElement] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
+
+        expect(styleElement.innerHTML).toEqual('');
       });
     });
   });

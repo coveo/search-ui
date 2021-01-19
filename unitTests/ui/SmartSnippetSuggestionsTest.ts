@@ -2,16 +2,17 @@ import { IQuerySuccessEventArgs, QueryEvents } from '../../src/events/QueryEvent
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { IQuestionAnswerResponse, IRelatedQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
 import { SmartSnippetSuggestions, SmartSnippetSuggestionsClassNames } from '../../src/ui/SmartSnippet/SmartSnippetSuggestions';
+import { advancedComponentSetup, AdvancedComponentSetupOptions, IBasicComponentSetup } from '../MockEnvironment';
 import {
   SmartSnippetCollapsibleSuggestion,
   SmartSnippetCollapsibleSuggestionClassNames
 } from '../../src/ui/SmartSnippet/SmartSnippetCollapsibleSuggestion';
-import { $$, Dom } from '../../src/utils/Dom';
-import { advancedComponentSetup, AdvancedComponentSetupOptions, IBasicComponentSetup } from '../MockEnvironment';
+import { $$ } from '../../src/utils/Dom';
 import { expectChildren } from '../TestUtils';
-import { flatten } from 'underscore';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
+import { Utils } from '../../src/Core';
+import { getDefaultSnippetStyle } from '../../src/ui/SmartSnippet/SmartSnippetCommon';
 
 const ClassNames = {
   ...SmartSnippetSuggestionsClassNames,
@@ -93,8 +94,8 @@ export function SmartSnippetSuggestionsTest() {
     ).el;
   }
 
-  function mockStyling() {
-    return $$('script', { type: 'text/css' }, style).el;
+  function mockStyling(content: string) {
+    return $$('script', { type: 'text/css' }, content).el;
   }
 
   function mockRelatedQuestions() {
@@ -119,10 +120,10 @@ export function SmartSnippetSuggestionsTest() {
     let test: IBasicComponentSetup<SmartSnippetSuggestions>;
     let collapsibleSuggestions: SmartSnippetCollapsibleSuggestion[];
 
-    function instantiateSmartSnippetSuggestions(hasStyling: boolean) {
+    function instantiateSmartSnippetSuggestions(styling: string) {
       test = advancedComponentSetup<SmartSnippetSuggestions>(
         SmartSnippetSuggestions,
-        new AdvancedComponentSetupOptions($$('div', {}, ...(hasStyling ? [mockStyling()] : [])).el)
+        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling)])).el)
       );
     }
 
@@ -153,15 +154,12 @@ export function SmartSnippetSuggestionsTest() {
       await waitForCollapsibleSuggestions();
     }
 
-    function findClass<T extends HTMLElement = HTMLElement>(className: string, inShadowRoot = false): T[] {
-      if (inShadowRoot) {
-        return flatten(getShadowRoots().map(shadowRoot => Dom.nodeListToArray(shadowRoot.querySelectorAll(`.${className}`))));
-      }
+    function findClass<T extends HTMLElement = HTMLElement>(className: string): T[] {
       return $$(test.cmp.element).findClass(className) as T[];
     }
 
     function getShadowRoots() {
-      return findClass(ClassNames.SHADOW_CLASSNAME).map(shadowContainer => shadowContainer.shadowRoot);
+      return findClass(ClassNames.SHADOW_CLASSNAME).map(shadowContainer => shadowContainer.shadowRoot.childNodes.item(0) as HTMLElement);
     }
 
     function resetAnalyticsSpyHistory() {
@@ -170,7 +168,7 @@ export function SmartSnippetSuggestionsTest() {
 
     describe('with styling without a source', () => {
       beforeEach(async done => {
-        instantiateSmartSnippetSuggestions(true);
+        instantiateSmartSnippetSuggestions(style);
         document.body.appendChild(test.env.root);
         await triggerQuestionAnswerQuery(false);
         done();
@@ -185,14 +183,16 @@ export function SmartSnippetSuggestionsTest() {
         expect(renderedStyles).toEqual([style, style, style]);
       });
 
-      it('renders only a shadow container in collapsible containers', () => {
-        findClass(ClassNames.QUESTION_SNIPPET_CLASSNAME).forEach(snippet => expectChildren(snippet, [ClassNames.SHADOW_CLASSNAME]));
+      it('renders only a shadow container in snippet containers', () => {
+        findClass(ClassNames.QUESTION_SNIPPET_CONTAINER_CLASSNAME).forEach(snippet =>
+          expectChildren(snippet, [ClassNames.SHADOW_CLASSNAME])
+        );
       });
     });
 
-    describe('without styling', () => {
+    describe('with default styling', () => {
       beforeEach(() => {
-        instantiateSmartSnippetSuggestions(false);
+        instantiateSmartSnippetSuggestions(null);
         document.body.appendChild(test.env.root);
       });
 
@@ -271,8 +271,14 @@ export function SmartSnippetSuggestionsTest() {
             findClass(ClassNames.QUESTION_TITLE_LABEL_CLASSNAME).forEach((label, i) => expect(label.innerText).toEqual(questions[i]));
           });
 
-          it('renders a shadow container, a source url and a source title in the collapsible container', () => {
+          it('renders a snippet container in the collapsible container', () => {
             findClass(ClassNames.QUESTION_SNIPPET_CLASSNAME).forEach(snippet =>
+              expectChildren(snippet, [ClassNames.QUESTION_SNIPPET_CONTAINER_CLASSNAME])
+            );
+          });
+
+          it('renders a shadow container, a source url and a source title in the collapsible container', () => {
+            findClass(ClassNames.QUESTION_SNIPPET_CONTAINER_CLASSNAME).forEach(snippet =>
               expectChildren(snippet, [ClassNames.SHADOW_CLASSNAME, ClassNames.SOURCE_URL_CLASSNAME, ClassNames.SOURCE_TITLE_CLASSNAME])
             );
           });
@@ -300,9 +306,11 @@ export function SmartSnippetSuggestionsTest() {
           });
 
           it('renders the expected shadow content', () => {
-            findClass(ClassNames.RAW_CONTENT_CLASSNAME, true).forEach((content, i) =>
-              expect(content.innerHTML).toEqual(mockSnippet(i).innerHTML)
-            );
+            getShadowRoots().forEach((shadowRoot, i) => {
+              const [shadowContainer] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
+
+              expect(shadowContainer.innerHTML).toEqual(mockSnippet(i).innerHTML);
+            });
           });
         });
 
@@ -342,6 +350,43 @@ export function SmartSnippetSuggestionsTest() {
               );
             });
           });
+
+          it('should wrap the snippet in a container in a shadow DOM', () => {
+            getShadowRoots().forEach((shadowRoot, i) => {
+              const [shadowContainer] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
+
+              expect(shadowContainer.innerHTML).toEqual(mockSnippet(i).innerHTML);
+            });
+          });
+
+          it('should render the default style', () => {
+            getShadowRoots().forEach(shadowRoot => {
+              const [, styleElement] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
+
+              expect(styleElement.innerHTML).toEqual(getDefaultSnippetStyle(ClassNames.RAW_CONTENT_CLASSNAME));
+            });
+          });
+        });
+      });
+    });
+
+    describe('with no styling, without sources', () => {
+      beforeEach(async done => {
+        instantiateSmartSnippetSuggestions('');
+        document.body.appendChild(test.env.root);
+        await triggerQuestionAnswerQuery(false);
+        done();
+      });
+
+      afterEach(() => {
+        test.env.root.remove();
+      });
+
+      it('should render the no style', () => {
+        getShadowRoots().forEach(shadowRoot => {
+          const [, styleElement] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
+
+          expect(styleElement.innerHTML).toEqual('');
         });
       });
     });
