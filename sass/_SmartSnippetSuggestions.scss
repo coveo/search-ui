@@ -56,19 +56,14 @@
 
       &-snippet {
         overflow: hidden;
-
-        &-hidden {
-          height: 0;
-        }
+        transition: height ease-in-out 0.2s;
 
         &-content {
           padding: 16px $inner-padding 24px $inner-padding;
         }
       }
 
-      &-source {
-        margin-top: 24px;
-
+      @at-root a.CoveoResultLink.coveo-smart-snippet-suggestions-question-source {
         &-url,
         &-title {
           padding: 0 $inner-padding;

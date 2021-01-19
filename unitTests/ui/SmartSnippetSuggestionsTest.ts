@@ -2,10 +2,14 @@ import { IQuerySuccessEventArgs, QueryEvents } from '../../src/events/QueryEvent
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { IQuestionAnswerResponse, IRelatedQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
 import { SmartSnippetSuggestions, SmartSnippetSuggestionsClassNames } from '../../src/ui/SmartSnippet/SmartSnippetSuggestions';
-import { SmartSnippetCollapsibleSuggestionClassNames } from '../../src/ui/SmartSnippet/SmartSnippetCollapsibleSuggestion';
-import { $$ } from '../../src/utils/Dom';
 import { advancedComponentSetup, AdvancedComponentSetupOptions, IBasicComponentSetup } from '../MockEnvironment';
+import {
+  SmartSnippetCollapsibleSuggestion,
+  SmartSnippetCollapsibleSuggestionClassNames
+} from '../../src/ui/SmartSnippet/SmartSnippetCollapsibleSuggestion';
+import { $$ } from '../../src/utils/Dom';
 import { expectChildren } from '../TestUtils';
+import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { Utils } from '../../src/Core';
 import { getDefaultSnippetStyle } from '../../src/ui/SmartSnippet/SmartSnippetCommon';
@@ -114,15 +118,23 @@ export function SmartSnippetSuggestionsTest() {
 
   describe('SmartSnippetSuggestions', () => {
     let test: IBasicComponentSetup<SmartSnippetSuggestions>;
+    let collapsibleSuggestions: SmartSnippetCollapsibleSuggestion[];
 
     function instantiateSmartSnippetSuggestions(styling: string) {
       test = advancedComponentSetup<SmartSnippetSuggestions>(
         SmartSnippetSuggestions,
         new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling)])).el)
       );
-      test.cmp['openLink'] = jasmine
-        .createSpy('openLink')
-        .and.callFake((href: string, newTab: boolean, sendAnalytics: () => void) => sendAnalytics());
+    }
+
+    async function waitForCollapsibleSuggestions() {
+      collapsibleSuggestions = await test.cmp['contentLoaded'];
+      collapsibleSuggestions.forEach(
+        suggestion =>
+          (suggestion['openLink'] = jasmine
+            .createSpy('openLink')
+            .and.callFake((href: string, newTab: boolean, sendAnalytics: () => void) => sendAnalytics()))
+      );
     }
 
     async function triggerQuerySuccess(args: Partial<IQuerySuccessEventArgs>) {
@@ -139,6 +151,7 @@ export function SmartSnippetSuggestionsTest() {
           questionAnswer: mockQuestionAnswer()
         }
       });
+      await waitForCollapsibleSuggestions();
     }
 
     function findClass<T extends HTMLElement = HTMLElement>(className: string): T[] {
@@ -149,12 +162,15 @@ export function SmartSnippetSuggestionsTest() {
       return findClass(ClassNames.SHADOW_CLASSNAME).map(shadowContainer => shadowContainer.shadowRoot.childNodes.item(0) as HTMLElement);
     }
 
+    function resetAnalyticsSpyHistory() {
+      (test.cmp.usageAnalytics.logCustomEvent as jasmine.Spy).calls.reset();
+    }
+
     describe('with styling without a source', () => {
       beforeEach(async done => {
         instantiateSmartSnippetSuggestions(style);
         document.body.appendChild(test.env.root);
         await triggerQuestionAnswerQuery(false);
-        await test.cmp['contentLoaded'];
         done();
       });
 
@@ -167,8 +183,10 @@ export function SmartSnippetSuggestionsTest() {
         expect(renderedStyles).toEqual([style, style, style]);
       });
 
-      it('renders only a shadow container in collapsible containers', () => {
-        findClass(ClassNames.QUESTION_SNIPPET_CLASSNAME).forEach(snippet => expectChildren(snippet, [ClassNames.SHADOW_CLASSNAME]));
+      it('renders only a shadow container in snippet containers', () => {
+        findClass(ClassNames.QUESTION_SNIPPET_CONTAINER_CLASSNAME).forEach(snippet =>
+          expectChildren(snippet, [ClassNames.SHADOW_CLASSNAME])
+        );
       });
     });
 
@@ -217,7 +235,6 @@ export function SmartSnippetSuggestionsTest() {
       describe('with a source', () => {
         beforeEach(async done => {
           await triggerQuestionAnswerQuery(true);
-          await test.cmp['contentLoaded'];
           done();
         });
 
@@ -254,8 +271,14 @@ export function SmartSnippetSuggestionsTest() {
             findClass(ClassNames.QUESTION_TITLE_LABEL_CLASSNAME).forEach((label, i) => expect(label.innerText).toEqual(questions[i]));
           });
 
-          it('renders a shadow container, a source url and a source title in the collapsible container', () => {
+          it('renders a snippet container in the collapsible container', () => {
             findClass(ClassNames.QUESTION_SNIPPET_CLASSNAME).forEach(snippet =>
+              expectChildren(snippet, [ClassNames.QUESTION_SNIPPET_CONTAINER_CLASSNAME])
+            );
+          });
+
+          it('renders a shadow container, a source url and a source title in the collapsible container', () => {
+            findClass(ClassNames.QUESTION_SNIPPET_CONTAINER_CLASSNAME).forEach(snippet =>
               expectChildren(snippet, [ClassNames.SHADOW_CLASSNAME, ClassNames.SOURCE_URL_CLASSNAME, ClassNames.SOURCE_TITLE_CLASSNAME])
             );
           });
@@ -281,18 +304,42 @@ export function SmartSnippetSuggestionsTest() {
               )
             ).toEqual([true, true, true]);
           });
+        });
 
-          describe('when the second question is expanded', () => {
+        describe('when the second question is expanded', () => {
+          beforeEach(() => {
+            resetAnalyticsSpyHistory();
+            findClass(ClassNames.QUESTION_TITLE_CHECKBOX_CLASSNAME)[1].click();
+          });
+
+          it('sends expand analytics', () => {
+            expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+              analyticsActionCauseList.expandSmartSnippetSuggestion,
+              { documentId: sources[1].id },
+              findClass(ClassNames.QUESTION_TITLE_CHECKBOX_CLASSNAME)[1]
+            );
+          });
+
+          it('is collapsed, apart from the second question', () => {
+            expect(
+              findClass(ClassNames.QUESTION_SNIPPET_CLASSNAME).map(question =>
+                question.classList.contains(ClassNames.QUESTION_SNIPPET_HIDDEN_CLASSNAME)
+              )
+            ).toEqual([true, false, true]);
+          });
+
+          describe('then collapsed', () => {
             beforeEach(() => {
+              resetAnalyticsSpyHistory();
               findClass(ClassNames.QUESTION_TITLE_CHECKBOX_CLASSNAME)[1].click();
             });
 
-            it('is collapsed, apart from the second question', () => {
-              expect(
-                findClass(ClassNames.QUESTION_SNIPPET_CLASSNAME).map(question =>
-                  question.classList.contains(ClassNames.QUESTION_SNIPPET_HIDDEN_CLASSNAME)
-                )
-              ).toEqual([true, false, true]);
+            it('sends collapse analytics', () => {
+              expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+                analyticsActionCauseList.collapseSmartSnippetSuggestion,
+                { documentId: sources[1].id },
+                findClass(ClassNames.QUESTION_TITLE_CHECKBOX_CLASSNAME)[1]
+              );
             });
           });
 
