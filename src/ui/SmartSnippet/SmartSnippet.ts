@@ -20,6 +20,7 @@ import { ExplanationModal, IReason } from './ExplanationModal';
 import { l } from '../../strings/Strings';
 import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { Utils } from '../../utils/Utils';
+import { getDefaultSnippetStyle } from './SmartSnippetCommon';
 import { ResultLink } from '../ResultLink/ResultLink';
 
 interface ISmartSnippetReason {
@@ -94,11 +95,11 @@ export class SmartSnippet extends Component {
   }
 
   private get style() {
-    return $$(this.element)
+    const styles = $$(this.element)
       .children()
       .filter(element => element instanceof HTMLScriptElement && element.type.toLowerCase() === 'text/css')
-      .map(element => element.innerHTML)
-      .join('\n');
+      .map(element => element.innerHTML);
+    return styles.length ? styles.join('\n') : null;
   }
 
   private set hasAnswer(hasAnswer: boolean) {
@@ -151,9 +152,7 @@ export class SmartSnippet extends Component {
     this.shadowLoading = attachShadow(this.shadowContainer, { mode: 'open', title: l('AnswerSnippet') }).then(shadow => {
       shadow.appendChild(this.snippetContainer);
       const style = this.buildStyle();
-      if (style) {
-        shadow.appendChild(style);
-      }
+      shadow.appendChild(style);
       return shadow;
     });
     return this.shadowContainer;
@@ -170,10 +169,7 @@ export class SmartSnippet extends Component {
   }
 
   private buildStyle() {
-    const style = this.style;
-    if (!style) {
-      return;
-    }
+    const style = Utils.isNullOrUndefined(this.style) ? getDefaultSnippetStyle(CONTENT_CLASSNAME) : this.style;
     const styleTag = document.createElement('style');
     styleTag.innerHTML = style;
     return styleTag;

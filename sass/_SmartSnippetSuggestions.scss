@@ -59,7 +59,7 @@
         transition: height ease-in-out 0.2s;
 
         &-content {
-          padding: 8px $inner-padding;
+          padding: 16px $inner-padding 24px $inner-padding;
         }
       }
 
