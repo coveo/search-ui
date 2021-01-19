@@ -57,7 +57,7 @@ node('linux && docker') {
         sh 'yarn run zipForGitReleases'
         
         withCredentials([
-            usernameColonPassword(credentialsId: 'github-commit-token', variable: 'GITHUB_TOKEN')
+          usernamePassword(credentialsId: 'github-commit-token', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_TOKEN')
         ]) {
             sh 'node ./build/github-release.deploy.js'
         }
