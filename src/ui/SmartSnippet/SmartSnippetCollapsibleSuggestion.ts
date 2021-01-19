@@ -15,6 +15,7 @@ const QUESTION_TITLE_CLASSNAME = `${QUESTION_CLASSNAME}-title`;
 const QUESTION_TITLE_LABEL_CLASSNAME = `${QUESTION_TITLE_CLASSNAME}-label`;
 const QUESTION_TITLE_CHECKBOX_CLASSNAME = `${QUESTION_TITLE_CLASSNAME}-checkbox`;
 const QUESTION_SNIPPET_CLASSNAME = `${QUESTION_CLASSNAME}-snippet`;
+const QUESTION_SNIPPET_CONTAINER_CLASSNAME = `${QUESTION_SNIPPET_CLASSNAME}-container`;
 const QUESTION_SNIPPET_HIDDEN_CLASSNAME = `${QUESTION_SNIPPET_CLASSNAME}-hidden`;
 const SHADOW_CLASSNAME = `${QUESTION_SNIPPET_CLASSNAME}-content`;
 const RAW_CONTENT_CLASSNAME = `${SHADOW_CLASSNAME}-raw`;
@@ -28,6 +29,7 @@ export const SmartSnippetCollapsibleSuggestionClassNames = {
   QUESTION_TITLE_LABEL_CLASSNAME,
   QUESTION_TITLE_CHECKBOX_CLASSNAME,
   QUESTION_SNIPPET_CLASSNAME,
+  QUESTION_SNIPPET_CONTAINER_CLASSNAME,
   QUESTION_SNIPPET_HIDDEN_CLASSNAME,
   SHADOW_CLASSNAME,
   RAW_CONTENT_CLASSNAME,
@@ -41,6 +43,7 @@ export class SmartSnippetCollapsibleSuggestion {
   private readonly snippetId = uniqueId(QUESTION_SNIPPET_CLASSNAME);
   private readonly checkboxId = uniqueId(QUESTION_TITLE_CHECKBOX_CLASSNAME);
   private contentLoaded: Promise<void>;
+  private snippetAndSourceContainer: Dom;
   private collapsibleContainer: Dom;
   private checkbox: Dom;
   private expanded = false;
@@ -108,13 +111,14 @@ export class SmartSnippetCollapsibleSuggestion {
 
   private buildCollapsibleContainer(innerHTML: string, title: string, style?: HTMLStyleElement) {
     const shadowContainer = $$('div', { className: SHADOW_CLASSNAME });
-    this.collapsibleContainer = $$('div', { className: QUESTION_SNIPPET_CLASSNAME, id: this.snippetId }, shadowContainer);
+    this.snippetAndSourceContainer = $$('div', { className: QUESTION_SNIPPET_CONTAINER_CLASSNAME }, shadowContainer);
+    this.collapsibleContainer = $$('div', { className: QUESTION_SNIPPET_CLASSNAME, id: this.snippetId }, this.snippetAndSourceContainer);
     this.contentLoaded = attachShadow(shadowContainer.el, { mode: 'open', title: l('AnswerSpecificSnippet', title) }).then(shadowRoot => {
       shadowRoot.appendChild(this.buildAnswerSnippetContent(innerHTML, style).el);
     });
     if (this.source) {
-      this.collapsibleContainer.append(this.buildSourceUrl());
-      this.collapsibleContainer.append(this.buildSourceTitle());
+      this.snippetAndSourceContainer.append(this.buildSourceUrl());
+      this.snippetAndSourceContainer.append(this.buildSourceTitle());
     }
     return this.collapsibleContainer;
   }
@@ -159,6 +163,7 @@ export class SmartSnippetCollapsibleSuggestion {
     this.collapsibleContainer.setAttribute('tabindex', `${this.expanded ? 0 : -1}`);
     this.collapsibleContainer.setAttribute('aria-hidden', (!this.expanded).toString());
     this.collapsibleContainer.toggleClass(QUESTION_SNIPPET_HIDDEN_CLASSNAME, !this.expanded);
+    this.collapsibleContainer.el.style.height = this.expanded ? `${this.snippetAndSourceContainer.el.clientHeight}px` : '0px';
   }
 
   private sendExpandAnalytics() {

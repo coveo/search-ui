@@ -185,8 +185,10 @@ export function SmartSnippetSuggestionsTest() {
         expect(renderedStyles).toEqual([style, style, style]);
       });
 
-      it('renders only a shadow container in collapsible containers', () => {
-        findClass(ClassNames.QUESTION_SNIPPET_CLASSNAME).forEach(snippet => expectChildren(snippet, [ClassNames.SHADOW_CLASSNAME]));
+      it('renders only a shadow container in snippet containers', () => {
+        findClass(ClassNames.QUESTION_SNIPPET_CONTAINER_CLASSNAME).forEach(snippet =>
+          expectChildren(snippet, [ClassNames.SHADOW_CLASSNAME])
+        );
       });
     });
 
@@ -271,8 +273,14 @@ export function SmartSnippetSuggestionsTest() {
             findClass(ClassNames.QUESTION_TITLE_LABEL_CLASSNAME).forEach((label, i) => expect(label.innerText).toEqual(questions[i]));
           });
 
-          it('renders a shadow container, a source url and a source title in the collapsible container', () => {
+          it('renders a snippet container in the collapsible container', () => {
             findClass(ClassNames.QUESTION_SNIPPET_CLASSNAME).forEach(snippet =>
+              expectChildren(snippet, [ClassNames.QUESTION_SNIPPET_CONTAINER_CLASSNAME])
+            );
+          });
+
+          it('renders a shadow container, a source url and a source title in the collapsible container', () => {
+            findClass(ClassNames.QUESTION_SNIPPET_CONTAINER_CLASSNAME).forEach(snippet =>
               expectChildren(snippet, [ClassNames.SHADOW_CLASSNAME, ClassNames.SOURCE_URL_CLASSNAME, ClassNames.SOURCE_TITLE_CLASSNAME])
             );
           });

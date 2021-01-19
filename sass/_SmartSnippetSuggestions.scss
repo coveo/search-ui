@@ -56,10 +56,7 @@
 
       &-snippet {
         overflow: hidden;
-
-        &-hidden {
-          height: 0;
-        }
+        transition: height ease-in-out 0.2s;
 
         &-content {
           padding: 8px $inner-padding;
