@@ -53,6 +53,10 @@ function getVersion() {
   return require('../package.json').version;
 }
 
+function isAlphaVersion() {
+  return getMajorMinorVersion() === '2.0';
+}
+
 function getMajorMinorVersion() {
   const version = getVersion();
   const form = `^${majorMinorForm()}`;
@@ -81,6 +85,7 @@ module.exports = {
   tagHasAlphabeticSuffix,
   getAlphabeticSuffix,
   getVersion,
+  isAlphaVersion,
   getHerokuVersion,
   getMajorMinorVersion,
   getPatchVersion
