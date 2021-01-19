@@ -130,6 +130,10 @@ export function ExplanationModalTest() {
         expect((getFirstChild(ClassNames.DETAILS_TEXTAREA_CLASSNAME) as HTMLTextAreaElement).disabled).toBeFalsy();
       });
 
+      it("doesn't disable the details section", () => {
+        expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('coveo-hidden')).toBeFalsy();
+      });
+
       it('builds a send button with the right text', () => {
         expect(getFirstChild(ClassNames.SEND_BUTTON_CLASSNAME).innerText).toEqual('Send');
       });
@@ -141,6 +145,10 @@ export function ExplanationModalTest() {
 
         it('should disable the details textarea', () => {
           expect((getFirstChild(ClassNames.DETAILS_TEXTAREA_CLASSNAME) as HTMLTextAreaElement).disabled).toBeTruthy();
+        });
+
+        it('should disable the details section', () => {
+          expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('coveo-hidden')).toBeTruthy();
         });
 
         describe('then pressing the send button', () => {
@@ -166,6 +174,10 @@ export function ExplanationModalTest() {
 
         it('should disable the details textarea', () => {
           expect((getFirstChild(ClassNames.DETAILS_TEXTAREA_CLASSNAME) as HTMLTextAreaElement).disabled).toBeTruthy();
+        });
+
+        it('should disable the details section', () => {
+          expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('coveo-hidden')).toBeTruthy();
         });
 
         describe('then pressing the send button', () => {
@@ -226,6 +238,10 @@ export function ExplanationModalTest() {
 
       it('disables the textarea', () => {
         expect((getFirstChild(ClassNames.DETAILS_TEXTAREA_CLASSNAME) as HTMLTextAreaElement).disabled).toBeTruthy();
+      });
+
+      it('disables the details section', () => {
+        expect(getFirstChild(ClassNames.DETAILS_SECTION_CLASSNAME).classList.contains('coveo-hidden')).toBeTruthy();
       });
     });
   });

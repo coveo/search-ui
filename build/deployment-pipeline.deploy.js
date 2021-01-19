@@ -1,7 +1,7 @@
 const { promisify } = require('util');
 const exec = promisify(require('child_process').exec);
 const compareVersions = require('compare-versions');
-const { getMajorMinorVersion, getVersion } = require('./tag.utilities');
+const { getMajorMinorVersion, getVersion, getPatchVersion } = require('./tag.utilities');
 const { getLatestVersionOnNpm } = require('./npm.utilities');
 
 async function installDeploymentPipeLineCli() {
@@ -20,7 +20,12 @@ async function createAndDeployPackage() {
 
 async function getResolvedParamString() {
   const npmVersion = await getLatestNpmVersion();
-  const params = [`MAJOR_MINOR_VERSION=${getMajorMinorVersion()}`, `LATEST_NPM_VERSION=${npmVersion}`];
+  const params = [
+    `MAJOR_MINOR_VERSION=${getMajorMinorVersion()}`,
+    `PATCH_VERSION=${getPatchVersion()}`,
+    `LATEST_NPM_VERSION=${npmVersion}`
+  ];
+
   return ['', ...params].join(' --resolve ').trim();
 }
 

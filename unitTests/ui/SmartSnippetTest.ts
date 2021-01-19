@@ -1,4 +1,4 @@
-import { IQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
+import { IQuestionAnswerResponse, IRelatedQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { $$ } from '../../src/utils/Dom';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
@@ -7,6 +7,9 @@ import { expectChildren } from '../TestUtils';
 import { UserFeedbackBannerClassNames } from '../../src/ui/SmartSnippet/UserFeedbackBanner';
 import { IBasicComponentSetup, advancedComponentSetup, AdvancedComponentSetupOptions } from '../MockEnvironment';
 import { HeightLimiterClassNames } from '../../src/ui/SmartSnippet/HeightLimiter';
+import { IQueryResults } from '../../src/rest/QueryResults';
+import { Utils } from '../../src/Core';
+import { getDefaultSnippetStyle } from '../../src/ui/SmartSnippet/SmartSnippetCommon';
 
 export function SmartSnippetTest() {
   const sourceTitle = 'Google!';
@@ -59,12 +62,13 @@ export function SmartSnippetTest() {
     ).el;
   }
 
-  function mockStyling() {
-    return $$('script', { type: 'text/css' }, style).el;
+  function mockStyling(content: string) {
+    return $$('script', { type: 'text/css' }, content).el;
   }
 
   function mockQuestionAnswer() {
-    return <IQuestionAnswerResponse>{
+    return <IRelatedQuestionAnswerResponse>{
+      question: 'abc',
       answerSnippet: mockSnippet().innerHTML,
       documentId: sourceId
     };
@@ -73,26 +77,30 @@ export function SmartSnippetTest() {
   describe('SmartSnippet', () => {
     let test: IBasicComponentSetup<SmartSnippet>;
 
-    function instantiateSmartSnippet(hasStyling: boolean) {
+    function instantiateSmartSnippet(styling: string | null) {
       test = advancedComponentSetup<SmartSnippet>(
         SmartSnippet,
-        new AdvancedComponentSetupOptions($$('div', {}, ...(hasStyling ? [mockStyling()] : [])).el)
+        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling)])).el)
       );
       test.cmp['openLink'] = jasmine
         .createSpy('openLink')
         .and.callFake((href: string, newTab: boolean, sendAnalytics: () => void) => sendAnalytics());
     }
 
-    async function triggerQuerySuccess(withSource: boolean) {
+    async function triggerQuerySuccess(args: Partial<IQuerySuccessEventArgs>) {
+      (test.env.queryController.getLastResults as jasmine.Spy).and.returnValue(args.results);
+      $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, args);
+      await test.cmp['shadowLoading'];
+    }
+
+    async function triggerQuestionAnswerQuery(withSource: boolean) {
       const results = withSource ? [mockResult()] : [];
-      (test.env.queryController.getLastResults as jasmine.Spy).and.returnValue({ results });
-      $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, <IQuerySuccessEventArgs>{
-        results: {
+      await triggerQuerySuccess({
+        results: <IQueryResults>{
           results,
           questionAnswer: mockQuestionAnswer()
         }
       });
-      await test.cmp['shadowLoading'];
     }
 
     function getFirstChild(className: string) {
@@ -105,9 +113,9 @@ export function SmartSnippetTest() {
 
     describe('with styling without a source', () => {
       beforeEach(async done => {
-        instantiateSmartSnippet(true);
+        instantiateSmartSnippet(style);
         document.body.appendChild(test.env.root);
-        await triggerQuerySuccess(false);
+        await triggerQuestionAnswerQuery(false);
         done();
       });
 
@@ -121,9 +129,9 @@ export function SmartSnippetTest() {
       });
     });
 
-    describe('without styling', () => {
+    describe('with default styling', () => {
       beforeEach(() => {
-        instantiateSmartSnippet(false);
+        instantiateSmartSnippet(null);
         document.body.appendChild(test.env.root);
       });
 
@@ -139,9 +147,39 @@ export function SmartSnippetTest() {
         expect(test.cmp.element.children.length).toEqual(0);
       });
 
+      it('with only related questions, does not render', async done => {
+        await triggerQuerySuccess({ results: <IQueryResults>{ questionAnswer: { relatedQuestions: [mockQuestionAnswer()] } } });
+        expect(test.cmp.element.classList.contains(ClassNames.HAS_ANSWER_CLASSNAME)).toBeFalsy();
+        done();
+      });
+
+      it('with an empty question, does not render', async done => {
+        await triggerQuerySuccess({
+          results: <IQueryResults>{ questionAnswer: { answerSnippet: 'abc', relatedQuestions: [mockQuestionAnswer()] } }
+        });
+        expect(test.cmp.element.classList.contains(ClassNames.HAS_ANSWER_CLASSNAME)).toBeFalsy();
+        done();
+      });
+
+      it('with an empty answer, does not render', async done => {
+        await triggerQuerySuccess({
+          results: <IQueryResults>{ questionAnswer: { question: 'abc', relatedQuestions: [mockQuestionAnswer()] } }
+        });
+        expect(test.cmp.element.classList.contains(ClassNames.HAS_ANSWER_CLASSNAME)).toBeFalsy();
+        done();
+      });
+
+      it('with a question and an answer but no questions, renders', async done => {
+        await triggerQuerySuccess({
+          results: <IQueryResults>{ questionAnswer: { question: 'abc', answerSnippet: 'def', relatedQuestions: [] } }
+        });
+        expect(test.cmp.element.classList.contains(ClassNames.HAS_ANSWER_CLASSNAME)).toBeTruthy();
+        done();
+      });
+
       describe('with a source', () => {
         beforeEach(async done => {
-          await triggerQuerySuccess(true);
+          await triggerQuestionAnswerQuery(true);
           done();
         });
 
@@ -165,7 +203,7 @@ export function SmartSnippetTest() {
 
       describe('without a source', () => {
         beforeEach(async done => {
-          await triggerQuerySuccess(false);
+          await triggerQuestionAnswerQuery(false);
           done();
         });
 
@@ -183,14 +221,39 @@ export function SmartSnippetTest() {
         });
 
         it('should wrap the snippet in a container in a shadow DOM', () => {
-          const [shadowContainer] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME]);
+          const [shadowContainer] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
 
           expect(shadowContainer.innerHTML).toEqual(mockSnippet().innerHTML);
+        });
+
+        it('should render the default style', () => {
+          const [, styleElement] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
+
+          expect(styleElement.innerHTML).toEqual(getDefaultSnippetStyle(ClassNames.CONTENT_CLASSNAME));
         });
 
         it('should not render any source', () => {
           expect(getFirstChild(ClassNames.SOURCE_CLASSNAME).children.length).toEqual(0);
         });
+      });
+    });
+
+    describe('with no styling, without a source', () => {
+      beforeEach(async done => {
+        instantiateSmartSnippet('');
+        document.body.appendChild(test.env.root);
+        await triggerQuestionAnswerQuery(false);
+        done();
+      });
+
+      afterEach(() => {
+        test.env.root.remove();
+      });
+
+      it('should render an empty style', () => {
+        const [, styleElement] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
+
+        expect(styleElement.innerHTML).toEqual('');
       });
     });
   });

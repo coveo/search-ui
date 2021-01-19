@@ -21,6 +21,8 @@ import { l } from '../../strings/Strings';
 import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
+import { getDefaultSnippetStyle } from './SmartSnippetCommon';
+import { ResultLink } from '../ResultLink/ResultLink';
 
 interface ISmartSnippetReason {
   analytics: AnalyticsSmartSnippetFeedbackReason;
@@ -117,11 +119,11 @@ export class SmartSnippet extends Component {
   }
 
   private get style() {
-    return $$(this.element)
+    const styles = $$(this.element)
       .children()
       .filter(element => element instanceof HTMLScriptElement && element.type.toLowerCase() === 'text/css')
-      .map(element => element.innerHTML)
-      .join('\n');
+      .map(element => element.innerHTML);
+    return styles.length ? styles.join('\n') : null;
   }
 
   private set hasAnswer(hasAnswer: boolean) {
@@ -174,9 +176,7 @@ export class SmartSnippet extends Component {
     this.shadowLoading = attachShadow(this.shadowContainer, { mode: 'open', title: l('AnswerSnippet') }).then(shadow => {
       shadow.appendChild(this.snippetContainer);
       const style = this.buildStyle();
-      if (style) {
-        shadow.appendChild(style);
-      }
+      shadow.appendChild(style);
       return shadow;
     });
     return this.shadowContainer;
@@ -196,10 +196,7 @@ export class SmartSnippet extends Component {
   }
 
   private buildStyle() {
-    const style = this.style;
-    if (!style) {
-      return;
-    }
+    const style = Utils.isNullOrUndefined(this.style) ? getDefaultSnippetStyle(CONTENT_CLASSNAME) : this.style;
     const styleTag = document.createElement('style');
     styleTag.innerHTML = style;
     return styleTag;
@@ -217,12 +214,16 @@ export class SmartSnippet extends Component {
 
   private async handleQuerySuccess(data: IQuerySuccessEventArgs) {
     const { questionAnswer } = data.results;
-    if (!questionAnswer) {
+    if (!this.containsQuestionAnswer(questionAnswer)) {
       this.hasAnswer = false;
       return;
     }
     this.hasAnswer = true;
     await this.render(questionAnswer);
+  }
+
+  private containsQuestionAnswer(questionAnswer: IQuestionAnswerResponse) {
+    return questionAnswer && questionAnswer.question && questionAnswer.answerSnippet;
   }
 
   private async render(questionAnswer: IQuestionAnswerResponse) {
@@ -244,39 +245,23 @@ export class SmartSnippet extends Component {
 
   private renderSource(source: IQueryResult) {
     $$(this.sourceContainer).empty();
-    this.sourceContainer.appendChild(this.renderSourceUrl(source.clickUri));
-    this.sourceContainer.appendChild(this.renderSourceTitle(source.title, source.clickUri));
+    this.sourceContainer.appendChild(this.renderSourceUrl(source));
+    this.sourceContainer.appendChild(this.renderSourceTitle(source));
   }
 
-  private renderSourceTitle(title: string, clickUri: string) {
-    return this.renderLink(title, clickUri, SOURCE_TITLE_CLASSNAME);
+  private renderSourceTitle(source: IQueryResult) {
+    return this.buildLink(source, source.title, SOURCE_TITLE_CLASSNAME);
   }
 
-  private renderSourceUrl(url: string) {
-    return this.renderLink(url, url, SOURCE_URL_CLASSNAME);
+  private renderSourceUrl(source: IQueryResult) {
+    return this.buildLink(source, source.clickUri, SOURCE_URL_CLASSNAME);
   }
 
-  private renderLink(text: string, href: string, className: string) {
-    const element = $$('a', { className, href }).el as HTMLAnchorElement;
+  private buildLink(source: IQueryResult, text: string, className: string) {
+    const element = $$('a', { className: `CoveoResultLink ${className}` }).el as HTMLAnchorElement;
     element.innerText = text;
-    this.enableAnalyticsOnLink(element, () => this.sendOpenSourceAnalytics());
+    new ResultLink(element, {}, { ...this.getBindings(), resultElement: this.element }, source);
     return element;
-  }
-
-  private enableAnalyticsOnLink(link: HTMLAnchorElement, sendAnalytics: () => Promise<any>) {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      this.openLink(link.href, e.ctrlKey, sendAnalytics);
-    });
-  }
-
-  private openLink(href: string, newTab: boolean, sendAnalytics: () => Promise<any>) {
-    sendAnalytics();
-    if (newTab) {
-      window.open(href);
-    } else {
-      window.location.href = href;
-    }
   }
 
   private openExplanationModal() {
@@ -314,15 +299,6 @@ export class SmartSnippet extends Component {
   private sendCollapseSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.collapseSmartSnippet,
-      {},
-      this.element,
-      this.lastRenderedResult
-    );
-  }
-
-  private sendOpenSourceAnalytics() {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
-      analyticsActionCauseList.openSmartSnippetSource,
       {},
       this.element,
       this.lastRenderedResult

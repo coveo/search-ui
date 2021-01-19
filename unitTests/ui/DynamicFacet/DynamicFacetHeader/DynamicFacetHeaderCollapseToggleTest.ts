@@ -5,9 +5,6 @@ import { IDynamicFacetHeaderOptions } from '../../../../src/ui/DynamicFacet/Dyna
 export function DynamicFacetHeaderCollapseToggleTest() {
   describe('DynamicFacetHeaderCollapseToggle', () => {
     let collapseToggle: DynamicFacetHeaderCollapseToggle;
-    let collapseToggleElement: HTMLElement;
-    let collapseBtnElement: HTMLElement;
-    let expandBtnElement: HTMLElement;
     let options: IDynamicFacetHeaderOptions;
 
     beforeEach(() => {
@@ -19,66 +16,45 @@ export function DynamicFacetHeaderCollapseToggleTest() {
         collapse: jasmine.createSpy('collapse'),
         expand: jasmine.createSpy('clear')
       };
-      initializeComponent();
+
+      collapseToggle = new DynamicFacetHeaderCollapseToggle(options);
     });
 
-    function initializeComponent() {
-      collapseToggle = new DynamicFacetHeaderCollapseToggle(options);
-      collapseToggleElement = collapseToggle.element;
-      collapseBtnElement = $$(collapseToggleElement).find('.coveo-dynamic-facet-header-collapse');
-      expandBtnElement = $$(collapseToggleElement).find('.coveo-dynamic-facet-header-expand');
+    function getCollapseButton() {
+      return $$(collapseToggle.element).find('.coveo-dynamic-facet-header-collapse');
     }
 
-    it(`should create the collapse & expand buttons
-      but only display the collapse button by default`, () => {
-      expect($$(collapseBtnElement).isVisible()).toBe(true);
-      expect($$(expandBtnElement).isVisible()).toBe(false);
+    function getExpandButton() {
+      return $$(collapseToggle.element).find('.coveo-dynamic-facet-header-expand');
+    }
+
+    it(`should create a collapse button`, () => {
+      expect(getCollapseButton()).toBeTruthy();
+      expect(getExpandButton()).toBeFalsy();
     });
 
     it(`when calling toggleButtons with isCollapsed to true
       should display the expand button and hide the collapse button`, () => {
-      collapseToggle.toggleButtons(true);
-      expect($$(collapseBtnElement).isVisible()).toBe(false);
-      expect($$(expandBtnElement).isVisible()).toBe(true);
+      collapseToggle.toggleButton(true);
+
+      expect(getCollapseButton()).toBeFalsy();
+      expect(getExpandButton()).toBeTruthy();
     });
 
     it(`when calling toggleButtons with isCollapsed to false
       should display the collapse button and hide the expand button`, () => {
-      collapseToggle.toggleButtons(true);
-      collapseToggle.toggleButtons(false);
-      expect($$(collapseBtnElement).isVisible()).toBe(true);
-      expect($$(expandBtnElement).isVisible()).toBe(false);
+      collapseToggle.toggleButton(true);
+      collapseToggle.toggleButton(false);
+
+      expect(getCollapseButton()).toBeTruthy();
+      expect(getExpandButton()).toBeFalsy();
     });
 
     it(`when clicking on the collapse button
-      should focus on the expand button`, () => {
-      spyOn(expandBtnElement, 'focus');
-      $$(collapseBtnElement).trigger('click');
+      should call toggleCollapse on the DynamicFacet component`, () => {
+      $$(getCollapseButton()).trigger('click');
 
-      expect(expandBtnElement.focus).toHaveBeenCalledTimes(1);
-    });
-
-    it(`when clicking on the collapse button
-      should call collapse on the DynamicFacet component`, () => {
-      $$(collapseBtnElement).trigger('click');
-
-      expect(options.collapse).toHaveBeenCalled();
-    });
-
-    it(`when clicking on the expand button
-    should focus on the collapse button`, () => {
-      spyOn(collapseBtnElement, 'focus');
-      $$(expandBtnElement).trigger('click');
-
-      expect(collapseBtnElement.focus).toHaveBeenCalledTimes(1);
-    });
-
-    it(`when clicking on the expand button
-    should call expand on the DynamicFacet component`, () => {
-      collapseToggle.toggleButtons(true);
-      $$(expandBtnElement).trigger('click');
-
-      expect(options.expand).toHaveBeenCalled();
+      expect(options.toggleCollapse).toHaveBeenCalled();
     });
   });
 }

@@ -402,7 +402,6 @@ export class SimpleFilter extends Component {
       this.handleValueToggle(checkbox);
     }, this.getValueCaption(label));
     checkbox.getElement().title = l(label);
-    $$(checkbox.getElement()).setAttribute('tabindex', '0');
     return { checkbox, label };
   }
 
