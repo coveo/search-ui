@@ -304,6 +304,14 @@ export function SmartSnippetSuggestionsTest() {
               )
             ).toEqual([true, true, true]);
           });
+
+          it('renders the expected shadow content', () => {
+            getShadowRoots().forEach((shadowRoot, i) => {
+              const [shadowContainer] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
+
+              expect(shadowContainer.innerHTML).toEqual(mockSnippet(i).innerHTML);
+            });
+          });
         });
 
         describe('when the second question is expanded', () => {
