@@ -237,6 +237,10 @@ export interface IAnalyticsSmartSnippetFeedbackMeta {
   details?: string;
 }
 
+export interface IAnalyticsSmartSnippetSuggestionMeta {
+  documentId: { contentIdKey: string; contentIdValue: string };
+}
+
 /**
  * Describes the object sent as metadata along with [`clickQuerySuggestPreview`]{@link analyticsActionCauseList.clickQuerySuggestPreview} usage analytics events.
  */
@@ -1405,22 +1409,6 @@ export var analyticsActionCauseList = {
     type: 'smartSnippet'
   },
   /**
-   * The custom event logged when the source of a [SmartSnippet]{@link SmartSnippet} is opened.
-   *
-   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
-   *
-   * ```javascript
-   * {
-   *  actionCause: "openSmartSnippetSource",
-   *  actionType: "smartSnippet"
-   * }
-   * ```
-   */
-  openSmartSnippetSource: <IAnalyticsActionCause>{
-    name: 'openSmartSnippetSource',
-    type: 'smartSnippet'
-  },
-  /**
    * The custom event logged when the "Explain why" button in a [SmartSnippet]{@link SmartSnippet} is pressed.
    *
    * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
@@ -1467,5 +1455,37 @@ export var analyticsActionCauseList = {
   sendSmartSnippetReason: <IAnalyticsActionCause>{
     name: 'sendSmartSnippetReason',
     type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is expanded.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "expandSmartSnippetSuggestion",
+   *  actionType: "smartSnippetSuggestions"
+   * }
+   * ```
+   */
+  expandSmartSnippetSuggestion: <IAnalyticsActionCause>{
+    name: 'expandSmartSnippetSuggestion',
+    type: 'smartSnippetSuggestions'
+  },
+  /**
+   * The custom event logged when a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is collapsed.
+   *
+   * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+   *
+   * ```javascript
+   * {
+   *  actionCause: "collapseSmartSnippetSuggestion",
+   *  actionType: "smartSnippetSuggestions"
+   * }
+   * ```
+   */
+  collapseSmartSnippetSuggestion: <IAnalyticsActionCause>{
+    name: 'collapseSmartSnippetSuggestion',
+    type: 'smartSnippetSuggestions'
   }
 };

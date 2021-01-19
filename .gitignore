@@ -11,3 +11,5 @@ docs/theme/assets/gen
 .vscode/
 package-lock.json
 .ds_store
+
+search-ui.zip
