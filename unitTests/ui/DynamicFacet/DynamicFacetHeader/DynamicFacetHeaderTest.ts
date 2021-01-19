@@ -101,9 +101,8 @@ export function DynamicFacetHeaderTest() {
         initializeComponent();
       });
 
-      it('should create collapse & expand buttons', () => {
+      it('should create a collapse button', () => {
         expect(collapseElement()).toBeTruthy();
-        expect(expandElement()).toBeTruthy();
       });
 
       it('should add the coveo-clickable class to the title', () => {

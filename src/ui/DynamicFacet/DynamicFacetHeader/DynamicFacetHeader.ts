@@ -57,7 +57,7 @@ export class DynamicFacetHeader {
   }
 
   public toggleCollapse(isCollapsed: boolean) {
-    this.options.enableCollapse && this.collapseToggle.toggleButtons(isCollapsed);
+    this.options.enableCollapse && this.collapseToggle.toggleButton(isCollapsed);
   }
 
   private createTitle() {
