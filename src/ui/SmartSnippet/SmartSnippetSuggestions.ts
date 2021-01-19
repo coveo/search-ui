@@ -31,7 +31,7 @@ export class SmartSnippetSuggestions extends Component {
   };
 
   private readonly titleId = uniqueId(QUESTIONS_LIST_TITLE_CLASSNAME);
-  private contentLoaded: Promise<any>;
+  private contentLoaded: Promise<SmartSnippetCollapsibleSuggestion[]>;
   private title: Dom;
   private questionAnswers: Dom;
   private renderedQuestionAnswer: IQuestionAnswerResponse;
@@ -85,14 +85,15 @@ export class SmartSnippetSuggestions extends Component {
   private buildQuestionAnswers(questionAnswers: IRelatedQuestionAnswerResponse[]) {
     const innerCSS = this.getInnerCSS();
     const answers = questionAnswers.map(
-      questionAnswer => new SmartSnippetCollapsibleSuggestion(questionAnswer, innerCSS, this.getCorrespondingResult(questionAnswer))
+      questionAnswer =>
+        new SmartSnippetCollapsibleSuggestion(questionAnswer, this.getBindings(), innerCSS, this.getCorrespondingResult(questionAnswer))
     );
     const container = $$(
       'ul',
       { className: QUESTIONS_LIST_CLASSNAME, ariaLabelledby: this.titleId },
       ...answers.map(answer => answer.build())
     );
-    this.contentLoaded = Promise.all(answers.map(answer => answer.loading));
+    this.contentLoaded = Promise.all(answers.map(answer => answer.loading.then(() => answer)));
     return container;
   }
 
