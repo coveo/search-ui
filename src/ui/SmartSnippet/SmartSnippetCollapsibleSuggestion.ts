@@ -6,7 +6,6 @@ import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { $$, Dom } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { IQueryResult } from '../../rest/QueryResult';
-import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { analyticsActionCauseList, IAnalyticsSmartSnippetSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IComponentBindings } from '../Base/ComponentBindings';
