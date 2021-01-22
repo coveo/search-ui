@@ -52,6 +52,7 @@ export class SmartSnippetCollapsibleSuggestion {
     private readonly questionAnswer: IRelatedQuestionAnswerResponse,
     private readonly bindings: IComponentBindings,
     private readonly innerCSS: string,
+    private readonly searchUid: string,
     private readonly source?: IQueryResult
   ) {}
 
@@ -168,6 +169,7 @@ export class SmartSnippetCollapsibleSuggestion {
     return this.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
       analyticsActionCauseList.expandSmartSnippetSuggestion,
       {
+        searchQueryUid: this.searchUid,
         documentId: this.questionAnswer.documentId
       },
       this.checkbox.el
@@ -178,6 +180,7 @@ export class SmartSnippetCollapsibleSuggestion {
     return this.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
       analyticsActionCauseList.collapseSmartSnippetSuggestion,
       {
+        searchQueryUid: this.searchUid,
         documentId: this.questionAnswer.documentId
       },
       this.checkbox.el

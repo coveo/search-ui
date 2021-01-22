@@ -80,6 +80,7 @@ export class SmartSnippet extends Component {
   };
 
   private lastRenderedResult: IQueryResult;
+  private searchUid: string;
   private questionContainer: HTMLElement;
   private shadowContainer: HTMLElement;
   private sourceContainer: HTMLElement;
@@ -192,6 +193,7 @@ export class SmartSnippet extends Component {
       return;
     }
     this.hasAnswer = true;
+    this.searchUid = data.results.searchUid;
     await this.render(questionAnswer);
   }
 
@@ -203,9 +205,9 @@ export class SmartSnippet extends Component {
     this.ensureDom();
     this.questionContainer.innerText = questionAnswer.question;
     this.renderSnippet(questionAnswer.answerSnippet);
-    const lastRenderedResult = this.getCorrespondingResult(questionAnswer);
-    if (lastRenderedResult) {
-      this.renderSource(lastRenderedResult);
+    this.lastRenderedResult = this.getCorrespondingResult(questionAnswer);
+    if (this.lastRenderedResult) {
+      this.renderSource();
     }
     await this.shadowLoading;
     await Utils.resolveAfter(0); // `scrollHeight` isn't instantly detected, or at-least not on IE11.
@@ -216,24 +218,24 @@ export class SmartSnippet extends Component {
     this.snippetContainer.innerHTML = content;
   }
 
-  private renderSource(source: IQueryResult) {
+  private renderSource() {
     $$(this.sourceContainer).empty();
-    this.sourceContainer.appendChild(this.renderSourceUrl(source));
-    this.sourceContainer.appendChild(this.renderSourceTitle(source));
+    this.sourceContainer.appendChild(this.renderSourceUrl());
+    this.sourceContainer.appendChild(this.renderSourceTitle());
   }
 
-  private renderSourceTitle(source: IQueryResult) {
-    return this.buildLink(source, source.title, SOURCE_TITLE_CLASSNAME);
+  private renderSourceTitle() {
+    return this.buildLink(this.lastRenderedResult.title, SOURCE_TITLE_CLASSNAME);
   }
 
-  private renderSourceUrl(source: IQueryResult) {
-    return this.buildLink(source, source.clickUri, SOURCE_URL_CLASSNAME);
+  private renderSourceUrl() {
+    return this.buildLink(this.lastRenderedResult.clickUri, SOURCE_URL_CLASSNAME);
   }
 
-  private buildLink(source: IQueryResult, text: string, className: string) {
+  private buildLink(text: string, className: string) {
     const element = $$('a', { className: `CoveoResultLink ${className}` }).el as HTMLAnchorElement;
     element.innerText = text;
-    new ResultLink(element, {}, { ...this.getBindings(), resultElement: this.element }, source);
+    new ResultLink(element, {}, { ...this.getBindings(), resultElement: this.element }, this.lastRenderedResult);
     return element;
   }
 
@@ -245,54 +247,48 @@ export class SmartSnippet extends Component {
   private sendLikeSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.likeSmartSnippet,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
   private sendDislikeSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.dislikeSmartSnippet,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
   private sendExpandSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.expandSmartSnippet,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
   private sendCollapseSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.collapseSmartSnippet,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
   private sendOpenFeedbackModalAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.openSmartSnippetFeedbackModal,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
   private sendCloseFeedbackModalAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.closeSmartSnippetFeedbackModal,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
@@ -300,11 +296,11 @@ export class SmartSnippet extends Component {
     return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetFeedbackMeta>(
       analyticsActionCauseList.sendSmartSnippetReason,
       {
+        searchQueryUid: this.searchUid,
         reason,
         details
       },
-      this.element,
-      this.lastRenderedResult
+      this.element
     );
   }
 }
