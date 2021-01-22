@@ -3,10 +3,7 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { IQuestionAnswerResponse, IRelatedQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
 import { SmartSnippetSuggestions, SmartSnippetSuggestionsClassNames } from '../../src/ui/SmartSnippet/SmartSnippetSuggestions';
 import { advancedComponentSetup, AdvancedComponentSetupOptions, IBasicComponentSetup } from '../MockEnvironment';
-import {
-  SmartSnippetCollapsibleSuggestion,
-  SmartSnippetCollapsibleSuggestionClassNames
-} from '../../src/ui/SmartSnippet/SmartSnippetCollapsibleSuggestion';
+import { SmartSnippetCollapsibleSuggestionClassNames } from '../../src/ui/SmartSnippet/SmartSnippetCollapsibleSuggestion';
 import { $$ } from '../../src/utils/Dom';
 import { expectChildren } from '../TestUtils';
 import { analyticsActionCauseList, IAnalyticsSmartSnippetSuggestionMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
@@ -118,7 +115,6 @@ export function SmartSnippetSuggestionsTest() {
 
   describe('SmartSnippetSuggestions', () => {
     let test: IBasicComponentSetup<SmartSnippetSuggestions>;
-    let collapsibleSuggestions: SmartSnippetCollapsibleSuggestion[];
     let searchUid: string;
 
     function instantiateSmartSnippetSuggestions(styling: string) {
@@ -129,13 +125,7 @@ export function SmartSnippetSuggestionsTest() {
     }
 
     async function waitForCollapsibleSuggestions() {
-      collapsibleSuggestions = await test.cmp['contentLoaded'];
-      collapsibleSuggestions.forEach(
-        suggestion =>
-          (suggestion['openLink'] = jasmine
-            .createSpy('openLink')
-            .and.callFake((href: string, newTab: boolean, sendAnalytics: () => void) => sendAnalytics()))
-      );
+      await test.cmp['contentLoaded'];
     }
 
     async function triggerQuerySuccess(args: Partial<IQuerySuccessEventArgs>) {

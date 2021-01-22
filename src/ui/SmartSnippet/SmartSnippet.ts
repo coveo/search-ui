@@ -20,6 +20,7 @@ import { ExplanationModal, IReason } from './ExplanationModal';
 import { l } from '../../strings/Strings';
 import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { Utils } from '../../utils/Utils';
+import { ComponentOptions } from '../Base/ComponentOptions';
 import { getDefaultSnippetStyle } from './SmartSnippetCommon';
 import { ResultLink } from '../ResultLink/ResultLink';
 
@@ -70,6 +71,10 @@ export const SmartSnippetClassNames = {
   SOURCE_URL_CLASSNAME
 };
 
+export interface ISmartSnippetOptions {
+  maximumSnippetHeight: number;
+}
+
 export class SmartSnippet extends Component {
   static ID = 'SmartSnippet';
 
@@ -77,6 +82,19 @@ export class SmartSnippet extends Component {
     exportGlobally({
       SmartSnippet
     });
+  };
+
+  /**
+   * The options for the SmartSnippet
+   * @componentOptions
+   */
+  static options: ISmartSnippetOptions = {
+    /**
+     * The maximum height an answer can have in pixels.
+     * Any part of an answer exceeding this height will be hidden by default and expendable via a "show more" button.
+     * Default value is `250`.
+     */
+    maximumSnippetHeight: ComponentOptions.buildNumberOption({ defaultValue: 250, min: 0 })
   };
 
   private lastRenderedResult: IQueryResult;
@@ -90,8 +108,14 @@ export class SmartSnippet extends Component {
   private feedbackBanner: UserFeedbackBanner;
   private shadowLoading: Promise<HTMLElement>;
 
-  constructor(public element: HTMLElement, public options?: {}, bindings?: IComponentBindings, private ModalBox = ModalBoxModule) {
+  constructor(
+    public element: HTMLElement,
+    public options?: ISmartSnippetOptions,
+    bindings?: IComponentBindings,
+    private ModalBox = ModalBoxModule
+  ) {
     super(element, SmartSnippet.ID, bindings);
+    this.options = ComponentOptions.initComponentOptions(element, SmartSnippet, options);
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
@@ -160,8 +184,11 @@ export class SmartSnippet extends Component {
   }
 
   private buildHeightLimiter() {
-    return (this.heightLimiter = new HeightLimiter(this.shadowContainer, this.snippetContainer, 400, isExpanded =>
-      isExpanded ? this.sendExpandSmartSnippetAnalytics() : this.sendCollapseSmartSnippetAnalytics()
+    return (this.heightLimiter = new HeightLimiter(
+      this.shadowContainer,
+      this.snippetContainer,
+      this.options.maximumSnippetHeight,
+      isExpanded => (isExpanded ? this.sendExpandSmartSnippetAnalytics() : this.sendCollapseSmartSnippetAnalytics())
     )).toggleButton;
   }
 
