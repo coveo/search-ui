@@ -1,245 +1,229 @@
 header {
-  background-color: #1D243F;
-  color: #FFFFFF;
+  height: 81px;
+  z-index: 10;
+  top: -1px;
+  background-color: #333357;
+  color: #ffffff;
+}
+
+subHeader {
+  height: 53px;
+  background-color: #f6f7f9;
+  color: #282829;
+  z-index: 9;
+  top: 1px;
+}
+
+header,
+subHeader {
+  position: -webkit-sticky;
+  position: sticky;
   display: flex;
-  font-size: 0.8rem;
+  font-size: 1rem;
   line-height: 1.5;
 }
 
-header * {
-  font-family: Lato;
+header.no-sticky,
+subHeader.no-sticky {
+  position: relative;
+  top: 0px;
+}
+
+header.all-sticky,
+subHeader.all-sticky {
+  position: sticky !important;
+  top: 80px;
+}
+
+header *,
+subHeader * {
   font-weight: 300;
   text-size-adjust: 100%;
 }
 
-header a:-webkit-any-link {
+header a:link,
+header a:visited,
+subHeader a:link,
+subHeader a:visited {
   color: unset;
   text-decoration: none;
 }
 
-header .content {
+header .content,
+subHeader .content {
+  flex: auto;
   height: auto;
   margin: 0 auto;
-  padding: 0.5rem 1rem 0 1rem;
   position: relative;
   width: 1274px;
-
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 
-/******************** LOGO ********************/
+header .content .main-header,
+subHeader .content .main-header {
+  box-sizing: border-box;
+  min-width: 100%;
+  display: flex;
+  align-items: center;
+  top: 0px;
+  z-index: 5;
+  padding: 0.5rem 2rem 0.5rem 2rem;
+}
 
-header .content .logo {
+header .content .main-header .logo,
+subHeader .content .main-header .logo {
   align-content: inherit;
   align-items: inherit;
   display: flex;
   position: relative;
 }
 
-header .content .logo-link {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  z-index: 2;
-  min-width: 100%;
-}
-
-header .content .logo-img-wrap {
-  line-height: 1;
-  padding-right: 0.75rem;
-}
-
-header .content .logo .logo-imgbg {
-  width: 66px;
-  height: 32px;
-  background: url(https://s3.amazonaws.com/coveo-static-assets/coveo-connect/coveo-logo.png) no-repeat;
-  background-size: contain;
-  line-height: 1;
-}
-
-header .content .logo .logo-text span {
-  font-size: 1.1rem;
-  font-weight: 200;
+header .content .main-header .logo .logo-text span,
+subHeader .content .main-header .logo .logo-text span {
+  font-size: 1rem;
+  font-weight: 300;
   line-height: 1.5;
+  padding-right: 0.65rem;
+}
+
+header .content .main-header .logo .logo-text-bar,
+subHeader .content .main-header .logo .logo-text-bar {
+  padding-right: 0.5rem;
+  color: #f05245;
+}
+
+header .content .main-header .logo-img-wrap,
+subHeader .content .main-header .logo-img-wrap {
+  line-height: 1;
   padding-right: 0.75rem;
 }
 
-header .content .logo .logo-text-bar {
-  padding-right: 0.5rem;
-}
-
-/******************** SEARCH BOX ********************/
-
-header .content .search {
+header .content .main-header .search,
+subHeader .content .main-header .search {
   margin: 0 2rem 0 2rem;
   padding-right: 0.5rem;
   display: block;
   flex: 1 1 auto;
-  height: 33px;
 }
 
-#coveoConnectHeaderStandaloneSearchbox {
-  display: flex;
-  height: 33px;
-  color: #373737;
-}
-
-#coveoConnectHeaderStandaloneSearchbox {
-  height: 33px;
-}
-
-#coveoConnectHeaderStandaloneSearchbox .CoveoSearchButton {
-  height: 33px;
-  width: 45px;
-  border: 1px solid transparent;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  background: #F58020;
-  float: right;
-  position: relative;
-  outline: none;
-}
-
-#coveoConnectHeaderStandaloneSearchbox .CoveoSearchButton:hover {
-  background-color: #e56613;
-}
-
-#coveoConnectHeaderStandaloneSearchbox .CoveoOmnibox.magic-box {
-  border: none;
-}
-
-#coveoConnectHeaderStandaloneSearchbox .magic-box .magic-box-input {
-  height: 33px;
-  border-radius: 5px 0 0 5px;
-}
-
-#coveoConnectHeaderStandaloneSearchbox .magic-box .magic-box-input input {
-  padding: 0.5rem;
-  height: 33px;
-}
-
-#coveoConnectHeaderStandaloneSearchbox .magic-box .magic-box-clear {
-  line-height: unset;
-}
-#coveoConnectHeaderStandaloneSearchbox .magic-box.magic-box-notEmpty .magic-box-clear {
-  width: 33px;
-}
-
-#coveoConnectHeaderStandaloneSearchbox .magic-box-suggestions.magic-box-hasSuggestion {
-  border-radius: 5px;
-}
-
-#coveoConnectHeaderStandaloneSearchbox .coveo-search-button-svg path {
-  fill: #fff;
-}
-
-/******************** SUBNAV ********************/
-
-@media (max-width:1024px) {
-  header .content .subnav {
-      display: none;
-  }
-}
-
-header .content .subnav ul {
+header .content .main-header .subnav ul,
+subHeader .content .main-header .subnav ul {
   margin: 0px;
   padding: 0px;
   list-style: none;
   display: inline-flex;
 }
 
-header .content .subnav li {
+header .content .main-header .subnav li,
+subHeader .content .main-header .subnav li {
+  height: 100%;
   display: inline;
   padding-right: 1.5rem;
   text-align: left;
   white-space: nowrap;
-}
-
-header .content .subnav li:hover {
-  color: #828593;
   transition: color 0.33s;
 }
 
-/******************** NAVBAR ********************/
-
-@media (max-width: 575px) {
-  header .content .search {
-    max-width: unset;
-    margin: 0;
-  }
+header .content .main-header .subnav li:hover,
+subHeader .content .main-header .subnav li:hover {
+  color: #399ffe;
+  transition: color 0.33s;
 }
 
-header .content .navBar {
+header .content .main-header .subnav li:last-child,
+subHeader .content .main-header .subnav li:last-child {
+  padding-right: unset;
+}
+
+header .content .navBar,
+subHeader .content .navBar {
+  box-sizing: border-box;
+  align-content: center;
+  justify-content: space-between;
   flex: 0 0 auto;
-  flex-direction: row-reverse;
+  flex-direction: row;
   width: 100%;
-  padding: 0.8rem 0 0.8rem;
-  font-size: 0.88rem;
+  padding: 0.5rem 2rem 0.5rem 2rem;
 }
 
-header .content .navBar .dropdownButton {
-  font-size: 0.88rem;
+header .content .navBar *,
+subHeader .content .navBar * {
+  letter-spacing: 0.8px;
 }
 
-header .content .navBar .dropdownButton .fa-chevron-down {
+header .content .navBar .dropdownButton,
+subHeader .content .navBar .dropdownButton {
+  min-height: 33px;
+  font-size: 1rem;
+}
+
+header .content .navBar .dropdownButton .fa-chevron-down,
+subHeader .content .navBar .dropdownButton .fa-chevron-down {
   margin-left: 0.3rem;
-  font-size: 0.3rem;
+  font-size: 0.6rem;
   vertical-align: middle;
 }
 
-header .content .navBar .dropdown li.active {
-  background-color: rgba(0, 0, 0, 0.07);
-}
-
-header .content .navBar .dropdown {
+header .content .navBar .dropdown,
+subHeader .content .navBar .dropdown {
   margin-top: 5px;
 }
 
-header .content .navBar a {
+header .content .navBar .dropdown li.active,
+subHeader .content .navBar .dropdown li.active {
+  background-color: rgba(0, 0, 0, 0.7);
+  width: -moz-available;
+  width: -webkit-fill-available;
+}
+
+header .content .navBar #darkModeButton,
+subHeader .content .navBar #darkModeButton {
+  padding-right: 0;
+}
+
+header .content .navBar a,
+subHeader .content .navBar a {
   text-decoration: none;
 }
 
-header .content ul {
-  list-style: none;
-  margin: 0;
-  padding-left: 0;
-}
-
-header .content .navBar li {
+header .content .navBar li,
+subHeader .content .navBar li {
   float: left;
-  padding-right: 1rem;
+  padding-right: 1.8rem;
   position: relative;
   text-decoration: none;
 }
 
-header .content .navBar > ul > li > button {
-  text-transform: uppercase;
-  color: #fff;
+header .content .navBar > ul > li > button,
+subHeader .content .navBar > ul > li > button {
+  font-weight: 500;
   border: none;
   background: none;
-  font-family: "Lato", sans-serif;
   padding: 5px 0;
 }
 
-header .content .navBar button:focus {
+header .content .navBar button:focus,
+subHeader .content .navBar button:focus {
   outline: none;
 }
 
-header .content .navBar button:hover {
+header .content .navBar button:hover,
+subHeader .content .navBar button:hover {
   cursor: pointer;
 }
 
-header .content .navBar ul li ul {
-  background-color: #fff;
+header .content .navBar ul li .dropdownButton ul,
+subHeader .content .navBar ul li .dropdownButton ul {
+  background-color: #ffffff;
   visibility: hidden;
-  opacity: 0;
-  min-width: 14rem;
-  border: 1px solid #E4EAED;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
+  opacity: 1 !important;
+  min-width: 16rem;
+  border: 1px solid #e5e8e8;
+  border-radius: 8px;
+  box-shadow: 0px 2px 16px 0px rgba(229, 232, 232, 0.75);
   position: absolute;
   transition: all 0.5s ease;
   left: 0;
@@ -247,22 +231,22 @@ header .content .navBar ul li ul {
   padding: 0;
 }
 
-header .content .navBar ul button.selected > ul,
-header .content .navBar ul li ul:active {
+header .content .navBar ul li .dropdownButton ul:active,
+subHeader .content .navBar ul li .dropdownButton ul:active {
   visibility: visible;
   opacity: 1;
   display: block;
   z-index: 2;
   width: auto;
   text-transform: none;
-
 }
 
-header .content .navBar ul li ul li {
+header .content .navBar ul li .dropdownButton ul li,
+subHeader .content .navBar ul li .dropdownButton ul li {
   clear: both;
-  color: #333333;
-  font-size: 0.8rem;
-  font-family: "Lato", sans-serif;
+  color: #282829;
+  font-size: 1rem;
+  font-weight: 300;
   line-height: 1.5;
   text-align: left;
   overflow: hidden;
@@ -270,6 +254,127 @@ header .content .navBar ul li ul li {
   width: 100%;
 }
 
-header .content .navBar ul li ul li a:hover {
-  color: #0D80EF;
+header .content .navBar ul li .dropdownButton ul li a:hover,
+subHeader .content .navBar ul li .dropdownButton ul li a:hover {
+  color: #1a50ad !important;
+}
+
+header .content .navBar ul button.selected > ul,
+subHeader .content .navBar ul button.selected > ul {
+  padding: 10px;
+  visibility: visible;
+  opacity: 1;
+  display: block;
+  z-index: 2;
+  width: auto;
+  text-transform: none;
+}
+
+header .content ul,
+subHeader .content ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+#coveoConnectHeaderStandaloneSearchbox {
+  margin: auto;
+  max-width: 555px;
+  color: #282829;
+  height: 48px;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .CoveoSearchButton {
+  height: 48px;
+  width: 48px;
+  border: 1px solid transparent;
+  border-radius: 0px 8px 8px 0px;
+  background: #1372ec;
+  transition: 0.3s background ease;
+  float: right;
+  position: relative;
+  outline: none;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .CoveoSearchButton:hover {
+  background-color: #1a50ad;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .CoveoOmnibox.magic-box {
+  border: none;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .magic-box .magic-box-input {
+  height: 48px;
+  border-radius: 5px 0 0 5px;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .magic-box .magic-box-input input {
+  padding: 0;
+  height: 48px;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .magic-box-icon {
+  height: 100%;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .magic-box-clear {
+  height: 33px;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .magic-box.magic-box-notEmpty .magic-box-clear {
+  width: 33px;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .magic-box-suggestions.magic-box-hasSuggestion {
+  border-radius: 5px;
+  border: 1px solid #e5e8e8;
+}
+
+#coveoConnectHeaderStandaloneSearchbox .coveo-search-button-svg path {
+  fill: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  header .content .main-header .subnav {
+    display: none;
+  }
+}
+
+@media (max-width: 695px) {
+  subHeader .content .navBar li {
+    padding-right: 1rem;
+  }
+  subHeader .content .navBar li .dropdownButton {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 595px) {
+  header .content .main-header .search {
+    max-width: unset;
+    margin: 0;
+  }
+  header .content .main-header .logo-text {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  subHeader {
+    height: unset;
+    position: static;
+  }
+  #coveoConnectHeaderStandaloneSearchbox {
+    display: initial !important;
+  }
+  #coveoConnectHeaderStandaloneSearchbox .CoveoSearchbox {
+    margin-right: unset;
+  }
+}
+
+@media (max-width: 360px) {
+  header .content .main-header .logo {
+    display: none;
+  }
 }
