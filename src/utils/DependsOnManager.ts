@@ -28,7 +28,7 @@ export class DependsOnManager {
   private parentFacetRef: IDependsOnCompatibleFacet;
 
   constructor(private facet: IDependentFacet) {
-    this.facet.ref.bind.onRootElement(QueryEvents.buildingQuery, () => this.handleBuildingQuery());
+    $$(this.facet.ref.searchInterface.element).on(QueryEvents.buildingQuery, () => this.handleBuildingQuery());
 
     if (this.getDependsOn(this.facet.ref)) {
       this.facet.ref.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => this.setupDependentFacet());
