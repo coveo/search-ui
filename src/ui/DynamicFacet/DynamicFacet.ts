@@ -164,6 +164,9 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * ```html
      * <div class="CoveoDynamicFacet" data-field="@ticketstatus" data-title="Ticket Status" data-tab="All" data-custom-sort="New,Opened,Feedback,Resolved"></div>
      * ```
+     *
+     * **Note:**
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
      */
     customSort: ComponentOptions.buildListOption<string>({ section: 'Sorting' }),
 
