@@ -225,6 +225,10 @@ export interface IAnalyticsMissingTerm {
   missingTerm: string;
 }
 
+export interface IAnalyticsSmartSnippetMeta {
+  searchQueryUid: string;
+}
+
 export enum AnalyticsSmartSnippetFeedbackReason {
   DoesNotAnswer = 'does_not_answer',
   PartiallyAnswers = 'partially_answers',
@@ -232,12 +236,12 @@ export enum AnalyticsSmartSnippetFeedbackReason {
   Other = 'other'
 }
 
-export interface IAnalyticsSmartSnippetFeedbackMeta {
+export interface IAnalyticsSmartSnippetFeedbackMeta extends IAnalyticsSmartSnippetMeta {
   reason: AnalyticsSmartSnippetFeedbackReason;
   details?: string;
 }
 
-export interface IAnalyticsSmartSnippetSuggestionMeta {
+export interface IAnalyticsSmartSnippetSuggestionMeta extends IAnalyticsSmartSnippetMeta {
   documentId: { contentIdKey: string; contentIdValue: string };
 }
 

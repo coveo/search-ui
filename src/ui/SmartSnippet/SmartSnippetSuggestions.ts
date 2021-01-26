@@ -37,6 +37,7 @@ export class SmartSnippetSuggestions extends Component {
   private title: Dom;
   private questionAnswers: Dom;
   private renderedQuestionAnswer: IQuestionAnswerResponse;
+  private searchUid: string;
 
   constructor(public element: HTMLElement, public options?: {}, bindings?: IComponentBindings) {
     super(element, SmartSnippetSuggestions.ID, bindings);
@@ -62,6 +63,7 @@ export class SmartSnippetSuggestions extends Component {
     const hasQuestions = !!(questionAnswer && questionAnswer.relatedQuestions.length);
     $$(this.element).toggleClass(HAS_QUESTIONS_CLASSNAME, hasQuestions);
     if (hasQuestions) {
+      this.searchUid = data.results.searchUid;
       if (this.renderedQuestionAnswer && isEqual(questionAnswer, this.renderedQuestionAnswer)) {
         return;
       }
@@ -94,6 +96,7 @@ export class SmartSnippetSuggestions extends Component {
           Utils.isNullOrUndefined(innerCSS)
             ? getDefaultSnippetStyle(SmartSnippetCollapsibleSuggestionClassNames.RAW_CONTENT_CLASSNAME)
             : innerCSS,
+          this.searchUid,
           this.getCorrespondingResult(questionAnswer)
         )
     );

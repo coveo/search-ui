@@ -6,7 +6,7 @@ import { advancedComponentSetup, AdvancedComponentSetupOptions, IBasicComponentS
 import { SmartSnippetCollapsibleSuggestionClassNames } from '../../src/ui/SmartSnippet/SmartSnippetCollapsibleSuggestion';
 import { $$ } from '../../src/utils/Dom';
 import { expectChildren } from '../TestUtils';
-import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { analyticsActionCauseList, IAnalyticsSmartSnippetSuggestionMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { Utils } from '../../src/Core';
 import { getDefaultSnippetStyle } from '../../src/ui/SmartSnippet/SmartSnippetCommon';
@@ -115,6 +115,7 @@ export function SmartSnippetSuggestionsTest() {
 
   describe('SmartSnippetSuggestions', () => {
     let test: IBasicComponentSetup<SmartSnippetSuggestions>;
+    let searchUid: string;
 
     function instantiateSmartSnippetSuggestions(styling: string) {
       test = advancedComponentSetup<SmartSnippetSuggestions>(
@@ -138,7 +139,8 @@ export function SmartSnippetSuggestionsTest() {
       await triggerQuerySuccess({
         results: <IQueryResults>{
           results,
-          questionAnswer: mockQuestionAnswer()
+          questionAnswer: mockQuestionAnswer(),
+          searchUid: searchUid = Math.random().toString().substr(2)
         }
       });
       await waitForCollapsibleSuggestions();
@@ -313,7 +315,7 @@ export function SmartSnippetSuggestionsTest() {
           it('sends expand analytics', () => {
             expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
               analyticsActionCauseList.expandSmartSnippetSuggestion,
-              { documentId: sources[1].id },
+              <IAnalyticsSmartSnippetSuggestionMeta>{ documentId: sources[1].id, searchQueryUid: searchUid },
               findClass(ClassNames.QUESTION_TITLE_CHECKBOX_CLASSNAME)[1]
             );
           });
@@ -335,7 +337,7 @@ export function SmartSnippetSuggestionsTest() {
             it('sends collapse analytics', () => {
               expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
                 analyticsActionCauseList.collapseSmartSnippetSuggestion,
-                { documentId: sources[1].id },
+                <IAnalyticsSmartSnippetSuggestionMeta>{ documentId: sources[1].id, searchQueryUid: searchUid },
                 findClass(ClassNames.QUESTION_TITLE_CHECKBOX_CLASSNAME)[1]
               );
             });
