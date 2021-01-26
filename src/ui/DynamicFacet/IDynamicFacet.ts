@@ -19,6 +19,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions, IDepe
   title?: string;
   field?: IFieldOption;
   sortCriteria?: FacetSortCriteria;
+  customSort?: string[];
   numberOfValues?: number;
   enableCollapse?: boolean;
   enableScrollToTop?: boolean;

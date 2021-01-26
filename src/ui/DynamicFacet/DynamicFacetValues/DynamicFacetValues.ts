@@ -1,6 +1,6 @@
 import 'styling/DynamicFacet/_DynamicFacetValues';
 import { $$ } from '../../../utils/Dom';
-import { findWhere, find, escape } from 'underscore';
+import { findWhere, find, escape, values } from 'underscore';
 import { DynamicFacetValue } from './DynamicFacetValue';
 import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
@@ -24,6 +24,21 @@ export class DynamicFacetValues implements IDynamicFacetValues {
 
   public createFromResponse(response: IFacetResponse) {
     this.facetValues = response.values.map((facetValue, index) => this.valueCreator.createFromResponse(facetValue, index));
+  }
+
+  public reorderValues(order: string[]) {
+    const facetValuesMap = this.facetValues.reduce<{ [id: string]: IDynamicFacetValue }>(
+      (map, value) => ({ ...map, [value.value]: value }),
+      {}
+    );
+    const orderedFacetValues: IDynamicFacetValue[] = [];
+    order.forEach(id => {
+      if (facetValuesMap[id]) {
+        orderedFacetValues.push(facetValuesMap[id]);
+        delete facetValuesMap[id];
+      }
+    });
+    this.facetValues = [...orderedFacetValues, ...values(facetValuesMap)];
   }
 
   public resetValues() {
