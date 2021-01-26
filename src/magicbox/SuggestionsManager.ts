@@ -372,7 +372,6 @@ export class SuggestionsManager {
   }
 
   private async updateSelectedSuggestion(suggestion: Suggestion) {
-    console.log(suggestion);
     $$(this.root).trigger(OmniboxEvents.querySuggestGetFocus, <IQuerySuggestSelection>{
       suggestion: suggestion.text
     });
