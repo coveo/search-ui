@@ -125,6 +125,18 @@ export class Dom {
   }
 
   /**
+   * Focuses on an element.
+   * @param preventScroll Whether or not to scroll the page to the focused element.
+   */
+  public focus(preventScroll: boolean) {
+    const { pageXOffset, pageYOffset } = window;
+    this.el.focus();
+    if (preventScroll) {
+      window.scrollTo(pageXOffset, pageYOffset);
+    }
+  }
+
+  /**
    * Empty (remove all child) from the element;
    */
   public empty(): void {
@@ -833,13 +845,17 @@ export class Win {
   public scrollY(): number {
     return this.supportPageOffset()
       ? this.win.pageYOffset
-      : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
+      : this.isCSS1Compat()
+      ? this.win.document.documentElement.scrollTop
+      : this.win.document.body.scrollTop;
   }
 
   public scrollX(): number {
     return this.supportPageOffset()
       ? window.pageXOffset
-      : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
+      : this.isCSS1Compat()
+      ? document.documentElement.scrollLeft
+      : document.body.scrollLeft;
   }
 
   private isCSS1Compat() {
