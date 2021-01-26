@@ -55,7 +55,7 @@ export class SuggestionsManager {
   }
 
   private get focusedSuggestion() {
-    return find(this.currentSuggestions, suggestion => suggestion.dom.classList.contains(this.options.selectedClass));
+    return find(this.currentSuggestions, suggestion => suggestion.dom.outerHTML.indexOf(this.options.selectedClass) != -1);
   }
 
   constructor(
@@ -372,6 +372,7 @@ export class SuggestionsManager {
   }
 
   private async updateSelectedSuggestion(suggestion: Suggestion) {
+    console.log(suggestion);
     $$(this.root).trigger(OmniboxEvents.querySuggestGetFocus, <IQuerySuggestSelection>{
       suggestion: suggestion.text
     });
