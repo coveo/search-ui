@@ -20,6 +20,9 @@ import { ExplanationModal, IReason } from './ExplanationModal';
 import { l } from '../../strings/Strings';
 import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { Utils } from '../../utils/Utils';
+import { ComponentOptions } from '../Base/ComponentOptions';
+import { getDefaultSnippetStyle } from './SmartSnippetCommon';
+import { ResultLink } from '../ResultLink/ResultLink';
 
 interface ISmartSnippetReason {
   analytics: AnalyticsSmartSnippetFeedbackReason;
@@ -68,6 +71,10 @@ export const SmartSnippetClassNames = {
   SOURCE_URL_CLASSNAME
 };
 
+export interface ISmartSnippetOptions {
+  maximumSnippetHeight: number;
+}
+
 export class SmartSnippet extends Component {
   static ID = 'SmartSnippet';
 
@@ -77,7 +84,21 @@ export class SmartSnippet extends Component {
     });
   };
 
+  /**
+   * The options for the SmartSnippet
+   * @componentOptions
+   */
+  static options: ISmartSnippetOptions = {
+    /**
+     * The maximum height an answer can have in pixels.
+     * Any part of an answer exceeding this height will be hidden by default and expendable via a "show more" button.
+     * Default value is `250`.
+     */
+    maximumSnippetHeight: ComponentOptions.buildNumberOption({ defaultValue: 250, min: 0 })
+  };
+
   private lastRenderedResult: IQueryResult;
+  private searchUid: string;
   private questionContainer: HTMLElement;
   private shadowContainer: HTMLElement;
   private sourceContainer: HTMLElement;
@@ -87,17 +108,23 @@ export class SmartSnippet extends Component {
   private feedbackBanner: UserFeedbackBanner;
   private shadowLoading: Promise<HTMLElement>;
 
-  constructor(public element: HTMLElement, public options?: {}, bindings?: IComponentBindings, private ModalBox = ModalBoxModule) {
+  constructor(
+    public element: HTMLElement,
+    public options?: ISmartSnippetOptions,
+    bindings?: IComponentBindings,
+    private ModalBox = ModalBoxModule
+  ) {
     super(element, SmartSnippet.ID, bindings);
+    this.options = ComponentOptions.initComponentOptions(element, SmartSnippet, options);
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
   private get style() {
-    return $$(this.element)
+    const styles = $$(this.element)
       .children()
       .filter(element => element instanceof HTMLScriptElement && element.type.toLowerCase() === 'text/css')
-      .map(element => element.innerHTML)
-      .join('\n');
+      .map(element => element.innerHTML);
+    return styles.length ? styles.join('\n') : null;
   }
 
   private set hasAnswer(hasAnswer: boolean) {
@@ -150,17 +177,18 @@ export class SmartSnippet extends Component {
     this.shadowLoading = attachShadow(this.shadowContainer, { mode: 'open', title: l('AnswerSnippet') }).then(shadow => {
       shadow.appendChild(this.snippetContainer);
       const style = this.buildStyle();
-      if (style) {
-        shadow.appendChild(style);
-      }
+      shadow.appendChild(style);
       return shadow;
     });
     return this.shadowContainer;
   }
 
   private buildHeightLimiter() {
-    return (this.heightLimiter = new HeightLimiter(this.shadowContainer, this.snippetContainer, 400, isExpanded =>
-      isExpanded ? this.sendExpandSmartSnippetAnalytics() : this.sendCollapseSmartSnippetAnalytics()
+    return (this.heightLimiter = new HeightLimiter(
+      this.shadowContainer,
+      this.snippetContainer,
+      this.options.maximumSnippetHeight,
+      isExpanded => (isExpanded ? this.sendExpandSmartSnippetAnalytics() : this.sendCollapseSmartSnippetAnalytics())
     )).toggleButton;
   }
 
@@ -169,10 +197,7 @@ export class SmartSnippet extends Component {
   }
 
   private buildStyle() {
-    const style = this.style;
-    if (!style) {
-      return;
-    }
+    const style = Utils.isNullOrUndefined(this.style) ? getDefaultSnippetStyle(CONTENT_CLASSNAME) : this.style;
     const styleTag = document.createElement('style');
     styleTag.innerHTML = style;
     return styleTag;
@@ -190,21 +215,26 @@ export class SmartSnippet extends Component {
 
   private async handleQuerySuccess(data: IQuerySuccessEventArgs) {
     const { questionAnswer } = data.results;
-    if (!questionAnswer) {
+    if (!this.containsQuestionAnswer(questionAnswer)) {
       this.hasAnswer = false;
       return;
     }
     this.hasAnswer = true;
+    this.searchUid = data.results.searchUid;
     await this.render(questionAnswer);
+  }
+
+  private containsQuestionAnswer(questionAnswer: IQuestionAnswerResponse) {
+    return questionAnswer && questionAnswer.question && questionAnswer.answerSnippet;
   }
 
   private async render(questionAnswer: IQuestionAnswerResponse) {
     this.ensureDom();
     this.questionContainer.innerText = questionAnswer.question;
     this.renderSnippet(questionAnswer.answerSnippet);
-    const lastRenderedResult = this.getCorrespondingResult(questionAnswer);
-    if (lastRenderedResult) {
-      this.renderSource(lastRenderedResult);
+    this.lastRenderedResult = this.getCorrespondingResult(questionAnswer);
+    if (this.lastRenderedResult) {
+      this.renderSource();
     }
     await this.shadowLoading;
     await Utils.resolveAfter(0); // `scrollHeight` isn't instantly detected, or at-least not on IE11.
@@ -215,41 +245,25 @@ export class SmartSnippet extends Component {
     this.snippetContainer.innerHTML = content;
   }
 
-  private renderSource(source: IQueryResult) {
+  private renderSource() {
     $$(this.sourceContainer).empty();
-    this.sourceContainer.appendChild(this.renderSourceUrl(source.clickUri));
-    this.sourceContainer.appendChild(this.renderSourceTitle(source.title, source.clickUri));
+    this.sourceContainer.appendChild(this.renderSourceUrl());
+    this.sourceContainer.appendChild(this.renderSourceTitle());
   }
 
-  private renderSourceTitle(title: string, clickUri: string) {
-    return this.renderLink(title, clickUri, SOURCE_TITLE_CLASSNAME);
+  private renderSourceTitle() {
+    return this.buildLink(this.lastRenderedResult.title, SOURCE_TITLE_CLASSNAME);
   }
 
-  private renderSourceUrl(url: string) {
-    return this.renderLink(url, url, SOURCE_URL_CLASSNAME);
+  private renderSourceUrl() {
+    return this.buildLink(this.lastRenderedResult.clickUri, SOURCE_URL_CLASSNAME);
   }
 
-  private renderLink(text: string, href: string, className: string) {
-    const element = $$('a', { className, href }).el as HTMLAnchorElement;
+  private buildLink(text: string, className: string) {
+    const element = $$('a', { className: `CoveoResultLink ${className}` }).el as HTMLAnchorElement;
     element.innerText = text;
-    this.enableAnalyticsOnLink(element, () => this.sendOpenSourceAnalytics());
+    new ResultLink(element, {}, { ...this.getBindings(), resultElement: this.element }, this.lastRenderedResult);
     return element;
-  }
-
-  private enableAnalyticsOnLink(link: HTMLAnchorElement, sendAnalytics: () => Promise<any>) {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      this.openLink(link.href, e.ctrlKey, sendAnalytics);
-    });
-  }
-
-  private openLink(href: string, newTab: boolean, sendAnalytics: () => Promise<any>) {
-    sendAnalytics();
-    if (newTab) {
-      window.open(href);
-    } else {
-      window.location.href = href;
-    }
   }
 
   private openExplanationModal() {
@@ -260,63 +274,48 @@ export class SmartSnippet extends Component {
   private sendLikeSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.likeSmartSnippet,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
   private sendDislikeSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.dislikeSmartSnippet,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
   private sendExpandSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.expandSmartSnippet,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
   private sendCollapseSmartSnippetAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.collapseSmartSnippet,
-      {},
-      this.element,
-      this.lastRenderedResult
-    );
-  }
-
-  private sendOpenSourceAnalytics() {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
-      analyticsActionCauseList.openSmartSnippetSource,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
   private sendOpenFeedbackModalAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.openSmartSnippetFeedbackModal,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
   private sendCloseFeedbackModalAnalytics() {
     return this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(
       analyticsActionCauseList.closeSmartSnippetFeedbackModal,
-      {},
-      this.element,
-      this.lastRenderedResult
+      { searchQueryUid: this.searchUid },
+      this.element
     );
   }
 
@@ -324,11 +323,11 @@ export class SmartSnippet extends Component {
     return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetFeedbackMeta>(
       analyticsActionCauseList.sendSmartSnippetReason,
       {
+        searchQueryUid: this.searchUid,
         reason,
         details
       },
-      this.element,
-      this.lastRenderedResult
+      this.element
     );
   }
 }

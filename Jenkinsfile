@@ -23,7 +23,7 @@ node('linux && docker') {
         sh "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -"
         sh "echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list"
         sh "apt-get update"
-        sh "apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 libxtst6 --no-install-recommends"
+        sh "apt-get install -y google-chrome-stable"
         sh "google-chrome --version"
       }
 
@@ -45,9 +45,22 @@ node('linux && docker') {
       }
 
       stage('Docs') {
-        sh './deploy.doc.sh'
+        withCredentials([
+            usernameColonPassword(credentialsId: 'github-commit-token', variable: 'GITHUB_TOKEN')
+        ]) {
+            sh './deploy.doc.sh'
+        }
         sh 'yarn run docsitemap'
+      }
+
+      stage('Github Release') {
         sh 'yarn run zipForGitReleases'
+        
+        withCredentials([
+          usernamePassword(credentialsId: 'github-commit-token', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_TOKEN')
+        ]) {
+            sh 'node ./build/github-release.deploy.js'
+        }
       }
 
       stage('Deploy') {
