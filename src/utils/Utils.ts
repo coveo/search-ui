@@ -448,6 +448,6 @@ export class Utils {
         delete valuesMap[keyToAppend];
       }
     });
-    return appendRemainingValues ? [...orderedValues, ..._.values(valuesMap)] : orderedValues;
+    return appendRemainingValues ? [...orderedValues, ..._.without(values, ...orderedValues)] : orderedValues;
   }
 }

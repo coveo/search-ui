@@ -58,17 +58,14 @@ export function UtilsTest() {
     });
 
     describe('reorderValuesByKeys', () => {
-      const objectsToSort = [{ name: 'abc' }, { name: 'def' }, { name: 'ghi' }, { name: 'jkl' }];
+      const objectsToSort = [{ name: '4' }, { name: '3' }, { name: '2' }, { name: '1' }];
 
       it('when appendRemainingValues is false, returns only the sorted values', () => {
-        expect(Utils.reorderValuesByKeys(objectsToSort, ['ghi', 'def'], obj => obj.name, false)).toEqual([
-          objectsToSort[2],
-          objectsToSort[1]
-        ]);
+        expect(Utils.reorderValuesByKeys(objectsToSort, ['2', '3'], obj => obj.name, false)).toEqual([objectsToSort[2], objectsToSort[1]]);
       });
 
       it('when appendRemainingValues is true, returns the sorted values followed by the unsorted values in their original order', () => {
-        expect(Utils.reorderValuesByKeys(objectsToSort, ['ghi', 'def'], obj => obj.name, true)).toEqual([
+        expect(Utils.reorderValuesByKeys(objectsToSort, ['2', '3'], obj => obj.name, true)).toEqual([
           objectsToSort[2],
           objectsToSort[1],
           objectsToSort[0],
