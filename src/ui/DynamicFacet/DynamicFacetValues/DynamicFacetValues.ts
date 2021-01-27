@@ -1,12 +1,13 @@
 import 'styling/DynamicFacet/_DynamicFacetValues';
 import { $$ } from '../../../utils/Dom';
-import { findWhere, find, escape, values } from 'underscore';
+import { findWhere, find, escape } from 'underscore';
 import { DynamicFacetValue } from './DynamicFacetValue';
 import { IFacetResponse } from '../../../rest/Facet/FacetResponse';
 import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
 import { IDynamicFacet, IValueCreator, IDynamicFacetValue, IDynamicFacetValues } from '../IDynamicFacet';
 import { DynamicFacetValueShowMoreLessButton } from './DynamicFacetValueMoreLessButton';
+import { Utils } from '../../../utils/Utils';
 
 export interface IDynamicFacetValueCreatorKlass {
   new (facet: IDynamicFacet): IValueCreator;
@@ -27,18 +28,7 @@ export class DynamicFacetValues implements IDynamicFacetValues {
   }
 
   public reorderValues(order: string[]) {
-    const facetValuesMap = this.facetValues.reduce<{ [id: string]: IDynamicFacetValue }>(
-      (map, value) => ({ ...map, [value.value]: value }),
-      {}
-    );
-    const orderedFacetValues: IDynamicFacetValue[] = [];
-    order.forEach(id => {
-      if (facetValuesMap[id]) {
-        orderedFacetValues.push(facetValuesMap[id]);
-        delete facetValuesMap[id];
-      }
-    });
-    this.facetValues = [...orderedFacetValues, ...values(facetValuesMap)];
+    this.facetValues = Utils.reorderValuesByKeys(this.facetValues, order, value => value.value);
   }
 
   public resetValues() {

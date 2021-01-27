@@ -56,5 +56,25 @@ export function UtilsTest() {
         });
       });
     });
+
+    describe('reorderValuesByKeys', () => {
+      const objectsToSort = [{ name: 'abc' }, { name: 'def' }, { name: 'ghi' }, { name: 'jkl' }];
+
+      it('when appendRemainingValues is false, returns only the sorted values', () => {
+        expect(Utils.reorderValuesByKeys(objectsToSort, ['ghi', 'def'], obj => obj.name, false)).toEqual([
+          objectsToSort[2],
+          objectsToSort[1]
+        ]);
+      });
+
+      it('when appendRemainingValues is true, returns the sorted values followed by the unsorted values in their original order', () => {
+        expect(Utils.reorderValuesByKeys(objectsToSort, ['ghi', 'def'], obj => obj.name, true)).toEqual([
+          objectsToSort[2],
+          objectsToSort[1],
+          objectsToSort[0],
+          objectsToSort[3]
+        ]);
+      });
+    });
   });
 }

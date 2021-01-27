@@ -10,6 +10,7 @@ import { l } from '../../../strings/Strings';
 import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicFacetValues/DynamicFacetValueMoreLessButton';
 import { IDynamicHierarchicalFacetValues, IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../IDynamicHierarchicalFacet';
 import { SVGIcons } from '../../../utils/SVGIcons';
+import { HashUtils } from '../../../utils/HashUtils';
 
 export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacetValues {
   private facetValues: IDynamicHierarchicalFacetValue[] = [];
@@ -26,6 +27,16 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
   public createFromResponse(response: IFacetResponse) {
     this.clearPath();
     this.facetValues = response.values.map(responseValue => this.createFacetValueFromResponse(responseValue));
+  }
+
+  public reorderValues(pathsOrder: string[][]) {
+    const order = pathsOrder.map(path => HashUtils.encodeArray(path));
+    if (!this.hasSelectedValue) {
+      this.facetValues = Utils.reorderValuesByKeys(this.facetValues, order, value => HashUtils.encodeArray(value.path));
+    } else {
+      const parentFacetValue = this.findValueWithPath(this.selectedPath);
+      parentFacetValue.children = Utils.reorderValuesByKeys(parentFacetValue.children, order, value => HashUtils.encodeArray(value.path));
+    }
   }
 
   private createFacetValueFromResponse(responseValue: IFacetResponseValue, path: string[] = []): IDynamicHierarchicalFacetValue {

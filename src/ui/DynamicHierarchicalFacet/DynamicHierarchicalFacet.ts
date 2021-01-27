@@ -240,6 +240,48 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     }),
 
     /**
+     * Specifies a custom order by which to sort the dynamic hierarchical facet values.
+     *
+     * **Example:**
+     * ```html
+     * <div
+     *   class="CoveoDynamicHierarchicalFacet"
+     *   data-field="@countries"
+     *   data-title="Countries"
+     *   data-tab="All"
+     *   data-clear-label="All Countries"
+     *   data-delimiting-character="|"
+     *   data-custom-sort="Asia|Japan, America|Mexico, America|Canada, Europe|Germany, Europe|France"
+     * ></div>
+     * ```
+     */
+    customSort: ComponentOptions.buildStringOption({ section: 'Sorting' }),
+
+    /**
+     * If a custom sort is defined, this specifies the delimiter that separates paths from eachother.
+     *
+     * *Example:**
+     * ```html
+     * <div
+     *   class="CoveoDynamicHierarchicalFacet"
+     *   data-field="@countries"
+     *   data-title="Countries"
+     *   data-tab="All"
+     *   data-clear-label="All Countries"
+     *   data-delimiting-character="|"
+     *   data-custom-sort="Asia|Japan...America|Mexico...America|Canada...Europe|Germany...Europe|France"
+     *   data-custom-sort-delimiting-character="..."
+     * ></div>
+     * ```
+     */
+    customSortDelimitingCharacter: ComponentOptions.buildStringOption({
+      section: 'Sorting',
+      depend: 'customSort',
+      postProcessing: (value, options: IDynamicHierarchicalFacetOptions) =>
+        Utils.isNullOrUndefined(value) ? (options.delimitingCharacter === ',' ? '|' : ',') : value
+    }),
+
+    /**
      * The label to display to clear the facet when a value is selected.
      *
      * Default value is the localized string for `AllCategories`.
@@ -412,6 +454,12 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   private onNewValues(facetResponse: IFacetResponse) {
     this.moreValuesAvailable = facetResponse.moreValuesAvailable;
     this.values.createFromResponse(facetResponse);
+    if (this.options.customSort) {
+      const order = this.options.customSort
+        .split(this.options.customSortDelimitingCharacter)
+        .map(value => value.trim().split(this.options.delimitingCharacter));
+      this.values.reorderValues(order);
+    }
   }
 
   private onNoValues() {
