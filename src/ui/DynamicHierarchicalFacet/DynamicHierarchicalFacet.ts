@@ -251,7 +251,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *   data-tab="All"
      *   data-clear-label="All Countries"
      *   data-delimiting-character="|"
-     *   data-custom-sort="Asia|Japan, America|Mexico, America|Canada, Europe|Germany, Europe|France"
+     *   data-custom-sort="America, Asia|Japan, America|Mexico, America|Canada, Europe|Germany, Europe|France, Oceania"
      * ></div>
      * ```
      */
@@ -269,7 +269,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *   data-tab="All"
      *   data-clear-label="All Countries"
      *   data-delimiting-character="|"
-     *   data-custom-sort="Asia|Japan...America|Mexico...America|Canada...Europe|Germany...Europe|France"
+     *   data-custom-sort="America...Asia|Japan...America|Mexico...America|Canada...Europe|Germany...Europe|France...Oceania"
      *   data-custom-sort-delimiting-character="..."
      * ></div>
      * ```
