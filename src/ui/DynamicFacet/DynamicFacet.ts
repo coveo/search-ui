@@ -156,6 +156,23 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     }),
 
     /**
+     * Specifies a custom order by which to sort the dynamic facet values.
+     *
+     * Custom-ordered values won't necessarily retrieve values from the index.
+     *
+     * **Example:**
+     *
+     * You could use this option to specify a logical order for support tickets, such as:
+     * ```html
+     * <div class="CoveoDynamicFacet" data-field="@ticketstatus" data-title="Ticket Status" data-tab="All" data-custom-sort="New,Opened,Feedback,Resolved"></div>
+     * ```
+     *
+     * **Note:**
+     * > The [`DynamicFacetRange`]{@link DynamicFacetRange} component does not support this option.
+     */
+    customSort: ComponentOptions.buildListOption<string>({ section: 'Sorting' }),
+
+    /**
      * The number of values to request for this facet.
      *
      * Also determines the default maximum number of additional values to request each time this facet is expanded,
@@ -671,6 +688,9 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   private onNewValues(facetResponse: IFacetResponse) {
     this.moreValuesAvailable = facetResponse.moreValuesAvailable;
     this.values.createFromResponse(facetResponse);
+    if (this.options.customSort) {
+      this.values.reorderValues(this.options.customSort);
+    }
   }
 
   private onNoValues() {

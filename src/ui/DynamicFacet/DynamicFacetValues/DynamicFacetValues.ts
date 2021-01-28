@@ -7,6 +7,7 @@ import { FacetValueState } from '../../../rest/Facet/FacetValueState';
 import { l } from '../../../strings/Strings';
 import { IDynamicFacet, IValueCreator, IDynamicFacetValue, IDynamicFacetValues } from '../IDynamicFacet';
 import { DynamicFacetValueShowMoreLessButton } from './DynamicFacetValueMoreLessButton';
+import { Utils } from '../../../utils/Utils';
 
 export interface IDynamicFacetValueCreatorKlass {
   new (facet: IDynamicFacet): IValueCreator;
@@ -24,6 +25,10 @@ export class DynamicFacetValues implements IDynamicFacetValues {
 
   public createFromResponse(response: IFacetResponse) {
     this.facetValues = response.values.map((facetValue, index) => this.valueCreator.createFromResponse(facetValue, index));
+  }
+
+  public reorderValues(order: string[]) {
+    this.facetValues = Utils.reorderValuesByKeys(this.facetValues, order, value => value.value);
   }
 
   public resetValues() {
