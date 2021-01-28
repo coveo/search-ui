@@ -258,7 +258,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     customSort: ComponentOptions.buildStringOption({ section: 'Sorting' }),
 
     /**
-     * If a custom sort is defined, this specifies the delimiter that separates paths from eachother.
+     * If a custom sort is defined, this specifies the delimiter that separates paths from each other.
      *
      * *Example:**
      * ```html
