@@ -285,24 +285,47 @@ export function DynamicHierarchicalFacetValuesTest() {
       });
 
       describe('when values are at multiple levels', () => {
+        let rootLevelFacetChildren: IDynamicHierarchicalFacetValue[];
         let firstLevelFacetValue: IDynamicHierarchicalFacetValue;
         let secondLevelFacetValue: IDynamicHierarchicalFacetValue;
         let thirdLevelFacetValue: IDynamicHierarchicalFacetValue;
+        let thirdLevelFacetChildren: IDynamicHierarchicalFacetValue[];
+        let order: string[][];
 
         beforeEach(() => {
           facet.values.createFromResponse(
             DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet, {
-              values: DynamicHierarchicalFacetTestUtils.createFakeFacetResponseValues(4, 3)
+              values: DynamicHierarchicalFacetTestUtils.createFakeFacetResponseValues(4, 4)
             })
           );
+          rootLevelFacetChildren = [...facet.values.allFacetValues];
+          firstLevelFacetValue = facet.values.allFacetValues[1];
+          secondLevelFacetValue = facet.values.allFacetValues[1].children[0];
+          thirdLevelFacetValue = facet.values.allFacetValues[1].children[0].children[2];
+          thirdLevelFacetChildren = [...thirdLevelFacetValue.children];
+          order = [
+            rootLevelFacetChildren[3].path,
+            rootLevelFacetChildren[1].path,
+            rootLevelFacetChildren[2].path,
+            firstLevelFacetValue.children[1].path,
+            firstLevelFacetValue.children[3].path,
+            thirdLevelFacetChildren[2].path,
+            thirdLevelFacetChildren[3].path
+          ];
+        });
+
+        it("when there's no selection, should be able to reorder the root level", () => {
+          facet.values.reorderValues(order);
+          expect(facet.values.allFacetValues.map(facetValue => facetValue.path)).toEqual([
+            rootLevelFacetChildren[3].path,
+            rootLevelFacetChildren[1].path,
+            rootLevelFacetChildren[2].path,
+            rootLevelFacetChildren[0].path
+          ]);
         });
 
         describe('when path already entirely exists', () => {
           beforeEach(() => {
-            firstLevelFacetValue = facet.values.allFacetValues[1];
-            secondLevelFacetValue = facet.values.allFacetValues[1].children[0];
-            thirdLevelFacetValue = facet.values.allFacetValues[1].children[0].children[2];
-
             facet.values.selectPath([firstLevelFacetValue.value, secondLevelFacetValue.value, thirdLevelFacetValue.value]);
           });
 
@@ -324,15 +347,23 @@ export function DynamicHierarchicalFacetValuesTest() {
           it('should have the right selectedPath', () => {
             expect(facet.values.selectedPath).toEqual(thirdLevelFacetValue.path);
           });
+
+          it('should be able to reorder the third level', () => {
+            thirdLevelFacetValue.children = thirdLevelFacetChildren;
+            facet.values.reorderValues(order);
+            expect(thirdLevelFacetValue.children.map(facetValue => facetValue.path)).toEqual([
+              thirdLevelFacetChildren[2].path,
+              thirdLevelFacetChildren[3].path,
+              thirdLevelFacetChildren[0].path,
+              thirdLevelFacetChildren[1].path
+            ]);
+          });
         });
 
         describe('when path only partially exist', () => {
           let newValue = 'a new value!!';
 
           beforeEach(() => {
-            firstLevelFacetValue = facet.values.allFacetValues[1];
-            secondLevelFacetValue = facet.values.allFacetValues[1].children[0];
-
             facet.values.selectPath([firstLevelFacetValue.value, secondLevelFacetValue.value, newValue]);
             thirdLevelFacetValue = facet.values.allFacetValues[0].children[0].children[0];
           });

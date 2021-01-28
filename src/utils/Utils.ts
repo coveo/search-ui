@@ -123,7 +123,7 @@ export class Utils {
   }
 
   static decodeHTMLEntities(rawString: string) {
-    return rawString.replace(/&#(\d+);/g, function(match, dec) {
+    return rawString.replace(/&#(\d+);/g, function (match, dec) {
       return String.fromCharCode(dec);
     });
   }
@@ -251,12 +251,12 @@ export class Utils {
     let result;
     let timeout: number = null;
     let previous = 0;
-    let later = function() {
+    let later = function () {
       previous = options.leading === false ? 0 : new Date().getTime();
       timeout = null;
       result = func.apply(context, args);
     };
-    return function() {
+    return function () {
       let now = new Date().getTime();
       if (!previous && options.leading === false) {
         previous = now;
@@ -329,7 +329,7 @@ export class Utils {
   static debounce(func: Function, wait: number) {
     let timeout: number;
     let stackTraceTimeout: number;
-    return function(...args: any[]) {
+    return function (...args: any[]) {
       if (timeout == null) {
         timeout = window.setTimeout(() => {
           timeout = null;
@@ -437,5 +437,16 @@ export class Utils {
 
   static resolveAfter<T = void>(ms: number, returns?: T): Promise<T> {
     return new Promise(resolve => setTimeout(() => (returns !== undefined ? resolve(returns) : resolve()), ms));
+  }
+
+  static reorderValuesByKeys<T, K extends string>(values: T[], order: K[], getKey: (value: T) => K) {
+    const valuesMap = values.reduce<{ [key: string]: T }>((map, value) => ({ ...map, [getKey(value)]: value }), {});
+    const orderedValues: T[] = [];
+    order.forEach(keyToAppend => {
+      if (valuesMap[keyToAppend]) {
+        orderedValues.push(valuesMap[keyToAppend]);
+      }
+    });
+    return [...orderedValues, ..._.without(values, ...orderedValues)];
   }
 }
