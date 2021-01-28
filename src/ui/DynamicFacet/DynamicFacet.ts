@@ -158,6 +158,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     /**
      * Specifies a custom order by which to sort the dynamic facet values.
      *
+     * Custom-ordered values won't necessarily retrieve values from the index.
+     *
      * **Example:**
      *
      * You could use this option to specify a logical order for support tickets, such as:

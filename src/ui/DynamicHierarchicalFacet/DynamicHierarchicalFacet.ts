@@ -242,6 +242,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     /**
      * Specifies a custom order by which to sort the dynamic hierarchical facet values.
      *
+     * Custom-ordered values won't necessarily retrieve values from the index.
+     *
      * **Example:**
      * ```html
      * <div
