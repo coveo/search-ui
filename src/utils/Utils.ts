@@ -439,15 +439,14 @@ export class Utils {
     return new Promise(resolve => setTimeout(() => (returns !== undefined ? resolve(returns) : resolve()), ms));
   }
 
-  static reorderValuesByKeys<T, K extends string>(values: T[], order: K[], getKey: (value: T) => K, appendRemainingValues = true) {
+  static reorderValuesByKeys<T, K extends string>(values: T[], order: K[], getKey: (value: T) => K) {
     const valuesMap = values.reduce<{ [key: string]: T }>((map, value) => ({ ...map, [getKey(value)]: value }), {});
     const orderedValues: T[] = [];
     order.forEach(keyToAppend => {
       if (valuesMap[keyToAppend]) {
         orderedValues.push(valuesMap[keyToAppend]);
-        delete valuesMap[keyToAppend];
       }
     });
-    return appendRemainingValues ? [...orderedValues, ..._.without(values, ...orderedValues)] : orderedValues;
+    return [...orderedValues, ..._.without(values, ...orderedValues)];
   }
 }

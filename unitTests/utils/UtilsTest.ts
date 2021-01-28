@@ -57,21 +57,14 @@ export function UtilsTest() {
       });
     });
 
-    describe('reorderValuesByKeys', () => {
+    it('reorderValuesByKeys returns the sorted values followed by the unsorted values in their original order', () => {
       const objectsToSort = [{ name: '4' }, { name: '3' }, { name: '2' }, { name: '1' }];
-
-      it('when appendRemainingValues is false, returns only the sorted values', () => {
-        expect(Utils.reorderValuesByKeys(objectsToSort, ['2', '3'], obj => obj.name, false)).toEqual([objectsToSort[2], objectsToSort[1]]);
-      });
-
-      it('when appendRemainingValues is true, returns the sorted values followed by the unsorted values in their original order', () => {
-        expect(Utils.reorderValuesByKeys(objectsToSort, ['2', '3'], obj => obj.name, true)).toEqual([
-          objectsToSort[2],
-          objectsToSort[1],
-          objectsToSort[0],
-          objectsToSort[3]
-        ]);
-      });
+      expect(Utils.reorderValuesByKeys(objectsToSort, ['2', '3'], obj => obj.name)).toEqual([
+        objectsToSort[2],
+        objectsToSort[1],
+        objectsToSort[0],
+        objectsToSort[3]
+      ]);
     });
   });
 }
