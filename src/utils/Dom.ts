@@ -4,6 +4,7 @@ import { Logger } from '../misc/Logger';
 import { IStringMap } from '../rest/GenericParam';
 import { JQueryUtils } from '../utils/JQueryutils';
 import { Utils } from '../utils/Utils';
+import { DeviceUtils } from './DeviceUtils';
 
 export interface IOffset {
   left: number;
@@ -122,6 +123,22 @@ export class Dom {
       arr[i] = <HTMLElement>nodeList.item(i);
     }
     return arr;
+  }
+
+  /**
+   * Focuses on an element.
+   * @param preserveScroll Whether or not to scroll the page to the focused element.
+   */
+  public focus(preserveScroll: boolean) {
+    if (DeviceUtils.getDeviceName() === 'IE') {
+      const { pageXOffset, pageYOffset } = window;
+      this.el.focus();
+      if (preserveScroll) {
+        window.scrollTo(pageXOffset, pageYOffset);
+      }
+    } else {
+      (this.el as any).focus({ preventScroll: preserveScroll });
+    }
   }
 
   /**
@@ -833,13 +850,17 @@ export class Win {
   public scrollY(): number {
     return this.supportPageOffset()
       ? this.win.pageYOffset
-      : this.isCSS1Compat() ? this.win.document.documentElement.scrollTop : this.win.document.body.scrollTop;
+      : this.isCSS1Compat()
+      ? this.win.document.documentElement.scrollTop
+      : this.win.document.body.scrollTop;
   }
 
   public scrollX(): number {
     return this.supportPageOffset()
       ? window.pageXOffset
-      : this.isCSS1Compat() ? document.documentElement.scrollLeft : document.body.scrollLeft;
+      : this.isCSS1Compat()
+      ? document.documentElement.scrollLeft
+      : document.body.scrollLeft;
   }
 
   private isCSS1Compat() {

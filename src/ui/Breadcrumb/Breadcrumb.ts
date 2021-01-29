@@ -162,10 +162,7 @@ export class Breadcrumb extends Component {
     const resultLists = this.searchInterface.getComponents<Component>('ResultList');
     const firstEnabledResultList = find(resultLists, resultList => resultList.disabled === false);
     if (firstEnabledResultList) {
-      // Problem with types definition of TypeScript 2.8
-      // default .focus() definition is incomplete.
-      // force cast to any
-      (firstEnabledResultList.element as any).focus({ preventScroll: true });
+      $$(firstEnabledResultList.element).focus(true);
     }
   }
 
