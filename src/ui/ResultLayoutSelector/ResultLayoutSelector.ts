@@ -64,8 +64,8 @@ export class ResultLayoutSelector extends Component {
 
   public static validLayouts: ValidLayout[] = ['list', 'card', 'table'];
 
-  public currentLayout: string;
-
+  public currentLayout: ValidLayout;
+  private preferredLayout: ValidLayout = null;
   private currentActiveLayouts: { [key: string]: IActiveLayouts };
 
   private resultLayoutSection: HTMLElement;
@@ -160,6 +160,49 @@ export class ResultLayoutSelector extends Component {
    * {@link ResultList.options.layout} value for this method to work.
    */
   public changeLayout(layout: ValidLayout) {
+    this.preferredLayout = null;
+    this.performLayoutChange(layout);
+  }
+
+  /**
+   * Gets the current layout (`list`, `card` or `table`).
+   * @returns {string} The current current layout.
+   */
+  public getCurrentLayout() {
+    return this.currentLayout;
+  }
+
+  public disableLayouts(layouts: ValidLayout[]) {
+    if (Utils.isNonEmptyArray(layouts)) {
+      each(layouts, layout => this.disableLayout(layout));
+
+      let remainingValidLayouts = difference(keys(this.currentActiveLayouts), layouts);
+      this.preferredLayout = this.currentLayout;
+
+      if (!isEmpty(remainingValidLayouts)) {
+        const newLayout = contains(remainingValidLayouts, this.currentLayout) ? this.currentLayout : remainingValidLayouts[0];
+        this.performLayoutChange(<ValidLayout>newLayout);
+      } else {
+        this.logger.error('Cannot disable the last valid layout ... Re-enabling the first one possible');
+        let firstPossibleValidLayout = <ValidLayout>keys(this.currentActiveLayouts)[0];
+        this.enableLayout(firstPossibleValidLayout);
+        this.setLayout(firstPossibleValidLayout);
+      }
+    }
+  }
+
+  public enableLayouts(layouts: ValidLayout[]) {
+    each(layouts, layout => this.enableLayout(layout));
+    const preferredLayoutAvailable = find(layouts, layout => layout === this.preferredLayout);
+    preferredLayoutAvailable && this.restorePreferredLayout();
+  }
+
+  private restorePreferredLayout() {
+    this.performLayoutChange(this.preferredLayout);
+    this.preferredLayout = null;
+  }
+
+  private performLayoutChange(layout: ValidLayout) {
     Assert.check(this.isLayoutDisplayedByButton(layout), 'Layout not available or invalid');
 
     if (layout !== this.currentLayout || this.getModelValue() === '') {
@@ -183,37 +226,6 @@ export class ResultLayoutSelector extends Component {
         }
       }
     }
-  }
-
-  /**
-   * Gets the current layout (`list`, `card` or `table`).
-   * @returns {string} The current current layout.
-   */
-  public getCurrentLayout() {
-    return this.currentLayout;
-  }
-
-  public disableLayouts(layouts: ValidLayout[]) {
-    if (Utils.isNonEmptyArray(layouts)) {
-      each(layouts, layout => this.disableLayout(layout));
-
-      let remainingValidLayouts = difference(keys(this.currentActiveLayouts), layouts);
-      if (!isEmpty(remainingValidLayouts)) {
-        const newLayout = contains(remainingValidLayouts, this.currentLayout) ? this.currentLayout : remainingValidLayouts[0];
-        this.changeLayout(<ValidLayout>newLayout);
-      } else {
-        this.logger.error('Cannot disable the last valid layout ... Re-enabling the first one possible');
-        let firstPossibleValidLayout = <ValidLayout>keys(this.currentActiveLayouts)[0];
-        this.enableLayout(firstPossibleValidLayout);
-        this.setLayout(firstPossibleValidLayout);
-      }
-    }
-  }
-
-  public enableLayouts(layouts: ValidLayout[]) {
-    each(layouts, layout => {
-      this.enableLayout(layout);
-    });
   }
 
   private disableLayout(layout: ValidLayout) {
