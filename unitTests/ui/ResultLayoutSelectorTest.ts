@@ -44,5 +44,25 @@ export function ResultLayoutSelectorTest() {
       buildResultLayoutSelector('card');
       expect(getLayoutButton('list').getAttribute('aria-pressed')).toEqual('false');
     });
+
+    it(`when the current layout is disabled and then renabled (e.g. due to resizing the screen smaller then larger),
+    the original layout is restored`, () => {
+      buildResultLayoutSelector('list');
+
+      test.cmp.disableLayouts(['list']);
+      test.cmp.enableLayouts(['list']);
+
+      expect(test.cmp.currentLayout).toBe('list');
+    });
+
+    it(`when the current layout is disabled, changed, and then renabled, the original layout is not restored`, () => {
+      buildResultLayoutSelector('list');
+
+      test.cmp.disableLayouts(['list']);
+      test.cmp.changeLayout('card');
+      test.cmp.enableLayouts(['list']);
+
+      expect(test.cmp.currentLayout).toBe('card');
+    });
   });
 }
