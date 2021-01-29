@@ -56,5 +56,15 @@ export function UtilsTest() {
         });
       });
     });
+
+    it('reorderValuesByKeys returns the sorted values followed by the unsorted values in their original order', () => {
+      const objectsToSort = [{ name: '4' }, { name: '3' }, { name: '2' }, { name: '1' }];
+      expect(Utils.reorderValuesByKeys(objectsToSort, ['2', '3'], obj => obj.name)).toEqual([
+        objectsToSort[2],
+        objectsToSort[1],
+        objectsToSort[0],
+        objectsToSort[3]
+      ]);
+    });
   });
 }
