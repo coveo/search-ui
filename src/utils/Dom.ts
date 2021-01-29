@@ -4,6 +4,7 @@ import { Logger } from '../misc/Logger';
 import { IStringMap } from '../rest/GenericParam';
 import { JQueryUtils } from '../utils/JQueryutils';
 import { Utils } from '../utils/Utils';
+import { DeviceUtils } from './DeviceUtils';
 
 export interface IOffset {
   left: number;
@@ -126,13 +127,17 @@ export class Dom {
 
   /**
    * Focuses on an element.
-   * @param preventScroll Whether or not to scroll the page to the focused element.
+   * @param preserveScroll Whether or not to scroll the page to the focused element.
    */
-  public focus(preventScroll: boolean) {
-    const { pageXOffset, pageYOffset } = window;
-    this.el.focus();
-    if (preventScroll) {
-      window.scrollTo(pageXOffset, pageYOffset);
+  public focus(preserveScroll: boolean) {
+    if (DeviceUtils.getDeviceName() === 'IE') {
+      const { pageXOffset, pageYOffset } = window;
+      this.el.focus();
+      if (preserveScroll) {
+        window.scrollTo(pageXOffset, pageYOffset);
+      }
+    } else {
+      (this.el as any).focus({ preventScroll: preserveScroll });
     }
   }
 
