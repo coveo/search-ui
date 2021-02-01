@@ -22,6 +22,8 @@ export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOp
   enableScrollToTop?: boolean;
   numberOfValues?: number;
   sortCriteria?: HierarchicalFacetSortCriteria;
+  customSort?: string;
+  customSortDelimitingCharacter?: string;
   injectionDepth?: number;
   enableMoreLess?: boolean;
   enableFacetSearch?: boolean;
@@ -94,6 +96,7 @@ export interface IDynamicHierarchicalFacetValues {
   resetValues(): void;
   clearPath(): void;
   createFromResponse(response: IFacetResponse): void;
+  reorderValues(order: string[][]): void;
   selectPath(path: string[]): void;
   render(): HTMLElement;
 

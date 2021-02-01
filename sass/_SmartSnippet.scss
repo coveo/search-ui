@@ -35,6 +35,7 @@
     @at-root .coveo-smart-snippet-content {
       transition: height ease-in-out 0.5s;
       overflow: hidden;
+      margin-top: 16px;
 
       @at-root .coveo-height-limiter-container-active {
         position: relative;
@@ -71,6 +72,7 @@
       }
 
       @at-root & {
+        margin-top: 5px;
         border: none;
         align-self: center;
         padding: 8px;
@@ -96,7 +98,7 @@
       }
     }
 
-    @at-root .coveo-smart-snippet-source {
+    @at-root a.CoveoResultLink.coveo-smart-snippet-source {
       margin-top: 24px;
 
       &-url {

@@ -185,6 +185,26 @@ export function DynamicFacetValuesTest() {
       expect(dynamicFacetValues.allFacetValues.length).toBe(0);
     });
 
+    it('should reorder values correctly', () => {
+      dynamicFacetValues.reorderValues([
+        'does not exist',
+        mockFacetValues[6].value,
+        mockFacetValues[3].value,
+        mockFacetValues[2].value,
+        'also does not exist'
+      ]);
+      expect(dynamicFacetValues.allValues).toEqual([
+        mockFacetValues[6].value,
+        mockFacetValues[3].value,
+        mockFacetValues[2].value,
+        mockFacetValues[0].value,
+        mockFacetValues[1].value,
+        mockFacetValues[4].value,
+        mockFacetValues[5].value,
+        mockFacetValues[7].value
+      ]);
+    });
+
     describe('when moreValuesAvailable is true', () => {
       beforeEach(() => {
         facet.moreValuesAvailable = true;

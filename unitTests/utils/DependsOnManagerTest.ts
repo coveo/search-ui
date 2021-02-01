@@ -62,8 +62,9 @@ export function DependsOnManagerTest() {
     }
 
     beforeEach(() => {
-      searchInterface = mockSearchInterface();
       root = document.createElement('div');
+      searchInterface = mockSearchInterface();
+      searchInterface.element = root;
       queryStateModel = new QueryStateModel(root);
       parentMock = createMock('@parent');
       dependentMock = createMock('@dependent', '@parent');
@@ -111,6 +112,124 @@ export function DependsOnManagerTest() {
 
         $$(root).trigger(QueryEvents.buildingQuery);
         expect(facet.hasClass('coveo-hidden')).toBe(true);
+      });
+    });
+
+    describe(`when two parent facets have no selected value (default conditions not fulfilled),
+    when triggering "building query"`, () => {
+      let dependent2Mock: IDependsOnManagerTestMock;
+      beforeEach(() => {
+        dependent2Mock = createMock('@dependent2', '@dependent');
+      });
+
+      it('should disable the first dependent facet', () => {
+        spyOn(dependentMock.facet.ref, 'disable');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(dependentMock.facet.ref.disable).toHaveBeenCalledTimes(1);
+      });
+
+      it('should disable the second dependent facet', () => {
+        spyOn(dependent2Mock.facet.ref, 'disable');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(dependent2Mock.facet.ref.disable).toHaveBeenCalledTimes(1);
+      });
+
+      it('should hide the first facet', () => {
+        const facet = $$(dependentMock.facet.ref.element);
+        facet.removeClass('coveo-hidden');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(facet.hasClass('coveo-hidden')).toBe(true);
+      });
+
+      it('should hide the second facet', () => {
+        const facet = $$(dependent2Mock.facet.ref.element);
+        facet.removeClass('coveo-hidden');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(facet.hasClass('coveo-hidden')).toBe(true);
+      });
+    });
+
+    describe(`when one parent facet has selected value(s) (default condition fulfilled)
+    and the second parent facet has no selected value (default conditions not fulfilled),
+    when triggering "building query"`, () => {
+      let dependent2Mock: IDependsOnManagerTestMock;
+      beforeEach(() => {
+        queryStateModel.registerNewAttribute(parentStateAttribute(), ['a value']);
+        dependent2Mock = createMock('@dependent2', '@dependent');
+      });
+
+      it('should enable the first dependent facet', () => {
+        spyOn(dependentMock.facet.ref, 'enable');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(dependentMock.facet.ref.enable).toHaveBeenCalledTimes(1);
+      });
+
+      it('should disable the second dependent facet', () => {
+        spyOn(dependent2Mock.facet.ref, 'disable');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(dependent2Mock.facet.ref.disable).toHaveBeenCalledTimes(1);
+      });
+
+      it('should show the first facet', () => {
+        const facet = $$(dependentMock.facet.ref.element);
+        facet.addClass('coveo-hidden');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(facet.hasClass('coveo-hidden')).toBe(false);
+      });
+
+      it('should hide the second facet', () => {
+        const facet = $$(dependent2Mock.facet.ref.element);
+        facet.removeClass('coveo-hidden');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(facet.hasClass('coveo-hidden')).toBe(true);
+      });
+    });
+
+    describe(`when two parent facets have selected value(s) (default conditions fulfilled),
+    when triggering "building query"`, () => {
+      let dependent2Mock: IDependsOnManagerTestMock;
+      beforeEach(() => {
+        queryStateModel.registerNewAttribute(parentStateAttribute(), ['a value']);
+        queryStateModel.registerNewAttribute(dependentStateAttribute(), ['a value']);
+        dependent2Mock = createMock('@dependent2', '@dependent');
+      });
+
+      it('should enable the first dependent facet', () => {
+        spyOn(dependentMock.facet.ref, 'enable');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(dependentMock.facet.ref.enable).toHaveBeenCalledTimes(1);
+      });
+
+      it('should enable the second dependent facet', () => {
+        spyOn(dependent2Mock.facet.ref, 'enable');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(dependent2Mock.facet.ref.enable).toHaveBeenCalledTimes(1);
+      });
+
+      it('should show the first facet', () => {
+        const facet = $$(dependentMock.facet.ref.element);
+        facet.addClass('coveo-hidden');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(facet.hasClass('coveo-hidden')).toBe(false);
+      });
+
+      it('should show the second facet', () => {
+        const facet = $$(dependent2Mock.facet.ref.element);
+        facet.addClass('coveo-hidden');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(facet.hasClass('coveo-hidden')).toBe(false);
       });
     });
 
