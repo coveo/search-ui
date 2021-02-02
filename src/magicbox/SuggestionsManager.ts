@@ -55,7 +55,11 @@ export class SuggestionsManager {
   }
 
   private get focusedSuggestion() {
-    return find(this.currentSuggestions, suggestion => $$(suggestion.dom).findClass(this.options.selectedClass) !== null);
+    return find(
+      this.currentSuggestions,
+      suggestion =>
+        $$(suggestion.dom).hasClass(this.options.selectedClass) || $$(suggestion.dom).findClass(this.options.selectedClass).length > 0
+    );
   }
 
   constructor(
