@@ -165,6 +165,16 @@ export function SuggestionsManagerTest() {
         expect(suggestion.getAttribute('aria-selected')).toBe('true');
       });
 
+      it('adds selected class and sets aria-selected to true when moving on element that contains a selectable element', () => {
+        const suggestionWrapper = $$(document.createElement('div'));
+        suggestionWrapper.el.appendChild(suggestion.el);
+        suggestionManager.handleMouseOver({
+          target: suggestionWrapper.el
+        });
+        expect(suggestion.hasClass(selectedClass)).toBe(true);
+        expect(suggestion.getAttribute('aria-selected')).toBe('true');
+      });
+
       it('adds selected class and sets aria-selected to true when moving on element that is inside a selectable element', () => {
         suggestionManager.handleMouseOver({
           target: elementInsideSuggestion.el
