@@ -55,7 +55,10 @@ export class SuggestionsManager {
   }
 
   private get focusedSuggestion() {
-    return find(this.currentSuggestions, suggestion => suggestion.dom.outerHTML.indexOf(this.options.selectedClass) != -1);
+    return find(this.currentSuggestions, suggestion => {
+      console.log(suggestion);
+      return suggestion.dom.outerHTML.match(/class=([^=]*)([^(\w\-_)])selected("|([^(\w|\-_)]).*")/) !== null;
+    });
   }
 
   constructor(

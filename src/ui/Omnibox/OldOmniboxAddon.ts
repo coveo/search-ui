@@ -131,8 +131,7 @@ export class OldOmniboxAddon {
           resolve([
             {
               dom: row.element,
-              index: row.zIndex,
-              text: row.element.innerText
+              index: row.zIndex
             }
           ]);
         });
@@ -143,8 +142,7 @@ export class OldOmniboxAddon {
               resolve([
                 {
                   dom: row.element,
-                  index: row.zIndex,
-                  text: row.element.innerText
+                  index: row.zIndex
                 }
               ]);
             } else {
