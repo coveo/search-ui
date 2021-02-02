@@ -55,10 +55,8 @@ export class SuggestionsManager {
   }
 
   private get focusedSuggestion() {
-    return find(this.currentSuggestions, suggestion => {
-      console.log(suggestion);
-      return suggestion.dom.outerHTML.match(/class=([^=]*)([^(\w\-_)])selected("|([^(\w|\-_)]).*")/) !== null;
-    });
+    const selectedRegex = new RegExp(`class=([^=]*)([^(\\w\\-_)])${this.options.selectedClass}("|([^(\\w|\\-_)]).*")`);
+    return find(this.currentSuggestions, suggestion => suggestion.dom.outerHTML.match(selectedRegex) !== null);
   }
 
   constructor(
