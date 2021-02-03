@@ -42,11 +42,11 @@
 
         input[type='radio']:checked + .coveo-radio-input-label {
           &::before {
-            border-color: $color-orange;
+            border-color: $color-primary;
           }
 
           &::after {
-            background-color: $color-orange;
+            background-color: $color-primary;
           }
         }
       }
@@ -75,7 +75,7 @@
         font-size: 1em;
 
         &:focus {
-          border-color: $color-active-orange;
+          border-color: $color-primary;
         }
       }
     }
@@ -96,12 +96,12 @@
     }
 
     #{$modal}-send-button {
-      background-color: $color-orange;
-      color: white;
+      background-color: $color-primary;
+      color: $color-on-primary;
       border: none;
       &:hover,
       &:focus {
-        background-color: $color-active-orange;
+        background-color: $color-primary-variant;
       }
     }
 
