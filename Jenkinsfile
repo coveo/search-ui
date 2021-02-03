@@ -11,7 +11,7 @@ node('linux && docker') {
       }
 
       stage('Build') {
-        sh 'yarn run injectTag'
+        sh 'yarn run injectVersion'
         sh 'yarn run build'
 
         if (tag) {
