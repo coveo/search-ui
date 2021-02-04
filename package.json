@@ -15,7 +15,7 @@
     "minimize": "gulp minimize",
     "doc": "gulp doc",
     "docsitemap": "gulp docsitemap",
-    "injectTag": "gulp injectTag",
+    "injectVersion": "gulp injectVersion",
     "heroku-postbuild": "npm run build",
     "start": "node index.js",
     "zipForGitReleases": "gulp zipForGitReleases",
