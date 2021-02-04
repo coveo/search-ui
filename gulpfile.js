@@ -14,7 +14,7 @@ const { dev, devTest, devAccessibilityTest } = require('./gulpTasks/dev');
 const { zipForGitReleases, zipForVeracode } = require('./gulpTasks/zip');
 const { coverage, uploadCoverage, unitTests, accessibilityTests } = require('./gulpTasks/test');
 const { docsitemap } = require('./gulpTasks/docsitemap');
-const { injectTag } = require('./gulpTasks/injectTag');
+const { injectVersion } = require('./gulpTasks/injectVersion');
 
 const src = series(compile, definitions);
 
@@ -36,7 +36,7 @@ exports.coverage = coverage;
 exports.uploadCoverage = uploadCoverage;
 exports.docsitemap = docsitemap;
 exports.doc = doc;
-exports.injectTag = injectTag;
+exports.injectVersion = injectVersion;
 exports.testString = testString;
 exports.unitTests = unitTests;
 exports.accessibilityTests = accessibilityTests;
