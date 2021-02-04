@@ -24,7 +24,7 @@ export class Playground {
   }
 
   public getTitle(): HTMLElement {
-    return $$(this.body).find('h1');
+    return $$(this.body).find('.tsd-page-title h1');
   }
 
   public getConfiguration(): IComponentPlaygroundConfiguration {
