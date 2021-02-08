@@ -46,28 +46,31 @@ ul.externalbox.with-sub ul {
 }
 
 body {
-  font-family: 'Lato', sans-serif !important;
+  font-family: 'canada-type-gibson', sans-serif !important;
   background-color: #ffffff;
-  font-size: 14px;
-  color: #373737;
+  font-size: 18px;
+  color: #282829;
 }
 
 h1 {
-  font-size: 32px;
+  font-size: 48px;
   margin-bottom: 30px;
   border-color: #d8d8d8 !important;
+  font-weight: 100;
 }
 
 h2 {
-  font-size: 26px;
+  font-size: 32px;
   margin-bottom: 10px;
   border-color: #d8d8d8 !important;
+  font-weight: 100;
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 24px;
   margin-bottom: 10px;
   border-color: #d8d8d8 !important;
+  font-weight: 100;
 }
 
 /* Ensures the ordered lists in the home page display properly display numbers. */
@@ -76,7 +79,7 @@ h3 {
 }
 
 code {
-  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: PTMono-Regular, monospace;
   padding: 1px 5px 1px 5px;
   background-color: #f1f3f4;
   border-radius: 4px;
@@ -84,7 +87,7 @@ code {
 }
 
 pre {
-  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: PTMono-Regular, monospace;
   padding: 10px;
   background-color: #f1f3f4;
   border-radius: 4px;
@@ -128,7 +131,7 @@ div.container.container-main {
 #filter-box-header {
   background-color: #f7f8f9;
   padding: 10px 0 10px 20px;
-  color: #3b73af;
+  color: #1372ec;
 }
 
 #filter-box-footer {
@@ -147,7 +150,7 @@ div.container.container-main {
 }
 
 .ctr-box-filter label:hover {
-  color: #f58020;
+  color: #1a50ad;
 }
 
 input[type='checkbox']:checked + .tsd-widget:before {
@@ -165,7 +168,7 @@ input[type='checkbox'] + .tsd-widget:before {
 /* ----- Globals link ----- */
 #globals-toc-link {
   padding-bottom: 10px;
-  color: #373737;
+  color: #282829;
 }
 
 /* ----- TOC content ----- */
@@ -181,7 +184,7 @@ nav.tsd-navigation.secondary.menu-sticky {
 }
 
 nav.tsd-navigation a {
-  color: #3b73af;
+  color: #1372ec;
 }
 
 nav.tsd-navigation.secondary.menu-sticky li.current {
@@ -189,7 +192,7 @@ nav.tsd-navigation.secondary.menu-sticky li.current {
 }
 
 ul.tsd-index-list a {
-  color: #3b73af !important;
+  color: #1372ec !important;
 }
 
 .tsd-navigation a {
@@ -197,7 +200,7 @@ ul.tsd-index-list a {
 }
 
 .tsd-navigation a:hover {
-  color: #f58020 !important;
+  color: #1a50ad !important;
   text-decoration: none;
 }
 
@@ -221,7 +224,7 @@ ul.tsd-index-list a {
 
 .tsd-breadcrumb,
 .tsd-breadcrumb a {
-  color: #3b73af;
+  color: #1372ec;
   font-size: 14px;
   padding: 10px 0 10px 0;
 }
@@ -281,7 +284,7 @@ section.tsd-panel.tsd-comment {
 
 /* Colors link text with the correct blue inside item description */
 .tsd-panel a {
-  color: #3b73af;
+  color: #1372ec;
 }
 
 div.tsd-panel > h1,
@@ -307,7 +310,7 @@ div.tsd-panel > h3 {
 }
 
 .tsd-panel.tsd-member h3 {
-  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: PTMono-Regular, monospace;
   padding: 1px 5px 1px 5px;
   margin: 0 0 10px 0;
   background-color: #f1f3f4;

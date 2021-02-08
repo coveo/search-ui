@@ -6403,22 +6403,6 @@ exports.analyticsActionCauseList = {
         type: 'smartSnippet'
     },
     /**
-     * The custom event logged when the source of a [SmartSnippet]{@link SmartSnippet} is opened.
-     *
-     * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
-     *
-     * ```javascript
-     * {
-     *  actionCause: "openSmartSnippetSource",
-     *  actionType: "smartSnippet"
-     * }
-     * ```
-     */
-    openSmartSnippetSource: {
-        name: 'openSmartSnippetSource',
-        type: 'smartSnippet'
-    },
-    /**
      * The custom event logged when the "Explain why" button in a [SmartSnippet]{@link SmartSnippet} is pressed.
      *
      * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
@@ -6465,6 +6449,38 @@ exports.analyticsActionCauseList = {
     sendSmartSnippetReason: {
         name: 'sendSmartSnippetReason',
         type: 'smartSnippet'
+    },
+    /**
+     * The custom event logged when a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is expanded.
+     *
+     * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+     *
+     * ```javascript
+     * {
+     *  actionCause: "expandSmartSnippetSuggestion",
+     *  actionType: "smartSnippetSuggestions"
+     * }
+     * ```
+     */
+    expandSmartSnippetSuggestion: {
+        name: 'expandSmartSnippetSuggestion',
+        type: 'smartSnippetSuggestions'
+    },
+    /**
+     * The custom event logged when a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is collapsed.
+     *
+     * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+     *
+     * ```javascript
+     * {
+     *  actionCause: "collapseSmartSnippetSuggestion",
+     *  actionType: "smartSnippetSuggestions"
+     * }
+     * ```
+     */
+    collapseSmartSnippetSuggestion: {
+        name: 'collapseSmartSnippetSuggestion',
+        type: 'smartSnippetSuggestions'
     }
 };
 
@@ -15144,8 +15160,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10082.8',
-    product: '2.10082.8',
+    lib: '2.10083.1',
+    product: '2.10083.1',
     supportedApiVersion: 2
 };
 
