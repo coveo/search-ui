@@ -2,6 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { ExportToExcel, setCreateAnchor } from '../../src/ui/ExportToExcel/ExportToExcel';
 import { IExportToExcelOptions } from '../../src/ui/ExportToExcel/ExportToExcel';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { Utils } from '../../src/Core';
 
 export function ExportToExcelTest() {
   describe('ExportToExcel', function () {
@@ -77,6 +78,36 @@ export function ExportToExcelTest() {
 
         expect(a.click).toHaveBeenCalledTimes(1);
         done();
+      });
+
+      describe('on IE11', () => {
+        let createAnchorSpy: jasmine.Spy;
+        let msSaveOrOpenBlobSpy: jasmine.Spy;
+        beforeEach(async done => {
+          setCreateAnchor((createAnchorSpy = jasmine.createSpy('createAnchor')));
+          window.navigator.msSaveOrOpenBlob = msSaveOrOpenBlobSpy = jasmine.createSpy('msSaveOrOpenBlob');
+
+          test.cmp.download();
+          await Utils.resolveAfter(0);
+
+          done();
+        });
+
+        afterEach(() => {
+          delete window.navigator.msSaveOrOpenBlob;
+        });
+
+        it("doesn't create an anchor element", () => {
+          expect(createAnchorSpy).not.toHaveBeenCalled();
+        });
+
+        it('calls msSaveOrOpenBlob', () => {
+          expect(msSaveOrOpenBlobSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('downloads the right blob', () => {
+          expect(URL.createObjectURL(msSaveOrOpenBlobSpy.calls.mostRecent().args[0])).toContain('blob:http://localhost');
+        });
       });
 
       it('revokes the blob object url', async done => {
