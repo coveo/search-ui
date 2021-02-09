@@ -131,11 +131,18 @@ export class ExportToExcel extends Component {
 
   private downloadExcelFile(content: ArrayBuffer) {
     const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const fileName = this.buildExcelFileName();
+
+    if (window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, fileName);
+      return;
+    }
+
     const url = URL.createObjectURL(blob);
 
     const a = createAnchor();
     a.href = url;
-    a.download = this.buildExcelFileName();
+    a.download = fileName;
     a.click();
 
     URL.revokeObjectURL(url);
