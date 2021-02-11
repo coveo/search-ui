@@ -55,7 +55,7 @@ export function AnalyticsInformationTest() {
       const visitorId = 'def';
 
       beforeEach(() => {
-        localStorage.setItem('visitorId', JSON.stringify(visitorId));
+        localStorage.setItem('visitorId', visitorId);
       });
 
       it('has a clientId', () => {

@@ -11,12 +11,11 @@ export class AnalyticsInformation {
     // Yes, its backwards: We are using a key named "visitorId" to fetched something for "clientId"
     // This is done to synchronize with https://github.com/coveo/coveo.analytics.js
     // This is intentional.
-    const ls = new LocalStorageUtils<string>(this.visitorIdKey, false);
-    return ls.load() || null;
+    return localStorage.getItem(this.visitorIdKey) || null;
   }
 
   public set clientId(id: string) {
-    new LocalStorageUtils(this.visitorIdKey, false).save(id);
+    localStorage.setItem(this.visitorIdKey, id);
   }
 
   public get lastPageId() {
@@ -43,7 +42,7 @@ export class AnalyticsInformation {
   }
 
   private clearLocalStorage() {
-    new LocalStorageUtils(this.visitorIdKey, false).remove();
+    localStorage.removeItem(this.visitorIdKey);
     new LocalStorageUtils(this.clientIdKey).remove();
   }
 
