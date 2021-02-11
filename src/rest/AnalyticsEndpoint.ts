@@ -173,7 +173,9 @@ export class AnalyticsEndpoint {
     const urlNormalized = UrlUtils.normalizeAsParts({
       paths: [this.options.serviceUrl, versionToCall, '/analytics/', path],
       query: {
-        org: this.organization
+        org: this.organization,
+        visitor: new AnalyticsInformation().visitorId,
+        prioritizeVisitorParameter: true
       }
     });
     return urlNormalized;

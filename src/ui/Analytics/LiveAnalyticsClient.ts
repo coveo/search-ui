@@ -277,7 +277,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
       originContext: this.originContext,
       customData: _.keys(metaObject).length > 0 ? metaObject : undefined,
       userAgent: navigator.userAgent,
-      clientId: new AnalyticsInformation().clientId
+      clientId: new AnalyticsInformation().visitorId
     };
   }
 
