@@ -7,22 +7,13 @@ export class AnalyticsInformation {
   private readonly visitorIdKey = 'visitorId';
   private readonly clientIdKey = 'clientId';
 
-  public get visitorId() {
-    const ls = new LocalStorageUtils<string>(this.visitorIdKey);
-    return ls.load() || Cookie.get(this.visitorIdKey) || null;
-  }
-
-  public set visitorId(id: string) {
-    new LocalStorageUtils(this.visitorIdKey).save(id);
-  }
-
   public get clientId() {
-    const ls = new LocalStorageUtils<string>(this.clientIdKey);
-    return ls.load() || Cookie.get(this.clientIdKey) || null;
+    const ls = new LocalStorageUtils<string>(this.visitorIdKey, false);
+    return ls.load() || null;
   }
 
   public set clientId(id: string) {
-    new LocalStorageUtils(this.clientIdKey).save(id);
+    new LocalStorageUtils(this.visitorIdKey, false).save(id);
   }
 
   public get lastPageId() {
@@ -49,7 +40,7 @@ export class AnalyticsInformation {
   }
 
   private clearLocalStorage() {
-    new LocalStorageUtils(this.visitorIdKey).remove();
+    new LocalStorageUtils(this.visitorIdKey, false).remove();
     new LocalStorageUtils(this.clientIdKey).remove();
   }
 

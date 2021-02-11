@@ -41,7 +41,6 @@ export function SearchEndpointTest() {
 
     function fakeAnalyticsInformation() {
       const info = new AnalyticsInformation();
-      info.visitorId = visitorId;
       info.clientId = clientId;
     }
 

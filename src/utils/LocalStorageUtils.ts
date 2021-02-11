@@ -9,7 +9,7 @@ try {
 }
 
 export class LocalStorageUtils<T> {
-  constructor(public id: string) {}
+  constructor(public id: string, private usePrefix = true) {}
 
   public save(data: T) {
     try {
@@ -46,6 +46,6 @@ export class LocalStorageUtils<T> {
   }
 
   private getLocalStorageKey() {
-    return 'coveo-' + this.id;
+    return `${this.usePrefix ? 'coveo-' : ''}${this.id}`;
   }
 }
