@@ -45,10 +45,6 @@ export function AnalyticsInformationTest() {
         Cookie.set('visitorId', visitorId);
       });
 
-      it('has a clientId', () => {
-        expect(analyticsInformation.clientId).toBe(visitorId);
-      });
-
       it('calling #clear removes the cookies', () => {
         analyticsInformation.clear();
         expect(analyticsInformation.clientId).toBeNull();

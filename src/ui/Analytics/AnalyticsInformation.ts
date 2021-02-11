@@ -8,6 +8,9 @@ export class AnalyticsInformation {
   private readonly clientIdKey = 'clientId';
 
   public get clientId() {
+    // Yes, its backwards: We are using a key named "visitorId" to fetched something for "clientId"
+    // This is done to synchronize with https://github.com/coveo/coveo.analytics.js
+    // This is intentional.
     const ls = new LocalStorageUtils<string>(this.visitorIdKey, false);
     return ls.load() || null;
   }
