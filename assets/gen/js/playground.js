@@ -3882,14 +3882,6 @@ exports.PreconditionFailedException = PreconditionFailedException;
 
 "use strict";
 
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = __webpack_require__(0);
 var isCoveoFieldRegex = /^@[a-zA-Z0-9_\.]+$/;
@@ -4311,19 +4303,6 @@ var Utils = /** @class */ (function () {
     };
     Utils.resolveAfter = function (ms, returns) {
         return new Promise(function (resolve) { return setTimeout(function () { return (returns !== undefined ? resolve(returns) : resolve()); }, ms); });
-    };
-    Utils.reorderValuesByKeys = function (values, order, getKey) {
-        var valuesMap = values.reduce(function (map, value) {
-            return (__assign({}, map, (_a = {}, _a[getKey(value)] = value, _a)));
-            var _a;
-        }, {});
-        var orderedValues = [];
-        order.forEach(function (keyToAppend) {
-            if (valuesMap[keyToAppend]) {
-                orderedValues.push(valuesMap[keyToAppend]);
-            }
-        });
-        return orderedValues.concat(_.without.apply(_, [values].concat(orderedValues)));
     };
     return Utils;
 }());
@@ -6424,6 +6403,22 @@ exports.analyticsActionCauseList = {
         type: 'smartSnippet'
     },
     /**
+     * The custom event logged when the source of a [SmartSnippet]{@link SmartSnippet} is opened.
+     *
+     * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
+     *
+     * ```javascript
+     * {
+     *  actionCause: "openSmartSnippetSource",
+     *  actionType: "smartSnippet"
+     * }
+     * ```
+     */
+    openSmartSnippetSource: {
+        name: 'openSmartSnippetSource',
+        type: 'smartSnippet'
+    },
+    /**
      * The custom event logged when the "Explain why" button in a [SmartSnippet]{@link SmartSnippet} is pressed.
      *
      * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
@@ -6470,38 +6465,6 @@ exports.analyticsActionCauseList = {
     sendSmartSnippetReason: {
         name: 'sendSmartSnippetReason',
         type: 'smartSnippet'
-    },
-    /**
-     * The custom event logged when a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is expanded.
-     *
-     * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
-     *
-     * ```javascript
-     * {
-     *  actionCause: "expandSmartSnippetSuggestion",
-     *  actionType: "smartSnippetSuggestions"
-     * }
-     * ```
-     */
-    expandSmartSnippetSuggestion: {
-        name: 'expandSmartSnippetSuggestion',
-        type: 'smartSnippetSuggestions'
-    },
-    /**
-     * The custom event logged when a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is collapsed.
-     *
-     * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
-     *
-     * ```javascript
-     * {
-     *  actionCause: "collapseSmartSnippetSuggestion",
-     *  actionType: "smartSnippetSuggestions"
-     * }
-     * ```
-     */
-    collapseSmartSnippetSuggestion: {
-        name: 'collapseSmartSnippetSuggestion',
-        type: 'smartSnippetSuggestions'
     }
 };
 
@@ -11392,11 +11355,7 @@ function includeVisitorId() {
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
-            var visitorId = new AnalyticsInformation_1.AnalyticsInformation().visitorId;
-            if (visitorId == null) {
-                visitorId = '';
-            }
-            getEndpointCallParameters(nbParams, args).requestData.visitorId = visitorId;
+            getEndpointCallParameters(nbParams, args).requestData.visitorId = new AnalyticsInformation_1.AnalyticsInformation().clientId;
             return originalMethod.apply(this, args);
         };
         return descriptor;
@@ -13930,24 +13889,15 @@ var AnalyticsInformation = /** @class */ (function () {
         this.visitorIdKey = 'visitorId';
         this.clientIdKey = 'clientId';
     }
-    Object.defineProperty(AnalyticsInformation.prototype, "visitorId", {
-        get: function () {
-            var ls = new Core_1.LocalStorageUtils(this.visitorIdKey);
-            return ls.load() || CookieUtils_1.Cookie.get(this.visitorIdKey) || null;
-        },
-        set: function (id) {
-            new Core_1.LocalStorageUtils(this.visitorIdKey).save(id);
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(AnalyticsInformation.prototype, "clientId", {
         get: function () {
-            var ls = new Core_1.LocalStorageUtils(this.clientIdKey);
-            return ls.load() || CookieUtils_1.Cookie.get(this.clientIdKey) || null;
+            // Yes, its backwards: We are using a key named "visitorId" to fetched something for "clientId"
+            // This is done to synchronize with https://github.com/coveo/coveo.analytics.js
+            // This is intentional.
+            return localStorage.getItem(this.visitorIdKey) || null;
         },
         set: function (id) {
-            new Core_1.LocalStorageUtils(this.clientIdKey).save(id);
+            localStorage.setItem(this.visitorIdKey, id);
         },
         enumerable: true,
         configurable: true
@@ -13984,7 +13934,7 @@ var AnalyticsInformation = /** @class */ (function () {
         this.clearCookies();
     };
     AnalyticsInformation.prototype.clearLocalStorage = function () {
-        new Core_1.LocalStorageUtils(this.visitorIdKey).remove();
+        localStorage.removeItem(this.visitorIdKey);
         new Core_1.LocalStorageUtils(this.clientIdKey).remove();
     };
     AnalyticsInformation.prototype.clearCookies = function () {
@@ -15181,8 +15131,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10083.2',
-    product: '2.10083.2',
+    lib: '2.10082.9',
+    product: '2.10082.9',
     supportedApiVersion: 2
 };
 
@@ -18392,9 +18342,7 @@ var AnalyticsEndpoint = /** @class */ (function () {
         var urlNormalized = UrlUtils_1.UrlUtils.normalizeAsParts({
             paths: [this.options.serviceUrl, versionToCall, '/analytics/', path],
             query: {
-                org: this.organization,
-                visitor: new AnalyticsInformation_1.AnalyticsInformation().visitorId,
-                prioritizeVisitorParameter: true
+                org: this.organization
             }
         });
         return urlNormalized;
@@ -18416,20 +18364,14 @@ var AnalyticsEndpoint = /** @class */ (function () {
     };
     AnalyticsEndpoint.prototype.handleAnalyticsEventResponse = function (response) {
         var visitId;
-        var visitorId;
         if (response['visitId']) {
             visitId = response['visitId'];
-            visitorId = response['visitorId'];
         }
         else if (response['searchEventResponses']) {
             visitId = underscore_1.first(response['searchEventResponses']).visitId;
-            visitorId = underscore_1.first(response['searchEventResponses']).visitorId;
         }
         if (visitId) {
             this.visitId = visitId;
-        }
-        if (visitorId) {
-            new AnalyticsInformation_1.AnalyticsInformation().visitorId = visitorId;
         }
         return response;
     };
