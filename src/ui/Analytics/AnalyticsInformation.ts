@@ -7,22 +7,15 @@ export class AnalyticsInformation {
   private readonly visitorIdKey = 'visitorId';
   private readonly clientIdKey = 'clientId';
 
-  public get visitorId() {
-    const ls = new LocalStorageUtils<string>(this.visitorIdKey);
-    return ls.load() || Cookie.get(this.visitorIdKey) || null;
-  }
-
-  public set visitorId(id: string) {
-    new LocalStorageUtils(this.visitorIdKey).save(id);
-  }
-
   public get clientId() {
-    const ls = new LocalStorageUtils<string>(this.clientIdKey);
-    return ls.load() || Cookie.get(this.clientIdKey) || null;
+    // Yes, its backwards: We are using a key named "visitorId" to fetched something for "clientId"
+    // This is done to synchronize with https://github.com/coveo/coveo.analytics.js
+    // This is intentional.
+    return localStorage.getItem(this.visitorIdKey) || null;
   }
 
   public set clientId(id: string) {
-    new LocalStorageUtils(this.clientIdKey).save(id);
+    localStorage.setItem(this.visitorIdKey, id);
   }
 
   public get lastPageId() {
@@ -49,7 +42,7 @@ export class AnalyticsInformation {
   }
 
   private clearLocalStorage() {
-    new LocalStorageUtils(this.visitorIdKey).remove();
+    localStorage.removeItem(this.visitorIdKey);
     new LocalStorageUtils(this.clientIdKey).remove();
   }
 

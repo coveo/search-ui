@@ -1427,12 +1427,7 @@ function includeVisitorId() {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      let visitorId = new AnalyticsInformation().visitorId;
-      if (visitorId == null) {
-        visitorId = '';
-      }
-
-      getEndpointCallParameters(nbParams, args).requestData.visitorId = visitorId;
+      getEndpointCallParameters(nbParams, args).requestData.visitorId = new AnalyticsInformation().clientId;
       return originalMethod.apply(this, args);
     };
 
