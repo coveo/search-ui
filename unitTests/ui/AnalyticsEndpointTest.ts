@@ -4,7 +4,6 @@ import { IAPIAnalyticsSearchEventsResponse } from '../../src/rest/APIAnalyticsSe
 import { IErrorResponse } from '../../src/rest/EndpointCaller';
 import { FakeResults } from '../Fake';
 import { SearchEndpoint } from '../../src/Core';
-import { AnalyticsInformation } from '../../src/ui/Analytics/AnalyticsInformation';
 
 export function AnalyticsEndpointTest() {
   function buildUrl(endpoint: AnalyticsEndpoint, path: string) {
@@ -109,29 +108,6 @@ export function AnalyticsEndpointTest() {
       endpoint.sendSearchEvents([fakeSearchEvent]);
 
       expect(jasmine.Ajax.requests.mostRecent().url.indexOf('org=organization') != -1).toBe(true);
-    });
-
-    it('sends visitor as parameter when sending a search event and there is a cookie value', () => {
-      const fakeSearchEvent = FakeResults.createFakeSearchEvent();
-      new AnalyticsInformation().visitorId = 'omNomNomNom';
-      endpoint.sendSearchEvents([fakeSearchEvent]);
-
-      expect(jasmine.Ajax.requests.mostRecent().url.indexOf('visitor=omNomNomNom') != -1).toBe(true);
-    });
-
-    it('does not send visitor as parameter when sending a search event and there is no cookie value', () => {
-      const fakeSearchEvent = FakeResults.createFakeSearchEvent();
-      new AnalyticsInformation().clear();
-      endpoint.sendSearchEvents([fakeSearchEvent]);
-
-      expect(jasmine.Ajax.requests.mostRecent().url.indexOf('visitor=') == -1).toBe(true);
-    });
-
-    it('sends prioritizes the visitorId query string parameter over the http-cookie when sending a search event', () => {
-      let fakeSearchEvent = FakeResults.createFakeSearchEvent();
-      endpoint.sendSearchEvents([fakeSearchEvent]);
-
-      expect(jasmine.Ajax.requests.mostRecent().url.indexOf('prioritizeVisitorParameter=true') != -1).toBe(true);
     });
 
     it('allow to getTopQueries', done => {
