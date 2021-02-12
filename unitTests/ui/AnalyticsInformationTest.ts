@@ -25,10 +25,6 @@ export function AnalyticsInformationTest() {
     });
 
     describe('without localstorage', () => {
-      it("doesn't have a visitorId", () => {
-        expect(analyticsInformation.visitorId).toBeNull();
-      });
-
       it("doesn't have a clientId", () => {
         expect(analyticsInformation.clientId).toBeNull();
       });
@@ -44,43 +40,26 @@ export function AnalyticsInformationTest() {
 
     describe('with legacy cookies, but without localstorage', () => {
       const visitorId = 'def';
-      const clientId = 'abc';
 
       beforeEach(() => {
         Cookie.set('visitorId', visitorId);
-        Cookie.set('clientId', clientId);
-      });
-
-      it('has a visitorId', () => {
-        expect(analyticsInformation.visitorId).toBe(visitorId);
-      });
-
-      it('has a clientId', () => {
-        expect(analyticsInformation.clientId).toBe(clientId);
       });
 
       it('calling #clear removes the cookies', () => {
         analyticsInformation.clear();
-        expect(analyticsInformation.visitorId).toBeNull();
         expect(analyticsInformation.clientId).toBeNull();
       });
     });
 
     describe('with localstorage', () => {
       const visitorId = 'def';
-      const clientId = 'abc';
 
       beforeEach(() => {
-        localStorage.setItem('coveo-visitorId', JSON.stringify(visitorId));
-        localStorage.setItem('coveo-clientId', JSON.stringify(clientId));
-      });
-
-      it('has a visitorId', () => {
-        expect(analyticsInformation.visitorId).toEqual(visitorId);
+        localStorage.setItem('visitorId', visitorId);
       });
 
       it('has a clientId', () => {
-        expect(analyticsInformation.clientId).toEqual(clientId);
+        expect(analyticsInformation.clientId).toEqual(visitorId);
         4;
       });
 

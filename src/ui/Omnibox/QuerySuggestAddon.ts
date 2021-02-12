@@ -165,7 +165,7 @@ export class QuerySuggestAddon implements IQuerySuggestAddon {
   }
 
   private get visitorId() {
-    return new AnalyticsInformation().visitorId;
+    return new AnalyticsInformation().clientId;
   }
 
   private get isGuestUser() {

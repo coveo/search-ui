@@ -28,7 +28,6 @@ interface ILastSentAnalytics {
 
 export function SearchEndpointTest() {
   describe('SearchEndpoint', () => {
-    const visitorId = 'the imposter';
     const clientId = 'some random uuid';
     const pageId = 'some pretty home page';
 
@@ -41,7 +40,6 @@ export function SearchEndpointTest() {
 
     function fakeAnalyticsInformation() {
       const info = new AnalyticsInformation();
-      info.visitorId = visitorId;
       info.clientId = clientId;
     }
 
@@ -51,7 +49,7 @@ export function SearchEndpointTest() {
     }
 
     const expectedAnalytics: ILastSentAnalytics = {
-      visitorId,
+      visitorId: clientId,
       clientId,
       documentReferrer: document.referrer,
       documentLocation: document.location.href,

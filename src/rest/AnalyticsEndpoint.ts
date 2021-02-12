@@ -173,9 +173,7 @@ export class AnalyticsEndpoint {
     const urlNormalized = UrlUtils.normalizeAsParts({
       paths: [this.options.serviceUrl, versionToCall, '/analytics/', path],
       query: {
-        org: this.organization,
-        visitor: new AnalyticsInformation().visitorId,
-        prioritizeVisitorParameter: true
+        org: this.organization
       }
     });
     return urlNormalized;
@@ -199,21 +197,15 @@ export class AnalyticsEndpoint {
 
   private handleAnalyticsEventResponse(response: IAPIAnalyticsEventResponse | IAPIAnalyticsSearchEventsResponse) {
     let visitId: string;
-    let visitorId: string;
 
     if (response['visitId']) {
       visitId = response['visitId'];
-      visitorId = response['visitorId'];
     } else if (response['searchEventResponses']) {
       visitId = (<IAPIAnalyticsEventResponse>first(response['searchEventResponses'])).visitId;
-      visitorId = (<IAPIAnalyticsEventResponse>first(response['searchEventResponses'])).visitorId;
     }
 
     if (visitId) {
       this.visitId = visitId;
-    }
-    if (visitorId) {
-      new AnalyticsInformation().visitorId = visitorId;
     }
 
     return response;
