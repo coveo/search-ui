@@ -6,102 +6,115 @@
 	<title>PromotedResultsBadge | Coveo JavaScript Search Framework - Reference Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'/>
+	<link rel="stylesheet" href="https://use.typekit.net/bqa0xml.css"></link>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.8521/css/CoveoFullSearch.min.css" />
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.6063/css/CoveoFullSearch.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.8521/js/CoveoJsSearch.min.js"></script>
-	<script src="https://static.cloud.coveo.com/searchui/v2.8521/js/templates/templates.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.6063/js/CoveoJsSearch.Lazy.min.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
-	<link href="https://s3.amazonaws.com/coveostatic/Developers.png" rel="shortcut icon" type="image/png">
-	<link href="https://s3.amazonaws.com/coveostatic/Developers.ico" rel="shortcut icon" type="image/x-icon">
-	<style>
-        .magic-box {
-            border: 1px solid #9e9e9e;
-        }
-    </style>
+	<link href="../assets/favicon.ico" rel="shortcut icon" type="image/x-icon">
 </head>
 <body>
-<header>
+<header class="no-sticky">
 	<div class="content">
-		<div class="logo">
-			<a class="logo-link" href="https://connect.coveo.com/s/"></a>
-			<div class="logo-img-wrap">
-				<div class="logo-imgbg"></div>
+		<div class="main-header">
+			<div class="logo">
+				<a class="logo-img-wrap" href="https://coveo.com">
+					<div class="logo-imgbg">
+						<svg width="124" height="32" viewBox="0 0 409 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g clip-path="url(#clip0)">
+								<path d="M164.7 36.2L159.8 41.4C156.4 38.1 152.8 36.2 147.9 36.2C139.4 36.2 133 42.9 133 52.3C133 61.7 139.4 68.4 147.9 68.4C152.5 68.4 156.9 66.5 160.1 63.2L164.7 68.4C160.7 73 155 75.4 148.3 75.4C134.3 75.4 125.2 65.4 125.2 52.3C125.2 38.9 134.3 28.9 148.3 28.9C154.6 28.8 160.6 31.5 164.7 36.2Z" fill="white"/>
+									<path d="M219.4 52.3C219.4 65.4 209.4 75.4 196 75.4C182.3 75.4 172.3 65.4 172.3 52.3C172.3 38.9 182.3 28.9 196 28.9C209.4 28.9 219.4 38.9 219.4 52.3ZM180.2 52.3C180.2 61.7 186.9 68.4 196 68.4C204.8 68.4 211.5 61.7 211.5 52.3C211.5 42.9 204.8 36.2 196 36.2C186.9 36.2 180.2 42.9 180.2 52.3Z" fill="white"/>
+										<path d="M252.3 74.5H243.1L224.3 30.1H232.8L247.7 66.9L262.6 30.1H270.8L252.3 74.5Z" fill="white"/>
+											<path d="M318.8 52V55H283.8C284.7 64.1 291.1 68.7 298.7 68.7C303.8 68.8 308.8 66.9 312.7 63.5L316.7 68.7C311.2 73.9 305.1 75.5 298.4 75.5C285 75.5 275.6 66.4 275.6 52.4C275.6 38.7 285 29 297.8 29C310 28.9 318.8 38.6 318.8 52ZM283.9 48.6H311.3C310.4 41 305.2 35.8 297.9 35.8C290 35.9 285.1 41 283.9 48.6Z" fill="white"/>
+												<path d="M376 52.3C376 65.4 366 75.4 352.6 75.4C338.9 75.4 328.9 65.4 328.9 52.3C328.9 38.9 338.9 28.9 352.6 28.9C365.9 28.9 376 38.9 376 52.3ZM336.8 52.3C336.8 61.7 343.5 68.4 352.6 68.4C361.4 68.4 368.1 61.7 368.1 52.3C368.1 42.9 361.4 36.2 352.6 36.2C343.4 36.2 336.8 42.9 336.8 52.3Z" fill="white"/>
+													<path d="M88.1 14.9C79.5 6.4 68.3 1.2 56.2 0C55.3 0 54.6 0.8 54.6 1.8C54.6 2.2 54.7 2.5 55 2.8L73.8 21.3C73.8 21.6 73.8 21.6 73.5 21.6C68.3 17.8 62.2 15.5 55.9 14.9C55.3 14.8 54.8 15.2 54.7 15.8C54.7 16.1 54.8 16.4 55 16.7L67.8 29.5C67.8 29.5 67.8 29.8 67.5 29.5C64 27.3 60.1 25.9 55.9 25.5C55.3 25.5 55 26.1 55.3 26.7L76.9 48.3C77.5 48.9 78.4 48.3 78.1 47.7C77.8 43.6 76.4 39.6 74.1 36.1C73.8 36.1 74.1 35.8 74.1 36.1L86.6 48.3C87.2 48.9 88.4 48.3 88.4 47.4C87.7 41 85.4 34.8 81.7 29.5C81.4 29.5 81.7 29.2 81.7 29.5L100.6 48C101.1 48.6 101.9 48.7 102.5 48.3C103 48 103.2 47.4 103 46.8C101.9 34.7 96.6 23.4 88.1 14.9Z" fill="#00ADFF"/>
+														<path d="M14.9 14.9C23.6 6.5 34.8 1.2 46.8 0C47.7 0 48.4 0.6 48.5 1.5C48.5 1.9 48.4 2.4 48 2.7L29.5 21.3C29.2 21.6 29.5 21.6 29.5 21.6C34.8 17.8 41 15.5 47.4 14.9C48.3 14.9 48.9 16.1 48.3 16.7L35.6 29.5C35.3 29.5 35.6 29.8 35.6 29.5C39.1 27.3 43 26 47.2 25.5C47.8 25.5 48.4 26.1 47.8 26.7L26.1 48.3C25.5 48.9 24.9 48.3 24.9 47.7C25.3 43.6 26.8 39.6 29.2 36.1C29.2 36.1 28.9 35.8 28.9 36.1L16.7 48.3C15.8 48.9 14.6 48.3 14.9 47.4C15.5 40.9 17.8 34.7 21.6 29.5C21.6 29.5 21.3 29.2 21.3 29.5L2.7 48C1.5 49.2 0 48.3 0 46.8C1.2 34.8 6.5 23.6 14.9 14.9Z" fill="#F05245"/>
+															<path d="M14.9 88.8C23.4 97.4 34.7 102.7 46.8 103.7C47.6 103.8 48.3 103.3 48.4 102.5C48.5 102 48.3 101.6 48 101.2L29.5 82.4C29.2 82.4 29.5 82.1 29.5 82.4C34.8 86.2 41 88.5 47.4 89C48.3 89 48.9 87.8 48.3 87.2L35.6 74.5C35.3 74.2 35.6 74.2 35.6 74.2C39 76.5 43 78 47.1 78.4C47.7 78.4 48.3 77.5 47.7 77.2L26.1 55.6C25.5 55 24.9 55.3 24.9 56.2C25.3 60.3 26.8 64.3 29.2 67.8C29.2 67.8 28.9 68.1 28.9 67.8L16.7 55.6C15.8 55 14.6 55.3 14.9 56.5C15.5 62.9 17.8 69 21.6 74.1C21.6 74.3 21.5 74.4 21.3 74.4L2.7 55.6C2 55 0.9 55.2 0.4 55.9C0.2 56.2 0.1 56.5 0 56.9C1.1 68.9 6.4 80.2 14.9 88.8Z" fill="#1CEBCF"/>
+																<path d="M88.1 88.8C79.6 97.5 68.3 102.8 56.2 103.7C55 104 54.1 102.2 55 101.3L73.8 82.5C73.8 82.5 73.8 82.2 73.5 82.5C68.3 86.3 62.2 88.6 55.9 89.2C55.3 89.3 54.8 88.8 54.7 88.2C54.7 87.9 54.8 87.6 55 87.3L67.8 74.5C67.8 74.2 67.8 74.2 67.5 74.2C64.1 76.6 60.1 78.1 56 78.4C55.5 78.3 55.2 77.9 55.3 77.5C55.3 77.4 55.3 77.3 55.4 77.2L77 55.6C77.6 55 78.5 55.3 78.2 56.2C77.9 60.3 76.5 64.3 74.2 67.8C73.9 67.8 74.2 68.1 74.2 67.8L86.7 55.6C87.1 55.2 87.8 55.2 88.2 55.6C88.4 55.8 88.5 56.2 88.5 56.5C87.8 62.8 85.5 68.9 81.8 74.1C81.5 74.4 81.8 74.4 81.8 74.4L100.6 55.6C101.5 54.7 103.3 55.6 103 56.8C102 68.9 96.7 80.2 88.1 88.8Z" fill="#FFE300"/>
+																	<path opacity="0.87" d="M390.8 31.9V43H388.9V31.9H385.4V30.1H394.4V31.9H390.8Z" fill="white"/>
+																		<path opacity="0.87" d="M407.7 43V34.4L404.7 40.5999H403.3L400.3 34.4V43H398.3V30.2H400.3L404 38.2L407.7 30.2H409.6V43H407.7Z" fill="white"/>
+							</g>
+							<defs>
+								<clipPath id="clip0">
+									<rect width="409" height="104" fill="white"/>
+								</clipPath>
+							</defs>
+						</svg>
+					</div>
+				</a>
+				<a class="logo-text" href="https://docs.coveo.com">
+					<span class="logo-text-bar">|</span>
+					<span class="logo-text-custom">docs</span>
+				</a>
 			</div>
-			<div class="logo-text">
-				<span class="logo-text-bar">|</span>
-				<span> Connect</span>
+			<div class="search">
+				<div id="coveoConnectHeaderStandaloneSearchbox" class="searchbox">
+					<div class="CoveoSearchbox" style="display: flex;" type="text" data-auto-focus="false" data-enable-omnibox="true"
+					data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false"
+					data-enable-reveal-query-suggest-addon="true" data-enable-query-syntax="true"
+				data-enable-field-addon="true" data-placeholder="Search"></div>
+				<div class="CoveoAnalytics"></div>
 			</div>
 		</div>
-		<div class="search">
-			<div id="coveoConnectHeaderStandaloneSearchbox" class="searchbox">
-				<div class="CoveoSearchbox" type="text" data-auto-focus="false" data-enable-omnibox="true"
-				data-inline="false" data-enable-wildcards="true" data-enable-search-as-you-type="false"
-				data-enable-reveal-query-suggest-addon="true" data-enable-query-syntax="true"
-			data-enable-field-addon="true"></div>
-		</div>
+		<nav class="subnav">
+			<ul>
+				<li><a href="https://connect.coveo.com/" target="_blank">Community</a></li>
+				<li><a href="https://coveo.co1.qualtrics.com/jfe/form/SV_0OFD8lvnckM3qtv?Q_JFE=qdg" target="_blank">Feedback</a></li>
+				<li><a href="https://docs.coveo.com/en/3378/">News</a></li>
+			</ul>
+		</nav>
 	</div>
-	<nav class="subnav">
-		<ul>
-			<li><a href="https://coveo.com" target="_blank">Coveo.com</a></li>
-			<li><a href="https://connect.coveo.com/s/community-guidelines" target="_blank">Community Guidelines</a>
-			</li>
-			<li><a href="https://coveo.co1.qualtrics.com/jfe/form/SV_0OFD8lvnckM3qtv?Q_JFE=qdg" target="_blank">Site
-			Feedback</a></li>
-		</ul>
-	</nav>
-	<nav class="navBar">
-		<ul>
-			<li><button class="dropdownButton">My Coveo<i class="fas fa-chevron-down"></i>
-					<ul class="dropdown">
-						<li><a href="https://connect.coveo.com/s/">Home</a></li>
-						<li><a href="https://platform.cloud.coveo.com/admin/" target="_blank">Coveo V2
-						Administration Console</a></li>
-						<li><a href="https://cloud.coveo.com" target="_blank">Coveo V1 Administration Console</a>
-						</li>
-					</ul>
-				</button>
-			</li>
-			<li>
-				<button class="dropdownButton">Learn<i class="fas fa-chevron-down"></i>
-					<ul class="dropdown">
-						<li><a href="https://docs.coveo.com" target="_blank">Product Docs</a></li>
-						<li><a
-							href="https://connect.coveo.com/s/global-search/%40uri#sort=relevancy&f:resourceType=[Support%20Article]">Knowledge
-						Articles</a></li>
-						<li><a href="https://academy.coveo.com" target="_blank">Academy</a></li>
-						<li><a href="https://source.coveo.com" target="_blank">Tech Blog</a></li>
-						<li><a href="https://blog.coveo.com" target="_blank">Blog</a></li>
-						<li><a href="https://connect.coveo.com/s/events">Events/Webinars</a></li>
-					</ul>
-				</button>
-			</li>
-			<li>
-				<button class="dropdownButton">Collaborate<i class="fas fa-chevron-down"></i>
-					<ul class="dropdown">
-						<li><a href="https://connect.coveo.com/s/discussions">Discussions</a></li>
-						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGvUGAU">Administrator Topic</a>
-						</li>
-						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGveGAE">Business User Topic</a>
-						</li>
-						<li><a href="https://connect.coveo.com/s/topic/0TO0d000000gGvZGAU">Developer Topic</a></li>
-						<li><a href="https://connect.coveo.com/s/groups">Groups</a></li>
-						<li><a href="https://connect.coveo.com/s/ideas">Ideas</a></li>
-					</ul>
-				</button>
-			</li>
-		</ul>
-	</nav>
 	</div>
 </header>
+<subHeader class="no-sticky">
+	<div class="content">
+		<nav class="navBar">
+			<ul>
+				<li><button class="dropdownButton">Guides<i class="fas fa-chevron-down"></i>
+						<ul class="dropdown">
+							<li><a href="https://docs.coveo.com/en/1724/">Searching With Coveo</a></li>
+							<li><a href="https://docs.coveo.com/en/2648/">Project Guide</a></li>
+							<li><a href="https://docs.coveo.com/en/1351/">Services</a></li>
+				</li>
+			</ul>
+			</button>
+			</li>
+			<li>
+				<button class="dropdownButton">API Reference<i class="fas fa-chevron-down"></i>
+					<ul class="dropdown">
+						<li><a href="https://coveo.github.io/search-ui/" target="_blank">JavaScript Search Framework</a></li>
+						<!-- <li><a href="#">Atomic</a></li> -->
+						<li><a href="https://docs.coveo.com/en/headless//reference/">Headless</a></li>
+						<li><a href="https://docs.coveo.com/en/12/">Push API</a></li>
+						<li><a href="https://docs.coveo.com/en/8/">Field API</a></li>
+						<li><a href="https://docs.coveo.com/en/13/">Search API</a></li>
+						<li><a href="https://docs.coveo.com/en/18/">Usage Analytics API</a></li>
+						<li><a href="https://docs.coveo.com/en/4/">Other APIs</a></li>
+					</ul>
+				</button>
+			</li>
+			<li>
+				<button class="dropdownButton">Extensions<i class="fas fa-chevron-down"></i>
+					<ul class="dropdown">
+						<li><a href="https://docs.coveo.com/en/1499/">Coveo for Commerce</a></li>
+						<li><a href="https://docs.coveo.com/en/1243/">Coveo for Salesforce</a></li>
+						<li><a href="https://docs.coveo.com/en/1479/">Coveo for ServiceNow</a></li>
+						<li><a href="https://docs.coveo.com/en/2709/">Coveo for Sitecore</a></li>
+					</ul>
+				</button>
+			</li>
+			</ul>
+		</nav>
+	</div>
+</subHeader>
 <div class="container container-main">
 	<div class="row">
 		<div id="toc-column" class="col-1 col-menu menu-sticky-wrap menu-highlight">

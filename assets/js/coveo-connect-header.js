@@ -19,7 +19,7 @@ const headerNamespace = {
       document.addEventListener('click', outsideClickListener);
     }
 
-    let buttons = document.querySelectorAll('header .content .navBar button.dropdownButton');
+    let buttons = document.querySelectorAll('subHeader .content .navBar button.dropdownButton');
 
     for (let i = 0; i < buttons.length; i++) {
       buttons[i].addEventListener('click', () => {
