@@ -872,3 +872,6 @@ HistoryStoreTest();
 
 import { AnalyticsInformationTest } from './ui/AnalyticsInformationTest';
 AnalyticsInformationTest();
+
+import { AttachShadowPolyfillTest } from './misc/AttachShadowPolyfillTest';
+AttachShadowPolyfillTest();

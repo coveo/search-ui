@@ -119,6 +119,10 @@ export class SmartSnippet extends Component {
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
+  public get loading() {
+    return this.shadowLoading;
+  }
+
   private get style() {
     const styles = $$(this.element)
       .children()
@@ -174,7 +178,11 @@ export class SmartSnippet extends Component {
   private buildShadow() {
     this.shadowContainer = $$('div', { className: SHADOW_CLASSNAME }).el;
     this.snippetContainer = $$('section', { className: CONTENT_CLASSNAME }).el;
-    this.shadowLoading = attachShadow(this.shadowContainer, { mode: 'open', title: l('AnswerSnippet') }).then(shadow => {
+    this.shadowLoading = attachShadow(this.shadowContainer, {
+      mode: 'open',
+      title: l('AnswerSnippet'),
+      onSizeChanged: () => this.handleAnswerSizeChanged()
+    }).then(shadow => {
       shadow.appendChild(this.snippetContainer);
       const style = this.buildStyle();
       shadow.appendChild(style);
@@ -186,7 +194,7 @@ export class SmartSnippet extends Component {
   private buildHeightLimiter() {
     return (this.heightLimiter = new HeightLimiter(
       this.shadowContainer,
-      this.snippetContainer,
+      this.shadowContainer.childNodes.item(0) as HTMLElement,
       this.options.maximumSnippetHeight,
       isExpanded => (isExpanded ? this.sendExpandSmartSnippetAnalytics() : this.sendCollapseSmartSnippetAnalytics())
     )).toggleButton;
@@ -201,6 +209,10 @@ export class SmartSnippet extends Component {
     const styleTag = document.createElement('style');
     styleTag.innerHTML = style;
     return styleTag;
+  }
+
+  private handleAnswerSizeChanged() {
+    this.heightLimiter.onContentHeightChanged();
   }
 
   /**
@@ -236,9 +248,6 @@ export class SmartSnippet extends Component {
     if (this.lastRenderedResult) {
       this.renderSource();
     }
-    await this.shadowLoading;
-    await Utils.resolveAfter(0); // `scrollHeight` isn't instantly detected, or at-least not on IE11.
-    this.heightLimiter.onContentHeightChanged();
   }
 
   private renderSnippet(content: string) {
