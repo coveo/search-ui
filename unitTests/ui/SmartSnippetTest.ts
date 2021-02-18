@@ -87,7 +87,7 @@ export function SmartSnippetTest() {
     async function triggerQuerySuccess(args: Partial<IQuerySuccessEventArgs>) {
       (test.env.queryController.getLastResults as jasmine.Spy).and.returnValue(args.results);
       $$(test.env.root).trigger(QueryEvents.deferredQuerySuccess, args);
-      await test.cmp['shadowLoading'];
+      await test.cmp.loading;
     }
 
     async function triggerQuestionAnswerQuery(withSource: boolean) {
