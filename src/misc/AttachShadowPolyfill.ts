@@ -32,6 +32,8 @@ function autoUpdateHeight(elementToResize: HTMLElement, content: HTMLElement, on
     if (lastWidth === content.clientWidth && lastHeight === content.clientHeight) {
       return;
     }
+    lastWidth = content.clientWidth;
+    lastHeight = content.clientHeight;
     elementToResize.style.width = `${content.clientWidth}px`;
     elementToResize.style.height = `${content.clientHeight}px`;
     if (onUpdate) {
