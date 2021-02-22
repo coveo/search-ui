@@ -16,6 +16,7 @@ import { IQueryResults } from '../../src/rest/QueryResults';
 import { Defer } from '../../src/misc/Defer';
 import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
 import { ResultListUtils } from '../../src/utils/ResultListUtils';
+import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
 
 export function ResultListTest() {
   describe('ResultList', () => {
@@ -832,59 +833,72 @@ export function ResultListTest() {
             expect(mockResultLayoutSelector.enableLayouts).toHaveBeenCalledWith(['card']);
           });
         });
-        describe('enableScrollToTop set to', () => {
-          let allResult: IQueryResults;
+
+        describe('scroll to top feature', () => {
           let scrollToTopSpy: jasmine.Spy;
-          const setupResultList = (
-            option: IResultListOptions = {
-              enableInfiniteScroll: true,
-              infiniteScrollContainer: document.createElement('div'),
-              enableScrollToTop: true
-            }
-          ) => {
-            let test = Mock.basicComponentSetup<ResultList>(ResultList, option);
-            test.cmp.currentlyDisplayedResults.push(allResult.results[1]);
-            (test.cmp.queryController.fetchMore as jasmine.Spy).and.returnValue(Promise.resolve(allResult));
+
+          const setupResultList = (options: Partial<IResultListOptions> = {}) => {
+            const test = Mock.advancedComponentSetup<ResultList>(ResultList, <Mock.AdvancedComponentSetupOptions>{
+              cmpOptions: {
+                infiniteScrollContainer: document.createElement('div'),
+                ...options
+              },
+              modifyBuilder: builder => {
+                return builder.withLiveQueryStateModel();
+              }
+            });
             return test;
           };
 
           beforeEach(() => {
             jasmine.clock().install();
             scrollToTopSpy = spyOn(ResultListUtils, 'scrollToTop');
-
-            allResult = FakeResults.createFakeResults(50);
           });
 
           afterEach(() => {
             jasmine.clock().uninstall();
           });
 
-          it('true, should call the scrollToTop of the ResultListUtils', done => {
-            test = setupResultList();
-            test.cmp.displayMoreResults(50).then(() => {
-              Simulate.query(test.env);
-              jasmine.clock().tick(0);
+          it(`when enableScrollToTop is true and enableInfiniteScroll is false
+          should scroll to top ONCE when page changes and a query is executed`, done => {
+            test = setupResultList({ enableScrollToTop: true, enableInfiniteScroll: false });
 
-              expect(scrollToTopSpy).toHaveBeenCalledWith(test.cmp.root);
+            test.cmp.queryStateModel.set(QUERY_STATE_ATTRIBUTES.FIRST, 11);
+            Simulate.query(test.env);
+            jasmine.clock().tick(0);
+            Simulate.query(test.env);
+            jasmine.clock().tick(0);
 
-              done();
-            });
+            expect(scrollToTopSpy).toHaveBeenCalledTimes(1);
+
+            done();
           });
 
-          it('false, should not call the scrollToTop of the ResultListUtils', done => {
-            test = setupResultList({
-              enableInfiniteScroll: true,
-              infiniteScrollContainer: undefined,
-              enableScrollToTop: false
-            });
-            test.cmp.displayMoreResults(50).then(() => {
-              Simulate.query(test.env);
-              jasmine.clock().tick(0);
+          it(`when enableScrollToTop is true and enableInfiniteScroll is true
+          should scroll to top on every query success`, done => {
+            test = setupResultList({ enableScrollToTop: true, enableInfiniteScroll: true });
 
-              expect(scrollToTopSpy).not.toHaveBeenCalled();
+            Simulate.query(test.env);
+            jasmine.clock().tick(0);
+            Simulate.query(test.env);
+            jasmine.clock().tick(0);
 
-              done();
-            });
+            expect(scrollToTopSpy).toHaveBeenCalledTimes(2);
+
+            done();
+          });
+
+          it(`when enableScrollToTop is false and enableInfiniteScroll is false
+          should not scroll to top after a query and a page change is executed`, done => {
+            test = setupResultList({ enableScrollToTop: false, enableInfiniteScroll: false });
+
+            test.cmp.queryStateModel.set(QUERY_STATE_ATTRIBUTES.FIRST, 11);
+            Simulate.query(test.env);
+            jasmine.clock().tick(0);
+
+            expect(scrollToTopSpy).not.toHaveBeenCalled();
+
+            done();
           });
         });
       });
