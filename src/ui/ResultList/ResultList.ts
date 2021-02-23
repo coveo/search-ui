@@ -252,15 +252,16 @@ export class ResultList extends Component {
     }),
 
     /**
-     * Whether to scroll back to the top of the page when the end-user interacts with a facet.
+     * Whether to scroll back to the top of the page when the end-user:
+     *  - interacts with a facet when [`infiniteScrollContainer`]{@link ResultList.options.infiniteScrollContainer} is set to `true`
+     *  - interacts with the [`Pager`]{@link Pager} component when [`infiniteScrollContainer`]{@link ResultList.options.infiniteScrollContainer} is set to `false`
      *
      * **Note:** Setting this option to `false` has no effect on dynamic facets. To disable this behavior on a `DynamicFacet` component, you must set its own [`enableScrollToTop`]{@link DynamicFacet.options.enableScrollToTop} option to `false`.
      *
      * @availablesince [July 2019 Release (v2.6459)](https://docs.coveo.com/en/2938/)
      */
     enableScrollToTop: ComponentOptions.buildBooleanOption({
-      defaultValue: true,
-      depend: 'enableInfiniteScroll'
+      defaultValue: true
     })
   };
 
@@ -308,25 +309,7 @@ export class ResultList extends Component {
 
     this.showOrHideElementsDependingOnState(false, false);
 
-    this.bind.onRootElement<INewQueryEventArgs>(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery());
-    this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) =>
-      this.handleBuildingQuery(args)
-    );
-    this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) =>
-      this.handleQuerySuccess(args)
-    );
-    this.bind.onRootElement<IDuringQueryEventArgs>(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery());
-    this.bind.onRootElement<IQueryErrorEventArgs>(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError());
-    $$(this.root).on(ResultListEvents.changeLayout, (e: Event, args: IChangeLayoutEventArgs) => this.handleChangeLayout(args));
-
-    if (this.options.enableInfiniteScroll) {
-      this.handlePageChanged();
-      this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', (e: Event) => {
-        this.successiveScrollCount = 0;
-        this.handleScrollOfResultList();
-      });
-    }
-    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => this.handlePageChanged());
+    this.addListeners();
 
     this.resultContainer = this.initResultContainer();
     Assert.exists(this.options.resultsContainer);
@@ -341,6 +324,47 @@ export class ResultList extends Component {
     this.setupRenderer();
     this.makeElementFocusable();
     this.ensureHasId();
+  }
+
+  private addListeners() {
+    this.bind.onRootElement<INewQueryEventArgs>(QueryEvents.newQuery, (args: INewQueryEventArgs) => this.handleNewQuery());
+    this.bind.onRootElement<IBuildingQueryEventArgs>(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) =>
+      this.handleBuildingQuery(args)
+    );
+    this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) =>
+      this.handleQuerySuccess(args)
+    );
+    this.bind.onRootElement<IDuringQueryEventArgs>(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery());
+    this.bind.onRootElement<IQueryErrorEventArgs>(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError());
+    $$(this.root).on(ResultListEvents.changeLayout, (e: Event, args: IChangeLayoutEventArgs) => this.handleChangeLayout(args));
+
+    if (this.options.enableInfiniteScroll) {
+      this.addInfiniteScrollListeners();
+    } else {
+      this.addPagerListeners();
+    }
+  }
+
+  private addInfiniteScrollListeners() {
+    this.bind.on(<HTMLElement>this.options.infiniteScrollContainer, 'scroll', () => {
+      this.successiveScrollCount = 0;
+      this.handleScrollOfResultList();
+    });
+    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => {
+      setTimeout(() => {
+        this.scrollToTopIfEnabled();
+      }, 0);
+    });
+  }
+
+  private addPagerListeners() {
+    this.bind.onQueryState(MODEL_EVENTS.CHANGE_ONE, QUERY_STATE_ATTRIBUTES.FIRST, () => {
+      this.bind.oneRootElement(QueryEvents.deferredQuerySuccess, () => {
+        setTimeout(() => {
+          this.scrollToTopIfEnabled();
+        }, 0);
+      });
+    });
   }
 
   /**
@@ -599,14 +623,6 @@ export class ResultList extends Component {
     if (this.isScrollingOfResultListAlmostAtTheBottom() && this.hasPotentiallyMoreResultsToDisplay()) {
       this.displayMoreResults(this.options.infiniteScrollPageSize);
     }
-  }
-
-  private handlePageChanged() {
-    this.bind.onRootElement(QueryEvents.deferredQuerySuccess, () => {
-      setTimeout(() => {
-        this.scrollToTopIfEnabled();
-      }, 0);
-    });
   }
 
   private scrollToTopIfEnabled() {
