@@ -937,23 +937,45 @@ export class FacetSlider extends Component {
   }
 
   private trySetSliderBoundaryFromState() {
-    const stateValues = this.rangeFromUrlState || this.queryStateModel.get(this.rangeQueryStateAttribute);
-    if (stateValues && stateValues[0] != undefined && stateValues[1] != undefined) {
-      stateValues[0] = Number(stateValues[0]);
-      stateValues[1] = Number(stateValues[1]);
-      this.setupInitialSliderStateStart(stateValues[0]);
-      this.setupInitialSliderStateEnd(stateValues[1]);
-      this.startOfSlider = stateValues[0];
-      this.endOfSlider = stateValues[1];
+    const boundaries = this.getBoundariesFromState();
+    if (!boundaries) {
+      return;
     }
+    this.setupInitialSliderStateStart(boundaries.start);
+    this.setupInitialSliderStateEnd(boundaries.end);
+    this.startOfSlider = boundaries.start;
+    this.endOfSlider = boundaries.end;
   }
 
   private trySetSliderBoundaryFromQueryResult(data: IQuerySuccessEventArgs) {
     const groupByResults = data.results.groupByResults[this.facetQueryController.lastGroupByRequestForFullRangeIndex];
-    if (groupByResults && groupByResults.values.length > 0 && groupByResults.values[0].numberOfResults != 0) {
-      this.setupInitialSliderStateStart(groupByResults.values[0].value.split('..')[0]);
-      this.setupInitialSliderStateEnd(groupByResults.values[groupByResults.values.length - 1].value.split('..')[1]);
+    if (!groupByResults || groupByResults.values.length <= 0 || groupByResults.values[0].numberOfResults == 0) {
+      return;
     }
+
+    let start = Number(groupByResults.values[0].value.split('..')[0]);
+    let end = Number(groupByResults.values[groupByResults.values.length - 1].value.split('..')[1]);
+
+    const boudariesFromState = this.getBoundariesFromState();
+
+    if (boudariesFromState) {
+      start = Math.min(start, boudariesFromState.start);
+      end = Math.max(end, boudariesFromState.end);
+    }
+
+    this.setupInitialSliderStateStart(start);
+    this.setupInitialSliderStateEnd(end);
+  }
+
+  private getBoundariesFromState() {
+    const stateValues = this.rangeFromUrlState || this.queryStateModel.get(this.rangeQueryStateAttribute);
+    if (!stateValues || stateValues[0] == undefined || stateValues[1] == undefined) {
+      return undefined;
+    }
+    return {
+      start: Number(stateValues[0]),
+      end: Number(stateValues[1])
+    };
   }
 
   private setupInitialSliderStateStart(value: any) {

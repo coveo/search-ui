@@ -411,5 +411,54 @@ export function FacetSliderTest() {
         expect(test.cmp.isSimpleSliderConfig).toBeFalsy();
       });
     });
+
+    describe('when setuping slider with no predetermined range', () => {
+      beforeEach(() => {
+        facetSliderOptions = { field: '@foo' };
+        test = Mock.optionsComponentSetup<FacetSlider, IFacetSliderOptions>(FacetSlider, facetSliderOptions);
+      });
+
+      const simulateStateRange = (start: number, end: number) => {
+        (<jasmine.Spy>test.env.queryStateModel.get).and.returnValue([start, end]);
+        (<jasmine.Spy>test.env.queryStateModel.getDefault).and.returnValue([start, end]);
+      };
+
+      const simulateGroupBy = (start: number, end: number) => {
+        const groupByResults = [
+          {
+            field: '@foo',
+            values: [FakeResults.createFakeGroupByRangeValue(start, end, 'foo', 1)]
+          }
+        ];
+        Simulate.query(test.env, {
+          groupByResults,
+          callbackDuringQuery: () => (test.cmp.facetQueryController.lastGroupByRequestForFullRangeIndex = 0)
+        });
+      };
+
+      it('should use smallest value from state versus group by to determine start of range', () => {
+        simulateStateRange(1, 3);
+        simulateGroupBy(2, 3);
+        expect(test.cmp.initialStartOfSlider).toBe(1);
+      });
+
+      it('should use smallest value from group by versus state to determine start of range', () => {
+        simulateStateRange(2, 3);
+        simulateGroupBy(1, 3);
+        expect(test.cmp.initialStartOfSlider).toBe(1);
+      });
+
+      it('should use the largest value from state versus group by to determine end of range', () => {
+        simulateStateRange(1, 3);
+        simulateGroupBy(1, 2);
+        expect(test.cmp.initialEndOfSlider).toBe(3);
+      });
+
+      it('should use the largest value from group by versus state by to determine end of range', () => {
+        simulateStateRange(1, 2);
+        simulateGroupBy(1, 3);
+        expect(test.cmp.initialEndOfSlider).toBe(3);
+      });
+    });
   });
 }
