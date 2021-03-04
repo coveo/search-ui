@@ -69,9 +69,10 @@ export interface IOmniboxOptions extends IQueryboxOptions {
   placeholder?: string;
   numberOfSuggestions?: number;
   querySuggestCharacterThreshold?: number;
-  grammar?: (
-    grammar: { start: string; expressions: { [id: string]: ExpressionDef } }
-  ) => { start: string; expressions: { [id: string]: ExpressionDef } };
+  grammar?: (grammar: {
+    start: string;
+    expressions: { [id: string]: ExpressionDef };
+  }) => { start: string; expressions: { [id: string]: ExpressionDef } };
   clearFiltersOnNewQuery?: boolean;
 }
 
@@ -228,7 +229,7 @@ export class Omnibox extends Component {
     /**
      * Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
      * query that the user enters in the Querybox (see
-     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * [Coveo Query Syntax Reference](https://docs.coveo.com/en/1552/searching-with-coveo/coveo-cloud-query-syntax)).
      *
      * Setting this option to `true` also causes the query syntax in the Querybox to highlight.
      *
