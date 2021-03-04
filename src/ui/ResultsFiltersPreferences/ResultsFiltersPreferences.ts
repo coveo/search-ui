@@ -266,7 +266,7 @@ export class ResultsFiltersPreferences extends Component {
     const onlineHelp = $$(
       'a',
       {
-        href: 'https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10006',
+        href: 'https://docs.coveo.com/en/2053/index-content/inspect-items-with-the-content-browser#results-filtering-expressions',
         className: 'coveo-online-help'
       },
       '?'
@@ -461,11 +461,7 @@ export class ResultsFiltersPreferences extends Component {
       this.fromPreferencesToCheckboxInput();
     };
 
-    new AccessibleButton()
-      .withElement(elem)
-      .withLabel(l('RemoveFilterOn', filter.caption))
-      .withSelectAction(onSelectAction)
-      .build();
+    new AccessibleButton().withElement(elem).withLabel(l('RemoveFilterOn', filter.caption)).withSelectAction(onSelectAction).build();
 
     return elem.el;
   }
