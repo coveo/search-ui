@@ -23,7 +23,8 @@
     "uploadCoverage": "gulp uploadCoverage",
     "validateTypeDefinitions": "gulp validateDefs",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "version:release-branch": "node ./build/release-branch.version.js"
   },
   "lint-staged": {
     "*.{js,ts,json,scss}": [
