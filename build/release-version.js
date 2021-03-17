@@ -26,11 +26,15 @@ async function checkIfBranchExists(branchName) {
 }
 
 async function updateBranch(branchName) {
+  console.log(`updating branch: ${branchName}`);
+
   await exec(`git checkout ${branchName}`);
   await exec(`npm version patch`);
 }
 
 async function createBranch(branchName) {
+  console.log(`creating branch: ${branchName}`);
+
   await exec(`git checkout -b ${branchName}`);
   const newVersion = await getNewReleaseVersion();
   await exec(`npm version ${newVersion}`);
@@ -48,6 +52,7 @@ function parseVersion(version) {
 }
 
 async function push(branchName) {
+  console.log(`pushing branch: ${branchName}`);
   await exec(`git push origin ${branchName}`);
 }
 
