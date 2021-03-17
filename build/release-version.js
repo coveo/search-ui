@@ -1,5 +1,6 @@
 const { promisify } = require('util');
 const { getLatestVersionOnNpm } = require('./npm.utilities');
+const { parseVersion } = require('./version.utilities');
 const exec = promisify(require('child_process').exec);
 
 async function main() {
@@ -44,11 +45,6 @@ async function getNewReleaseVersion() {
   const version = await getLatestVersionOnNpm();
   const { major, minor } = parseVersion(version);
   return `${major}.${minor + 1}.0`;
-}
-
-function parseVersion(version) {
-  const [major, minor, patch] = version.split('.').map(num => parseInt(num, 10));
-  return { major, minor, patch };
 }
 
 async function push(branchName) {

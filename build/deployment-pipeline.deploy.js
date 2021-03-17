@@ -1,7 +1,7 @@
 const { promisify } = require('util');
 const exec = promisify(require('child_process').exec);
 const compareVersions = require('compare-versions');
-const { getMajorMinorVersion, getVersion, getPatchVersion } = require('./tag.utilities');
+const { getMajorMinorVersion, getVersion, getPatchVersion } = require('./version.utilities');
 const { getLatestVersionOnNpm } = require('./npm.utilities');
 
 async function installDeploymentPipeLineCli() {
