@@ -23,7 +23,7 @@
     "uploadCoverage": "gulp uploadCoverage",
     "validateTypeDefinitions": "gulp validateDefs",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "husky install && npm run snyk-protect"
   },
   "lint-staged": {
     "*.{js,ts,json,scss}": [
