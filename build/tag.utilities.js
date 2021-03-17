@@ -7,46 +7,8 @@ function isTagged() {
   return tag && tag !== '';
 }
 
-function isOfficialTag() {
-  const officialForm = `^${semanticVersionForm()}$`;
-  const officialRegex = new RegExp(officialForm);
-
-  return officialRegex.test(tag);
-}
-
-function isBetaTag() {
-  const betaForm = `^${semanticVersionForm()}-beta$`;
-  const betaRegex = new RegExp(betaForm);
-
-  return betaRegex.test(tag);
-}
-
-function semanticVersionForm() {
-  return `${number}${dot}${number}${dot}${number}`;
-}
-
 function majorMinorForm() {
   return `${number}${dot}${number}`;
-}
-
-function smallLetters() {
-  return '[a-z]+';
-}
-
-function tagHasAlphabeticSuffix() {
-  const suffixForm = `^${semanticVersionForm()}-${smallLetters()}$`;
-  const suffixRegex = new RegExp(suffixForm);
-
-  return suffixRegex.test(tag);
-}
-
-function getAlphabeticSuffix() {
-  if (!tagHasAlphabeticSuffix()) {
-    return '';
-  }
-
-  const suffixRegex = new RegExp(`${smallLetters()}$`);
-  return suffixRegex.exec(tag)[0];
 }
 
 function getVersion() {
@@ -73,20 +35,10 @@ function getPatchVersion() {
   return regex.exec(version)[0];
 }
 
-function getHerokuVersion() {
-  const version = getVersion();
-  return version ? version.replace(/\./g, '-') : 'unknown-version';
-}
-
 module.exports = {
   isTagged,
-  isOfficialTag,
-  isBetaTag,
-  tagHasAlphabeticSuffix,
-  getAlphabeticSuffix,
   getVersion,
   isAlphaVersion,
-  getHerokuVersion,
   getMajorMinorVersion,
   getPatchVersion
 };
