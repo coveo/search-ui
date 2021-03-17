@@ -3,7 +3,11 @@ const { getLatestVersionOnNpm } = require('./npm.utilities');
 const exec = promisify(require('child_process').exec);
 
 async function main() {
-  const branchName = process.argv[2];
+  const branchName = process.env.BRANCH_NAME || '';
+
+  if (!branchName) {
+    return console.log('please specify a branch name');
+  }
 
   const exists = await checkIfBranchExists(branchName);
   exists ? updateBranch() : createBranch();
