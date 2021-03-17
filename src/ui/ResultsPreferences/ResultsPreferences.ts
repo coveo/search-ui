@@ -70,7 +70,7 @@ export class ResultsPreferences extends Component {
      *
      * If query syntax is enabled, the Coveo Platform tries to interpret special query syntax (e.g.,
      * `@objecttype=message`) when the end user types a query in the [`Querybox`]{@link Querybox} (see
-     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Enabling query
+     * [Coveo Query Syntax Reference](https://docs.coveo.com/en/1552/searching-with-coveo/coveo-cloud-query-syntax)). Enabling query
      * syntax also causes the `Querybox` to highlight any query syntax.
      *
      * Selecting **On** for the **Enable query syntax** setting enables query syntax, whereas selecting **Off** disables

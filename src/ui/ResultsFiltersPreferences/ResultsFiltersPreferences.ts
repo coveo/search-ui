@@ -46,7 +46,7 @@ export interface IResultsFiltersPreferencesOptions {
  * are saved to local storage.
  *
  * Only advanced end users who understand the Coveo query syntax should use this feature (see
- * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+ * [Coveo Query Syntax Reference](https://docs.coveo.com/en/1552/searching-with-coveo/coveo-cloud-query-syntax)).
  *
  * This component is normally accessible through the [`Settings`]{@link Settings} menu. Its usual location in the DOM is
  * inside the [`PreferencesPanel`]{@link PreferencesPanel} element.
@@ -266,7 +266,7 @@ export class ResultsFiltersPreferences extends Component {
     const onlineHelp = $$(
       'a',
       {
-        href: 'https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10006',
+        href: 'https://docs.coveo.com/en/2053/index-content/inspect-items-with-the-content-browser#results-filtering-expressions',
         className: 'coveo-online-help'
       },
       '?'
@@ -461,11 +461,7 @@ export class ResultsFiltersPreferences extends Component {
       this.fromPreferencesToCheckboxInput();
     };
 
-    new AccessibleButton()
-      .withElement(elem)
-      .withLabel(l('RemoveFilterOn', filter.caption))
-      .withSelectAction(onSelectAction)
-      .build();
+    new AccessibleButton().withElement(elem).withLabel(l('RemoveFilterOn', filter.caption)).withSelectAction(onSelectAction).build();
 
     return elem.el;
   }

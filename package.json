@@ -23,7 +23,7 @@
     "uploadCoverage": "gulp uploadCoverage",
     "validateTypeDefinitions": "gulp validateDefs",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect",
+    "prepare": "husky install && npm run snyk-protect",
     "releaseVersion": "node ./build/release-version.js"
   },
   "lint-staged": {
@@ -88,7 +88,7 @@
     "bluebird": "^3.4.7",
     "body-parser": "^1.18.2",
     "cheerio": "^0.20.0",
-    "colors": "^1.1.2",
+    "colors": "^1.4.0",
     "compare-versions": "^3.6.0",
     "coveralls": "3.0.2",
     "css-loader": "^0.23.1",
@@ -112,7 +112,7 @@
     "gulp-replace": "^0.5.4",
     "gulp-shell": "^0.5.2",
     "gulp-zip": "^3.2.0",
-    "husky": "^0.14.3",
+    "husky": "^5.1.3",
     "imports-loader": "^0.7.1",
     "ini": "^1.3.4",
     "istanbul-combine": "^0.3.0",
