@@ -55,7 +55,7 @@ async function getNewReleaseVersion() {
 
 async function push(branchName) {
   console.log(`pushing branch: ${branchName}`);
-  await exec(`git push origin ${branchName}`);
+  await exec(`git push origin ${branchName} --tags`);
 }
 
 main();
