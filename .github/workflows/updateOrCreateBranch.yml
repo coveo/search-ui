@@ -14,6 +14,8 @@ jobs:
       BRANCH_NAME: ${{ github.event.inputs.BRANCH_NAME }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v1
         with:
           node-version: "12"
