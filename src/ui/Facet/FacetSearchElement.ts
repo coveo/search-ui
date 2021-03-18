@@ -84,7 +84,18 @@ export class FacetSearchElement {
         this.facetSearch.dismissSearchResults();
       }
     });
+    $$(this.searchResults).on('focusout', (event: FocusEvent) => this.onSearchResultsFocusOut(event));
     $$(this.searchResults).hide();
+  }
+
+  private onSearchResultsFocusOut(event: FocusEvent) {
+    const target = event.relatedTarget as HTMLElement;
+    const focusedOnInput = this.input.contains(target);
+    const focusedOnSearchResult = this.searchResults.contains(target);
+
+    if (!focusedOnInput && !focusedOnSearchResult) {
+      this.facetSearch.dismissSearchResults();
+    }
   }
 
   private initSearchDropdownNavigator() {
