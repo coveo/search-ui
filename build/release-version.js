@@ -19,7 +19,7 @@ async function main() {
 
 async function configureGit() {
   await exec(`git config --global user.email "sandbox_JSUI@coveo.com"`);
-  await exec(`git config --global user.name "Github Actions"`);
+  await exec(`git config --global user.name "Github Action Bot"`);
 }
 
 async function checkIfBranchExists(branchName) {
