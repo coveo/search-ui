@@ -3,7 +3,6 @@ const { promisify } = require('util');
 const exec = promisify(require('child_process').exec);
 const fs = require('fs');
 const os = require('os');
-const { isTagged } = require('./tag.utilities');
 
 async function deployTaggedVersion() {
   const suffix = 'beta';
@@ -25,6 +24,11 @@ function setNpmrcFile() {
 
   console.log('setting npmrc file');
   return new Promise((resolve, reject) => fs.writeFile(fileName, npmrcString, err => (err ? reject(err) : resolve())));
+}
+
+function isTagged() {
+  const tag = process.env.TAG_NAME || '';
+  return tag !== '';
 }
 
 async function main() {

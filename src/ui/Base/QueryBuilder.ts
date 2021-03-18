@@ -113,7 +113,7 @@ export class QueryBuilder {
   /**
    * Whether to interpret special query syntax (e.g., `@objecttype=message`) in the basic
    * [`expression`]{@link QueryBuilder.expression} (see
-   * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+   * [Coveo Query Syntax Reference](https://docs.coveo.com/en/1552/searching-with-coveo/coveo-cloud-query-syntax)).
    *
    * See also [`enableLowercaseOperators`]{@link QueryBuilder.enableLowercaseOperators}.
    *

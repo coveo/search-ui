@@ -1,7 +1,6 @@
 const { parallel, series } = require('gulp');
 const { buildLegacy } = require('./gulpTasks/legacy');
 const { doc } = require('./gulpTasks/doc');
-const { linkGitHooks } = require('./gulpTasks/linkGitHooks');
 const { setNodeProdEnv } = require('./gulpTasks/nodeEnv');
 const { fileTypes } = require('./gulpTasks/filetypes');
 const { iconList } = require('./gulpTasks/iconList');
@@ -18,7 +17,7 @@ const { injectVersion } = require('./gulpTasks/injectVersion');
 
 const src = series(compile, definitions);
 
-const build = series(parallel(linkGitHooks, setNodeProdEnv), parallel(fileTypes, iconList, setup, templates), buildStrings, src);
+const build = series(setNodeProdEnv, parallel(fileTypes, iconList, setup, templates), buildStrings, src);
 
 const defaultTask = parallel(buildLegacy, build, doc);
 

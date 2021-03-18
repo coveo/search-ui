@@ -58,7 +58,7 @@ export class FieldSuggestions extends Component {
 
     /**
      * Specifies a query override to apply when retrieving suggestions. You can use any valid query expression (see
-     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * [Coveo Query Syntax Reference](https://docs.coveo.com/en/1552/searching-with-coveo/coveo-cloud-query-syntax)).
      *
      * Default value is the empty string, and the component applies no query override.
      */

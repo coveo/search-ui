@@ -79,7 +79,7 @@ export class Querybox extends Component {
     /**
      * Specifies whether to interpret special query syntax (e.g., `@objecttype=message`) when the end user types
      * a query in the `Querybox` (see
-     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)). Setting this
+     * [Coveo Query Syntax Reference](https://docs.coveo.com/en/1552/searching-with-coveo/coveo-cloud-query-syntax)). Setting this
      * option to `true` also causes the `Querybox` to highlight any query syntax.
      *
      * Regardless of the value of this option, the Coveo Cloud REST Search API always interprets expressions surrounded
@@ -139,7 +139,7 @@ export class Querybox extends Component {
      * the end user types those keywords in lowercase.
      *
      * This option applies to all query operators (see
-     * [Coveo Query Syntax Reference](https://www.coveo.com/go?dest=adminhelp70&lcid=9&context=10005)).
+     * [Coveo Query Syntax Reference](https://docs.coveo.com/en/1552/searching-with-coveo/coveo-cloud-query-syntax)).
      *
      * **Example:**
      * > If this option and the `enableQuerySyntax` option are both `true`, the Coveo Platform interprets the `near`
