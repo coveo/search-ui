@@ -1254,14 +1254,14 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(7);
 var ComponentOptions_1 = __webpack_require__(14);
-var ComponentOptionsModel_1 = __webpack_require__(22);
+var ComponentOptionsModel_1 = __webpack_require__(23);
 var AnalyticsActionListMeta_1 = __webpack_require__(10);
 var ResultListEvents_1 = __webpack_require__(32);
 var HighlightUtils_1 = __webpack_require__(80);
-var DeviceUtils_1 = __webpack_require__(30);
+var DeviceUtils_1 = __webpack_require__(21);
 var OSUtils_1 = __webpack_require__(120);
 var Initialization_1 = __webpack_require__(12);
-var QueryUtils_1 = __webpack_require__(21);
+var QueryUtils_1 = __webpack_require__(22);
 var Assert_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(3);
 var Defer_1 = __webpack_require__(31);
@@ -1269,7 +1269,7 @@ var Dom_1 = __webpack_require__(1);
 var StreamHighlightUtils_1 = __webpack_require__(117);
 var StringUtils_1 = __webpack_require__(20);
 var underscore_1 = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(23);
+var GlobalExports_1 = __webpack_require__(24);
 __webpack_require__(337);
 var AccessibleButton_1 = __webpack_require__(122);
 /**
