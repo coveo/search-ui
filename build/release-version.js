@@ -48,7 +48,9 @@ async function createBranch(branchName) {
 }
 
 async function bumpVersion(version) {
+  console.log(`bumping version: ${version}`);
   await exec(`npm version ${version} -m "[version bump] %s"`);
+  await exec(`git log -2`);
 }
 
 async function getNewReleaseVersion() {
