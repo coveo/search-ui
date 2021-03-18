@@ -11,9 +11,9 @@ async function main() {
   }
 
   const exists = await checkIfBranchExists(branchName);
-  exists ? updateBranch() : createBranch();
+  exists ? updateBranch(branchName) : createBranch(branchName);
 
-  await push();
+  await push(branchName);
 }
 
 async function checkIfBranchExists(branchName) {
