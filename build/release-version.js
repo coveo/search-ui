@@ -10,10 +10,9 @@ async function main() {
     return console.log('please specify a branch name');
   }
 
-  await exec('git fetch');
   await configureGit();
   const exists = await checkIfBranchExists(branchName);
-  exists ? updateBranch(branchName) : createBranch(branchName);
+  exists ? await updateBranch(branchName) : await createBranch(branchName);
 
   await push(branchName);
 }
