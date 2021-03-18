@@ -23,13 +23,8 @@ async function configureGit() {
 }
 
 async function checkIfBranchExists(branchName) {
-  try {
-    await exec(`git show-ref --verify --quiet refs/heads/${branchName}`);
-    return true;
-  } catch (e) {
-    console.log(`did not find a branch called: ${branchName}`);
-    return false;
-  }
+  const { stdout } = await exec(`git ls-remote --heads origin ${branchName}`);
+  return stdout !== '';
 }
 
 async function updateBranch(branchName) {
