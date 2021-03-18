@@ -11,7 +11,7 @@ async function main() {
   }
 
   await exec('git fetch');
-  configureGit();
+  await configureGit();
   const exists = await checkIfBranchExists(branchName);
   exists ? updateBranch(branchName) : createBranch(branchName);
 
