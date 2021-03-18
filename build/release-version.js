@@ -36,15 +36,19 @@ async function updateBranch(branchName) {
   console.log(`updating branch: ${branchName}`);
 
   await exec(`git checkout ${branchName}`);
-  await exec(`npm version patch`);
+  await bumpVersion('patch');
 }
 
 async function createBranch(branchName) {
   console.log(`creating branch: ${branchName}`);
 
   await exec(`git checkout -b ${branchName}`);
-  const newVersion = await getNewReleaseVersion();
-  await exec(`npm version ${newVersion}`);
+  const version = await getNewReleaseVersion();
+  await bumpVersion(version);
+}
+
+async function bumpVersion(version) {
+  await exec(`npm version ${version} -m "[version bump] %s"`);
 }
 
 async function getNewReleaseVersion() {
