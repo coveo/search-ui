@@ -10,6 +10,7 @@ async function main() {
     return console.log('please specify a branch name');
   }
 
+  await exec('git fetch');
   configureGit();
   const exists = await checkIfBranchExists(branchName);
   exists ? updateBranch(branchName) : createBranch(branchName);
@@ -50,8 +51,6 @@ async function createBranch(branchName) {
 async function bumpVersion(version) {
   console.log(`bumping version: ${version}`);
   await exec(`npm version ${version} -m "[version bump] %s"`);
-  const { stdout, stderr } = await exec(`git log -2`);
-  console.log(stdout, stderr);
 }
 
 async function getNewReleaseVersion() {
