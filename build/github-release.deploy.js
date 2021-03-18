@@ -1,6 +1,6 @@
 const { Octokit } = require('@octokit/rest');
 const fs = require('fs');
-const { isAlphaVersion } = require('./tag.utilities');
+const { isAlphaVersion } = require('./version.utilities');
 
 const token = process.env.GITHUB_TOKEN || '';
 const tag_name = process.env.TAG_NAME || '';

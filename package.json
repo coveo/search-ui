@@ -5,7 +5,6 @@
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
   "scripts": {
-    "precommit": "lint-staged",
     "test": "npm run unitTests",
     "unitTests": "gulp unitTests && gulp coverage",
     "accessibilityTests": "gulp accessibilityTests",
@@ -23,7 +22,8 @@
     "uploadCoverage": "gulp uploadCoverage",
     "validateTypeDefinitions": "gulp validateDefs",
     "snyk-protect": "snyk protect",
-    "prepare": "husky install && npm run snyk-protect"
+    "prepare": "husky install && npm run snyk-protect",
+    "releaseVersion": "node ./build/release-version.js"
   },
   "lint-staged": {
     "*.{js,ts,json,scss}": [
