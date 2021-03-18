@@ -10,10 +10,16 @@ async function main() {
     return console.log('please specify a branch name');
   }
 
+  configureGit();
   const exists = await checkIfBranchExists(branchName);
   exists ? updateBranch(branchName) : createBranch(branchName);
 
   await push(branchName);
+}
+
+async function configureGit() {
+  await exec(`git config --global user.email "sandbox_JSUI@coveo.com"`);
+  await exec(`git config --global user.name "Github Actions"`);
 }
 
 async function checkIfBranchExists(branchName) {
