@@ -953,18 +953,26 @@ export class FacetSlider extends Component {
       return;
     }
 
-    let start = Number(groupByResults.values[0].value.split('..')[0]);
-    let end = Number(groupByResults.values[groupByResults.values.length - 1].value.split('..')[1]);
+    let start = groupByResults.values[0].value.split('..')[0];
+    let end = groupByResults.values[groupByResults.values.length - 1].value.split('..')[1];
 
-    const boudariesFromState = this.getBoundariesFromState();
-
-    if (boudariesFromState) {
-      start = Math.min(start, boudariesFromState.start);
-      end = Math.max(end, boudariesFromState.end);
+    if (this.isValueADate(start) && this.isValueADate(end)) {
+      this.setupInitialSliderStateStart(start);
+      this.setupInitialSliderStateEnd(end);
+      return;
     }
 
-    this.setupInitialSliderStateStart(start);
-    this.setupInitialSliderStateEnd(end);
+    const boudariesFromState = this.getBoundariesFromState();
+    let startAsNumber = Number(start);
+    let endAsNumber = Number(end);
+
+    if (boudariesFromState) {
+      startAsNumber = Math.min(startAsNumber, boudariesFromState.start);
+      endAsNumber = Math.max(endAsNumber, boudariesFromState.end);
+    }
+
+    this.setupInitialSliderStateStart(startAsNumber);
+    this.setupInitialSliderStateEnd(endAsNumber);
   }
 
   private getBoundariesFromState() {
@@ -981,8 +989,8 @@ export class FacetSlider extends Component {
   private setupInitialSliderStateStart(value: any) {
     if (this.initialStartOfSlider == undefined) {
       this.initialStartOfSlider = value;
-      if (this.options.dateField && isNaN(value)) {
-        this.initialStartOfSlider = new Date(value.replace('@', ' ')).getTime();
+      if (this.isValueADate(value)) {
+        this.initialStartOfSlider = this.getTimeFromAPIResponse(value);
       }
     }
   }
@@ -990,10 +998,18 @@ export class FacetSlider extends Component {
   private setupInitialSliderStateEnd(value: any) {
     if (this.initialEndOfSlider == undefined) {
       this.initialEndOfSlider = value;
-      if (this.options.dateField && isNaN(value)) {
-        this.initialEndOfSlider = new Date(value.replace('@', ' ')).getTime();
+      if (this.isValueADate(value)) {
+        this.initialEndOfSlider = this.getTimeFromAPIResponse(value);
       }
     }
+  }
+
+  private getTimeFromAPIResponse(value: string) {
+    return new Date(value.replace('@', ' ')).getTime();
+  }
+
+  private isValueADate(value: any) {
+    return this.options.dateField && isNaN(value);
   }
 
   private updateAppearanceDependingOnState(sliding = false) {
