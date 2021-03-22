@@ -980,9 +980,15 @@ export class FacetSlider extends Component {
     if (!stateValues || stateValues[0] == undefined || stateValues[1] == undefined) {
       return undefined;
     }
+    const startAsNumber = Number(stateValues[0]);
+    const endAsNumber = Number(stateValues[1]);
+
+    if (isNaN(startAsNumber) || isNaN(endAsNumber)) {
+      return undefined;
+    }
     return {
-      start: Number(stateValues[0]),
-      end: Number(stateValues[1])
+      start: startAsNumber,
+      end: endAsNumber
     };
   }
 
