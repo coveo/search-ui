@@ -66,7 +66,7 @@ function externalDefs() {
       './node_modules/@types/d3/index.d.ts',
       './lib/globalize/index.d.ts',
       './lib/jstimezonedetect/index.d.ts',
-      // './lib/coveoanalytics/index.d.ts',
+      './lib/coveoanalytics/index.d.ts',
       './lib/map/index.d.ts'
     ])
     .pipe(concat('Externals.d.ts'))

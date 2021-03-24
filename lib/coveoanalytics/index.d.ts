@@ -1,6 +1,5 @@
 declare namespace CoveoAnalytics {
-  interface Response {
-  }
+  interface Response {}
 
   interface SearchDocument {
     documentUri: string;
@@ -72,17 +71,13 @@ declare namespace CoveoAnalytics {
     visitorId: string;
   }
 
-  interface SearchEventResponse extends DefaultEventResponse {
-  }
+  interface SearchEventResponse extends DefaultEventResponse {}
 
-  interface ClickEventResponse extends DefaultEventResponse {
-  }
+  interface ClickEventResponse extends DefaultEventResponse {}
 
-  interface CustomEventResponse extends DefaultEventResponse {
-  }
+  interface CustomEventResponse extends DefaultEventResponse {}
 
-  interface ViewEventResponse extends DefaultEventResponse {
-  }
+  interface ViewEventResponse extends DefaultEventResponse {}
 
   interface VisitResponse {
     raw: Response;
@@ -120,7 +115,7 @@ declare namespace CoveoAnalytics {
 
   interface History {
     HistoryStore: {
-      new(storage?: WebStorage): HistoryStore;
+      new (storage?: WebStorage): HistoryStore;
     };
   }
 
@@ -151,7 +146,6 @@ declare namespace CoveoAnalytics {
     onLoad(callback: Function): void;
   }
 
-
   interface WebStorage {
     getItem(key: string): string;
     removeItem(key: string): void;
@@ -160,7 +154,6 @@ declare namespace CoveoAnalytics {
   let preferredStorage: WebStorage;
 
   function getAvailableStorage(): WebStorage;
-
 
   class NullStorage implements WebStorage {
     getItem(key: string): string;
@@ -179,16 +172,4 @@ declare namespace CoveoAnalytics {
   }
 
   type EventType = 'pageview';
-}
-
-declare module 'coveo.analytics' {
-  export const analytics: CoveoAnalytics.AnalyticsClient;
-  export const history: CoveoAnalytics.History;
-  export const storage: {
-    CookieStorage: new ()=> CoveoAnalytics.CookieStorage
-  }
-  export const SimpleAnalytics: {
-    SimpleAPI: CoveoAnalytics.SimpleAPI,
-    SimpleAnalytics: (action: string, ...params: any[]) => any;
-  };
 }
