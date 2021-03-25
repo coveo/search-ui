@@ -96,6 +96,22 @@ export function FacetSliderQueryControllerTest() {
           expect(requestForFullRange.constantQueryOverride).toBeUndefined();
         });
 
+        it('should use @uri for advanced query override', () => {
+          expect(requestForFullRange.advancedQueryOverride).toBe('@uri');
+        });
+      });
+
+      describe('with a query containing a constant expression', () => {
+        beforeEach(() => {
+          builder.constantExpression.add('foo');
+          controller.putGroupByIntoQueryBuilder(builder);
+          requestForFullRange = builder.groupByRequests[controller.lastGroupByRequestForFullRangeIndex];
+        });
+
+        it('should have a constant query override copied from the main request', () => {
+          expect(requestForFullRange.constantQueryOverride).toBe('foo');
+        });
+
         it('should not use any advanced query override', () => {
           expect(requestForFullRange.advancedQueryOverride).toBeUndefined();
         });
