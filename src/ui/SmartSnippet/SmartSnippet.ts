@@ -242,6 +242,7 @@ export class SmartSnippet extends Component {
 
   private async render(questionAnswer: IQuestionAnswerResponse) {
     this.ensureDom();
+    this.feedbackBanner.reset();
     this.questionContainer.innerText = questionAnswer.question;
     this.renderSnippet(questionAnswer.answerSnippet);
     this.lastRenderedResult = this.getCorrespondingResult(questionAnswer);

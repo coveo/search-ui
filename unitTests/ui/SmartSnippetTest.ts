@@ -101,7 +101,7 @@ export function SmartSnippetTest() {
     }
 
     function getFirstChild(className: string) {
-      return test.cmp.element.getElementsByClassName(className)[0] as HTMLElement;
+      return (test.cmp.element.getElementsByClassName(className)[0] as HTMLElement) || null;
     }
 
     function getShadowRoot() {
@@ -217,6 +217,30 @@ export function SmartSnippetTest() {
 
         it('should render the answer container followed by the feedback banner', () => {
           expectChildren(test.cmp.element, [ClassNames.ANSWER_CONTAINER_CLASSNAME, UserFeedbackBannerClassNames.ROOT_CLASSNAME]);
+        });
+
+        it('the thank you banner should not be active', () => {
+          expect(getFirstChild(UserFeedbackBannerClassNames.THANK_YOU_BANNER_ACTIVE_CLASSNAME)).toBeNull();
+        });
+
+        it('after clicking yes or no, the thank you banner should be active', () => {
+          getFirstChild(UserFeedbackBannerClassNames.NO_BUTTON_CLASSNAME).click();
+          expect(getFirstChild(UserFeedbackBannerClassNames.THANK_YOU_BANNER_ACTIVE_CLASSNAME)).not.toBeNull();
+        });
+
+        it('after clicking yes or no and receiving a new answer, the thank you banner should not be active', async done => {
+          getFirstChild(UserFeedbackBannerClassNames.NO_BUTTON_CLASSNAME).click();
+          await triggerQuestionAnswerQuery(false);
+          expect(getFirstChild(UserFeedbackBannerClassNames.THANK_YOU_BANNER_ACTIVE_CLASSNAME)).toBeNull();
+          done();
+        });
+
+        it('after clicking yes or no and receiving a new answer, it should still be possible to give the same answer', async done => {
+          getFirstChild(UserFeedbackBannerClassNames.NO_BUTTON_CLASSNAME).click();
+          await triggerQuestionAnswerQuery(false);
+          getFirstChild(UserFeedbackBannerClassNames.NO_BUTTON_CLASSNAME).click();
+          expect(getFirstChild(UserFeedbackBannerClassNames.THANK_YOU_BANNER_ACTIVE_CLASSNAME)).not.toBeNull();
+          done();
         });
 
         it('should render the snippet followed by the source in the answer container', () => {
