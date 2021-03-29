@@ -72,6 +72,16 @@ export class UserFeedbackBanner {
     ).el;
   }
 
+  public reset() {
+    this.isUseful = UsefulState.Unknown;
+    $$(this.yesButton).removeClass(BUTTON_ACTIVE_CLASSNAME);
+    $$(this.yesButton).setAttribute('aria-pressed', 'false');
+    $$(this.noButton).removeClass(BUTTON_ACTIVE_CLASSNAME);
+    $$(this.noButton).setAttribute('aria-pressed', 'false');
+    $$(this.thankYouBanner).removeClass(THANK_YOU_BANNER_ACTIVE_CLASSNAME);
+    $$(this.explainWhy).removeClass(EXPLAIN_WHY_ACTIVE_CLASSNAME);
+  }
+
   private buildContainer() {
     return $$(
       'div',
