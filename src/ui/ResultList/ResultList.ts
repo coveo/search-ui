@@ -1,7 +1,7 @@
 import 'styling/_Result';
 import 'styling/_ResultFrame';
 import 'styling/_ResultList';
-import { chain, compact, contains, each, flatten, map, unique, without, uniqueId } from 'underscore';
+import { compact, contains, each, flatten, map, unique, without, uniqueId } from 'underscore';
 import {
   IBuildingQueryEventArgs,
   IDuringQueryEventArgs,
@@ -372,7 +372,11 @@ export class ResultList extends Component {
    * @returns {string[]}
    */
   public getAutoSelectedFieldsToInclude(): string[] {
-    return chain(this.options.resultTemplate.getFields()).concat(this.getMinimalFieldsToInclude()).compact().unique().value();
+    const fields = this.options.resultTemplate.getFields();
+    const allFields = fields.concat(this.getMinimalFieldsToInclude());
+    const validFields = compact(allFields);
+
+    return unique(validFields);
   }
 
   private setupTemplatesVersusLayouts() {

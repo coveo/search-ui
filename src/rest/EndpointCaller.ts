@@ -5,7 +5,7 @@ import { TimeSpan } from '../utils/TimeSpanUtils';
 import { DeviceUtils } from '../utils/DeviceUtils';
 import { Utils } from '../utils/Utils';
 import { JQueryUtils } from '../utils/JQueryutils';
-import * as _ from 'underscore';
+import { chain, compact, isObject, isFunction, each, defer } from 'underscore';
 import { UrlUtils } from '../utils/UrlUtils';
 
 declare const XDomainRequest;
@@ -214,16 +214,17 @@ export class EndpointCaller implements IEndpointCaller {
   public static convertJsonToQueryString(json: Record<string, any>): string[] {
     Assert.exists(json);
 
-    return _.chain(json)
+    const encoded = chain(json)
       .map((value, key) => {
         if (value != null) {
-          const stringValue = _.isObject(value) ? JSON.stringify(value) : value.toString();
+          const stringValue = isObject(value) ? JSON.stringify(value) : value.toString();
           return `${key}=${Utils.safeEncodeURIComponent(stringValue)}`;
         }
         return null;
       })
-      .compact()
       .value();
+
+    return compact(encoded);
   }
 
   public static convertJsonToFormBody(json: Record<string, any>): string {
@@ -250,7 +251,7 @@ export class EndpointCaller implements IEndpointCaller {
     };
     requestInfo.headers = this.buildRequestHeaders(requestInfo);
 
-    if (_.isFunction(this.options.requestModifier)) {
+    if (isFunction(this.options.requestModifier)) {
       requestInfo = this.options.requestModifier(requestInfo);
     }
 
@@ -298,7 +299,7 @@ export class EndpointCaller implements IEndpointCaller {
           sent = true;
           xmlHttpRequest.withCredentials = true;
 
-          _.each(requestInfo.headers, (headerValue, headerKey) => {
+          each(requestInfo.headers, (headerValue, headerKey) => {
             xmlHttpRequest.setRequestHeader(headerKey, headerValue);
           });
 
@@ -408,7 +409,7 @@ export class EndpointCaller implements IEndpointCaller {
       xDomainRequest.onprogress = () => this.logger.trace('Request progress', xDomainRequest, requestInfo.requestData);
 
       // We must open the request in a separate thread, for obscure reasons
-      _.defer(() => {
+      defer(() => {
         if (requestInfo.method == 'GET') {
           xDomainRequest.send();
         } else {

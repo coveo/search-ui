@@ -7,7 +7,7 @@ import { IGroupByRequest } from '../../rest/GroupByRequest';
 import { IQuery } from '../../rest/Query';
 import { QueryBuilder } from '../Base/QueryBuilder';
 import { $$ } from '../../utils/Dom';
-import * as _ from 'underscore';
+import { chain, map, uniq, each, compact, clone } from 'underscore';
 import { AllowedValuesPatternType } from '../../rest/AllowedValuesPatternType';
 
 export class FacetSearchParameters {
@@ -35,13 +35,13 @@ export class FacetSearchParameters {
   }
 
   public excludeCurrentlyDisplayedValuesInSearch(searchResults: HTMLElement) {
-    _.each(this.getCurrentlyShowedValueInSearch(searchResults), v => {
+    each(this.getCurrentlyShowedValueInSearch(searchResults), v => {
       const expandedValues = FacetUtils.getValuesToUseForSearchInFacet(v, this.facet);
-      _.each(expandedValues, expanded => {
+      each(expandedValues, expanded => {
         this.alwaysExclude.push(expanded);
       });
     });
-    _.each(this.facet.getDisplayedFacetValues(), v => {
+    each(this.facet.getDisplayedFacetValues(), v => {
       this.alwaysExclude.push(v.value);
     });
   }
@@ -60,7 +60,7 @@ export class FacetSearchParameters {
     if (this.valueToSearch) {
       allowedValues = typedByUser.concat(this.alwaysInclude).concat(this.alwaysExclude);
     } else {
-      allowedValues = _.compact(typedByUser.concat(this.alwaysInclude).concat(this.facet.options.allowedValues));
+      allowedValues = compact(typedByUser.concat(this.alwaysInclude).concat(this.facet.options.allowedValues));
     }
 
     let completeFacetWithStandardValues = this.completeFacetWithStandardValues;
@@ -96,7 +96,7 @@ export class FacetSearchParameters {
   }
 
   public getQuery(): IQuery {
-    let lastQuery = _.clone(this.facet.queryController.getLastQuery());
+    let lastQuery = clone(this.facet.queryController.getLastQuery());
     if (!lastQuery) {
       // There should normally always be a last query available
       // If not, just create an empty one.
@@ -124,24 +124,20 @@ export class FacetSearchParameters {
   }
 
   private getCurrentlyShowedValueInSearch(searchResults: HTMLElement) {
-    return _.map($$(searchResults).findAll('.coveo-facet-value-caption'), val => {
+    return map($$(searchResults).findAll('.coveo-facet-value-caption'), val => {
       return $$(val).getAttribute('data-original-value') || $$(val).text();
     });
   }
 
   private lowerCaseAll() {
-    this.alwaysExclude = _.chain(this.alwaysExclude)
-      .map(v => {
-        return v.toLowerCase();
-      })
-      .uniq()
-      .value();
+    this.alwaysExclude = this.convertToLowercase(this.alwaysExclude);
+    this.alwaysInclude = this.convertToLowercase(this.alwaysInclude);
+  }
 
-    this.alwaysInclude = _.chain(this.alwaysInclude)
-      .map(v => {
-        return v.toLowerCase();
-      })
-      .uniq()
+  private convertToLowercase(arr: string[]) {
+    const lowercase = chain(arr)
+      .map(v => v.toLowerCase())
       .value();
+    return uniq(lowercase);
   }
 }

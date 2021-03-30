@@ -1,6 +1,6 @@
 import { Assert } from '../misc/Assert';
 import { Utils } from '../utils/Utils';
-import * as _ from 'underscore';
+import { chain, compact, each, isObject, keys, map, Dictionary, isArray, isNumber, isBoolean } from 'underscore';
 import { Logger } from '../MiscModules';
 
 export class HashUtils {
@@ -36,11 +36,11 @@ export class HashUtils {
 
   public static encodeValues(values: {}): string {
     const hash: String[] = [];
-    _.each(<_.Dictionary<any>>values, (valueToEncode, key, obj?) => {
+    each(<Dictionary<any>>values, (valueToEncode, key, obj?) => {
       let encodedValue = '';
       if (Utils.isNonEmptyArray(valueToEncode)) {
         encodedValue = HashUtils.encodeArray(valueToEncode);
-      } else if (_.isObject(valueToEncode) && Utils.isNonEmptyArray(_.keys(valueToEncode))) {
+      } else if (isObject(valueToEncode) && Utils.isNonEmptyArray(keys(valueToEncode))) {
         encodedValue = HashUtils.encodeObject(valueToEncode);
       } else if (!Utils.isNullOrUndefined(valueToEncode)) {
         encodedValue = Utils.safeEncodeURIComponent(valueToEncode.toString());
@@ -168,14 +168,14 @@ export class HashUtils {
   }
 
   public static encodeArray(array: string[]): string {
-    const arrayReturn = _.map(array, value => {
+    const arrayReturn = map(array, value => {
       return Utils.safeEncodeURIComponent(value);
     });
     return HashUtils.DELIMITER.arrayStart + arrayReturn.join(',') + HashUtils.DELIMITER.arrayEnd;
   }
 
   public static encodeObject(obj: Object): string {
-    const retArray = _.map(<_.Dictionary<any>>obj, (val, key?, obj?) => {
+    const retArray = map(<Dictionary<any>>obj, (val, key?, obj?) => {
       return `"${Utils.safeEncodeURIComponent(key)}":${this.encodeValue(val)}`;
     });
     return HashUtils.DELIMITER.objectStart + retArray.join(' , ') + HashUtils.DELIMITER.objectEnd;
@@ -183,11 +183,11 @@ export class HashUtils {
 
   private static encodeValue(val: any) {
     let encodedValue = '';
-    if (_.isArray(val)) {
+    if (isArray(val)) {
       encodedValue = HashUtils.encodeArray(val);
-    } else if (_.isObject(val)) {
+    } else if (isObject(val)) {
       encodedValue = JSON.stringify(val);
-    } else if (_.isNumber(val) || _.isBoolean(val)) {
+    } else if (isNumber(val) || isBoolean(val)) {
       encodedValue = Utils.safeEncodeURIComponent(val.toString());
     } else {
       encodedValue = '"' + Utils.safeEncodeURIComponent(val) + '"';
@@ -220,10 +220,10 @@ export class HashUtils {
     }
   }
 
-  private static decodeArray(value: string): any[] {
+  private static decodeArray(value: string): string[] {
     const valueWithoutSquareBrackets = HashUtils.removeSquareBrackets(value);
     const array = valueWithoutSquareBrackets.split(',');
-    return _.chain(array)
+    const decoded = chain(array)
       .map(val => {
         try {
           return decodeURIComponent(val);
@@ -232,8 +232,9 @@ export class HashUtils {
           return null;
         }
       })
-      .compact()
       .value();
+
+    return compact(decoded);
   }
 
   private static removeSquareBrackets(value: string) {

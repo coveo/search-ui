@@ -6,7 +6,7 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { $$, Dom } from '../../utils/Dom';
 import { Initialization } from '../Base/Initialization';
 import { ValidLayout } from '../ResultLayoutSelector/ValidLayout';
-import { map, chain, each } from 'underscore';
+import { map, chain, each, compact, flatten } from 'underscore';
 
 export interface ITemplateFromStringProperties {
   condition?: string;
@@ -61,13 +61,12 @@ export class TemplateFromAScriptTag {
     // Scan components in this template
     // return the fields needed for the content of this template
     const neededFieldsForComponents = chain(this.template.getComponentsInside(scriptTag.innerHTML))
-      .map((component: string) => {
-        return Initialization.getRegisteredFieldsComponentForQuery(component);
-      })
-      .flatten()
+      .map((component: string) => Initialization.getRegisteredFieldsComponentForQuery(component))
       .value();
 
-    this.template.addFields(neededFieldsForComponents);
+    const fields = flatten(neededFieldsForComponents);
+
+    this.template.addFields(fields);
   }
 
   toHtmlElement(container?: Dom): HTMLElement {
@@ -84,7 +83,7 @@ export class TemplateFromAScriptTag {
 
   parseFieldsAttributes(): IFieldsToMatch[] {
     const dataSet = this.scriptTag.dataset;
-    return chain(dataSet)
+    const fields = chain(dataSet)
       .map((value, key: string) => {
         const match = key.match(/field([a-zA-Z0-9_\.]*)/i);
         if (match) {
@@ -100,8 +99,9 @@ export class TemplateFromAScriptTag {
           return undefined;
         }
       })
-      .compact()
       .value();
+
+    return compact(fields);
   }
 
   parseScreenSize(attribute: string) {

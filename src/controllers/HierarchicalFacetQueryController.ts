@@ -6,7 +6,7 @@ import { HierarchicalFacet, IValueHierarchy } from '../ui/HierarchicalFacet/Hier
 import { FacetSearchParameters } from '../ui/Facet/FacetSearchParameters';
 import { IIndexFieldValue } from '../rest/FieldValue';
 import { FacetUtils } from '../ui/Facet/FacetUtils';
-import * as _ from 'underscore';
+import { chain, contains, map } from 'underscore';
 
 export class HierarchicalFacetQueryController extends FacetQueryController {
   constructor(public facet: HierarchicalFacet) {
@@ -20,18 +20,18 @@ export class HierarchicalFacetQueryController extends FacetQueryController {
       this.facet.options.facetSearchIgnoreAccents
     );
     return new Promise<IIndexFieldValue[]>(resolve => {
-      const match = _.chain(this.facet.getAllValueHierarchy())
-        .toArray()
+      const match = chain(this.facet.getAllValueHierarchy())
+        .values()
         .filter((v: IValueHierarchy) => {
           return (
             this.facet.getValueCaption(v.facetValue).match(regex) != null &&
-            !_.contains(<any>_.map(params.alwaysExclude, toExclude => toExclude.toLowerCase()), v.facetValue.value.toLowerCase())
+            !contains(<any>map(params.alwaysExclude, toExclude => toExclude.toLowerCase()), v.facetValue.value.toLowerCase())
           );
         })
         .first(this.facet.options.numberOfValuesInFacetSearch)
         .value();
 
-      const facetValues: IIndexFieldValue[] = _.map(match, (v: IValueHierarchy) => {
+      const facetValues: IIndexFieldValue[] = map(match, (v: IValueHierarchy) => {
         return <any>v.facetValue;
       });
 
