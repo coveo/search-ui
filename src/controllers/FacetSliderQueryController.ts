@@ -59,9 +59,7 @@ export class FacetSliderQueryController {
     if (!this.isAValidRangeResponse(args)) {
       const logger = new Logger(this);
       logger.error(
-        `Cannot instantiate FacetSlider for this field : ${
-          this.facet.options.field
-        }. It needs to be configured as a numerical field in the index`
+        `Cannot instantiate FacetSlider for this field : ${this.facet.options.field}. It needs to be configured as a numerical field in the index`
       );
       logger.error(`Disabling the FacetSlider`, this.facet);
       this.facet.disable();
@@ -264,10 +262,7 @@ export class FacetSliderQueryController {
 
   private getFilterDateFormat(rawValue: any) {
     if (rawValue) {
-      return this.getISOFormat(rawValue)
-        .replace('T', '@')
-        .replace('.000Z', '')
-        .replace(/-/g, '/');
+      return this.getISOFormat(rawValue).replace('T', '@').replace('.000Z', '').replace(/-/g, '/');
     } else {
       return undefined;
     }
@@ -296,6 +291,18 @@ export class FacetSliderQueryController {
     }
 
     this.addExpressionToExcludeInvalidDates(groupByRequestForFullRange);
+
+    // If, after the above treatment, * all * parts of the group by request override are still empty,
+    // we need to add at least one override for it to be able to actually "disregard" the current filters of the interface, and retrieve the full range from the index.
+    // If all query override parts stays empty, we end up with a useless query that is affected by any other filters in the interface
+    if (
+      groupByRequestForFullRange.queryOverride === undefined &&
+      groupByRequestForFullRange.advancedQueryOverride === undefined &&
+      groupByRequestForFullRange.constantQueryOverride === undefined
+    ) {
+      groupByRequestForFullRange.advancedQueryOverride = '@uri';
+    }
+
     queryBuilder.groupByRequests.push(groupByRequestForFullRange);
   }
 
