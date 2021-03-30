@@ -91,19 +91,21 @@ export class FacetSearchElement {
 
   private onInputBlur(e: FocusEvent) {
     const target = e.relatedTarget as HTMLElement;
+    const isUsingKeyboard = !!target;
     const focusedOnSearchResult = this.searchResults.contains(target);
 
-    if (!focusedOnSearchResult) {
+    if (isUsingKeyboard && !focusedOnSearchResult) {
       this.facetSearch.dismissSearchResults();
     }
   }
 
   private onSearchResultsFocusOut(e: FocusEvent) {
     const target = e.relatedTarget as HTMLElement;
+    const isUsingKeyboard = !!target;
     const focusedOnInput = this.input.contains(target);
     const focusedOnSearchResult = this.searchResults.contains(target);
 
-    if (!focusedOnInput && !focusedOnSearchResult) {
+    if (isUsingKeyboard && !focusedOnInput && !focusedOnSearchResult) {
       this.facetSearch.dismissSearchResults();
     }
   }
