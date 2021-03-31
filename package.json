@@ -80,7 +80,7 @@
     "@types/jasmine": "^2.8.7",
     "@types/jasmine-ajax": "^3.1.37",
     "@types/pikaday": "^1.7.0",
-    "@types/underscore": "1.10.2",
+    "@types/underscore": "1.11.0",
     "@types/xregexp": "^3.0.30",
     "aws-sdk": "^2.155.0",
     "axe-core": "~3.0.3",
@@ -167,7 +167,7 @@
     "moment": "~2.22.2",
     "pikaday": "^1.4.0",
     "popper.js": "^1.14.3",
-    "underscore": "1.10.2",
+    "underscore": "1.11.0",
     "xregexp": "^4.2.4"
   },
   "resolutions": {

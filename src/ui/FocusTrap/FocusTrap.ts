@@ -9,7 +9,8 @@ export class FocusTrap {
   private enabled: boolean;
 
   private get focusableElements(): HTMLElement[] {
-    return sortBy(this.container.querySelectorAll('[tabindex]'), element => element.tabIndex);
+    const elements = this.container.querySelectorAll<HTMLElement>('[tabindex]');
+    return sortBy(elements, element => element.tabIndex);
   }
 
   constructor(private container: HTMLElement) {

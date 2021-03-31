@@ -6,7 +6,7 @@ import { toArray } from 'underscore';
 import { Suggestion } from '../../src/magicbox/SuggestionsManager';
 
 export function ResultPreviewsManagerTest() {
-  describe('ResultPreviewsManager', function() {
+  describe('ResultPreviewsManager', function () {
     const previewClass = 'this-is-fine';
     const suggestionText = 'DVD';
     const previewsTexts = ['Fabric DVD pouch', '15 Blank CDs', 'CD/DVD drive'];
@@ -63,7 +63,8 @@ export function ResultPreviewsManagerTest() {
     }
 
     function getAppendedPreviews() {
-      return toArray<HTMLElement>(env.element.querySelectorAll(`.${previewClass}`));
+      const elements = env.element.querySelectorAll<HTMLElement>(`.${previewClass}`);
+      return toArray(elements);
     }
 
     beforeEach(async done => {

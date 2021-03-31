@@ -357,7 +357,7 @@ export class Folding extends Component {
   // Convert ResultNode to QueryResult
   private static resultNodeToQueryResult(resultNode: IResultNode): IQueryResult {
     const result = resultNode.result;
-    result.attachments = map(sortBy<IResultNode>(resultNode.children, 'score'), Folding.resultNodeToQueryResult);
+    result.attachments = map(sortBy(resultNode.children, 'score'), Folding.resultNodeToQueryResult);
     result.parentResult = resultNode.parent != null ? resultNode.parent.result : null;
     return result;
   }

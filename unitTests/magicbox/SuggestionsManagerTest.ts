@@ -724,7 +724,7 @@ export function SuggestionsManagerTest() {
               it("moving the focus right when there's previews sets aria-selected on the first preview", async done => {
                 await moveDownToSuggestionAndWait(0);
                 suggestionsManager.moveRight();
-                const selectedElements = toArray<HTMLElement>(env.root.querySelectorAll('[aria-selected="true"]'));
+                const selectedElements = toArray(env.root.querySelectorAll<HTMLElement>('[aria-selected="true"]'));
                 expect(selectedElements.length).toEqual(1);
                 expect(selectedElements[0].innerText).toEqual(first(first(textPreviews)));
                 done();

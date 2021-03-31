@@ -27,7 +27,7 @@ export class ExecutionReportSimpleSection implements IExecutionReportSectionBuil
     const { container, agGridElement } = ExecutionReport.standardSectionHeader(this.sectionTitle);
     let gridOptions: agGridModule.GridOptions;
     const topLevelProperty = find(executionReport.children, child => {
-      return child.name == this.topLevelProperty && child.children && findWhere(child.children, { name: this.secondLevelProperty });
+      return child.name == this.topLevelProperty && child.children && !!findWhere(child.children, { name: this.secondLevelProperty });
     });
 
     if (topLevelProperty && topLevelProperty.children) {

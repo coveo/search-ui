@@ -96,19 +96,21 @@ export class FieldAddon {
   }
 
   private hashValueToSuggestion(hash: IFieldAddonHash, promise: Promise<IOmniboxSuggestion[]>): Promise<IOmniboxSuggestion[]> {
-    return promise.then(values => {
-      const suggestions = _.map<any, IOmniboxSuggestion>(values, (value: string, i): IOmniboxSuggestion => {
-        const suggestion: IOmniboxSuggestion = {
-          text:
-            hash.before +
-            (hash.current.toLowerCase().indexOf(value.toLowerCase()) == 0 ? hash.current + value.substr(hash.current.length) : value) +
-            hash.after,
-          html: MagicBoxUtils.highlightText(value, hash.current, true),
-          index: FieldAddon.INDEX - i / values.length
-        };
-        return suggestion;
-      });
-      return suggestions;
+    return promise.then(suggestions => {
+      const values = suggestions as string[];
+      return _.map(
+        values,
+        (value, i): IOmniboxSuggestion => {
+          return {
+            text:
+              hash.before +
+              (hash.current.toLowerCase().indexOf(value.toLowerCase()) == 0 ? hash.current + value.substr(hash.current.length) : value) +
+              hash.after,
+            html: MagicBoxUtils.highlightText(value, hash.current, true),
+            index: FieldAddon.INDEX - i / values.length
+          };
+        }
+      );
     });
   }
 

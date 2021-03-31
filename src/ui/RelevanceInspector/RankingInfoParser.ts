@@ -139,7 +139,7 @@ const parseTermsWeights = (termsWeight: RegExpExecArray | null): IListOfTermsWei
   if (termsWeight && termsWeight[1]) {
     let terms = StringUtils.match(termsWeight[1], REGEX_EXTRACT_GROUP_OF_TERMS);
 
-    return object(
+    return (object(
       map(terms, term => {
         let words = object(
           map(StringUtils.match(term[1], REGEX_EXTRACT_SINGLE_TERM), word => {
@@ -161,7 +161,7 @@ const parseTermsWeights = (termsWeight: RegExpExecArray | null): IListOfTermsWei
           }
         ];
       })
-    ) as IListOfTermsWeights;
+    ) as any) as IListOfTermsWeights;
   }
   return null;
 };

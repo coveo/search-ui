@@ -18,7 +18,7 @@ export class TemplateConditionEvaluator {
     );
     const matchedFields = StringUtils.match(text, fieldMatcher);
 
-    return _.map(matchedFields, match => _.find(match.splice(1), field => field));
+    return _.map(matchedFields, match => _.find(match.splice(1), field => !!field));
   }
 
   static evaluateCondition(condition: string, result: IQueryResult, responsiveComponents = new ResponsiveComponents()): Boolean {

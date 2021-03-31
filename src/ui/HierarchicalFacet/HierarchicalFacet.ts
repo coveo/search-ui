@@ -249,7 +249,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     if (deselectChildren) {
       let hasChilds = valueHierarchy.childs != undefined;
       if (hasChilds) {
-        let activeChilds = _.filter<IValueHierarchy>(valueHierarchy.childs, child => {
+        let activeChilds = _.filter(valueHierarchy.childs, child => {
           let valueToCompare = this.getFacetValueFromHierarchy(child.facetValue);
           return valueToCompare.selected || valueToCompare.excluded;
         });
@@ -528,7 +528,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   protected handleOmniboxWithStaticValue(eventArg: IPopulateOmniboxEventArgs) {
     let regex = eventArg.completeQueryExpression.regex;
     let match = _.first(
-      _.filter<IValueHierarchy>(this.getAllValueHierarchy(), existingValue => {
+      _.filter(this.getAllValueHierarchy(), existingValue => {
         return regex.test(this.getValueCaption(existingValue.facetValue));
       }),
       this.options.numberOfValuesInOmnibox
@@ -730,14 +730,14 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   }
 
   private setInHierarchy(flatHierarchy: IFlatHierarchy[]) {
-    this.correctLevels = _.filter<IFlatHierarchy>(flatHierarchy, hierarchy => {
+    this.correctLevels = _.filter(flatHierarchy, hierarchy => {
       let isCorrectMinimumLevel = this.options.levelStart == undefined || hierarchy.level >= this.options.levelStart;
       let isCorrectMaximumLevel = this.options.levelEnd == undefined || hierarchy.level < this.options.levelEnd;
       return isCorrectMinimumLevel && isCorrectMaximumLevel;
     });
     _.each(this.correctLevels, (hierarchy: IFlatHierarchy) => {
       let childs = _.map(
-        _.filter<IFlatHierarchy>(this.correctLevels, (possibleChild: IFlatHierarchy) => {
+        _.filter(this.correctLevels, (possibleChild: IFlatHierarchy) => {
           return possibleChild.parent != null && possibleChild.parent.toLowerCase() == hierarchy.self.toLowerCase();
         }),
         (child): IValueHierarchy => {
@@ -753,7 +753,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
 
       let parent =
         hierarchy.parent != null
-          ? _.find<IFlatHierarchy>(this.correctLevels, possibleParent => {
+          ? _.find(this.correctLevels, possibleParent => {
               return possibleParent.self.toLowerCase() == hierarchy.parent.toLowerCase();
             })
           : null;
@@ -908,7 +908,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
     let parent = valueHierarchy.parent;
     while (parent) {
       let parentInHierarchy = this.getValueHierarchy(parent.facetValue.value);
-      let otherSelectedChilds = _.filter<IValueHierarchy>(parentInHierarchy.childs, child => {
+      let otherSelectedChilds = _.filter(parentInHierarchy.childs, child => {
         let childInHierarchy = this.getValueHierarchy(child.facetValue.value);
         if (childInHierarchy != undefined) {
           return (

@@ -615,9 +615,9 @@ export class ResultsFiltersPreferences extends Component {
   private mergeLocalPreferencesWithStaticPreferences() {
     const staticPreferences = this.fromResultsFilterOptionToResultsPreferenceInterface();
     const localPreferences = this.preferencePanelLocalStorage.load();
-    const localPreferencesWithoutRemoved = _.filter<IResultFilterPreference>(localPreferences, preference => {
+    const localPreferencesWithoutRemoved = _.filter(localPreferences, preference => {
       const isCustom = preference.custom;
-      const existsInStatic = _.find<IResultFilterPreference>(staticPreferences, staticPreference => {
+      const existsInStatic = _.find(staticPreferences, staticPreference => {
         return staticPreference.caption == preference.caption;
       });
       return isCustom || existsInStatic != undefined;

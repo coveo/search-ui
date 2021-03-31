@@ -38,7 +38,7 @@ export class MagicBoxInstance {
   private displayedResult: Result;
 
   private get firstSuggestionWithText(): Suggestion {
-    return find(this.lastSuggestions, suggestion => suggestion.text);
+    return find(this.lastSuggestions, suggestion => !!suggestion.text);
   }
 
   private get firstSuggestionText() {

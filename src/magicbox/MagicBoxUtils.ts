@@ -7,15 +7,15 @@ export class MagicBoxUtils {
 
   static highlightText(
     text: string,
-    highligth: string,
+    highlight: string,
     ignoreCase = false,
     matchClass: string = 'magic-box-hightlight',
     doNotMatchClass: string = ''
   ) {
-    if (highligth.length == 0) {
+    if (highlight.length == 0) {
       return text;
     }
-    const escaped = this.escapeRegExp(highligth);
+    const escaped = this.escapeRegExp(highlight);
     const stringRegex = '(' + escaped + ')|(.*?(?=' + escaped + ')|.+)';
     const regex = new RegExp(stringRegex, ignoreCase ? 'gi' : 'g');
     return text.replace(regex, (text, match, notmatch) => this.escapeText(match != null ? matchClass : doNotMatchClass, text));

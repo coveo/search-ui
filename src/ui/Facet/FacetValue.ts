@@ -76,9 +76,9 @@ export class FacetValue {
       return FacetValue.createFromValue(value);
     } else if (isObject(value)) {
       if ('computedFieldResults' in value) {
-        return FacetValue.createFromGroupByValue(value);
+        return FacetValue.createFromGroupByValue(value as IGroupByValue);
       } else {
-        return FacetValue.createFromFieldValue(value);
+        return FacetValue.createFromFieldValue(value as IIndexFieldValue);
       }
     } else {
       throw new Error("Can't create value from " + value);

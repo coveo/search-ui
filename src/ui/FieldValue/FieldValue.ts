@@ -225,7 +225,7 @@ export class FieldValue extends Component {
     conditions: ComponentOptions.buildFieldConditionOption()
   };
 
-  static simpleOptions = omit(FieldValue.options, 'helperOptions');
+  static simpleOptions = <any>omit(FieldValue.options, 'helperOptions');
 
   static helperOptions = <any>{
     helperOptions: FieldValue.options.helperOptions

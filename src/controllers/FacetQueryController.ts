@@ -52,12 +52,19 @@ export class FacetQueryController {
           builder.addFieldExpression(<string>this.facet.options.field, '==', [value.value]);
         });
       } else {
-        builder.addFieldExpression(<string>this.facet.options.field, '==', _.map(selected, (value: FacetValue) => value.value));
+        builder.addFieldExpression(
+          <string>this.facet.options.field,
+          '==',
+          _.map(selected, (value: FacetValue) => value.value)
+        );
       }
     }
     const excluded = this.facet.values.getExcluded();
     if (excluded.length > 0) {
-      builder.addFieldNotEqualExpression(<string>this.facet.options.field, _.map(excluded, (value: FacetValue) => value.value));
+      builder.addFieldNotEqualExpression(
+        <string>this.facet.options.field,
+        _.map(excluded, (value: FacetValue) => value.value)
+      );
     }
     if (Utils.isNonEmptyString(this.facet.options.additionalFilter)) {
       builder.add(this.facet.options.additionalFilter);
@@ -362,7 +369,7 @@ export class FacetQueryController {
   private checkForFacetSearchValuesToRemove(fieldValues: IIndexFieldValue[], valueToCheckAgainst: string) {
     const regex = FacetUtils.getRegexToUseForFacetSearch(valueToCheckAgainst, this.facet.options.facetSearchIgnoreAccents);
 
-    return _.filter<IIndexFieldValue>(fieldValues, fieldValue => {
+    return _.filter(fieldValues, fieldValue => {
       const isAllowed = _.isEmpty(this.facet.options.allowedValues) || this.isValueAllowedByAllowedValueOption(fieldValue.value);
       const value = this.facet.getValueCaption(fieldValue);
       return isAllowed && regex.test(value);

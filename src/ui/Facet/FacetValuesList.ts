@@ -29,7 +29,7 @@ export class FacetValuesList {
   }
 
   public getAll(): ValueElement[] {
-    return _.toArray<ValueElement>(this.valueList);
+    return _.toArray(this.valueList);
   }
 
   public getAllFacetValue(): FacetValue[] {

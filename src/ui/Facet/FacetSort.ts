@@ -97,7 +97,7 @@ export class FacetSort {
     this.removeEnabledSortsBasedOnFacetType();
     if (Utils.isNonEmptyArray(this.enabledSorts)) {
       if (this.facet.options.sortCriteria != undefined) {
-        this.activeSort = _.find<IFacetSortDescription>(this.enabledSorts, enabledSort => {
+        this.activeSort = _.find(this.enabledSorts, enabledSort => {
           return enabledSort.name == this.facet.options.sortCriteria;
         });
       }
