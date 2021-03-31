@@ -1,6 +1,6 @@
 import { CategoryFacet } from './CategoryFacet';
 import { FacetSearchElement } from '../Facet/FacetSearchElement';
-import { pluck, debounce, last } from 'underscore';
+import { pluck, debounce as _debounce, last } from 'underscore';
 import { $$, Dom } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -13,6 +13,13 @@ import { IFacetSearch } from '../Facet/IFacetSearch';
 import { IIndexFieldValue } from '../../rest/FieldValue';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import * as Globalize from 'globalize';
+
+type Debounce = <T extends Function>(fn: T, wait: number, immediate?: boolean) => T;
+let debounce: Debounce = _debounce;
+
+export function setDebounceFn(fn: Debounce) {
+  debounce = fn;
+}
 
 export class CategoryFacetSearch implements IFacetSearch {
   public container: Dom | undefined;

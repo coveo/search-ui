@@ -1,7 +1,7 @@
 import { CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import { mock, basicComponentSetup } from '../../MockEnvironment';
 import { FakeResults } from '../../Fake';
-import { CategoryFacetSearch } from '../../../src/ui/CategoryFacet/CategoryFacetSearch';
+import { CategoryFacetSearch, setDebounceFn } from '../../../src/ui/CategoryFacet/CategoryFacetSearch';
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import _ = require('underscore');
 import { IGroupByValue } from '../../../src/rest/GroupByValue';
@@ -10,22 +10,6 @@ import { KEYBOARD } from '../../../src/utils/KeyboardUtils';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 import * as Globalize from 'globalize';
 import { Simulate } from '../../Simulate';
-
-function undebounce(fn: (...args: any[]) => any, time = 0): (...args: any[]) => void {
-  return (...args) => {
-    let wasClockInstalled = false;
-    try {
-      jasmine.clock().install();
-    } catch (e) {
-      wasClockInstalled = true;
-    }
-    fn(...args);
-    jasmine.clock().tick(time);
-    if (!wasClockInstalled) {
-      jasmine.clock().uninstall();
-    }
-  };
-}
 
 export function CategoryFacetSearchTest() {
   describe('CategoryFacetSearch', () => {
@@ -75,6 +59,7 @@ export function CategoryFacetSearchTest() {
     }
 
     beforeEach(() => {
+      setDebounceFn(cb => cb);
       const facetSearchDelay = 5;
       categoryFacetMock = basicComponentSetup<CategoryFacet>(CategoryFacet, {
         field: '@field',
@@ -85,7 +70,6 @@ export function CategoryFacetSearchTest() {
       categoryFacetMock.categoryFacetQueryController = mock(CategoryFacetQueryController);
       categoryFacetMock.categoryFacetQueryController.searchFacetValues = () => new Promise(resolve => resolve(fakeGroupByValues));
       categoryFacetSearch = new CategoryFacetSearch(categoryFacetMock);
-      categoryFacetSearch.displayNewValues = undebounce(categoryFacetSearch.displayNewValues, facetSearchDelay);
       categoryFacetSearch.build();
     });
 
