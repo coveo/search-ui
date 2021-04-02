@@ -618,7 +618,7 @@ export class FacetSlider extends Component {
       {
         className: 'coveo-facet-slider-breadcrumb-clear'
       },
-      SVGIcons.icons.checkboxHookExclusionMore
+      SVGIcons.icons.mainClear
     );
     SVGDom.addClassToSVGInContainer(clear.el, 'coveo-facet-slider-clear-svg');
 
