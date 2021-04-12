@@ -20,7 +20,7 @@ import {
 import { Utils } from '../src/utils/Utils';
 import { Defer } from '../src/misc/Defer';
 import { IOmniboxData } from '../src/ui/Omnibox/OmniboxInterface';
-import { OmniboxEvents } from '../src/events/OmniboxEvents';
+import { IBuildingQuerySuggestArgs, IQuerySuggestSuccessArgs, OmniboxEvents } from '../src/events/OmniboxEvents';
 import { IBreadcrumbItem, IPopulateBreadcrumbEventArgs, BreadcrumbEvents } from '../src/events/BreadcrumbEvents';
 import { JQuery } from './JQueryModule';
 import _ = require('underscore');
@@ -29,6 +29,7 @@ import { NoopComponent } from '../src/ui/NoopComponent/NoopComponent';
 import { Component } from '../src/ui/Base/Component';
 import { QueryError } from '../src/rest/QueryError';
 import { InitializationEvents } from '../src/Core';
+import { IQuerySuggestCompletion } from '../src/rest/QuerySuggest';
 
 export interface ISimulateQueryData {
   query?: IQuery;
@@ -198,6 +199,23 @@ export class Simulate {
     }
 
     return options;
+  }
+
+  static querySuggest(env: IMockEnvironment, query: string, completions: string[] = []) {
+    const buildingQuerySuggestArgs: IBuildingQuerySuggestArgs = { payload: { q: query } };
+    $$(env.root).trigger(OmniboxEvents.buildingQuerySuggest, buildingQuerySuggestArgs);
+
+    const querySuggestSuccessArgs: IQuerySuggestSuccessArgs = {
+      completions: completions.map<IQuerySuggestCompletion>(completion => ({
+        expression: completion,
+        highlighted: query,
+        executableConfidence: 1,
+        score: 1
+      }))
+    };
+    $$(env.root).trigger(OmniboxEvents.querySuggestSuccess, querySuggestSuccessArgs);
+
+    return { buildingQuerySuggestArgs, querySuggestSuccessArgs };
   }
 
   static initialization(env: IMockEnvironment) {
