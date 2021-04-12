@@ -349,7 +349,7 @@ export class Pager extends Component {
     lastPageNumber = Math.max(lastPageNumber, 1);
     const halfLength = Math.floor(this.options.numberOfPages / 2);
     let firstPageNumber = currentPage - halfLength;
-    firstPageNumber = Math.max(firstPageNumber, 1);
+    firstPageNumber = Math.max(Math.min(firstPageNumber, lastPageNumber - this.options.numberOfPages + 1), 1);
     let endPageNumber = firstPageNumber + this.options.numberOfPages - 1;
     endPageNumber = Math.min(endPageNumber, lastPageNumber);
     return {

@@ -15,6 +15,22 @@ export function PagerTest() {
   describe('Pager', () => {
     let test: Mock.IBasicComponentSetup<Pager>;
 
+    function simulatePageCount(pageCount: number, currentPage = 1) {
+      const builder = new QueryBuilder();
+      builder.firstResult = (currentPage - 1) * 10;
+
+      Simulate.query(test.env, {
+        query: builder.build(),
+        results: FakeResults.createFakeResults(pageCount * 10)
+      });
+    }
+
+    function getRenderedButtonLabels() {
+      return $$(test.cmp.element)
+        .findAll('a.coveo-pager-list-item-text')
+        .map(item => item.innerText);
+    }
+
     beforeEach(() => {
       registerCustomMatcher();
       test = Mock.basicComponentSetup<Pager>(Pager);
@@ -111,22 +127,64 @@ export function PagerTest() {
     });
 
     it('should render the pager boundary correctly', () => {
-      // First results start at 70.
-      // Pager displays 10 pages by default, and 10 results per page.
-      // So the total range should be from results 20 to results 110 (page #3 to page #12)
-
-      const builder = new QueryBuilder();
-      builder.firstResult = 70;
-
-      Simulate.query(test.env, {
-        query: builder.build(),
-        results: FakeResults.createFakeResults(1000)
-      });
+      simulatePageCount(100, 8);
 
       const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
       expect($$(anchors[0]).text()).toBe('6');
       expect(anchors[0].parentElement.getAttribute('tabindex')).toBe('0');
       expect($$(anchors[anchors.length - 1]).text()).toBe('10');
+    });
+
+    it('should always respect an uneven numberOfPages when enough pages exist', () => {
+      test.cmp.options.numberOfPages = 5;
+
+      simulatePageCount(7);
+      expect(getRenderedButtonLabels()).toEqual(['1', '2', '3', '4', '5']);
+
+      simulatePageCount(7, 4);
+      expect(getRenderedButtonLabels()).toEqual(['2', '3', '4', '5', '6']);
+
+      simulatePageCount(7, 7);
+      expect(getRenderedButtonLabels()).toEqual(['3', '4', '5', '6', '7']);
+    });
+
+    it('should always respect an even numberOfPages when enough pages exist', () => {
+      test.cmp.options.numberOfPages = 4;
+
+      simulatePageCount(7);
+      expect(getRenderedButtonLabels()).toEqual(['1', '2', '3', '4']);
+
+      simulatePageCount(7, 4);
+      expect(getRenderedButtonLabels()).toEqual(['2', '3', '4', '5']);
+
+      simulatePageCount(7, 7);
+      expect(getRenderedButtonLabels()).toEqual(['4', '5', '6', '7']);
+    });
+
+    it('should render buttons for every page when the amount is lower than numberOfPages', () => {
+      test.cmp.options.numberOfPages = 5;
+
+      simulatePageCount(3);
+      expect(getRenderedButtonLabels()).toEqual(['1', '2', '3']);
+
+      simulatePageCount(3, 2);
+      expect(getRenderedButtonLabels()).toEqual(['1', '2', '3']);
+
+      simulatePageCount(3, 3);
+      expect(getRenderedButtonLabels()).toEqual(['1', '2', '3']);
+    });
+
+    it('should render buttons for every page when the amount is equal to numberOfPages', () => {
+      test.cmp.options.numberOfPages = 5;
+
+      simulatePageCount(5);
+      expect(getRenderedButtonLabels()).toEqual(['1', '2', '3', '4', '5']);
+
+      simulatePageCount(5, 3);
+      expect(getRenderedButtonLabels()).toEqual(['1', '2', '3', '4', '5']);
+
+      simulatePageCount(5, 5);
+      expect(getRenderedButtonLabels()).toEqual(['1', '2', '3', '4', '5']);
     });
 
     describe('with 100 fake results', () => {
