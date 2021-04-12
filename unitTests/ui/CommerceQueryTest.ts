@@ -27,13 +27,13 @@ export function CommerceQueryTest() {
         expect(simulation.queryBuilder.build().context['listing']).toEqual(test.cmp.options.listing);
       });
 
-      it('should update the tab in query suggest to the lisitng option', () => {
+      it('should update the tab in query suggest to the listing option', () => {
         const simulation = Simulate.querySuggest(test.env, 'abc');
 
         expect(simulation.buildingQuerySuggestArgs.payload.tab).toEqual(test.cmp.options.listing);
       });
 
-      it('should add a context value to query suggest with the lisitng option', () => {
+      it('should add a context value to query suggest with the listing option', () => {
         const simulation = Simulate.querySuggest(test.env, 'abc');
 
         expect(simulation.buildingQuerySuggestArgs.payload.context['listing']).toEqual(test.cmp.options.listing);
