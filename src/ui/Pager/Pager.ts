@@ -345,13 +345,12 @@ export class Pager extends Component {
   private computePagerBoundary(firstResult: number, totalCount: number) {
     const resultPerPage = this.searchInterface.resultsPerPage;
     const currentPage = Math.floor(firstResult / resultPerPage) + 1;
-    let lastPageNumber = Math.min(Math.ceil(totalCount / resultPerPage), this.getMaxNumberOfPagesForCurrentResultsPerPage());
-    lastPageNumber = Math.max(lastPageNumber, 1);
+    const lastPageNumber = Math.max(Math.min(Math.ceil(totalCount / resultPerPage), this.getMaxNumberOfPagesForCurrentResultsPerPage()), 1);
+
     const halfLength = Math.floor(this.options.numberOfPages / 2);
-    let firstPageNumber = currentPage - halfLength;
-    firstPageNumber = Math.max(Math.min(firstPageNumber, lastPageNumber - this.options.numberOfPages + 1), 1);
-    let endPageNumber = firstPageNumber + this.options.numberOfPages - 1;
-    endPageNumber = Math.min(endPageNumber, lastPageNumber);
+    const firstPageNumber = Math.max(Math.min(currentPage - halfLength, lastPageNumber - this.options.numberOfPages + 1), 1);
+    const endPageNumber = Math.min(firstPageNumber + this.options.numberOfPages - 1, lastPageNumber);
+
     return {
       start: firstPageNumber,
       end: endPageNumber,
