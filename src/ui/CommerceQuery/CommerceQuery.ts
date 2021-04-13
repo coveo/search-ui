@@ -5,6 +5,7 @@ import { QueryEvents, IBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { AnalyticsEvents, IChangeAnalyticsCustomDataEventArgs } from '../../events/AnalyticsEvents';
 import { Initialization } from '../Base/Initialization';
 import { exportGlobally } from '../../GlobalExports';
+import { IBuildingQuerySuggestArgs, OmniboxEvents } from '../../events/OmniboxEvents';
 
 export interface ICommerceQueryOptions {
   listing?: string;
@@ -54,6 +55,7 @@ export class CommerceQuery extends Component {
     this.options = ComponentOptions.initComponentOptions(element, CommerceQuery, options);
 
     this.bind.onRootElement(QueryEvents.doneBuildingQuery, this.handleDoneBuildingQuery);
+    this.bind.onRootElement(OmniboxEvents.buildingQuerySuggest, this.handleBuildingQuerySuggest);
     this.bind.onRootElement(AnalyticsEvents.changeAnalyticsCustomData, this.handleChangeAnalytics);
   }
 
@@ -61,6 +63,13 @@ export class CommerceQuery extends Component {
     if (this.options.listing) {
       event.queryBuilder.tab = this.options.listing;
       event.queryBuilder.addContextValue('listing', this.options.listing);
+    }
+  }
+
+  private handleBuildingQuerySuggest(event: IBuildingQuerySuggestArgs) {
+    if (this.options.listing) {
+      event.payload.tab = this.options.listing;
+      (event.payload.context || (event.payload.context = {})).listing = this.options.listing;
     }
   }
 
