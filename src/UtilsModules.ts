@@ -19,3 +19,4 @@ export { StringUtils } from './utils/StringUtils';
 export { TimeSpan } from './utils/TimeSpanUtils';
 export { Utils } from './utils/Utils';
 export { UrlUtils } from './utils/UrlUtils';
+export { AnalyticsInformation } from './ui/Analytics/AnalyticsInformation';
