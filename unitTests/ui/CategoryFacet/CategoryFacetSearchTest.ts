@@ -100,7 +100,7 @@ export function CategoryFacetSearchTest() {
       expect(getInput().focus).toHaveBeenCalled();
     });
 
-    it('renders values on focus', async done => {
+    it('renders values on focus', done => {
       categoryFacetSearch.focus();
 
       setTimeout(() => {
