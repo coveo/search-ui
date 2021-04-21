@@ -1,5 +1,5 @@
 import 'styling/_ResultLayoutSelector';
-import { contains, difference, each, filter, find, isEmpty, keys, uniq } from 'underscore';
+import { contains, difference, each, filter, find, isEmpty, keys, uniq, pick } from 'underscore';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { IQueryErrorEventArgs, IQuerySuccessEventArgs, QueryEvents } from '../../events/QueryEvents';
 import { IResultLayoutPopulateArgs, ResultLayoutEvents } from '../../events/ResultLayoutEvents';
@@ -146,6 +146,15 @@ export class ResultLayoutSelector extends Component {
   }
 
   public get activeLayouts(): { [key: string]: IActiveLayouts } {
+    if (this.searchInterface.responsiveComponents.isLargeScreenWidth()) {
+      return pick(this.currentActiveLayouts, this.options.desktopLayouts);
+    }
+    if (this.searchInterface.responsiveComponents.isMediumScreenWidth()) {
+      return pick(this.currentActiveLayouts, this.options.tabletLayouts);
+    }
+    if (this.searchInterface.responsiveComponents.isSmallScreenWidth()) {
+      return pick(this.currentActiveLayouts, this.options.mobileLayouts);
+    }
     return this.currentActiveLayouts;
   }
 

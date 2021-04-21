@@ -820,17 +820,37 @@ export function ResultListTest() {
         describe('when it is enabled', () => {
           let mockResultLayoutSelector: ResultLayoutSelector;
 
+          const setCurrentActiveLayouts = (layout: Record<string, {}>) => {
+            (mockResultLayoutSelector as any).activeLayouts = layout;
+          };
+
           beforeEach(() => {
             test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
               layout: 'card'
             });
             mockResultLayoutSelector = Mock.mock<ResultLayoutSelector>(ResultLayoutSelector);
-            (test.env.searchInterface.getComponents as jasmine.Spy).and.returnValue([mockResultLayoutSelector]);
+            (test.env.searchInterface.getComponents as jasmine.Spy).and.callFake(requested => {
+              if (requested === ResultLayoutSelector.ID) {
+                return [mockResultLayoutSelector];
+              }
+              return [];
+            });
           });
 
           it('should enable the layout in the layout selector', () => {
+            setCurrentActiveLayouts({ card: {} });
+            test.cmp.options.layout = 'card';
             test.cmp.enable();
             expect(mockResultLayoutSelector.enableLayouts).toHaveBeenCalledWith(['card']);
+          });
+
+          it('should not be enabled when it does not fit current layout', () => {
+            setCurrentActiveLayouts({ card: {} });
+            test.cmp.options.layout = 'table';
+            test.cmp.disable();
+            expect(test.cmp.disabled).toBe(true);
+            test.cmp.enable();
+            expect(test.cmp.disabled).toBe(true);
           });
         });
 

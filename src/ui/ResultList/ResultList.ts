@@ -1,7 +1,7 @@
 import 'styling/_Result';
 import 'styling/_ResultFrame';
 import 'styling/_ResultList';
-import { chain, compact, contains, each, flatten, map, unique, without, uniqueId } from 'underscore';
+import { chain, compact, contains, each, flatten, map, unique, without, uniqueId, find } from 'underscore';
 import {
   IBuildingQueryEventArgs,
   IDuringQueryEventArgs,
@@ -491,17 +491,17 @@ export class ResultList extends Component {
   }
 
   public enable(): void {
-    super.enable();
     this.disableLayoutChange = false;
-    each(this.resultLayoutSelectors, resultLayoutSelector => {
-      resultLayoutSelector.enableLayouts([this.options.layout] as ValidLayout[]);
-    });
-    $$(this.element).removeClass('coveo-hidden');
+    if (this.resultLayoutSelectors.length > 0) {
+      this.enableBasedOnActiveLayouts();
+    } else {
+      super.enable();
+      $$(this.element).removeClass('coveo-hidden');
+    }
   }
 
   public disable(): void {
     super.disable();
-
     const otherLayoutsStillActive = map(this.otherResultLists, otherResultList => otherResultList.options.layout);
     if (!contains(otherLayoutsStillActive, this.options.layout) && !this.disableLayoutChange) {
       each(this.resultLayoutSelectors, resultLayoutSelector => {
@@ -860,6 +860,18 @@ export class ResultList extends Component {
     if (currentId === '') {
       this.element.id = uniqueId('coveo-result-list');
     }
+  }
+
+  private enableBasedOnActiveLayouts() {
+    // We should try to enable a result list only when the result layout selector currently allow that result list layout to be displayed.
+    each(this.resultLayoutSelectors, resultLayoutSelector => {
+      const found = find(resultLayoutSelector.activeLayouts, (activeLayout, activeLayoutKey) => activeLayoutKey == this.options.layout);
+      if (found) {
+        super.enable();
+        resultLayoutSelector.enableLayouts([this.options.layout] as ValidLayout[]);
+        $$(this.element).removeClass('coveo-hidden');
+      }
+    });
   }
 }
 

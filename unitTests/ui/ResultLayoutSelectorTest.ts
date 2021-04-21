@@ -1,4 +1,4 @@
-import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
+import { ResultLayoutSelector, IResultLayoutOptions } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
 import { ValidLayout } from '../../src/ui/ResultLayoutSelector/ValidLayout';
 import * as Mock from '../MockEnvironment';
 import { $$ } from '../../src/utils/Dom';
@@ -19,13 +19,14 @@ export function ResultLayoutSelectorTest() {
       $$(test.env.root).trigger(event);
     }
 
-    function buildResultLayoutSelector(activeLayout: ValidLayout) {
+    function buildResultLayoutSelector(activeLayout: ValidLayout, options: Partial<IResultLayoutOptions> = {}) {
       test = Mock.advancedComponentSetup<ResultLayoutSelector>(ResultLayoutSelector, <Mock.AdvancedComponentSetupOptions>{
         modifyBuilder: builder => {
           handleLayoutsPopulation(builder.root);
           (builder.queryStateModel.get as jasmine.Spy).and.returnValue(activeLayout);
           return builder;
-        }
+        },
+        cmpOptions: options
       });
       triggerRootEvent(InitializationEvents.afterComponentsInitialization);
       triggerRootEvent(InitializationEvents.afterInitialization);
@@ -34,6 +35,36 @@ export function ResultLayoutSelectorTest() {
     function getLayoutButton(layout: ValidLayout) {
       return test.cmp['currentActiveLayouts'][layout].button.el;
     }
+
+    it('should filter activelayouts based on the desktopLayouts options', () => {
+      buildResultLayoutSelector('list', { desktopLayouts: ['table'] });
+      test.cmp.searchInterface.responsiveComponents.isSmallScreenWidth = () => false;
+      test.cmp.searchInterface.responsiveComponents.isMediumScreenWidth = () => false;
+      test.cmp.searchInterface.responsiveComponents.isLargeScreenWidth = () => true;
+      const layouts = Object.keys(test.cmp.activeLayouts);
+      expect(layouts.length).toBe(1);
+      expect(layouts[0]).toBe('table');
+    });
+
+    it('should filter activelayouts based on the tabletLayouts options', () => {
+      buildResultLayoutSelector('list', { tabletLayouts: ['table'] });
+      test.cmp.searchInterface.responsiveComponents.isSmallScreenWidth = () => false;
+      test.cmp.searchInterface.responsiveComponents.isMediumScreenWidth = () => true;
+      test.cmp.searchInterface.responsiveComponents.isLargeScreenWidth = () => false;
+      const layouts = Object.keys(test.cmp.activeLayouts);
+      expect(layouts.length).toBe(1);
+      expect(layouts[0]).toBe('table');
+    });
+
+    it('should filter activelayouts based on the mobileLayouts options', () => {
+      buildResultLayoutSelector('list', { mobileLayouts: ['table'] });
+      test.cmp.searchInterface.responsiveComponents.isSmallScreenWidth = () => true;
+      test.cmp.searchInterface.responsiveComponents.isMediumScreenWidth = () => false;
+      test.cmp.searchInterface.responsiveComponents.isLargeScreenWidth = () => false;
+      const layouts = Object.keys(test.cmp.activeLayouts);
+      expect(layouts.length).toBe(1);
+      expect(layouts[0]).toBe('table');
+    });
 
     it('if the list layout is selected, should give the pressed state to the list button', () => {
       buildResultLayoutSelector('list');
