@@ -82,11 +82,7 @@ export function getRestHighlightsForAllTerms(
   opts: IStreamHighlightOptions
 ): IHighlight[] {
   const indexes = [];
-  const termsFromPhrases = _.chain(phrasesToHighlight)
-    .values()
-    .map(_.keys)
-    .flatten()
-    .value();
+  const termsFromPhrases = _.chain(phrasesToHighlight).values().map(_.keys).flatten().value();
 
   _.each(termsToHighlight, (terms: string[], term: string) => {
     const uniqueTermsToHighlight = _.chain([term])
@@ -96,6 +92,10 @@ export function getRestHighlightsForAllTerms(
       .map(Utils.escapeRegexCharacter)
       .sortBy('length')
       .value();
+
+    if (uniqueTermsToHighlight.length === 0) {
+      return;
+    }
 
     const regex = `${regexStart}${uniqueTermsToHighlight.join('|')})(?=(?:${wordBoundary}|$)+)`;
     const indexesFound = StringUtils.getHighlights(toHighlight, new RegExp(regex, opts.regexFlags), term);

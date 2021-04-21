@@ -8,6 +8,7 @@ import { mockSearchEndpoint, MockEnvironmentBuilder } from '../MockEnvironment';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { IIconOptions } from '../../src/ui/Icon/Icon';
 import { Component } from '../../src/Core';
+import * as _ from 'underscore';
 
 export function CoreHelperTest() {
   describe('CoreHelpers', () => {
@@ -93,6 +94,14 @@ export function CoreHelperTest() {
       expect(TemplateHelpers.getHelper('highlightStreamText')(toHighlight, terms, {})).toEqual(
         '<span class="coveo-highlight" data-highlight-group="1" data-highlight-group-term="a">a</span> <span class="coveo-highlight" data-highlight-group="2" data-highlight-group-term="b">b</span>'
       );
+    });
+
+    it('highlightStreamText should not crash in case of duplicate terms on a text that starts with a word delimiter', () => {
+      const toHighlight = `'This is a bad text`;
+      const terms: IHighlightTerm = { aTerm: [] };
+      const phrases: IHighlightPhrase = { aTerm: terms };
+
+      expect(TemplateHelpers.getHelper('highlightStreamText')(toHighlight, terms, phrases)).toEqual(_.escape(toHighlight));
     });
 
     it('highlightStreamTextv2 should work correctly', () => {
