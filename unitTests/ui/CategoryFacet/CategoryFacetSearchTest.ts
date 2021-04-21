@@ -1,7 +1,7 @@
 import { CategoryFacet } from '../../../src/ui/CategoryFacet/CategoryFacet';
 import { mock, basicComponentSetup } from '../../MockEnvironment';
 import { FakeResults } from '../../Fake';
-import { CategoryFacetSearch, setDebounceFn } from '../../../src/ui/CategoryFacet/CategoryFacetSearch';
+import { CategoryFacetSearch } from '../../../src/ui/CategoryFacet/CategoryFacetSearch';
 import { CategoryFacetQueryController } from '../../../src/controllers/CategoryFacetQueryController';
 import _ = require('underscore');
 import { IGroupByValue } from '../../../src/rest/GroupByValue';
@@ -13,6 +13,7 @@ import { Simulate } from '../../Simulate';
 
 export function CategoryFacetSearchTest() {
   describe('CategoryFacetSearch', () => {
+    const facetSearchDelay = 5;
     const noResultsClass = 'coveo-no-results';
     const facetSearchNoResultsClass = 'coveo-facet-search-no-results';
     const categoryFacetTitle = 'abcdef';
@@ -59,8 +60,6 @@ export function CategoryFacetSearchTest() {
     }
 
     beforeEach(() => {
-      setDebounceFn(cb => cb);
-      const facetSearchDelay = 5;
       categoryFacetMock = basicComponentSetup<CategoryFacet>(CategoryFacet, {
         field: '@field',
         title: categoryFacetTitle,
@@ -101,12 +100,13 @@ export function CategoryFacetSearchTest() {
       expect(getInput().focus).toHaveBeenCalled();
     });
 
-    it('renders values on focus', done => {
+    it('renders values on focus', async done => {
       categoryFacetSearch.focus();
+
       setTimeout(() => {
         expect(getSearchResults().innerHTML).not.toEqual('');
         done();
-      });
+      }, facetSearchDelay);
     });
 
     it('should call updateAriaLiveWithResults', done => {
@@ -116,7 +116,7 @@ export function CategoryFacetSearchTest() {
       setTimeout(() => {
         expect(categoryFacetSearch.facetSearchElement.updateAriaLiveWithResults).toHaveBeenCalled();
         done();
-      });
+      }, facetSearchDelay);
     });
 
     it('renders values correctly', done => {
@@ -133,7 +133,7 @@ export function CategoryFacetSearchTest() {
           expect($$(valueCounts[i]).text()).toEqual((i + 1).toString());
         }
         done();
-      });
+      }, facetSearchDelay);
     });
 
     it('renders the path correctly', done => {
@@ -146,7 +146,7 @@ export function CategoryFacetSearchTest() {
         const pathCaption = $$(getSearchResults()).find('.coveo-category-facet-search-path');
         expect($$(pathCaption).text()).toEqual('a/b/');
         done();
-      });
+      }, facetSearchDelay);
     });
 
     it('sets the correct classes when there is no results', done => {
@@ -157,7 +157,7 @@ export function CategoryFacetSearchTest() {
       setTimeout(() => {
         expectNoResults();
         done();
-      });
+      }, facetSearchDelay);
     });
 
     it('removes no results classes when there are results', done => {
@@ -169,7 +169,7 @@ export function CategoryFacetSearchTest() {
       setTimeout(() => {
         expectResults();
         done();
-      });
+      }, facetSearchDelay);
     });
 
     it('selects the first results when displaying new values', done => {
@@ -178,7 +178,7 @@ export function CategoryFacetSearchTest() {
       setTimeout(() => {
         expect($$(getFacetSearchValues()[0]).hasClass('coveo-facet-search-current-result')).toBe(true);
         done();
-      });
+      }, facetSearchDelay);
     });
 
     it('sends an analytics event on selection', done => {
@@ -189,7 +189,7 @@ export function CategoryFacetSearchTest() {
         $$(getFacetSearchValues()[0]).trigger('click');
         expect(categoryFacetMock.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.categoryFacetSelect, ['value0']);
         done();
-      });
+      }, facetSearchDelay);
     });
 
     it('it scrolls to top', done => {
@@ -200,13 +200,13 @@ export function CategoryFacetSearchTest() {
         $$(getFacetSearchValues()[0]).trigger('click');
         expect(categoryFacetMock.scrollToTop).toHaveBeenCalled();
         done();
-      });
+      }, facetSearchDelay);
     });
 
     describe('when expanding', () => {
       beforeEach(done => {
         categoryFacetSearch.displayNewValues();
-        setTimeout(done);
+        setTimeout(done, facetSearchDelay);
       });
 
       it('sets aria-expanded to true', () => {
@@ -252,7 +252,7 @@ export function CategoryFacetSearchTest() {
           getInputHandler().handleKeyboardEvent(keyboardEvent);
           expect(categoryFacetMock.changeActivePath).toHaveBeenCalledWith(['value0']);
           done();
-        });
+        }, facetSearchDelay);
       });
 
       it('it scrolls to top', done => {
@@ -260,7 +260,7 @@ export function CategoryFacetSearchTest() {
           getInputHandler().handleKeyboardEvent(keyboardEvent);
           expect(categoryFacetMock.scrollToTop).toHaveBeenCalled();
           done();
-        });
+        }, facetSearchDelay);
       });
 
       it('it sends an analytics event', done => {
@@ -268,7 +268,7 @@ export function CategoryFacetSearchTest() {
           getInputHandler().handleKeyboardEvent(keyboardEvent);
           expect(categoryFacetMock.logAnalyticsEvent).toHaveBeenCalledWith(analyticsActionCauseList.categoryFacetSelect, ['value0']);
           done();
-        });
+        }, facetSearchDelay);
       });
     });
 
@@ -280,7 +280,7 @@ export function CategoryFacetSearchTest() {
         getInputHandler().handleKeyboardEvent(keyboardEvent);
         expect($$(getFacetSearchValues()[1]).hasClass('coveo-facet-search-current-result')).toBe(true);
         done();
-      });
+      }, facetSearchDelay);
     });
 
     it('pressing up arrow while on the input moves current result up', done => {
@@ -291,7 +291,7 @@ export function CategoryFacetSearchTest() {
         getInputHandler().handleKeyboardEvent(keyboardEvent);
         expect($$(getFacetSearchValues().slice(-1)[0]).hasClass('coveo-facet-search-current-result')).toBe(true);
         done();
-      });
+      }, facetSearchDelay);
     });
 
     it('pressing escape while on the input closes the search input', done => {
@@ -312,7 +312,7 @@ export function CategoryFacetSearchTest() {
       setTimeout(() => {
         expect(getSearchResults().innerHTML).not.toEqual('');
         done();
-      });
+      }, facetSearchDelay);
     });
 
     it('pressing escape while on the results closes the search input', done => {
