@@ -215,44 +215,47 @@ export function FacetSliderTest() {
         env = mockEnvironmentBuilder.build();
       });
 
-      afterEach(() => {
-        jasmine.clock().uninstall();
-      });
-
       describe('on resize', () => {
         beforeEach(() => {
-          jasmine.clock().install();
           facetSlider = new FacetSlider(env.element, facetSliderOptions, mockEnvironmentBuilder.getBindings(), slider);
         });
 
-        afterEach(() => {
-          jasmine.clock().uninstall();
-        });
-
-        it('should draw the graph on resize when there are results', () => {
+        it('should draw the graph on resize when there are results', done => {
           facetSlider.onResize(new Event('resize'));
-          jasmine.clock().tick(FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
-          expect(slider.drawGraph).toHaveBeenCalled();
+
+          setTimeout(() => {
+            expect(slider.drawGraph).toHaveBeenCalled();
+            done();
+          }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
         });
 
-        it('should execute the onMoving function of the slider on resize', () => {
+        it('should execute the onMoving function of the slider on resize', done => {
           facetSlider.onResize(new Event('resize'));
-          jasmine.clock().tick(FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
-          expect(slider.onMoving).toHaveBeenCalled();
+
+          setTimeout(() => {
+            expect(slider.onMoving).toHaveBeenCalled();
+            done();
+          }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
         });
 
-        it('should not execute the onMoving function of the slider if it is not instantiated', () => {
+        it('should not execute the onMoving function of the slider if it is not instantiated', done => {
           facetSlider['slider'] = null;
           facetSlider.onResize(new Event('resize'));
-          jasmine.clock().tick(FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
-          expect(slider.onMoving).not.toHaveBeenCalled();
+
+          setTimeout(() => {
+            expect(slider.onMoving).not.toHaveBeenCalled();
+            done();
+          }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
         });
 
-        it('should not draw the graph on resize when there are no results', () => {
+        it('should not draw the graph on resize when there are no results', done => {
           $$(env.root).trigger(QueryEvents.noResults);
           facetSlider.onResize(new Event('resize'));
-          jasmine.clock().tick(FacetSlider.DEBOUNCED_RESIZE_DELAY + 1);
-          expect(slider.drawGraph).not.toHaveBeenCalled();
+
+          setTimeout(() => {
+            expect(slider.drawGraph).not.toHaveBeenCalled();
+            done();
+          }, FacetSlider.DEBOUNCED_RESIZE_DELAY);
         });
       });
 
