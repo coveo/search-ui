@@ -24,7 +24,6 @@ export function ResponsiveComponentsManagerTest() {
 
   describe('ResponsiveComponentsManager', () => {
     beforeEach(() => {
-      jasmine.clock().install();
       let searchInterfaceMock = Mock.optionsSearchInterfaceSetup<SearchInterface, ISearchInterfaceOptions>(SearchInterface, {
         enableAutomaticResponsiveMode: true
       });
@@ -39,10 +38,6 @@ export function ResponsiveComponentsManagerTest() {
       };
       component = {};
       responsiveComponentsManager = new ResponsiveComponentsManager(root);
-    });
-
-    afterEach(() => {
-      jasmine.clock().uninstall();
     });
 
     it(`when registering a tab with #enableResponsiveMode false and a responsive facet,
@@ -71,21 +66,26 @@ export function ResponsiveComponentsManagerTest() {
         setResponsiveMode('auto');
       });
 
-      it('should calls handle resize event when resize listener is called', () => {
+      it('should calls handle resize event when resize listener is called', done => {
         root.width = () => 400;
         responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
         responsiveComponentsManager.resizeListener();
-        jasmine.clock().tick(250);
-        expect(handleResizeEvent).toHaveBeenCalled();
+
+        setTimeout(() => {
+          expect(handleResizeEvent).toHaveBeenCalled();
+          done();
+        }, 250);
       });
 
-      it('should call resize listener of all ResponsiveComponentManager when resizeAllComponentsManager is called', () => {
+      it('should call resize listener of all ResponsiveComponentManager when resizeAllComponentsManager is called', done => {
         root.width = () => 400;
         responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
         ResponsiveComponentsManager.resizeAllComponentsManager();
 
-        jasmine.clock().tick(500);
-        expect(handleResizeEvent).toHaveBeenCalled();
+        setTimeout(() => {
+          expect(handleResizeEvent).toHaveBeenCalled();
+          done();
+        }, 250);
       });
 
       describe('and the root element width is zero', () => {
@@ -93,11 +93,14 @@ export function ResponsiveComponentsManagerTest() {
           root.width = () => 0;
         });
 
-        it('should  not calls handle resize event when resize listener is called', () => {
+        it('should  not call handle resize event when resize listener is called', done => {
           responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
           responsiveComponentsManager.resizeListener();
-          jasmine.clock().tick(250);
-          expect(handleResizeEvent).not.toHaveBeenCalled();
+
+          setTimeout(() => {
+            expect(handleResizeEvent).not.toHaveBeenCalled();
+            done();
+          }, 250);
         });
 
         it('should  not calls handle resize event when it registers component', () => {
@@ -117,11 +120,14 @@ export function ResponsiveComponentsManagerTest() {
           root.width = () => 0;
         });
 
-        it('should calls handle resize event when resize listener is called', () => {
+        it('should calls handle resize event when resize listener is called', done => {
           responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
           responsiveComponentsManager.resizeListener();
-          jasmine.clock().tick(250);
-          expect(handleResizeEvent).toHaveBeenCalled();
+
+          setTimeout(() => {
+            expect(handleResizeEvent).toHaveBeenCalled();
+            done();
+          }, 250);
         });
       });
     });
