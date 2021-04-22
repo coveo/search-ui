@@ -96,8 +96,11 @@ export function CoreHelperTest() {
       );
     });
 
-    it('highlightStreamText should not crash in case of duplicate terms on a text that starts with a word delimiter', () => {
+    it('highlightStreamText should not hang in case of duplicate terms on a text that starts with a word delimiter', () => {
+      // A "bad text" is any text that starts with a "word delimiter".
       const toHighlight = `'This is a bad text`;
+
+      // The only "term" needs to be in both the "terms" and the "phrases".
       const terms: IHighlightTerm = { aTerm: [] };
       const phrases: IHighlightPhrase = { aTerm: terms };
 
