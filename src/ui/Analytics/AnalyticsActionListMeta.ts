@@ -47,7 +47,7 @@ export interface IAnalyticsResultsSortMeta {
  * See also the [`Analytics`]{@link Analytics} component, and more specifically its
  * [`logClickEvent`]{@link Analytics.logClickEvent} method.
  */
-export interface IAnalyticsDocumentViewMeta {
+export type IAnalyticsDocumentViewMeta = {
   /**
    * The URL of the clicked item.
    */
