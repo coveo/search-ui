@@ -23,6 +23,9 @@ export class ResponsiveResultLayout implements IResponsiveComponent {
 
   constructor(public coveoRoot: Dom, public ID: string, options: IResponsiveComponentOptions, responsiveDropdown?: ResponsiveDropdown) {
     this.searchInterface = <SearchInterface>Component.get(this.coveoRoot.el, SearchInterface, false);
+    coveoRoot.on('state:change:t', () => {
+      this.handleResizeEvent();
+    });
   }
 
   public registerComponent(accept: Component) {
