@@ -36,7 +36,7 @@ export function ResultLayoutSelectorTest() {
       return test.cmp['currentActiveLayouts'][layout].button.el;
     }
 
-    it('should filter activelayouts based on the desktopLayouts options', () => {
+    it('when the screen is large, activeLayouts returns the desktop layouts', () => {
       buildResultLayoutSelector('list', { desktopLayouts: ['table'] });
       test.cmp.searchInterface.responsiveComponents.isSmallScreenWidth = () => false;
       test.cmp.searchInterface.responsiveComponents.isMediumScreenWidth = () => false;
@@ -46,7 +46,7 @@ export function ResultLayoutSelectorTest() {
       expect(layouts[0]).toBe('table');
     });
 
-    it('should filter activelayouts based on the tabletLayouts options', () => {
+    it('when the screen is medium, activeLayouts returns the tablets layouts', () => {
       buildResultLayoutSelector('list', { tabletLayouts: ['table'] });
       test.cmp.searchInterface.responsiveComponents.isSmallScreenWidth = () => false;
       test.cmp.searchInterface.responsiveComponents.isMediumScreenWidth = () => true;
@@ -56,7 +56,7 @@ export function ResultLayoutSelectorTest() {
       expect(layouts[0]).toBe('table');
     });
 
-    it('should filter activelayouts based on the mobileLayouts options', () => {
+    it('when the screen is small, activeLayouts returns the mobile layouts', () => {
       buildResultLayoutSelector('list', { mobileLayouts: ['table'] });
       test.cmp.searchInterface.responsiveComponents.isSmallScreenWidth = () => true;
       test.cmp.searchInterface.responsiveComponents.isMediumScreenWidth = () => false;
