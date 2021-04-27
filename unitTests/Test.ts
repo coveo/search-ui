@@ -21,6 +21,9 @@ BackOffRequestTest();
 import { FacetSortCriteriaTest } from './rest/Facet/FacetSortCriteriaTest';
 FacetSortCriteriaTest();
 
+import { FacetRangeSortOrderTest } from './rest/Facet/FacetRangeSortOrderTest';
+FacetRangeSortOrderTest();
+
 import { PlanTest } from './rest/PlanTest';
 PlanTest();
 

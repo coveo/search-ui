@@ -1,5 +1,6 @@
 import { IDynamicFacetOptions, IDynamicFacet } from './IDynamicFacet';
 import { IRangeValue } from '../../rest/RangeValue';
+import { FacetRangeSortOrder } from '../../rest/Facet/FacetRangeSortOrder';
 
 /**
  * The allowed values for the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} option
@@ -29,6 +30,7 @@ export interface IDynamicFacetRangeOptions extends IDynamicFacetOptions {
   valueFormat?: DynamicFacetRangeValueFormat;
   ranges?: IRangeValue[];
   currencySymbol?: string;
+  sortOrder?: FacetRangeSortOrder;
 }
 
 export interface IDynamicFacetRange extends IDynamicFacet {
