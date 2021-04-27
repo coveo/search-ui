@@ -259,15 +259,15 @@ function getCoveoAnalytics(element: HTMLElement) {
  * ( `{}` ).
  * @param result The query result that relates to the custom event, if applicable.
  */
-export function logCustomEvent(
+export function logCustomEvent<TMeta extends IStringMap<any> = IStringMap<string>>(
   element: HTMLElement,
   customEventCause: IAnalyticsActionCause,
-  metadata: IStringMap<string>,
+  metadata: TMeta,
   result?: IQueryResult
 ) {
   var client = getCoveoAnalyticsClient(element);
   if (client) {
-    client.logCustomEvent<any>(customEventCause, metadata, element, result);
+    client.logCustomEvent<TMeta>(customEventCause, metadata, element, result);
   }
 }
 
@@ -330,14 +330,14 @@ Initialization.registerNamedMethod(
  * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
  * ( `{}` ).
  */
-export function logSearchAsYouTypeEvent(
+export function logSearchAsYouTypeEvent<TMeta extends IStringMap<any> = IStringMap<string>>(
   element: HTMLElement,
   searchAsYouTypeEventCause: IAnalyticsActionCause,
-  metadata: IStringMap<string>
+  metadata: TMeta
 ) {
   var client = getCoveoAnalyticsClient(element);
   if (client) {
-    client.logSearchAsYouType<any>(searchAsYouTypeEventCause, metadata);
+    client.logSearchAsYouType<TMeta>(searchAsYouTypeEventCause, metadata);
   }
 }
 
@@ -364,15 +364,15 @@ Initialization.registerNamedMethod(
  * ( `{}` ).
  * @param result The result that was clicked.
  */
-export function logClickEvent(
+export function logClickEvent<TMeta extends IStringMap<any> = IAnalyticsDocumentViewMeta>(
   element: HTMLElement,
   clickEventCause: IAnalyticsActionCause,
-  metadata: IStringMap<any>,
+  metadata: TMeta,
   result: IQueryResult
 ) {
   var client = getCoveoAnalyticsClient(element);
   if (client) {
-    client.logClickEvent(clickEventCause, <IAnalyticsDocumentViewMeta>metadata, result, element);
+    client.logClickEvent<TMeta>(clickEventCause, metadata, result, element);
   }
 }
 
