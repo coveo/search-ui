@@ -7,7 +7,7 @@ import { IQueryResults } from '../../rest/QueryResults';
 import { IAnalyticsClient } from '../Analytics/AnalyticsClient';
 import { InitializationEvents } from '../../events/InitializationEvents';
 import { $$ } from '../../utils/Dom';
-import { IAnalyticsActionCause, IAnalyticsDocumentViewMeta } from '../Analytics/AnalyticsActionListMeta';
+import { IAnalyticsActionCause } from '../Analytics/AnalyticsActionListMeta';
 import { IStringMap } from '../../rest/GenericParam';
 import { BaseComponent } from '../Base/BaseComponent';
 import { Component } from '../Base/Component';
@@ -259,7 +259,7 @@ function getCoveoAnalytics(element: HTMLElement) {
  * ( `{}` ).
  * @param result The query result that relates to the custom event, if applicable.
  */
-export function logCustomEvent<TMeta extends IStringMap<any> = IStringMap<string>>(
+export function logCustomEvent<TMeta extends IStringMap<any>>(
   element: HTMLElement,
   customEventCause: IAnalyticsActionCause,
   metadata: TMeta,
@@ -330,7 +330,7 @@ Initialization.registerNamedMethod(
  * names. Each value must be a simple string. If you do not need to log metadata, you can simply pass an empty JSON
  * ( `{}` ).
  */
-export function logSearchAsYouTypeEvent<TMeta extends IStringMap<any> = IStringMap<string>>(
+export function logSearchAsYouTypeEvent<TMeta extends IStringMap<any>>(
   element: HTMLElement,
   searchAsYouTypeEventCause: IAnalyticsActionCause,
   metadata: TMeta
@@ -364,7 +364,7 @@ Initialization.registerNamedMethod(
  * ( `{}` ).
  * @param result The result that was clicked.
  */
-export function logClickEvent<TMeta extends IStringMap<any> = IAnalyticsDocumentViewMeta>(
+export function logClickEvent<TMeta extends IStringMap<any>>(
   element: HTMLElement,
   clickEventCause: IAnalyticsActionCause,
   metadata: TMeta,

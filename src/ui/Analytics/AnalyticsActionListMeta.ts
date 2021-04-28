@@ -210,7 +210,7 @@ export interface IAnalyticsSearchAlertsUpdateMeta extends IAnalyticsSearchAlerts
   frequency: string;
 }
 
-export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocumentViewMeta {
+export type IAnalyticsSearchAlertsFollowDocumentMeta = IAnalyticsDocumentViewMeta & {
   documentSource: string;
   documentLanguage: string[];
   contentIDKey: string;
