@@ -47,7 +47,7 @@ export interface IAnalyticsResultsSortMeta {
  * See also the [`Analytics`]{@link Analytics} component, and more specifically its
  * [`logClickEvent`]{@link Analytics.logClickEvent} method.
  */
-export interface IAnalyticsDocumentViewMeta {
+export type IAnalyticsDocumentViewMeta = {
   /**
    * The URL of the clicked item.
    */
@@ -210,7 +210,7 @@ export interface IAnalyticsSearchAlertsUpdateMeta extends IAnalyticsSearchAlerts
   frequency: string;
 }
 
-export interface IAnalyticsSearchAlertsFollowDocumentMeta extends IAnalyticsDocumentViewMeta {
+export type IAnalyticsSearchAlertsFollowDocumentMeta = IAnalyticsDocumentViewMeta & {
   documentSource: string;
   documentLanguage: string[];
   contentIDKey: string;
