@@ -12,6 +12,8 @@ import { DynamicFacetValues } from './DynamicFacetValues/DynamicFacetValues';
 import { DynamicFacetRangeValueCreator } from './DynamicFacetValues/DynamicFacetRangeValueCreator';
 import { DynamicFacetRangeQueryController } from '../../controllers/DynamicFacetRangeQueryController';
 import { Utils } from '../../Core';
+import { FacetRangeSortOrder, isFacetRangeSortOrder } from '../../rest/Facet/FacetRangeSortOrder';
+import { Logger } from '../../misc/Logger';
 
 /**
  * A `DynamicFacetRange` is a [facet](https://docs.coveo.com/en/198/) whose values are expressed as ranges.
@@ -25,7 +27,6 @@ import { Utils } from '../../Core';
  * - [`useLeadingWildcardInFacetSearch`]{@link DynamicFacet.options.useLeadingWildcardInFacetSearch}
  * - [`enableMoreLess`]{@link DynamicFacet.options.enableMoreLess}
  * - [`valueCaption`]{@link DynamicFacet.options.valueCaption}
- * - [`sortCriteria`]{@link DynamicFacet.options.sortCriteria}
  *
  * @notSupportedIn salesforcefree
  * @availablesince [October 2019 Release (v2.7219)](https://docs.coveo.com/en/3084/)
@@ -94,6 +95,28 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
       required: false,
       section: 'CommonOptions',
       postProcessing: ranges => (Utils.isNonEmptyArray(ranges) ? ranges : [])
+    }),
+    /**
+     * The sort order to use for this facet.
+     *
+     * Can be either `ascending` or `descending`.
+     *
+     * **Default:** `ascending`.
+     */
+    sortOrder: <FacetRangeSortOrder>ComponentOptions.buildStringOption({
+      postProcessing: value => {
+        if (!value) {
+          return undefined;
+        }
+
+        if (isFacetRangeSortOrder(value)) {
+          return value;
+        }
+
+        new Logger(value).warn('sortOrder is not of the the allowed values: "ascending", "descending"');
+        return undefined;
+      },
+      section: 'Sorting'
     })
   };
 
@@ -126,6 +149,7 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
     this.options.enableMoreLess = false;
     this.options.valueCaption = {};
     this.options.sortCriteria = undefined;
+    this.options.customSort = undefined;
   }
 
   public get facetType(): FacetType {
