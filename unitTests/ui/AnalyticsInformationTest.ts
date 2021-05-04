@@ -51,6 +51,19 @@ export function AnalyticsInformationTest() {
       });
     });
 
+    it('retrieving lastPageId does not interact with the __coveo.analytics.history cookie', () => {
+      // When HistoryStore interacts with cookies, browsers show a missing SameSite attribute warning.
+      // To prevent this, the source code must initialize HistoryStore using a special helper.
+      // The decoy value should remain intact after accessing lastPageId.
+
+      const decoyValue = '__coveo.analytics.history=value';
+
+      document.cookie = decoyValue;
+      analyticsInformation.lastPageId;
+
+      expect(document.cookie).toContain(decoyValue);
+    });
+
     describe('with localstorage', () => {
       const visitorId = 'def';
 
