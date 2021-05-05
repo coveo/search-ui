@@ -69,7 +69,9 @@ export class FacetValueSuggestions extends Component {
     /**
      * Whether to get scoped query suggestions from the current Coveo ML query suggestions.
      *
-     * **Note:** If this options is set to `true` the [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon} option of the [`Omnibox`]{@link Omnibox.option.enableQuerySuggestAddon} component must be set to `true` as well.
+     * **Notes:**
+     * - If this option is set to `true`, the [`enableQuerySuggestAddon`]{@link Omnibox.options.enableQuerySuggestAddon} option of the [`Omnibox`]{@link Omnibox} component must be set to `true` as well.
+     * - If this option is set to `true`, an additional `POST` HTTP request is sent to `https://platform.cloud.coveo.com/rest/search/v2/querySuggest`.
      */
     useQuerySuggestions: ComponentOptions.buildBooleanOption({ defaultValue: true }),
 
