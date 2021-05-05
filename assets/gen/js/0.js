@@ -1,6 +1,6 @@
 webpackJsonpplayground([0],{
 
-/***/ 119:
+/***/ 118:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -275,7 +275,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var AgGrid_1 = __webpack_require__(335);
 var underscore_1 = __webpack_require__(0);
-var UtilsModules_1 = __webpack_require__(78);
+var UtilsModules_1 = __webpack_require__(79);
 var ResultLink_1 = __webpack_require__(336);
 exports.defaultGridOptions = {
     domLayout: 'autoHeight',
@@ -515,7 +515,7 @@ var ExecutionReportResolvedPipelineSection_1 = __webpack_require__(344);
 var ExecutionReportQueryOverrideSection_1 = __webpack_require__(345);
 var ExecutionReportSimpleSection_1 = __webpack_require__(333);
 var ExecutionReportEffectiveIndexQuerySection_1 = __webpack_require__(346);
-var UtilsModules_1 = __webpack_require__(78);
+var UtilsModules_1 = __webpack_require__(79);
 var ExecutionReportRankingModifiers_1 = __webpack_require__(347);
 var Core_1 = __webpack_require__(40);
 var ExecutionReportITDSection_1 = __webpack_require__(348);
@@ -1257,21 +1257,21 @@ var ComponentOptions_1 = __webpack_require__(14);
 var ComponentOptionsModel_1 = __webpack_require__(23);
 var AnalyticsActionListMeta_1 = __webpack_require__(10);
 var ResultListEvents_1 = __webpack_require__(32);
-var HighlightUtils_1 = __webpack_require__(80);
+var HighlightUtils_1 = __webpack_require__(81);
 var DeviceUtils_1 = __webpack_require__(21);
-var OSUtils_1 = __webpack_require__(120);
+var OSUtils_1 = __webpack_require__(119);
 var Initialization_1 = __webpack_require__(12);
 var QueryUtils_1 = __webpack_require__(22);
 var Assert_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(3);
 var Defer_1 = __webpack_require__(31);
 var Dom_1 = __webpack_require__(1);
-var StreamHighlightUtils_1 = __webpack_require__(117);
+var StreamHighlightUtils_1 = __webpack_require__(116);
 var StringUtils_1 = __webpack_require__(20);
 var underscore_1 = __webpack_require__(0);
 var GlobalExports_1 = __webpack_require__(24);
 __webpack_require__(337);
-var AccessibleButton_1 = __webpack_require__(122);
+var AccessibleButton_1 = __webpack_require__(121);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.
@@ -1851,7 +1851,7 @@ var underscore_1 = __webpack_require__(0);
 var Dom_1 = __webpack_require__(1);
 var StringUtils_1 = __webpack_require__(20);
 var DateUtils_1 = __webpack_require__(57);
-var TextInput_1 = __webpack_require__(118);
+var TextInput_1 = __webpack_require__(117);
 var MetaDataTable = /** @class */ (function () {
     function MetaDataTable(results, bindings) {
         this.results = results;
@@ -2651,7 +2651,7 @@ var ExecutionReport_1 = __webpack_require__(329);
 var TableBuilder_1 = __webpack_require__(328);
 var underscore_1 = __webpack_require__(0);
 var GenericValueOutput_1 = __webpack_require__(330);
-var QueryBuilder_1 = __webpack_require__(79);
+var QueryBuilder_1 = __webpack_require__(80);
 var ExecutionReportRankingModifiers = /** @class */ (function () {
     function ExecutionReportRankingModifiers() {
     }
@@ -2789,7 +2789,7 @@ var underscore_1 = __webpack_require__(0);
 var TableBuilder_1 = __webpack_require__(328);
 var Dom_1 = __webpack_require__(1);
 var Utils_1 = __webpack_require__(3);
-var StreamHighlightUtils_1 = __webpack_require__(117);
+var StreamHighlightUtils_1 = __webpack_require__(116);
 var ExecutionReportSimpleSection_1 = __webpack_require__(333);
 var ExecutionReportITDSection = /** @class */ (function () {
     function ExecutionReportITDSection() {
@@ -2953,9 +2953,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var TableBuilder_1 = __webpack_require__(328);
 var underscore_1 = __webpack_require__(0);
 var GenericValueOutput_1 = __webpack_require__(330);
-var UtilsModules_1 = __webpack_require__(78);
-var QueryBuilder_1 = __webpack_require__(79);
-var PopupUtils_1 = __webpack_require__(121);
+var UtilsModules_1 = __webpack_require__(79);
+var QueryBuilder_1 = __webpack_require__(80);
+var PopupUtils_1 = __webpack_require__(120);
 var AvailableFieldsTable = /** @class */ (function () {
     function AvailableFieldsTable(bindings) {
         this.bindings = bindings;
