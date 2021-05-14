@@ -1,6 +1,7 @@
 import { find } from 'underscore';
 import { Logger } from '../../misc/Logger';
 import { Utils } from '../../utils/Utils';
+import { ComponentOptions } from './ComponentOptions';
 import { ComponentOptionsType, IComponentLocalizedStringOptionArgs, IComponentOptionsOption } from './IComponentOptions';
 
 export class ComponentOptionLoader {
@@ -18,7 +19,7 @@ export class ComponentOptionLoader {
   public load() {
     return this.findFirstValidValue(
       this.loadFromAttribute.bind(this),
-      this.loadFromOptionsDictionnary.bind(this),
+      this.loadFromOptionsDictionary.bind(this),
       this.loadFromDefaultValue.bind(this),
       this.loadFromDefaultFunction.bind(this)
     );
@@ -28,8 +29,20 @@ export class ComponentOptionLoader {
     return this.optionDefinition.load ? this.optionDefinition.load(this.element, this.optionName, this.optionDefinition) : null;
   }
 
-  private loadFromOptionsDictionnary() {
-    return this.values[this.optionName];
+  private loadFromOptionsDictionary() {
+    const value = this.values[this.optionName];
+
+    if (!value) {
+      return undefined;
+    }
+
+    if (this.optionDefinition.load) {
+      const attrName = ComponentOptions.attrNameFromName(this.optionName, this.optionDefinition);
+      this.element.setAttribute(attrName, value);
+      return this.loadFromAttribute();
+    }
+
+    return value;
   }
 
   private loadFromDefaultValue() {
@@ -66,9 +79,7 @@ export class ComponentOptionLoader {
 
   private warnDeprecatedLocalizedStringAndReturnDefaultValue() {
     this.logger.warn(
-      `defaultValue for option ${
-        this.optionName
-      } is deprecated. You should instead use localizedString. Not doing so could cause localization bug in your interface.`
+      `defaultValue for option ${this.optionName} is deprecated. You should instead use localizedString. Not doing so could cause localization bug in your interface.`
     );
     return this.optionDefinition.defaultValue;
   }

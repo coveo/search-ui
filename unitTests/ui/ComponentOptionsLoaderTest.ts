@@ -1,6 +1,6 @@
 import { ComponentOptionLoader } from '../../src/ui/Base/ComponentOptionsLoader';
 import { $$, ComponentOptions, ComponentOptionsType, l } from '../../src/Core';
-import { IComponentLocalizedStringOptionArgs } from '../../src/ui/Base/IComponentOptions';
+import { IComponentLocalizedStringOptionArgs, IComponentOptions } from '../../src/ui/Base/IComponentOptions';
 export function ComponentOptionLoaderTest() {
   describe('ComponentOptionLoader', () => {
     it('should be able to load from the element attribute', () => {
@@ -10,11 +10,37 @@ export function ComponentOptionLoaderTest() {
       expect(valueLoaded).toBe('bar');
     });
 
-    it('should be able to load from dictionnary value', () => {
+    it('should be able to load from dictionary value', () => {
       const elem = $$('div').el;
 
       const valueLoaded = new ComponentOptionLoader(elem, { abc: 'def' }, 'abc', {}).load();
       expect(valueLoaded).toBe('def');
+    });
+
+    it(`when the value of a custom option is specified using a dictionary,
+    the value is transformed by the option definition`, () => {
+      const elem = $$('div').el;
+      const optionName = 'a';
+      const dictionary = { [optionName]: 'b' };
+
+      const definition: IComponentOptions<string> = {};
+      ComponentOptions.buildCustomOption(() => 'c', definition);
+
+      const option = new ComponentOptionLoader(elem, dictionary, optionName, definition);
+      expect(option.load()).toBe('c');
+    });
+
+    it(`when the value of a custom option with an alias is specified using a dictionary,
+    the value is transformed by the option definition`, () => {
+      const elem = $$('div').el;
+      const optionName = 'a';
+      const dictionary = { [optionName]: 'b' };
+
+      const definition: IComponentOptions<string> = { attrName: `data-alias-${optionName}` };
+      ComponentOptions.buildCustomOption(() => 'c', definition);
+
+      const option = new ComponentOptionLoader(elem, dictionary, optionName, definition);
+      expect(option.load()).toBe('c');
     });
 
     describe('should be able to load default value from option definition', () => {
