@@ -6,6 +6,8 @@ import { QueryStateModel } from '../../../src/Core';
 import { RangeEndScope } from '../../../src/rest/RangeValue';
 import { FacetSortCriteria } from '../../../src/rest/Facet/FacetSortCriteria';
 import { IDynamicFacetRangeOptions, DynamicFacetRangeValueFormat } from '../../../src/ui/DynamicFacet/IDynamicFacetRange';
+import { Simulate } from '../../Simulate';
+import { FacetRangeSortOrder } from '../../../src/rest/Facet/FacetRangeSortOrder';
 
 export function DynamicFacetRangeTest() {
   describe('DynamicFacetRange', () => {
@@ -21,6 +23,10 @@ export function DynamicFacetRangeTest() {
       test = DynamicFacetRangeTestUtils.createAdvancedFakeFacet(options);
       spyOn(test.cmp.logger, 'error');
       spyOn(test.cmp.logger, 'warn');
+    }
+
+    function getFirstFacetRequest() {
+      return Simulate.query(test.env).queryBuilder.build().facets[0];
     }
 
     it('facet search options should be disabled', () => {
@@ -47,6 +53,19 @@ export function DynamicFacetRangeTest() {
       options.sortCriteria = FacetSortCriteria.score;
       initializeComponent();
       expect(test.cmp.options.sortCriteria).toBeUndefined();
+    });
+
+    it(`when not setting a sortOrder option
+      should set it to undefined in the query`, () => {
+      expect(getFirstFacetRequest().sortCriteria).toBeUndefined();
+    });
+
+    it(`when setting a sortOrder option
+      should pass it down to the query`, () => {
+      options.sortOrder = FacetRangeSortOrder.descending;
+      initializeComponent();
+
+      expect(getFirstFacetRequest().sortCriteria).toBe(FacetRangeSortOrder.descending);
     });
 
     it(`when the ranges option is not defined

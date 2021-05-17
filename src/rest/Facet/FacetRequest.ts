@@ -1,6 +1,7 @@
 import { FacetValueState } from './FacetValueState';
 import { FacetSortCriteria } from './FacetSortCriteria';
 import { IRangeValue } from '../RangeValue';
+import { FacetRangeSortOrder } from './FacetRangeSortOrder';
 
 /**
  * The allowed values for the [`facetType`]{@link IFacetRequest.facetType} property of a [facet request]{@link IFacetRequest}.
@@ -98,15 +99,20 @@ export interface IFacetRequest {
   /**
    * The sort criterion to apply to the returned facet values.
    *
-   * **Default behavior (Search API):**
+   * **Default behaviour when [`type`]{@link IFacetRequest.type} is set to [`specific`]{@link FaceType.Specific}
+   * or [`hierarchical`]{@link FaceType.Hierarchical} (Search API):**
    * - When [`isFieldExpanded`]{@link IFacetRequest.isFieldExpanded} is `false`
    * in the facet request, and
    * [`moreValuesAvailable`]{@link IFacetResponse.moreValuesAvailable} is
    * `true` in the corresponding [facet response]{@link IFacetResponse}, use
    * `score`.
    * - Otherwise, use `alphanumeric`.
+   *
+   * **Default (Search API) when [`type`]{@link IFacetRequest.type} is set to [`dateRange`]{@link FaceType.dateRange}
+   * or [`numericalRange`]{@link FacetType.numericalRange} (Search API)::** `ascending`
+   * Other possible value: `descending`
    */
-  sortCriteria?: FacetSortCriteria;
+  sortCriteria?: FacetSortCriteria | FacetRangeSortOrder;
 
   /**
    * The maximum number of facet values to fetch.

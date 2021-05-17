@@ -4,6 +4,7 @@ import { DynamicFacetRange } from '../../src/ui/DynamicFacet/DynamicFacetRange';
 import { IDynamicFacetRangeOptions } from '../../src/ui/DynamicFacet/IDynamicFacetRange';
 import { QueryBuilder } from '../../src/Core';
 import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
+import { FacetRangeSortOrder } from '../../src/rest/Facet/FacetRangeSortOrder';
 
 export function DynamicFacetRangeQueryControllerTest() {
   describe('DynamicFacetRangeQueryController', () => {
@@ -13,7 +14,7 @@ export function DynamicFacetRangeQueryControllerTest() {
     let ranges = DynamicFacetRangeTestUtils.createFakeRanges();
 
     beforeEach(() => {
-      facetOptions = {};
+      facetOptions = { field: '@test', sortOrder: FacetRangeSortOrder.descending, injectionDepth: 1234, id: 'myfacetisthebestfacet' };
       initializeComponents();
     });
 
@@ -30,7 +31,7 @@ export function DynamicFacetRangeQueryControllerTest() {
       expect(facetRequest().facetId).toBe(facet.options.id);
       expect(facetRequest().field).toBe(facet.fieldName);
       expect(facetRequest().type).toBe(facet.facetType);
-      expect(facetRequest().sortCriteria).toBe(facet.options.sortCriteria);
+      expect(facetRequest().sortCriteria).toBe(facet.options.sortOrder);
       expect(facetRequest().injectionDepth).toBe(facet.options.injectionDepth);
     });
 

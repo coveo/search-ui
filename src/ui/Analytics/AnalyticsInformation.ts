@@ -1,7 +1,7 @@
-import { history } from 'coveo.analytics';
 import { findLastIndex } from 'underscore';
 import { LocalStorageUtils } from '../../Core';
 import { Cookie } from '../../utils/CookieUtils';
+import { buildHistoryStore } from '../../utils/HistoryStore';
 
 export class AnalyticsInformation {
   private readonly visitorIdKey = 'visitorId';
@@ -19,7 +19,7 @@ export class AnalyticsInformation {
   }
 
   public get lastPageId() {
-    const store = new history.HistoryStore();
+    const store = buildHistoryStore();
     const actions = store.getHistory() as { name: string; value?: string }[];
     const pageViewActionId = findLastIndex(actions, action => action.name === 'PageView');
     if (pageViewActionId === -1) {
