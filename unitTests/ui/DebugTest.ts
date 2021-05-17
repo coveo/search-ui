@@ -16,8 +16,19 @@ export function DebugTest() {
 
     it('should allow to open the debug panel after a delay', done => {
       test.cmp.showDebugPanel();
+
       setTimeout(() => {
         expect(test.modalBox.open).toHaveBeenCalled();
+        done();
+      }, 200);
+    });
+
+    it('should open the debug panel after a delay in the Interface root', done => {
+      test.cmp.bindings.root = $$('div').el;
+      test.cmp.showDebugPanel();
+
+      setTimeout(() => {
+        expect(test.modalBox.open).toHaveBeenCalledWith(jasmine.any(Object), jasmine.objectContaining({ body: test.cmp.bindings.root }));
         done();
       }, 200);
     });
