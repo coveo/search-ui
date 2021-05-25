@@ -1209,10 +1209,12 @@ export class StandaloneSearchInterface extends SearchInterface {
   }
 
   private async doRedirect(searchPage: string) {
+    const cachedHashValue = this.encodedHashValues;
     const executionPlan = await this.queryController.fetchQueryExecutionPlan();
     const redirectionURL = executionPlan && executionPlan.redirectionURL;
+
     if (!redirectionURL) {
-      return this.redirectToSearchPage(searchPage);
+      return this.redirectToSearchPage(searchPage, cachedHashValue);
     }
 
     this.redirectToURL(redirectionURL);
@@ -1231,18 +1233,19 @@ export class StandaloneSearchInterface extends SearchInterface {
     this._window.location.assign(url);
   }
 
-  public redirectToSearchPage(searchPage: string) {
+  public redirectToSearchPage(searchPage: string, hashValueToUse?: string) {
     const link = document.createElement('a');
     link.href = searchPage;
     link.href = link.href; // IE11 needs this to correctly fill the properties that are used below.
 
     const pathname = link.pathname.indexOf('/') == 0 ? link.pathname : '/' + link.pathname; // IE11 does not add a leading slash to this property.
     const hash = link.hash ? link.hash + '&' : '#';
+    const hashValue = hashValueToUse || this.encodedHashValues;
 
     // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
     // eg: onblur of the magic box.
     setTimeout(() => {
-      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${this.encodedHashValues}`;
+      this._window.location.href = `${link.protocol}//${link.host}${pathname}${link.search}${hash}${hashValue}`;
     }, 0);
   }
 
