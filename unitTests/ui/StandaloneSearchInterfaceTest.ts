@@ -108,7 +108,7 @@ export function StandaloneSearchInterfaceTest() {
           handleRedirect();
           await promise;
 
-          expect(cmp.redirectToSearchPage).toHaveBeenCalledWith(options.searchPageUri);
+          expect(cmp.redirectToSearchPage).toHaveBeenCalledWith(options.searchPageUri, '');
           done();
         });
 
@@ -121,7 +121,7 @@ export function StandaloneSearchInterfaceTest() {
           handleRedirect();
           await promise;
 
-          expect(cmp.redirectToSearchPage).toHaveBeenCalledWith(options.searchPageUri);
+          expect(cmp.redirectToSearchPage).toHaveBeenCalledWith(options.searchPageUri, '');
           done();
         });
       });
