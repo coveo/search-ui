@@ -23,6 +23,9 @@ export const SmartSnippetSuggestionsClassNames = {
   QUESTIONS_LIST_TITLE_CLASSNAME
 };
 
+/**
+ * SmartSnippetSuggestions allows to display recommended related suggestions to end users.
+ */
 export class SmartSnippetSuggestions extends Component {
   static ID = 'SmartSnippetSuggestions';
 
