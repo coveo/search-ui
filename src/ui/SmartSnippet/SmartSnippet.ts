@@ -74,7 +74,11 @@ export const SmartSnippetClassNames = {
 export interface ISmartSnippetOptions {
   maximumSnippetHeight: number;
 }
-
+/**
+ * The SmartSnippet component displays the excerpt of a document that would be most likely to answer a particular query.
+ *
+ * This excerpt can be visually customized using inline styling.
+ */
 export class SmartSnippet extends Component {
   static ID = 'SmartSnippet';
 
