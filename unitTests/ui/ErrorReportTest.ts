@@ -140,6 +140,22 @@ export function ErrorReportTest() {
       );
     });
 
+    it('should display a different error message is cause by the usage of both Facet and DynamicFacet components', () => {
+      Simulate.query(test.env, {
+        error: new QueryError({
+          statusCode: 400,
+          data: {
+            message: 'the message',
+            type: 'OrganizationIsPausedException',
+            name: 'OrganizationIsPausedException'
+          }
+        })
+      });
+      expect($$($$(test.cmp.root).find('.coveo-error-report-title')).text()).toEqual(
+        l('OrganizationIsPaused') + l('OrganizationWillResume')
+      );
+    });
+
     it('should display error report options with possible actions', () => {
       Simulate.query(test.env, {
         error: new QueryError({
