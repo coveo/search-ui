@@ -75,9 +75,9 @@ export interface ISmartSnippetOptions {
   maximumSnippetHeight: number;
 }
 /**
- * SmartSnippet allows a to display the excerpt of a document that would be the most likely to answer a particular query.
+ * The SmartSnippet component displays the excerpt of a document that would be most likely to answer a particular query.
  *
- * This excerpt can be customized visually using inline styling.
+ * This excerpt can be visually customized using inline styling.
  */
 export class SmartSnippet extends Component {
   static ID = 'SmartSnippet';
