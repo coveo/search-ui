@@ -140,7 +140,7 @@ export function ErrorReportTest() {
       );
     });
 
-    it('should display a different error message is cause by the usage of both Facet and DynamicFacet components', () => {
+    it('should display a different error message when the organization is paused', () => {
       Simulate.query(test.env, {
         error: new QueryError({
           statusCode: 400,
