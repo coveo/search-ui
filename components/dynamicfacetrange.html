@@ -283,7 +283,6 @@
 						<li><a href="dynamicfacet.html#options.useleadingwildcardinfacetsearch"><code>useLeadingWildcardInFacetSearch</code></a></li>
 						<li><a href="dynamicfacet.html#options.enablemoreless"><code>enableMoreLess</code></a></li>
 						<li><a href="dynamicfacet.html#options.valuecaption"><code>valueCaption</code></a></li>
-						<li><a href="dynamicfacet.html#options.sortcriteria"><code>sortCriteria</code></a></li>
 					</ul>
 					<dl class="tsd-comment-tags">
 						<dt>Not supported in</dt>
@@ -353,6 +352,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacetrange.html#options.currencysymbol" class="tsd-kind-icon">currency<wbr>Symbol</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacetrange.html#options.ranges" class="tsd-kind-icon">ranges</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacetrange.html#options.sortorder" class="tsd-kind-icon">sort<wbr>Order</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacetrange.html#options.valueformat" class="tsd-kind-icon">value<wbr>Format</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="dynamicfacetrange.html#options.valueseparator" class="tsd-kind-icon">value<wbr>Separator</a></li>
 							</ul>
@@ -1214,8 +1214,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacetRange.ts#L85">ui/DynamicFacet/DynamicFacetRange.ts
-							:85</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacetRange.ts#L86">ui/DynamicFacet/DynamicFacetRange.ts
+							:86</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1236,23 +1236,35 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacetRange.ts#L93">ui/DynamicFacet/DynamicFacetRange.ts
-							:93</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacetRange.ts#L94">ui/DynamicFacet/DynamicFacetRange.ts
+							:94</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
 						<div class="lead">
 							<p>The list of <a href="../interfaces/irangevalue.html">range values</a> to request (see <a href="https://docs.coveo.com/en/2790/">Requesting Specific FacetRange Values</a>).</p>
 						</div>
 						<p>This value will override the <a href="dynamicfacet.html#options.numberofvalues"><code>numberOfValues</code></a> value.</p>
 						<p>If this option is not defined, the index will try to generate automatic ranges.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Required</dt>
-							<dd><p>Specifying a value for this option is required for the component to work</p>
-							</dd>
-						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.sortorder" class="tsd-anchor"></a>
+					<h3>sort<wbr>Order</h3>
+					<div class="tsd-signature tsd-kind-icon">sort<wbr>Order<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">FacetRangeSortOrder</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacetRange.ts#L105">ui/DynamicFacet/DynamicFacetRange.ts
+							:105</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The sort order to use for this facet.</p>
+						</div>
+						<p>Can be either <code>ascending</code> or <code>descending</code>.</p>
+						<p><strong>Default:</strong> <code>ascending</code>.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -1262,8 +1274,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacetRange.ts#L66">ui/DynamicFacet/DynamicFacetRange.ts
-							:66</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacetRange.ts#L67">ui/DynamicFacet/DynamicFacetRange.ts
+							:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1287,8 +1299,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacetRange.ts#L50">ui/DynamicFacet/DynamicFacetRange.ts
-							:50</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacetRange.ts#L51">ui/DynamicFacet/DynamicFacetRange.ts
+							:51</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -1318,8 +1330,8 @@ data-value-separator&#x3D;&#x27;up to&#x27;</pre>
 								<p>Overwrites <a href="dynamicfacet.html">DynamicFacet</a>.<a href="dynamicfacet.html#constructor">constructor</a></p>
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacetRange.ts#L100">ui/DynamicFacet/DynamicFacetRange.ts
-									:100</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/DynamicFacet/DynamicFacetRange.ts#L122">ui/DynamicFacet/DynamicFacetRange.ts
+									:122</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

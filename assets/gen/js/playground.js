@@ -9692,15 +9692,17 @@ var StandaloneSearchInterface = /** @class */ (function (_super) {
     };
     StandaloneSearchInterface.prototype.doRedirect = function (searchPage) {
         return __awaiter(this, void 0, void 0, function () {
-            var executionPlan, redirectionURL;
+            var cachedHashValue, executionPlan, redirectionURL;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.queryController.fetchQueryExecutionPlan()];
+                    case 0:
+                        cachedHashValue = this.encodedHashValues;
+                        return [4 /*yield*/, this.queryController.fetchQueryExecutionPlan()];
                     case 1:
                         executionPlan = _a.sent();
                         redirectionURL = executionPlan && executionPlan.redirectionURL;
                         if (!redirectionURL) {
-                            return [2 /*return*/, this.redirectToSearchPage(searchPage)];
+                            return [2 /*return*/, this.redirectToSearchPage(searchPage, cachedHashValue)];
                         }
                         this.redirectToURL(redirectionURL);
                         return [2 /*return*/];
@@ -9715,17 +9717,18 @@ var StandaloneSearchInterface = /** @class */ (function (_super) {
         }, this.element);
         this._window.location.assign(url);
     };
-    StandaloneSearchInterface.prototype.redirectToSearchPage = function (searchPage) {
+    StandaloneSearchInterface.prototype.redirectToSearchPage = function (searchPage, hashValueToUse) {
         var _this = this;
         var link = document.createElement('a');
         link.href = searchPage;
         link.href = link.href; // IE11 needs this to correctly fill the properties that are used below.
         var pathname = link.pathname.indexOf('/') == 0 ? link.pathname : '/' + link.pathname; // IE11 does not add a leading slash to this property.
         var hash = link.hash ? link.hash + '&' : '#';
+        var hashValue = hashValueToUse || this.encodedHashValues;
         // By using a setTimeout, we allow other possible code related to the search box / magic box time to complete.
         // eg: onblur of the magic box.
         setTimeout(function () {
-            _this._window.location.href = link.protocol + "//" + link.host + pathname + link.search + hash + _this.encodedHashValues;
+            _this._window.location.href = link.protocol + "//" + link.host + pathname + link.search + hash + hashValue;
         }, 0);
     };
     Object.defineProperty(StandaloneSearchInterface.prototype, "encodedHashValues", {
@@ -15335,8 +15338,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10085.2',
-    product: '2.10085.2',
+    lib: '2.10086.0',
+    product: '2.10086.0',
     supportedApiVersion: 2
 };
 
@@ -16275,6 +16278,8 @@ var dict = {
     "ExpandQuestionAnswer": "View answer for \"{0}\"",
     "MoreValuesAvailable": "additional values are available",
     "Breadcrumb": "Active filters",
+    "OrganizationIsPaused": "Your Coveo organization is paused and search is currently unavailable.",
+    "OrganizationWillResume": "Your organisation will resume and will be available shortly.",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
@@ -28489,7 +28494,7 @@ var Debug = /** @class */ (function (_super) {
                 return true;
             },
             sizeMod: 'big',
-            body: document.getElementsByClassName('CoveoSearchInterface')[0] // Will return undefined if no CoveoSearchInterface is present
+            body: this.bindings.root
         });
         var title = Dom_1.$$(this.modalBox.wrapper).find('.coveo-modal-header');
         if (title) {
