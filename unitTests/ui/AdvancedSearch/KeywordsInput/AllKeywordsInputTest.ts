@@ -15,7 +15,7 @@ export function AnyKeywordsInputTest() {
     });
 
     describe('getValue', () => {
-      it('should return the values separated by OR', () => {
+      it('should return the values surrounded by a no syntax block', () => {
         let value = 'starcraft starwars startrek';
         input.setValue(value);
         expect(input.getValue()).toEqual('<@-starcraft starwars startrek-@>');
