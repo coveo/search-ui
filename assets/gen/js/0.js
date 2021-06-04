@@ -1510,7 +1510,7 @@ var ResultLink = /** @class */ (function (_super) {
     };
     ResultLink.prototype.filterProtocol = function (uri) {
         var isAbsolute = /^(https?|ftp|file|mailto|tel):/i.test(uri);
-        var isRelative = /^\//.test(uri);
+        var isRelative = /^(\/|\.\/|\.\.\/)/.test(uri);
         return isAbsolute || isRelative ? uri : '';
     };
     ResultLink.prototype.getResultUri = function () {
