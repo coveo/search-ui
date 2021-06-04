@@ -359,8 +359,20 @@ export function ResultLinkTest() {
         expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
       });
 
-      it('when the clickUri is a relative url (starts with slash), it sets the href to the uri', () => {
+      it('when the clickUri is a relative url with a slash, it sets the href to the uri', () => {
         fakeResult.clickUri = '/casemgmt/sc_KnowledgeArticle?sfdcid=ka32C0000009t9CQAQ&type=Solution';
+        initHyperLink();
+        expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
+      });
+
+      it('when the uri is a relative url with a period, it sets the href to the uri', () => {
+        fakeResult.clickUri = './articles/ka32C0000009t9CQAQ';
+        initHyperLink();
+        expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
+      });
+
+      it('when the uri is a relative url with two periods, it sets the href to the uri', () => {
+        fakeResult.clickUri = '../articles/ka32C0000009t9CQAQ';
         initHyperLink();
         expect(test.cmp.element.getAttribute('href')).toEqual(fakeResult.clickUri);
       });
@@ -382,6 +394,27 @@ export function ResultLinkTest() {
         it clears the value to prevent XSS`, () => {
         fakeResult.raw['test'] = 'javascript:void(0)';
         initHyperLink({ field: '@test' });
+        expect(test.cmp.element.getAttribute('href')).toEqual('');
+      });
+
+      it(`when the uri uses the javascript protocol and contains a relative uri with a slash,
+        it clears the value to prevent XSS`, () => {
+        fakeResult.clickUri = 'javascript:"/casemgmt/sc_KnowledgeArticle"';
+        initHyperLink();
+        expect(test.cmp.element.getAttribute('href')).toEqual('');
+      });
+
+      it(`when the uri uses the javascript protocol and contains a relative uri with a period,
+        it clears the value to prevent XSS`, () => {
+        fakeResult.clickUri = 'javascript:"./articles/ka32C0000009t9CQAQ"';
+        initHyperLink();
+        expect(test.cmp.element.getAttribute('href')).toEqual('');
+      });
+
+      it(`when the uri uses the javascript protocol and contains a relative uri with two periods,
+        it clears the value to prevent XSS`, () => {
+        fakeResult.clickUri = 'javascript:"../articles/ka32C0000009t9CQAQ"';
+        initHyperLink();
         expect(test.cmp.element.getAttribute('href')).toEqual('');
       });
 
