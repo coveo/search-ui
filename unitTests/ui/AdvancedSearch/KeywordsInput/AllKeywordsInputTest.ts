@@ -1,12 +1,12 @@
-import { AnyKeywordsInput } from '../../../../src/ui/AdvancedSearch/KeywordsInput/AnyKeywordsInput';
+import { AllKeywordsInput } from '../../../../src/ui/AdvancedSearch/KeywordsInput/AllKeywordsInput';
 import { $$ } from '../../../../src/utils/Dom';
 
 export function AnyKeywordsInputTest() {
-  describe('AnyKeywordsInput', () => {
-    let input: AnyKeywordsInput;
+  describe('AllKeywordsInput', () => {
+    let input: AllKeywordsInput;
 
     beforeEach(function () {
-      input = new AnyKeywordsInput($$('div').el);
+      input = new AllKeywordsInput($$('div').el);
       input.build();
     });
 
@@ -18,7 +18,7 @@ export function AnyKeywordsInputTest() {
       it('should return the values separated by OR', () => {
         let value = 'starcraft starwars startrek';
         input.setValue(value);
-        expect(input.getValue()).toEqual('"<@-starcraft-@>" OR "<@-starwars-@>" OR "<@-startrek-@>"');
+        expect(input.getValue()).toEqual('<@-starcraft starwars startrek-@>');
       });
     });
   });
