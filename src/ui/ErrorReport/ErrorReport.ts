@@ -253,6 +253,12 @@ export class ErrorReport extends Component {
         this.setErrorTitle(undefined, l('GroupByAndFacetRequestsCannotCoexist'));
         break;
 
+      case 'OrganizationIsPausedException':
+        this.options.showDetailedError = false;
+        this.buildEndpointErrorElements();
+        this.setErrorTitle(l('OrganizationIsPaused'), l('OrganizationWillResume'));
+        break;
+
       default:
         this.buildOptionsElement();
         this.setErrorTitle();
