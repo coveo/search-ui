@@ -108,7 +108,7 @@ export function StandaloneSearchInterfaceTest() {
           handleRedirect();
           await promise;
 
-          expect(cmp.redirectToSearchPage).toHaveBeenCalledWith(options.searchPageUri);
+          expect(cmp.redirectToSearchPage).toHaveBeenCalledWith(options.searchPageUri, '');
           done();
         });
 
@@ -121,8 +121,27 @@ export function StandaloneSearchInterfaceTest() {
           handleRedirect();
           await promise;
 
-          expect(cmp.redirectToSearchPage).toHaveBeenCalledWith(options.searchPageUri);
+          expect(cmp.redirectToSearchPage).toHaveBeenCalledWith(options.searchPageUri, '');
           done();
+        });
+
+        it(`where there is an analytics event prior to performing a redirection,
+        when the execution plan does not return a url (but cancels pending search events),
+        the redirection url contains the original analytics event cause`, async done => {
+          const cause = analyticsActionCauseList.omniboxFromLink;
+          cmp.usageAnalytics.logSearchEvent(cause, {});
+
+          const promise = Promise.resolve(null);
+          spyOn(cmp.queryController, 'fetchQueryExecutionPlan').and.returnValue(promise);
+
+          handleRedirect();
+          cmp.usageAnalytics.cancelAllPendingEvents();
+          await promise;
+
+          setTimeout(() => {
+            expect(windoh.location.href).toContain('#firstQueryCause=omniboxFromLink');
+            done();
+          }, 0);
         });
       });
     });
