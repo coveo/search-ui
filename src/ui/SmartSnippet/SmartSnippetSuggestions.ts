@@ -23,6 +23,9 @@ export const SmartSnippetSuggestionsClassNames = {
   QUESTIONS_LIST_TITLE_CLASSNAME
 };
 
+/**
+ * The SmartSnippetSuggestions component displays additional queries for which a Coveo Smart Snippets model can provide relevant excerpts.
+ */
 export class SmartSnippetSuggestions extends Component {
   static ID = 'SmartSnippetSuggestions';
 

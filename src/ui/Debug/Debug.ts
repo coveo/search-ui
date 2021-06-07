@@ -212,7 +212,7 @@ export class Debug extends RootComponent {
         return true;
       },
       sizeMod: 'big',
-      body: document.getElementsByClassName('CoveoSearchInterface')[0] // Will return undefined if no CoveoSearchInterface is present
+      body: this.bindings.root
     });
 
     const title = $$(this.modalBox.wrapper).find('.coveo-modal-header');
