@@ -6,8 +6,11 @@ export class ExactKeywordsInput extends KeywordsInput {
     super(l('ExactPhrase'), root);
   }
 
-  public getValue(): string {
-    let value = super.getValue();
-    return value ? '"' + value + '"' : '';
+  public getValue() {
+    const value = super.getValue();
+    if (!value) {
+      return '';
+    }
+    return `"<@-${value}-@>"`;
   }
 }
