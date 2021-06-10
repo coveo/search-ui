@@ -7600,7 +7600,7 @@
     "fr": "Filtres actifs"
   },
   "OrganizationIsPaused": {
-    "en": "Your Coveo organization is paused because of inactivity and search is currently unavailable.",
+    "en": "Your Coveo organization is paused due to inactivity and search is currently unavailable.",
     "fr": "Votre organisation Coveo est pausée due a l'inactivité et la recherche est présentement non disponible."
   },
   "OrganizationWillResume": {
