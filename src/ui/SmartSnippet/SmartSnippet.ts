@@ -2,7 +2,7 @@ import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { QueryEvents, Initialization, $$ } from '../../Core';
+import { QueryEvents, Initialization, $$, StringUtils } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import 'styling/_SmartSnippet';
@@ -75,7 +75,6 @@ export const SmartSnippetClassNames = {
 export interface ISmartSnippetOptions {
   maximumSnippetHeight: number;
   titleField: IFieldOption;
-  uriField: IFieldOption;
   hrefTemplate?: string;
 }
 /**
@@ -108,11 +107,6 @@ export class SmartSnippet extends Component {
      * The field to display for the title.
      */
     titleField: ComponentOptions.buildFieldOption({ defaultValue: '@title' }),
-
-    /**
-     * The field to display and use for the URI.
-     */
-    uriField: ComponentOptions.buildFieldOption({ defaultValue: '@clickUri' }),
 
     /**
      * Specifies a template literal from which to generate the title and URI's `href` attribute value (see
@@ -311,7 +305,10 @@ export class SmartSnippet extends Component {
   }
 
   private renderSourceUrl() {
-    return this.buildLink(Utils.getFieldValue(this.lastRenderedResult, <string>this.options.uriField), SOURCE_URL_CLASSNAME);
+    const uri = this.options.hrefTemplate
+      ? StringUtils.buildStringTemplateFromResult(this.options.hrefTemplate, this.lastRenderedResult)
+      : this.lastRenderedResult.clickUri;
+    return this.buildLink(uri, SOURCE_URL_CLASSNAME);
   }
 
   private buildLink(text: string, className: string) {
@@ -319,7 +316,7 @@ export class SmartSnippet extends Component {
     element.innerText = text;
     new ResultLink(
       element,
-      { field: this.options.uriField, hrefTemplate: this.options.hrefTemplate },
+      { hrefTemplate: this.options.hrefTemplate },
       { ...this.getBindings(), resultElement: this.element },
       this.lastRenderedResult
     );

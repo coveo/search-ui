@@ -131,23 +131,38 @@ export function SmartSnippetTest() {
       done();
     });
 
-    it('displays the specified uriField', async done => {
-      instantiateSmartSnippet(null, { uriField: '@alt' });
-      document.body.appendChild(test.env.root);
-      await triggerQuestionAnswerQuery(true);
-      expect(getFirstChild(ClassNames.SOURCE_URL_CLASSNAME).innerText).toEqual(sourceAlt);
-      expect(getFirstChild(ClassNames.SOURCE_TITLE_CLASSNAME).innerText).toEqual(sourceTitle);
-      test.env.root.remove();
-      done();
-    });
-
-    it('uses the specified hrefTemplate', async done => {
+    it('uses and displays the specified hrefTemplate', async done => {
       instantiateSmartSnippet(null, { hrefTemplate: '${raw.alt}/?abcd=1' });
       document.body.appendChild(test.env.root);
       await triggerQuestionAnswerQuery(true);
       const expectedHref = `${sourceAlt}/?abcd=1`;
       expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).href).toEqual(expectedHref);
+      expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).innerText).toEqual(expectedHref);
       expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME).href).toEqual(expectedHref);
+      test.env.root.remove();
+      done();
+    });
+
+    it('resists XSS injections in hrefTemplate (1)', async done => {
+      instantiateSmartSnippet(null, { hrefTemplate: 'https://test.com?q=<img src="abcd.png" onerror="window.XSSInjected = true;">' });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      await Promise.resolve();
+      expect('XSSInjected' in window).toBeFalsy();
+      delete window['XSSInjected'];
+      test.env.root.remove();
+      done();
+    });
+
+    it('resists XSS injections in hrefTemplate (2)', async done => {
+      instantiateSmartSnippet(null, {
+        hrefTemplate: 'https://test.com?q="/><img src="abcd.png" onerror="window.XSSInjected = true;"><span title="'
+      });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      await Promise.resolve();
+      expect('XSSInjected' in window).toBeFalsy();
+      delete window['XSSInjected'];
       test.env.root.remove();
       done();
     });
