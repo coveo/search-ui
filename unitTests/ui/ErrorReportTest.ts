@@ -152,7 +152,7 @@ export function ErrorReportTest() {
         })
       });
       expect($$($$(test.cmp.root).find('.coveo-error-report-title')).text()).toEqual(
-        l('OrganizationIsPaused') + l('OrganizationWillResume')
+        l('OrganizationWillResume') + l('OrganizationIsPaused')
       );
     });
 
