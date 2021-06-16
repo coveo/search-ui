@@ -255,8 +255,8 @@ export class ErrorReport extends Component {
 
       case 'OrganizationIsPausedException':
         this.options.showDetailedError = false;
-        this.buildEndpointErrorElements();
-        this.setErrorTitle(l('OrganizationIsPaused'), l('OrganizationWillResume'));
+        this.buildEndpointErrorElements('https://docs.coveo.com/l6af0467');
+        this.setErrorTitle(l('OrganizationWillResume'), l('OrganizationIsPaused'));
         break;
 
       default:
