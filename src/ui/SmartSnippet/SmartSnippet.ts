@@ -2,7 +2,7 @@ import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { QueryEvents, Initialization, $$ } from '../../Core';
+import { QueryEvents, Initialization, $$, StringUtils } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import 'styling/_SmartSnippet';
@@ -23,6 +23,7 @@ import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { getDefaultSnippetStyle } from './SmartSnippetCommon';
 import { ResultLink } from '../ResultLink/ResultLink';
+import { IFieldOption } from '../Base/IComponentOptions';
 
 interface ISmartSnippetReason {
   analytics: AnalyticsSmartSnippetFeedbackReason;
@@ -73,6 +74,8 @@ export const SmartSnippetClassNames = {
 
 export interface ISmartSnippetOptions {
   maximumSnippetHeight: number;
+  titleField: IFieldOption;
+  hrefTemplate?: string;
 }
 /**
  * The SmartSnippet component displays the excerpt of a document that would be most likely to answer a particular query.
@@ -98,7 +101,39 @@ export class SmartSnippet extends Component {
      * Any part of an answer exceeding this height will be hidden by default and expendable via a "show more" button.
      * Default value is `250`.
      */
-    maximumSnippetHeight: ComponentOptions.buildNumberOption({ defaultValue: 250, min: 0 })
+    maximumSnippetHeight: ComponentOptions.buildNumberOption({ defaultValue: 250, min: 0 }),
+
+    /**
+     * The field to display for the title.
+     */
+    titleField: ComponentOptions.buildFieldOption({ defaultValue: '@title' }),
+
+    /**
+     * Specifies a template literal from which to generate the title and URI's `href` attribute value (see
+     * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
+     *
+     * This option overrides the [`field`]{@link SmartSnippet.options.uriField} option value.
+     *
+     * The template literal can reference any number of fields from the parent result. It can also reference global
+     * scope properties.
+     *
+     * **Examples:**
+     *
+     * - The following markup generates an `href` value such as `http://uri.com?id=itemTitle`:
+     *
+     * ```html
+     * <a class='CoveoSmartSnippet' data-href-template='${clickUri}?id=${raw.title}'></a>
+     * ```
+     *
+     * - The following markup generates an `href` value such as `localhost/fooBar`:
+     *
+     * ```html
+     * <a class='CoveoSmartSnippet' data-href-template='${window.location.hostname}/{Foo.Bar}'></a>
+     * ```
+     *
+     * Default value is `undefined`.
+     */
+    hrefTemplate: ComponentOptions.buildStringOption()
   };
 
   private lastRenderedResult: IQueryResult;
@@ -266,17 +301,25 @@ export class SmartSnippet extends Component {
   }
 
   private renderSourceTitle() {
-    return this.buildLink(this.lastRenderedResult.title, SOURCE_TITLE_CLASSNAME);
+    return this.buildLink(Utils.getFieldValue(this.lastRenderedResult, <string>this.options.titleField), SOURCE_TITLE_CLASSNAME);
   }
 
   private renderSourceUrl() {
-    return this.buildLink(this.lastRenderedResult.clickUri, SOURCE_URL_CLASSNAME);
+    const uri = this.options.hrefTemplate
+      ? StringUtils.buildStringTemplateFromResult(this.options.hrefTemplate, this.lastRenderedResult)
+      : this.lastRenderedResult.clickUri;
+    return this.buildLink(uri, SOURCE_URL_CLASSNAME);
   }
 
   private buildLink(text: string, className: string) {
     const element = $$('a', { className: `CoveoResultLink ${className}` }).el as HTMLAnchorElement;
     element.innerText = text;
-    new ResultLink(element, {}, { ...this.getBindings(), resultElement: this.element }, this.lastRenderedResult);
+    new ResultLink(
+      element,
+      { hrefTemplate: this.options.hrefTemplate },
+      { ...this.getBindings(), resultElement: this.element },
+      this.lastRenderedResult
+    );
     return element;
   }
 
