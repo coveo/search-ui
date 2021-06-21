@@ -140,6 +140,17 @@ Every time you hit **Save** in a source file, the dev server will reload and re-
 
 Code coverage will be reported in `./bin/coverage`
 
+### Accessibility tests
+
+Tests are written using [Axe core](https://github.com/dequelabs/axe-core). You can use `npm run accessibilityTests` to run
+the tests in Chrome Headless.
+
+If you wish to write new tests, you can do so by starting a new webpack-dev-server instance.
+
+To start the server, run `gulp devAccessibilityTest`.
+
+Load [http://localhost:8082/tests/Accessibility.html](http://localhost:8082/tests/Accessibility.html).
+
 ## Documentation
 
 General reference documentation is generated using TypeDoc (see
