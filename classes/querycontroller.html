@@ -214,16 +214,6 @@
 					<h1>Class QueryController</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>This class is automatically instantiated and bound to the root of your search interface when you initialize the framework.<br/>
-							It is essentially a singleton that wraps the access to the <a href="searchendpoint.html">SearchEndpoint</a> endpoint to execute query, and is in charge of triggering the different query events.<br/>
-							This is what every component of the framework uses internally to execute query or access the endpoint.<br/>
-						When calling <code>Coveo.executeQuery</code> this class is used.</p>
-					</div>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -281,11 +271,6 @@
 									:416</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Cancel any pending query</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -306,11 +291,6 @@
 									:41</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the debug info about this component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -331,13 +311,6 @@
 									:52</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Disable the component.
-										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -358,13 +331,6 @@
 									:61</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Enable the component.
-										Normally this means that the component will execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -384,13 +350,6 @@
 									:198</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Execute a query and return a Promise of IQueryResults.<br/>
-										This will execute the normal query flow, triggering all the necessary query events (newQuery <br/>
-									All components present in the interface will act accordingly (modify the query and render results if needed).</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -416,11 +375,6 @@
 									:357</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Using the same parameters as the last successful query, fetch another batch of results. Particularly useful for infinite scrolling, for example.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -446,11 +400,6 @@
 									:181</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the plan of execution of a search request, without executing it.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="executionplan.html" class="tsd-signature-type">ExecutionPlan</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -470,11 +419,6 @@
 									:152</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the <a href="searchendpoint.html">SearchEndpoint</a> that is currently used by the query controller to execute query</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ISearchEndpoint</span></h4>
 						</li>
 					</ul>
@@ -494,11 +438,6 @@
 									:165</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the last query that was performed by the query controller</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/iquery.html" class="tsd-signature-type">IQuery</a></h4>
 						</li>
 					</ul>
@@ -518,11 +457,6 @@
 									:173</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the last query results set.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a></h4>
 						</li>
 					</ul>
@@ -542,17 +476,10 @@
 									:143</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Set the <a href="searchendpoint.html">SearchEndpoint</a> that the query controller should use to execute query</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>endpoint: <a href="searchendpoint.html" class="tsd-signature-type">SearchEndpoint</a></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -574,18 +501,6 @@
 							:23</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="componentevents.html">ComponentEvents</a>.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{boolean}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -599,11 +514,6 @@
 							:18</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Allows component to log in the dev console.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -617,12 +527,6 @@
 							:28</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The static ID that each component needs in order to be identified.<br/>
-							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
-						</div>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -642,11 +546,6 @@
 									:113</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Create a new query controller</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -657,18 +556,9 @@
 								</li>
 								<li>
 									<h5>usageAnalytics: <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p><strong>Deprecated.</strong> Since the <a href="https://docs.coveo.com/en/3084/">October 2019 Release (v2.7219)</a>, the class retrieves and uses the {@link AnalyticsClient} from its <code>searchInterface</code> constructor parameter.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>searchInterface: <a href="../components/searchinterface.html" class="tsd-signature-type">SearchInterface</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="querycontroller.html" class="tsd-signature-type">QueryController</a></h4>

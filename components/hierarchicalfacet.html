@@ -319,47 +319,6 @@
 					<h1>Coveo HierarchicalFacet Component (CoveoHierarchicalFacet)</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<dl class="tsd-deprecated">
-					</dl>
-					<dl class="tsd-comment-tags">
-						<dt>deprecated</dt>
-						<dd><p>This component is exposed for legacy reasons. Instead, use the <a href="categoryfacet.html">CategoryFacet</a> component, which is more performant and easier to use.</p>
-							<p>The <code>HierarchicalFacet</code> component inherits all of its options and behaviors from the <a href="facet.html"><code>Facet</code></a>
-							component, but is meant to be used to render hierarchical values.</p>
-							<p><strong>Note:</strong></p>
-							<blockquote>
-								<p>The <code>HierarchicalFacet</code> component does not support the <a href="facet.html#options.customsort"><code>customSort</code></a>
-								<code>Facet</code> option.</p>
-							</blockquote>
-							<p>The <code>HierarchicalFacet</code> component can be used to display files in a file system, or categories for items in a
-							hierarchy.</p>
-							<p>This facet requires a group by field with a special format to work correctly.</p>
-							<p><strong>Example:</strong></p>
-							<p>You have the following files indexed on a file system:</p>
-							<pre><code>c:<span class="hljs-string">\</span>
-  folder1<span class="hljs-string">\</span>
-    text1.txt
-  folder2<span class="hljs-string">\</span>
-    folder3<span class="hljs-string">\</span>
-      text2.txt</code></pre><p>The <code>text1.txt</code> item would have a field with the following format:
-							<code>c; c|folder1;</code></p>
-							<p>The <code>text2.txt</code> item would have a field with the following format:
-							<code>c; c|folder2; c|folder2|folder3;</code></p>
-							<p>By default, the <code>|</code> character determines the hierarchy (<code>folder3</code> inside <code>folder2</code> inside <code>c</code>).</p>
-							<p>Since both items contain the <code>c</code> value, selecting it value in the facet would return both items.</p>
-							<p>Selecting the <code>folder3</code> value in the facet would only return the <code>text2.txt</code> item.</p>
-						</dd>
-						<dt>Not supported in</dt>
-						<dd><p><a href="https://docs.coveo.com/en/1107/">Coveo for Salesforce Free</a></p>
-						</dd>
-						<dt>Deprecated since</dt>
-						<dd><p><a href="https://docs.coveo.com/en/2763/">January 2019 Release (v2.5395.12)</a></p>
-						</dd>
-					</dl>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -465,18 +424,10 @@
 									:430</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Closes (collapses) a single value and hides all its children.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">IValueHierarchy</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The value to close.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -499,11 +450,6 @@
 									:1248</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Collapses the facet.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -524,11 +470,6 @@
 									:41</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the debug info about this component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -549,25 +490,13 @@
 									:310</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Deselects multiple values.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>values: <span class="tsd-signature-type">FacetValue[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The array of values to deselect.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> deselectChildren: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;!this.options.useAnd</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Specifies whether to also deselect all child values (if any). Default value is the opposite
-										of the <a href="facet.html#options.useand"><code>useAnd</code></a> option value set for this <code>HierarchicalFacet</code>.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -590,24 +519,13 @@
 									:245</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Deselects a single value</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The value to deselect.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> deselectChildren: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Specifies whether to also deselect all child values (if any). Default value is <code>true</code>.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -630,13 +548,6 @@
 									:52</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Disable the component.
-										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -657,13 +568,6 @@
 									:61</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Enable the component.
-										Normally this means that the component will execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -684,19 +588,10 @@
 									:932</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Excludes multiple values.</p>
-								</div>
-								<p>Does not trigger a query automatically.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>values: <span class="tsd-signature-type">FacetValue[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -719,25 +614,13 @@
 									:273</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Excludes a single value.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The value to exclude.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> excludeChildren: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;!this.options.useAnd</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Specifies whether to also exclude all child values (if any). Default value is the opposite
-										of the <a href="facet.html#options.useand"><code>useAnd</code></a> option value set for this <code>HierarchicalFacet</code>.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -760,11 +643,6 @@
 									:1258</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Expands the facet.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -785,11 +663,6 @@
 									:328</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the bindings, or environment, for the current component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -810,18 +683,10 @@
 									:1206</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the configured caption for a desired facet value.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The string facet value whose caption the method should return.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -844,11 +709,6 @@
 									:1014</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the currently displayed values as an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a>.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">FacetValue[]</span></h4>
 							<p>The currently displayed values.</p>
 						</li>
@@ -870,11 +730,6 @@
 									:379</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the values that the <code>HierarchicalFacet</code> is currently displaying.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 							<p>An array containing all the values that the <code>HierarchicalFacet</code> is currently displaying.</p>
 						</li>
@@ -896,11 +751,6 @@
 									:1088</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the endpoint for the facet.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ISearchEndpoint</span></h4>
 							<p>The endpoint for the facet.</p>
 						</li>
@@ -922,11 +772,6 @@
 									:1044</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the currently excluded values as an array of strings.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 							<p>The currently excluded values.</p>
 						</li>
@@ -948,11 +793,6 @@
 									:1026</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the currently selected values as an array of strings.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 							<p>The currently selected values.</p>
 						</li>
@@ -974,18 +814,10 @@
 									:361</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the caption of a single value.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>facetValue: <a href="../interfaces/iindexfieldvalue.html" class="tsd-signature-type">IIndexFieldValue</a><span class="tsd-signature-symbol"> | </span><a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The value whose caption the method should return.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1009,18 +841,10 @@
 									:1035</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Determines whether the specified value is selected in the facet.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The name of the facet value to verify.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -1043,11 +867,6 @@
 									:1141</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Hides the waiting animation in the facet header.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1067,18 +886,10 @@
 									:407</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Opens (expands) a single value and shows all its children.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">IValueHierarchy</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The value to open.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1101,11 +912,6 @@
 									:452</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Resets the <code>HierarchicalFacet</code> state.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1126,25 +932,13 @@
 									:225</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Selects multiple values</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>values: <span class="tsd-signature-type">FacetValue[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The array of values to select.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> selectChildren: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;!this.options.useAnd</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Specifies whether to also select all child values (if any). Default value is the opposite of
-										the <a href="facet.html#options.useand"><code>useAnd</code></a> option value set for this <code>HierarchicalFacet</code>.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1167,25 +961,13 @@
 									:208</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Selects a single value.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The value to select.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> selectChildren: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;!this.options.useAnd</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Specifies whether to also select all child values (if any). Default value is the opposite of
-										the <a href="facet.html#options.useand"><code>useAnd</code></a> option value set for this <code>HierarchicalFacet</code>.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1208,13 +990,6 @@
 									:1235</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Shows less elements in the Facet (up to the original number of values).</p>
-								</div>
-								<p>See the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a>, and
-								<a href="facet.html#options.numberofvalues"><code>numberOfValues</code></a> options.</p>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1235,14 +1010,6 @@
 									:1219</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Shows the next page of results in the facet.</p>
-								</div>
-								<p>See the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a>, and <a href="facet.html#options.pagesize"><code>pageSize</code></a>
-								options.</p>
-								<p>Triggers a query if needed, or displays the already available values.</p>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1263,11 +1030,6 @@
 									:1130</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Shows a waiting animation in the facet header (a spinner).</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1288,13 +1050,6 @@
 									:1066</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Switches the facet to <code>AND</code> mode.</p>
-								</div>
-								<p>See the <a href="facet.html#options.useand"><code>useAnd</code></a>, and
-								<a href="facet.html#options.enabletogglingoperator"><code>enableTogglingOperator</code></a> options.</p>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1315,13 +1070,6 @@
 									:1078</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Switches the facet to <code>OR</code> mode.</p>
-								</div>
-								<p>See the <a href="facet.html#options.useand"><code>useAnd</code></a>, and
-								<a href="facet.html#options.enabletogglingoperator"><code>enableTogglingOperator</code></a> options.</p>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1342,18 +1090,10 @@
 									:346</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Toggles the exclusion of a single value (excludes value if not excluded; un-excludes value if excluded).</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The value to exclude or un-exclude.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1376,18 +1116,10 @@
 									:332</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Toggles the selection of a single value (selects value if not selected; deselects value if selected).</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The value to select or deselect.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1410,19 +1142,10 @@
 									:962</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Unexcludes multiple values.</p>
-								</div>
-								<p>Does not trigger a query automatically.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>values: <span class="tsd-signature-type">FacetValue[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1445,25 +1168,13 @@
 									:293</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Un-excludes a single value.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The value to un-exclude.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> unexludeChildren: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;!this.options.useAnd</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Specifies whether to also un-exclude all child values (if any). Default value is the
-										opposite of the <a href="facet.html#options.useand"><code>useAnd</code></a> option value set for this <code>HierarchicalFacet</code>.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1486,20 +1197,10 @@
 									:399</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Updates the sort criteria for the <code>HierarchicalFacet</code>.</p>
-								</div>
-								<p>See the <a href="../interfaces/igroupbyrequest.html#sortcriteria"><code>sortCriteria</code></a> property of the [<code>IGroupByRequest</code>] interface for the
-								list and description of possible values.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>criteria: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The new sort criteria.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1522,31 +1223,16 @@
 									:410</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -1568,18 +1254,6 @@
 							:270</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Allows the component to bind events and execute them only when it is enabled.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{Coveo.ComponentEvents}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -1593,11 +1267,6 @@
 							:294</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -1611,11 +1280,6 @@
 							:282</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -1629,18 +1293,6 @@
 							:23</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{boolean}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="facetsearch" class="tsd-anchor"></a>
@@ -1654,11 +1306,6 @@
 							:726</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Renders and handles the facet <strong>Search</strong> part of the component.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="facetsettings" class="tsd-anchor"></a>
@@ -1672,11 +1319,6 @@
 							:731</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Renders and handles the facet <strong>Settings</strong> part of the component</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -1690,11 +1332,6 @@
 							:18</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Allows component to log in the dev console.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -1708,11 +1345,6 @@
 							:286</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the singleton that allows to trigger queries.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -1726,11 +1358,6 @@
 							:278</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -1744,11 +1371,6 @@
 							:274</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -1762,11 +1384,6 @@
 							:290</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -1780,12 +1397,6 @@
 							:28</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The static ID that each component needs in order to be identified.<br/>
-							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
-						</div>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -1793,27 +1404,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-									:343</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
-						</li>
-					</ul>
+					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+							:343</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -1829,23 +1428,6 @@
 							:130</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The character that allows to specify the hierarchical dependency.</p>
-						</div>
-						<p><strong>Example:</strong></p>
-						<p>If your field has the following values:</p>
-						<p><code>@field: c; c&gt;folder2; c&gt;folder2&gt;folder3;</code></p>
-						<p>The delimiting character is <code>&gt;</code>.</p>
-						<p>Default value is <code>|</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>|</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-delimiting-character&#x3D;&#x27;foo&#x27;</pre>
@@ -1862,21 +1444,6 @@
 							:160</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies at which level (0-based index) of the hierarchy the <code>HierarchicalFacet</code> should stop displaying its
-							values.</p>
-						</div>
-						<p>Default value is <code>undefined</code>, which means the <code>HierarchicalFacet</code> component renders all hierarchical levels.
-						Minimum value is <code>0</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Minimum</dt>
-							<dd><p><code>0</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-level-end&#x3D;&#x27;10&#x27;</pre>
@@ -1893,31 +1460,6 @@
 							:151</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies at which level (0-based index) of the hierarchy the <code>HierarchicalFacet</code> should start displaying its
-							values.</p>
-						</div>
-						<p><strong>Example:</strong></p>
-						<p>If you have the following files indexed on a file system:</p>
-						<pre><code>c:<span class="hljs-string">\</span>
-   folder1<span class="hljs-string">\</span>
-       text1.txt
-   folder2<span class="hljs-string">\</span>
-     folder3<span class="hljs-string">\</span>
-       text2.txt</code></pre><p>Setting <code>levelStart</code> to <code>1</code> displays <code>folder1</code> and <code>folder2</code> in the <code>HierarchicalFacet</code>, but omits <code>c:</code>.</p>
-						<p>Default (and minimum) value is <code>0</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Minimum</dt>
-							<dd><p><code>0</code></p>
-							</dd>
-							<dt>Default</dt>
-							<dd><p><code>0</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-level-start&#x3D;&#x27;10&#x27;</pre>
@@ -1934,22 +1476,6 @@
 							:167</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies the margin (in pixels) to display between each hierarchical level when expanding.</p>
-						</div>
-						<p>Default value is <code>10</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Minimum</dt>
-							<dd><p><code>0</code></p>
-							</dd>
-							<dt>Default</dt>
-							<dd><p><code>10</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-margin-by-level&#x3D;&#x27;10&#x27;</pre>
@@ -1974,37 +1500,16 @@
 									:183</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates a new <code>HierarchicalFacet</code> component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>options: <span class="tsd-signature-type">IHierarchicalFacetOptions</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The options for the <code>HierarchicalFacet</code> component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="hierarchicalfacet.html" class="tsd-signature-type">HierarchicalFacet</a></h4>

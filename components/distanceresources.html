@@ -229,23 +229,6 @@
 					<h1>Coveo DistanceResources Component (CoveoDistanceResources)</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<dl class="tsd-deprecated">
-					</dl>
-					<div class="lead">
-						<p>The <code>DistanceResources</code> component defines a field that computes the distance according to the current position of the
-						end user.</p>
-					</div>
-					<p>Components relying on the current distance should be disabled until this component successfully provides a distance.</p>
-					<p>See also <a href="../classes/distanceevents.html"><code>DistanceEvents</code></a>.</p>
-					<dl class="tsd-comment-tags">
-						<dt>Available since</dt>
-						<dd><p><a href="https://docs.coveo.com/en/373/#november-2017-release-v234779">November 2017 Release (v2.3477.9)</a></p>
-						</dd>
-					</dl>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -329,11 +312,6 @@
 									:41</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the debug info about this component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -354,13 +332,6 @@
 									:52</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Disable the component.
-										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -381,13 +352,6 @@
 									:61</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Enable the component.
-										Normally this means that the component will execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -408,11 +372,6 @@
 									:328</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the bindings, or environment, for the current component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -432,11 +391,6 @@
 									:247</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns a promise of the last position resolved using the registered position providers.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/igeolocationposition.html" class="tsd-signature-type">IGeolocationPosition</a><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>A promise of the last resolved position value.</p>
 						</li>
@@ -457,28 +411,13 @@
 									:220</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Overrides the current position with the provided values.</p>
-								</div>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>Calling this method does not automatically trigger a query.</p>
-								</blockquote>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>latitude: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The latitude to set.</p>
-									</div>
 								</li>
 								<li>
 									<h5>longitude: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The longitude to set.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -501,31 +440,16 @@
 									:410</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -547,18 +471,6 @@
 							:270</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Allows the component to bind events and execute them only when it is enabled.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{Coveo.ComponentEvents}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -572,11 +484,6 @@
 							:294</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -590,11 +497,6 @@
 							:282</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -608,18 +510,6 @@
 							:23</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{boolean}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -633,11 +523,6 @@
 							:18</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Allows component to log in the dev console.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -651,11 +536,6 @@
 							:286</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the singleton that allows to trigger queries.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -669,11 +549,6 @@
 							:278</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -687,11 +562,6 @@
 							:274</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -705,11 +575,6 @@
 							:290</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -723,12 +588,6 @@
 							:28</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The static ID that each component needs in order to be identified.<br/>
-							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
-						</div>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -736,27 +595,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-									:343</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
-						</li>
-					</ul>
+					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+							:343</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -772,19 +619,6 @@
 							:189</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether to cancel all the queries until the <code>DistanceResources</code> component successfully resolves a position.</p>
-						</div>
-						<p>Default value is <code>true</code></p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>true</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-cancel-query-until-position-resolved&#x3D;&#x27;true&#x27;
@@ -802,20 +636,6 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 							:128</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The CSS class for components that need to be re-enabled when the <code>DistanceResources</code> component successfully
-							provides a distance.</p>
-						</div>
-						<p>Default value is <code>coveo-distance-disabled</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>coveo-distance-disabled</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-disabled-distance-css-class&#x3D;&#x27;foo&#x27;</pre>
@@ -832,19 +652,6 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 							:71</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies the name of the field in which to store the distance value.</p>
-						</div>
-						<p>Specifying a value for this option is required for the <code>DistanceResources</code> component to work.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Required</dt>
-							<dd><p>Specifying a value for this option is required for the component to work</p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-distance-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -861,13 +668,6 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 							:160</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The API key to use to request the Google API geolocation service.</p>
-						</div>
-						<p>If you do not specify a value for this option, the <code>DistanceResources</code> component does not try to request the
-						service.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-google-api-key&#x3D;&#x27;foo&#x27;</pre>
@@ -884,26 +684,6 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 							:86</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies the name of the field that contains the latitude value.</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>The field you specify for this option must be an existing numerical field in your index (see
-								<a href="https://docs.coveo.com/en/1833/">Adding and Managing Fields</a>. Otherwise, your query responses
-								will contain a <code>QueryExceptionInvalidQueryFunctionField</code> or QueryExceptionInvalidQueryFunctionFieldType`
-							exception, and the DistanceResources component will be unable to evaluate distances.</p>
-						</blockquote>
-						<p>Specifying a value for this option is required for the <code>DistanceResources</code> component to work.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Required</dt>
-							<dd><p>Specifying a value for this option is required for the component to work</p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-latitude-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -920,22 +700,6 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 							:139</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The latitude to use if no other position was provided.</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>You must also specify a <a href="distanceresources.html#options.longitudevalue"><code>longitudeValue</code></a> if you specify a
-							<code>latitudeValue</code>.</p>
-						</blockquote>
-						<dl class="tsd-comment-tags">
-							<dt>Accepts floating point values</dt>
-							<dd></dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-latitude-value&#x3D;&#x27;10&#x27;</pre>
@@ -952,26 +716,6 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 							:101</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies the name of the field that contains the longitude value.</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>The field you specify for this option must be an existing numerical field in your index (see
-								<a href="https://docs.coveo.com/en/1833/">Adding and Managing Fields</a>. Otherwise, your query responses
-								will contain a <code>QueryExceptionInvalidQueryFunctionField</code> or QueryExceptionInvalidQueryFunctionFieldType`
-							exception, and the DistanceResources component will be unable to evaluate distances.</p>
-						</blockquote>
-						<p>Specifying a value for this option is required for the <code>DistanceResources</code> component to work.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Required</dt>
-							<dd><p>Specifying a value for this option is required for the component to work</p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-longitude-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -988,22 +732,6 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 							:150</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The longitude to use if no other position was provided.</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>You must also specify a <a href="distanceresources.html#options.latitudevalue"><code>latitudeValue</code></a> if you specify a
-							<code>longitudeValue</code>.</p>
-						</blockquote>
-						<dl class="tsd-comment-tags">
-							<dt>Accepts floating point values</dt>
-							<dd></dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-longitude-value&#x3D;&#x27;10&#x27;</pre>
@@ -1020,19 +748,6 @@ data-cancel-query-until-position-resolved&#x3D;&#x27;false&#x27;</pre>
 							:180</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether to execute a new query when the <code>DistanceResources</code> component successfully provides a new position.</p>
-						</div>
-						<p>Default value is <code>false</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>false</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-trigger-new-query-on-new-position&#x3D;&#x27;true&#x27;
@@ -1050,27 +765,6 @@ data-trigger-new-query-on-new-position&#x3D;&#x27;false&#x27;</pre>
 							:115</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The conversion factor to apply to the base distance unit (meter).</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<ul>
-								<li>If you want to convert distances to kilometers, you should set the <code>unitConversionFactor</code> to <code>1000</code>.</li>
-								<li>If you want to convert distance to miles, you should set the <code>unitConversionFactor</code> to <code>1610</code> (one mile is
-								approximately equal to 1610 meters).</li>
-							</ul>
-						</blockquote>
-						<p>Default value is <code>1000</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>1000</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-unit-conversion-factor&#x3D;&#x27;10&#x27;</pre>
@@ -1087,18 +781,6 @@ data-trigger-new-query-on-new-position&#x3D;&#x27;false&#x27;</pre>
 							:173</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether to request the geolocation service of the web browser.</p>
-						</div>
-						<p>If not defined, will not try to request the service.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>Recent web browsers typically require a site to be in HTTPS to enable their geolocation service.</p>
-						</blockquote>
-						<p>If you do not specify a value for this option, the <code>DistanceResources</code> component does not try to request the
-						service.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-use-navigator&#x3D;&#x27;true&#x27;
@@ -1124,37 +806,16 @@ data-use-navigator&#x3D;&#x27;false&#x27;</pre>
 									:192</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates a new <code>DistanceResources</code> component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>options: <span class="tsd-signature-type">IDistanceOptions</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The options for the <code>DistanceResources</code> component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="distanceresources.html" class="tsd-signature-type">DistanceResources</a></h4>

@@ -244,19 +244,6 @@
 					<h1>Coveo ResultList Component (CoveoResultList)</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>The <code>ResultList</code> component is responsible for displaying query results by applying one or several result templates
-						(see <a href="https://docs.coveo.com/en/413/">Result Templates</a>).</p>
-					</div>
-					<p>It is possible to include multiple <code>ResultList</code> components along with a single <code>ResultLayout</code>
-						component in a search page to provide different result layouts (see
-					<a href="https://docs.coveo.com/en/360/">Result Layouts</a>).</p>
-					<p>This component supports infinite scrolling (see the
-					<a href="resultlist.html#options.enableinfinitescroll"><code>enableInfiniteScroll</code></a> option).</p>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -344,18 +331,10 @@
 									:435</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Builds and returns an HTMLElement for the given result.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>result: <a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the result to build an HTMLElement from.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -377,18 +356,10 @@
 									:425</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Builds and returns an array of HTMLElement with the given result set.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>results: <a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the result set to build an array of HTMLElement from.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLElement[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -411,11 +382,6 @@
 									:41</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the debug info about this component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -436,13 +402,6 @@
 									:52</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Disable the component.
-										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -462,21 +421,10 @@
 									:449</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Executes a query to fetch new results. After the query returns, renders the new results.</p>
-								</div>
-								<p>Asserts that there are more results to display by verifying whether the last query has returned as many results as
-								requested.</p>
-								<p>Asserts that the <code>ResultList</code> is not currently fetching results.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>count: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The number of results to fetch and display.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -499,13 +447,6 @@
 									:61</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Enable the component.
-										Normally this means that the component will execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -525,11 +466,6 @@
 									:374</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the fields needed to be automatically included in the query for this result list.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 						</li>
 					</ul>
@@ -550,11 +486,6 @@
 									:328</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the bindings, or environment, for the current component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -574,11 +505,6 @@
 									:481</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the list of currently displayed result.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IQueryResult[]</span></h4>
 						</li>
 					</ul>
@@ -598,11 +524,6 @@
 									:489</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the list of currently displayed result HTMLElement.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement[]</span></h4>
 						</li>
 					</ul>
@@ -622,13 +543,6 @@
 									:411</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Empties the current result list content and appends the given array of HTMLElement.</p>
-								</div>
-								<p>Can append to existing elements in the result list, or replace them.</p>
-								<p>Triggers the <code>newResultsDisplayed</code> and <code>newResultDisplayed</code> events.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -636,8 +550,6 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> append: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -660,31 +572,16 @@
 									:410</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -706,18 +603,6 @@
 							:270</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Allows the component to bind events and execute them only when it is enabled.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{Coveo.ComponentEvents}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -731,11 +616,6 @@
 							:294</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -749,11 +629,6 @@
 							:282</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -767,18 +642,6 @@
 							:23</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{boolean}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -792,11 +655,6 @@
 							:18</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Allows component to log in the dev console.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -810,11 +668,6 @@
 							:286</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the singleton that allows to trigger queries.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -828,11 +681,6 @@
 							:278</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -846,11 +694,6 @@
 							:274</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -864,11 +707,6 @@
 							:290</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -882,12 +720,6 @@
 							:28</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The static ID that each component needs in order to be identified.<br/>
-							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
-						</div>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -895,27 +727,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-									:343</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
-						</li>
-					</ul>
+					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+							:343</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -931,26 +751,6 @@
 							:221</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether the <code>ResultList</code> should scan its result templates to discover which fields it must request to
-							be able to render all results.</p>
-						</div>
-						<p>Setting this option to <code>true</code> ensures that the Coveo Search API does not return fields that are unnecessary for
-						the UI to function.</p>
-						<p><strong>Notes:</strong></p>
-						<ul>
-							<li>Many interfaces created with the JavaScript Search Interface Editor explicitly set this option to <code>true</code>.</li>
-							<li>You cannot set this option to <code>true</code> in the Coveo for Sitecore integration.</li>
-						</ul>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>false</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-auto-select-fields-to-include&#x3D;&#x27;true&#x27;
@@ -968,25 +768,6 @@ data-auto-select-fields-to-include&#x3D;&#x27;false&#x27;</pre>
 							:159</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether to automatically retrieve an additional page of results and append it to the
-								results that the <code>ResultList</code> is currently displaying when the user scrolls down to the bottom of the
-							<a href="resultlist.html#options.infinitescrollcontainer"><code>infiniteScrollContainer</code></a>.</p>
-						</div>
-						<p>See also the <a href="resultlist.html#options.infinitescrollpagesize"><code>infiniteScrollPageSize</code></a> and
-						<a href="resultlist.html#options.enableinfinitescrollwaitinganimation"><code>enableInfiniteScrollWaitingAnimation</code></a> options.</p>
-						<p>It is important to specify the <code>infiniteScrollContainer</code> option manually if you want the scrolling element to be
-							something else than the default <code>window</code> element. Otherwise, you might find yourself in a strange state where the
-						framework rapidly triggers multiple successive query.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>false</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-infinite-scroll&#x3D;&#x27;true&#x27;
@@ -1004,22 +785,6 @@ data-enable-infinite-scroll&#x3D;&#x27;false&#x27;</pre>
 							:201</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether to display the <a href="resultlist.html#options.waitanimation"><code>waitingAnimation</code></a> while fetching additional
-							results.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>Only effective when</dt>
-							<dd><p><a href="resultlist.html#options.enableinfinitescroll"><code>enableInfiniteScroll</code></a> is set to <code>true</code></p>
-							</dd>
-							<dt>Default</dt>
-							<dd><p><code>true</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;true&#x27;
@@ -1037,26 +802,6 @@ data-enable-infinite-scroll-waiting-animation&#x3D;&#x27;false&#x27;</pre>
 							:263</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether to scroll back to the top of the page when the end-user:</p>
-							<ul>
-								<li>interacts with a facet when <a href="resultlist.html#options.infinitescrollcontainer"><code>infiniteScrollContainer</code></a> is set to <code>true</code></li>
-								<li>interacts with the <a href="pager.html"><code>Pager</code></a> component when <a href="resultlist.html#options.infinitescrollcontainer"><code>infiniteScrollContainer</code></a> is set to <code>false</code></li>
-							</ul>
-						</div>
-						<p><strong>Note:</strong> Setting this option to <code>false</code> has no effect on dynamic facets. To disable this behavior on a <code>DynamicFacet</code> component, you must set its own <a href="dynamicfacet.html#options.enablescrolltotop"><code>enableScrollToTop</code></a> option to <code>false</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>true</code></p>
-							</dd>
-							<dt>Available since</dt>
-							<dd><p><a href="https://docs.coveo.com/en/2938/">July 2019 Release (v2.6459)</a></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-scroll-to-top&#x3D;&#x27;true&#x27;
@@ -1074,17 +819,6 @@ data-enable-scroll-to-top&#x3D;&#x27;false&#x27;</pre>
 							:234</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A list of fields to include in the query results.</p>
-						</div>
-						<p>If you set the <a href="resultlist.html#options.autoselectfieldstoinclude"><code>autoSelectFieldsToInclude</code></a> option to
-							<code>true</code>, the Coveo Search API returns the fields you specify for this option (if those fields are available) in
-						addition to the fields which the <code>ResultList</code> automatically requests.</p>
-						<p>Otherwise, the Coveo Search API only returns the fields you specify for this option (if those fields are
-							available), unless you leave this option undefined, in which case the Coveo Search API returns all available
-						fields.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.infinitescrollcontainer" class="tsd-anchor"></a>
@@ -1097,29 +831,6 @@ data-enable-scroll-to-top&#x3D;&#x27;false&#x27;</pre>
 							:192</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The element that triggers fetching additional results when the end user scrolls down to its bottom.</p>
-						</div>
-						<p>You can change the container by specifying its selector (e.g.,
-						<code>data-infinite-scroll-container-selector=&#39;#someCssSelector&#39;</code>).</p>
-						<p>By default, the framework uses the first vertically scrollable parent element it finds, starting from the
-							<code>ResultList</code> element itself. A vertically scrollable element is an element whose CSS <code>overflow-y</code> attribute is
-						<code>scroll</code>.</p>
-						<p>This implies that if the framework can find no scrollable parent, it uses the <code>window</code> itself as a scrollable
-						container.</p>
-						<p>This heuristic is not perfect, for technical reasons. There are always some corner case CSS combination which the
-						framework will not be able to correctly detect as &#39;scrollable&#39;.</p>
-						<p>It is highly recommended that you manually set this option if you wish something else than the <code>window</code> to be the
-						scrollable element.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Only effective when</dt>
-							<dd><p><a href="resultlist.html#options.enableinfinitescroll"><code>enableInfiniteScroll</code></a> is set to <code>true</code></p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.infinitescrollpagesize" class="tsd-anchor"></a>
@@ -1132,25 +843,6 @@ data-enable-scroll-to-top&#x3D;&#x27;false&#x27;</pre>
 							:167</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The number of additional results to fetch when the user scrolls down to the bottom of the
-							<a href="resultlist.html#options.infinitescrollcontainer"><code>infiniteScrollContainer</code></a>.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>Only effective when</dt>
-							<dd><p><a href="resultlist.html#options.enableinfinitescroll"><code>enableInfiniteScroll</code></a> is set to <code>true</code></p>
-							</dd>
-							<dt>Minimum</dt>
-							<dd><p><code>1</code></p>
-							</dd>
-							<dt>Default</dt>
-							<dd><p><code>10</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-infinite-scroll-page-size&#x3D;&#x27;5&#x27;</pre>
@@ -1167,27 +859,6 @@ data-enable-scroll-to-top&#x3D;&#x27;false&#x27;</pre>
 							:249</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies the layout to use when displaying results in this <code>ResultList</code> (see
-								<a href="https://docs.coveo.com/en/360/">Result Layouts</a>). Specifying a value for this option automatically
-							populates a [<code>ResultLayout</code>]{@link ResultLayout} component with a switcher for the layout.</p>
-						</div>
-						<p>For example, if there are two <code>ResultList</code> components in the page, one with its <code>layout</code> set to <code>list</code> and the
-							other with the same option set to <code>card</code>, then the <code>ResultLayout</code> component will render two buttons respectively
-						entitled <strong>List</strong> and <strong>Card</strong>.</p>
-						<p>See the <a href="../globals.html#validlayout"><code>ValidLayout</code></a> type for the list of possible values.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Required</dt>
-							<dd><p>Specifying a value for this option is required for the component to work</p>
-							</dd>
-							<dt>Default</dt>
-							<dd><p><code>list</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-layout&#x3D;&#x27;card&#x27;</pre>
@@ -1204,16 +875,6 @@ data-enable-scroll-to-top&#x3D;&#x27;false&#x27;</pre>
 							:118</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The element inside which to insert the rendered result templates.</p>
-						</div>
-						<p>Performing a new query clears the content of this element.</p>
-						<p>You can change the container by specifying its selector (e.g.,
-						<code>data-result-container-selector=&#39;#someCssSelector&#39;</code>).</p>
-						<p>If you specify no value for this option, a <code>div</code> element will be dynamically created and appended to the result
-						list. This element will then be used as a result container.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.waitanimation" class="tsd-anchor"></a>
@@ -1226,25 +887,6 @@ data-enable-scroll-to-top&#x3D;&#x27;false&#x27;</pre>
 							:133</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The type of animation to display while waiting for a query to return.</p>
-						</div>
-						<p>The possible values are:</p>
-						<ul>
-							<li><code>fade</code>: Fades out the current list of results while the query is executing.</li>
-							<li><code>spinner</code>: Shows a spinning animation while the query is executing.</li>
-							<li><code>none</code>: Use no animation during queries.</li>
-						</ul>
-						<p>See also the <a href="resultlist.html#options.waitanimationcontainer"><code>waitAnimationContainer</code></a> option.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>none</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-wait-animation&#x3D;&#x27;spinner&#x27;</pre>
@@ -1261,14 +903,6 @@ data-enable-scroll-to-top&#x3D;&#x27;false&#x27;</pre>
 							:143</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The element inside which to display the <a href="resultlist.html#options.waitanimation"><code>waitAnimation</code></a>.</p>
-						</div>
-						<p>You can change this by specifying a CSS selector (e.g.,
-						<code>data-wait-animation-container-selector=&#39;#someCssSelector&#39;</code>).</p>
-						<p>Defaults to the value of the <a href="resultlist.html#options.resultscontainer"><code>resultsContainer</code></a> option.</p>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -1289,48 +923,19 @@ data-enable-scroll-to-top&#x3D;&#x27;false&#x27;</pre>
 									:283</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates a new <code>ResultList</code> component. Binds various event related to queries (e.g., on querySuccess -&gt;
-										renderResults). Binds scroll event if the <a href="resultlist.html#options.enableinfinitescroll"><code>enableInfiniteScroll</code></a>
-									option is <code>true</code>.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IResultListOptions</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The options for the <code>ResultList</code> component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> elementClassId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;ResultList.ID</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The class that this component should instantiate. Components that extend the base ResultList
-											use this. Default value is <code>CoveoResultList</code>.</p>
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="resultlist.html" class="tsd-signature-type">ResultList</a></h4>

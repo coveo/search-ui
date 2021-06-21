@@ -271,23 +271,6 @@
 					<h1>Class SearchEndpoint</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<dl class="tsd-deprecated">
-					</dl>
-					<div class="lead">
-						<p>The <code>SearchEndpoint</code> class allows the framework to perform HTTP requests against the Search API (e.g., searching, getting query suggestions, getting the HTML preview of an item, etc.).</p>
-					</div>
-					<p><strong>Note:</strong></p>
-					<p>When writing custom code that interacts with the Search API, be aware that executing queries directly through an instance of this class will <em>not</em> trigger any <a href="https://docs.coveo.com/en/417/#query-events">query events</a>.</p>
-					<p>In some cases, this may be what you want. However, if you <em>do</em> want query events to be triggered (e.g., to ensure that standard components update themselves as expected), use the <a href="querycontroller.html"><code>queryController</code></a> instance instead.</p>
-					<dl class="tsd-comment-tags">
-						<dt>Additional documentation</dt>
-						<dd><p><a href="https://docs.coveo.com/en/331/">JavaScript Search Framework Endpoint</a></p>
-						</dd>
-					</dl>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -364,30 +347,16 @@
 									:1024</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Deletes a subscription.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>subscription: <a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The subscription to delete.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -409,24 +378,13 @@
 									:763</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Lists all available query extensions for the search endpoint.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IExtension[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -449,30 +407,16 @@
 									:882</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Searches through the values of a facet.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>request: <a href="../interfaces/ifacetsearchrequest.html" class="tsd-signature-type">IFacetSearchRequest</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The request for which to search through the values of a facet.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/ifacetsearchresponse.html" class="tsd-signature-type">IFacetSearchResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -495,31 +439,16 @@
 									:414</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Performs a search on the index and returns a Promise of <code>ArrayBuffer</code>.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>query: <a href="../interfaces/iquery.html" class="tsd-signature-type">IQuery</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The query to execute. Typically, the query object is built using a
-										<a href="querybuilder.html"><code>QueryBuilder</code></a>.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ArrayBuffer</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -542,30 +471,16 @@
 									:907</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Follows an item, or a query result, using the search alerts service.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>request: <a href="../interfaces/isubscriptionrequest.html" class="tsd-signature-type">ISubscriptionRequest</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The subscription details.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -587,42 +502,22 @@
 									:309</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the URI that can be used to authenticate against the given provider.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>provider: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The provider name.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> returnUri: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The URI to return to after the authentication is completed.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> message: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The authentication message.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -645,11 +540,6 @@
 									:294</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the base URI of the search alerts endpoint.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 							<p>The base URI of the search alerts endpoint.</p>
 						</li>
@@ -670,11 +560,6 @@
 									:286</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the base URI of the Search API endpoint.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 							<p>The base URI of the Search API endpoint.</p>
 						</li>
@@ -695,30 +580,16 @@
 									:561</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets a single item, using its <code>uniqueId</code>.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>documentUniqueID: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Typically, the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iqueryresult.html" class="tsd-signature-type">IQueryResult</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -741,30 +612,16 @@
 									:622</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the content for a single item, as an HTMLDocument (think: quickview).</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>documentUniqueID: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Typically, the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">HTMLDocument</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -787,30 +644,16 @@
 									:592</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the content of a single item, as text (think: quickview).</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>documentUniqueID: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Typically, the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -833,47 +676,19 @@
 									:460</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-deprecated">
-								</dl>
-								<dl class="tsd-comment-tags">
-									<dt>deprecated</dt>
-									<dd><p>getExportToExcelLink does not factor in all query parameters (e.g. dynamic facets) due to GET request url length limitations.
-										Please use <code>fetchBinary</code> instead to ensure all query parameters are used.</p>
-										<p>Gets a link / URI to download a query result set to the XLSX format.</p>
-										<p><strong>Note:</strong></p>
-										<blockquote>
-											<p>This method does not automatically download the query result set, but rather provides an URI from which to
-											download it.</p>
-										</blockquote>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>query: <a href="../interfaces/iquery.html" class="tsd-signature-type">IQuery</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The query for which to get the XLSX result set.</p>
-									</div>
 								</li>
 								<li>
 									<h5>numberOfResults: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The number of results to download.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -896,30 +711,16 @@
 									:847</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets a list of query suggestions for a request.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>request: <a href="../interfaces/iquerysuggestrequest.html" class="tsd-signature-type">IQuerySuggestRequest</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The query, and the number of suggestions to return.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iquerysuggestresponse.html" class="tsd-signature-type">IQuerySuggestResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -942,40 +743,19 @@
 									:498</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the raw datastream for an item. This is typically used to get a thumbnail for an item.</p>
-								</div>
-								<p>Returns an array buffer.</p>
-								<p><strong>Example:</strong></p>
-								<pre><code><span class="hljs-keyword">let</span> rawBinary = <span class="hljs-built_in">String</span>.fromCharCode.apply(<span class="hljs-literal">null</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(response));
-img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-string">'data:image/png;base64,'</span> + btoa(rawBinary));</code></pre>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>documentUniqueId: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Typically, the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result.</p>
-									</div>
 								</li>
 								<li>
 									<h5>dataStreamType: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Normally, <code>$Thumbnail</code>.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ArrayBuffer</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -997,37 +777,19 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:533</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets an URL from which it is possible to see the datastream for an item. This is typically used to get a
-									thumbnail for an item.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>documentUniqueID: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Typically, the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result.</p>
-									</div>
 								</li>
 								<li>
 									<h5>dataStreamType: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Normally, <code>$Thumbnail</code>.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> callOptions: <a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1050,30 +812,16 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:659</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets an URL from which it is possible to see a single item content, as HTML (think: quickview).</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>documentUniqueID: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Typically, the <a href="../interfaces/iqueryresult.html#uniqueid">IQueryResult.uniqueId</a> on each result.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iviewashtmloptions.html" class="tsd-signature-type">IViewAsHtmlOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1096,11 +844,6 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:331</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Indicates whether the search endpoint is using JSONP internally to communicate with the Search API.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 							<p><code>true</code> in the search enpoint is using JSONP; <code>false</code> otherwise.</p>
 						</li>
@@ -1121,30 +864,16 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:680</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Lists the possible field values for a request.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>request: <a href="../interfaces/ilistfieldvaluesrequest.html" class="tsd-signature-type">IListFieldValuesRequest</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The request for which to list the possible field values.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IIndexFieldValue[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1167,30 +896,16 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:713</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Lists the possible field values for a request.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>request: <a href="../interfaces/ilistfieldvaluesbatchrequest.html" class="tsd-signature-type">IListFieldValuesBatchRequest</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The request for which to list the possible field values.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IIndexFieldValue[][]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1213,24 +928,13 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:745</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Lists all fields for the index, and returns an array of their descriptions.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IFieldDescription[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1253,30 +957,16 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:936</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets a Promise of an array of the current subscriptions.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> page: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The page of the subscriptions.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ISubscription[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1298,31 +988,16 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:434</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the plan of execution of a search request, without performing it.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>query: <a href="../interfaces/iquery.html" class="tsd-signature-type">IQuery</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The query to execute. Typically, the query object is built using a
-										<a href="querybuilder.html"><code>QueryBuilder</code></a>.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="executionplan.html" class="tsd-signature-type">ExecutionPlan</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1345,34 +1020,16 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:786</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p><strong>Note:</strong></p>
-								</div>
-								<blockquote>
-									<p>The Coveo Cloud V2 platform does not support collaborative rating. Therefore, this method is obsolete in Coveo Cloud V2.</p>
-								</blockquote>
-								<p>Rates a single item in the index (granted that collaborative rating is enabled on your index)</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>ratingRequest: <a href="../interfaces/iratingrequest.html" class="tsd-signature-type">IRatingRequest</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The item id, and the rating to add.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1394,33 +1051,16 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:367</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Performs a search on the index and returns a Promise of <a href="../interfaces/iqueryresults.html"><code>IQueryResults</code></a>.</p>
-								</div>
-								<p>This method slightly modifies the query results by adding additional information to each result (id, state object,
-								etc.).</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>query: <a href="../interfaces/iquery.html" class="tsd-signature-type">IQuery</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The query to execute. Typically, the query object is built using a
-										<a href="querybuilder.html"><code>QueryBuilder</code></a>.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iqueryresults.html" class="tsd-signature-type">IQueryResults</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1443,23 +1083,10 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:278</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Sets a function which allows external code to modify all endpoint call parameters before the browser sends them.</p>
-								</div>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>This is useful in very specific scenarios where the network infrastructure requires special request headers to be
-									added or removed, for example.</p>
-								</blockquote>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>requestModifier: <span class="tsd-signature-type">function</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The function.</p>
-									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
@@ -1499,30 +1126,16 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:816</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Tags a single item.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>taggingRequest: <a href="../interfaces/itaggingrequest.html" class="tsd-signature-type">ITaggingRequest</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The item id, and the tag action to perform.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1544,30 +1157,16 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:987</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Updates a subscription with new parameters.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>subscription: <a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The subscription to update with new parameters.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callOptions: <a href="../interfaces/iendpointcalloptions.html" class="tsd-signature-type">IEndpointCallOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An additional set of options to use for this call.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callParams: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The options injected by the applied decorators.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isubscription.html" class="tsd-signature-type">ISubscription</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1589,36 +1188,19 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:143</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Configures a search endpoint on a Coveo Cloud V1 index.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> organization: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The organization ID of your Coveo Cloud index.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> token: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The token to use to execute query. If not specified, you will likely need to login when querying.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> uri: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;https://cloudplatform.coveo.com/rest/search&quot;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The URI of the Coveo Cloud REST Search API. By default, this points to the production environment.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> otherOptions: <a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>A set of additional options to use when configuring this endpoint.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1640,45 +1222,19 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:178</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p><a href="https://docs.coveo.com/331/#configuring-a-new-search-endpoint">Configures a new search endpoint</a> on a Coveo Cloud V2 organization.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> organization: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The unique identifier of the target Coveo Cloud V2 organization (e.g., <code>mycoveocloudv2organizationg8tp8wu3</code>).</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> token: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The access token to authenticate Search API requests with (i.e., an <a href="https://docs.coveo.com/105/">API key</a> or a <a href="https://docs.coveo.com/56/">search token</a>).</p>
-										<p><strong>Note:</strong> This token will also authenticate Usage Analytics Write API requests if the search interface initializes an <a href="../components/analytics.html"><code>Analytics</code></a> component whose <a href="../components/analytics.html#options.token"><code>token</code></a> option is unspecified.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> uri: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;https://platform.cloud.coveo.com/rest/search&quot;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The base URI of the Search API.</p>
-										<p><strong>Allowed values:</strong></p>
-										<ul>
-											<li><code>https://platform.cloud.coveo.com/rest/search</code> (for organizations in the standard Coveo Cloud V2 environment)</li>
-											<li><code>https://platform-eu.cloud.coveo.com/rest/search</code> (for organizations with European <a href="https://docs.coveo.com/en/2976/#data-residency-configuration">data residency</a>)</li>
-											<li><code>https://platform-au.cloud.coveo.com/rest/search</code> (for organizations with Australian data residency)</li>
-											<li><code>https://platformhipaa.cloud.coveo.com/rest/search</code> (for <a href="https://docs.coveo.com/1853/">HIPAA</a> organizations)</li>
-										</ul>
-										<p><strong>Default:</strong> <code>https://platform.cloud.coveo.com/rest/search</code></p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> otherOptions: <a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Additional options to apply for this endpoint (e.g., a <a href="../interfaces/isearchendpointoptions.html#renewaccesstoken"><code>renewAccessToken</code></a> function).</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1700,31 +1256,16 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:194</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Configures a search endpoint on a Coveo on-premise index.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>uri: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The URI of your Coveo Search API endpoint (e.g., <code>http://myserver:8080/rest/search</code>)</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> token: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The token to use to execute query. If not specified, you will likely need to login when querying
-										(unless your Coveo Search API endpoint is configured using advanced auth options, such as Windows auth or claims).</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> otherOptions: <a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>A set of additional options to use when configuring this endpoint.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1746,19 +1287,10 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:86</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Configures a demo search endpoint on a Coveo Cloud V1 organization whose index contains various types of non-secured items.</p>
-								</div>
-								<p><strong>Note:</strong> This method mainly exists for demo and testing purposes.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> otherOptions: <a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Additional options to apply for this endpoint.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1780,19 +1312,10 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:120</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Configures a demo search endpoint on a Coveo Cloud V2 organization whose index contains various types of non-secured items.</p>
-								</div>
-								<p><strong>Note:</strong> This method mainly exists for demo and testing purposes.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> otherOptions: <a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Additional options to apply for this endpoint.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1813,19 +1336,6 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 							:77</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>A map of all initialized <code>SearchEndpoint</code> instances.</p>
-						</div>
-						<p><strong>Example:</strong> <code>Coveo.SearchEndpoint.endpoints[&quot;default&quot;]</code> returns the default endpoint that was created at initialization.</p>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{{}}</p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1853,23 +1363,10 @@ img.setAttribute(<span class="hljs-string">'src'</span>, <span class="hljs-strin
 									:230</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates a new <code>SearchEndpoint</code> instance.
-										Uses a set of adequate default options, and merges these with the <code>options</code> parameter.
-										Also creates an <a href="endpointcaller.html"><code>EndpointCaller</code></a> instance and uses it to communicate with the endpoint
-									internally.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/isearchendpointoptions.html" class="tsd-signature-type">ISearchEndpointOptions</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The custom options to apply to the new <code>SearchEndpoint</code>.</p>
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="searchendpoint.html" class="tsd-signature-type">SearchEndpoint</a></h4>

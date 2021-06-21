@@ -15338,8 +15338,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10086.2',
-    product: '2.10086.2',
+    lib: '2.10087.2',
+    product: '2.10087.2',
     supportedApiVersion: 2
 };
 
@@ -16278,8 +16278,8 @@ var dict = {
     "ExpandQuestionAnswer": "View answer for \"{0}\"",
     "MoreValuesAvailable": "additional values are available",
     "Breadcrumb": "Active filters",
-    "OrganizationIsPaused": "Your Coveo organization is paused and search is currently unavailable.",
-    "OrganizationWillResume": "Your organisation will resume and will be available shortly.",
+    "OrganizationIsPaused": "Your Coveo organization is paused due to inactivity and search is currently unavailable.",
+    "OrganizationWillResume": "Your organization is resuming and will be available shortly.",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});

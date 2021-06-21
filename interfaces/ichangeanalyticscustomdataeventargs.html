@@ -193,24 +193,6 @@
 					<h1>Interface IChangeAnalyticsCustomDataEventArgs</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>The <code>IChangeAnalyticsCustomDataEventArgs</code> interface describes the object that all
-						<a href="../classes/analyticsevents.html#changeanalyticscustomdata"><code>changeAnalyticsCustomData</code></a> event handlers receive as an argument.</p>
-					</div>
-					<p>This interface extends the <a href="ichangeableanalyticsdataobject.html"><code>IChangeableAnalyticsDataObject</code></a> interface.</p>
-					<p><strong>Notes:</strong></p>
-					<blockquote>
-						<ul>
-							<li>External code can only modify the attributes described by the <code>IChangeableAnalyticsDataObject</code> interface.</li>
-							<li>When the analytics event being logged is a <code>ClickEvent</code>, the <code>ChangeAnalyticsCustomDataEventArgs</code> object also
-								contains a <code>resultData</code> attribute, which describes the <a href="iqueryresult.html"><code>QueryResult</code></a> that was clicked.
-							External code <strong>cannot</strong> modify this object.</li>
-						</ul>
-					</blockquote>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -247,18 +229,6 @@
 							:86</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The cause of the usage analytics event.</p>
-						</div>
-						<p>For instance, triggering a query using the search box logs a usage analytics event with <code>searchBoxSubmit</code> as its
-							<code>actionCause</code>, whereas triggering a query by selecting a facet value logs a usage analytics event with
-						<code>facetSelect</code> as its <code>actionCause</code>.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>External code <strong>cannot</strong> modify the value of this attribute.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="actiontype" class="tsd-anchor"></a>
@@ -271,19 +241,6 @@
 							:74</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The generic action type of the usage analytics event.</p>
-						</div>
-						<p>All analytics events that strongly relate to a certain feature or component usually share the same <code>actionType</code>.</p>
-						<p>For instance, all usage analytics events relating to the <a href="../components/facet.html"><code>Facet</code></a> component have <code>facet</code> as their
-							<code>actionType</code>, whereas all usage analytics events relating to the <a href="../components/breadcrumb.html"><code>Breadcrumb</code></a> component have
-						<code>breadcrumb</code> as their <code>actionType</code>.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>External code <strong>cannot</strong> modify the value of this attribute.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="language" class="tsd-anchor"></a>
@@ -297,17 +254,6 @@
 							:164</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The language of the search interface from which the usage analytics event originates.</p>
-						</div>
-						<p>By default, the framework populates this attribute with the currently loaded localization and culture file of the
-						search interface from which the usage analytics event originates.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>External code <strong>can</strong> modify the value of this attribute.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="metaobject" class="tsd-anchor"></a>
@@ -321,15 +267,6 @@
 							:117</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The metadata to send along with the usage analytics event.</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>External code <strong>can</strong> modify existing values, or add new key-value pairs in this attribute.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="originlevel1" class="tsd-anchor"></a>
@@ -343,18 +280,6 @@
 							:130</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The high-level origin of the usage analytics event.</p>
-						</div>
-						<p>For instance, this could be the name of the search hub, or a name that can uniquely identify the search page from
-						which the usage analytics event originates.</p>
-						<p>Default value is <code>default</code>.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>External code <strong>can</strong> modify the value of this attribute.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="originlevel2" class="tsd-anchor"></a>
@@ -368,17 +293,6 @@
 							:141</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The mid-level origin of the usage analytics event.</p>
-						</div>
-						<p>By default, the framework populates this attribute with the <code>data-id</code> of the currently selected tab in the search
-						interface from which the usage analytics event originates.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>External code <strong>can</strong> modify the value of this attribute.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="originlevel3" class="tsd-anchor"></a>
@@ -392,17 +306,6 @@
 							:153</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The low-level origin of the usage analytics event.</p>
-						</div>
-						<p>For instance, this could be the HTTP identifier of the page from which the usage analytics event originates.</p>
-						<p>Default value is the empty string.</p>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>External code <strong>can</strong> modify the value of this attribute.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="type" class="tsd-anchor"></a>
@@ -415,15 +318,6 @@
 							:60</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The type of the usage analytics event.</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>External code <strong>cannot</strong> modify the value of this attribute.</p>
-						</blockquote>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

@@ -196,23 +196,6 @@
 					<h1>Interface IDateToStringOptions</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>The <code>IDateToStringOptions</code> interface describes a set of options to use when converting a standard Date object to a
-							string using the <a href="../classes/dateutils.html#datetostring"> <code>dateToString</code> </a>, or the
-							<a href="../classes/dateutils.html#datetimetostring"> <code>dateTimeToString</code> </a> method from the <a href="../classes/dateutils.html"> <code>DateUtils</code> </a> class.
-							The precedence orders for the options are:
-							<a href="idatetostringoptions.html#usetodayyesterdayandtomorrow"> <code>useTodayYesterdayAndTomorrow</code> </a>
-							-&gt; <a href="idatetostringoptions.html#useweekdayifthisweek"> <code>useWeekdayIfThisWeek</code> </a>
-							-&gt; <a href="idatetostringoptions.html#omityearifcurrentone"> <code>omitYearIfCurrentOne</code> </a>
-							-&gt; <a href="idatetostringoptions.html#uselongdateformat"> <code>useLongDateFormat</code> </a>
-							and <a href="idatetostringoptions.html#alwaysincludetime"> <code>alwaysIncludeTime</code> </a>
-							-&gt; <a href="idatetostringoptions.html#includetimeifthisweek"> <code>includeTimeIfThisWeek</code> </a>
-						-&gt; <a href="idatetostringoptions.html#includetimeiftoday"> <code>includeTimeIfToday</code> </a>.</p>
-					</div>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -250,19 +233,6 @@
 							:146</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether to always include the time in the resulting string when converting the Date object (e.g. <code>May 15, 4:17 PM</code>)
-							This option takes precedence over <a href="idatetostringoptions.html#includetimeifthisweek"> <code>includeTimeIfThisWeek</code> </a>.</p>
-						</div>
-						<p><strong>Example</strong></p>
-						<p>If <a href="idatetostringoptions.html#includetimeiftoday"> <code>includeTimeIfToday</code> </a> is <code>true</code>
-						and <a href="idatetostringoptions.html#now"> <code>now</code> </a> contains a Date object equivalent to <code>Monday, March 8, 2017</code>, then:</p>
-						<ul>
-							<li>If the Date object to convert is equivalent to <code>2010/03/08 17:23:11</code>, the resulting string is <code>3/8/2010, 5:23 PM</code>.</li>
-						</ul>
-						<p>Default value is <code>false</code>.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="includetimeifthisweek" class="tsd-anchor"></a>
@@ -275,23 +245,6 @@
 							:131</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether to include the time in the resulting string when converting the Date object (e.g. <code>May 15, 4:17 PM</code>)
-								if the date to convert within a week from <a href="idatetostringoptions.html#now"> <code>now</code> </a>. This option takes precedence over
-							<a href="idatetostringoptions.html#includetimeiftoday"> <code>includeTimeIfToday</code> </a>.</p>
-						</div>
-						<p><strong>Examples</strong></p>
-						<p>If <a href="idatetostringoptions.html#includetimeiftoday"> <code>includeTimeIfToday</code> </a> is <code>true</code>
-						and <a href="idatetostringoptions.html#now"> <code>now</code> </a> contains a Date object equivalent to <code>Monday, March 8, 2017</code>, then:</p>
-						<ul>
-							<li><p>If the Date object to convert is equivalent to <code>2017/03/08 17:23:11</code>, the resulting string is <code>3/8/2017, 5:23 PM</code>.</p>
-							</li>
-							<li><p>If the Date object to convert is equivalent to <code>2017/03/09 17:23:11</code>, the resulting string is <code>3/9/2017 ,5:23 PM</code>.</p>
-							</li>
-						</ul>
-						<p>Default value is <code>true</code>.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="includetimeiftoday" class="tsd-anchor"></a>
@@ -304,22 +257,6 @@
 							:113</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether to include the time in the resulting string when converting the Date object (e.g. <code>May 15, 4:17 PM</code>)
-							if the date to convert is equivalent to <a href="idatetostringoptions.html#now"> <code>now</code> </a>.</p>
-						</div>
-						<p><strong>Examples</strong></p>
-						<p>If <a href="idatetostringoptions.html#includetimeiftoday"> <code>includeTimeIfToday</code> </a> is <code>true</code>
-						and <a href="idatetostringoptions.html#now"> <code>now</code> </a> contains a Date object equivalent to <code>Monday, March 8, 2017</code>, then:</p>
-						<ul>
-							<li><p>If the Date object to convert is equivalent to <code>2017/03/08 17:23:11</code>, the resulting string is <code>3/8/2017, 5:23 PM</code>.</p>
-							</li>
-							<li><p>If the Date object to convert is equivalent to <code>2017/03/09 17:23:11</code>, the resulting string is <code>3/9/2017</code>.</p>
-							</li>
-						</ul>
-						<p>Default value is <code>true</code>.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="now" class="tsd-anchor"></a>
@@ -332,12 +269,6 @@
 							:29</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains a standard Date object that specifies the current date and time.</p>
-						</div>
-						<p>Default value is <code>undefined</code>.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="omityearifcurrentone" class="tsd-anchor"></a>
@@ -350,23 +281,6 @@
 							:89</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether to omit the year from the resulting string when converting the Date object, if the year
-								is the current one. This option takes precedence over
-							<a href="idatetostringoptions.html#uselongdateformat"> <code>useLongDateFormat</code> </a>.</p>
-						</div>
-						<p><strong>Examples</strong></p>
-						<ul>
-							<li><p>If the Date object to convert is equivalent to <code>September 22, 2017</code>, the resulting string does not contain
-								the year (e.g., <code>September 22</code>).</p>
-							</li>
-							<li><p>If the Date object to convert is equivalent to <code>September 22, 2016</code>, the resulting string contains the year
-								(e.g., <code>September 22, 2016</code>).</p>
-							</li>
-						</ul>
-						<p>Default value is <code>true</code>.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="predefinedformat" class="tsd-anchor"></a>
@@ -379,28 +293,6 @@
 							:166</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a custom date format (e.g., dd/MM/yyyy), regardless of browser locale or any other option.</p>
-						</div>
-						<p>This option uses the following syntax. All examples use the April 5th, 2018 14:15:34 time.</p>
-						<ul>
-							<li><code>yyyy</code>: full length year (e.g., 2018)</li>
-							<li><code>yy</code>: short length year (e.g., 18)</li>
-							<li><code>MMMM</code>: month name (e.g., April)</li>
-							<li><code>MMM</code>: shortened month name (e.g., Apr)</li>
-							<li><code>MM</code>: month number (e.g., 04)</li>
-							<li><code>M</code>: single digit month number for months before October (e.g., 4)</li>
-							<li><code>dddd</code>: day name (e.g., Thursday)</li>
-							<li><code>ddd</code>: shortened day name (e.g., Thu)</li>
-							<li><code>dd</code>: day number (e.g., 05)</li>
-							<li><code>d</code>: single digit day for days before the 10th (e.g., 5)</li>
-							<li><code>hh</code>: hour, in the 24-hour format (e.g., 14)</li>
-							<li><code>h</code>: hour, in the 12-hour format (e.g., 2)</li>
-							<li><code>mm</code>: minutes (e.g., 15)</li>
-							<li><code>ss</code>: seconds (e.g., 34)</li>
-						</ul>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="uselongdateformat" class="tsd-anchor"></a>
@@ -413,12 +305,6 @@
 							:96</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether to format the resulting string in the long date format (e.g., <code>Friday, August 04, 2017</code>).</p>
-						</div>
-						<p>Default value is <code>false</code>.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="usetodayyesterdayandtomorrow" class="tsd-anchor"></a>
@@ -431,28 +317,6 @@
 							:52</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether to convert the Date object to the localized version of <code>Today</code>, <code>Yesterday</code>, or <code>Tomorrow</code>,
-								if possible. This option takes precedence over
-							<a href="idatetostringoptions.html#useweekdayifthisweek"> <code>useWeekdayIfThisWeek</code> </a>.</p>
-						</div>
-						<p><strong>Examples</strong></p>
-						<p>If <a href="idatetostringoptions.html#usetodayyesterdayandtomorrow"> <code>useTodayYesterdayAndTomorrow</code> </a> is <code>true</code>,
-						and <a href="idatetostringoptions.html#now"> <code>now</code> </a> contains a Date object equivalent to <code>March 8, 2017</code>, then:</p>
-						<ul>
-							<li><p>If the Date object to convert contains a value equivalent to <code>March 7, 2017</code>, the resulting string is the
-								localized version of <code>Yesterday</code>.</p>
-							</li>
-							<li><p>If the Date object to convert contains a value equivalent to <code>March 8, 2017</code>, the resulting string is the
-								localized version of <code>Today</code>.</p>
-							</li>
-							<li><p>If the Date object to convert contains a value equivalent to <code>March 9, 2017</code>, the resulting string is the
-								localized version of <code>Tomorrow</code>.</p>
-							</li>
-						</ul>
-						<p>Default value is <code>true</code>.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="useweekdayifthisweek" class="tsd-anchor"></a>
@@ -465,25 +329,6 @@
 							:72</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether to convert the Date object to the localized version of the corresponding day of the week,
-								if the date to convert is part of the current week. This option takes precedence over
-							<a href="idatetostringoptions.html#omityearifcurrentone"> <code>omitYearIfCurrentOne</code> </a>.</p>
-						</div>
-						<p><strong>Examples</strong></p>
-						<p> If <a href="idatetostringoptions.html#useweekdayifthisweek"> <code>useWeekdayIfThisWeek</code> </a> is <code>true</code>
-						and <a href="idatetostringoptions.html#now"> <code>now</code> </a> contains a Date object equivalent to <code>Monday, March 8, 2017</code>, then:</p>
-						<ul>
-							<li><p>If the date to convert is equivalent to <code>Saturday, March 6, 2017</code>, the resulting string is the localized
-								version of <code>Last Saturday</code>.</p>
-							</li>
-							<li><p>If the date to convert is equivalent to <code>Thursday, March 11, 2017</code>, the resulting string is the localized
-								version of <code>Next Thursday</code>.</p>
-							</li>
-						</ul>
-						<p>Default value is <code>true</code>.</p>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

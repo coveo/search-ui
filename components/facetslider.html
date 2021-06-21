@@ -235,32 +235,6 @@
 					<h1>Coveo FacetSlider Component (CoveoFacetSlider)</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<dl class="tsd-deprecated">
-					</dl>
-					<div class="lead">
-						<p>The <code>FacetSlider</code> component creates a facet which contains a slider widget that allows the end user to filter results
-						based on a range of numerical values (e.g., a date range, a price range, etc.).</p>
-					</div>
-					<p><strong>Note:</strong></p>
-					<blockquote>
-						<p>This component does <strong>not</strong> inherit from the <a href="facet.html"><code>Facet</code></a> component. Consequently, it does not offer the
-							same configuration options. Moreover, some of the <code>FacetSlider</code> options (see
-							<a href="facetslider.html#options.getsteps"><code>getSteps</code></a> and <a href="facetslider.html#options.valuecaption"><code>valueCaption</code></a>)
-							cannot be configured as <code>data-</code> attributes in the markup. If you wish to configure those options, you must either
-							do so in the <a href="../globals.html#init"><code>init</code></a> call of your search interface (see
-							<a href="https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call">Passing Component Options in the init Call</a>),
-							or before the <code>init</code> call, using the <code>options</code> top-level function (see
-						<a href="https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call">Passing Component Options Before the init Call</a>).</p>
-					</blockquote>
-					<dl class="tsd-comment-tags">
-						<dt>Not supported in</dt>
-						<dd><p><a href="https://docs.coveo.com/en/1107/">Coveo for Salesforce Free</a></p>
-						</dd>
-					</dl>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -352,11 +326,6 @@
 									:41</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the debug info about this component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -377,13 +346,6 @@
 									:52</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Disable the component.
-										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -404,13 +366,6 @@
 									:61</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Enable the component.
-										Normally this means that the component will execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -431,11 +386,6 @@
 									:328</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the bindings, or environment, for the current component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -455,17 +405,6 @@
 									:432</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Gets the current selection in the slider.</p>
-								</div>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>This method returns an array of number for selected date values. These numbers represent a number of milliseconds
-										before or after January 1, 1970. Therefore, you can use these numbers to instantiate standard JavaScript Date
-									objects.</p>
-								</blockquote>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number[]</span></h4>
 							<p>An array of number containing the first and last selected values, if possible. An array containing
 							two <code>undefined</code> values otherwise.</p>
@@ -487,12 +426,6 @@
 									:462</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Indicates whether the <code>FacetSlider</code> is active. An active <code>FacetSlider</code> outputs an expression in the query when a
-									search is performed.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 							<p><code>true</code> if the FacetSlider is active; <code>false</code> otherwise.</p>
 						</li>
@@ -513,11 +446,6 @@
 									:413</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Resets the <code>FacetSlider</code> (meaning that you need to set the range value as inactive).</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -537,23 +465,10 @@
 									:449</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Sets the selected values in the slider.</p>
-								</div>
-								<p><strong>Note:</strong></p>
-								<blockquote>
-									<p>You must set date values with numbers representing a number of milliseconds before or after January 1, 1970. You
-									can easily extract such numbers from standard JavaScript Date objects.</p>
-								</blockquote>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>values: <span class="tsd-signature-type">number[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An array containing the first and last values to select in the slider.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -576,31 +491,16 @@
 									:410</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -622,18 +522,6 @@
 							:270</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Allows the component to bind events and execute them only when it is enabled.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{Coveo.ComponentEvents}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -647,11 +535,6 @@
 							:294</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -665,11 +548,6 @@
 							:282</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -683,18 +561,6 @@
 							:23</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{boolean}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -708,11 +574,6 @@
 							:18</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Allows component to log in the dev console.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -726,11 +587,6 @@
 							:286</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the singleton that allows to trigger queries.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -744,11 +600,6 @@
 							:278</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -762,11 +613,6 @@
 							:274</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -780,11 +626,6 @@
 							:290</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -798,12 +639,6 @@
 							:28</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The static ID that each component needs in order to be identified.<br/>
-							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
-						</div>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -811,27 +646,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-									:343</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
-						</li>
-					</ul>
+					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+							:343</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -847,21 +670,6 @@
 							:88</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies whether the <a href="facetslider.html#options.field"><code>field</code></a> for which you are requesting a range is a date
-								field. This allows the <code>FacetSlider</code> to correctly build the outgoing <a href="../interfaces/igroupbyrequest.html">GroupByRequest</a> and
-							render itself properly.</p>
-						</div>
-						<p>Default value is <code>false</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>false</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-date-field&#x3D;&#x27;true&#x27;
@@ -879,13 +687,6 @@ data-date-field&#x3D;&#x27;false&#x27;</pre>
 							:120</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the format to use when displaying date values.</p>
-						</div>
-						<p>See also the <a href="facetslider.html#options.datefield"><code>dateField</code></a> option.</p>
-						<p>Default value is <code>MMM dd, yyyy</code>.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-date-format&#x3D;&#x27;foo&#x27;</pre>
@@ -902,25 +703,6 @@ data-date-field&#x3D;&#x27;false&#x27;</pre>
 							:219</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies the percentage caption options to use when displaying the field values.</p>
-						</div>
-						<p>Available options are:</p>
-						<ul>
-							<li>enable (<code>data-display-as-percent-enable</code>): boolean; specifies whether to display the caption as a percentage.
-								Default value is <code>false</code>.
-								separator (<code>data-display-as-percent-separator</code>): string; specifies the character(s) to use as a separator in the
-							caption. Default value is <code>&quot;-&quot;</code>.</li>
-						</ul>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>false</code></p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.displayasvalue" class="tsd-anchor"></a>
@@ -933,27 +715,6 @@ data-date-field&#x3D;&#x27;false&#x27;</pre>
 							:201</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies the caption options to use when displaying the field values.</p>
-						</div>
-						<p>Available options are:</p>
-						<ul>
-							<li>enable (<code>data-display-as-value-enable</code>): boolean; specifies whether to display the caption as a value. Default
-							value is <code>true</code>.</li>
-							<li>unitSign (<code>data-display-as-value-unit-sign</code>): string; specifies the unit sign for this value (e.g., <code>$</code>).
-							Default value is <code>undefined</code>.</li>
-							<li>separator (<code>data-display-as-value-separator</code>): string; specifies the character(s) to use as a separator in the
-							caption. Default value is <code>&quot;-&quot;</code>.</li>
-						</ul>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>true</code></p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.end" class="tsd-anchor"></a>
@@ -966,14 +727,6 @@ data-date-field&#x3D;&#x27;false&#x27;</pre>
 							:155</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the ending boundary of the slider.</p>
-						</div>
-						<p>Date values are rounded to the nearest year when you set the <a href="facetslider.html#options.datefield"><code>dateField</code></a>
-						option to <code>true</code>.</p>
-						<p>Default value is the highest available field value in the index.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.excludeouterbounds" class="tsd-anchor"></a>
@@ -986,19 +739,6 @@ data-date-field&#x3D;&#x27;false&#x27;</pre>
 							:162</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies whether to exclude the outer bounds of the slider in the generated query when they are not active.</p>
-						</div>
-						<p>Default value is <code>false</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>false</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-exclude-outer-bounds&#x3D;&#x27;true&#x27;
@@ -1016,21 +756,6 @@ data-exclude-outer-bounds&#x3D;&#x27;false&#x27;</pre>
 							:98</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies the index field whose values the <code>FacetSlider</code> should use.</p>
-						</div>
-						<p>The field must be configured correctly as a Facet field in the index (see
-						<a href="https://docs.coveo.com/en/1833/">Adding and Managing Fields</a>).</p>
-						<p>Specifying a value for this option is required for the <code>FacetSlider</code> component to work.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Required</dt>
-							<dd><p>Specifying a value for this option is required for the component to work</p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -1047,44 +772,6 @@ data-exclude-outer-bounds&#x3D;&#x27;false&#x27;</pre>
 							:288</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a function to generate the <code>FacetSlider</code> steps (see the <a href="facetslider.html#options.steps"><code>steps</code></a>
-								option). This function receives the <code>FacetSlider</code> boundaries (see the <a href="facetslider.html#options.start"><code>start</code></a>
-							and <a href="facetslider.html#options.end"><code>end</code></a> options), and must return an array of numbers (the steps).</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-								<a href="../globals.html#init"><code>init</code></a> call of your search interface (see
-								<a href="https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call">Passing Component Options in the init Call</a>),
-								or before the <code>init</code> call, using the <code>options</code> top-level function (see
-							<a href="https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call">Passing Component Options Before the init Call</a>).</p>
-						</blockquote>
-						<p><strong>Example:</strong></p>
-						<pre><code class="language-javascript">
-<span class="hljs-keyword">var</span> myGetStepsFunction = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">start, end</span>) </span>{
-  <span class="hljs-keyword">var</span> result = [];
-  <span class="hljs-keyword">for</span> (i = start; i &lt; end; i += <span class="hljs-number">2</span>) {
-    result.push(i);
-  }
-  <span class="hljs-keyword">return</span> result;
-}
-
-<span class="hljs-comment">// You can set the option in the 'init' call:</span>
-Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
-   <span class="hljs-attr">FacetSlider</span>: {
-     <span class="hljs-attr">getSteps</span>: myGetStepsFunction
-   }
-});
-
-<span class="hljs-comment">// Or before the 'init' call, using the 'options' top-level function:</span>
-<span class="hljs-comment">// Coveo.options(document.querySelector("#search"), {</span>
-<span class="hljs-comment">//   FacetSlider : {</span>
-<span class="hljs-comment">//     valueCaption : myGetStepsFunction</span>
-<span class="hljs-comment">//   }</span>
-<span class="hljs-comment">// });</span></code></pre>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1121,23 +808,6 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 							:234</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies whether to display a small graph on top of the slider.</p>
-						</div>
-						<p>Available options are:</p>
-						<ul>
-							<li>steps (<code>data-graph-steps</code>): number; specifies the number of steps/columns to display in your graph. Default
-							value is <code>10</code>. Minimum value is <code>2</code>.</li>
-						</ul>
-						<dl class="tsd-comment-tags">
-							<dt>Minimum</dt>
-							<dd><p><code>2</code></p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.id-1" class="tsd-anchor"></a>
@@ -1150,15 +820,6 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 							:109</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a unique identifier for the <code>FacetSlider</code>. Among other things, this identifier serves the purpose of
-							saving the facet state in the URL hash.</p>
-						</div>
-						<p>If you have two facets with the same field in the same page, you should specify a unique <code>id</code> value for at least
-						one of those two facets. This <code>id</code> must be unique in the page.</p>
-						<p>Default value is the <a href="facetslider.html#options.field"><code>field</code></a> option value.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-id&#x3D;&#x27;foo&#x27;</pre>
@@ -1175,16 +836,6 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 							:135</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a query to filter automatic minimum and maximum values for the slider range.</p>
-						</div>
-						<p>This is especially useful in the case of date ranges since the index may contain values which are not set, and
-						thus return values from the year 1400 (the earliest date from the boost C++ library).</p>
-						<p><strong>Example:</strong></p>
-						<p>The query override in the following markup filters out any <code>@date</code> value anterior to January 1st 2000.</p>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacetSlider"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@date"</span> <span class="hljs-attr">data-date-field</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">data-query-override</span>=<span class="hljs-string">"@date&gt;2000/01/01"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-query-override&#x3D;&#x27;foo&#x27;</pre>
@@ -1201,12 +852,6 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 							:188</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether you want a slider with two buttons instead of a slider with a single button.</p>
-						</div>
-						<p>By default, only one button appears in the slider.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-range-slider&#x3D;&#x27;true&#x27;
@@ -1224,19 +869,6 @@ data-range-slider&#x3D;&#x27;false&#x27;</pre>
 							:169</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies the number of decimal places to round the displayed numerical values to.</p>
-						</div>
-						<p>Default (and minimum) value is <code>0</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Minimum</dt>
-							<dd><p><code>0</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-rounded&#x3D;&#x27;10&#x27;</pre>
@@ -1253,14 +885,6 @@ data-range-slider&#x3D;&#x27;false&#x27;</pre>
 							:145</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the starting boundary of the slider.</p>
-						</div>
-						<p>Date values are rounded to the nearest year when you set the <a href="facetslider.html#options.datefield"><code>dateField</code></a>
-						option to <code>true</code>.</p>
-						<p>Default value is the lowest available field value in the index.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.steps" class="tsd-anchor"></a>
@@ -1273,22 +897,6 @@ data-range-slider&#x3D;&#x27;false&#x27;</pre>
 							:181</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies the number of steps to split the slider into.</p>
-						</div>
-						<p>For example, if your range is [ 0 , 100 ] and you specify <code>10</code> steps, then the end user can move the slider only
-						to the values [ 0, 10, 20, 30 ... , 100 ].</p>
-						<p>For performance reasons, the maximum value for this option is <code>100</code></p>
-						<p>Default value is <code>undefined</code>, and the slider allows up to 100 steps. Minimum value is <code>2</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Minimum</dt>
-							<dd><p><code>2</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-steps&#x3D;&#x27;10&#x27;</pre>
@@ -1305,12 +913,6 @@ data-range-slider&#x3D;&#x27;false&#x27;</pre>
 							:76</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the title to display on top of the <code>FacetSlider</code>.</p>
-						</div>
-						<p>Default value is the localized string for <code>NoTitle</code>.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-title&#x3D;&#x27;foo&#x27;</pre>
@@ -1327,39 +929,6 @@ data-range-slider&#x3D;&#x27;false&#x27;</pre>
 							:325</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a function to generate the value caption for the <code>FacetSlider</code>. This function receives the current
-							slider values (number[]), and must return the caption (string).</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>You cannot set this option directly in the component markup as an HTML attribute. You must either set it in the
-								<a href="../globals.html#init"><code>init</code></a> call of your search interface (see
-								<a href="https://docs.coveo.com/en/346/#passing-component-options-in-the-init-call">Passing Component Options in the init Call</a>),
-								or before the <code>init</code> call, using the <code>options</code> top-level function (see
-							<a href="https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call">Passing Component Options Before the init Call</a>).</p>
-						</blockquote>
-						<p><strong>Example:</strong></p>
-						<pre><code class="language-javascript">
-<span class="hljs-keyword">var</span> myValueCaptionFunction = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">values</span>) </span>{
-  <span class="hljs-keyword">return</span> <span class="hljs-string">"From "</span> + values[<span class="hljs-number">0</span>] + <span class="hljs-string">" to "</span> + values[<span class="hljs-number">1</span>];
-}
-
-<span class="hljs-comment">// You can set the option in the 'init' call:</span>
-Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
-  <span class="hljs-attr">FacetSlider</span>: {
-    <span class="hljs-attr">valueCaption</span>: myValueCaptionFunction
-  }
-});
-
-<span class="hljs-comment">// Or before the 'init' call, using the 'options' top-level function:</span>
-<span class="hljs-comment">// Coveo.options(document.querySelector("#search"), {</span>
-<span class="hljs-comment">//   FacetSlider : {</span>
-<span class="hljs-comment">//     valueCaption : myValueCaptionFunction</span>
-<span class="hljs-comment">//   }</span>
-<span class="hljs-comment">// });</span></code></pre>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1401,44 +970,19 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 									:354</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates a new <code>FacetSlider</code> component. Binds multiple query events as well.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to instantiate the component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>options: <span class="tsd-signature-type">IFacetSliderOptions</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The options for the <code>FacetSlider</code> component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The bindings that the component requires to function normally. If not set, these will be
-											automatically resolved (with a slower execution time).</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> slider: <span class="tsd-signature-type">Slider</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="facetslider.html" class="tsd-signature-type">FacetSlider</a></h4>

@@ -238,18 +238,6 @@
 					<h1>Interface ICoreHelpers</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>The core template helpers provided by default.</p>
-					</div>
-					<p><strong>Examples:</strong></p>
-					<p><strong>HTML</strong></p>
-					<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@videoduration"</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"timeSpan"</span> <span class="hljs-attr">data-helper-options-is-milliseconds</span>=<span class="hljs-string">"false"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-					<p><strong>Underscore</strong></p>
-					<pre><code class="language-erb"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span></span></span><span class="ruby"> timeSpan(raw.videoduration, { <span class="hljs-symbol">isMilliseconds:</span> <span class="hljs-literal">false</span> }) </span><span class="xml"><span class="hljs-tag">%&gt;</span></span></code></pre>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -301,15 +289,6 @@
 							:219</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Formats a clickable HTML link (<code>&lt;a&gt;</code>).</p>
-						</div>
-						<ul>
-							<li><code>href</code>: The link URI</li>
-							<li><code>options</code>: Optional. The options to use (see <a href="ianchorutilsoptions.html">IAnchorUtilsOptions</a>)</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -346,15 +325,6 @@
 							:179</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Formats a currency value to a string using the specified options.</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The number value to format.</li>
-							<li><code>options</code>: Optional. The options to use (see <a href="icurrencytostringoptions.html">ICurrencyToStringOptions</a>).</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -391,15 +361,6 @@
 							:157</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Formats a date value to a date-only string using the specified options.</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The Date value to format.</li>
-							<li><code>options</code>: Optional. The options to use (see <a href="idatetostringoptions.html">IDateToStringOptions</a>).</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -436,16 +397,6 @@
 							:172</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Formats a date value to a date and time string using the specified
-							options.</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The Date value to format.</li>
-							<li><code>options</code>: Optional. The options to use (see <a href="idatetostringoptions.html">IDateToStringOptions</a>).</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -482,33 +433,6 @@
 							:212</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Renders one or several email values in <code>mailto:</code> hyperlinks.</p>
-						</div>
-						<ul>
-							<li><code>value</code>: The string or array of strings that contains a list of semicolon-separated email
-								values. When multiple values are passed, each value is displayed in a
-							separate hyperlink.</li>
-							<li><code>companyDomain</code>: Optional. The string that contains your own domain (e.g.:
-								coveo.com). When specified, this parameter allows email addresses
-								coming from your own domain to be displayed in a shortened format
-								(e.g.: Full Name), whereas email addresses coming from an external
-								domain will be displayed in an extended format (e.g.: Full Name
-								(domain.com)). If this parameter is not specified, then the shortened
-							format will automatically be used.</li>
-							<li><code>me</code>: Optional. The string that contains the current username. If it is
-								specified, then the email address containing the current username will
-							be replaced by the localized string &#39;Me&#39;.</li>
-							<li><code>lengthLimit</code>: Optional. The number of email addresses that you want to display
-								before an ellipse is added (e.g.: &#39;From Joe, John and 5 others&#39;).<br/>
-							The default value is 2.</li>
-							<li><code>truncateName</code>: Optional. When the username is available from the email address,
-								then you can specify if you want to truncate the full name. (e.g.:
-								&#39;John S.&#39; instead of &#39;John Smith&#39;).<br/>
-							The default value is <code>false</code>.</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -554,16 +478,6 @@
 							:187</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Formats a date value to a date and time string using options suitable for
-							email dates</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The Date value to format.</li>
-							<li><code>options</code>: Optional. The options to use (see <a href="idatetostringoptions.html">IDateToStringOptions</a>).</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -600,14 +514,6 @@
 							:333</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Replace all carriage return in a string by a &lt;br /&gt; tag</p>
-						</div>
-						<ul>
-							<li><code>value</code>: The string value to replace the carriage returns in.</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -641,21 +547,6 @@
 							:254</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Generates an icon based on the file type of the current result. The icon
-								will be contained inside a <code>&lt;span&gt;</code> element with the appropriate CSS
-							class.</p>
-						</div>
-						<ul>
-							<li><code>result</code>: Optional. The current result object inside your template. In
-								underscore, it is referenced as <code>obj</code>. By default, the result
-								will be resolved automatically from your current template function (
-								Meaning the nearest result in the current call stack execution inside
-							your template)</li>
-							<li><code>options</code>: Optional. The options to use (see <a href="iiconoptions.html">IIconOptions</a>).</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -692,16 +583,6 @@
 							:87</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Highlights a string using the provided highlight information.</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The URI to shorten.</li>
-							<li><code>highlights</code>: Optional. The highlight information to use.</li>
-							<li><code>cssClass</code>: Optional. The name of the CSS class to use for highlighting.</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -741,25 +622,6 @@
 							:130</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>This helper operates exactly like the <a href="icorehelpers.html#highlightstreamtext">highlightStreamText</a> helper, except
-								that it should be used to highlight HTML content. The helper takes care
-							of not highlighting the HTML markup.</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The string content to highlight</li>
-							<li><code>termsToHighlight</code>: The terms to highlight (see <a href="ihighlightterm.html">IHighlightTerm</a>)</li>
-							<li><code>phraseToHighlight</code>: The phrases to highlight (see <a href="ihighlightphrase.html">IHighlightPhrase</a>)</li>
-							<li><code>options</code>: Optional. The options defined below as <a href="istreamhighlightoptions.html">IStreamHighlightOptions</a></li>
-						</ul>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p><code>highlightStreamHTML</code> should only be used for very particular/specific use cases (e.g., augmenting the result template with additional information rather than the typical excerpt/title), and is not a proper replacement for actually having the correct title and excerpt on your results.</p>
-							<p>Using incorrect result titles or excerpts on your search interface also causes relevancy to suffer greatly, as the index uses the title and excerpt to find relevant results. Consequently, end users are more likely to see results whose titles do not match their query.</p>
-							<p>Moreover, the recommended method to implement simple title and/or excerpt highlighting is to simply use the <a href="../components/excerpt.html">Excerpt</a> and <a href="../components/resultlink.html">ResultLink</a> components.</p>
-						</blockquote>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -802,27 +664,6 @@
 							:107</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Highlights the provided terms in a given string.<br/>
-								By default, the terms to highlight are the current query and the
-								associated stemming words from the index.
-								The only required parameter is the content, which specify the string that needs to be highlighted.
-							The other parameters will normally be automatically resolved for you from the current result object.</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The string content to highlight</li>
-							<li><code>termsToHighlight</code>: The terms to highlight (see <a href="ihighlightterm.html">IHighlightTerm</a>)</li>
-							<li><code>phraseToHighlight</code>: The phrases to highlight (see <a href="ihighlightphrase.html">IHighlightPhrase</a>)</li>
-							<li><code>options</code>: Optional. The options defined below as <a href="istreamhighlightoptions.html">IStreamHighlightOptions</a></li>
-						</ul>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p><code>highlightStreamText</code> should only be used for very particular/specific use cases (e.g., augmenting the result template with additional information rather than the typical excerpt/title), and is not a proper replacement for actually having the correct title and excerpt on your results.</p>
-							<p>Using incorrect result titles or excerpts on your search interface also causes relevancy to suffer greatly, as the index uses the title and excerpt to find relevant results. Consequently, end users are more likely to see results whose titles do not match their query.</p>
-							<p>Moreover, the recommended method to implement simple title and/or excerpt highlighting is to simply use the <a href="../components/excerpt.html">Excerpt</a> and <a href="../components/resultlink.html">ResultLink</a> components.</p>
-						</blockquote>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -865,15 +706,6 @@
 							:226</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Formats an HTML image tag (<code>&lt;img&gt;</code>).</p>
-						</div>
-						<ul>
-							<li><code>src</code>: The image source URI</li>
-							<li><code>options</code>: Optional. The options to use (see <a href="iimageutilsoptions.html">IImageUtilsOptions</a>)</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -910,13 +742,6 @@
 							:341</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Detect if the results is being rendered in a mobile device.</p>
-						</div>
-						<p>If it&#39;s not a mobile device, the helper return null ;</p>
-						<p>If it&#39;s a mobile device, return the type of device (Android, iPhone, iPad) etc.</p>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -944,25 +769,6 @@
 							:271</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Loads a partial template in the current template, by passing the ID of
-								the template to load, the condition for which this template should be
-								loaded, and the context object (the object that the loaded template will
-								use as its data). By default, the context object will be the same as the
-								template that called this helper function. So, for example, in a
-								ResultList Component, the contextObject would, by default, be the Query
-							Results.</p>
-						</div>
-						<ul>
-							<li><code>templateId</code>: The ID of the template to load.</li>
-							<li><code>condition</code>: Optional. The boolean condition to determine if this template should
-								load for this result set. Most of the time this would be a condition of
-							the type if raw.somefield == &#39;something&#39;.</li>
-							<li><code>contextObject</code>: Optional. The object that should be used by the loaded template
-							as its contextObject.</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1002,18 +808,6 @@
 							:150</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Formats a numeric value using the format string.</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The numeric value to format.</li>
-							<li><code>format</code> Optional. The string format to use. See the <a href="https://github.com/klaaspieter/jquery-global#numbers" target="_blank">Globalize</a> library for the list of available formats.</li>
-						</ul>
-						<p>When the helper is used in a <a href="../components/fieldvalue.html"><code>FieldValue</code></a> component, this value is automatically retrieved from the specified <a href="../components/fieldvalue.html#options.field"><code>field</code></a>.</p>
-						<p><strong>Example:</strong></p>
-						<pre><code class="language-html"> <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@viewcount"</span> <span class="hljs-attr">data-text-caption</span>=<span class="hljs-string">"Views"</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"number"</span> <span class="hljs-attr">data-helper-options-format</span>=<span class="hljs-string">"n0"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1050,20 +844,6 @@
 							:55</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Shortens a string so that its length does not exceed a specific number of
-								characters. An ellipsis is appended to the string if it exceeds the
-							maximum length.</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The string to shorten.</li>
-							<li><code>length</code>: The maximum length of the resulting string.</li>
-							<li><code>highlights</code>: Optional. If provided, the string will be highlighted
-							using this highlight information.</li>
-							<li><code>cssClass</code>: Optional. When highlighting, the name of the CSS class to use.</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1106,20 +886,6 @@
 							:67</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Shortens a string using an algorithm suitable for file paths. The helper
-								will insert an ellipsis in the string where text has been removed when
-							the path exceeds the maximum length.</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The path to shorten.</li>
-							<li><code>length</code>: The maximum length of the resulting string.</li>
-							<li><code>highlights</code>: Optional. If provided, the string will be highlighted using
-							this highlight information.</li>
-							<li><code>cssClass</code>: Optional. When highlighting, the name of the CSS class to use.</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1162,20 +928,6 @@
 							:79</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Shortens a string using an algorithm suitable for URIs. The helper will
-								insert an ellipsis in the string where text has been removed when the URI
-							exceeds the maximum length.</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The URI to shorten.</li>
-							<li><code>length</code>: The maximum length of the resulting string.</li>
-							<li><code>highlights</code>: Optional. If provided, the string will be highlighted
-							using this highlight information.</li>
-							<li><code>cssClass</code>: Optional. When highlighting, the name of the CSS class to use.</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1218,30 +970,6 @@
 							:313</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Formats a number, which represents a file size in bytes, into a logical unit size.</p>
-						</div>
-						<p><strong>Examples:</strong></p>
-						<blockquote>
-							<p><code>size(1024) =&gt; 1024 B</code></p>
-							<p><code>size(1025) =&gt; 1 KB</code></p>
-							<p><code>size(10240) =&gt; 10 KB</code></p>
-						</blockquote>
-						<p><strong>Examples:</strong></p>
-						<blockquote>
-							<p><strong>HTML</strong></p>
-							<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@size'</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"size"</span> <span class="hljs-attr">data-helper-options-base</span>=<span class="hljs-string">"1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-						</blockquote>
-						<blockquote>
-							<p><strong>Underscore</strong></p>
-							<pre><code class="language-erb"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span></span></span><span class="ruby"> size(raw.size, {<span class="hljs-symbol">base:</span> <span class="hljs-number">0</span>, <span class="hljs-symbol">precision:</span> <span class="hljs-number">2</span>}) </span><span class="xml"><span class="hljs-tag">%&gt;</span></span></code></pre>
-						</blockquote>
-						<ul>
-							<li><code>value</code>: The number to format</li>
-							<li><code>options</code> : The options to use (see <a href="isizeoptions.html">ISizeOptions</a>)</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1278,24 +1006,6 @@
 							:241</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Formats an HTML image tag (<code>&lt;img&gt;</code>), and automatically uses the result
-								object to query the REST API to get the thumbnail for this result. For
-								example, this can be used to great effect when designing a template
-							showing users or previews of files.</p>
-							<ul>
-								<li><code>result</code>: Optional. The current result object inside your template. In
-									underscore, it is referenced as <code>obj</code>. By default, the result
-									will be resolved automatically from your current template function (
-									Meaning the nearest result in the current call stack execution inside
-								your template)</li>
-								<li><code>endpoint</code>: Optional. The name of the endpoint to use for your
-								thumbnail. Default is default.</li>
-								<li><code>options</code>: Optional. The options to use (see <a href="iimageutilsoptions.html">IImageUtilsOptions</a>).</li>
-							</ul>
-						</div>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1335,15 +1045,6 @@
 							:164</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Formats a date value to a time-only string using the specified options.</p>
-						</div>
-						<ul>
-							<li><code>content</code>: The Date value to format.</li>
-							<li><code>options</code>: Optional. The options to use (see <a href="idatetostringoptions.html">IDateToStringOptions</a>).</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1380,20 +1081,6 @@
 							:284</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Given a number, either in millisecond or second, convert to a HH:MM:SS format.</p>
-						</div>
-						<p><strong>Examples</strong></p>
-						<blockquote>
-							<p><code>timeSpan(1, {isMilliseconds: false}) =&gt; &#39;00:01&#39;</code></p>
-							<p><code>timeSpan(1000, {isMilliseconds: true}) =&gt; &#39;00:01&#39;</code></p>
-						</blockquote>
-						<ul>
-							<li><code>value</code>: The number to convert to a timespan</li>
-							<li><code>options</code> : The options to use (see <a href="itimespanutilsoptions.html">ITimeSpanUtilsOptions</a>)</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -1430,20 +1117,6 @@
 							:327</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Given a filetype value, try to return a translated and human readable version.</p>
-						</div>
-						<p>If the filetype is known and recognized by the framework, a translated value will be returned.</p>
-						<p><strong>Examples</strong></p>
-						<blockquote>
-							<p><code>translatedCaption(&#39;doc&#39;) =&gt; Document</code></p>
-							<p><code>translatedCaption(&#39;xls&#39;) =&gt; Spreadsheet Document</code></p>
-						</blockquote>
-						<ul>
-							<li><code>value</code>: The string value to translate</li>
-						</ul>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">

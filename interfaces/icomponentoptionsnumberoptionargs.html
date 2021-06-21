@@ -208,14 +208,6 @@
 					<h1>Interface IComponentOptionsNumberOptionArgs</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>The <code>IComponentOptionsNumberOptionArgs</code> interface describes the available parameters when building a
-						[number option]{@link ComponentOptions.buildNumberOption).</p>
-					</div>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -258,15 +250,6 @@
 							:117</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies an alias, or array of aliases, which can be used instead of the actual option name.</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>This can be useful to modify an option name without introducing a breaking change.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="attrname" class="tsd-anchor"></a>
@@ -280,16 +263,6 @@
 							:108</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a different markup name to use for an option, rather than the standard name (i.e., <code>data-</code> followed by
-							the hyphened name of the option).</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>This should only be used for backward compatibility reasons.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="defaultfunction" class="tsd-anchor"></a>
@@ -303,21 +276,6 @@
 							:76</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies a function that should return the value the option must take when no other value is explicitly specified.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>param</dt>
-							<dd><p>The HTMLElement on which the current option is being parsed.</p>
-							</dd>
-							<dt>returns</dt>
-							<dd><p>The default value of the option.</p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -352,11 +310,6 @@
 							:68</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the value the option must take when no other value is explicitly specified.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="depend" class="tsd-anchor"></a>
@@ -370,16 +323,6 @@
 							:132</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the name of a boolean component option which must be <code>true</code> in order for this option to function
-							properly.</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>This is mostly useful for the Coveo JavaScript Interface Editor.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="deprecated" class="tsd-anchor"></a>
@@ -393,17 +336,6 @@
 							:144</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a message that labels the option as deprecated. This message appears in the console upon initialization
-								if the deprecated option is used in the page. Consequently, this message should explain as clearly as possible why
-							the option is deprecated, and what now replaces it.</p>
-						</div>
-						<p><strong>Note:</strong></p>
-						<blockquote>
-							<p>Deprecated options do not appear in the Coveo JavaScript Interface Editor.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="float" class="tsd-anchor"></a>
@@ -416,11 +348,6 @@
 							:181</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether the value of this option is a floating point number.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="max" class="tsd-anchor"></a>
@@ -433,13 +360,6 @@
 							:176</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the exclusive maximum value the option can take.</p>
-						</div>
-						<p>Configuring the option using a value strictly greater than this maximum displays a warning message in the console
-						and automatically sets the option to its maximum value.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="min" class="tsd-anchor"></a>
@@ -452,13 +372,6 @@
 							:168</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the exclusive minimum value the option can take.</p>
-						</div>
-						<p>Configuring the option using a value strictly less than this minimum displays a warning message in the console and
-						automatically sets the option to its minimum value.</p>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="postprocessing" class="tsd-anchor"></a>
@@ -472,17 +385,6 @@
 							:98</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a function that should allow a component option to further modify its own value once all other options
-							of that component have been built.</p>
-						</div>
-						<p><strong>Example:</strong></p>
-						<blockquote>
-							<p>By default, the <a href="../components/facet.html#options.id-1"><code>id</code></a> option of the <code>Facet</code> component uses a post processing function to
-							set its value to that of the <a href="../components/facet.html#options.field"><code>field</code></a> option.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="required" class="tsd-anchor"></a>
@@ -496,17 +398,6 @@
 							:87</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies whether it is necessary to explicitly specify a value for the option in order for the component to
-							function properly.</p>
-						</div>
-						<p><strong>Example:</strong></p>
-						<blockquote>
-							<p>The <a href="../components/facet.html#options.field"><code>field</code></a> option of the <code>Facet</code> component is required, since a facet cannot
-							function properly without a field.</p>
-						</blockquote>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="section" class="tsd-anchor"></a>
@@ -520,11 +411,6 @@
 							:122</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a section name inside which the option should appear in the Coveo JavaScript Interface Editor.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="validator" class="tsd-anchor"></a>
@@ -538,21 +424,6 @@
 							:152</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Specifies a function that should indicate whether the option value is valid.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>param</dt>
-							<dd><p>The option value to validate.</p>
-							</dd>
-							<dt>returns</dt>
-							<dd><p><code>true</code> if the option value is valid; <code>false</code> otherwise.</p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">

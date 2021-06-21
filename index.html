@@ -1171,6 +1171,12 @@ gulp</code></pre><h2 id="important-gulp-tasks">Important Gulp Tasks</h2>
 				<p>Load <a href="http://localhost:8081/tests/SpecRunner.html">http://localhost:8081/tests/SpecRunner.html</a>.</p>
 				<p>Every time you hit <strong>Save</strong> in a source file, the dev server will reload and re-run your tests.</p>
 				<p>Code coverage will be reported in <code>./bin/coverage</code></p>
+				<h3 id="accessibility-tests">Accessibility tests</h3>
+				<p>Tests are written using <a href="https://github.com/dequelabs/axe-core">Axe core</a>. You can use <code>npm run accessibilityTests</code> to run
+				the tests in Chrome Headless.</p>
+				<p>If you wish to write new tests, you can do so by starting a new webpack-dev-server instance.</p>
+				<p>To start the server, run <code>gulp devAccessibilityTest</code>.</p>
+				<p>Load <a href="http://localhost:8082/tests/Accessibility.html">http://localhost:8082/tests/Accessibility.html</a>.</p>
 				<h2 id="documentation">Documentation</h2>
 				<p>General reference documentation is generated using TypeDoc (see
 					<a href="https://coveo.github.io/search-ui/">Coveo JavaScript Search UI Framework - Reference Documentation</a>). The

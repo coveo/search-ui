@@ -250,28 +250,6 @@
 					<h1>Coveo DynamicHierarchicalFacet Component (CoveoDynamicHierarchicalFacet)</h1>
 				</div>
 			</div>
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<dl class="tsd-deprecated">
-					</dl>
-					<div class="lead">
-						<p>The <code>DynamicHierarchicalFacet</code> component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
-						selected path of values.</p>
-					</div>
-					<p>This facet requires a <a href="dynamichierarchicalfacet.html#options.field"><code>field</code></a> with a special format to work correctly.</p>
-					<dl class="tsd-comment-tags">
-						<dt>Not supported in</dt>
-						<dd><p><a href="https://docs.coveo.com/en/1107/">Coveo for Salesforce Free</a></p>
-						</dd>
-						<dt>Available since</dt>
-						<dd><p><a href="https://docs.coveo.com/en/3163/">January 2020 Release (v2.7968)</a></p>
-						</dd>
-						<dt>Additional documentation</dt>
-						<dd><p><a href="https://docs.coveo.com/en/2667">Using Hierarchical Facets</a></p>
-						</dd>
-					</dl>
-				</div>
-			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -371,11 +349,6 @@
 									:614</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Collapses the facet, hiding values.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -396,11 +369,6 @@
 									:41</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the debug info about this component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -421,13 +389,6 @@
 									:52</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Disable the component.
-										Normally this means that the component will not execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -448,13 +409,6 @@
 									:61</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Enable the component.
-										Normally this means that the component will execute handlers for the framework events (query events, for example).
-									Components are enabled by default on creation.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -474,14 +428,6 @@
 									:603</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>For this method to work, the component has to be the child of a <a href="dynamicfacetmanager.html">DynamicFacetManager</a> component.</p>
-								</div>
-								<p>Sets a flag indicating whether the facets should be returned in their current order.</p>
-								<p>Setting the flag to <code>true</code> helps ensuring that the facets do not move around while the end-user is interacting with them.</p>
-								<p>The flag is automatically set back to <code>false</code> after a query is built.</p>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -501,11 +447,6 @@
 									:581</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Expands the facet, displaying all of its currently fetched values.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -526,11 +467,6 @@
 									:328</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Return the bindings, or environment, for the current component.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -550,16 +486,10 @@
 									:637</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The string to find a caption for.
-										Returns the caption for a value or the value itself if no caption is available.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -581,13 +511,6 @@
 									:558</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Deselects the path in the facet.</p>
-								</div>
-								<p>Does <strong>not</strong> trigger a query automatically.
-								Does <strong>not</strong> update the visual of the facet until a query is performed.</p>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -607,20 +530,10 @@
 									:537</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Select a path in the hierarchy.</p>
-								</div>
-								<p>Does <strong>not</strong> trigger a query automatically.
-								Does <strong>not</strong> update the visual of the facet until a query is performed.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>path: <span class="tsd-signature-type">string[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The values representing the path.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -642,13 +555,6 @@
 									:522</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Reduces the number of displayed facet values down to <a href="dynamicfacet.html#options.numberofvalues">numberOfValues</a>.</p>
-								</div>
-								<p>See the <a href="dynamichierarchicalfacet.html#options.enablemoreless"><code>enableMoreLess</code></a> option.</p>
-								<p>Automatically triggers an isolated query.</p>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -668,20 +574,10 @@
 									:508</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Requests additional values.</p>
-								</div>
-								<p>See the <a href="dynamichierarchicalfacet.html#options.enablemoreless"><code>enableMoreLess</code></a> option.</p>
-								<p>Automatically triggers an isolated query.</p>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> additionalNumberOfValues: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;this.options.numberOfValues</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The number of additional values to request. Minimum value is 1. Defaults to the <a href="dynamichierarchicalfacet.html#options.numberofvalues">numberOfValues</a> option value.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -703,11 +599,6 @@
 									:574</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Collapses or expands the facet depending on it&#39;s current state.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -728,31 +619,16 @@
 									:410</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
-									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>HTMLElement for which to get the bound component.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Boolean option to tell the method to not throw on error.</p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -774,18 +650,6 @@
 							:270</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Allows the component to bind events and execute them only when it is enabled.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{Coveo.ComponentEvents}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -799,11 +663,6 @@
 							:294</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -817,11 +676,6 @@
 							:282</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -835,18 +689,6 @@
 							:23</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>type</dt>
-							<dd><p>{boolean}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -860,11 +702,6 @@
 							:18</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Allows component to log in the dev console.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -878,11 +715,6 @@
 							:286</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the singleton that allows to trigger queries.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -896,11 +728,6 @@
 							:278</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -914,11 +741,6 @@
 							:274</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -932,11 +754,6 @@
 							:290</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -950,12 +767,6 @@
 							:28</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The static ID that each component needs in order to be identified.<br/>
-							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
-						</div>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -963,27 +774,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-								<ul>
-									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-									:343</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
-						</li>
-					</ul>
+					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+							:343</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -999,27 +798,6 @@
 							:311</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The base path shared by all values to display in the hierarchical facet.</p>
-						</div>
-						<p>If you set this option, the specified base path will always be active on the facet.</p>
-						<p>This implies that:</p>
-						<ul>
-							<li>The end user will not have to manually select the specified base path values.</li>
-							<li>Values that do not have the specified base path will not be displayed in the facet.</li>
-						</ul>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>[]</code></p>
-							</dd>
-							<dt>Available since</dt>
-							<dd><p><a href="https://docs.coveo.com/en/3231/">April 2020 Release (v2.8864)</a></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-base-path&#x3D;&#x27;electronics&#x27;
@@ -1037,12 +815,6 @@ data-base-path&#x3D;&#x27;electronics,laptops&#x27;</pre>
 							:293</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The label to display to clear the facet when a value is selected.</p>
-						</div>
-						<p>Default value is the localized string for <code>AllCategories</code>.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-clear-label&#x3D;&#x27;Everything&#x27;</pre>
@@ -1059,21 +831,6 @@ data-base-path&#x3D;&#x27;electronics,laptops&#x27;</pre>
 							:125</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether this facet should be collapsed by default.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>Only effective when</dt>
-							<dd><p><a href="dynamichierarchicalfacet.html#options.enablecollapse"><code>enableCollapse</code></a> is set to <code>true</code></p>
-							</dd>
-							<dt>Default</dt>
-							<dd><p><code>false</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-collapsed-by-default&#x3D;&#x27;true&#x27;
@@ -1091,22 +848,6 @@ data-collapsed-by-default&#x3D;&#x27;false&#x27;</pre>
 							:260</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies a custom order by which to sort the dynamic hierarchical facet values.</p>
-						</div>
-						<p>Custom-ordered values won&#39;t necessarily retrieve values from the index.</p>
-						<p><strong>Example:</strong></p>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
-  <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoDynamicHierarchicalFacet"</span>
-  <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@countries"</span>
-  <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Countries"</span>
-  <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span>
-  <span class="hljs-attr">data-clear-label</span>=<span class="hljs-string">"All Countries"</span>
-  <span class="hljs-attr">data-delimiting-character</span>=<span class="hljs-string">"|"</span>
-  <span class="hljs-attr">data-custom-sort</span>=<span class="hljs-string">"America, Asia|Japan, America|Mexico, America|Canada, Europe|Germany, Europe|France, Oceania"</span>
-&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-custom-sort&#x3D;&#x27;foo&#x27;</pre>
@@ -1123,29 +864,6 @@ data-collapsed-by-default&#x3D;&#x27;false&#x27;</pre>
 							:279</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>If a custom sort is defined, this specifies the delimiter that separates paths from each other.</p>
-						</div>
-						<p><em>Example:*</em></p>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
-  <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoDynamicHierarchicalFacet"</span>
-  <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@countries"</span>
-  <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Countries"</span>
-  <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span>
-  <span class="hljs-attr">data-clear-label</span>=<span class="hljs-string">"All Countries"</span>
-  <span class="hljs-attr">data-delimiting-character</span>=<span class="hljs-string">"|"</span>
-  <span class="hljs-attr">data-custom-sort</span>=<span class="hljs-string">"America...Asia|Japan...America|Mexico...America|Canada...Europe|Germany...Europe|France...Oceania"</span>
-  <span class="hljs-attr">data-custom-sort-delimiting-character</span>=<span class="hljs-string">"..."</span>
-&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-						<dl class="tsd-comment-tags">
-							<dt>Only effective when</dt>
-							<dd><p><a href="dynamichierarchicalfacet.html#options.customsort"><code>customSort</code></a> is set to <code>true</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-custom-sort-delimiting-character&#x3D;&#x27;foo&#x27;</pre>
@@ -1162,22 +880,6 @@ data-collapsed-by-default&#x3D;&#x27;false&#x27;</pre>
 							:171</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The character that specifies the hierarchical dependency.</p>
-						</div>
-						<p><strong>Example:</strong></p>
-						<p>If your field has the following values:</p>
-						<p><code>electronics; electronics&gt;laptops; electronics&gt;laptops&gt;gaming;</code></p>
-						<p>The delimiting character is <code>&gt;</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>|</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-delimiting-character&#x3D;&#x27;&gt;&#x27;</pre>
@@ -1194,20 +896,6 @@ data-collapsed-by-default&#x3D;&#x27;false&#x27;</pre>
 							:189</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The <code>id</code> option value of another facet in which at least one value must be selected in order
-							for the dependent hierarchical facet to be visible.</p>
-						</div>
-						<p><strong>Default:</strong> <code>undefined</code> and the hierarchical facet does not depend on any other facet to be displayed.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Additional documentation</dt>
-							<dd><p><a href="https://docs.coveo.com/3210/">Defining Dependent Facets</a></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-depends-on&#x3D;&#x27;department&#x27;</pre>
@@ -1224,24 +912,6 @@ data-collapsed-by-default&#x3D;&#x27;false&#x27;</pre>
 							:201</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>A function that verifies whether the current state of the <code>dependsOn</code> facet allows the dependent facet to be displayed.</p>
-						</div>
-						<p>If specified, the function receives a reference to the resolved <code>dependsOn</code> facet component instance as an argument, and must return a boolean.
-						The function&#39;s argument should typically be treated as read-only.</p>
-						<p>By default, the dependent facet is displayed whenever one or more values are selected in its <code>dependsOn</code> facet.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Only effective when</dt>
-							<dd><p><a href="dynamichierarchicalfacet.html#options.dependson"><code>dependsOn</code></a> is set to <code>true</code></p>
-							</dd>
-							<dt>Additional documentation</dt>
-							<dd><p><a href="https://docs.coveo.com/3210/">Defining Dependent Facets</a></p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.enablecollapse" class="tsd-anchor"></a>
@@ -1254,18 +924,6 @@ data-collapsed-by-default&#x3D;&#x27;false&#x27;</pre>
 							:120</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether to allow the end-user to expand and collapse this facet.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>true</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-collapse&#x3D;&#x27;true&#x27;
@@ -1283,18 +941,6 @@ data-enable-collapse&#x3D;&#x27;false&#x27;</pre>
 							:156</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether to allow the end-user to search the facet values.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>false</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-facet-search&#x3D;&#x27;true&#x27;
@@ -1312,19 +958,6 @@ data-enable-facet-search&#x3D;&#x27;false&#x27;</pre>
 							:151</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether to enable the <strong>More</strong> and <strong>Less</strong> buttons in the Facet.</p>
-						</div>
-						<p>See also the <a href="dynamichierarchicalfacet.html#options.numberofvalues"><code>numberOfValues</code></a> option.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>true</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-more-less&#x3D;&#x27;true&#x27;
@@ -1342,18 +975,6 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 							:130</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether to scroll back to the top of the page whenever the end-user interacts with a facet.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>true</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-scroll-to-top&#x3D;&#x27;true&#x27;
@@ -1371,24 +992,6 @@ data-enable-scroll-to-top&#x3D;&#x27;false&#x27;</pre>
 							:93</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The index field whose values the facet should use. The field values should have the form:
-								<code>the; the|path; the|path|to; the|path|to|given; the|path|to|given|item;</code>
-							where the delimiting character is <code>|</code>. This default delimiting character can be changed using the <a href="dynamichierarchicalfacet.html#options.delimitingcharacter">delimitingCharacter</a> option.</p>
-						</div>
-						<p>To help you verify whether your fields are setup correctly, use the <a href="dynamichierarchicalfacet.html#debuginfo"><code>debugInfo</code></a> method.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Required</dt>
-							<dd><p>Specifying a value for this option is required for the component to work</p>
-							</dd>
-							<dt>Additional documentation</dt>
-							<dd><p><a href="https://docs.coveo.com/en/2667">Using the Hierarchical Facet Component</a>.</p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-field&#x3D;&#x27;@category&#x27;</pre>
@@ -1405,13 +1008,6 @@ data-enable-scroll-to-top&#x3D;&#x27;false&#x27;</pre>
 							:215</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether to exclude folded result parents when estimating result counts for facet values.</p>
-						</div>
-						<p>See also the <a href="folding.html"><code>Folding</code></a> and <a href="../classes/foldingforthread.html"><code>FoldingForThread</code></a> components.</p>
-						<p><strong>Default:</strong> <code>false</code> if folded results are requested; <code>true</code> otherwise.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-filter-facet-count&#x3D;&#x27;true&#x27;
@@ -1429,15 +1025,6 @@ data-filter-facet-count&#x3D;&#x27;false&#x27;</pre>
 							:78</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A unique identifier for the facet. Among other things, this identifier serves the purpose of saving
-							the facet state in the URL hash.</p>
-						</div>
-						<p>If you have two facets with the same field on the same page, you should specify an <code>id</code> value for at least one of
-						those two facets. This <code>id</code> must be unique among the facets.</p>
-						<p>Default value is the <a href="dynamichierarchicalfacet.html#options.field"><code>field</code></a> option value.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-id&#x3D;&#x27;productcategory&#x27;</pre>
@@ -1454,18 +1041,6 @@ data-filter-facet-count&#x3D;&#x27;false&#x27;</pre>
 							:135</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>Whether to notify the <a href="breadcrumb.html"><code>Breadcrumb</code></a> component when toggling values in the facet.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>Default</dt>
-							<dd><p><code>true</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-include-in-breadcrumb&#x3D;&#x27;true&#x27;
@@ -1483,22 +1058,6 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 							:144</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The number of items to scan for facet values.</p>
-						</div>
-						<p>Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Minimum</dt>
-							<dd><p><code>0</code></p>
-							</dd>
-							<dt>Default</dt>
-							<dd><p><code>1000</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-injection-depth&#x3D;&#x27;500&#x27;</pre>
@@ -1515,23 +1074,6 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 							:115</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The maximum number of field values to display by default in the facet before the user
-							clicks the arrow to show more.</p>
-						</div>
-						<p>See also the <a href="dynamichierarchicalfacet.html#options.enablemoreless"><code>enableMoreLess</code></a> option.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Minimum</dt>
-							<dd><p><code>0</code></p>
-							</dd>
-							<dt>Default</dt>
-							<dd><p><code>5</code></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-number-of-values&#x3D;&#x27;8&#x27;</pre>
@@ -1548,19 +1090,6 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 							:226</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>The sort criterion to use for this facet.</p>
-						</div>
-						<p><strong>Default (Search API):</strong> <code>occurrences</code>.</p>
-						<dl class="tsd-comment-tags">
-							<dt>Available since</dt>
-							<dd><p><a href="https://docs.coveo.com/en/3203/">March 2020 Release (v2.8521)</a></p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-sort-criteria&#x3D;&#x27;alphanumeric&#x27;</pre>
@@ -1577,12 +1106,6 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 							:102</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The title to display at the top of the facet.</p>
-						</div>
-						<p>Default value is the localized string for <code>NoTitle</code>.</p>
-					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-title&#x3D;&#x27;Product category&#x27;</pre>
@@ -1599,18 +1122,6 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 							:178</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-deprecated">
-						</dl>
-						<div class="lead">
-							<p>A mapping of facet values to their desired captions.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>Additional documentation</dt>
-							<dd><p><a href="https://docs.coveo.com/en/368/">Normalizing Facet Value Captions</a></p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -1631,38 +1142,16 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 									:296</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Create a new Component. Resolve all <a href="../interfaces/icomponentbindings.html">IComponentBindings</a> if not provided.<br/>
-										Create a new Logger for this component.
-									Attach the component to the <a href="searchinterface.html">SearchInterface</a>.<br/></p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The HTMLElement on which to create the component. Used to bind data on the element.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>type: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The unique identifier for this component. See: <a href="../interfaces/icomponentdefinition.html#id">IComponentDefinition.ID</a>. Used to generate the unique Coveo CSS class associated with every component.</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The environment for every component. Optional, but omitting to provide one will impact performance.</p>
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="dynamichierarchicalfacet.html" class="tsd-signature-type">DynamicHierarchicalFacet</a></h4>
