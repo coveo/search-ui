@@ -53,7 +53,6 @@ import { AccessibilityStarResult } from './AccessibilityStarResult';
 import { AccessibilityResultPreviewsManager } from './AccessibilityResultPreviewsManager';
 import { AccessibilitySettings } from './AccessibilitySettings';
 import { AccessibilityQuerySummary } from './AccessibilityQuerySummary';
-import { AccessibilityThumbnail } from './AccessibilityThumbnail';
 import { AccessibilityCategoryFacet } from './AccessibilityCategoryFacet';
 import { AccessibilityDynamicHierarchicalFacetSearch } from './AccessibilityDynamicHierarchicalFacetSearch';
 import { AccessibilitySmartSnippet } from './AccessibilitySmartSnippet';
@@ -175,7 +174,6 @@ describe('Testing ...', () => {
   AccessibilityResultPreviewsManager();
   AccessibilitySettings();
   AccessibilityQuerySummary();
-  AccessibilityThumbnail();
   AccessibilityCategoryFacet();
   AccessibilityDynamicHierarchicalFacetSearch();
   AccessibilitySmartSnippet();
