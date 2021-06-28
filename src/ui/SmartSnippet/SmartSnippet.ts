@@ -318,7 +318,7 @@ export class SmartSnippet extends Component {
     const element = $$('a', { className: 'CoveoResultLink' }).el as HTMLAnchorElement;
     new ResultLink(
       element,
-      this.options.hrefTemplate ? { hrefTemplate: this.options.hrefTemplate } : {},
+      { hrefTemplate: this.options.hrefTemplate },
       { ...this.getBindings(), resultElement: this.element },
       this.lastRenderedResult
     );
