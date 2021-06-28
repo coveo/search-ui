@@ -32,6 +32,7 @@ export function SmartSnippetTest() {
   function mockResult() {
     return (<Partial<IQueryResult>>{
       title: sourceTitle,
+      titleHighlights: [],
       clickUri: sourceUrl,
       raw: {
         alt: sourceAlt,
@@ -139,6 +140,15 @@ export function SmartSnippetTest() {
       expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).href).toEqual(expectedHref);
       expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).innerText).toEqual(expectedHref);
       expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME).href).toEqual(expectedHref);
+      test.env.root.remove();
+      done();
+    });
+
+    it('displays resolved relative URLs when specified in the hrefTemplate', async done => {
+      instantiateSmartSnippet(null, { hrefTemplate: '../${raw.alt}' });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).innerText.indexOf(window.location.protocol)).toEqual(0);
       test.env.root.remove();
       done();
     });

@@ -2,7 +2,7 @@ import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { QueryEvents, Initialization, $$, StringUtils } from '../../Core';
+import { QueryEvents, Initialization, $$ } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import 'styling/_SmartSnippet';
@@ -301,22 +301,24 @@ export class SmartSnippet extends Component {
   }
 
   private renderSourceTitle() {
-    return this.buildLink(Utils.getFieldValue(this.lastRenderedResult, <string>this.options.titleField), SOURCE_TITLE_CLASSNAME);
+    const link = this.buildLink();
+    link.innerText = Utils.getFieldValue(this.lastRenderedResult, <string>this.options.titleField);
+    link.classList.add(SOURCE_TITLE_CLASSNAME);
+    return link;
   }
 
   private renderSourceUrl() {
-    const uri = this.options.hrefTemplate
-      ? StringUtils.buildStringTemplateFromResult(this.options.hrefTemplate, this.lastRenderedResult)
-      : this.lastRenderedResult.clickUri;
-    return this.buildLink(uri, SOURCE_URL_CLASSNAME);
+    const link = this.buildLink();
+    link.innerText = link.href;
+    link.classList.add(SOURCE_URL_CLASSNAME);
+    return link;
   }
 
-  private buildLink(text: string, className: string) {
-    const element = $$('a', { className: `CoveoResultLink ${className}` }).el as HTMLAnchorElement;
-    element.innerText = text;
+  private buildLink() {
+    const element = $$('a', { className: 'CoveoResultLink' }).el as HTMLAnchorElement;
     new ResultLink(
       element,
-      { hrefTemplate: this.options.hrefTemplate },
+      this.options.hrefTemplate ? { hrefTemplate: this.options.hrefTemplate } : {},
       { ...this.getBindings(), resultElement: this.element },
       this.lastRenderedResult
     );
