@@ -2,7 +2,7 @@ import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { QueryEvents, Initialization, $$, StringUtils } from '../../Core';
+import { QueryEvents, Initialization, $$ } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import 'styling/_SmartSnippet';
@@ -295,27 +295,29 @@ export class SmartSnippet extends Component {
   }
 
   private renderSource() {
-    $$(this.sourceContainer).empty();
-    this.sourceContainer.appendChild(this.renderSourceUrl());
-    this.sourceContainer.appendChild(this.renderSourceTitle());
+    const container = $$(this.sourceContainer);
+    container.empty();
+    container.append(this.renderSourceUrl().el);
+    container.append(this.renderSourceTitle().el);
   }
 
   private renderSourceTitle() {
-    return this.buildLink(Utils.getFieldValue(this.lastRenderedResult, <string>this.options.titleField), SOURCE_TITLE_CLASSNAME);
+    const link = this.buildLink(SOURCE_TITLE_CLASSNAME);
+    link.text(Utils.getFieldValue(this.lastRenderedResult, <string>this.options.titleField));
+    return link;
   }
 
   private renderSourceUrl() {
-    const uri = this.options.hrefTemplate
-      ? StringUtils.buildStringTemplateFromResult(this.options.hrefTemplate, this.lastRenderedResult)
-      : this.lastRenderedResult.clickUri;
-    return this.buildLink(uri, SOURCE_URL_CLASSNAME);
+    const link = this.buildLink(SOURCE_URL_CLASSNAME);
+    link.text((link.el as HTMLAnchorElement).href);
+    return link;
   }
 
-  private buildLink(text: string, className: string) {
-    const element = $$('a', { className: `CoveoResultLink ${className}` }).el as HTMLAnchorElement;
-    element.innerText = text;
+  private buildLink(className: string) {
+    const element = $$('a', { className: 'CoveoResultLink' });
+    element.addClass(className);
     new ResultLink(
-      element,
+      element.el,
       { hrefTemplate: this.options.hrefTemplate },
       { ...this.getBindings(), resultElement: this.element },
       this.lastRenderedResult
