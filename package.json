@@ -143,7 +143,7 @@
     "through2": "^2.0.3",
     "ts-loader": "^2.0.3",
     "tvm": "^0.8.14",
-    "typedoc": "https://github.com/coveord/typedoc",
+    "typedoc": "https://github.com/coveord/typedoc#219a50500c029ee426fa1cdb85c2ff8bf87dbb4c",
     "typescript": "2.8.1",
     "walk": "^2.3.9",
     "webpack": "^3.10.0",
