@@ -362,10 +362,6 @@
   resolved "https://registry.yarnpkg.com/@types/graphlib/-/graphlib-2.1.7.tgz#e6a47a4f43511f5bad30058a669ce5ce93bfd823"
   integrity sha512-K7T1n6U2HbTYu+SFHlBjz/RH74OA2D/zF1qlzn8uXbvB4uRg7knOM85ugS2bbXI1TXMh7rLqk4OVRwIwEBaixg==
 
-"@types/handlebars@4.0.36":
-  version "4.0.36"
-  resolved "https://registry.yarnpkg.com/@types/handlebars/-/handlebars-4.0.36.tgz#ff57c77fa1ab6713bb446534ddc4d979707a3a79"
-
 "@types/highlight.js@9.12.2":
   version "9.12.2"
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.12.2.tgz#6ee7cd395effe5ec80b515d3ff1699068cd0cd1d"
@@ -4600,7 +4596,7 @@ handle-thing@^1.2.5:
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-1.2.5.tgz#fd7aad726bf1a5fd16dfc29b2f7a6601d27139c4"
   integrity sha1-/Xqtcmvxpf0W38KbL3pmAdJxOcQ=
 
-handlebars@^4.0.1, handlebars@^4.0.5, handlebars@^4.0.6:
+handlebars@^4.0.1, handlebars@^4.0.5, handlebars@^4.7.7:
   version "4.7.7"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.7.tgz#9ce33416aad02dbd6c8fafa8240d5d98004945a1"
   integrity sha512-aAcXm5OAfE/8IXkcZvCepKU3VzW1/39Fb5ZuqMtgI/hT8X2YgoMvBY5dLhq/cpOvw7Lk1nK/UF71aLG/ZnVYRA==
@@ -10711,19 +10707,18 @@ typedoc-default-themes@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/typedoc-default-themes/-/typedoc-default-themes-0.5.0.tgz#6dc2433e78ed8bea8e887a3acde2f31785bd6227"
 
-"typedoc@https://github.com/coveord/typedoc":
+"typedoc@https://github.com/coveord/typedoc#219a50500c029ee426fa1cdb85c2ff8bf87dbb4c":
   version "0.10.0"
-  resolved "https://github.com/coveord/typedoc#2bd5c3a9d49c1a6fea4b80bba5c1edddc8b70661"
+  resolved "https://github.com/coveord/typedoc#219a50500c029ee426fa1cdb85c2ff8bf87dbb4c"
   dependencies:
     "@types/fs-extra" "5.0.0"
-    "@types/handlebars" "4.0.36"
     "@types/highlight.js" "9.12.2"
     "@types/lodash" "4.14.99"
     "@types/marked" "0.3.0"
     "@types/minimatch" "3.0.3"
     "@types/shelljs" "0.7.7"
     fs-extra "^5.0.0"
-    handlebars "^4.0.6"
+    handlebars "^4.7.7"
     highlight.js "~9.12.0"
     lodash "^4.13.1"
     marked "^0.3.12"
