@@ -295,29 +295,29 @@ export class SmartSnippet extends Component {
   }
 
   private renderSource() {
-    $$(this.sourceContainer).empty();
-    this.sourceContainer.appendChild(this.renderSourceUrl());
-    this.sourceContainer.appendChild(this.renderSourceTitle());
+    const container = $$(this.sourceContainer);
+    container.empty();
+    container.append(this.renderSourceUrl().el);
+    container.append(this.renderSourceTitle().el);
   }
 
   private renderSourceTitle() {
-    const link = this.buildLink();
-    link.innerText = Utils.getFieldValue(this.lastRenderedResult, <string>this.options.titleField);
-    link.classList.add(SOURCE_TITLE_CLASSNAME);
+    const link = this.buildLink(SOURCE_TITLE_CLASSNAME);
+    link.text(Utils.getFieldValue(this.lastRenderedResult, <string>this.options.titleField));
     return link;
   }
 
   private renderSourceUrl() {
-    const link = this.buildLink();
-    link.innerText = link.href;
-    link.classList.add(SOURCE_URL_CLASSNAME);
+    const link = this.buildLink(SOURCE_URL_CLASSNAME);
+    link.text((link.el as HTMLAnchorElement).href);
     return link;
   }
 
-  private buildLink() {
-    const element = $$('a', { className: 'CoveoResultLink' }).el as HTMLAnchorElement;
+  private buildLink(className: string) {
+    const element = $$('a', { className: 'CoveoResultLink' });
+    element.addClass(className);
     new ResultLink(
-      element,
+      element.el,
       { hrefTemplate: this.options.hrefTemplate },
       { ...this.getBindings(), resultElement: this.element },
       this.lastRenderedResult
