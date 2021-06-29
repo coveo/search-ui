@@ -238,6 +238,23 @@
 					<h1>Coveo Omnibox Component (CoveoOmnibox)</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The <code>Omnibox</code> component extends the <a href="querybox.html"><code>Querybox</code></a>, and thus provides the same basic options and
+						behaviors. Furthermore, the <code>Omnibox</code> adds a type-ahead capability to the search input.</p>
+					</div>
+					<p>You can configure the type-ahead feature by enabling or disabling certain addons, which the Coveo JavaScript Search
+						Framework provides out-of-the-box (see the <a href="omnibox.html#options.enablefieldaddon"><code>enableFieldAddon</code></a>,
+						<a href="omnibox.html#options.enablequeryextensionaddon"><code>enableQueryExtension</code></a>, and
+					<a href="omnibox.html#options.enablequerysuggestaddon"><code>enableQuerySuggestAddon</code></a> options).</p>
+					<p>Custom components and external code can also extend or customize the type-ahead feature and the query completion
+						suggestions it provides by attaching their own handlers to the
+					<a href="../classes/omniboxevents.html#populateomniboxsuggestions"><code>populateOmniboxSuggestions</code></a> event.</p>
+					<p>See also the <a href="searchbox.html"><code>Searchbox</code></a> component, which can automatically instantiate an <code>Omnibox</code> along with an
+					optional <a href="searchbutton.html">SearchButton</a>.</p>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -324,6 +341,11 @@
 									:370</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Clears the content of the input.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -344,6 +366,11 @@
 									:41</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the debug info about this component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -364,6 +391,13 @@
 									:52</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Disable the component.
+										Normally this means that the component will not execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -384,6 +418,13 @@
 									:61</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Enable the component.
+										Normally this means that the component will execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -404,6 +445,11 @@
 									:328</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the bindings, or environment, for the current component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -423,6 +469,11 @@
 									:377</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the <code>HTMLInputElement</code> of the Omnibox.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLInputElement</span></h4>
 						</li>
 					</ul>
@@ -442,6 +493,11 @@
 									:354</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the current content of the input.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 							<p>The current content of the input.</p>
 						</li>
@@ -462,10 +518,18 @@
 									:362</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the content of the input</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>text: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The string to set in the input.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -487,6 +551,13 @@
 									:341</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds the current content of the input to the query and triggers a query if the current content of the input has
+									changed since last submit.</p>
+								</div>
+								<p>Also logs a <code>searchboxSubmit</code> event in the usage analytics.</p>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -507,16 +578,31 @@
 									:410</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
+									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>HTMLElement for which to get the bound component.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Boolean option to tell the method to not throw on error.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -538,6 +624,18 @@
 							:270</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Allows the component to bind events and execute them only when it is enabled.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{Coveo.ComponentEvents}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -551,6 +649,11 @@
 							:294</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -564,6 +667,11 @@
 							:282</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -577,6 +685,18 @@
 							:23</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{boolean}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -590,6 +710,11 @@
 							:18</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Allows component to log in the dev console.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -603,6 +728,11 @@
 							:286</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the singleton that allows to trigger queries.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -616,6 +746,11 @@
 							:278</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -629,6 +764,11 @@
 							:274</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -642,6 +782,11 @@
 							:290</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -655,6 +800,12 @@
 							:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -662,15 +813,27 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-							:343</a></li>
-						</ul>
-					</aside>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+									:343</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -686,6 +849,22 @@
 							:280</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Whether to clear all active query filters when the end user submits a new query from the search box.</p>
+						</div>
+						<p>Note: This does not include the filter expression enforced by the currently selected tab, if any.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+							<dt>Available since</dt>
+							<dd><p><a href="https://docs.coveo.com/en/2990/">September 2019 Release (v2.7023)</a></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-clear-filters-on-new-query&#x3D;&#x27;true&#x27;
@@ -703,6 +882,32 @@ data-clear-filters-on-new-query&#x3D;&#x27;false&#x27;</pre>
 							:164</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>The <code>field</code> addon makes the <code>Omnibox</code> highlight and complete field syntax. Setting this option to <code>true</code> automatically sets
+							the <a href="querybox.html#options.enablequerysyntax">enableQuerySyntax</a> option to <code>true</code> as a side effect.</p>
+						</div>
+						<p><strong>Example:</strong></p>
+						<blockquote>
+							<p>Suppose you want to search for PDF files. You start typing <code>@f</code> in the search box. The <code>Omnibox</code> provides
+								you with several matching fields. You select the <code>@filetype</code> field. Then, you start typing <code>=p</code> in the input.
+								This time, the <code>Omnibox</code> provides you with several matching values for the <code>@filetype</code> field. You select the
+								<code>pdf</code> suggestion, and submit your search request. Since the <code>enableQuerySyntax</code> option is set to <code>true</code>, the
+								Coveo Search API interprets the basic expression as query syntax and returns the items whose <code>@filetype</code> field
+							matches the <code>pdf</code> value.</p>
+						</blockquote>
+						<p>Default value is <code>false</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="omnibox.html#options.enablequerysyntax"><code>enableQuerySyntax</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-field-addon&#x3D;&#x27;true&#x27;
@@ -720,6 +925,23 @@ data-enable-field-addon&#x3D;&#x27;false&#x27;</pre>
 							:204</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If <a href="querybox.html#options.enablequerysyntax">Querybox.options.enableQuerySyntax</a> is <code>true</code>, specifies whether to enable the <code>query extension</code> addon.</p>
+						</div>
+						<p>The <code>query extension</code> addon allows the Omnibox to complete the syntax for query extensions.</p>
+						<p>Default value is <code>false</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="omnibox.html#options.enablequerysyntax"><code>enableQuerySyntax</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-query-extension-addon&#x3D;&#x27;true&#x27;
@@ -737,6 +959,30 @@ data-enable-query-extension-addon&#x3D;&#x27;false&#x27;</pre>
 							:192</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Whether to display Coveo Machine Learning (Coveo ML) query suggestions in the <code>Omnibox</code>.</p>
+						</div>
+						<p>A Coveo ML query suggestions (QS) model must be properly configured in your Coveo Cloud organization, otherwise this
+							option has no effect (see
+						<a href="https://docs.coveo.com/en/1832/#create-a-qs-model">Create a QS Model</a>).</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>When you set this option and the <a href="omnibox.html#options.enablesearchasyoutype"><code>enableSearchAsYouType</code></a> option
+								to <code>true</code>, the query suggestion feature returns the auto-completion of the currently typed keyword as its first
+							query suggestion.</p>
+						</blockquote>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+							<dt>Available since</dt>
+							<dd><p><a href="https://docs.coveo.com/en/289/#december-2015-release-v10273">December 2015 Release (v1.0.273)</a></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-query-suggest-addon&#x3D;&#x27;true&#x27;
@@ -754,6 +1000,22 @@ data-enable-query-suggest-addon&#x3D;&#x27;false&#x27;</pre>
 							:238</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether the Coveo Platform should try to interpret special query syntax such as field references in the
+								query that the user enters in the Querybox (see
+							<a href="https://docs.coveo.com/en/1552/searching-with-coveo/coveo-cloud-query-syntax">Coveo Query Syntax Reference</a>).</p>
+						</div>
+						<p>Setting this option to <code>true</code> also causes the query syntax in the Querybox to highlight.</p>
+						<p>Default value is <code>false</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-query-syntax&#x3D;&#x27;true&#x27;
@@ -771,6 +1033,26 @@ data-enable-query-syntax&#x3D;&#x27;false&#x27;</pre>
 							:135</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Whether to automatically trigger a new query whenever the end user types additional text in the search box input.</p>
+						</div>
+						<p>See also the <a href="omnibox.html#options.searchasyoutypedelay"><code>searchAsYouTypeDelay</code></a> option.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>If you set this option and the <a href="omnibox.html#options.enablequerysuggestaddon"><code>enableQuerySuggestAddon</code></a>
+								option to <code>true</code>, the query suggestion feature returns the auto-completion of the currently typed keyword as
+							its first suggestion.</p>
+						</blockquote>
+						<p>Default value is <code>false</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-search-as-you-type&#x3D;&#x27;true&#x27;
@@ -788,6 +1070,22 @@ data-enable-search-as-you-type&#x3D;&#x27;false&#x27;</pre>
 							:121</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether query completion suggestions appearing in the <code>Omnibox</code> should push the result list and facets
+							down, rather than rendering themselves over them (and partially hiding them).</p>
+						</div>
+						<p>Set this option as well as <a href="omnibox.html#options.enablesearchasyoutype">Omnibox.options.enableSearchAsYouType</a> and
+						<a href="omnibox.html#options.enablequerysuggestaddon">Omnibox.options.enableQuerySuggestAddon</a> to <code>true</code> for a cool effect!</p>
+						<p>Default value is <code>false</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-inline&#x3D;&#x27;true&#x27;
@@ -805,6 +1103,25 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							:253</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the number of suggestions that should appear in standard ML-powered query suggestions.</p>
+						</div>
+						<p>This option only affects the number of suggestions that appear with the <a href="omnibox.html#options.enablequerysuggestaddon">Omnibox.options.enableQuerySuggestAddon</a> option.</p>
+						<p>This options does not affect the <a href="analyticssuggestions.html">AnalyticsSuggestions</a> or the <a href="fieldsuggestions.html">FieldSuggestions</a> component, which expose their own dedicated options for this parameter.</p>
+						<p>Default value is <code>5</code>.</p>
+						<p>Minimum value is <code>1</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Minimum</dt>
+							<dd><p><code>1</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>5</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-number-of-suggestions&#x3D;&#x27;10&#x27;</pre>
@@ -821,6 +1138,22 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							:228</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies a timeout (in milliseconds) before rejecting suggestions in the Omnibox.</p>
+						</div>
+						<p>Default value is <code>2000</code>. Minimum value is <code>0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>2000</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-omnibox-timeout&#x3D;&#x27;10&#x27;</pre>
@@ -837,6 +1170,18 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							:221</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies a placeholder for the input.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>Available since</dt>
+							<dd><p><a href="https://docs.coveo.com/en/309/#july-2016-release-v166724">July 2016 Release (v1.667.24)</a></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-placeholder&#x3D;&#x27;foo&#x27;</pre>
@@ -853,6 +1198,27 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							:268</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>The minimum number of characters required in the in the text input before displaying available query suggestions when focus is on the component.</p>
+						</div>
+						<p>Note: Only effective when <a href="omnibox.html#options.enablequerysuggestaddon">enableQuerySuggestAddon</a> is true.</p>
+						<p>depend: &#39;enableQuerySuggestAddon&#39;</p>
+						<p>Default (and minimum): 0, meaning that trending query suggestions are displayed when focus is on the component, even if its text input is empty.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+							<dt>Available since</dt>
+							<dd><p><a href="https://docs.coveo.com/en/2938/">July 2019 Release (v2.6459)</a></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-query-suggest-character-threshold&#x3D;&#x27;10&#x27;</pre>
@@ -869,6 +1235,26 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 							:143</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If <a href="omnibox.html#options.enablesearchasyoutype">Omnibox.options.enableSearchAsYouType</a> is <code>true</code>, specifies the delay (in milliseconds) before
+							triggering a new query when the end user types in the <code>Omnibox</code>.</p>
+						</div>
+						<p>Default value is <code>2000</code>. Minimum value is <code>0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="omnibox.html#options.enablesearchasyoutype"><code>enableSearchAsYouType</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>2000</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-search-as-you-type-delay&#x3D;&#x27;10&#x27;</pre>
@@ -893,16 +1279,37 @@ data-inline&#x3D;&#x27;false&#x27;</pre>
 									:292</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new Omnibox component. Also enables necessary addons and binds events on various query events.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which to instantiate the component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IOmniboxOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the Omnibox component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="omnibox.html" class="tsd-signature-type">Omnibox</a></h4>

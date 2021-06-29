@@ -199,6 +199,15 @@
 					<h1>Class ExpressionBuilder</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>An <code>ExpressionBuilder</code> that is mostly used by the <a href="querybuilder.html">QueryBuilder</a>.<br/>
+							It is used to build a single query expression.<br/>
+						It allows combining multiple expression parts into a single string and provides utilities to generate common expression parts.</p>
+					</div>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -241,10 +250,17 @@
 									:18</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add a new part to the expression.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>expression: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -266,16 +282,31 @@
 									:38</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add a new part to the expression, but specific for field values<br/>
+									eg @field=(value1,value2,value3).</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>field: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The field for which to create an expression (e.g.: @foo).</p>
+									</div>
 								</li>
 								<li>
 									<h5>operator: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The operator to use e.g.: = (equal) == (strict equal) &lt;&gt; (not equal).</p>
+									</div>
 								</li>
 								<li>
 									<h5>values: <span class="tsd-signature-type">string[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The values to put in the expression.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -297,13 +328,25 @@
 									:53</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add a new part to the expression, but specific for field values<br/>
+									eg : NOT @field==(value1, value2, value3).</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>field: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The field for which to create an expression (e.g.: @foo)</p>
+									</div>
 								</li>
 								<li>
 									<h5>values: <span class="tsd-signature-type">string[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The values to put in the expression.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -325,10 +368,18 @@
 									:86</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Builds the expression string by combining all the parts together.<br/></p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> exp: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot; &quot;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>expression to join the different parts, default to a space.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -350,10 +401,17 @@
 									:27</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Take another <code>ExpressionBuilder</code>, and copy it.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>expression: <a href="expressionbuilder.html" class="tsd-signature-type">ExpressionBuilder</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -375,6 +433,8 @@
 									:101</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 							<p>array containing the differents parts of the expression</p>
 						</li>
@@ -395,6 +455,11 @@
 									:77</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Checks if the builder is currently empty.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
@@ -414,10 +479,17 @@
 									:65</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Removes an expression from the builder.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>expression: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -439,10 +511,18 @@
 									:110</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Merges several <code>ExpressionBuilder</code> together.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>builders: <span class="tsd-signature-type">ExpressionBuilder[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Builders that should be merged.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="expressionbuilder.html" class="tsd-signature-type">ExpressionBuilder</a></h4>
@@ -464,10 +544,18 @@
 									:124</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Merges several <code>ExpressionBuilder</code> together, using the OR operator.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>builders: <span class="tsd-signature-type">ExpressionBuilder[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Builders that should be merged.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="expressionbuilder.html" class="tsd-signature-type">ExpressionBuilder</a></h4>

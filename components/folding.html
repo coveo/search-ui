@@ -223,6 +223,25 @@
 					<h1>Coveo Folding Component (CoveoFolding)</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The <code>Folding</code> component makes it possible to render hierarchic representations of search results sharing a common
+						<a href="folding.html#options.field"><code>field</code></a>.</p>
+					</div>
+					<p>This component has no visual impact on its own. It simply folds certain search results so that the
+						<a href="resultfolding.html"><code>ResultFolding</code></a> and <a href="resultattachments.html"><code>ResultAttachments</code></a> components can then nicely
+					render them within result templates (see <a href="https://docs.coveo.com/en/413/">Result Templates</a>).</p>
+					<p>A typical use case of the <code>Folding</code> component is to fold email conversations and message board threads results in a
+						result set in order to display them in a convenient format. Messages belonging to a single conversation typically
+						have a unique conversation ID. By indexing this ID on a field, you can use it to fold search results (see
+					<a href="https://docs.coveo.com/en/428/">Folding Results</a>).</p>
+					<p><strong>Note:</strong></p>
+					<blockquote>
+						<p>There can only be one <code>Folding</code> component per <a href="tab.html"><code>Tab</code></a> component.</p>
+					</blockquote>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -306,6 +325,11 @@
 									:41</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the debug info about this component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -326,6 +350,13 @@
 									:52</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Disable the component.
+										Normally this means that the component will not execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -346,6 +377,13 @@
 									:61</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Enable the component.
+										Normally this means that the component will execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -366,6 +404,11 @@
 									:328</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the bindings, or environment, for the current component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -386,16 +429,31 @@
 									:410</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
+									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>HTMLElement for which to get the bound component.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Boolean option to tell the method to not throw on error.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -417,6 +475,18 @@
 							:270</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Allows the component to bind events and execute them only when it is enabled.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{Coveo.ComponentEvents}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -430,6 +500,11 @@
 							:294</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -443,6 +518,11 @@
 							:282</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -456,6 +536,18 @@
 							:23</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{boolean}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -469,6 +561,11 @@
 							:18</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Allows component to log in the dev console.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -482,6 +579,11 @@
 							:286</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the singleton that allows to trigger queries.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -495,6 +597,11 @@
 							:278</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -508,6 +615,11 @@
 							:274</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -521,6 +633,11 @@
 							:290</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -534,6 +651,12 @@
 							:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -541,15 +664,27 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-							:343</a></li>
-						</ul>
-					</aside>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+									:343</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -565,6 +700,27 @@
 							:104</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the field that determines whether a certain result is a child of another top result.</p>
+						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>In the index, the values of the corresponding field must:</p>
+							<ul>
+								<li>Contain alphanumerical characters only.</li>
+								<li>Contain no more than 60 characters.</li>
+							</ul>
+						</blockquote>
+						<p>Default value is <code>@foldingchild</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>@foldingchild</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-child&#x3D;&#x27;@foo&#x27;</pre>
@@ -581,6 +737,17 @@
 							:121</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>This option is deprecated. Instead, use the <a href="folding.html#options.parent">Folding.options.parent</a> option.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>deprecated</dt>
+							<dd></dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-child-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -597,6 +764,23 @@
 							:176</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to add a callback function on the top result, allowing to make an additional query to load all
+							of its child results (e.g., to load all conversations of a given thread).</p>
+						</div>
+						<p>Concretely, the <a href="resultfolding.html"><code>ResultFolding</code></a> component uses this for its <strong>Show More</strong> link.</p>
+						<p>See also the <a href="folding.html#options.expandexpression"><code>expandExpression</code></a> and
+						<a href="folding.html#options.maximumexpandedresults"><code>maximumExpandedResults</code></a> options.</p>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-expand&#x3D;&#x27;true&#x27;
@@ -614,6 +798,20 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							:183</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If the <a href="folding.html#options.enableexpand"><code>enableExpand</code></a> option is <code>true</code>, specifies a custom constant
+							expression to send when querying the expanded results.</p>
+						</div>
+						<p>Default value is <code>undefined</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="folding.html#options.enableexpand"><code>enableExpand</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-expand-expression&#x3D;&#x27;foo&#x27;</pre>
@@ -630,6 +828,26 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							:93</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the name of the field on which to do the folding.</p>
+						</div>
+						<p>Specifying a value for this option is required for this component to work.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>In an Elasticsearch index, the corresponding field must be configured as a <em>Facet</em> field
+								(see <a href="https://docs.coveo.com/en/1982/">Add or Edit Fields</a>).
+							This limitation does not apply to Coveo indexes.</p>
+						</blockquote>
+						<p>Default value is <code>@foldingcollection</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>@foldingcollection</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -646,6 +864,16 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							:242</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the function that manages the folding of all results.</p>
+						</div>
+						<p>Default value is:</p>
+						<pre><code class="language-javascript">Coveo.Folding.defaultGetMoreResults = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>) </span>{
+   <span class="hljs-comment">// The results are flat, just do the folding.</span>
+   <span class="hljs-keyword">return</span> Coveo.Folding.foldWithParent(results);
+}</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -679,6 +907,33 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							:226</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the function that manages the individual folding of each result.</p>
+						</div>
+						<p>Default value is:</p>
+						<pre><code class="language-javascript"><span class="hljs-keyword">var</span> results = result.childResults || [];
+<span class="hljs-comment">// Add the top result at the top of the list.</span>
+results.unshift(result);
+<span class="hljs-comment">// Empty childResults just to clean it.</span>
+result.childResults = [];
+<span class="hljs-comment">// Fold those results.</span>
+results = Coveo.Folding.foldWithParent(results);
+<span class="hljs-comment">// The first result is the top one.</span>
+<span class="hljs-keyword">var</span> topResult = results.shift();
+<span class="hljs-comment">// All other results are childResults.</span>
+topResult.childResults = results;
+<span class="hljs-keyword">return</span> topResult;</code></pre>
+						<p>You can pre-process all the result with this option in the <a href="../globals.html#init"><code>init</code></a> call of your search interface:</p>
+						<pre><code class="language-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+   <span class="hljs-attr">Folding</span>: {
+     <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
+       result = Coveo.Folding.defaultGetResult(result);
+       <span class="hljs-comment">// Your code here</span>
+     }
+   }
+})</code></pre>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -712,6 +967,26 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							:191</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If the <a href="folding.html#options.enableexpand"><code>enableExpand</code></a> option is <code>true</code>, specifies the maximum number of
+							results to load when expanding.</p>
+						</div>
+						<p>Default value is <code>100</code>. Minimum value is <code>1</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="folding.html#options.enableexpand"><code>enableExpand</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Minimum</dt>
+							<dd><p><code>1</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>100</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-maximum-expanded-results&#x3D;&#x27;10&#x27;</pre>
@@ -728,6 +1003,27 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							:115</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the field that determines whether a certain result is a top result containing other child results.</p>
+						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>In the index, the values of the corresponding field must:</p>
+							<ul>
+								<li>Contain alphanumerical characters only.</li>
+								<li>Contain no more than 60 characters.</li>
+							</ul>
+						</blockquote>
+						<p>Default value is <code>@foldingparent</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>@foldingparent</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-parent&#x3D;&#x27;@foo&#x27;</pre>
@@ -744,6 +1040,17 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							:128</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>This option is deprecated. Instead, use the <a href="folding.html#options.child">Folding.options.child</a> option.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>deprecated</dt>
+							<dd></dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-parent-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -760,6 +1067,29 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							:143</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the maximum number of child results to fold.</p>
+						</div>
+						<p><strong>Example:</strong></p>
+						<blockquote>
+							<p>For an email thread with a total of 20 messages, using the default value of <code>2</code> means that the component loads
+								up to a maximum of 2 child messages under the original message, unless the end user expands the entire
+								conversation using the <strong>Show More</strong> link (see the <a href="folding.html#options.enableexpand"><code>enableExpand</code></a>
+							option).</p>
+						</blockquote>
+						<p>Default value is <code>2</code>. Minimum value is <code>0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>2</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-range&#x3D;&#x27;10&#x27;</pre>
@@ -776,6 +1106,24 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							:163</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the sort criteria to apply to the top result and its child results (e.g., <code>date ascending</code>,
+							<code>@myfield descending</code>, etc.). See <a href="https://docs.coveo.com/en/1461/#RestQueryParameters-sortCriteria">sortCriteria</a>.</p>
+						</div>
+						<p>This option works from the results returned by the index. This means that if only the three most relevant folded results are returned by the index
+							and you choose to rearrange the folded results by date, then the three most relevant results will be rearranged by date,
+						meaning that the first folded result is not necessarily the oldest or newest item.</p>
+						<p>However, since clicking on the <code>Show More</code> button triggers a new query, you would receive new results based on the sort criteria of this option.</p>
+						<p><strong>Example</strong></p>
+						<blockquote>
+							<p>If you are folding email results by conversation and you specify <code>date descending</code> as the <code>rearrange</code> value of
+								the <code>Folding</code> component, the component re-arranges email conversations so that the newest email is always the
+								top result. Specifying <code>date ascending</code> instead always makes the original email the top result, as it is also
+							necessarily the oldest.</p>
+						</blockquote>
+						<p>By default, the component displays the results in the order that the index returns them.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 					<a name="options" class="tsd-anchor"></a>
@@ -789,6 +1137,17 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 							:80</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>The options for the component</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>componentoptions</dt>
+							<dd></dd>
+						</dl>
+					</div>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 						<a name="options.child" class="tsd-anchor"></a>
 						<h3>child</h3>
@@ -800,6 +1159,27 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:104</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<dl class="tsd-deprecated">
+							</dl>
+							<div class="lead">
+								<p>Specifies the field that determines whether a certain result is a child of another top result.</p>
+							</div>
+							<p><strong>Note:</strong></p>
+							<blockquote>
+								<p>In the index, the values of the corresponding field must:</p>
+								<ul>
+									<li>Contain alphanumerical characters only.</li>
+									<li>Contain no more than 60 characters.</li>
+								</ul>
+							</blockquote>
+							<p>Default value is <code>@foldingchild</code>.</p>
+							<dl class="tsd-comment-tags">
+								<dt>Default</dt>
+								<dd><p><code>@foldingchild</code></p>
+								</dd>
+							</dl>
+						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
 							<pre>data-child&#x3D;&#x27;@foo&#x27;</pre>
@@ -816,6 +1196,17 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:121</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<dl class="tsd-deprecated">
+							</dl>
+							<div class="lead">
+								<p>This option is deprecated. Instead, use the <a href="folding.html#options.parent">Folding.options.parent</a> option.</p>
+							</div>
+							<dl class="tsd-comment-tags">
+								<dt>deprecated</dt>
+								<dd></dd>
+							</dl>
+						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
 							<pre>data-child-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -832,6 +1223,23 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:176</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<dl class="tsd-deprecated">
+							</dl>
+							<div class="lead">
+								<p>Specifies whether to add a callback function on the top result, allowing to make an additional query to load all
+								of its child results (e.g., to load all conversations of a given thread).</p>
+							</div>
+							<p>Concretely, the <a href="resultfolding.html"><code>ResultFolding</code></a> component uses this for its <strong>Show More</strong> link.</p>
+							<p>See also the <a href="folding.html#options.expandexpression"><code>expandExpression</code></a> and
+							<a href="folding.html#options.maximumexpandedresults"><code>maximumExpandedResults</code></a> options.</p>
+							<p>Default value is <code>true</code>.</p>
+							<dl class="tsd-comment-tags">
+								<dt>Default</dt>
+								<dd><p><code>true</code></p>
+								</dd>
+							</dl>
+						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
 							<pre>data-enable-expand&#x3D;&#x27;true&#x27;
@@ -849,6 +1257,20 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:183</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<dl class="tsd-deprecated">
+							</dl>
+							<div class="lead">
+								<p>If the <a href="folding.html#options.enableexpand"><code>enableExpand</code></a> option is <code>true</code>, specifies a custom constant
+								expression to send when querying the expanded results.</p>
+							</div>
+							<p>Default value is <code>undefined</code>.</p>
+							<dl class="tsd-comment-tags">
+								<dt>Only effective when</dt>
+								<dd><p><a href="../classes/foldingforthread.html#options.enableexpand"><code>enableExpand</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+								</dd>
+							</dl>
+						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
 							<pre>data-expand-expression&#x3D;&#x27;foo&#x27;</pre>
@@ -865,6 +1287,26 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:93</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<dl class="tsd-deprecated">
+							</dl>
+							<div class="lead">
+								<p>Specifies the name of the field on which to do the folding.</p>
+							</div>
+							<p>Specifying a value for this option is required for this component to work.</p>
+							<p><strong>Note:</strong></p>
+							<blockquote>
+								<p>In an Elasticsearch index, the corresponding field must be configured as a <em>Facet</em> field
+									(see <a href="https://docs.coveo.com/en/1982/">Add or Edit Fields</a>).
+								This limitation does not apply to Coveo indexes.</p>
+							</blockquote>
+							<p>Default value is <code>@foldingcollection</code>.</p>
+							<dl class="tsd-comment-tags">
+								<dt>Default</dt>
+								<dd><p><code>@foldingcollection</code></p>
+								</dd>
+							</dl>
+						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
 							<pre>data-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -881,6 +1323,16 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:242</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies the function that manages the folding of all results.</p>
+							</div>
+							<p>Default value is:</p>
+							<pre><code class="language-javascript">Coveo.Folding.defaultGetMoreResults = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">results</span>) </span>{
+   <span class="hljs-comment">// The results are flat, just do the folding.</span>
+   <span class="hljs-keyword">return</span> Coveo.Folding.foldWithParent(results);
+}</code></pre>
+						</div>
 						<div class="tsd-type-declaration">
 							<h4>Type declaration</h4>
 							<ul class="tsd-parameters">
@@ -914,6 +1366,33 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:226</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies the function that manages the individual folding of each result.</p>
+							</div>
+							<p>Default value is:</p>
+							<pre><code class="language-javascript"><span class="hljs-keyword">var</span> results = result.childResults || [];
+<span class="hljs-comment">// Add the top result at the top of the list.</span>
+results.unshift(result);
+<span class="hljs-comment">// Empty childResults just to clean it.</span>
+result.childResults = [];
+<span class="hljs-comment">// Fold those results.</span>
+results = Coveo.Folding.foldWithParent(results);
+<span class="hljs-comment">// The first result is the top one.</span>
+<span class="hljs-keyword">var</span> topResult = results.shift();
+<span class="hljs-comment">// All other results are childResults.</span>
+topResult.childResults = results;
+<span class="hljs-keyword">return</span> topResult;</code></pre>
+							<p>You can pre-process all the result with this option in the <a href="../globals.html#init"><code>init</code></a> call of your search interface:</p>
+							<pre><code class="language-javascript">Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#search'</span>), {
+   <span class="hljs-attr">Folding</span>: {
+     <span class="hljs-attr">getResult</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>{
+       result = Coveo.Folding.defaultGetResult(result);
+       <span class="hljs-comment">// Your code here</span>
+     }
+   }
+})</code></pre>
+						</div>
 						<div class="tsd-type-declaration">
 							<h4>Type declaration</h4>
 							<ul class="tsd-parameters">
@@ -947,6 +1426,26 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:191</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<dl class="tsd-deprecated">
+							</dl>
+							<div class="lead">
+								<p>If the <a href="folding.html#options.enableexpand"><code>enableExpand</code></a> option is <code>true</code>, specifies the maximum number of
+								results to load when expanding.</p>
+							</div>
+							<p>Default value is <code>100</code>. Minimum value is <code>1</code>.</p>
+							<dl class="tsd-comment-tags">
+								<dt>Only effective when</dt>
+								<dd><p><a href="../classes/foldingforthread.html#options.enableexpand"><code>enableExpand</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+								</dd>
+								<dt>Minimum</dt>
+								<dd><p><code>1</code></p>
+								</dd>
+								<dt>Default</dt>
+								<dd><p><code>100</code></p>
+								</dd>
+							</dl>
+						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
 							<pre>data-maximum-expanded-results&#x3D;&#x27;10&#x27;</pre>
@@ -963,6 +1462,27 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:115</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<dl class="tsd-deprecated">
+							</dl>
+							<div class="lead">
+								<p>Specifies the field that determines whether a certain result is a top result containing other child results.</p>
+							</div>
+							<p><strong>Note:</strong></p>
+							<blockquote>
+								<p>In the index, the values of the corresponding field must:</p>
+								<ul>
+									<li>Contain alphanumerical characters only.</li>
+									<li>Contain no more than 60 characters.</li>
+								</ul>
+							</blockquote>
+							<p>Default value is <code>@foldingparent</code>.</p>
+							<dl class="tsd-comment-tags">
+								<dt>Default</dt>
+								<dd><p><code>@foldingparent</code></p>
+								</dd>
+							</dl>
+						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
 							<pre>data-parent&#x3D;&#x27;@foo&#x27;</pre>
@@ -979,6 +1499,17 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:128</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<dl class="tsd-deprecated">
+							</dl>
+							<div class="lead">
+								<p>This option is deprecated. Instead, use the <a href="folding.html#options.child">Folding.options.child</a> option.</p>
+							</div>
+							<dl class="tsd-comment-tags">
+								<dt>deprecated</dt>
+								<dd></dd>
+							</dl>
+						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
 							<pre>data-parent-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -995,6 +1526,29 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:143</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<dl class="tsd-deprecated">
+							</dl>
+							<div class="lead">
+								<p>Specifies the maximum number of child results to fold.</p>
+							</div>
+							<p><strong>Example:</strong></p>
+							<blockquote>
+								<p>For an email thread with a total of 20 messages, using the default value of <code>2</code> means that the component loads
+									up to a maximum of 2 child messages under the original message, unless the end user expands the entire
+									conversation using the <strong>Show More</strong> link (see the <a href="folding.html#options.enableexpand"><code>enableExpand</code></a>
+								option).</p>
+							</blockquote>
+							<p>Default value is <code>2</code>. Minimum value is <code>0</code>.</p>
+							<dl class="tsd-comment-tags">
+								<dt>Minimum</dt>
+								<dd><p><code>0</code></p>
+								</dd>
+								<dt>Default</dt>
+								<dd><p><code>2</code></p>
+								</dd>
+							</dl>
+						</div>
 						<div class="tsd-panel">
 							<div class="tsd-signature-type">Markup configuration example(s) :</div>
 							<pre>data-range&#x3D;&#x27;10&#x27;</pre>
@@ -1011,6 +1565,24 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 								:163</a></li>
 							</ul>
 						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Specifies the sort criteria to apply to the top result and its child results (e.g., <code>date ascending</code>,
+								<code>@myfield descending</code>, etc.). See <a href="https://docs.coveo.com/en/1461/#RestQueryParameters-sortCriteria">sortCriteria</a>.</p>
+							</div>
+							<p>This option works from the results returned by the index. This means that if only the three most relevant folded results are returned by the index
+								and you choose to rearrange the folded results by date, then the three most relevant results will be rearranged by date,
+							meaning that the first folded result is not necessarily the oldest or newest item.</p>
+							<p>However, since clicking on the <code>Show More</code> button triggers a new query, you would receive new results based on the sort criteria of this option.</p>
+							<p><strong>Example</strong></p>
+							<blockquote>
+								<p>If you are folding email results by conversation and you specify <code>date descending</code> as the <code>rearrange</code> value of
+									the <code>Folding</code> component, the component re-arranges email conversations so that the newest email is always the
+									top result. Specifying <code>date ascending</code> instead always makes the original email the top result, as it is also
+								necessarily the oldest.</p>
+							</blockquote>
+							<p>By default, the component displays the results in the order that the index returns them.</p>
+						</div>
 					</section>
 				</section>
 			</section>
@@ -1032,16 +1604,37 @@ data-enable-expand&#x3D;&#x27;false&#x27;</pre>
 									:245</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new <code>Folding</code> component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which to instantiate the component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5>options: <span class="tsd-signature-type">IFoldingOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the <code>Folding</code> component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="folding.html" class="tsd-signature-type">Folding</a></h4>

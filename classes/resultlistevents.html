@@ -181,6 +181,15 @@
 					<h1>Class ResultListEvents</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The <code>ResultListEvents</code> static class contains the string definitions of all events that strongly relate to the result
+						list.</p>
+					</div>
+					<p>See <a href="https://docs.coveo.com/en/417/">Events</a>.</p>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -213,6 +222,21 @@
 							:110</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered by the [<code>ResultLayout</code>]{@link ResultLayout} component whenever the current result layout changes (see
+							<a href="https://docs.coveo.com/en/360/">Result Layouts</a>).</p>
+						</div>
+						<p>All <code>changeLayout</code> event handlers receive a <a href="../interfaces/ichangelayouteventargs.html"><code>ChangeLayoutEventArgs</code></a> object as an
+						argument.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string} The string value is <code>changeLayout</code>.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="newresultdisplayed" class="tsd-anchor"></a>
@@ -225,6 +249,20 @@
 							:83</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered each time the result list has just finished rendering a single result.</p>
+						</div>
+						<p>All <code>newResultDisplayed</code> event handlers receive a
+						<a href="../interfaces/idisplayednewresulteventargs.html"><code>DisplayedNewResultEventArgs</code></a> object as an argument.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string} The string value is <code>newResultDisplayed</code>.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="newresultsdisplayed" class="tsd-anchor"></a>
@@ -237,6 +275,18 @@
 							:73</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered when the result list has just finished rendering the current page of results.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string} The string value is <code>newResultsDisplayed</code>.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="openquickview" class="tsd-anchor"></a>
@@ -249,6 +299,25 @@
 							:99</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered by the <a href="../components/resultlink.html"><code>ResultLink</code></a> result template component when its
+								<a href="../components/resultlink.html#options.openquickview"><code>openQuickview</code></a> option is set to <code>true</code> and the end user clicks the
+								result link. The <a href="../components/quickview.html"><code>Quickview</code></a> component listens to this event to be able to open the quickview
+							modal window in reaction.</p>
+						</div>
+						<p>See also the <a href="quickviewevents.html#openquickview"><code>openQuickview</code></a> event (which is identical to this one, except
+						that it is triggered by the [<code>QuickviewDocument</code>] result template component instead).</p>
+						<p>All <code>openQuickview</code> event handlers receive an <a href="../interfaces/iopenquickvieweventargs.html"><code>OpenQuickviewEventArgs</code></a> object as
+						an argument</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string} The string value is <code>openQuickview</code>.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

@@ -247,6 +247,25 @@
 					<h1>Coveo Matrix Component (CoveoMatrix)</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-deprecated">
+					</dl>
+					<div class="lead">
+						<p>The Matrix component uses the values of two fields (row and column) to display the results of the specified computed
+						field in a table.</p>
+					</div>
+					<p>The user specifies the values to use for the columns. An <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a> operation performed at the same time
+					as the main query retrieves the values to use for the rows.</p>
+					<p>In a way that is similar to the <a href="facet.html">Facet</a> component, selecting a Matrix cell allows the end user to drill down
+					inside the results by restricting the row field and the column field to match the values of the selected cell.</p>
+					<dl class="tsd-comment-tags">
+						<dt>Not supported in</dt>
+						<dd><p><a href="https://docs.coveo.com/en/1107/">Coveo for Salesforce Free</a></p>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -347,6 +366,11 @@
 									:41</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the debug info about this component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -367,6 +391,13 @@
 									:52</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Disable the component.
+										Normally this means that the component will not execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -387,6 +418,13 @@
 									:61</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Enable the component.
+										Normally this means that the component will execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -407,6 +445,11 @@
 									:328</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the bindings, or environment, for the current component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -426,13 +469,24 @@
 									:408</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the HTMLElement associated to a cell.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>rowNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The row number of the cell.</p>
+									</div>
 								</li>
 								<li>
 									<h5>columnNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The column number of the cell.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLElement</span></h4>
@@ -455,13 +509,24 @@
 									:418</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the string associated to a cell.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>rowNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The row number of the cell.</p>
+									</div>
 								</li>
 								<li>
 									<h5>columnNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The column number of the cell.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -484,6 +549,11 @@
 									:391</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the currently selected column value.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -503,6 +573,11 @@
 									:398</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the currently selected row value.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -522,13 +597,24 @@
 									:363</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Selects a cell by its row and column number. Does not execute a query.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>rowNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The row number of the cell to select.</p>
+									</div>
 								</li>
 								<li>
 									<h5>columnNumber: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The column number of the cell to select.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -551,16 +637,31 @@
 									:410</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
+									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>HTMLElement for which to get the bound component.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Boolean option to tell the method to not throw on error.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -582,6 +683,18 @@
 							:270</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Allows the component to bind events and execute them only when it is enabled.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{Coveo.ComponentEvents}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -595,6 +708,11 @@
 							:294</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -608,6 +726,11 @@
 							:282</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component">
 					<a name="data" class="tsd-anchor"></a>
@@ -620,6 +743,11 @@
 							:300</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Holds the data for the Matrix.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -633,6 +761,18 @@
 							:23</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{boolean}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -646,6 +786,11 @@
 							:18</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Allows component to log in the dev console.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -659,6 +804,11 @@
 							:286</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the singleton that allows to trigger queries.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -672,6 +822,11 @@
 							:278</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -685,6 +840,11 @@
 							:274</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -698,6 +858,11 @@
 							:290</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component">
 					<a name="selectedcolumnvalue" class="tsd-anchor"></a>
@@ -710,6 +875,11 @@
 							:313</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The currently selected column value, or <code>undefined</code> if nothing is selected.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component">
 					<a name="selectedrowvalue" class="tsd-anchor"></a>
@@ -722,6 +892,11 @@
 							:308</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The currently selected row value, or <code>undefined</code> if nothing is selected.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -735,6 +910,12 @@
 							:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -742,15 +923,27 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-							:343</a></li>
-						</ul>
-					</aside>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+									:343</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -766,6 +959,22 @@
 							:208</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the font-size to use for displaying text inside the cells.</p>
+						</div>
+						<p>This option is mainly useful to prevent a Matrix containing many columns from cropping some of its values.</p>
+						<p>However, instead of using this option to solve this kind of issue, you could also remove some of the less
+						important columns from your Matrix or modify the CSS of your page to allow the Matrix to occupy a larger space.</p>
+						<p>Default value is <code>&#39;&#39;</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p>``</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-cell-font-size&#x3D;&#x27;foo&#x27;</pre>
@@ -782,6 +991,19 @@
 							:97</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the field to use for the columns.</p>
+						</div>
+						<p>Specifying a value for this options is required for this component to work.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Required</dt>
+							<dd><p>Specifying a value for this option is required for the component to work</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-column-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -798,6 +1020,21 @@
 							:130</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the field values to use for each column.</p>
+						</div>
+						<p>See also <a href="matrix.html#options.columnlabels">Matrix.options.columnLabels</a>.</p>
+						<p>Default value is <code>[]</code>, which means that the Matrix will not generate any column (except the <strong>Total</strong> column, if
+						<a href="matrix.html#options.enablerowtotals">Matrix.options.enableRowTotals</a> is <code>true</code>).</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>[]</code></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.columnheader" class="tsd-anchor"></a>
@@ -810,6 +1047,12 @@
 							:144</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the label for the first column on the left as a description of the <a href="matrix.html#options.columnfield">Matrix.options.columnField</a>.</p>
+						</div>
+						<p>Default value is <code>undefined</code>.</p>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-column-header&#x3D;&#x27;foo&#x27;</pre>
@@ -826,6 +1069,19 @@
 							:137</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the label values to use for each column.</p>
+						</div>
+						<p>Default value is <code>[]</code>. The array set for this options should match the <a href="matrix.html#options.columnfieldvalues">Matrix.options.columnFieldValues</a>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>[]</code></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.computedfield" class="tsd-anchor"></a>
@@ -838,6 +1094,19 @@
 							:168</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the field whose computed values you want to display in the cells.</p>
+						</div>
+						<p>Specifying a value for this options is required for this component to work.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Required</dt>
+							<dd><p>Specifying a value for this option is required for the component to work</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-computed-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -854,6 +1123,27 @@
 							:196</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies how to format the values resulting from a <a href="matrix.html#options.computedfieldoperation">Matrix.options.computedFieldOperation</a>.</p>
+						</div>
+						<p>The Globalize library defines all available formats (see
+						<a href="https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-">Globalize</a>).</p>
+						<p>The most commonly used formats are:</p>
+						<ul>
+							<li><code>c0</code> - Formats the value as a currency.</li>
+							<li><code>n0</code> - Formats the value as an integer.</li>
+							<li><code>n2</code> - Formats the value as a floating point with 2 decimal digits.</li>
+						</ul>
+						<p>Default value is <code>c0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>c0</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-computed-field-format&#x3D;&#x27;foo&#x27;</pre>
@@ -870,6 +1160,26 @@
 							:181</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the type of aggregate operation to perform on the <a href="matrix.html#options.computedfield">Matrix.options.computedField</a>.</p>
+						</div>
+						<p>The possible values are:</p>
+						<ul>
+							<li><code>sum</code> - Computes the sum of the computed field values.</li>
+							<li><code>average</code> - Computes the average of the computed field values.</li>
+							<li><code>minimum</code> - Finds the minimum value of the computed field values.</li>
+							<li><code>maximum</code> - Finds the maximum value of the computed field values.</li>
+						</ul>
+						<p>Default value is <code>sum</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>sum</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-computed-field-operation&#x3D;&#x27;foo&#x27;</pre>
@@ -886,6 +1196,19 @@
 							:161</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to add a <strong>Total</strong> row containing the total of each column.</p>
+						</div>
+						<p>Default value is <code>true</code></p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-column-totals&#x3D;&#x27;true&#x27;
@@ -903,6 +1226,22 @@ data-enable-column-totals&#x3D;&#x27;false&#x27;</pre>
 							:219</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to show a preview popup of cell results when hovering over a cell.</p>
+						</div>
+						<p>See also <a href="matrix.html#options.previewsortcriteria">Matrix.options.previewSortCriteria</a>, <a href="matrix.html#options.previewmaxwidth">Matrix.options.previewMaxWidth</a>,
+							<a href="matrix.html#options.previewminwidth">Matrix.options.previewMinWidth</a>, <a href="matrix.html#options.previewdelay">Matrix.options.previewDelay</a> and
+						<a href="matrix.html#options.previewtemplate">Matrix.options.previewTemplate</a>.</p>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-hover-preview&#x3D;&#x27;true&#x27;
@@ -920,6 +1259,19 @@ data-enable-hover-preview&#x3D;&#x27;false&#x27;</pre>
 							:120</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to display a <strong>Total</strong> column containing the sum of each row.</p>
+						</div>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-row-totals&#x3D;&#x27;true&#x27;
@@ -937,6 +1289,22 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							:113</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the maximum number of rows to display in the Matrix.</p>
+						</div>
+						<p>Default value is <code>10</code>. Minimum value is <code>0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>10</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-maximum-number-of-rows&#x3D;&#x27;10&#x27;</pre>
@@ -953,6 +1321,24 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							:154</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the maximum number of results to include in the <a href="../interfaces/igroupbyrequest.html">IGroupByRequest</a> for the columns.</p>
+						</div>
+						<p>This value should always be greater than the <a href="matrix.html#options.maximumnumberofrows">Matrix.options.maximumNumberOfRows</a>. If it is too small, some
+						of the results will not be displayed in the Matrix.</p>
+						<p>Default value is <code>100</code>. Minimum value is <code>0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>100</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-maximum-number-of-values-in-group-by&#x3D;&#x27;10&#x27;</pre>
@@ -969,6 +1355,20 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							:273</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If <a href="matrix.html#options.enablehoverpreview">Matrix.options.enableHoverPreview</a> is <code>true</code>, specifies the delay (in milliseconds) before sending the
+							query to get the preview results.</p>
+						</div>
+						<p>Default value is <code>500</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>500</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-preview-delay&#x3D;&#x27;10&#x27;</pre>
@@ -985,6 +1385,20 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							:257</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If <a href="matrix.html#options.enablehoverpreview">Matrix.options.enableHoverPreview</a> is <code>true</code>, specifies the maximum width (in pixels) of the preview
+							popup.</p>
+						</div>
+						<p>Default value is <code>500px</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>500px</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-preview-max-width&#x3D;&#x27;foo&#x27;</pre>
@@ -1001,6 +1415,20 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							:265</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If <a href="matrix.html#options.enablehoverpreview">Matrix.options.enableHoverPreview</a> is <code>true</code>, specifies the minimum width (in pixels) of the preview
+							popup.</p>
+						</div>
+						<p>Default value is <code>0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-preview-min-width&#x3D;&#x27;foo&#x27;</pre>
@@ -1017,6 +1445,33 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							:241</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If <a href="matrix.html#options.enablehoverpreview">Matrix.options.enableHoverPreview</a> is <code>true</code>, specifies the criteria to use for sorting the results of
+							the hover preview.</p>
+						</div>
+						<p>The available sort criteria values are the same as those of the <a href="../interfaces/iquery.html">IQuery</a>.</p>
+						<p>The possible values are:</p>
+						<ul>
+							<li><code>relevancy</code>: Uses all configured ranking weights and any specified ranking expressions to sort the results.</li>
+							<li><code>dateascending</code> / <code>datedescending</code>: Sorts the results using the <code>@date</code> field value, which is typically the
+							last modification date of an item in the index.</li>
+							<li><code>qre</code>: Sorts the results using only the weights applied by ranking expressions. Using <code>qre</code> is much like using
+							<code>relevancy</code>, except that <code>qre</code> does not compute automatic weights, such as weights based on keyword proximity.</li>
+							<li><code>nosort</code>: Does not sort the results. Using <code>nosort</code> returns the items in an essentially random order.</li>
+							<li><code>fieldascending</code> / <code>fielddescending</code>: Sorts the results using the value of a custom field.</li>
+							<li><code>fieldascending</code> / <code>fielddescending</code>: Sorts the results using the value of a custom field.</li>
+						</ul>
+						<p>See also <a href="matrix.html#options.previewsortfield">Matrix.options.previewSortField</a>.</p>
+						<p>Default value is <code>FieldDescending</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>FieldDescending</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-preview-sort-criteria&#x3D;&#x27;foo&#x27;</pre>
@@ -1033,6 +1488,13 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							:249</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>If <a href="matrix.html#options.previewsortcriteria">Matrix.options.previewSortCriteria</a> is <code>fieldascending</code> or <code>fielddescending</code>, specifies the field to
+							use for sorting the results of the hover preview.</p>
+						</div>
+						<p>Default value is the value of <a href="matrix.html#options.computedfield">Matrix.options.computedField</a>.</p>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-preview-sort-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -1049,6 +1511,19 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							:294</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>If <a href="matrix.html#options.enablehoverpreview">Matrix.options.enableHoverPreview</a> is <code>true</code>, specifies the template ID or CSS selector of the template
+							to use to render the results of the hover preview.</p>
+						</div>
+						<p>You must use either <code>data-template-id</code> or <code>data-template-selector</code> in the markup to specify a value for this
+						option.</p>
+						<p><strong>Examples:</strong></p>
+						<p>Specifying what template to use by referring to its template ID:</p>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoMatrix'</span> <span class="hljs-attr">data-template-id</span>=<span class="hljs-string">'TemplateId'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<p>Specifying what template to use by referring to its CSS selector:</p>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoMatrix'</span> <span class="hljs-attr">data-template-selector</span>=<span class="hljs-string">'.templateSelector'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.rowfield" class="tsd-anchor"></a>
@@ -1061,6 +1536,19 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							:90</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the field to use for the rows.</p>
+						</div>
+						<p>Specifying a value for this options is required for this component to work.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Required</dt>
+							<dd><p>Specifying a value for this option is required for the component to work</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-row-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -1077,6 +1565,20 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							:106</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the criteria to use for sorting the rows.</p>
+						</div>
+						<p>See <a href="../interfaces/igroupbyrequest.html#sortcriteria">IGroupByRequest.sortCriteria</a> for the list of possible values.</p>
+						<p>Default value is <code>computedfielddescending</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>computedfielddescending</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-sort-criteria&#x3D;&#x27;foo&#x27;</pre>
@@ -1093,6 +1595,11 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 							:83</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the text to display at the top of the Matrix.</p>
+						</div>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-title&#x3D;&#x27;foo&#x27;</pre>
@@ -1117,16 +1624,37 @@ data-enable-row-totals&#x3D;&#x27;false&#x27;</pre>
 									:317</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new Matrix. Also verifies whether options are valid and coherent. Binds query events.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which to instantiate the component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">IMatrixOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the Matrix component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="matrix.html" class="tsd-signature-type">Matrix</a></h4>

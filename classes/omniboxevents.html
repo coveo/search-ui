@@ -190,6 +190,14 @@
 					<h1>Class OmniboxEvents</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The <code>OmniboxEvents</code> static class contains the string definitions of all events that strongly relate to the
+						<a href="../components/omnibox.html"><code>Omnibox</code></a> component.</p>
+					</div>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -225,6 +233,13 @@
 							:83</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Triggered by the <a href="../components/omnibox.html"><code>Omnibox</code></a> component before sending a query suggestion request to the Search API.</p>
+						</div>
+						<p>Allows external functions to refine the payload b3efore sending the request.</p>
+						<p>This event is only triggered by standard ML-powered query suggestions, and not <a href="../components/analyticssuggestions.html">AnalyticsSuggestions</a> or <a href="../components/fieldsuggestions.html">FieldSuggestions</a>.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="populateomniboxsuggestions" class="tsd-anchor"></a>
@@ -237,6 +252,25 @@
 							:72</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered by the <a href="../components/omnibox.html"><code>Omnibox</code></a> component before query completion suggestions are rendered.</p>
+						</div>
+						<p>The out-of-the-box Coveo JavaScript Search Framework query completion suggestion addons (see the
+							<a href="../components/omnibox.html#options.enablefieldaddon"><code>enableFieldAddon</code></a>,
+							<a href="../components/omnibox.html#options.enablequeryextensionaddon"><code>enableQueryExtensionAddon</code></a>, and
+							<a href="../components/omnibox.html#options.enablequerysuggestaddon"><code>enableQuerySuggestAddon</code></a> options of the <code>Omnibox</code>) push their
+						respective suggestions in the argument object which is passed along with this event.</p>
+						<p>All <code>populateOmniboxSuggestions</code> event handlers receive a
+						<a href="../interfaces/ipopulateomniboxsuggestionseventargs.html"><code>PopulateOmniboxSuggestionsEventArgs</code></a> object as an argument.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string} The string value is <code>populateOmniboxSuggestions</code>.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="querysuggestgetfocus" class="tsd-anchor"></a>
@@ -249,6 +283,12 @@
 							:101</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Triggered by the <a href="../components/omnibox.html"><code>Omnibox</code></a> component when a query suggestion gets focus following a mouse hovering or keyboard navigation event.</p>
+						</div>
+						<p>All <code>querySuggestGetFocus</code> event handlers receive an object implementing the <a href="../interfaces/iquerysuggestselection.html"><code>IQuerySuggestSelection</code></a> interface as an argument.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="querysuggestlosefocus" class="tsd-anchor"></a>
@@ -261,6 +301,11 @@
 							:105</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Triggered by the <a href="../components/omnibox.html"><code>Omnibox</code></a> component when a query suggestion loses focus following a mouse hovering or keyboard navigation event.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="querysuggestrendered" class="tsd-anchor"></a>
@@ -273,6 +318,11 @@
 							:95</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Triggered by the <a href="../components/omnibox.html"><code>Omnibox</code></a> component when a query suggestion has finished rendering.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="querysuggestselection" class="tsd-anchor"></a>
@@ -285,6 +335,12 @@
 							:111</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Triggered by the <a href="../components/omnibox.html"><code>Omnibox</code></a> component when a query suggestion is selected by a mouse click or pressing the enter key.</p>
+						</div>
+						<p>All <code>querySuggestSelection</code> event handlers receive an object implementing the <a href="../interfaces/iquerysuggestselection.html"><code>IQuerySuggestSelection</code></a> interface as an argument.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="querysuggestsuccess" class="tsd-anchor"></a>
@@ -297,6 +353,13 @@
 							:91</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Triggered by the <a href="../components/omnibox.html"><code>Omnibox</code></a> component when query suggestions are received from the Search API.</p>
+						</div>
+						<p>Allows external functions to look into the received query suggestions, and modify them if needed.</p>
+						<p>This event is only triggered by standard ML-powered query suggestions, and not <a href="../components/analyticssuggestions.html">AnalyticsSuggestions</a> or <a href="../components/fieldsuggestions.html">FieldSuggestions</a>.</p>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

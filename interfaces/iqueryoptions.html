@@ -187,6 +187,13 @@
 					<h1>Interface IQueryOptions</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Possible options when performing a query with the query controller</p>
+					</div>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -221,6 +228,11 @@
 							:52</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specify a function that you wish to execute just before the query is executed</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -248,6 +260,11 @@
 							:56</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Cancel the query</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="ignorewarningsearchevent" class="tsd-anchor"></a>
@@ -260,6 +277,12 @@
 							:44</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>If the analytics component is enabled in the interface, it will look for any query executed by the query controller for which no analytics event was associated.<br/>
+							By setting this property to true, this will cancel this check when the query is performed</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="loginactionshistory" class="tsd-anchor"></a>
@@ -272,6 +295,14 @@
 							:68</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether or not to log the query in the user actions history when using the page view script: <a href="https://github.com/coveo/coveo.analytics.js">https://github.com/coveo/coveo.analytics.js</a>.
+								Only the &#39;q&#39; part of the query will be logged.
+								This option is useful, because it prevents the query to be logged twice when a <a href="../components/recommendation.html">Recommendation</a> component is present.
+							It also makes sure that only relevant queries are logged. For exemple, the &#39;empty&#39; interface load query isn&#39;t logged.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="origin" class="tsd-anchor"></a>
@@ -284,6 +315,11 @@
 							:60</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The component from which the query originated. For example the pager will set the property to tweak it&#39;s behaviour</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="searchasyoutype" class="tsd-anchor"></a>
@@ -296,6 +332,11 @@
 							:48</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether the query to execute is a search-as-you-type. This information will be passed down in the query events for component and external code to determine their behavior</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

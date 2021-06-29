@@ -199,6 +199,14 @@
 					<h1>Interface IFacetRequestValue</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A <a href="ifacetrequest.html#currentvalues"><code>currentValues</code></a> item in a Search API
+						<a href="ifacetrequest.html">facet request</a>.</p>
+					</div>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -237,6 +245,13 @@
 							:66</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The children of this category facet value.
+								Each child is a full-fledged category facet value that may in turn have its own children and so forth,
+							up to a maximum depth of 50 levels</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="end" class="tsd-anchor"></a>
@@ -250,6 +265,18 @@
 							:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The value to end the range at.</p>
+						</div>
+						<p><strong>Examples:</strong></p>
+						<blockquote>
+							<ul>
+								<li><code>500</code></li>
+								<li><code>2018-12-31T23:59:59.999Z</code></li>
+							</ul>
+						</blockquote>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="endinclusive" class="tsd-anchor"></a>
@@ -263,6 +290,11 @@
 							:42</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to include the <a href="irangevalue.html#end"><code>end</code></a> value in the range.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="label" class="tsd-anchor"></a>
@@ -276,6 +308,18 @@
 							:37</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The label to associate with the range value.</p>
+						</div>
+						<p><strong>Examples:</strong></p>
+						<blockquote>
+							<ul>
+								<li><code>0 - 500</code></li>
+								<li><code>In 2018</code></li>
+							</ul>
+						</blockquote>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="preventautoselect" class="tsd-anchor"></a>
@@ -288,6 +332,12 @@
 							:48</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to prevent Coveo ML from automatically selecting the facet value.</p>
+						</div>
+						<p><strong>Default:</strong> <code>false</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="retrievechildren" class="tsd-anchor"></a>
@@ -300,6 +350,12 @@
 							:54</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether to retrieve the children of this category facet value. Can only be used on leaf values in the request (i.e., values with no current children).</p>
+						</div>
+						<p><strong>Default:</strong> <code>false</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="retrievecount" class="tsd-anchor"></a>
@@ -312,6 +368,12 @@
 							:60</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>If <a href="ifacetrequestvalue.html#retrievechildren">retrieveChildren</a> is true, the maximum number of children to retrieve for this leaf value.</p>
+						</div>
+						<p><strong>Default (Search API):</strong> <code>0</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="start" class="tsd-anchor"></a>
@@ -325,6 +387,18 @@
 							:19</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The value to start the range at.</p>
+						</div>
+						<p><strong>Examples:</strong></p>
+						<blockquote>
+							<ul>
+								<li><code>0</code></li>
+								<li><code>2018-01-01T00:00:00.000Z</code></li>
+							</ul>
+						</blockquote>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="state" class="tsd-anchor"></a>
@@ -337,6 +411,12 @@
 							:38</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The current facet value state in the search interface.</p>
+						</div>
+						<p><strong>Default (Search API):</strong> <code>idle</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="value" class="tsd-anchor"></a>
@@ -349,6 +429,11 @@
 							:42</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p><strong>Required (Search API).</strong> The facet value name.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

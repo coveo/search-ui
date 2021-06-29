@@ -175,6 +175,14 @@
 					<h1>Class QuickviewEvents</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The <code>QuickviewEvents</code> static class contains the string definitions of all events that strongly relate to the
+						<a href="../components/quickview.html"><code>Quickview</code></a> component.</p>
+					</div>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -205,6 +213,23 @@
 							:42</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered by the <a href="../components/quickviewdocument.html"><code>QuickviewDocument</code></a> component when the end user has just clicked the
+							<strong>Quickview</strong> button/link to open the quickview modal window.</p>
+						</div>
+						<p>This event allows external code to modify the terms to highlight before the content of the quickview modal window
+						is rendered.</p>
+						<p>All <code>openQuickview</code> event handlers receive an
+						[<code>OpenQuickviewEventArgs</code>]{@link ResultListEvents.IOpenQuickviewEventArgs} object as an argument.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string} The string value is <code>openQuickview</code>.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="quickviewloaded" class="tsd-anchor"></a>
@@ -217,6 +242,22 @@
 							:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Triggered by the <a href="../components/quickviewdocument.html"><code>QuickviewDocument</code></a> component when the content to display in the
+							quickview modal window has just finished downloading.</p>
+						</div>
+						<p>The <a href="../components/quickview.html"><code>Quickview</code></a> component listens to this event to know when to remove its loading animation.</p>
+						<p>All <code>quickviewLoaded</code> event handlers receive a <a href="../interfaces/iquickviewloadedeventargs.html"><code>QuickviewLoadedEventArgs</code></a> object
+						as an argument.</p>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{string} The string value is <code>quickviewLoaded</code>.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

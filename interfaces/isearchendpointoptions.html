@@ -199,6 +199,13 @@
 					<h1>Interface ISearchEndpointOptions</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The possible options when creating a <a href="../classes/searchendpoint.html">SearchEndpoint</a></p>
+					</div>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -238,6 +245,11 @@
 							:43</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>This allows using an OAuth2 or a search token to authenticate against the Search API.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="anonymous" class="tsd-anchor"></a>
@@ -250,6 +262,13 @@
 							:39</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies that the request (and the Coveo Search API) does not need any kind of authentication.<br/>
+								This flag is only needed for specific setups when your requests are being blocked by your browser. If your queries are executing correctly, you do not need to bother.<br/>
+							Setting this flag will prevent the withCredentials option to be set on the XMLHttpRequest, allowing performing cross-domain requests on a server that returns * in the Access-Control-Allow-Origin HTTP header.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
 					<a name="password" class="tsd-anchor"></a>
@@ -263,6 +282,12 @@
 							:58</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>This is the password part of the credentials used to authenticate with the REST API.<br/>
+							This option should only be used for development purposes. Including secret credentials in an HTML page that is sent to a client browser is not secure.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="querystringarguments" class="tsd-anchor"></a>
@@ -275,6 +300,12 @@
 							:33</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Query string arguments to add to every request to the search endpoint.<br/>
+							eg : {&#39;foo&#39;:&#39;bar&#39;, &#39;a&#39;:&#39;b&#39;}</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="renewaccesstoken" class="tsd-anchor"></a>
@@ -287,6 +318,12 @@
 							:48</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a function that, when called, will arrange for a new search token to be generated.<br/>
+							It is expected to return a Promise that should be resolved with the new token once it&#39;s available.</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -315,6 +352,12 @@
 							:165</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A function which will allow external code to modify all endpoint call parameters before they are sent by the browser.</p>
+						</div>
+						<p>Used in very specific scenario where the network infrastructure require special request headers to be added or removed, for example.</p>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -348,6 +391,11 @@
 							:27</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The uri for the search endpoint. eg: cloudplatform.coveo.com/rest/search</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="searchalertsuri" class="tsd-anchor"></a>
@@ -360,6 +408,11 @@
 							:62</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The uri for the Coveo search alerts service. If not specified, will automatically resolve using the restUri otherwise</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
 					<a name="username" class="tsd-anchor"></a>
@@ -373,6 +426,12 @@
 							:53</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>This is the username part of the credentials used to authenticate with the Search API using Basic Authentication.<br/>
+							This option should only be used for development purposes. Including secret credentials in an HTML page that is sent to a client browser is not secure.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="xmlhttprequest" class="tsd-anchor"></a>
@@ -386,6 +445,12 @@
 							:171</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The XmlHttpRequest implementation to use instead of the native one.
+							If not specified, the native one is used.</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">

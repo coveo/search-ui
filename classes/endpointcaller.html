@@ -187,6 +187,21 @@
 					<h1>Class EndpointCaller</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>This class is in charge of calling an endpoint (eg: a <a href="searchendpoint.html">SearchEndpoint</a>).</p>
+					</div>
+					<p>This means it&#39;s only uses to execute an XMLHttpRequest (for example), massage the response and check if there are errors.</p>
+					<p>Will execute the call and return a Promise.</p>
+					<p>Call using one of those options :</p>
+					<ul>
+						<li>XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.</li>
+						<li>XDomainRequest for older IE browser that do not support CORS.</li>
+						<li>Jsonp if all else fails, or is explicitly enabled.</li>
+					</ul>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -235,6 +250,15 @@
 									:242</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generic call to the endpoint using the provided <a href="../interfaces/iendpointcallparameters.html">IEndpointCallParameters</a>.<br/>
+										Internally, will decide which method to use to call the endpoint :<br/>
+										-- XMLHttpRequest for recent browser that support CORS, or if the endpoint is on the same origin.<br/>
+										-- XDomainRequest for older IE browser that do not support CORS.<br/>
+									-- Jsonp if all else fails, or is explicitly enabled.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -245,6 +269,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>params: <a href="../interfaces/iendpointcallparameters.html" class="tsd-signature-type">IEndpointCallParameters</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The parameters to use for the call</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isuccessresponse.html" class="tsd-signature-type">ISuccessResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -267,6 +294,12 @@
 									:427</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Call the endpoint using Jsonp <a href="https://en.wikipedia.org/wiki/JSONP">https://en.wikipedia.org/wiki/JSONP</a><br/>
+									Should be used for dev only, or for very special setup as using jsonp has a lot of drawbacks.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -277,6 +310,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>requestInfo: <a href="../interfaces/irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The info about the request</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isuccessresponse.html" class="tsd-signature-type">ISuccessResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -298,6 +334,12 @@
 									:380</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Call the endpoint using XDomainRequest <a href="https://msdn.microsoft.com/en-us/library/cc288060(v=vs.85).aspx">https://msdn.microsoft.com/en-us/library/cc288060(v=vs.85).aspx</a><br/>
+									Used for IE8/9</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -308,6 +350,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>requestInfo: <a href="../interfaces/irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The info about the request</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isuccessresponse.html" class="tsd-signature-type">ISuccessResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -329,6 +374,13 @@
 									:286</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Call the endpoint using XMLHttpRequest. Used internally by <a href="endpointcaller.html#call">EndpointCaller.call</a>.<br/>
+										Will try internally to handle error if it can.<br/>
+									Promise will otherwise fail with the error type.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -339,9 +391,15 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>requestInfo: <a href="../interfaces/irequestinfo.html" class="tsd-signature-type">IRequestInfo</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The info about the request</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> responseType: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;text&quot;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The responseType. Default to text. <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType">https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType</a></p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/isuccessresponse.html" class="tsd-signature-type">ISuccessResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -362,6 +420,20 @@
 							:203</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Set this property to true to enable Jsonp call to the endpoint.<br/>
+								Be aware that jsonp is &quot;easier&quot; to setup endpoint wise, but has a lot of drawback and limitation for the client code.<br/>
+							Default to false.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{boolean}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -381,10 +453,20 @@
 									:205</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a new EndpointCaller.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../interfaces/iendpointcalleroptions.html" class="tsd-signature-type">IEndpointCallerOptions</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Specify the authentication that will be used for this endpoint. Not needed if the endpoint is public and has no authentication</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="endpointcaller.html" class="tsd-signature-type">EndpointCaller</a></h4>

@@ -199,6 +199,13 @@
 					<h1>Interface IFacetSearchRequest</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A Search API facet search request.</p>
+					</div>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -237,6 +244,12 @@
 							:95</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The base path shared by all values for the facet.</p>
+						</div>
+						<p><strong>Note:</strong> This parameter has no effect unless the facet <code>type</code> is <code>hierarchical</code>.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="captions" class="tsd-anchor"></a>
@@ -249,6 +262,15 @@
 							:63</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A dictionary that maps index field values to facet value display names.</p>
+						</div>
+						<p><strong>Example</strong></p>
+						<blockquote>
+							<p><code>{&quot;acme_productA&quot;: &quot;ACME Product A&quot;, &quot;acme_productB&quot;: &quot;ACME Product B&quot;}</code></p>
+						</blockquote>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="delimitingcharacter" class="tsd-anchor"></a>
@@ -261,6 +283,17 @@
 							:89</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The character to use to split field values into a hierarchical sequence.</p>
+						</div>
+						<p><strong>Example:</strong></p>
+						<p>For a multi-value field containing the following values:</p>
+						<pre><code><span class="hljs-built_in">c</span>; <span class="hljs-built_in">c</span>&gt;folder2; <span class="hljs-built_in">c</span>&gt;folder2&gt;folder3;</code></pre><p>The delimiting character is <code>&gt;</code>.</p>
+						<p>For a hierarchical field containing the following values:</p>
+						<pre><code>c<span class="hljs-comment">;folder2;folder3;</span></code></pre><p>The delimiting character is <code>;</code>.</p>
+						<p><strong>Default:</strong> <code>;</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="field" class="tsd-anchor"></a>
@@ -273,6 +306,11 @@
 							:24</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The name of the field against which to execute the facet search request.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="ignorepaths" class="tsd-anchor"></a>
@@ -285,6 +323,12 @@
 							:42</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A list of paths to filter out from the hierarchical facet search results.</p>
+						</div>
+						<p><strong>Example:</strong> <code>[[&quot;Electronics&quot;, &quot;Entertainment&quot;, &quot;Gaming Consoles&quot;],[&quot;Appliances&quot;, &quot;Kitchen&quot;]]</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="ignorevalues" class="tsd-anchor"></a>
@@ -297,6 +341,12 @@
 							:36</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A list of index field values to filter out from the facet search results.</p>
+						</div>
+						<p><strong>Example:</strong> <code>[&quot;blue&quot;, &quot;green&quot;]</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="numberofvalues" class="tsd-anchor"></a>
@@ -309,6 +359,12 @@
 							:48</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The maximum number of facet values to fetch.</p>
+						</div>
+						<p><strong>Default (Search API):</strong> <code>10</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="query" class="tsd-anchor"></a>
@@ -321,6 +377,13 @@
 							:56</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The string to match.</p>
+						</div>
+						<p>Typically, the text entered by the end-user in the facet search box, to which one or more wildcard characters (<code>*</code>) may be added.</p>
+						<p><strong>Example:</strong> <code>&quot;*oran*&quot;</code></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="searchcontext" class="tsd-anchor"></a>
@@ -333,6 +396,12 @@
 							:69</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The query parameters representing the current state of the search interface.</p>
+						</div>
+						<p>See the <a href="iquery.html">query</a> documentation.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="type" class="tsd-anchor"></a>
@@ -345,6 +414,12 @@
 							:30</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The kind of facet values against which the search request is being made.</p>
+						</div>
+						<p><strong>Default:</strong> <code>specific</code></p>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">

@@ -313,6 +313,24 @@
 					<h1>Coveo Facet Component (CoveoFacet)</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The <code>Facet</code> component displays a <em>facet</em> of the results for the current query. A facet is a list of values for a
+						certain field occurring in the results, ordered using a configurable criteria (e.g., number of occurrences).</p>
+					</div>
+					<p>The list of values is obtained using a <a href="../interfaces/igroupbyrequest.html"><code>GroupByRequest</code></a> operation performed at the same time
+					as the main query.</p>
+					<p>The <code>Facet</code> component allows the end user to drill down inside a result set by restricting the result to certain
+						field values. It also allows filtering out values from the facet itself, and can provide a search box to look for
+					specific values inside larger sets.</p>
+					<p>This is probably the most complex component in the Coveo JavaScript Search Framework and as such, it allows for many
+					configuration options.</p>
+					<p>See also the <a href="facetrange.html"><code>FacetRange</code></a> and <a href="timespanfacet.html"><code>TimespanFacet</code></a> components (which
+						extend this component), and the <a href="facetslider.html"><code>FacetSlider</code></a> and <a href="categoryfacet.html"><code>CategoryFacet</code></a> components (which do not extend this
+					component, but are very similar).</p>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -450,6 +468,11 @@
 									:1248</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Collapses the facet.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -470,6 +493,11 @@
 									:41</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the debug info about this component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -489,10 +517,19 @@
 									:901</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Deselects multiple values.</p>
+								</div>
+								<p>Does not trigger a query automatically.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>values: <span class="tsd-signature-type">FacetValue[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -514,10 +551,20 @@
 									:887</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Deselects a single value.</p>
+								</div>
+								<p>Does not trigger a query automatically.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string (e.g., <code>deselectValue(&#39;foobar&#39;)</code> or
+										<code>deselectValue(new FacetValue(&#39;foobar&#39;))</code>).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -540,6 +587,13 @@
 									:52</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Disable the component.
+										Normally this means that the component will not execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -560,6 +614,13 @@
 									:61</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Enable the component.
+										Normally this means that the component will execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -579,10 +640,19 @@
 									:932</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Excludes multiple values.</p>
+								</div>
+								<p>Does not trigger a query automatically.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>values: <span class="tsd-signature-type">FacetValue[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -604,10 +674,20 @@
 									:918</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Excludes a single value.</p>
+								</div>
+								<p>Does not trigger a query automatically.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string (e.g., <code>excludeValue(&#39;foobar&#39;)</code> or
+										<code>excludeValue(new FacetValue(&#39;foobar&#39;))</code>).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -629,6 +709,11 @@
 									:1258</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Expands the facet.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -649,6 +734,11 @@
 									:328</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the bindings, or environment, for the current component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h4>
 						</li>
 					</ul>
@@ -668,10 +758,18 @@
 									:1206</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the configured caption for a desired facet value.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The string facet value whose caption the method should return.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -693,6 +791,11 @@
 									:1014</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the currently displayed values as an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">FacetValue[]</span></h4>
 							<p>The currently displayed values.</p>
 						</li>
@@ -713,6 +816,11 @@
 									:1005</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the currently displayed values as an array of strings.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 							<p>The currently displayed values.</p>
 						</li>
@@ -733,6 +841,11 @@
 									:1088</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the endpoint for the facet.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ISearchEndpoint</span></h4>
 							<p>The endpoint for the facet.</p>
 						</li>
@@ -753,6 +866,11 @@
 									:1044</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the currently excluded values as an array of strings.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 							<p>The currently excluded values.</p>
 						</li>
@@ -773,6 +891,11 @@
 									:1026</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the currently selected values as an array of strings.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string[]</span></h4>
 							<p>The currently selected values.</p>
 						</li>
@@ -793,10 +916,18 @@
 									:1183</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the configured caption for the given <a href="../classes/facetvalue.html"><code>FacetValue</code></a>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>facetValue: <a href="../interfaces/iindexfieldvalue.html" class="tsd-signature-type">IIndexFieldValue</a><span class="tsd-signature-symbol"> | </span><a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The <code>FacetValue</code> whose caption the method should return.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -818,10 +949,18 @@
 									:1035</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Determines whether the specified value is selected in the facet.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The name of the facet value to verify.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -843,6 +982,11 @@
 									:1141</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Hides the waiting animation in the facet header.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -862,6 +1006,11 @@
 									:1052</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Resets the facet by un-selecting all values, un-excluding all values, and redrawing the facet.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -881,10 +1030,19 @@
 									:870</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Selects multiple values.</p>
+								</div>
+								<p>Does not trigger a query automatically.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>values: <span class="tsd-signature-type">FacetValue[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -906,10 +1064,20 @@
 									:856</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Selects a single value.</p>
+								</div>
+								<p>Does not trigger a query automatically.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string (e.g., <code>selectValue(&#39;foobar&#39;)</code> or
+										<code>selectValue(new FacetValue(&#39;foobar&#39;))</code>).</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -931,6 +1099,13 @@
 									:1235</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Shows less elements in the Facet (up to the original number of values).</p>
+								</div>
+								<p>See the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a>, and
+								<a href="facet.html#options.numberofvalues"><code>numberOfValues</code></a> options.</p>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -950,6 +1125,14 @@
 									:1219</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Shows the next page of results in the facet.</p>
+								</div>
+								<p>See the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a>, and <a href="facet.html#options.pagesize"><code>pageSize</code></a>
+								options.</p>
+								<p>Triggers a query if needed, or displays the already available values.</p>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -969,6 +1152,11 @@
 									:1130</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Shows a waiting animation in the facet header (a spinner).</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -988,6 +1176,13 @@
 									:1066</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Switches the facet to <code>AND</code> mode.</p>
+								</div>
+								<p>See the <a href="facet.html#options.useand"><code>useAnd</code></a>, and
+								<a href="facet.html#options.enabletogglingoperator"><code>enableTogglingOperator</code></a> options.</p>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1007,6 +1202,13 @@
 									:1078</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Switches the facet to <code>OR</code> mode.</p>
+								</div>
+								<p>See the <a href="facet.html#options.useand"><code>useAnd</code></a>, and
+								<a href="facet.html#options.enabletogglingoperator"><code>enableTogglingOperator</code></a> options.</p>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1026,10 +1228,20 @@
 									:993</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Toggles the exclusion state of a single value (excludes the value if it is not already excluded; un-excludes the
+									value if it is already excluded).</p>
+								</div>
+								<p>Does not trigger a query automatically.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1051,10 +1263,20 @@
 									:978</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Toggles the selection state of a single value (selects the value if it is not already selected; un-selects the
+									value if it is already selected).</p>
+								</div>
+								<p>Does not trigger a query automatically.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1076,10 +1298,19 @@
 									:962</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Unexcludes multiple values.</p>
+								</div>
+								<p>Does not trigger a query automatically.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>values: <span class="tsd-signature-type">FacetValue[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Can be an array of <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or an array of strings.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1101,10 +1332,19 @@
 									:948</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Unexcludes a single value.</p>
+								</div>
+								<p>Does not trigger a query automatically.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>value: <a href="../classes/facetvalue.html" class="tsd-signature-type">FacetValue</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Can be a <a href="../classes/facetvalue.html"><code>FacetValue</code></a> or a string.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1126,10 +1366,20 @@
 									:1101</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Changes the sort parameter for the facet.</p>
+								</div>
+								<p>See <a href="facet.html#options.availablesorts">Facet.options.availableSorts</a> for the list of possible values.</p>
+								<p>Also triggers a new query.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>criteria: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The new sort parameter for the facet.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1152,16 +1402,31 @@
 									:410</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the bound component to the given HTMLElement. Throws an assert if the HTMLElement has no component bound, unless using the noThrow argument.<br/>
+									If there is multiple component bound to the current HTMLElement, you must specify the component class.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>HTMLElement for which to get the bound component.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> componentClass: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Optional component class. If the HTMLElement has multiple components bound, you must specify which one you are targeting.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> noThrow: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Boolean option to tell the method to not throw on error.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h4>
@@ -1183,6 +1448,18 @@
 							:270</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Allows the component to bind events and execute them only when it is enabled.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{Coveo.ComponentEvents}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentoptionsmodel" class="tsd-anchor"></a>
@@ -1196,6 +1473,11 @@
 							:294</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of options for different components. Mainly used by <a href="resultlink.html">ResultLink</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="componentstatemodel" class="tsd-anchor"></a>
@@ -1209,6 +1491,11 @@
 							:282</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of different components (enabled vs disabled). Allows to get/set values. Triggers component state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="disabled" class="tsd-anchor"></a>
@@ -1222,6 +1509,18 @@
 							:23</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{boolean}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component">
 					<a name="facetsearch" class="tsd-anchor"></a>
@@ -1234,6 +1533,11 @@
 							:726</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Renders and handles the facet <strong>Search</strong> part of the component.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component">
 					<a name="facetsettings" class="tsd-anchor"></a>
@@ -1246,6 +1550,11 @@
 							:731</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Renders and handles the facet <strong>Settings</strong> part of the component</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -1259,6 +1568,11 @@
 							:18</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Allows component to log in the dev console.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querycontroller" class="tsd-anchor"></a>
@@ -1272,6 +1586,11 @@
 							:286</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the singleton that allows to trigger queries.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="querystatemodel" class="tsd-anchor"></a>
@@ -1285,6 +1604,11 @@
 							:278</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Contains the state of the query. Allows to get/set values. Trigger query state event when modified. Each component can listen to those events.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="root" class="tsd-anchor"></a>
@@ -1298,6 +1622,11 @@
 							:274</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root HTMLElement (the <a href="searchinterface.html">SearchInterface</a>).</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="searchinterface" class="tsd-anchor"></a>
@@ -1311,6 +1640,11 @@
 							:290</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A reference to the root of every component, the <a href="searchinterface.html">SearchInterface</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -1324,6 +1658,12 @@
 							:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
@@ -1331,15 +1671,27 @@
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="usageanalytics" class="tsd-anchor"></a>
 					<h3>usage<wbr>Analytics</h3>
-					<div class="tsd-signature tsd-kind-icon">usage<wbr>Analytics<span class="tsd-signature-symbol">:</span> </div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
-						<ul>
-							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
-							:343</a></li>
-						</ul>
-					</aside>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-coveo-component tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="../classes/component.html">Component</a>.<a href="../classes/component.html#usageanalytics">usageAnalytics</a></p>
+								<ul>
+									<li>Defined in
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/Component.ts#L343">ui/Base/Component.ts
+									:343</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A reference to the <a href="analytics.html#client">Analytics.client</a>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ianalyticsclient.html" class="tsd-signature-type">IAnalyticsClient</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -1355,6 +1707,20 @@
 							:623</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies an additional query expression (query override) to add to each
+							<a href="../interfaces/igroupbyrequest.html"><code>GroupByRequest</code></a> that this facet performs.</p>
+						</div>
+						<p>Example: <code>@date&gt;=2014/01/01</code></p>
+						<dl class="tsd-comment-tags">
+							<dt>Not supported in</dt>
+							<dd><p><a href="https://docs.coveo.com/en/1107/">Coveo for Salesforce Free</a></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-additional-filter&#x3D;&#x27;foo&#x27;</pre>
@@ -1371,6 +1737,22 @@
 							:615</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies an explicit list of <a href="../interfaces/igroupbyrequest.html#allowedvalues"><code>allowedValues</code></a> in the
+							<a href="../interfaces/igroupbyrequest.html"><code>GroupByRequest</code></a>.</p>
+						</div>
+						<p>If you specify a list of values for this option, the facet uses only these values (if they are available in
+						the current result set).</p>
+						<p><strong>Example:</strong></p>
+						<p>The following facet only uses the <code>Contact</code>, <code>Account</code>, and <code>File</code> values of the <code>@objecttype</code> field. Even if the
+							current result set contains other <code>@objecttype</code> values, such as <code>Message</code>, or <code>Product</code>, the facet does not use
+						those other values.</p>
+						<pre><code class="language-html">
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@objecttype"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Object Type"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span> <span class="hljs-attr">data-allowed-values</span>=<span class="hljs-string">"Contact,Account,File"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<p>Default value is <code>undefined</code>, and the facet uses all available values for its
+						<a href="facet.html#options.field"><code>field</code></a> in the current result set.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.availablesorts" class="tsd-anchor"></a>
@@ -1383,6 +1765,45 @@
 							:261</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If the <a href="facet.html#options.enablesettings"><code>enableSettings</code></a> option is <code>true</code>, specifies the sort criteria
+							options to display in the facet <strong>Settings</strong> menu.</p>
+						</div>
+						<p>Possible values are:</p>
+						<ul>
+							<li><code>&quot;occurrences&quot;</code></li>
+							<li><code>&quot;score&quot;</code></li>
+							<li><code>&quot;alphaascending&quot;</code></li>
+							<li><code>&quot;alphadescending&quot;</code></li>
+							<li><code>&quot;computedfieldascending&quot;</code></li>
+							<li><code>&quot;computedfielddescending&quot;</code></li>
+							<li><code>&quot;custom&quot;</code></li>
+						</ul>
+						<p>See <a href="../interfaces/igroupbyrequest.html#sortcriteria">IGroupByRequest.sortCriteria</a> for a description of each possible value.</p>
+						<p><strong>Notes:</strong></p>
+						<blockquote>
+							<ul>
+								<li>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</li>
+							</ul>
+						</blockquote>
+						<blockquote>
+							<ul>
+								<li>Using value captions will disable alphabetical sorts (see the <a href="facet.html#options.valuecaption">valueCaption</a> option).</li>
+							</ul>
+						</blockquote>
+						<p>Default value is <code>occurrences,score,alphaascending,alphadescending</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="facet.html#options.enablesettings"><code>enableSettings</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>[occurrences, score, alphaascending, alphadescending]</code></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.computedfield" class="tsd-anchor"></a>
@@ -1395,6 +1816,24 @@
 							:465</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the name of a field on which to execute an aggregate operation for all distinct values of the facet
+							<a href="facet.html#options.field"><code>field</code></a>.</p>
+						</div>
+						<p>The facet displays the result of the operation along with the number of occurrences for each value.</p>
+						<p>You can use this option to compute the sum of a field (like a money amount) for each listed facet value.</p>
+						<p>Works in conjunction with the <a href="facet.html#options.computedfieldoperation"><code>computedFieldOperation</code></a>,
+							<a href="facet.html#options.computedfieldformat"><code>computedFieldFormat</code></a>, and
+						<a href="facet.html#options.computedfieldcaption"><code>computedFieldCaption</code></a> options.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Not supported in</dt>
+							<dd><p><a href="https://docs.coveo.com/en/1107/">Coveo for Salesforce Free</a></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-computed-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -1411,6 +1850,25 @@
 							:513</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies what the caption of the <a href="facet.html#options.computedfield"><code>computedField</code></a> should be in the facet
+							<strong>Settings</strong> menu for sorting.</p>
+						</div>
+						<p>For example, setting this option to <code>&quot;Money&quot;</code> will display <code>&quot;Money Ascending&quot;</code> for computed field ascending.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+						<p>Default value is the localized string for <code>ComputedField</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Not supported in</dt>
+							<dd><p><a href="https://docs.coveo.com/en/1107/">Coveo for Salesforce Free</a></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-computed-field-caption&#x3D;&#x27;foo&#x27;</pre>
@@ -1427,6 +1885,31 @@
 							:497</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies how to format the values resulting from a
+							<a href="facet.html#options.computedfieldoperation"><code>computedFieldOperation</code></a>.</p>
+						</div>
+						<p>The Globalize library defines all available formats (see
+						<a href="https://github.com/klaaspieter/jquery-global#globalizeformat-value-format-culture-">Globalize</a>).</p>
+						<p>The most commonly used formats are:</p>
+						<ul>
+							<li><code>c0</code> - Formats the value as a currency.</li>
+							<li><code>n0</code> - Formats the value as an integer.</li>
+							<li><code>n2</code> - Formats the value as a floating point with 2 decimal digits.</li>
+						</ul>
+						<p>Default value is <code>&quot;c0&quot;</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Not supported in</dt>
+							<dd><p><a href="https://docs.coveo.com/en/1107/">Coveo for Salesforce Free</a></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>c0</code></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.computedfieldoperation" class="tsd-anchor"></a>
@@ -1439,6 +1922,29 @@
 							:478</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the type of aggregate operation to perform on the <a href="facet.html#options.computedfield"><code>computedField</code></a>.</p>
+						</div>
+						<p>The possible values are:</p>
+						<ul>
+							<li><code>sum</code> - Computes the sum of the computed field values.</li>
+							<li><code>average</code> - Computes the average of the computed field values.</li>
+							<li><code>minimum</code> - Finds the minimum value of the computed field values.</li>
+							<li><code>maximum</code> - Finds the maximum value of the computed field values.</li>
+						</ul>
+						<p>Default value is <code>sum</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Not supported in</dt>
+							<dd><p><a href="https://docs.coveo.com/en/1107/">Coveo for Salesforce Free</a></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>sum</code></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.customsort" class="tsd-anchor"></a>
@@ -1451,6 +1957,18 @@
 							:302</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a custom order by which to sort the facet values.</p>
+						</div>
+						<p><strong>Example:</strong></p>
+						<p>You could use this option to specify a logical order for support tickets, such as:</p>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@ticketstatus"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Ticket Status"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span> <span class="hljs-attr">data-custom-sort</span>=<span class="hljs-string">"New,Opened,Feedback,Resolved"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.dependson" class="tsd-anchor"></a>
@@ -1463,6 +1981,28 @@
 							:654</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies whether this facet only appears when a value is selected in its &quot;parent&quot; facet.</p>
+						</div>
+						<p>To specify the parent facet, use its <a href="facet.html#options.id-1"><code>id</code></a>.</p>
+						<p>Remember that by default, a facet <code>id</code> value is the same as its <a href="facet.html#options.field"><code>field</code></a> option
+						value.</p>
+						<p><strong>Examples:</strong></p>
+						<p>First case: the &quot;parent&quot; facet has no custom <code>id</code>:</p>
+						<pre><code class="language-html"><span class="hljs-comment">&lt;!-- "Parent" Facet: --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Parent Facet'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- The "dependent" Facet must refer to the default `id` of its "parent" Facet, which is the name of its field. --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Dependent Facet'</span> <span class="hljs-attr">data-depends-on</span>=<span class="hljs-string">'@myfield'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<p>Second case: the &quot;parent&quot; facet has a custom <code>id</code>:</p>
+						<pre><code class="language-html"><span class="hljs-comment">&lt;!-- "Parent" Facet: --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Parent Facet'</span> <span class="hljs-attr">data-id</span>=<span class="hljs-string">'myParentCustomId'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- The "dependent" Facet must refer to the custom `id` of its "parent" Facet, which is 'myParentCustomId'. --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">'My Dependent Facet'</span> <span class="hljs-attr">data-depends-on</span>=<span class="hljs-string">'myParentCustomId'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<p>Default value is <code>undefined</code></p>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-depends-on&#x3D;&#x27;foo&#x27;</pre>
@@ -1479,6 +2019,24 @@
 							:665</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>A function that verifies whether the current state of the <code>dependsOn</code> facet allows the dependent facet to be displayed.</p>
+						</div>
+						<p>If specified, the function receives a reference to the resolved <code>dependsOn</code> facet component instance as an argument, and must return a boolean.
+						The function&#39;s argument should typically be treated as read-only.</p>
+						<p>By default, the dependent facet is displayed whenever one or more values are selected in its <code>dependsOn</code> facet.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="facet.html#options.dependson"><code>dependsOn</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Additional documentation</dt>
+							<dd><p><a href="https://docs.coveo.com/3210/">Defining Dependent Facets</a></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.enablecollapse" class="tsd-anchor"></a>
@@ -1491,6 +2049,27 @@
 							:593</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If the <a href="facet.html#options.enablesettings"><code>enableSettings</code></a> option is <code>true</code>, specifies whether the
+							<strong>Collapse \ Expand</strong> menu option is available in the facet <strong>Settings</strong> menu.</p>
+						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="facet.html#options.enablesettings"><code>enableSettings</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-collapse&#x3D;&#x27;true&#x27;
@@ -1508,6 +2087,27 @@ data-enable-collapse&#x3D;&#x27;false&#x27;</pre>
 							:360</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to display a search box at the bottom of the facet for searching among the available facet
+							<a href="facet.html#options.field"><code>field</code></a> values.</p>
+						</div>
+						<p>See also the <a href="facet.html#options.facetsearchdelay"><code>facetSearchDelay</code></a>,
+							<a href="facet.html#options.facetsearchignoreaccents"><code>facetSearchIgnoreAccents</code></a>, and
+						<a href="facet.html#options.numberofvaluesinfacetsearch"><code>numberOfValuesInFacetSearch</code></a> options.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-facet-search&#x3D;&#x27;true&#x27;
@@ -1525,6 +2125,24 @@ data-enable-facet-search&#x3D;&#x27;false&#x27;</pre>
 							:573</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to enable the <strong>More</strong> and <strong>Less</strong> buttons in the Facet.</p>
+						</div>
+						<p>See also the <a href="facet.html#options.pagesize"><code>pageSize</code></a> option.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-more-less&#x3D;&#x27;true&#x27;
@@ -1542,6 +2160,26 @@ data-enable-more-less&#x3D;&#x27;false&#x27;</pre>
 							:228</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to display the facet <strong>Settings</strong> menu.</p>
+						</div>
+						<p>See also the <a href="facet.html#options.enablesettingsfacetstate"><code>enableSettingsFacetState</code></a>,
+							<a href="facet.html#options.availablesorts"><code>availableSorts</code></a>, and
+						<a href="facet.html#options.enablecollapse"><code>enableCollapse</code></a> options.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-settings&#x3D;&#x27;true&#x27;
@@ -1559,6 +2197,27 @@ data-enable-settings&#x3D;&#x27;false&#x27;</pre>
 							:238</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If the <a href="facet.html#options.enablesettings"><code>enableSettings</code></a> option is <code>true</code>, specifies whether the
+							<strong>Save state</strong> menu option is available in the facet <strong>Settings</strong> menu.</p>
+						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+						<p>Default value is <code>false</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="facet.html#options.enablesettings"><code>enableSettings</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-settings-facet-state&#x3D;&#x27;true&#x27;
@@ -1576,6 +2235,21 @@ data-enable-settings-facet-state&#x3D;&#x27;false&#x27;</pre>
 							:343</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to allow the user to toggle between the <code>OR</code> and <code>AND</code> modes in the facet.</p>
+						</div>
+						<p>Setting this option to <code>true</code> displays an icon in the top right corner of the facet. The user can click this icon
+						to toggle between between the two modes.</p>
+						<p>Default value is <code>false</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-toggling-operator&#x3D;&#x27;true&#x27;
@@ -1593,6 +2267,32 @@ data-enable-toggling-operator&#x3D;&#x27;false&#x27;</pre>
 							:373</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If the <a href="facet.html#options.enablefacetsearch"><code>enableFacetSearch</code></a> option is <code>true</code>, specifies the delay (in
+							milliseconds) before sending a search request to the server when the user starts typing in the facet search box.</p>
+						</div>
+						<p>Specifying a smaller value makes results appear faster. However, chances of having to cancel many requests
+						sent to the server increase as the user keeps on typing new characters.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+						<p>Default value is <code>100</code>. Minimum value is <code>0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="facet.html#options.enablefacetsearch"><code>enableFacetSearch</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>100</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-facet-search-delay&#x3D;&#x27;10&#x27;</pre>
@@ -1609,6 +2309,27 @@ data-enable-toggling-operator&#x3D;&#x27;false&#x27;</pre>
 							:383</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If the <a href="facet.html#options.enablefacetsearch"><code>enableFacetSearch</code></a> option is <code>true</code>, specifies whether to ignore
+							accents in the facet search box.</p>
+						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+						<p>Default value is <code>false</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="facet.html#options.enablefacetsearch"><code>enableFacetSearch</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-facet-search-ignore-accents&#x3D;&#x27;true&#x27;
@@ -1626,6 +2347,21 @@ data-facet-search-ignore-accents&#x3D;&#x27;false&#x27;</pre>
 							:172</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the index field whose values the facet should use.</p>
+						</div>
+						<p>This requires the given field to be configured correctly in the index as a <em>Facet field</em> (see
+						<a href="https://docs.coveo.com/en/1982/">Add or Edit Fields</a>).</p>
+						<p>Specifying a value for this option is required for the <code>Facet</code> component to work.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Required</dt>
+							<dd><p>Specifying a value for this option is required for the component to work</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -1642,6 +2378,16 @@ data-facet-search-ignore-accents&#x3D;&#x27;false&#x27;</pre>
 							:187</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a unique identifier for the facet. Among other things, this identifier serves the purpose of saving
+							the facet state in the URL hash.</p>
+						</div>
+						<p>If you have two facets with the same field on the same page, you should specify an <code>id</code> value for at least one of
+						those two facets. This <code>id</code> must be unique among the facets.</p>
+						<p>Non-word characters except - @ $ _ . + ! * &#39; ( ) , , ( <code>^a-zA-Z0-9-@$_.+!*&#39;(),,]+</code> ) are automatically removed from the <code>id</code> value.</p>
+						<p>Default value is the <a href="facet.html#options.field"><code>field</code></a> option value.</p>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-id&#x3D;&#x27;foo&#x27;</pre>
@@ -1658,6 +2404,20 @@ data-facet-search-ignore-accents&#x3D;&#x27;false&#x27;</pre>
 							:412</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether the facet should push data to the <a href="breadcrumb.html"><code>Breadcrumb</code></a> component.</p>
+						</div>
+						<p>See also the <a href="facet.html#options.numberofvaluesinbreadcrumb"><code>numberOfValuesInBreadcrumb</code></a> option.</p>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-include-in-breadcrumb&#x3D;&#x27;true&#x27;
@@ -1675,6 +2435,23 @@ data-include-in-breadcrumb&#x3D;&#x27;false&#x27;</pre>
 							:434</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether the Facet should push data to the <a href="omnibox.html">Omnibox</a> component.</p>
+						</div>
+						<p>See also <a href="facet.html#options.numberofvaluesinomnibox">Facet.options.numberOfValuesInOmnibox</a>.</p>
+						<p>Default value is <code>false</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>deprecated</dt>
+							<dd><p>This option is exposed for legacy reasons. It is not recommended to use this option.</p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-include-in-omnibox&#x3D;&#x27;true&#x27;
@@ -1692,6 +2469,27 @@ data-include-in-omnibox&#x3D;&#x27;false&#x27;</pre>
 							:319</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the <em>injection depth</em> to use for the <a href="../interfaces/igroupbyrequest.html"><code>GroupByRequest</code></a> operation.</p>
+						</div>
+						<p>The injection depth determines how many results to scan in the index to ensure that the facet lists all potential
+						facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.</p>
+						<p>Default value is <code>1000</code>. Minimum value is <code>0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Not supported in</dt>
+							<dd><p><a href="https://docs.coveo.com/en/1107/">Coveo for Salesforce Free</a></p>
+							</dd>
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>1000</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-injection-depth&#x3D;&#x27;10&#x27;</pre>
@@ -1708,6 +2506,20 @@ data-include-in-omnibox&#x3D;&#x27;false&#x27;</pre>
 							:207</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether the facet <a href="facet.html#options.field"><code>field</code></a> is configured in the index as a multi-value
+							field (semicolon separated values such as <code>abc;def;ghi</code>).</p>
+						</div>
+						<p>Default value is <code>false</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-is-multi-value-field&#x3D;&#x27;true&#x27;
@@ -1725,6 +2537,18 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 							:213</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the field whose values the Facet should display.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>deprecated</dt>
+							<dd><p>This option is exposed for legacy reasons. It is not recommended to use this option.</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-lookup-field&#x3D;&#x27;@foo&#x27;</pre>
@@ -1741,6 +2565,23 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 							:309</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies the maximum number of field values to display by default in the facet before the user
+							clicks the arrow to show more.</p>
+						</div>
+						<p>See also the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a> option.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>5</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-number-of-values&#x3D;&#x27;10&#x27;</pre>
@@ -1757,6 +2598,24 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 							:420</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If the <a href="facet.html#options.includeinbreadcrumb"><code>includeInBreadcrumb</code></a> option is <code>true</code>, specifies the maximum
+								number of values that the facet should display in the <a href="breadcrumb.html"><code>Breadcrumb</code></a> before outputting a
+							<strong>more...</strong> button.</p>
+						</div>
+						<p>Default value is <code>5</code> on a desktop computer and <code>3</code> on a mobile device. Minimum value is <code>0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="facet.html#options.includeinbreadcrumb"><code>includeInBreadcrumb</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-number-of-values-in-breadcrumb&#x3D;&#x27;10&#x27;</pre>
@@ -1773,6 +2632,27 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 							:393</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If the <a href="facet.html#options.enablefacetsearch"><code>enableFacetSearch</code></a> option is <code>true</code>, specifies the number of v
+							alues to display in the facet search results popup.</p>
+						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+						<p>Default value is <code>15</code>. Minimum value is <code>1</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Minimum</dt>
+							<dd><p><code>1</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>15</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-number-of-values-in-facet-search&#x3D;&#x27;10&#x27;</pre>
@@ -1789,6 +2669,26 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 							:446</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>When <a href="facet.html#options.includeinomnibox">Facet.options.includeInOmnibox</a> is <code>true</code>, specifies the number of values to populate the
+							<a href="breadcrumb.html">Breadcrumb</a> with.</p>
+						</div>
+						<p>Default value is <code>5</code> on desktop computer and <code>3</code> on a mobile device. Minimum value is <code>0</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>deprecated</dt>
+							<dd><p>This option is exposed for legacy reasons. It is not recommended to use this option.</p>
+							</dd>
+							<dt>Only effective when</dt>
+							<dd><p><a href="facet.html#options.includeinomnibox"><code>includeInOmnibox</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Minimum</dt>
+							<dd><p><code>0</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-number-of-values-in-omnibox&#x3D;&#x27;10&#x27;</pre>
@@ -1805,6 +2705,13 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 							:545</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the parent container of the facets.</p>
+						</div>
+						<p>Used by the <a href="facet.html#options.preserveposition"><code>preservePosition</code></a> option.</p>
+						<p>Default value is <code>element.parentElement</code>.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.pagesize" class="tsd-anchor"></a>
@@ -1817,6 +2724,30 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 							:583</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If the <a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a> option is <code>true</code>, specifies the number of
+							additional results to fetch when clicking the <strong>More</strong> button.</p>
+						</div>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>The <a href="facetrange.html"><code>FacetRange</code></a> component does not support this option.</p>
+						</blockquote>
+						<p>Default value is <code>10</code>. Minimum value is <code>1</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Only effective when</dt>
+							<dd><p><a href="facet.html#options.enablemoreless"><code>enableMoreLess</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
+							</dd>
+							<dt>Minimum</dt>
+							<dd><p><code>1</code></p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>10</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-page-size&#x3D;&#x27;10&#x27;</pre>
@@ -1833,6 +2764,30 @@ data-is-multi-value-field&#x3D;&#x27;false&#x27;</pre>
 							:537</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether the facet should remain stable in its current position in the viewport while the mouse cursor
+							is over it.</p>
+						</div>
+						<p>Whenever the value selection changes in a facet, the search interface automatically performs a query. This new
+							query might cause other elements in the page to resize themselves (typically, other facets above or below the
+						one the user is interacting with).</p>
+						<p>This option is responsible for adding the <code>&lt;div class=&#39;coveo-topSpace&#39;&gt;</code> and
+							<code>&lt;div class=&#39;coveo-bottomSpace&#39;&gt;</code> around the Facet container. The Facet adjusts the scroll amount of the page to
+						ensure that it does not move relatively to the mouse when the results are updated.</p>
+						<p>In some cases, the facet also adds margins to the <code>scrollContainer</code>, if scrolling alone is not enough to
+						preserve position.</p>
+						<p>See also the <a href="facet.html#options.paddingcontainer"><code>paddingContainer</code></a>, and
+						<a href="facet.html#options.scrollcontainer"><code>scrollContainer</code></a> options.</p>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-preserve-position&#x3D;&#x27;true&#x27;
@@ -1850,6 +2805,14 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 							:562</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the HTML element (through a CSS selector) whose scroll amount the facet should adjust to preserve its
+							position when results are updated.</p>
+						</div>
+						<p>Used by the <a href="facet.html#options.preserveposition"><code>preservePosition</code></a> option.</p>
+						<p>Default value is <code>document.body</code>.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.sortcriteria" class="tsd-anchor"></a>
@@ -1862,6 +2825,14 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 							:284</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the criteria to use to sort the facet values.</p>
+						</div>
+						<p>See <a href="../interfaces/igroupbyrequest.html#sortcriteria">IGroupByRequest.sortCriteria</a> for the list and description of possible values.</p>
+						<p>Default value is the first sort criteria specified in the <a href="facet.html#options.availablesorts"><code>availableSorts</code></a>
+						option, or <code>occurrences</code> if no sort criteria is specified.</p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.title" class="tsd-anchor"></a>
@@ -1874,6 +2845,12 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 							:159</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the title to display at the top of the facet.</p>
+						</div>
+						<p>Default value is the localized string for <code>NoTitle</code>.</p>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-title&#x3D;&#x27;foo&#x27;</pre>
@@ -1890,6 +2867,23 @@ data-preserve-position&#x3D;&#x27;false&#x27;</pre>
 							:334</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to use the <code>AND</code> operator in the resulting filter when multiple values are selected in the
+							facet.</p>
+						</div>
+						<p>Setting this option to <code>true</code> means that items must have all of the selected values to match the resulting
+						query.</p>
+						<p>Default value is <code>false</code>, which means that the filter uses the <code>OR</code> operator. Thus, by default, items must
+						have at least one of the selected values to match the query.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-use-and&#x3D;&#x27;true&#x27;
@@ -1907,6 +2901,25 @@ data-use-and&#x3D;&#x27;false&#x27;</pre>
 							:404</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether [wildcards]{@link AllowedValuesPatternType.wildcards} are used as the <a href="../interfaces/igroupbyrequest.html#allowedvaluespatterntype">allowedValuesPatternType</a>
+							in the <a href="../interfaces/igroupbyrequest.html">groupBy</a> for the facet search.</p>
+						</div>
+						<p>Enabling this option returns results that end with the entered value. For example, searching for <code>veo</code> would match with <code>Coveo</code>.</p>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>If you are experiencing slow facet search and/or timeouts when this option is set to <code>true</code>, consider enabling the <strong>Use cache for nested queries</strong>
+							option on your facet <a href="facet.html#options.field">field</a> in the Coveo Cloud Admninistration Console (see <a href="https://docs.coveo.com/en/1982/" class="external">Add or Edit Fields</a>).</p>
+						</blockquote>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-use-wildcards-in-facet-search&#x3D;&#x27;true&#x27;
@@ -1924,6 +2937,38 @@ data-use-wildcards-in-facet-search&#x3D;&#x27;false&#x27;</pre>
 							:710</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a JSON object describing a mapping of facet values to their desired captions. See
+							<a href="https://docs.coveo.com/en/368/">Normalizing Facet Value Captions</a>.</p>
+						</div>
+						<p><strong>Examples:</strong></p>
+						<p>You can set the option in the <a href="../globals.html#init">&#39;init&#39;</a> call:</p>
+						<pre><code class="language-javascript"><span class="hljs-keyword">var</span> myValueCaptions = {
+  <span class="hljs-string">"txt"</span> : <span class="hljs-string">"Text files"</span>,
+  <span class="hljs-string">"html"</span> : <span class="hljs-string">"Web page"</span>,
+  [ ... ]
+};
+
+Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
+  <span class="hljs-attr">Facet</span> : {
+    <span class="hljs-attr">valueCaption</span> : myValueCaptions
+  }
+});</code></pre>
+						<p>Or before the <code>init</code> call, using the <a href="facet.html#options">&#39;options&#39;</a> top-level function:</p>
+						<pre><code class="language-javascript">Coveo.options(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
+  <span class="hljs-attr">Facet</span> : {
+    <span class="hljs-attr">valueCaption</span> : myValueCaptions
+  }
+});</code></pre>
+						<p>Or directly in the markup:</p>
+						<pre><code class="language-html"><span class="hljs-comment">&lt;!-- Ensure that the double quotes are properly handled in data-value-caption. --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoFacet'</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@myotherfield'</span> <span class="hljs-attr">data-value-caption</span>=<span class="hljs-string">'{"txt":"Text files","html":"Web page"}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<p><strong>Note:</strong></p>
+						<blockquote>
+							<p>Using value captions will disable alphabetical sorts (see the <a href="facet.html#options.availablesorts">availableSorts</a> option).</p>
+						</blockquote>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -1944,19 +2989,46 @@ data-use-wildcards-in-facet-search&#x3D;&#x27;false&#x27;</pre>
 									:757</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new <code>Facet</code> component. Binds multiple query events as well.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which to instantiate the component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5>options: <span class="tsd-signature-type">IFacetOptions</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the <code>Facet</code> component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bindings: <a href="../interfaces/icomponentbindings.html" class="tsd-signature-type">IComponentBindings</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The bindings that the component requires to function normally. If not set, these will be
+											automatically resolved (with a slower execution time).</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> facetClassId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;Facet.ID</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The ID to use for this facet (as <code>Facet</code> inherited from by other component
+											(e.g., <a href="facetrange.html"><code>FacetRange</code></a>). Default value is <code>Facet</code>.</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="facet.html" class="tsd-signature-type">Facet</a></h4>

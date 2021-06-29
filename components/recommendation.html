@@ -214,6 +214,32 @@
 					<h1>Coveo Recommendation Component (CoveoRecommendation)</h1>
 				</div>
 			</div>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<dl class="tsd-deprecated">
+					</dl>
+					<div class="lead">
+						<p>The Recommendation component is a <a href="searchinterface.html">SearchInterface</a> that displays recommendations typically based on user
+						history.</p>
+					</div>
+					<p>This component usually listens to the main SearchInterface. When the main SearchInterface generates a query, the
+					Recommendation component generates another query to get the recommendations at the same time.</p>
+					<p>To get history-based recommendations, you will likely want to include the <code>pageview</code> script in your page (see
+						<a href="https://github.com/coveo/coveo.analytics.js">coveo.analytics.js</a>). However, including this script is not mandatory.
+						For instance, you could use the Recommendation component without the Coveo Machine Learning service to create a
+					simple &quot;recommended people&quot; interface.</p>
+					<p>It is possible to include this component inside another SearchInterface, but it is also possible to instantiate it as
+						a &quot;standalone&quot; search interface, without even instantiating a main SearchInterface component. In any case, a
+						Recommendation component always acts as a full-fledged search interface. Therefore, you can include any component
+						inside the Recommendation component (Searchbox, Facet, Sort, etc.), just as you would inside the main SearchInterface
+					component.</p>
+					<dl class="tsd-comment-tags">
+						<dt>Available since</dt>
+						<dd><p><a href="https://docs.coveo.com/en/309/#july-2016-release-v166724">July 2016 Release (v1.667.24)</a></p>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<div class="preview-container tsd-panel">
 				<div class="overlay"></div>
 			</div>
@@ -285,13 +311,26 @@
 									:617</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Attaches a component to the search interface. This allows the search interface to easily list and iterate over its
+									components.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>type: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Normally, the component type is a unique identifier without the <code>Coveo</code> prefix (e.g., <code>CoveoFacet</code> -&gt;
+										<code>Facet</code>, <code>CoveoPager</code> -&gt; <code>Pager</code>, <code>CoveoQuerybox</code> -&gt; <code>Querybox</code>, etc.).</p>
+									</div>
 								</li>
 								<li>
 									<h5>component: <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The component instance to attach.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -314,6 +353,11 @@
 									:41</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the debug info about this component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
@@ -334,13 +378,25 @@
 									:627</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Detaches a component from the search interface.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>type: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Normally, the component type is a unique identifier without the <code>Coveo</code> prefix (e.g., <code>CoveoFacet</code> -&gt;
+										<code>Facet</code>, <code>CoveoPager</code> -&gt; <code>Pager</code>, <code>CoveoQuerybox</code> -&gt; <code>Querybox</code>, etc.).</p>
+									</div>
 								</li>
 								<li>
 									<h5>component: <a href="../classes/basecomponent.html" class="tsd-signature-type">BaseComponent</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The component instance to detach.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -363,10 +419,17 @@
 									:714</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Detaches from the SearchInterface every component that is inside the given element.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -389,6 +452,13 @@
 									:52</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Disable the component.
+										Normally this means that the component will not execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -409,6 +479,13 @@
 									:61</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Enable the component.
+										Normally this means that the component will execute handlers for the framework events (query events, for example).
+									Components are enabled by default on creation.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -429,6 +506,11 @@
 									:639</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the bindings, or environment, for the current component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
 							<ul class="tsd-parameters">
 							</ul>
@@ -451,6 +533,11 @@
 									:693</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets all the components of a given type.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -461,6 +548,12 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>type: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Normally, the component type is a unique identifier without the <code>Coveo</code> prefix (e.g., <code>CoveoFacet</code> -&gt;
+											<code>Facet</code>, <code>CoveoPager</code> -&gt; <code>Pager</code>, <code>CoveoQuerybox</code> -&gt; <code>Querybox</code>, etc.).</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T[]</span></h4>
@@ -483,6 +576,17 @@
 									:665</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the query context for the current search interface.</p>
+								</div>
+								<p>If the search interface has performed at least one query, it will try to resolve the context from the last query sent to the Coveo Search API.</p>
+								<p>If the search interface has not performed a query yet, it will try to resolve the context from any avaiable <a href="pipelinecontext.html">PipelineContext</a> component.</p>
+								<p>If multiple <a href="pipelinecontext.html">PipelineContext</a> components are available, it will merge all context values together.</p>
+								<p><strong>Note:</strong>
+								Having multiple PipelineContext components in the same search interface is not recommended, especially if some context keys are repeated across those components.</p>
+								<p>If no context is found, returns <code>undefined</code></p>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../globals.html#context" class="tsd-signature-type">Context</a></h4>
 						</li>
 					</ul>
@@ -502,6 +606,18 @@
 							:23</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>A disabled component will not participate in the query, or listen to <a href="../classes/componentevents.html">ComponentEvents</a>.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>type</dt>
+							<dd><p>{boolean}</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="logger" class="tsd-anchor"></a>
@@ -515,6 +631,11 @@
 							:18</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Allows component to log in the dev console.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited">
 					<a name="responsivecomponents" class="tsd-anchor"></a>
@@ -528,6 +649,12 @@
 							:528</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Allows to get and set the different breakpoints for mobile and tablet devices.</p>
+						</div>
+						<p>This is useful, amongst other, for <a href="facet.html">Facet</a>, <a href="tab.html">Tab</a> and <a href="resultlist.html">ResultList</a></p>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-coveo-component tsd-is-inherited tsd-is-static">
 					<a name="id" class="tsd-anchor"></a>
@@ -541,6 +668,12 @@
 							:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The static ID that each component needs in order to be identified.<br/>
+							For example, SearchButton -&gt; static ID: SearchButton -&gt; className: CoveoSearchButton</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -556,6 +689,15 @@
 							:196</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>If <a href="recommendation.html#options.enableresponsivemode">Recommendation.options.enableResponsiveMode</a> is <code>true</code> for all Recommendation components, specifies the
+							label of the dropdown button that allows to display the Recommendation components when in responsive mode.</p>
+						</div>
+						<p>If more than one Recommendation component in the search interface specifies a value for this option, then the
+						framework uses the first occurrence of the option.</p>
+						<p>Default value is <code>Recommendations</code>.</p>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-dropdown-header-label&#x3D;&#x27;foo&#x27;</pre>
@@ -572,6 +714,25 @@
 							:169</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to enable <em>responsive mode</em> for Recommendation components. Setting this options to <code>false</code> on
+								any Recommendation component in a search interface disables responsive mode for all other Recommendation
+							components in the search interface.</p>
+						</div>
+						<p>Responsive mode displays all Recommendation components under a single dropdown button whenever the width of the
+							HTML element which the search interface is bound to reaches or falls behind a certain threshold (see
+						<a href="recommendation.html#options.responsivebreakpoint">Recommendation.options.responsiveBreakpoint</a>).</p>
+						<p>See also <a href="recommendation.html#options.dropdownheaderlabel">Recommendation.options.dropdownHeaderLabel</a>.</p>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-enable-responsive-mode&#x3D;&#x27;true&#x27;
@@ -589,6 +750,19 @@ data-enable-responsive-mode&#x3D;&#x27;false&#x27;</pre>
 							:146</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to hide the Recommendations component if no result or recommendation is available.</p>
+						</div>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-hide-if-no-results&#x3D;&#x27;true&#x27;
@@ -606,6 +780,14 @@ data-hide-if-no-results&#x3D;&#x27;false&#x27;</pre>
 							:100</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the ID of the interface.
+							The usage analytics use the interface ID to know which recommendation interface was selected.</p>
+						</div>
+						<p>Default value is <code>Recommendation</code> for the first one and <code>Recommendation_{number}</code>, where {number} depends on the
+						number of Recommendation interfaces with default IDs in the page for the others.</p>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-id&#x3D;&#x27;foo&#x27;</pre>
@@ -622,6 +804,11 @@ data-hide-if-no-results&#x3D;&#x27;false&#x27;</pre>
 							:85</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the main <a href="searchinterface.html">SearchInterface</a> to listen to.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.optionstouse" class="tsd-anchor"></a>
@@ -634,6 +821,29 @@ data-hide-if-no-results&#x3D;&#x27;false&#x27;</pre>
 							:119</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies which options from the main <a href="../classes/querybuilder.html">QueryBuilder</a> to use in the triggered query.</p>
+						</div>
+						<p>Possible values are:</p>
+						<ul>
+							<li><code>expression</code></li>
+							<li><code>advancedExpression</code></li>
+							<li><code>constantExpression</code></li>
+							<li><code>disjunctionExpression</code></li>
+						</ul>
+						<p><strong>Example:</strong></p>
+						<p>Adding the expression (<code>q</code>) and the advanced expression (<code>aq</code>) parts of the main query in the triggered query:</p>
+						<p><code>data-options-to-use=&quot;expression,advancedExpression&quot;</code></p>
+						<p>Default value is <code>expression</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>[expression]</code></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.responsivebreakpoint" class="tsd-anchor"></a>
@@ -646,6 +856,25 @@ data-hide-if-no-results&#x3D;&#x27;false&#x27;</pre>
 							:185</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>If <a href="recommendation.html#options.enableresponsivemode">Recommendation.options.enableResponsiveMode</a> is <code>true</code> for all Recommendation components, specifies the
+							width threshold (in pixels) of the search interface at which Recommendation components go in responsive mode.</p>
+						</div>
+						<p>Recommendation components go in responsive mode when the width of the search interface is equal to or lower than
+						this value.</p>
+						<p>The <code>search interface</code> corresponds to the HTML element with the class <code>CoveoSearchInterface</code>.</p>
+						<p>If more than one Recommendation component in the search interface specifies a value for this option, then the
+						framework uses the last occurrence of the option.</p>
+						<p>Default value is <code>1000</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>1000</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-responsive-breakpoint&#x3D;&#x27;10&#x27;</pre>
@@ -662,6 +891,25 @@ data-hide-if-no-results&#x3D;&#x27;false&#x27;</pre>
 							:135</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specifies whether to send the actions history along with the triggered query.</p>
+						</div>
+						<p>Setting this option to <code>false</code> makes it impossible for this component to get Coveo Machine Learning
+						recommendations.</p>
+						<p>However, setting this option to <code>false</code> can be useful to display side results in a search page.</p>
+						<p>Default value is <code>true</code>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>deprecated</dt>
+							<dd><p>This option is now deprecated. The correct way to control this behavior is to configure an appropriate machine learning model in the administration interface (Recommendation, Relevance tuning, Query suggestions).</p>
+							</dd>
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-send-actions-history&#x3D;&#x27;true&#x27;
@@ -679,6 +927,12 @@ data-send-actions-history&#x3D;&#x27;false&#x27;</pre>
 							:91</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies the user context to send to Coveo usage analytics.
+							The component sends this information with the query alongside the user history to get the recommendations.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -699,13 +953,28 @@ data-send-actions-history&#x3D;&#x27;false&#x27;</pre>
 									:206</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new Recommendation component.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>element: <span class="tsd-signature-type">HTMLElement</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The HTMLElement on which to instantiate the component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">IRecommendationOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The options for the Recommendation component.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> analyticsOptions: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
@@ -714,6 +983,10 @@ data-send-actions-history&#x3D;&#x27;false&#x27;</pre>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> _window: <span class="tsd-signature-type">Window</span><span class="tsd-signature-symbol"> =&nbsp;window</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="recommendation.html" class="tsd-signature-type">Recommendation</a></h4>
