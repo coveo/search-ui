@@ -1,5 +1,5 @@
 import * as Globalize from 'globalize';
-import { each, filter, first, map, rest } from 'underscore';
+import { first, rest } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
@@ -45,66 +45,66 @@ export class BreadcrumbValueList {
     if (this.elem) {
       return (
         `${this.facet.options.title}: ` +
-        map($$(this.elem).findAll('.coveo-facet-breadcrumb-value'), (value: HTMLElement) => {
-          return $$(value).text();
-        }).join(', ')
+        $$(this.elem)
+          .findAll('.coveo-facet-breadcrumb-value')
+          .map((value: HTMLElement) => {
+            return $$(value).text();
+          })
+          .join(', ')
       );
     }
     return '';
   }
 
   private buildExpanded() {
-    each(this.expanded, (value: FacetValue, index?: number) => {
+    this.expanded.forEach((value: FacetValue) => {
       const elementBreadcrumb = new this.breadcrumbValueElementKlass(this.facet, value).build();
       this.valueContainer.appendChild(elementBreadcrumb.el);
     });
   }
 
   private buildCollapsed() {
-    const numberOfSelected = filter(this.collapsed, (value: FacetValue) => value.selected).length;
-    const numberOfExcluded = filter(this.collapsed, (value: FacetValue) => value.excluded).length;
+    const numberOfSelected = this.collapsed.filter((value: FacetValue) => value.selected).length;
+    const numberOfExcluded = this.collapsed.filter((value: FacetValue) => value.excluded).length;
     Assert.check(numberOfSelected + numberOfExcluded == this.collapsed.length);
 
-    const listContainer = $$('li', {
-      className: 'coveo-facet-breadcrumb-value-list-item'
-    });
+    const nMoreElement = $$(
+      'div',
+      {
+        className: 'coveo-facet-breadcrumb-value'
+      },
+      $$(
+        'span',
+        {
+          className: 'coveo-facet-breadcrumb-multi-count'
+        },
+        l('NMore', Globalize.format(numberOfSelected + numberOfExcluded, 'n0'))
+      )
+    );
 
-    const elem = $$('div', {
-      className: 'coveo-facet-breadcrumb-value'
-    });
+    const nMoreContainer = $$(
+      'li',
+      {
+        className: 'coveo-facet-breadcrumb-value-list-item'
+      },
+      nMoreElement
+    );
 
-    const multiCount = $$('span', {
-      className: 'coveo-facet-breadcrumb-multi-count'
-    });
-
-    multiCount.text(l('NMore', Globalize.format(numberOfSelected + numberOfExcluded, 'n0')));
-    elem.append(multiCount.el);
-
-    const valueElements = map(this.collapsed, facetValue => {
-      return new this.breadcrumbValueElementKlass(this.facet, facetValue);
-    });
-
-    const toolTips = map(valueElements, valueElement => {
-      return valueElement.getBreadcrumbTooltip();
-    });
+    const collapsedBreadcrumbs = this.collapsed.map((value: FacetValue) => new this.breadcrumbValueElementKlass(this.facet, value));
+    const toolTip = collapsedBreadcrumbs.map(element => element.getBreadcrumbTooltip()).join('\n');
 
     new AccessibleButton()
-      .withElement(elem)
-      .withTitle(toolTips.join('\n'))
+      .withElement(nMoreElement)
+      .withTitle(toolTip)
       .withSelectAction(() => {
-        const elements: HTMLElement[] = [];
-        each(valueElements, valueElement => {
-          elements.push(valueElement.build().el);
+        nMoreElement.remove();
+        collapsedBreadcrumbs.forEach(breadcrumb => {
+          this.valueContainer.appendChild(breadcrumb.build().el);
         });
-        each(elements, el => {
-          $$(el).insertBefore(elem.el);
-        });
-        elem.detach();
       })
       .build();
 
-    listContainer.append(elem.el);
-    this.valueContainer.appendChild(listContainer.el);
+    this.valueContainer.appendChild(nMoreContainer.el);
   }
 
   private setExpandedAndCollapsed() {
