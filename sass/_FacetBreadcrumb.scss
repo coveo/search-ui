@@ -5,8 +5,7 @@
 }
 
 .coveo-facet-breadcrumb-value,
-.coveo-facet-slider-breadcrumb-value,
-.coveo-facet-breadcrumb-value-list-item {
+.coveo-facet-slider-breadcrumb-value {
   @include breadcrumb-value();
   display: inline-block;
   &.coveo-excluded .coveo-facet-breadcrumb-caption {
@@ -15,6 +14,7 @@
 }
 
 .coveo-facet-breadcrumb-value-list-item {
+  display: inline-block;
   margin: 0;
   padding: 0;
 }
