@@ -1,5 +1,5 @@
 import * as Globalize from 'globalize';
-import { first, rest } from 'underscore';
+import { first, rest, filter } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { l } from '../../strings/Strings';
 import { $$ } from '../../utils/Dom';
@@ -64,8 +64,8 @@ export class BreadcrumbValueList {
   }
 
   private buildCollapsed() {
-    const numberOfSelected = this.collapsed.filter((value: FacetValue) => value.selected).length;
-    const numberOfExcluded = this.collapsed.filter((value: FacetValue) => value.excluded).length;
+    const numberOfSelected = filter(this.collapsed, (value: FacetValue) => value.selected).length;
+    const numberOfExcluded = filter(this.collapsed, (value: FacetValue) => value.excluded).length;
     Assert.check(numberOfSelected + numberOfExcluded == this.collapsed.length);
 
     const nMoreElement = $$(
