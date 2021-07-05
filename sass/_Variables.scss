@@ -63,7 +63,9 @@ $default-medium-border: 2px solid $color-very-light-grey;
   border-radius: 4px;
 }
 @mixin highContrastModeOutline {
-  outline: 1px solid transparent;
+  &:not(:focus) {
+    outline: 1px solid transparent;
+  }
 }
 
 $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -126,7 +128,9 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
   &:hover,
-  &:hover a {
+  &:hover a,
+  &:focus,
+  &:focus a {
     text-decoration: underline;
   }
   &.coveo-selected * {
