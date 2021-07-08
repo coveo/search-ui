@@ -294,6 +294,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     /**
      * Whether to exclude folded result parents when estimating result counts for facet values.
      *
+     * **Note:** The target folding field must be a facet field with the **Use cache for nested queries** options enabled (see [Add or Edit a Field](https://docs.coveo.com/en/1982)).
+     *
      * See also the [`Folding`]{@link Folding} and [`FoldingForThread`]{@link FoldingForThread} components.
      *
      * **Default:** `false` if folded results are requested; `true` otherwise.
