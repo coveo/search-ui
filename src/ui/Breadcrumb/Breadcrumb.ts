@@ -123,8 +123,7 @@ export class Breadcrumb extends Component {
     const clear = $$(
       'div',
       {
-        className: 'coveo-breadcrumb-clear-all',
-        title: l('ClearAllFilters')
+        className: 'coveo-breadcrumb-clear-all'
       },
       clearText
     ).el;
@@ -133,7 +132,7 @@ export class Breadcrumb extends Component {
       .withElement(clear)
       .withSelectAction(() => this.clearBreadcrumbs())
       .withOwner(this.bind)
-      .withLabel(l('ClearAllFilters'))
+      .withoutLabelOrTitle()
       .build();
 
     this.element.appendChild(clear);
