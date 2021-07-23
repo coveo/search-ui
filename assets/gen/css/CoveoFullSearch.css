@@ -193,7 +193,9 @@
 }
 
 .coveo-emails-excess-collapsed:hover,
-.coveo-emails-excess-collapsed:hover a {
+.coveo-emails-excess-collapsed:hover a,
+.coveo-emails-excess-collapsed:focus,
+.coveo-emails-excess-collapsed:focus a {
   text-decoration: underline;
 }
 
@@ -239,8 +241,12 @@
 
 .coveo-modal-container .coveo-email-from a:hover,
 .coveo-modal-container .coveo-email-from a:hover a,
+.coveo-modal-container .coveo-email-from a:focus,
+.coveo-modal-container .coveo-email-from a:focus a,
 .coveo-modal-container .coveo-email-to a:hover,
-.coveo-modal-container .coveo-email-to a:hover a {
+.coveo-modal-container .coveo-email-to a:hover a,
+.coveo-modal-container .coveo-email-to a:focus,
+.coveo-modal-container .coveo-email-to a:focus a {
   text-decoration: underline;
 }
 
@@ -267,7 +273,9 @@
 }
 
 .CoveoEmailAction:hover,
-.CoveoEmailAction:hover a {
+.CoveoEmailAction:hover a,
+.CoveoEmailAction:focus,
+.CoveoEmailAction:focus a {
   text-decoration: underline;
 }
 
@@ -648,8 +656,12 @@
 
 .coveo-lithium-from a:hover,
 .coveo-lithium-from a:hover a,
+.coveo-lithium-from a:focus,
+.coveo-lithium-from a:focus a,
 .coveo-lithium-to a:hover,
-.coveo-lithium-to a:hover a {
+.coveo-lithium-to a:hover a,
+.coveo-lithium-to a:focus,
+.coveo-lithium-to a:focus a {
   text-decoration: underline;
 }
 
@@ -8517,7 +8529,9 @@ body.coveo-modalBox-opened .CoveoSearchInterface {
 }
 
 .coveo-debug.coveo-modal-container .coveo-modal-header a:hover,
-.coveo-debug.coveo-modal-container .coveo-modal-header a:hover a {
+.coveo-debug.coveo-modal-container .coveo-modal-header a:hover a,
+.coveo-debug.coveo-modal-container .coveo-modal-header a:focus,
+.coveo-debug.coveo-modal-container .coveo-modal-header a:focus a {
   text-decoration: underline;
 }
 
@@ -8932,7 +8946,6 @@ input[type='checkbox'].coveo-checkbox + button {
   background: none;
   border: none;
   color: #296896;
-  outline: 1px solid transparent;
   font-size: 14px;
   margin-right: 15px;
   outline-offset: 1px;
@@ -8945,12 +8958,18 @@ input[type='checkbox'].coveo-checkbox + button {
 }
 
 .coveo-missing-term-breadcrumb-value:hover,
-.coveo-missing-term-breadcrumb-value:hover a {
+.coveo-missing-term-breadcrumb-value:hover a,
+.coveo-missing-term-breadcrumb-value:focus,
+.coveo-missing-term-breadcrumb-value:focus a {
   text-decoration: underline;
 }
 
 .coveo-missing-term-breadcrumb-value.coveo-selected * {
   color: #0059b3;
+}
+
+.coveo-missing-term-breadcrumb-value:not(:focus) {
+  outline: 1px solid transparent;
 }
 
 .coveo-missing-term-breadcrumb-value.coveo-selected * {
