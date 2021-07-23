@@ -89,13 +89,9 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
 
         it('should have an accessible label', () => {
           const expectedLabel = l(
-            'HierarchicalFacetValueIndentedUnder',
-            l(
-              'IncludeValueWithResultCount',
-              facetValue.displayValue,
-              l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
-            ),
-            facet.options.clearLabel
+            'IncludeValueWithResultCount',
+            facetValue.displayValue,
+            l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
           );
           expect(render.getAttribute('aria-label')).toEqual(expectedLabel);
         });
@@ -122,11 +118,11 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
           expect(count.innerText).toEqual(`(${facetValue.numberOfResults})`);
         });
 
-        it('should render a path containing only the prefix and the clearLabel', () => {
+        it('should render a path containing only the clearLabel', () => {
           const [path] = $$(render).findClass(ClassNames.PATH_CLASSNAME);
           expect(path.getAttribute('aria-hidden')).toEqual('true');
-          const [, part] = expectChildren(path, [ClassNames.PATH_PREFIX_CLASSNAME, ClassNames.PATH_PART_CLASSNAME]);
-          expect(part.innerText).toEqual(facet.options.clearLabel);
+          const [part] = expectChildren(path, [ClassNames.PATH_PART_CLASSNAME]);
+          expect(part.innerText).toEqual(l('HierarchicalFacetValueRootPrefix', facet.options.clearLabel));
         });
       });
     });
@@ -167,6 +163,19 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
       beforeEach(() => {
         initializeRenderer(parentValues);
         render = renderer.render();
+      });
+
+      it('should have an accessible label', () => {
+        const expectedLabel = l(
+          'HierarchicalFacetValueIndentedUnder',
+          l(
+            'IncludeValueWithResultCount',
+            facetValue.displayValue,
+            l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
+          ),
+          parentValues.join(', ')
+        );
+        expect(render.getAttribute('aria-label')).toEqual(expectedLabel);
       });
 
       it('should show every parent value in the label', () => {
