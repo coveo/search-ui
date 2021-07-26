@@ -35,7 +35,7 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
   private get pathToRender(): { start: string[]; end?: string[] } {
     const parentPath = this.facetValue.fullPath.slice(0, -1);
     if (!parentPath.length) {
-      return { start: [] };
+      return { start: [this.facet.options.clearLabel] };
     }
     if (parentPath.length > PATH_START_LENGTH + PATH_END_LENGTH) {
       return { start: parentPath.slice(0, PATH_START_LENGTH), end: parentPath.slice(-PATH_END_LENGTH) };
@@ -45,15 +45,15 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
 
   private get label() {
     const { start, end } = this.pathToRender;
-    const valueLabel = l(
-      'IncludeValueWithResultCount',
-      this.facetValue.displayValue,
-      l('ResultCount', this.facetValue.numberOfResults, this.facetValue.numberOfResults)
+    return l(
+      'HierarchicalFacetValueIndentedUnder',
+      l(
+        'IncludeValueWithResultCount',
+        this.facetValue.displayValue,
+        l('ResultCount', this.facetValue.numberOfResults, this.facetValue.numberOfResults)
+      ),
+      [...start, ...(end || [])].join(', ')
     );
-    if (start.length === 0) {
-      return valueLabel;
-    }
-    return l('HierarchicalFacetValueIndentedUnder', valueLabel, [...start, ...(end || [])].join(', '));
   }
 
   public render() {
@@ -85,16 +85,15 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
   }
 
   private renderPath() {
+    const element = $$(
+      'ul',
+      {
+        className: PATH_CLASSNAME,
+        ariaHidden: true
+      },
+      this.renderPathPrefix()
+    );
     const { start, end } = this.pathToRender;
-    const element = $$('ul', {
-      className: PATH_CLASSNAME,
-      ariaHidden: true
-    });
-    if (start.length === 0) {
-      element.append(this.renderPathPart(l('HierarchicalFacetValueRootPrefix', this.facet.options.clearLabel)).el);
-      return element;
-    }
-    element.append(this.renderPathPrefix().el);
     start.forEach((part, index) => {
       if (index > 0) {
         element.append(this.renderPathSeparator().el);

@@ -7527,10 +7527,6 @@
     "en": "in",
     "fr": "dans"
   },
-  "HierarchicalFacetValueRootPrefix": {
-    "en": "in {0}",
-    "fr": "dans {0}"
-  },
   "UsefulnessFeedbackRequest": {
     "en": "Was this useful?",
     "fr": "Était-ce utile?"
