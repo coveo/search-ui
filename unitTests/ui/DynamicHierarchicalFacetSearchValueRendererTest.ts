@@ -95,7 +95,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
               facetValue.displayValue,
               l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
             ),
-            facet.options.clearLabel
+            l('AllCategories')
           );
           expect(render.getAttribute('aria-label')).toEqual(expectedLabel);
         });
@@ -126,7 +126,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
           const [path] = $$(render).findClass(ClassNames.PATH_CLASSNAME);
           expect(path.getAttribute('aria-hidden')).toEqual('true');
           const [, part] = expectChildren(path, [ClassNames.PATH_PREFIX_CLASSNAME, ClassNames.PATH_PART_CLASSNAME]);
-          expect(part.innerText).toEqual(facet.options.clearLabel);
+          expect(part.innerText).toEqual(l('AllCategories'));
         });
       });
     });
