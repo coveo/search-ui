@@ -35,7 +35,7 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
   private get pathToRender(): { start: string[]; end?: string[] } {
     const parentPath = this.facetValue.fullPath.slice(0, -1);
     if (!parentPath.length) {
-      return { start: [this.facet.options.clearLabel] };
+      return { start: [l('AllCategories')] };
     }
     if (parentPath.length > PATH_START_LENGTH + PATH_END_LENGTH) {
       return { start: parentPath.slice(0, PATH_START_LENGTH), end: parentPath.slice(-PATH_END_LENGTH) };
