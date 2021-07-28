@@ -47,7 +47,7 @@ export function AuthenticationProviderTest() {
       test = null;
     });
 
-    it('when the url hash contains an #access_token param, it stores the token in localstorage', () => {
+    it('url hash contains an #access_token param, it stores the token in localstorage', () => {
       const token = 'test-token';
       window.location.hash = `access_token=${token}`;
 
@@ -57,7 +57,7 @@ export function AuthenticationProviderTest() {
       expect(localStorage.getItem(samlTokenStorageKey)).toBe(token);
     });
 
-    it('when the url hash contains multiple params and an #access_token param, it stores the token in localstorage', () => {
+    it('url hash contains multiple params including an #access_token param, it stores the token in localstorage', () => {
       const token = 'test-token';
       window.location.hash = `a=b&access_token=${token}`;
 
@@ -67,7 +67,7 @@ export function AuthenticationProviderTest() {
       expect(localStorage.getItem(samlTokenStorageKey)).toBe(token);
     });
 
-    it('when the url hash contains an #access_token param, it decodes the token before storing it', () => {
+    it('url hash contains an #access_token param, it decodes the token before storing it', () => {
       const token = 'test%3Etoken';
       window.location.hash = `access_token=${token}`;
 
@@ -77,7 +77,7 @@ export function AuthenticationProviderTest() {
       expect(localStorage.getItem(samlTokenStorageKey)).toBe('test>token');
     });
 
-    it('when local storage contains a saml token, it updates the endpoint to use it', () => {
+    it('local storage contains a saml token, it updates the endpoint to use it', () => {
       const token = 'test-token';
       localStorage.setItem(samlTokenStorageKey, token);
 
