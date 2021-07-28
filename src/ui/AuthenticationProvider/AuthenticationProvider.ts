@@ -16,6 +16,7 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_AuthenticationProvider';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { SearchEndpoint } from '../../Core';
 
 export interface IAuthenticationProviderOptions {
   name?: string;
@@ -23,6 +24,8 @@ export interface IAuthenticationProviderOptions {
   useIFrame?: boolean;
   showIFrame?: boolean;
 }
+
+export const samlTokenStorageKey = 'coveo-SAML-access-token';
 
 /**
  * The `AuthenticationProvider` component makes it possible to execute queries with an identity that the end user
@@ -112,6 +115,9 @@ export class AuthenticationProvider extends Component {
   ) {
     super(element, AuthenticationProvider.ID, bindings);
 
+    this.storeTokenIfFoundInUrl();
+    this.loadTokenFromStorage();
+
     this.options = ComponentOptions.initComponentOptions(element, AuthenticationProvider, options);
 
     Assert.exists(this.options.name);
@@ -134,6 +140,33 @@ export class AuthenticationProvider extends Component {
         svgIconClassName: 'coveo-authentication-provider-svg'
       });
     });
+  }
+
+  private storeTokenIfFoundInUrl() {
+    const token = this.getTokenFromUrl();
+    token && localStorage.setItem(samlTokenStorageKey, token);
+  }
+
+  private getTokenFromUrl() {
+    const fragment = window.location.hash.slice(1);
+    const params = fragment.split('&');
+
+    const tokenParam = _.find(params, param => {
+      const [key] = param.split('=');
+      return key === 'access_token';
+    });
+
+    if (!tokenParam) {
+      return '';
+    }
+
+    const token = tokenParam.split('=')[1];
+    return token ? decodeURIComponent(token) : '';
+  }
+
+  private loadTokenFromStorage() {
+    const token = localStorage.getItem(samlTokenStorageKey);
+    token && SearchEndpoint.defaultEndpoint.accessToken.updateToken(token);
   }
 
   private handleBuildingCallOptions(args: IBuildingCallOptionsEventArgs) {
