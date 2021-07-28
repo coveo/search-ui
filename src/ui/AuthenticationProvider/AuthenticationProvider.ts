@@ -180,8 +180,8 @@ export class AuthenticationProvider extends Component {
     args.defer.push(promise);
   }
 
-  private async exchangeTemporaryToken(token: string) {
-    return await SearchEndpoint.defaultEndpoint.exchangeAuthenticationProviderTemporaryTokenForAccessToken(token);
+  private exchangeTemporaryToken(token: string) {
+    return SearchEndpoint.defaultEndpoint.exchangeAuthenticationProviderTemporaryTokenForAccessToken(token);
   }
 
   private replaceTemporaryTokenWithAccessToken(accessToken: string) {
