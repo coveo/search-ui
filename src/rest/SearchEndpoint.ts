@@ -324,20 +324,23 @@ export class SearchEndpoint implements ISearchEndpoint {
     });
   }
 
+  /**
+   * Exchanges a temporary authentication provider token for an access token.
+   *
+   * @param token - the temporary token.
+   * @returns {string} The access token.
+   */
   @path('/login/handshake/token')
   @method('POST')
   @requestDataType('application/json')
   @responseType('json')
-  public exchangeAuthenticationProviderTemporaryTokenForAccessToken(token: string) {
-    return this.performOneCall<string>({
-      method: 'POST',
-      requestData: { token },
-      queryString: [],
-      responseType: 'json',
-      url: '/login/handshake/token',
-      errorsAsSuccess: false,
-      requestDataType: 'application/json'
-    });
+  public exchangeAuthenticationProviderTemporaryTokenForAccessToken(
+    token: string,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ) {
+    const call = this.buildCompleteCall({ token }, callOptions, callParams);
+    return this.performOneCall<string>(call.params, call.options);
   }
 
   /**
