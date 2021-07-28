@@ -3,7 +3,7 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingCallOptionsEventArgs, IQueryErrorEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { InitializationEvents } from '../../events/InitializationEvents';
+import { IInitializationEventArgs, InitializationEvents } from '../../events/InitializationEvents';
 import { SettingsEvents } from '../../events/SettingsEvents';
 import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
 import { DomUtils } from '../../utils/DomUtils';
@@ -25,7 +25,8 @@ export interface IAuthenticationProviderOptions {
   showIFrame?: boolean;
 }
 
-export const samlTokenStorageKey = 'coveo-SAML-access-token';
+export const authProviderTemporaryToken = 'coveo-auth-provider-temporary-token';
+export const authProviderAccessToken = 'coveo-auth-provider-access-token';
 
 /**
  * The `AuthenticationProvider` component makes it possible to execute queries with an identity that the end user
@@ -114,9 +115,7 @@ export class AuthenticationProvider extends Component {
     public _window?: Window
   ) {
     super(element, AuthenticationProvider.ID, bindings);
-
-    this.storeTokenIfFoundInUrl();
-    this.loadTokenFromStorage();
+    this.storeTemporaryTokenIfFoundInUrl();
 
     this.options = ComponentOptions.initComponentOptions(element, AuthenticationProvider, options);
 
@@ -130,6 +129,9 @@ export class AuthenticationProvider extends Component {
     this.bind.onRootElement(QueryEvents.buildingCallOptions, this.handleBuildingCallOptions);
     this.bind.onRootElement(QueryEvents.queryError, this.handleQueryError);
     this.bind.onRootElement(InitializationEvents.nuke, this.handleNuke);
+    this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, (args: IInitializationEventArgs) =>
+      this.onAfterComponentsInitialization(args)
+    );
 
     this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
       args.menuData.push({
@@ -142,12 +144,12 @@ export class AuthenticationProvider extends Component {
     });
   }
 
-  private storeTokenIfFoundInUrl() {
-    const token = this.getTokenFromUrl();
-    token && localStorage.setItem(samlTokenStorageKey, token);
+  private storeTemporaryTokenIfFoundInUrl() {
+    const token = this.getTemporaryTokenFromUrl();
+    token && localStorage.setItem(authProviderTemporaryToken, token);
   }
 
-  private getTokenFromUrl() {
+  private getTemporaryTokenFromUrl() {
     const fragment = window.location.hash.slice(1);
     const params = fragment.split('&');
 
@@ -164,8 +166,31 @@ export class AuthenticationProvider extends Component {
     return token ? decodeURIComponent(token) : '';
   }
 
-  private loadTokenFromStorage() {
-    const token = localStorage.getItem(samlTokenStorageKey);
+  private onAfterComponentsInitialization(args: IInitializationEventArgs) {
+    const temporaryToken = localStorage.getItem(authProviderTemporaryToken);
+
+    if (!temporaryToken) {
+      return this.loadAccessTokenFromStorage();
+    }
+
+    const promise = this.exchangeTemporaryToken(temporaryToken)
+      .then(token => this.replaceTemporaryTokenWithAccessToken(token))
+      .then(() => this.loadAccessTokenFromStorage());
+
+    args.defer.push(promise);
+  }
+
+  private async exchangeTemporaryToken(token: string) {
+    return await SearchEndpoint.defaultEndpoint.exchangeAuthenticationProviderTemporaryTokenForAccessToken(token);
+  }
+
+  private replaceTemporaryTokenWithAccessToken(accessToken: string) {
+    localStorage.removeItem(authProviderTemporaryToken);
+    localStorage.setItem(authProviderAccessToken, accessToken);
+  }
+
+  private loadAccessTokenFromStorage() {
+    const token = localStorage.getItem(authProviderAccessToken);
     token && SearchEndpoint.defaultEndpoint.accessToken.updateToken(token);
   }
 

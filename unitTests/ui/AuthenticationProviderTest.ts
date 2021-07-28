@@ -1,5 +1,9 @@
 import * as Mock from '../MockEnvironment';
-import { AuthenticationProvider, samlTokenStorageKey } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
+import {
+  AuthenticationProvider,
+  authProviderAccessToken,
+  authProviderTemporaryToken
+} from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { ModalBox } from '../../src/ExternalModulesShim';
 import { IAuthenticationProviderOptions } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { IBuildingCallOptionsEventArgs } from '../../src/events/QueryEvents';
@@ -11,14 +15,21 @@ import { $$ } from '../../src/utils/Dom';
 import { MissingAuthenticationError } from '../../src/rest/MissingAuthenticationError';
 import _ = require('underscore');
 import { SearchEndpoint } from '../../src/BaseModules';
+import { InitializationEvents } from '../../src/EventsModules';
+import { IInitializationEventArgs } from '../../src/events/InitializationEvents';
 
 export function AuthenticationProviderTest() {
   describe('AuthenticationProvider', function () {
+    let initializationArgs: IInitializationEventArgs;
     let options: IAuthenticationProviderOptions;
     let test: Mock.IBasicComponentSetup<AuthenticationProvider>;
 
     function initAuthenticationProvider() {
       test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, options);
+    }
+
+    function triggerAfterComponentsInitialization() {
+      $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization, initializationArgs);
     }
 
     function setupDefaultEndpoint() {
@@ -29,7 +40,11 @@ export function AuthenticationProviderTest() {
 
     beforeEach(function () {
       window.location.hash = '';
-      localStorage.removeItem(samlTokenStorageKey);
+      localStorage.clear();
+
+      initializationArgs = {
+        defer: []
+      };
 
       options = {
         name: 'foo',
@@ -51,41 +66,92 @@ export function AuthenticationProviderTest() {
       const token = 'test-token';
       window.location.hash = `access_token=${token}`;
 
-      setupDefaultEndpoint();
       initAuthenticationProvider();
 
-      expect(localStorage.getItem(samlTokenStorageKey)).toBe(token);
+      expect(localStorage.getItem(authProviderTemporaryToken)).toBe(token);
     });
 
     it('url hash contains multiple params including an #access_token param, it stores the token in localstorage', () => {
       const token = 'test-token';
       window.location.hash = `a=b&access_token=${token}`;
 
-      setupDefaultEndpoint();
       initAuthenticationProvider();
 
-      expect(localStorage.getItem(samlTokenStorageKey)).toBe(token);
+      expect(localStorage.getItem(authProviderTemporaryToken)).toBe(token);
     });
 
     it('url hash contains an #access_token param, it decodes the token before storing it', () => {
       const token = 'test%3Etoken';
       window.location.hash = `access_token=${token}`;
 
-      setupDefaultEndpoint();
       initAuthenticationProvider();
 
-      expect(localStorage.getItem(samlTokenStorageKey)).toBe('test>token');
+      expect(localStorage.getItem(authProviderTemporaryToken)).toBe('test>token');
     });
 
-    it('local storage contains a saml token, it updates the endpoint to use it', () => {
-      const token = 'test-token';
-      localStorage.setItem(samlTokenStorageKey, token);
+    it(`local storage contains an access token and no temporary token,
+    when components have initialized, it updates the endpoint to use the access token`, () => {
+      const accessToken = 'access-token';
+      localStorage.setItem(authProviderAccessToken, accessToken);
 
       setupDefaultEndpoint();
       const spy = spyOn(SearchEndpoint.endpoints['default'].accessToken, 'updateToken');
       initAuthenticationProvider();
 
-      expect(spy).toHaveBeenCalledWith(token);
+      triggerAfterComponentsInitialization();
+
+      expect(spy).toHaveBeenCalledWith(accessToken);
+    });
+
+    describe(`local storage contains a temporary token, when components have initialized`, () => {
+      const accessToken = 'access-token';
+
+      beforeEach(() => {
+        localStorage.setItem(authProviderTemporaryToken, 'temporary-token');
+        setupDefaultEndpoint();
+
+        spyOn(SearchEndpoint.endpoints['default'], 'exchangeAuthenticationProviderTemporaryTokenForAccessToken').and.returnValue(
+          accessToken
+        );
+
+        initAuthenticationProvider();
+      });
+
+      it('adds an entry to the initialization args #defer array', () => {
+        triggerAfterComponentsInitialization();
+        expect(initializationArgs.defer.length).toBe(1);
+      });
+
+      it('removes the temporary token from local storage', done => {
+        triggerAfterComponentsInitialization();
+
+        setTimeout(() => {
+          const token = localStorage.getItem(authProviderTemporaryToken);
+          expect(token).toBe(null);
+          done();
+        }, 0);
+      });
+
+      it('adds the access token to local storage', done => {
+        triggerAfterComponentsInitialization();
+
+        setTimeout(() => {
+          const token = localStorage.getItem(authProviderAccessToken);
+          expect(token).toBe(accessToken);
+          done();
+        }, 0);
+      });
+
+      it('updates the endpoint to use the access token', done => {
+        const spy = spyOn(SearchEndpoint.endpoints['default'].accessToken, 'updateToken');
+
+        triggerAfterComponentsInitialization();
+
+        setTimeout(() => {
+          expect(spy).toHaveBeenCalledWith(accessToken);
+          done();
+        }, 0);
+      });
     });
 
     describe('exposes options', function () {

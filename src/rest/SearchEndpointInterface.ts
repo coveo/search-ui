@@ -92,6 +92,7 @@ export interface ISearchEndpoint {
   getBaseUri(): string;
   getBaseAlertsUri(): string;
   getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string;
+  exchangeAuthenticationProviderTemporaryTokenForAccessToken(token: string): Promise<string>;
   isJsonp(): boolean;
   search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults>;
   fetchBinary(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ArrayBuffer>;

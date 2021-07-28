@@ -324,6 +324,22 @@ export class SearchEndpoint implements ISearchEndpoint {
     });
   }
 
+  @path('/login/handshake/token')
+  @method('POST')
+  @requestDataType('application/json')
+  @responseType('json')
+  public exchangeAuthenticationProviderTemporaryTokenForAccessToken(token: string) {
+    return this.performOneCall<string>({
+      method: 'POST',
+      requestData: { token },
+      queryString: [],
+      responseType: 'json',
+      url: '/login/handshake/token',
+      errorsAsSuccess: false,
+      requestDataType: 'application/json'
+    });
+  }
+
   /**
    * Indicates whether the search endpoint is using JSONP internally to communicate with the Search API.
    * @returns {boolean} `true` in the search enpoint is using JSONP; `false` otherwise.
