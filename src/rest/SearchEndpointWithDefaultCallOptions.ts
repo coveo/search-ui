@@ -31,6 +31,10 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     this.options = endpoint.options;
   }
 
+  public get accessToken() {
+    return this.endpoint.accessToken;
+  }
+
   public getBaseUri(): string {
     return this.endpoint.getBaseUri();
   }

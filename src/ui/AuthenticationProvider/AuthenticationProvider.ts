@@ -16,7 +16,6 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_AuthenticationProvider';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { SearchEndpoint } from '../../Core';
 
 export interface IAuthenticationProviderOptions {
   name?: string;
@@ -175,7 +174,7 @@ export class AuthenticationProvider extends Component {
   }
 
   private exchangeHandshakeToken(token: string) {
-    return SearchEndpoint.defaultEndpoint.exchangeAuthenticationProviderToken(token);
+    return this.queryController.getEndpoint().exchangeAuthenticationProviderToken(token);
   }
 
   private storeAccessToken(accessToken: string) {
@@ -184,7 +183,7 @@ export class AuthenticationProvider extends Component {
 
   private loadAccessTokenFromStorage() {
     const token = localStorage.getItem(authProviderAccessToken);
-    token && SearchEndpoint.defaultEndpoint.accessToken.updateToken(token);
+    token && this.queryController.getEndpoint().accessToken.updateToken(token);
   }
 
   private handleBuildingCallOptions(args: IBuildingCallOptionsEventArgs) {

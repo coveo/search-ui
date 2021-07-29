@@ -28,10 +28,9 @@ export function AuthenticationProviderTest() {
       $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization, initializationArgs);
     }
 
-    function setupDefaultEndpoint() {
-      SearchEndpoint.endpoints['default'] = new SearchEndpoint({
-        restUri: 'https://platform.cloud.coveo.com/rest/search'
-      });
+    function setupEndpoint() {
+      const endpoint = new SearchEndpoint({ restUri: 'https://platform.cloud.coveo.com/rest/search' });
+      test.env.queryController.getEndpoint = () => endpoint;
     }
 
     beforeEach(function () {
@@ -63,10 +62,10 @@ export function AuthenticationProviderTest() {
       const accessToken = 'access-token';
       localStorage.setItem(authProviderAccessToken, accessToken);
 
-      setupDefaultEndpoint();
-      const spy = spyOn(SearchEndpoint.endpoints['default'].accessToken, 'updateToken');
       initAuthenticationProvider();
+      setupEndpoint();
 
+      const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
       triggerAfterComponentsInitialization();
 
       expect(spy).toHaveBeenCalledWith(accessToken);
@@ -79,12 +78,12 @@ export function AuthenticationProviderTest() {
 
       beforeEach(() => {
         window.location.hash = `handshake_token=${handshakeToken}`;
-        setupDefaultEndpoint();
-
-        exchangeTokenSpy = spyOn(SearchEndpoint.endpoints['default'], 'exchangeAuthenticationProviderToken');
-        exchangeTokenSpy.and.returnValue(Promise.resolve(accessToken));
 
         initAuthenticationProvider();
+        setupEndpoint();
+
+        exchangeTokenSpy = spyOn(test.cmp.queryController.getEndpoint(), 'exchangeAuthenticationProviderToken');
+        exchangeTokenSpy.and.returnValue(Promise.resolve(accessToken));
       });
 
       it('exchanges the token', () => {
@@ -137,7 +136,7 @@ export function AuthenticationProviderTest() {
       });
 
       it('updates the endpoint to use the access token', async done => {
-        const spy = spyOn(SearchEndpoint.endpoints['default'].accessToken, 'updateToken');
+        const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
         triggerAfterComponentsInitialization();
         await Promise.resolve();
 
