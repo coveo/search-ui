@@ -25,7 +25,6 @@ export interface IAuthenticationProviderOptions {
   showIFrame?: boolean;
 }
 
-export const authProviderTemporaryToken = 'coveo-auth-provider-temporary-token';
 export const authProviderAccessToken = 'coveo-auth-provider-access-token';
 
 /**
@@ -115,7 +114,6 @@ export class AuthenticationProvider extends Component {
     public _window?: Window
   ) {
     super(element, AuthenticationProvider.ID, bindings);
-    this.storeTemporaryTokenIfFoundInUrl();
 
     this.options = ComponentOptions.initComponentOptions(element, AuthenticationProvider, options);
 
@@ -144,11 +142,6 @@ export class AuthenticationProvider extends Component {
     });
   }
 
-  private storeTemporaryTokenIfFoundInUrl() {
-    const token = this.getTemporaryTokenFromUrl();
-    token && localStorage.setItem(authProviderTemporaryToken, token);
-  }
-
   private getTemporaryTokenFromUrl() {
     const fragment = window.location.hash.slice(1);
     const params = fragment.split('&');
@@ -167,14 +160,14 @@ export class AuthenticationProvider extends Component {
   }
 
   private onAfterComponentsInitialization(args: IInitializationEventArgs) {
-    const temporaryToken = localStorage.getItem(authProviderTemporaryToken);
+    const temporaryToken = this.getTemporaryTokenFromUrl();
 
     if (!temporaryToken) {
       return this.loadAccessTokenFromStorage();
     }
 
     const promise = this.exchangeTemporaryToken(temporaryToken)
-      .then(token => this.replaceTemporaryTokenWithAccessToken(token))
+      .then(token => this.storeAccessToken(token))
       .then(() => this.loadAccessTokenFromStorage());
 
     args.defer.push(promise);
@@ -184,8 +177,7 @@ export class AuthenticationProvider extends Component {
     return SearchEndpoint.defaultEndpoint.exchangeAuthenticationProviderTemporaryTokenForAccessToken(token);
   }
 
-  private replaceTemporaryTokenWithAccessToken(accessToken: string) {
-    localStorage.removeItem(authProviderTemporaryToken);
+  private storeAccessToken(accessToken: string) {
     localStorage.setItem(authProviderAccessToken, accessToken);
   }
 

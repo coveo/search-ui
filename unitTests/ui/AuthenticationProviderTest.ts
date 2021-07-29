@@ -1,9 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import {
-  AuthenticationProvider,
-  authProviderAccessToken,
-  authProviderTemporaryToken
-} from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
+import { AuthenticationProvider, authProviderAccessToken } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { ModalBox } from '../../src/ExternalModulesShim';
 import { IAuthenticationProviderOptions } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { IBuildingCallOptionsEventArgs } from '../../src/events/QueryEvents';
@@ -62,34 +58,7 @@ export function AuthenticationProviderTest() {
       test = null;
     });
 
-    it('url hash contains an #access_token param, it stores the token in localstorage', () => {
-      const token = 'test-token';
-      window.location.hash = `access_token=${token}`;
-
-      initAuthenticationProvider();
-
-      expect(localStorage.getItem(authProviderTemporaryToken)).toBe(token);
-    });
-
-    it('url hash contains multiple params including an #access_token param, it stores the token in localstorage', () => {
-      const token = 'test-token';
-      window.location.hash = `a=b&access_token=${token}`;
-
-      initAuthenticationProvider();
-
-      expect(localStorage.getItem(authProviderTemporaryToken)).toBe(token);
-    });
-
-    it('url hash contains an #access_token param, it decodes the token before storing it', () => {
-      const token = 'test%3Etoken';
-      window.location.hash = `access_token=${token}`;
-
-      initAuthenticationProvider();
-
-      expect(localStorage.getItem(authProviderTemporaryToken)).toBe('test>token');
-    });
-
-    it(`local storage contains an access token and no temporary token,
+    it(`local storage contains an access token,
     when components have initialized, it updates the endpoint to use the access token`, () => {
       const accessToken = 'access-token';
       localStorage.setItem(authProviderAccessToken, accessToken);
@@ -103,33 +72,44 @@ export function AuthenticationProviderTest() {
       expect(spy).toHaveBeenCalledWith(accessToken);
     });
 
-    describe(`local storage contains a temporary token, when components have initialized`, () => {
+    describe(`url hash contains a temporary token, when components have initialized`, () => {
+      const temporaryToken = 'temporary-token';
       const accessToken = 'access-token';
+      let exchangeTokenSpy: jasmine.Spy;
 
       beforeEach(() => {
-        localStorage.setItem(authProviderTemporaryToken, 'temporary-token');
+        window.location.hash = `access_token=${temporaryToken}`;
         setupDefaultEndpoint();
 
-        spyOn(SearchEndpoint.endpoints['default'], 'exchangeAuthenticationProviderTemporaryTokenForAccessToken').and.returnValue(
-          accessToken
-        );
+        exchangeTokenSpy = spyOn(SearchEndpoint.endpoints['default'], 'exchangeAuthenticationProviderTemporaryTokenForAccessToken');
+        exchangeTokenSpy.and.returnValue(Promise.resolve(accessToken));
 
         initAuthenticationProvider();
+      });
+
+      it('exchanges the token', () => {
+        triggerAfterComponentsInitialization();
+        expect(exchangeTokenSpy).toHaveBeenCalledWith(temporaryToken);
+      });
+
+      it('url hash contains multiple params including an #access_token param, it exchanges the token', () => {
+        window.location.hash = `a=b&access_token=${temporaryToken}`;
+        triggerAfterComponentsInitialization();
+        expect(exchangeTokenSpy).toHaveBeenCalledWith(temporaryToken);
+      });
+
+      it('url hash contains an #access_token param, it decodes the token before storing it', () => {
+        const token = 'test%3Etoken';
+        window.location.hash = `access_token=${token}`;
+
+        triggerAfterComponentsInitialization();
+
+        expect(exchangeTokenSpy).toHaveBeenCalledWith('test>token');
       });
 
       it('adds an entry to the initialization args #defer array', () => {
         triggerAfterComponentsInitialization();
         expect(initializationArgs.defer.length).toBe(1);
-      });
-
-      it('removes the temporary token from local storage', done => {
-        triggerAfterComponentsInitialization();
-
-        setTimeout(() => {
-          const token = localStorage.getItem(authProviderTemporaryToken);
-          expect(token).toBe(null);
-          done();
-        }, 0);
       });
 
       it('adds the access token to local storage', done => {
