@@ -24,6 +24,11 @@ export class AccessToken {
     );
   }
 
+  public updateToken(token: string) {
+    this.token = token;
+    this.notifySubscribers();
+  }
+
   public async doRenew(onError?: (error: Error) => void): Promise<Boolean> {
     this.triedRenewals++;
     this.resetRenewalTriesAfterDelay();
@@ -33,7 +38,7 @@ export class AccessToken {
       this.logger.info('Renewing expired access token');
       this.token = await this.renew();
       this.logger.info('Access token renewed', this.token);
-      this.subscribers.forEach(subscriber => subscriber(this.token));
+      this.notifySubscribers();
       return true;
     } catch (err) {
       switch (err.message) {
@@ -67,5 +72,9 @@ export class AccessToken {
     if (this.triedRenewals >= 5) {
       throw new Error(ACCESS_TOKEN_ERRORS.REPEATED_FAILURES);
     }
+  }
+
+  private notifySubscribers() {
+    this.subscribers.forEach(subscriber => subscriber(this.token));
   }
 }
