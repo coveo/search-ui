@@ -325,6 +325,26 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
+   * Exchanges a temporary authentication provider token for an access token.
+   *
+   * @param token - the temporary token.
+   * @returns {string} The access token.
+   */
+  @path('/login/handshake/token')
+  @method('POST')
+  @requestDataType('application/json')
+  @responseType('json')
+  public async exchangeAuthenticationProviderToken(
+    token: string,
+    callOptions?: IEndpointCallOptions,
+    callParams?: IEndpointCallParameters
+  ) {
+    const call = this.buildCompleteCall({ token }, callOptions, callParams);
+    const data = await this.performOneCall<{ token: string }>(call.params, call.options);
+    return data.token;
+  }
+
+  /**
    * Indicates whether the search endpoint is using JSONP internally to communicate with the Search API.
    * @returns {boolean} `true` in the search enpoint is using JSONP; `false` otherwise.
    */

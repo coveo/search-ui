@@ -3,7 +3,7 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IBuildingCallOptionsEventArgs, IQueryErrorEventArgs } from '../../events/QueryEvents';
 import { IComponentBindings } from '../Base/ComponentBindings';
-import { InitializationEvents } from '../../events/InitializationEvents';
+import { IInitializationEventArgs, InitializationEvents } from '../../events/InitializationEvents';
 import { SettingsEvents } from '../../events/SettingsEvents';
 import { ISettingsPopulateMenuArgs } from '../Settings/Settings';
 import { DomUtils } from '../../utils/DomUtils';
@@ -23,6 +23,8 @@ export interface IAuthenticationProviderOptions {
   useIFrame?: boolean;
   showIFrame?: boolean;
 }
+
+export const authProviderAccessToken = 'coveo-auth-provider-access-token';
 
 /**
  * The `AuthenticationProvider` component makes it possible to execute queries with an identity that the end user
@@ -124,6 +126,9 @@ export class AuthenticationProvider extends Component {
     this.bind.onRootElement(QueryEvents.buildingCallOptions, this.handleBuildingCallOptions);
     this.bind.onRootElement(QueryEvents.queryError, this.handleQueryError);
     this.bind.onRootElement(InitializationEvents.nuke, this.handleNuke);
+    this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, (args: IInitializationEventArgs) =>
+      this.onAfterComponentsInitialization(args)
+    );
 
     this.bind.onRootElement(SettingsEvents.settingsPopulateMenu, (args: ISettingsPopulateMenuArgs) => {
       args.menuData.push({
@@ -134,6 +139,51 @@ export class AuthenticationProvider extends Component {
         svgIconClassName: 'coveo-authentication-provider-svg'
       });
     });
+  }
+
+  private getHandshakeTokenFromUrl() {
+    const fragment = window.location.hash.slice(1);
+    const params = fragment.split('&');
+
+    const tokenParam = _.find(params, param => {
+      const [key] = param.split('=');
+      return key === 'handshake_token';
+    });
+
+    if (!tokenParam) {
+      return '';
+    }
+
+    const token = tokenParam.split('=')[1];
+    return token ? decodeURIComponent(token) : '';
+  }
+
+  private onAfterComponentsInitialization(args: IInitializationEventArgs) {
+    const handshakeToken = this.getHandshakeTokenFromUrl();
+
+    if (!handshakeToken) {
+      return this.loadAccessTokenFromStorage();
+    }
+
+    const promise = this.exchangeHandshakeToken(handshakeToken)
+      .then(token => this.storeAccessToken(token))
+      .then(() => this.loadAccessTokenFromStorage())
+      .catch(e => this.logger.error(e));
+
+    args.defer.push(promise);
+  }
+
+  private exchangeHandshakeToken(token: string) {
+    return this.queryController.getEndpoint().exchangeAuthenticationProviderToken(token);
+  }
+
+  private storeAccessToken(accessToken: string) {
+    localStorage.setItem(authProviderAccessToken, accessToken);
+  }
+
+  private loadAccessTokenFromStorage() {
+    const token = localStorage.getItem(authProviderAccessToken);
+    token && this.queryController.getEndpoint().accessToken.updateToken(token);
   }
 
   private handleBuildingCallOptions(args: IBuildingCallOptionsEventArgs) {

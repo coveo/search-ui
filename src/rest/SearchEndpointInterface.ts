@@ -16,6 +16,7 @@ import { ISentryLog } from './SentryLog';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 import { ExecutionPlan } from './Plan';
+import { AccessToken } from './AccessToken';
 
 /**
  * The possible options when creating a {@link SearchEndpoint}
@@ -88,10 +89,12 @@ export interface IViewAsHtmlOptions extends IEndpointCallOptions {
 }
 
 export interface ISearchEndpoint {
+  accessToken: AccessToken;
   options?: ISearchEndpointOptions;
   getBaseUri(): string;
   getBaseAlertsUri(): string;
   getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string;
+  exchangeAuthenticationProviderToken(token: string): Promise<string>;
   isJsonp(): boolean;
   search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults>;
   fetchBinary(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ArrayBuffer>;

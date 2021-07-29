@@ -23,12 +23,17 @@ import * as _ from 'underscore';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 import { ExecutionPlan } from './Plan';
+import { AccessToken } from './AccessToken';
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;
 
   constructor(private endpoint: ISearchEndpoint, private callOptions?: IEndpointCallOptions) {
     this.options = endpoint.options;
+  }
+
+  public get accessToken(): AccessToken {
+    return this.endpoint.accessToken;
   }
 
   public getBaseUri(): string {
@@ -137,6 +142,10 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
 
   public logError(sentryLog: ISentryLog): Promise<boolean> {
     return this.endpoint.logError(sentryLog);
+  }
+
+  public exchangeAuthenticationProviderToken(token: string): Promise<string> {
+    return this.endpoint.exchangeAuthenticationProviderToken(token);
   }
 
   private enrichCallOptions<T extends IEndpointCallOptions>(callOptions?: T): T {
