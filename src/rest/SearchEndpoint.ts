@@ -334,13 +334,14 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('POST')
   @requestDataType('application/json')
   @responseType('json')
-  public exchangeAuthenticationProviderHandshakeTokenForAccessToken(
+  public async exchangeAuthenticationProviderHandshakeTokenForAccessToken(
     token: string,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ) {
     const call = this.buildCompleteCall({ token }, callOptions, callParams);
-    return this.performOneCall<string>(call.params, call.options);
+    const data = await this.performOneCall<{ token: string }>(call.params, call.options);
+    return data.token;
   }
 
   /**
