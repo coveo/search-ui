@@ -92,13 +92,15 @@ export function AuthenticationProviderTest() {
         expect(exchangeTokenSpy).toHaveBeenCalledWith(handshakeToken);
       });
 
-      it('url hash contains multiple params including an #handshake_token param, it exchanges the token', () => {
+      it(`url hash contains multiple params including an #handshake_token param,
+      it exchanges the token`, () => {
         window.location.hash = `a=b&handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
         expect(exchangeTokenSpy).toHaveBeenCalledWith(handshakeToken);
       });
 
-      it('url hash contains an #handshake_token param, it decodes the token before storing it', () => {
+      it(`url hash contains an #handshake_token with encoded characters,
+      it decodes the token before exchanging it`, () => {
         const token = 'test%3Etoken';
         window.location.hash = `handshake_token=${token}`;
 
@@ -107,30 +109,41 @@ export function AuthenticationProviderTest() {
         expect(exchangeTokenSpy).toHaveBeenCalledWith('test>token');
       });
 
+      it(`when the exchange call throws an error,
+      it logs a message and does not store anything in localstorage`, async done => {
+        const errorMessage = 'unable to exchange token';
+        exchangeTokenSpy.and.returnValue(Promise.reject(errorMessage));
+
+        const logggerSpy = spyOn(test.cmp.logger, 'error');
+        triggerAfterComponentsInitialization();
+
+        await Promise.resolve();
+
+        expect(logggerSpy).toHaveBeenCalledWith(errorMessage);
+        done();
+      });
+
       it('adds an entry to the initialization args #defer array', () => {
         triggerAfterComponentsInitialization();
         expect(initializationArgs.defer.length).toBe(1);
       });
 
-      it('adds the access token to local storage', done => {
+      it('adds the access token to local storage', async done => {
         triggerAfterComponentsInitialization();
+        await Promise.resolve();
 
-        setTimeout(() => {
-          const token = localStorage.getItem(authProviderAccessToken);
-          expect(token).toBe(accessToken);
-          done();
-        }, 0);
+        const token = localStorage.getItem(authProviderAccessToken);
+        expect(token).toBe(accessToken);
+        done();
       });
 
-      it('updates the endpoint to use the access token', done => {
+      it('updates the endpoint to use the access token', async done => {
         const spy = spyOn(SearchEndpoint.endpoints['default'].accessToken, 'updateToken');
-
         triggerAfterComponentsInitialization();
+        await Promise.resolve();
 
-        setTimeout(() => {
-          expect(spy).toHaveBeenCalledWith(accessToken);
-          done();
-        }, 0);
+        expect(spy).toHaveBeenCalledWith(accessToken);
+        done();
       });
     });
 

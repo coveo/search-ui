@@ -168,7 +168,8 @@ export class AuthenticationProvider extends Component {
 
     const promise = this.exchangeHandshakeToken(handshakeToken)
       .then(token => this.storeAccessToken(token))
-      .then(() => this.loadAccessTokenFromStorage());
+      .then(() => this.loadAccessTokenFromStorage())
+      .catch(e => this.logger.error(e));
 
     args.defer.push(promise);
   }
