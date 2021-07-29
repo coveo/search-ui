@@ -81,7 +81,7 @@ export function AuthenticationProviderTest() {
         window.location.hash = `handshake_token=${handshakeToken}`;
         setupDefaultEndpoint();
 
-        exchangeTokenSpy = spyOn(SearchEndpoint.endpoints['default'], 'exchangeAuthenticationProviderHandshakeTokenForAccessToken');
+        exchangeTokenSpy = spyOn(SearchEndpoint.endpoints['default'], 'exchangeAuthenticationProviderToken');
         exchangeTokenSpy.and.returnValue(Promise.resolve(accessToken));
 
         initAuthenticationProvider();

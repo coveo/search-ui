@@ -334,7 +334,7 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('POST')
   @requestDataType('application/json')
   @responseType('json')
-  public async exchangeAuthenticationProviderHandshakeTokenForAccessToken(
+  public async exchangeAuthenticationProviderToken(
     token: string,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters

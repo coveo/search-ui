@@ -175,7 +175,7 @@ export class AuthenticationProvider extends Component {
   }
 
   private exchangeHandshakeToken(token: string) {
-    return SearchEndpoint.defaultEndpoint.exchangeAuthenticationProviderHandshakeTokenForAccessToken(token);
+    return SearchEndpoint.defaultEndpoint.exchangeAuthenticationProviderToken(token);
   }
 
   private storeAccessToken(accessToken: string) {
