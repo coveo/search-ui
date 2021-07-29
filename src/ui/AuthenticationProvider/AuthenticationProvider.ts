@@ -142,13 +142,13 @@ export class AuthenticationProvider extends Component {
     });
   }
 
-  private getTemporaryTokenFromUrl() {
+  private getHandshakeTokenFromUrl() {
     const fragment = window.location.hash.slice(1);
     const params = fragment.split('&');
 
     const tokenParam = _.find(params, param => {
       const [key] = param.split('=');
-      return key === 'access_token';
+      return key === 'handshake_token';
     });
 
     if (!tokenParam) {
@@ -160,21 +160,21 @@ export class AuthenticationProvider extends Component {
   }
 
   private onAfterComponentsInitialization(args: IInitializationEventArgs) {
-    const temporaryToken = this.getTemporaryTokenFromUrl();
+    const handshakeToken = this.getHandshakeTokenFromUrl();
 
-    if (!temporaryToken) {
+    if (!handshakeToken) {
       return this.loadAccessTokenFromStorage();
     }
 
-    const promise = this.exchangeTemporaryToken(temporaryToken)
+    const promise = this.exchangeHandshakeToken(handshakeToken)
       .then(token => this.storeAccessToken(token))
       .then(() => this.loadAccessTokenFromStorage());
 
     args.defer.push(promise);
   }
 
-  private exchangeTemporaryToken(token: string) {
-    return SearchEndpoint.defaultEndpoint.exchangeAuthenticationProviderTemporaryTokenForAccessToken(token);
+  private exchangeHandshakeToken(token: string) {
+    return SearchEndpoint.defaultEndpoint.exchangeAuthenticationProviderHandshakeTokenForAccessToken(token);
   }
 
   private storeAccessToken(accessToken: string) {

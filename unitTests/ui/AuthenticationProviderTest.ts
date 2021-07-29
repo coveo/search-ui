@@ -72,16 +72,16 @@ export function AuthenticationProviderTest() {
       expect(spy).toHaveBeenCalledWith(accessToken);
     });
 
-    describe(`url hash contains a temporary token, when components have initialized`, () => {
-      const temporaryToken = 'temporary-token';
+    describe(`url hash contains a handshake token, when components have initialized`, () => {
+      const handshakeToken = 'handshake-token';
       const accessToken = 'access-token';
       let exchangeTokenSpy: jasmine.Spy;
 
       beforeEach(() => {
-        window.location.hash = `access_token=${temporaryToken}`;
+        window.location.hash = `handshake_token=${handshakeToken}`;
         setupDefaultEndpoint();
 
-        exchangeTokenSpy = spyOn(SearchEndpoint.endpoints['default'], 'exchangeAuthenticationProviderTemporaryTokenForAccessToken');
+        exchangeTokenSpy = spyOn(SearchEndpoint.endpoints['default'], 'exchangeAuthenticationProviderHandshakeTokenForAccessToken');
         exchangeTokenSpy.and.returnValue(Promise.resolve(accessToken));
 
         initAuthenticationProvider();
@@ -89,18 +89,18 @@ export function AuthenticationProviderTest() {
 
       it('exchanges the token', () => {
         triggerAfterComponentsInitialization();
-        expect(exchangeTokenSpy).toHaveBeenCalledWith(temporaryToken);
+        expect(exchangeTokenSpy).toHaveBeenCalledWith(handshakeToken);
       });
 
-      it('url hash contains multiple params including an #access_token param, it exchanges the token', () => {
-        window.location.hash = `a=b&access_token=${temporaryToken}`;
+      it('url hash contains multiple params including an #handshake_token param, it exchanges the token', () => {
+        window.location.hash = `a=b&handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
-        expect(exchangeTokenSpy).toHaveBeenCalledWith(temporaryToken);
+        expect(exchangeTokenSpy).toHaveBeenCalledWith(handshakeToken);
       });
 
-      it('url hash contains an #access_token param, it decodes the token before storing it', () => {
+      it('url hash contains an #handshake_token param, it decodes the token before storing it', () => {
         const token = 'test%3Etoken';
-        window.location.hash = `access_token=${token}`;
+        window.location.hash = `handshake_token=${token}`;
 
         triggerAfterComponentsInitialization();
 

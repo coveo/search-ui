@@ -139,8 +139,8 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.logError(sentryLog);
   }
 
-  public exchangeAuthenticationProviderTemporaryTokenForAccessToken(token: string): Promise<string> {
-    return this.endpoint.exchangeAuthenticationProviderTemporaryTokenForAccessToken(token);
+  public exchangeAuthenticationProviderHandshakeTokenForAccessToken(token: string): Promise<string> {
+    return this.endpoint.exchangeAuthenticationProviderHandshakeTokenForAccessToken(token);
   }
 
   private enrichCallOptions<T extends IEndpointCallOptions>(callOptions?: T): T {
