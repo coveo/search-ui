@@ -109,8 +109,7 @@ export function AuthenticationProviderTest() {
         expect(exchangeTokenSpy).toHaveBeenCalledWith('test>token');
       });
 
-      it(`when the exchange call throws an error,
-      it logs a message and does not store anything in localstorage`, async done => {
+      it(`when the exchange throws an error, it logs an error`, async done => {
         const errorMessage = 'unable to exchange token';
         exchangeTokenSpy.and.returnValue(Promise.reject(errorMessage));
 
