@@ -23,6 +23,7 @@ import * as _ from 'underscore';
 import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 import { ExecutionPlan } from './Plan';
+import { AccessToken } from './AccessToken';
 
 export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
   options: ISearchEndpointOptions;
@@ -31,7 +32,7 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     this.options = endpoint.options;
   }
 
-  public get accessToken() {
+  public get accessToken(): AccessToken {
     return this.endpoint.accessToken;
   }
 
