@@ -10654,6 +10654,27 @@ var SearchEndpoint = /** @class */ (function () {
         });
     };
     /**
+     * Exchanges a temporary authentication provider token for an access token.
+     *
+     * @param token - the temporary token.
+     * @returns {string} The access token.
+     */
+    SearchEndpoint.prototype.exchangeAuthenticationProviderToken = function (token, callOptions, callParams) {
+        return __awaiter(this, void 0, void 0, function () {
+            var call, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        call = this.buildCompleteCall({ token: token }, callOptions, callParams);
+                        return [4 /*yield*/, this.performOneCall(call.params, call.options)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, data.token];
+                }
+            });
+        });
+    };
+    /**
      * Indicates whether the search endpoint is using JSONP internally to communicate with the Search API.
      * @returns {boolean} `true` in the search enpoint is using JSONP; `false` otherwise.
      */
@@ -11320,6 +11341,12 @@ var SearchEndpoint = /** @class */ (function () {
         path('/login/'),
         accessTokenInUrl()
     ], SearchEndpoint.prototype, "getAuthenticationProviderUri", null);
+    __decorate([
+        path('/login/handshake/token'),
+        method('POST'),
+        requestDataType('application/json'),
+        responseType('json')
+    ], SearchEndpoint.prototype, "exchangeAuthenticationProviderToken", null);
     __decorate([
         includeActionsHistory(),
         includeReferrer(),
@@ -15338,8 +15365,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10088.1',
-    product: '2.10088.1',
+    lib: '2.10088.2',
+    product: '2.10088.2',
     supportedApiVersion: 2
 };
 
@@ -18100,9 +18127,12 @@ var AccessToken = /** @class */ (function () {
             _this.triedRenewals = 0;
         }, 500, false);
     }
+    AccessToken.prototype.updateToken = function (token) {
+        this.token = token;
+        this.notifySubscribers();
+    };
     AccessToken.prototype.doRenew = function (onError) {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
             var _a, err_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -18119,7 +18149,7 @@ var AccessToken = /** @class */ (function () {
                     case 2:
                         _a.token = _b.sent();
                         this.logger.info('Access token renewed', this.token);
-                        this.subscribers.forEach(function (subscriber) { return subscriber(_this.token); });
+                        this.notifySubscribers();
                         return [2 /*return*/, true];
                     case 3:
                         err_1 = _b.sent();
@@ -18154,6 +18184,10 @@ var AccessToken = /** @class */ (function () {
         if (this.triedRenewals >= 5) {
             throw new Error(ACCESS_TOKEN_ERRORS.REPEATED_FAILURES);
         }
+    };
+    AccessToken.prototype.notifySubscribers = function () {
+        var _this = this;
+        this.subscribers.forEach(function (subscriber) { return subscriber(_this.token); });
     };
     return AccessToken;
 }());
@@ -24603,6 +24637,13 @@ var SearchEndpointWithDefaultCallOptions = /** @class */ (function () {
         this.callOptions = callOptions;
         this.options = endpoint.options;
     }
+    Object.defineProperty(SearchEndpointWithDefaultCallOptions.prototype, "accessToken", {
+        get: function () {
+            return this.endpoint.accessToken;
+        },
+        enumerable: true,
+        configurable: true
+    });
     SearchEndpointWithDefaultCallOptions.prototype.getBaseUri = function () {
         return this.endpoint.getBaseUri();
     };
@@ -24683,6 +24724,9 @@ var SearchEndpointWithDefaultCallOptions = /** @class */ (function () {
     };
     SearchEndpointWithDefaultCallOptions.prototype.logError = function (sentryLog) {
         return this.endpoint.logError(sentryLog);
+    };
+    SearchEndpointWithDefaultCallOptions.prototype.exchangeAuthenticationProviderToken = function (token) {
+        return this.endpoint.exchangeAuthenticationProviderToken(token);
     };
     SearchEndpointWithDefaultCallOptions.prototype.enrichCallOptions = function (callOptions) {
         return _.extend({}, callOptions, this.callOptions);
