@@ -341,6 +341,11 @@ export class SearchEndpoint implements ISearchEndpoint {
   ) {
     const call = this.buildCompleteCall({ token }, callOptions, callParams);
     const data = await this.performOneCall<{ token: string }>(call.params, call.options);
+
+    if (!data.token) {
+      throw new Error('Failed to exchange handshake token.');
+    }
+
     return data.token;
   }
 
