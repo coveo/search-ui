@@ -1,5 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import { AuthenticationProvider } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
+import { AuthenticationProvider, accessTokenStorageKey } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { ModalBox } from '../../src/ExternalModulesShim';
 import { IAuthenticationProviderOptions } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { IBuildingCallOptionsEventArgs } from '../../src/events/QueryEvents';
@@ -61,7 +61,7 @@ export function AuthenticationProviderTest() {
     it(`local storage contains an access token,
     when components have initialized, it updates the endpoint to use the access token`, () => {
       const accessToken = 'access-token';
-      localStorage.setItem(test.cmp.accessTokenStorageKey, accessToken);
+      localStorage.setItem(accessTokenStorageKey, accessToken);
 
       initAuthenticationProvider();
       setupEndpoint();
@@ -149,7 +149,7 @@ export function AuthenticationProviderTest() {
         triggerAfterComponentsInitialization();
         await Promise.resolve();
 
-        const token = localStorage.getItem(test.cmp.accessTokenStorageKey);
+        const token = localStorage.getItem(accessTokenStorageKey);
         expect(token).toBe(accessToken);
         done();
       });

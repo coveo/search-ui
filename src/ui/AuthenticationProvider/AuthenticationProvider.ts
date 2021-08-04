@@ -19,6 +19,8 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { HashUtils } from '../../utils/HashUtils';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 
+export const accessTokenStorageKey = 'coveo-auth-provider-access-token';
+
 export interface IAuthenticationProviderOptions {
   name?: string;
   caption?: string;
@@ -177,16 +179,12 @@ export class AuthenticationProvider extends Component {
     return this.queryController.getEndpoint().exchangeAuthenticationProviderToken(token);
   }
 
-  public get accessTokenStorageKey() {
-    return `coveo-${this.options.name}-provider-access-token`;
-  }
-
   private storeAccessToken(accessToken: string) {
-    localStorage.setItem(this.accessTokenStorageKey, accessToken);
+    localStorage.setItem(accessTokenStorageKey, accessToken);
   }
 
   private loadAccessTokenFromStorage() {
-    const token = localStorage.getItem(this.accessTokenStorageKey);
+    const token = localStorage.getItem(accessTokenStorageKey);
     token && this.queryController.getEndpoint().accessToken.updateToken(token);
   }
 
