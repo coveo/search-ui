@@ -172,8 +172,10 @@ export class AuthenticationProvider extends Component {
     return !tabId || tabId === activeTabId;
   }
 
-  private exchangeHandshakeToken(token: string) {
-    return this.queryController.getEndpoint().exchangeAuthenticationProviderToken(token);
+  private exchangeHandshakeToken(handshakeToken: string) {
+    const accessToken = localStorage.getItem(accessTokenStorageKey);
+    const options = accessToken ? { handshakeToken, accessToken } : { handshakeToken };
+    return this.queryController.getEndpoint().exchangeHandshakeToken(options);
   }
 
   private storeAccessToken(accessToken: string) {

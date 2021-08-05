@@ -1,4 +1,4 @@
-import { ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions } from './SearchEndpointInterface';
+import { ISearchEndpointOptions, ISearchEndpoint, IViewAsHtmlOptions, IExchangeHandshakeTokenOptions } from './SearchEndpointInterface';
 import {
   EndpointCaller,
   IEndpointCallParameters,
@@ -325,7 +325,8 @@ export class SearchEndpoint implements ISearchEndpoint {
   }
 
   /**
-   * Exchanges a temporary authentication provider token for an access token.
+   * Exchanges a temporary handshake token to either get an initial access token
+   * or extend the privileges of an existing access token.
    *
    * @param token - the temporary token.
    * @returns {string} The access token.
@@ -334,12 +335,12 @@ export class SearchEndpoint implements ISearchEndpoint {
   @method('POST')
   @requestDataType('application/json')
   @responseType('json')
-  public async exchangeAuthenticationProviderToken(
-    token: string,
+  public async exchangeHandshakeToken(
+    options: IExchangeHandshakeTokenOptions,
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ) {
-    const call = this.buildCompleteCall({ token }, callOptions, callParams);
+    const call = this.buildCompleteCall(options, callOptions, callParams);
     const data = await this.performOneCall<{ token: string }>(call.params, call.options);
 
     if (!data.token) {
