@@ -25,6 +25,10 @@ export function AuthenticationProviderTest() {
       test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, options);
     }
 
+    function setDataTab(el: HTMLElement, tab: string) {
+      $$(el).setAttribute('data-tab', tab);
+    }
+
     function triggerAfterComponentsInitialization() {
       $$(test.env.root).trigger(InitializationEvents.afterComponentsInitialization, initializationArgs);
     }
@@ -72,6 +76,23 @@ export function AuthenticationProviderTest() {
       expect(spy).toHaveBeenCalledWith(accessToken);
     });
 
+    it(`local storage contains an access token,
+    auth provider has a data-tab configured,
+    when components have initialized,
+    it updates the endpoint to use the access token`, () => {
+      const accessToken = 'access-token';
+      localStorage.setItem(accessTokenStorageKey, accessToken);
+
+      initAuthenticationProvider();
+      setDataTab(test.cmp.element, 'a');
+      setupEndpoint();
+
+      const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
+      triggerAfterComponentsInitialization();
+
+      expect(spy).toHaveBeenCalledWith(accessToken);
+    });
+
     describe(`url hash contains a handshake token, when components have initialized`, () => {
       const handshakeToken = 'handshake-token';
       const accessToken = 'access-token';
@@ -103,7 +124,7 @@ export function AuthenticationProviderTest() {
       auth provider data-tab does not match the active tab,
       it does not exchange the token`, () => {
         window.location.hash = `${QUERY_STATE_ATTRIBUTES.T}=a&handshake_token=${handshakeToken}`;
-        $$(test.cmp.element).setAttribute('data-tab', 'b');
+        setDataTab(test.cmp.element, 'b');
         triggerAfterComponentsInitialization();
         expect(exchangeTokenSpy).not.toHaveBeenCalled();
       });
@@ -112,6 +133,7 @@ export function AuthenticationProviderTest() {
       auth provider data-tab matches the active tab,
       it exchanges the token`, () => {
         window.location.hash = `${QUERY_STATE_ATTRIBUTES.T}=a&handshake_token=${handshakeToken}`;
+        setDataTab(test.cmp.element, 'a');
         $$(test.cmp.element).setAttribute('data-tab', 'a');
         triggerAfterComponentsInitialization();
         expect(exchangeTokenSpy).toHaveBeenCalledWith(handshakeToken);

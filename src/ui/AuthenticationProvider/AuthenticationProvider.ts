@@ -150,29 +150,26 @@ export class AuthenticationProvider extends Component {
   }
 
   private onAfterComponentsInitialization(args: IInitializationEventArgs) {
-    this.shouldAuthenticate && this.tryToAuthenticate(args);
+    const handshakeToken = this.getHandshakeTokenFromUrl();
+
+    if (handshakeToken && this.shouldExchangeHandshakeToken) {
+      const promise = this.exchangeHandshakeToken(handshakeToken)
+        .then(token => this.storeAccessToken(token))
+        .then(() => this.loadAccessTokenFromStorage())
+        .catch(e => this.logger.error(e));
+
+      args.defer.push(promise);
+      return;
+    }
+
+    return this.loadAccessTokenFromStorage();
   }
 
-  private get shouldAuthenticate() {
+  private get shouldExchangeHandshakeToken() {
     const tabId = $$(this.element).getAttribute('data-tab');
     const hash = HashUtils.getHash();
     const activeTabId = HashUtils.getValue(QUERY_STATE_ATTRIBUTES.T, hash);
     return !tabId || tabId === activeTabId;
-  }
-
-  private tryToAuthenticate(args: IInitializationEventArgs) {
-    const handshakeToken = this.getHandshakeTokenFromUrl();
-
-    if (!handshakeToken) {
-      return this.loadAccessTokenFromStorage();
-    }
-
-    const promise = this.exchangeHandshakeToken(handshakeToken)
-      .then(token => this.storeAccessToken(token))
-      .then(() => this.loadAccessTokenFromStorage())
-      .catch(e => this.logger.error(e));
-
-    args.defer.push(promise);
   }
 
   private exchangeHandshakeToken(token: string) {
