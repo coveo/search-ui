@@ -152,17 +152,20 @@ export class AuthenticationProvider extends Component {
   private onAfterComponentsInitialization(args: IInitializationEventArgs) {
     const handshakeToken = this.getHandshakeTokenFromUrl();
 
-    if (handshakeToken && this.shouldExchangeHandshakeToken) {
-      const promise = this.exchangeHandshakeToken(handshakeToken)
-        .then(token => this.storeAccessToken(token))
-        .then(() => this.loadAccessTokenFromStorage())
-        .catch(e => this.logger.error(e));
+    if (!handshakeToken) {
+      return this.loadAccessTokenFromStorage();
+    }
 
-      args.defer.push(promise);
+    if (!this.shouldExchangeHandshakeToken) {
       return;
     }
 
-    return this.loadAccessTokenFromStorage();
+    const promise = this.exchangeHandshakeToken(handshakeToken)
+      .then(token => this.storeAccessToken(token))
+      .then(() => this.loadAccessTokenFromStorage())
+      .catch(e => this.logger.error(e));
+
+    args.defer.push(promise);
   }
 
   private get shouldExchangeHandshakeToken() {

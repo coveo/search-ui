@@ -128,6 +128,29 @@ export function AuthenticationProviderTest() {
         expect(exchangeTokenSpy).toHaveBeenCalledWith({ handshakeToken });
       });
 
+      describe(`url hash contains an active tab and a handshake token param,
+      auth provider data-tab does not match the active tab`, () => {
+        beforeEach(() => {
+          window.location.hash = `${QUERY_STATE_ATTRIBUTES.T}=a&handshake_token=${handshakeToken}`;
+          setDataTab(test.cmp.element, 'b');
+        });
+
+        it(`does not exchange the handshake token`, () => {
+          triggerAfterComponentsInitialization();
+          expect(exchangeTokenSpy).not.toHaveBeenCalled();
+        });
+
+        it('does not load an existing access token', () => {
+          // Ensures that the AuthenticationProvider that is performing the exchange is using the
+          // initially configured API key, not an access token loaded by a different instance.
+          localStorage.setItem(accessTokenStorageKey, 'access-token');
+          const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
+
+          triggerAfterComponentsInitialization();
+          expect(spy).not.toHaveBeenCalled();
+        });
+      });
+
       it(`url hash contains an active tab and a handshake token param,
       auth provider data-tab does not match the active tab,
       it does not exchange the token`, () => {
