@@ -10654,21 +10654,25 @@ var SearchEndpoint = /** @class */ (function () {
         });
     };
     /**
-     * Exchanges a temporary authentication provider token for an access token.
+     * Exchanges a temporary handshake token to either get an initial access token
+     * or extend the privileges of an existing access token.
      *
      * @param token - the temporary token.
      * @returns {string} The access token.
      */
-    SearchEndpoint.prototype.exchangeAuthenticationProviderToken = function (token, callOptions, callParams) {
+    SearchEndpoint.prototype.exchangeHandshakeToken = function (options, callOptions, callParams) {
         return __awaiter(this, void 0, void 0, function () {
             var call, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        call = this.buildCompleteCall({ token: token }, callOptions, callParams);
+                        call = this.buildCompleteCall(options, callOptions, callParams);
                         return [4 /*yield*/, this.performOneCall(call.params, call.options)];
                     case 1:
                         data = _a.sent();
+                        if (!data.token) {
+                            throw new Error('Failed to exchange handshake token.');
+                        }
                         return [2 /*return*/, data.token];
                 }
             });
@@ -11346,7 +11350,7 @@ var SearchEndpoint = /** @class */ (function () {
         method('POST'),
         requestDataType('application/json'),
         responseType('json')
-    ], SearchEndpoint.prototype, "exchangeAuthenticationProviderToken", null);
+    ], SearchEndpoint.prototype, "exchangeHandshakeToken", null);
     __decorate([
         includeActionsHistory(),
         includeReferrer(),
@@ -15365,8 +15369,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10088.2',
-    product: '2.10088.2',
+    lib: '2.10088.3',
+    product: '2.10088.3',
     supportedApiVersion: 2
 };
 
@@ -24725,8 +24729,8 @@ var SearchEndpointWithDefaultCallOptions = /** @class */ (function () {
     SearchEndpointWithDefaultCallOptions.prototype.logError = function (sentryLog) {
         return this.endpoint.logError(sentryLog);
     };
-    SearchEndpointWithDefaultCallOptions.prototype.exchangeAuthenticationProviderToken = function (token) {
-        return this.endpoint.exchangeAuthenticationProviderToken(token);
+    SearchEndpointWithDefaultCallOptions.prototype.exchangeHandshakeToken = function (options) {
+        return this.endpoint.exchangeHandshakeToken(options);
     };
     SearchEndpointWithDefaultCallOptions.prototype.enrichCallOptions = function (callOptions) {
         return _.extend({}, callOptions, this.callOptions);
