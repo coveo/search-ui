@@ -16,6 +16,10 @@ import * as _ from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 import 'styling/_AuthenticationProvider';
 import { SVGIcons } from '../../utils/SVGIcons';
+import { HashUtils } from '../../utils/HashUtils';
+import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+
+export const accessTokenStorageKey = 'coveo-auth-provider-access-token';
 
 export interface IAuthenticationProviderOptions {
   name?: string;
@@ -23,8 +27,6 @@ export interface IAuthenticationProviderOptions {
   useIFrame?: boolean;
   showIFrame?: boolean;
 }
-
-export const authProviderAccessToken = 'coveo-auth-provider-access-token';
 
 /**
  * The `AuthenticationProvider` component makes it possible to execute queries with an identity that the end user
@@ -142,20 +144,9 @@ export class AuthenticationProvider extends Component {
   }
 
   private getHandshakeTokenFromUrl() {
-    const fragment = window.location.hash.slice(1);
-    const params = fragment.split('&');
-
-    const tokenParam = _.find(params, param => {
-      const [key] = param.split('=');
-      return key === 'handshake_token';
-    });
-
-    if (!tokenParam) {
-      return '';
-    }
-
-    const token = tokenParam.split('=')[1];
-    return token ? decodeURIComponent(token) : '';
+    const hash = HashUtils.getHash();
+    const token = HashUtils.getValue('handshake_token', hash);
+    return typeof token === 'string' ? token : '';
   }
 
   private onAfterComponentsInitialization(args: IInitializationEventArgs) {
@@ -163,6 +154,10 @@ export class AuthenticationProvider extends Component {
 
     if (!handshakeToken) {
       return this.loadAccessTokenFromStorage();
+    }
+
+    if (!this.shouldExchangeHandshakeToken) {
+      return;
     }
 
     const promise = this.exchangeHandshakeToken(handshakeToken)
@@ -173,16 +168,25 @@ export class AuthenticationProvider extends Component {
     args.defer.push(promise);
   }
 
-  private exchangeHandshakeToken(token: string) {
-    return this.queryController.getEndpoint().exchangeAuthenticationProviderToken(token);
+  private get shouldExchangeHandshakeToken() {
+    const tabId = $$(this.element).getAttribute('data-tab');
+    const hash = HashUtils.getHash();
+    const activeTabId = HashUtils.getValue(QUERY_STATE_ATTRIBUTES.T, hash);
+    return !tabId || tabId === activeTabId;
+  }
+
+  private exchangeHandshakeToken(handshakeToken: string) {
+    const accessToken = localStorage.getItem(accessTokenStorageKey);
+    const options = accessToken ? { handshakeToken, accessToken } : { handshakeToken };
+    return this.queryController.getEndpoint().exchangeHandshakeToken(options);
   }
 
   private storeAccessToken(accessToken: string) {
-    localStorage.setItem(authProviderAccessToken, accessToken);
+    localStorage.setItem(accessTokenStorageKey, accessToken);
   }
 
   private loadAccessTokenFromStorage() {
-    const token = localStorage.getItem(authProviderAccessToken);
+    const token = localStorage.getItem(accessTokenStorageKey);
     token && this.queryController.getEndpoint().accessToken.updateToken(token);
   }
 

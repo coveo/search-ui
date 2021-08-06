@@ -1,5 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import { AuthenticationProvider, authProviderAccessToken } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
+import { AuthenticationProvider, accessTokenStorageKey } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { ModalBox } from '../../src/ExternalModulesShim';
 import { IAuthenticationProviderOptions } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { IBuildingCallOptionsEventArgs } from '../../src/events/QueryEvents';
@@ -13,6 +13,7 @@ import _ = require('underscore');
 import { SearchEndpoint } from '../../src/BaseModules';
 import { InitializationEvents } from '../../src/EventsModules';
 import { IInitializationEventArgs } from '../../src/events/InitializationEvents';
+import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
 
 export function AuthenticationProviderTest() {
   describe('AuthenticationProvider', function () {
@@ -22,6 +23,10 @@ export function AuthenticationProviderTest() {
 
     function initAuthenticationProvider() {
       test = Mock.optionsComponentSetup<AuthenticationProvider, IAuthenticationProviderOptions>(AuthenticationProvider, options);
+    }
+
+    function setDataTab(el: HTMLElement, tab: string) {
+      $$(el).setAttribute('data-tab', tab);
     }
 
     function triggerAfterComponentsInitialization() {
@@ -60,9 +65,26 @@ export function AuthenticationProviderTest() {
     it(`local storage contains an access token,
     when components have initialized, it updates the endpoint to use the access token`, () => {
       const accessToken = 'access-token';
-      localStorage.setItem(authProviderAccessToken, accessToken);
+      localStorage.setItem(accessTokenStorageKey, accessToken);
 
       initAuthenticationProvider();
+      setupEndpoint();
+
+      const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
+      triggerAfterComponentsInitialization();
+
+      expect(spy).toHaveBeenCalledWith(accessToken);
+    });
+
+    it(`local storage contains an access token,
+    auth provider has a data-tab configured,
+    when components have initialized,
+    it updates the endpoint to use the access token`, () => {
+      const accessToken = 'access-token';
+      localStorage.setItem(accessTokenStorageKey, accessToken);
+
+      initAuthenticationProvider();
+      setDataTab(test.cmp.element, 'a');
       setupEndpoint();
 
       const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
@@ -82,20 +104,70 @@ export function AuthenticationProviderTest() {
         initAuthenticationProvider();
         setupEndpoint();
 
-        exchangeTokenSpy = spyOn(test.cmp.queryController.getEndpoint(), 'exchangeAuthenticationProviderToken');
+        exchangeTokenSpy = spyOn(test.cmp.queryController.getEndpoint(), 'exchangeHandshakeToken');
         exchangeTokenSpy.and.returnValue(Promise.resolve(accessToken));
       });
 
       it('exchanges the token', () => {
         triggerAfterComponentsInitialization();
-        expect(exchangeTokenSpy).toHaveBeenCalledWith(handshakeToken);
+        expect(exchangeTokenSpy).toHaveBeenCalledWith({ handshakeToken });
+      });
+
+      it(`when an accessToken is found in localstorage,
+      it sends both the accessToken and handshake token`, () => {
+        const accessToken = 'access-token';
+        localStorage.setItem(accessTokenStorageKey, accessToken);
+        triggerAfterComponentsInitialization();
+        expect(exchangeTokenSpy).toHaveBeenCalledWith({ handshakeToken, accessToken });
       });
 
       it(`url hash contains multiple params including an #handshake_token param,
       it exchanges the token`, () => {
         window.location.hash = `a=b&handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
-        expect(exchangeTokenSpy).toHaveBeenCalledWith(handshakeToken);
+        expect(exchangeTokenSpy).toHaveBeenCalledWith({ handshakeToken });
+      });
+
+      describe(`url hash contains an active tab and a handshake token param,
+      auth provider data-tab does not match the active tab`, () => {
+        beforeEach(() => {
+          window.location.hash = `${QUERY_STATE_ATTRIBUTES.T}=a&handshake_token=${handshakeToken}`;
+          setDataTab(test.cmp.element, 'b');
+        });
+
+        it(`does not exchange the handshake token`, () => {
+          triggerAfterComponentsInitialization();
+          expect(exchangeTokenSpy).not.toHaveBeenCalled();
+        });
+
+        it('does not load an existing access token', () => {
+          // Ensures that the AuthenticationProvider that is performing the exchange is using the
+          // initially configured API key, not an access token loaded by a different instance.
+          localStorage.setItem(accessTokenStorageKey, 'access-token');
+          const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
+
+          triggerAfterComponentsInitialization();
+          expect(spy).not.toHaveBeenCalled();
+        });
+      });
+
+      it(`url hash contains an active tab and a handshake token param,
+      auth provider data-tab does not match the active tab,
+      it does not exchange the token`, () => {
+        window.location.hash = `${QUERY_STATE_ATTRIBUTES.T}=a&handshake_token=${handshakeToken}`;
+        setDataTab(test.cmp.element, 'b');
+        triggerAfterComponentsInitialization();
+        expect(exchangeTokenSpy).not.toHaveBeenCalled();
+      });
+
+      it(`url hash contains an active tab and a handshake token param,
+      auth provider data-tab matches the active tab,
+      it exchanges the token`, () => {
+        window.location.hash = `${QUERY_STATE_ATTRIBUTES.T}=a&handshake_token=${handshakeToken}`;
+        setDataTab(test.cmp.element, 'a');
+        $$(test.cmp.element).setAttribute('data-tab', 'a');
+        triggerAfterComponentsInitialization();
+        expect(exchangeTokenSpy).toHaveBeenCalledWith({ handshakeToken });
       });
 
       it(`url hash contains an #handshake_token with encoded characters,
@@ -105,7 +177,7 @@ export function AuthenticationProviderTest() {
 
         triggerAfterComponentsInitialization();
 
-        expect(exchangeTokenSpy).toHaveBeenCalledWith('test>token');
+        expect(exchangeTokenSpy).toHaveBeenCalledWith({ handshakeToken: 'test>token' });
       });
 
       it(`when the exchange throws an error, it logs an error`, async done => {
@@ -130,7 +202,7 @@ export function AuthenticationProviderTest() {
         triggerAfterComponentsInitialization();
         await Promise.resolve();
 
-        const token = localStorage.getItem(authProviderAccessToken);
+        const token = localStorage.getItem(accessTokenStorageKey);
         expect(token).toBe(accessToken);
         done();
       });

@@ -3,7 +3,8 @@ import {
   IEndpointCallOptions,
   IGetDocumentOptions,
   ISearchEndpointOptions,
-  IViewAsHtmlOptions
+  IViewAsHtmlOptions,
+  IExchangeHandshakeTokenOptions
 } from './SearchEndpointInterface';
 import { IQuery } from './Query';
 import { ITaggingRequest } from './TaggingRequest';
@@ -144,8 +145,8 @@ export class SearchEndpointWithDefaultCallOptions implements ISearchEndpoint {
     return this.endpoint.logError(sentryLog);
   }
 
-  public exchangeAuthenticationProviderToken(token: string): Promise<string> {
-    return this.endpoint.exchangeAuthenticationProviderToken(token);
+  public exchangeHandshakeToken(options: IExchangeHandshakeTokenOptions): Promise<string> {
+    return this.endpoint.exchangeHandshakeToken(options);
   }
 
   private enrichCallOptions<T extends IEndpointCallOptions>(callOptions?: T): T {

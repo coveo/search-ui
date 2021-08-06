@@ -88,13 +88,18 @@ export interface IViewAsHtmlOptions extends IEndpointCallOptions {
   contentType?: string;
 }
 
+export interface IExchangeHandshakeTokenOptions {
+  handshakeToken: string;
+  accessToken?: string;
+}
+
 export interface ISearchEndpoint {
   accessToken: AccessToken;
   options?: ISearchEndpointOptions;
   getBaseUri(): string;
   getBaseAlertsUri(): string;
   getAuthenticationProviderUri(provider: string, returnUri: string, message: string): string;
-  exchangeAuthenticationProviderToken(token: string): Promise<string>;
+  exchangeHandshakeToken(options: IExchangeHandshakeTokenOptions): Promise<string>;
   isJsonp(): boolean;
   search(query: IQuery, callOptions?: IEndpointCallOptions): Promise<IQueryResults>;
   fetchBinary(query: IQuery, callOptions?: IEndpointCallOptions): Promise<ArrayBuffer>;
