@@ -145,8 +145,8 @@ export class AuthenticationProvider extends Component {
 
   private getHandshakeTokenFromUrl() {
     const rawHash = HashUtils.getHash();
-    const slashAfterHash = rawHash.indexOf('#/') === 0;
-    const hash = slashAfterHash ? `#${rawHash.slice(2)}` : rawHash;
+    const hasSlashAfterHash = rawHash.indexOf('#/') === 0;
+    const hash = hasSlashAfterHash ? `#${rawHash.slice(2)}` : rawHash;
     const token = HashUtils.getValue('handshake_token', hash);
 
     return typeof token === 'string' ? token : '';
