@@ -121,6 +121,14 @@ export function AuthenticationProviderTest() {
         expect(exchangeTokenSpy).toHaveBeenCalledWith({ handshakeToken, accessToken });
       });
 
+      it(`url hash starts with / followed by #handshake_token param,
+      it exchanges the token`, () => {
+        // Sharepoint adds a / betwe the # and the hash parameters.
+        window.location.hash = `/handshake_token=${handshakeToken}`;
+        triggerAfterComponentsInitialization();
+        expect(exchangeTokenSpy).toHaveBeenCalledWith({ handshakeToken });
+      });
+
       it(`url hash contains multiple params including an #handshake_token param,
       it exchanges the token`, () => {
         window.location.hash = `a=b&handshake_token=${handshakeToken}`;
