@@ -1,0 +1,32 @@
+{
+  "filetype": {
+    "slackmessage": {
+      "icon": "slack",
+      "captions": {
+        "en": "Slack Message",
+        "fr": "Message Slack"
+      }
+    },
+    "slackchannel": {
+      "icon": "slack",
+      "captions": {
+        "en": "Slack Channel",
+        "fr": "Canal Slack"
+      }
+    },
+    "slackfile": {
+      "icon": "slack",
+      "captions": {
+        "en": "Slack File",
+        "fr": "Fichier Slack"
+      }
+    },
+    "slackuser": {
+      "icon": "slack",
+      "captions": {
+        "en": "Slack User",
+        "fr": "Utilisateur Slack"
+      }
+    }
+  }
+}
