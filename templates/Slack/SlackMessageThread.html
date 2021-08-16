@@ -1,43 +1,41 @@
 <style>
-  .CoveoResultList .coveo-highlight {
+  .CoveoResultList .coveo-slack-result-template .coveo-highlight {
     font-weight: normal;
     background-color: #FFE300;
   }
 
-  .CoveoResult {
+  .CoveoResult .coveo-slack-result-template {
     margin-right: 16px;
   }
 
-  .CoveoImageFieldValue[data-field="@slackmessageauthorprofilepicture"]>span>img {
+  .coveo-slack-result-template .CoveoImageFieldValue[data-field="@slackmessageauthorprofilepicture"]>span>img {
     border-radius: 4px;
   }
 
-  .coveo-folding-footer {
+  .coveo-slack-result-template .coveo-folding-footer {
     order: 1;
     margin: 0;
     font-size: 12px;
   }
 
-  .coveo-folding-results .coveo-result-folding-child-result, .coveo-folding-results .coveo-result-folding-child-result:hover {
+  .coveo-slack-result-template .coveo-folding-results .coveo-result-folding-child-result, .coveo-slack-result-template .coveo-folding-results .coveo-result-folding-child-result:hover {
     padding-left: 0;
     border-left: none;
   }
 
-  .coveo-folding-oneresult-caption {
+  .coveo-slack-result-template .coveo-folding-oneresult-caption {
     display: none;
   }
 </style>
 
-<div class="coveo-result-frame">
+<div class="coveo-result-frame coveo-slack-result-template">
   <div class="coveo-result-row" style="margin-right: 16px;">
     <div
       style="font-size: 12px; display: flex; align-items: baseline; margin-bottom: 10px; justify-content: space-between;">
       <div>
-        <span style="
-          background-color: #86D8FF; color: #FFFFFF; padding: 3px 10px; border-radius: 32px; margin-right: 8px;">
-          THREAD
-        </span>
-        <span>in:&nbsp;</span>
+        <span class="CoveoText" data-value="THREAD" style="background-color: #86D8FF; color: #FFFFFF; padding: 3px 10px; border-radius: 32px; margin-right: 8px;"></span>
+        <span class="CoveoText" data-value="in"></span>
+        <span>:&nbsp;</span>
         <a class="CoveoResultLink" data-always-open-in-window="true" data-field="@clickableuri">
           <span class="CoveoFieldValue" data-field="@slackchannelname"></span>
         </a>
@@ -61,7 +59,12 @@
             <span class="CoveoFieldValue" data-field="@date" data-helper="time"
               style="color: #616061; padding-bottom: 2px;"></span>
           </div>
-          <span class="CoveoExcerpt"></span>
+          <span class="CoveoExcerpt"></span>
+          <div  style="color: #626971; margin-top: 8px; font-weight: 700;">
+            <span class="CoveoText" data-value="Reply count"></span>
+            <span>:&nbsp;</span>
+            <span class="CoveoFieldValue" data-field="@slackmessagereplycount"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -71,7 +74,7 @@
         data-result-template-id="SlackMessageReply" data-more-caption="Show thread"
         data-less-caption="Hide thread"></span>
       <a class="CoveoResultLink" style="order: 3;" data-field="@clickableuri" data-always-open-in-new-window="true">
-        <span style="font-size: 12px;">Open in Slack</span>
+        <span class="CoveoText" data-value="Open in Slack" style="font-size: 12px;"></span>
       </a>
     </div>
   </div>
