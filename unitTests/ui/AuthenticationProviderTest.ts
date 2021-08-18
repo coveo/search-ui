@@ -202,13 +202,14 @@ export function AuthenticationProviderTest() {
         expect(initializationArgs.defer.length).toBe(1);
       });
 
-      it('adds the access token to local storage', async done => {
+      it('adds the access token to local storage', done => {
         triggerAfterComponentsInitialization();
-        await Promise.resolve();
 
-        const token = localStorage.getItem(accessTokenStorageKey);
-        expect(token).toBe(accessToken);
-        done();
+        setTimeout(() => {
+          const token = localStorage.getItem(accessTokenStorageKey);
+          expect(token).toBe(accessToken);
+          done();
+        }, 0);
       });
 
       it('removes the handshake-in-progress flag', done => {
@@ -221,22 +222,24 @@ export function AuthenticationProviderTest() {
         }, 0);
       });
 
-      it('it removes the handshake token from the url', async done => {
+      it('it removes the handshake token from the url', done => {
         window.location.hash = `a=b&handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
-        await Promise.resolve();
 
-        expect(window.location.hash).toBe(`#a=b`);
-        done();
+        setTimeout(() => {
+          expect(window.location.hash).toBe(`#a=b`);
+          done();
+        }, 0);
       });
 
-      it('when the hash starts with a /, it removes the handshake token from the url but keeps the slash', async done => {
+      it('when the hash starts with a /, it removes the handshake token from the url but keeps the slash', done => {
         window.location.hash = `/a=b&handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
-        await Promise.resolve();
 
-        expect(window.location.hash).toBe(`#/a=b`);
-        done();
+        setTimeout(() => {
+          expect(window.location.hash).toBe(`#/a=b`);
+          done();
+        }, 0);
       });
 
       it('updates the endpoint to use the access token', done => {
@@ -264,7 +267,7 @@ export function AuthenticationProviderTest() {
         exchangeTokenSpy.and.returnValue(Promise.reject(errorMessage));
       });
 
-      it(`it logs an error`, async done => {
+      it(`it logs an error`, done => {
         const logggerSpy = spyOn(test.cmp.logger, 'error');
         triggerAfterComponentsInitialization();
 
