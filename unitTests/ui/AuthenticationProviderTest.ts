@@ -1,5 +1,9 @@
 import * as Mock from '../MockEnvironment';
-import { AuthenticationProvider, accessTokenStorageKey } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
+import {
+  AuthenticationProvider,
+  accessTokenStorageKey,
+  handshakeInProgressStorageKey
+} from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { ModalBox } from '../../src/ExternalModulesShim';
 import { IAuthenticationProviderOptions } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { IBuildingCallOptionsEventArgs } from '../../src/events/QueryEvents';
@@ -106,6 +110,11 @@ export function AuthenticationProviderTest() {
 
         exchangeTokenSpy = spyOn(test.cmp.queryController.getEndpoint(), 'exchangeHandshakeToken');
         exchangeTokenSpy.and.returnValue(Promise.resolve(accessToken));
+      });
+
+      it('sets the handshake-in-progress flag', () => {
+        triggerAfterComponentsInitialization();
+        expect(localStorage.getItem(handshakeInProgressStorageKey)).toBe('true');
       });
 
       it('exchanges the token', () => {
@@ -216,6 +225,16 @@ export function AuthenticationProviderTest() {
         done();
       });
 
+      it('removes the removes the handshake-in-progress flag', done => {
+        triggerAfterComponentsInitialization();
+
+        setTimeout(() => {
+          const flag = localStorage.getItem(handshakeInProgressStorageKey);
+          expect(flag).toBe(null);
+          done();
+        }, 0);
+      });
+
       it('it removes the handshake token from the url', async done => {
         window.location.hash = `a=b&handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
@@ -234,13 +253,60 @@ export function AuthenticationProviderTest() {
         done();
       });
 
-      it('updates the endpoint to use the access token', async done => {
+      it('updates the endpoint to use the access token', done => {
         const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
         triggerAfterComponentsInitialization();
-        await Promise.resolve();
 
-        expect(spy).toHaveBeenCalledWith(accessToken);
-        done();
+        setTimeout(() => {
+          expect(spy).toHaveBeenCalledWith(accessToken);
+          done();
+        }, 0);
+      });
+    });
+
+    describe(`url hash contains a handshake token, a handshake is in progress`, () => {
+      const handshakeToken = 'handshake-token';
+      const accessToken = 'access-token';
+      let exchangeTokenSpy: jasmine.Spy;
+
+      beforeEach(() => {
+        window.location.hash = `handshake_token=${handshakeToken}`;
+        localStorage.setItem(handshakeInProgressStorageKey, 'true');
+
+        initAuthenticationProvider();
+        setupEndpoint();
+
+        exchangeTokenSpy = spyOn(test.cmp.queryController.getEndpoint(), 'exchangeHandshakeToken');
+        exchangeTokenSpy.and.returnValue(Promise.resolve(accessToken));
+      });
+
+      it('does not exchange the token', () => {
+        triggerAfterComponentsInitialization();
+        expect(exchangeTokenSpy).not.toHaveBeenCalled();
+      });
+
+      it('when the handshake completes, it loads the access token', done => {
+        jasmine.clock().install();
+        const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
+        triggerAfterComponentsInitialization();
+
+        jasmine.clock().tick(500);
+
+        localStorage.setItem(accessTokenStorageKey, accessToken);
+        localStorage.removeItem(handshakeInProgressStorageKey);
+
+        jasmine.clock().tick(500);
+        jasmine.clock().uninstall();
+
+        setTimeout(() => {
+          expect(spy).toHaveBeenCalledWith(accessToken);
+          done();
+        }, 0);
+      });
+
+      it('adds an entry to the initialization args #defer array', () => {
+        triggerAfterComponentsInitialization();
+        expect(initializationArgs.defer.length).toBe(1);
       });
     });
 

@@ -20,6 +20,7 @@ import { HashUtils } from '../../utils/HashUtils';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 
 export const accessTokenStorageKey = 'coveo-auth-provider-access-token';
+export const handshakeInProgressStorageKey = 'coveo-handshake-in-progress';
 const handshakeTokenParamName = 'handshake_token';
 
 export interface IAuthenticationProviderOptions {
@@ -167,13 +168,23 @@ export class AuthenticationProvider extends Component {
       return this.loadAccessTokenFromStorage();
     }
 
+    if (this.isHandshakeInProgress) {
+      const promise = this.waitForHandshakeToFinish().then(() => this.loadAccessTokenFromStorage());
+
+      args.defer.push(promise);
+      return;
+    }
+
     if (!this.shouldExchangeHandshakeToken) {
       return;
     }
 
+    this.setHandshakeInProgressFlag();
+
     const promise = this.exchangeHandshakeToken(handshakeToken)
       .then(token => this.storeAccessToken(token))
       .then(() => this.removeHandshakeTokenFromUrl())
+      .then(() => this.removeHandshakeInProgressFlag())
       .then(() => this.loadAccessTokenFromStorage())
       .catch(e => this.logger.error(e));
 
@@ -195,6 +206,31 @@ export class AuthenticationProvider extends Component {
 
   private storeAccessToken(accessToken: string) {
     localStorage.setItem(accessTokenStorageKey, accessToken);
+  }
+
+  private waitForHandshakeToFinish() {
+    return new Promise(resolve => {
+      const interval = setInterval(() => {
+        if (this.isHandshakeInProgress) {
+          return;
+        }
+
+        clearInterval(interval);
+        resolve();
+      }, 500);
+    });
+  }
+
+  private get isHandshakeInProgress() {
+    return !!localStorage.getItem(handshakeInProgressStorageKey);
+  }
+
+  private setHandshakeInProgressFlag() {
+    localStorage.setItem(handshakeInProgressStorageKey, 'true');
+  }
+
+  private removeHandshakeInProgressFlag() {
+    localStorage.removeItem(handshakeInProgressStorageKey);
   }
 
   private removeHandshakeTokenFromUrl() {
