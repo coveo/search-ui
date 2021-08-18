@@ -196,6 +196,7 @@ export function AuthenticationProviderTest() {
         triggerAfterComponentsInitialization();
 
         await Promise.resolve();
+        await Promise.resolve();
 
         expect(logggerSpy).toHaveBeenCalledWith(errorMessage);
         done();
@@ -212,6 +213,24 @@ export function AuthenticationProviderTest() {
 
         const token = localStorage.getItem(accessTokenStorageKey);
         expect(token).toBe(accessToken);
+        done();
+      });
+
+      it('it removes the handshake token from the url', async done => {
+        window.location.hash = `a=b&handshake_token=${handshakeToken}`;
+        triggerAfterComponentsInitialization();
+        await Promise.resolve();
+
+        expect(window.location.hash).toBe(`#a=b`);
+        done();
+      });
+
+      it('when the hash starts with a /, it removes the handshake token from the url but keeps the slash', async done => {
+        window.location.hash = `/a=b&handshake_token=${handshakeToken}`;
+        triggerAfterComponentsInitialization();
+        await Promise.resolve();
+
+        expect(window.location.hash).toBe(`#/a=b`);
         done();
       });
 

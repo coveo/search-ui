@@ -20,6 +20,7 @@ import { HashUtils } from '../../utils/HashUtils';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 
 export const accessTokenStorageKey = 'coveo-auth-provider-access-token';
+const handshakeTokenParamName = 'handshake_token';
 
 export interface IAuthenticationProviderOptions {
   name?: string;
@@ -144,12 +145,19 @@ export class AuthenticationProvider extends Component {
   }
 
   private getHandshakeTokenFromUrl() {
-    const rawHash = HashUtils.getHash();
-    const hasSlashAfterHash = rawHash.indexOf('#/') === 0;
-    const hash = hasSlashAfterHash ? `#${rawHash.slice(2)}` : rawHash;
-    const token = HashUtils.getValue('handshake_token', hash);
-
+    const hash = this.getHashAfterAdjustingForSharepoint();
+    const token = HashUtils.getValue(handshakeTokenParamName, hash);
     return typeof token === 'string' ? token : '';
+  }
+
+  private getHashAfterAdjustingForSharepoint() {
+    const hash = HashUtils.getHash();
+    return this.isSharepointHash ? `#${hash.slice(2)}` : hash;
+  }
+
+  private get isSharepointHash() {
+    const rawHash = HashUtils.getHash();
+    return rawHash.indexOf('#/') === 0;
   }
 
   private onAfterComponentsInitialization(args: IInitializationEventArgs) {
@@ -165,6 +173,7 @@ export class AuthenticationProvider extends Component {
 
     const promise = this.exchangeHandshakeToken(handshakeToken)
       .then(token => this.storeAccessToken(token))
+      .then(() => this.removeHandshakeTokenFromUrl())
       .then(() => this.loadAccessTokenFromStorage())
       .catch(e => this.logger.error(e));
 
@@ -186,6 +195,19 @@ export class AuthenticationProvider extends Component {
 
   private storeAccessToken(accessToken: string) {
     localStorage.setItem(accessTokenStorageKey, accessToken);
+  }
+
+  private removeHandshakeTokenFromUrl() {
+    const delimiter = `&`;
+    const hash = this.getHashAfterAdjustingForSharepoint();
+    const token = this.getHandshakeTokenFromUrl();
+    const handshakeEntry = `${handshakeTokenParamName}=${token}`;
+
+    const entries = hash.substr(1).split(delimiter);
+    const newHash = entries.filter(param => param !== handshakeEntry).join(delimiter);
+    const adjustedHash = this.isSharepointHash ? `/${newHash}` : newHash;
+
+    window.history.replaceState(null, '', `#${adjustedHash}`);
   }
 
   private loadAccessTokenFromStorage() {
