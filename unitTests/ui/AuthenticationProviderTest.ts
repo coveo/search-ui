@@ -197,20 +197,6 @@ export function AuthenticationProviderTest() {
         expect(exchangeTokenSpy).toHaveBeenCalledWith({ handshakeToken: 'test>token' });
       });
 
-      it(`when the exchange throws an error, it logs an error`, async done => {
-        const errorMessage = 'unable to exchange token';
-        exchangeTokenSpy.and.returnValue(Promise.reject(errorMessage));
-
-        const logggerSpy = spyOn(test.cmp.logger, 'error');
-        triggerAfterComponentsInitialization();
-
-        await Promise.resolve();
-        await Promise.resolve();
-
-        expect(logggerSpy).toHaveBeenCalledWith(errorMessage);
-        done();
-      });
-
       it('adds an entry to the initialization args #defer array', () => {
         triggerAfterComponentsInitialization();
         expect(initializationArgs.defer.length).toBe(1);
@@ -225,7 +211,7 @@ export function AuthenticationProviderTest() {
         done();
       });
 
-      it('removes the removes the handshake-in-progress flag', done => {
+      it('removes the handshake-in-progress flag', done => {
         triggerAfterComponentsInitialization();
 
         setTimeout(() => {
@@ -264,25 +250,48 @@ export function AuthenticationProviderTest() {
       });
     });
 
-    describe(`url hash contains a handshake token, a handshake is in progress`, () => {
-      const handshakeToken = 'handshake-token';
-      const accessToken = 'access-token';
+    describe('url hash contains a handshake token, when the exchange throws an error', () => {
+      const errorMessage = 'unable to exchange token';
       let exchangeTokenSpy: jasmine.Spy;
 
       beforeEach(() => {
-        window.location.hash = `handshake_token=${handshakeToken}`;
-        localStorage.setItem(handshakeInProgressStorageKey, 'true');
+        window.location.hash = `handshake_token=token`;
 
         initAuthenticationProvider();
         setupEndpoint();
 
         exchangeTokenSpy = spyOn(test.cmp.queryController.getEndpoint(), 'exchangeHandshakeToken');
-        exchangeTokenSpy.and.returnValue(Promise.resolve(accessToken));
+        exchangeTokenSpy.and.returnValue(Promise.reject(errorMessage));
       });
 
-      it('does not exchange the token', () => {
+      it(`it logs an error`, async done => {
+        const logggerSpy = spyOn(test.cmp.logger, 'error');
         triggerAfterComponentsInitialization();
-        expect(exchangeTokenSpy).not.toHaveBeenCalled();
+
+        setTimeout(() => {
+          expect(logggerSpy).toHaveBeenCalledWith(errorMessage);
+          done();
+        }, 0);
+      });
+
+      it('clears the handshake-in-progress flag', done => {
+        triggerAfterComponentsInitialization();
+
+        setTimeout(() => {
+          expect(localStorage.getItem(handshakeInProgressStorageKey)).toBe(null);
+          done();
+        }, 0);
+      });
+    });
+
+    describe(`a handshake is in progress`, () => {
+      const accessToken = 'access-token';
+
+      beforeEach(() => {
+        localStorage.setItem(handshakeInProgressStorageKey, 'true');
+
+        initAuthenticationProvider();
+        setupEndpoint();
       });
 
       it('when the handshake completes, it loads the access token', done => {

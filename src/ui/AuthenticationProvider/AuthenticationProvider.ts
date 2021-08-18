@@ -162,17 +162,17 @@ export class AuthenticationProvider extends Component {
   }
 
   private onAfterComponentsInitialization(args: IInitializationEventArgs) {
-    const handshakeToken = this.getHandshakeTokenFromUrl();
-
-    if (!handshakeToken) {
-      return this.loadAccessTokenFromStorage();
-    }
-
     if (this.isHandshakeInProgress) {
       const promise = this.waitForHandshakeToFinish().then(() => this.loadAccessTokenFromStorage());
 
       args.defer.push(promise);
       return;
+    }
+
+    const handshakeToken = this.getHandshakeTokenFromUrl();
+
+    if (!handshakeToken) {
+      return this.loadAccessTokenFromStorage();
     }
 
     if (!this.shouldExchangeHandshakeToken) {
@@ -184,9 +184,9 @@ export class AuthenticationProvider extends Component {
     const promise = this.exchangeHandshakeToken(handshakeToken)
       .then(token => this.storeAccessToken(token))
       .then(() => this.removeHandshakeTokenFromUrl())
-      .then(() => this.removeHandshakeInProgressFlag())
       .then(() => this.loadAccessTokenFromStorage())
-      .catch(e => this.logger.error(e));
+      .catch(e => this.logger.error(e))
+      .finally(() => this.removeHandshakeInProgressFlag());
 
     args.defer.push(promise);
   }
