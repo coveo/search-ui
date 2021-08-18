@@ -98,7 +98,7 @@ export function AuthenticationProviderTest() {
     });
 
     describe(`url hash contains a handshake token, when components have initialized`, () => {
-      const handshakeToken = 'handshake-token';
+      const handshakeToken = '04212242-fd27-4825-be27-53844ed83ac9';
       const accessToken = 'access-token';
       let exchangeTokenSpy: jasmine.Spy;
 
@@ -228,6 +228,26 @@ export function AuthenticationProviderTest() {
 
         setTimeout(() => {
           expect(window.location.hash).toBe(`#a=b`);
+          done();
+        }, 0);
+      });
+
+      it('when the hash starts with a /, it removes the handshake token from the url but keeps the slash', done => {
+        window.location.hash = `/handshake_token=${handshakeToken}`;
+        triggerAfterComponentsInitialization();
+
+        setTimeout(() => {
+          expect(window.location.hash).toBe(`#/`);
+          done();
+        }, 0);
+      });
+
+      it('when the handshake token is between two parameters, it removes the handshake token correctly', done => {
+        window.location.hash = `/a=b&handshake_token=${handshakeToken}&c=d`;
+        triggerAfterComponentsInitialization();
+
+        setTimeout(() => {
+          expect(window.location.hash).toBe(`#/a=b&c=d`);
           done();
         }, 0);
       });
