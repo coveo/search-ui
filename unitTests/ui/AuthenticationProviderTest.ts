@@ -226,11 +226,11 @@ export function AuthenticationProviderTest() {
       });
 
       it('when the hash starts with a /, it removes the handshake token from the url but keeps the slash', async done => {
-        window.location.hash = `/a=b&handshake_token=${handshakeToken}`;
+        window.location.hash = `/handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
         await Promise.resolve();
 
-        expect(window.location.hash).toBe(`#/a=b`);
+        expect(window.location.hash).toBe(`#/`);
         done();
       });
 
