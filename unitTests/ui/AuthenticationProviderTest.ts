@@ -14,6 +14,7 @@ import { SearchEndpoint } from '../../src/BaseModules';
 import { InitializationEvents } from '../../src/EventsModules';
 import { IInitializationEventArgs } from '../../src/events/InitializationEvents';
 import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
+import { Utils } from '../../src/UtilsModules';
 
 export function AuthenticationProviderTest() {
   describe('AuthenticationProvider', function () {
@@ -199,73 +200,73 @@ export function AuthenticationProviderTest() {
         expect(initializationArgs.defer.length).toBe(1);
       });
 
-      it('adds the access token to local storage', done => {
+      it('adds the access token to local storage', async done => {
         triggerAfterComponentsInitialization();
 
-        setTimeout(() => {
-          const token = localStorage.getItem(accessTokenStorageKey);
-          expect(token).toBe(accessToken);
-          done();
-        }, 0);
+        await Utils.resolveAfter(0);
+
+        const token = localStorage.getItem(accessTokenStorageKey);
+        expect(token).toBe(accessToken);
+        done();
       });
 
-      it('sets the handshake-in-progress flag to false', done => {
+      it('sets the handshake-in-progress flag to false', async done => {
         triggerAfterComponentsInitialization();
 
-        setTimeout(() => {
-          expect(AuthenticationProvider.handshakeInProgress).toBe(false);
-          done();
-        }, 0);
+        await Utils.resolveAfter(0);
+
+        expect(AuthenticationProvider.handshakeInProgress).toBe(false);
+        done();
       });
 
-      it('it removes the handshake token from the url', done => {
+      it('it removes the handshake token from the url', async done => {
         window.location.hash = `a=b&handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
 
-        setTimeout(() => {
-          expect(window.location.hash).toBe(`#a=b`);
-          done();
-        }, 0);
+        await Utils.resolveAfter(0);
+
+        expect(window.location.hash).toBe(`#a=b`);
+        done();
       });
 
-      it('when the hash starts with a /, it removes the handshake token from the url but keeps the slash', done => {
+      it('when the hash starts with a /, it removes the handshake token from the url but keeps the slash', async done => {
         window.location.hash = `/handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
 
-        setTimeout(() => {
-          expect(window.location.hash).toBe(`#/`);
-          done();
-        }, 0);
+        await Utils.resolveAfter(0);
+
+        expect(window.location.hash).toBe(`#/`);
+        done();
       });
 
-      it('when the handshake token is between two parameters, it removes the handshake token correctly', done => {
+      it('when the handshake token is between two parameters, it removes the handshake token correctly', async done => {
         window.location.hash = `/a=b&handshake_token=${handshakeToken}&c=d`;
         triggerAfterComponentsInitialization();
 
-        setTimeout(() => {
-          expect(window.location.hash).toBe(`#/a=b&c=d`);
-          done();
-        }, 0);
+        await Utils.resolveAfter(0);
+
+        expect(window.location.hash).toBe(`#/a=b&c=d`);
+        done();
       });
 
-      it('when the hash starts with a /, it removes the handshake token from the url but keeps the slash', done => {
+      it('when the hash starts with a /, it removes the handshake token from the url but keeps the slash', async done => {
         window.location.hash = `/a=b&handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
 
-        setTimeout(() => {
-          expect(window.location.hash).toBe(`#/a=b`);
-          done();
-        }, 0);
+        await Utils.resolveAfter(0);
+
+        expect(window.location.hash).toBe(`#/a=b`);
+        done();
       });
 
-      it('updates the endpoint to use the access token', done => {
+      it('updates the endpoint to use the access token', async done => {
         const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
         triggerAfterComponentsInitialization();
 
-        setTimeout(() => {
-          expect(spy).toHaveBeenCalledWith(accessToken);
-          done();
-        }, 0);
+        await Utils.resolveAfter(0);
+
+        expect(spy).toHaveBeenCalledWith(accessToken);
+        done();
       });
     });
 
@@ -283,23 +284,23 @@ export function AuthenticationProviderTest() {
         exchangeTokenSpy.and.returnValue(Promise.reject(errorMessage));
       });
 
-      it(`it logs an error`, done => {
+      it(`it logs an error`, async done => {
         const logggerSpy = spyOn(test.cmp.logger, 'error');
         triggerAfterComponentsInitialization();
 
-        setTimeout(() => {
-          expect(logggerSpy).toHaveBeenCalledWith(errorMessage);
-          done();
-        }, 0);
+        await Utils.resolveAfter(0);
+
+        expect(logggerSpy).toHaveBeenCalledWith(errorMessage);
+        done();
       });
 
-      it('sets the handshake-in-progress flag to false', done => {
+      it('sets the handshake-in-progress flag to false', async done => {
         triggerAfterComponentsInitialization();
 
-        setTimeout(() => {
-          expect(AuthenticationProvider.handshakeInProgress).toBe(false);
-          done();
-        }, 0);
+        await Utils.resolveAfter(0);
+
+        expect(AuthenticationProvider.handshakeInProgress).toBe(false);
+        done();
       });
     });
 
@@ -313,7 +314,7 @@ export function AuthenticationProviderTest() {
         setupEndpoint();
       });
 
-      it('when the handshake completes, it loads the access token', done => {
+      it('when the handshake completes, it loads the access token', async done => {
         jasmine.clock().install();
         const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
         triggerAfterComponentsInitialization();
@@ -326,10 +327,10 @@ export function AuthenticationProviderTest() {
         jasmine.clock().tick(100);
         jasmine.clock().uninstall();
 
-        setTimeout(() => {
-          expect(spy).toHaveBeenCalledWith(accessToken);
-          done();
-        }, 0);
+        await Utils.resolveAfter(0);
+
+        expect(spy).toHaveBeenCalledWith(accessToken);
+        done();
       });
 
       it('adds an entry to the initialization args #defer array', () => {
