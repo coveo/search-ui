@@ -1,9 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import {
-  AuthenticationProvider,
-  accessTokenStorageKey,
-  handshakeInProgressStorageKey
-} from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
+import { AuthenticationProvider, accessTokenStorageKey } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { ModalBox } from '../../src/ExternalModulesShim';
 import { IAuthenticationProviderOptions } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { IBuildingCallOptionsEventArgs } from '../../src/events/QueryEvents';
@@ -104,6 +100,7 @@ export function AuthenticationProviderTest() {
 
       beforeEach(() => {
         window.location.hash = `handshake_token=${handshakeToken}`;
+        AuthenticationProvider.handshakeInProgress = false;
 
         initAuthenticationProvider();
         setupEndpoint();
@@ -112,9 +109,9 @@ export function AuthenticationProviderTest() {
         exchangeTokenSpy.and.returnValue(Promise.resolve(accessToken));
       });
 
-      it('sets the handshake-in-progress flag', () => {
+      it('sets the handshake-in-progress flag to true', () => {
         triggerAfterComponentsInitialization();
-        expect(localStorage.getItem(handshakeInProgressStorageKey)).toBe('true');
+        expect(AuthenticationProvider.handshakeInProgress).toBe(true);
       });
 
       it('exchanges the token', () => {
@@ -212,12 +209,11 @@ export function AuthenticationProviderTest() {
         }, 0);
       });
 
-      it('removes the handshake-in-progress flag', done => {
+      it('sets the handshake-in-progress flag to false', done => {
         triggerAfterComponentsInitialization();
 
         setTimeout(() => {
-          const flag = localStorage.getItem(handshakeInProgressStorageKey);
-          expect(flag).toBe(null);
+          expect(AuthenticationProvider.handshakeInProgress).toBe(false);
           done();
         }, 0);
       });
@@ -297,11 +293,11 @@ export function AuthenticationProviderTest() {
         }, 0);
       });
 
-      it('clears the handshake-in-progress flag', done => {
+      it('sets the handshake-in-progress flag to false', done => {
         triggerAfterComponentsInitialization();
 
         setTimeout(() => {
-          expect(localStorage.getItem(handshakeInProgressStorageKey)).toBe(null);
+          expect(AuthenticationProvider.handshakeInProgress).toBe(false);
           done();
         }, 0);
       });
@@ -311,7 +307,7 @@ export function AuthenticationProviderTest() {
       const accessToken = 'access-token';
 
       beforeEach(() => {
-        localStorage.setItem(handshakeInProgressStorageKey, 'true');
+        AuthenticationProvider.handshakeInProgress = true;
 
         initAuthenticationProvider();
         setupEndpoint();
@@ -325,9 +321,9 @@ export function AuthenticationProviderTest() {
         jasmine.clock().tick(500);
 
         localStorage.setItem(accessTokenStorageKey, accessToken);
-        localStorage.removeItem(handshakeInProgressStorageKey);
+        AuthenticationProvider.handshakeInProgress = false;
 
-        jasmine.clock().tick(500);
+        jasmine.clock().tick(100);
         jasmine.clock().uninstall();
 
         setTimeout(() => {

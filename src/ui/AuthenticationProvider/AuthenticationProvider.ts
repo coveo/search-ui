@@ -20,7 +20,6 @@ import { HashUtils } from '../../utils/HashUtils';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 
 export const accessTokenStorageKey = 'coveo-auth-provider-access-token';
-export const handshakeInProgressStorageKey = 'coveo-handshake-in-progress';
 const handshakeTokenParamName = 'handshake_token';
 
 export interface IAuthenticationProviderOptions {
@@ -42,6 +41,7 @@ export interface IAuthenticationProviderOptions {
  */
 export class AuthenticationProvider extends Component {
   static ID = 'AuthenticationProvider';
+  static handshakeInProgress = false;
 
   static doExport = () => {
     exportGlobally({
@@ -162,7 +162,7 @@ export class AuthenticationProvider extends Component {
   }
 
   private onAfterComponentsInitialization(args: IInitializationEventArgs) {
-    if (this.isHandshakeInProgress) {
+    if (AuthenticationProvider.handshakeInProgress) {
       const promise = this.waitForHandshakeToFinish().then(() => this.loadAccessTokenFromStorage());
 
       args.defer.push(promise);
@@ -179,14 +179,14 @@ export class AuthenticationProvider extends Component {
       return;
     }
 
-    this.setHandshakeInProgressFlag();
+    this.enableHandshakeInProgressFlag();
 
     const promise = this.exchangeHandshakeToken(handshakeToken)
       .then(token => this.storeAccessToken(token))
       .then(() => this.removeHandshakeTokenFromUrl())
       .then(() => this.loadAccessTokenFromStorage())
       .catch(e => this.logger.error(e))
-      .finally(() => this.removeHandshakeInProgressFlag());
+      .finally(() => this.disableHandshakeInProgressFlag());
 
     args.defer.push(promise);
   }
@@ -211,26 +211,22 @@ export class AuthenticationProvider extends Component {
   private waitForHandshakeToFinish() {
     return new Promise(resolve => {
       const interval = setInterval(() => {
-        if (this.isHandshakeInProgress) {
+        if (AuthenticationProvider.handshakeInProgress) {
           return;
         }
 
         clearInterval(interval);
         resolve();
-      }, 500);
+      }, 100);
     });
   }
 
-  private get isHandshakeInProgress() {
-    return !!localStorage.getItem(handshakeInProgressStorageKey);
+  private enableHandshakeInProgressFlag() {
+    AuthenticationProvider.handshakeInProgress = true;
   }
 
-  private setHandshakeInProgressFlag() {
-    localStorage.setItem(handshakeInProgressStorageKey, 'true');
-  }
-
-  private removeHandshakeInProgressFlag() {
-    localStorage.removeItem(handshakeInProgressStorageKey);
+  private disableHandshakeInProgressFlag() {
+    AuthenticationProvider.handshakeInProgress = false;
   }
 
   private removeHandshakeTokenFromUrl() {
