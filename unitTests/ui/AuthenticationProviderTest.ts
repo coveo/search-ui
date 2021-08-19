@@ -339,6 +339,32 @@ export function AuthenticationProviderTest() {
       });
     });
 
+    describe('when encountering an invalid token error', () => {
+      function triggerInvalidTokenError() {
+        const error = { name: 'InvalidTokenException' };
+        $$(test.env.root).trigger(QueryEvents.queryError, { error });
+      }
+
+      it('clears the access token from localstorage', () => {
+        localStorage.setItem(accessTokenStorageKey, 'invalid token');
+        triggerInvalidTokenError();
+        expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
+      });
+
+      it('redirects to the third party provider', () => {
+        options.useIFrame = false;
+        initAuthenticationProvider();
+
+        const fakeWindow = Mock.mockWindow();
+        test.cmp._window = fakeWindow;
+        test.env.searchEndpoint.getAuthenticationProviderUri = () => 'coveo.com';
+
+        triggerInvalidTokenError();
+
+        expect(fakeWindow.location.href).toBe('coveo.com');
+      });
+    });
+
     describe('exposes options', function () {
       it('name should push name in buildingCallOptions', function () {
         options = { name: 'testpatate' };

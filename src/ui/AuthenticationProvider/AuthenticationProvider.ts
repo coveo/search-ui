@@ -252,6 +252,12 @@ export class AuthenticationProvider extends Component {
   }
 
   private handleQueryError(args: IQueryErrorEventArgs) {
+    if (args.error.name === 'InvalidTokenException') {
+      localStorage.removeItem(accessTokenStorageKey);
+      this.authenticateWithProvider();
+      return;
+    }
+
     let missingAuthError = <MissingAuthenticationError>args.error;
 
     if (
