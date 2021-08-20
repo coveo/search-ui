@@ -257,8 +257,9 @@ export class AuthenticationProvider extends Component {
 
   private handleQueryError(args: IQueryErrorEventArgs) {
     const token = this.getAccessTokenFromStorage();
+    const shouldClearToken = this.shouldClearTokenFollowingErrorEvent(args);
 
-    if (token && args.error.name === 'InvalidTokenException') {
+    if (token && shouldClearToken) {
       localStorage.removeItem(accessTokenStorageKey);
       this._window.location.reload();
       return;
@@ -278,6 +279,11 @@ export class AuthenticationProvider extends Component {
       this.logger.error('The AuthenticationProvider is in a redirect loop. This may be due to a back-end configuration problem.');
       this.redirectCount = -1;
     }
+  }
+
+  private shouldClearTokenFollowingErrorEvent(args: IQueryErrorEventArgs) {
+    const error = args.error.name;
+    return error === 'InvalidTokenException' || error === 'ExpiredTokenException';
   }
 
   private authenticateWithProvider() {
