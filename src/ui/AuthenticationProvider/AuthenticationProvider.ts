@@ -239,7 +239,7 @@ export class AuthenticationProvider extends Component {
     const newHash = entries.filter(param => param !== handshakeEntry).join(delimiter);
     const adjustedHash = this.isSharepointHash ? `/${newHash}` : newHash;
 
-    window.history.replaceState(null, '', `#${adjustedHash}`);
+    this._window.history.replaceState(null, '', `#${adjustedHash}`);
   }
 
   private loadAccessTokenFromStorage() {
@@ -254,7 +254,7 @@ export class AuthenticationProvider extends Component {
   private handleQueryError(args: IQueryErrorEventArgs) {
     if (args.error.name === 'InvalidTokenException') {
       localStorage.removeItem(accessTokenStorageKey);
-      this.authenticateWithProvider();
+      this._window.location.reload();
       return;
     }
 

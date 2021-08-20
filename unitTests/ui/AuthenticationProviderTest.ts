@@ -340,10 +340,17 @@ export function AuthenticationProviderTest() {
     });
 
     describe('when encountering an invalid token error', () => {
+      let fakeWindow: Window;
+
       function triggerInvalidTokenError() {
         const error = { name: 'InvalidTokenException' };
         $$(test.env.root).trigger(QueryEvents.queryError, { error });
       }
+
+      beforeEach(() => {
+        fakeWindow = Mock.mockWindow();
+        test.cmp._window = fakeWindow;
+      });
 
       it('clears the access token from localstorage', () => {
         localStorage.setItem(accessTokenStorageKey, 'invalid token');
@@ -351,17 +358,9 @@ export function AuthenticationProviderTest() {
         expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
       });
 
-      it('redirects to the third party provider', () => {
-        options.useIFrame = false;
-        initAuthenticationProvider();
-
-        const fakeWindow = Mock.mockWindow();
-        test.cmp._window = fakeWindow;
-        test.env.searchEndpoint.getAuthenticationProviderUri = () => 'coveo.com';
-
+      it('reloads the page', () => {
         triggerInvalidTokenError();
-
-        expect(fakeWindow.location.href).toBe('coveo.com');
+        expect(fakeWindow.location.reload).toHaveBeenCalledTimes(1);
       });
     });
 
