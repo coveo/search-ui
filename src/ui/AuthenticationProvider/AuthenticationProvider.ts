@@ -243,8 +243,12 @@ export class AuthenticationProvider extends Component {
   }
 
   private loadAccessTokenFromStorage() {
-    const token = localStorage.getItem(accessTokenStorageKey);
+    const token = this.getAccessTokenFromStorage();
     token && this.queryController.getEndpoint().accessToken.updateToken(token);
+  }
+
+  private getAccessTokenFromStorage() {
+    return localStorage.getItem(accessTokenStorageKey);
   }
 
   private handleBuildingCallOptions(args: IBuildingCallOptionsEventArgs) {
@@ -252,7 +256,9 @@ export class AuthenticationProvider extends Component {
   }
 
   private handleQueryError(args: IQueryErrorEventArgs) {
-    if (args.error.name === 'InvalidTokenException') {
+    const token = this.getAccessTokenFromStorage();
+
+    if (token && args.error.name === 'InvalidTokenException') {
       localStorage.removeItem(accessTokenStorageKey);
       this._window.location.reload();
       return;

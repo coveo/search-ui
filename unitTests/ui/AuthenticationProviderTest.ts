@@ -352,15 +352,24 @@ export function AuthenticationProviderTest() {
         test.cmp._window = fakeWindow;
       });
 
-      it('clears the access token from localstorage', () => {
-        localStorage.setItem(accessTokenStorageKey, 'invalid token');
-        triggerInvalidTokenError();
-        expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
+      describe('if there is an access token in storage', () => {
+        beforeEach(() => {
+          localStorage.setItem(accessTokenStorageKey, 'invalid token');
+          triggerInvalidTokenError();
+        });
+
+        it('clears the access token from localstorage', () => {
+          expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
+        });
+
+        it('reloads the page', () => {
+          expect(fakeWindow.location.reload).toHaveBeenCalledTimes(1);
+        });
       });
 
-      it('reloads the page', () => {
+      it('if there is no access token in storage, it does not reload the page', () => {
         triggerInvalidTokenError();
-        expect(fakeWindow.location.reload).toHaveBeenCalledTimes(1);
+        expect(fakeWindow.location.reload).not.toHaveBeenCalled();
       });
     });
 
