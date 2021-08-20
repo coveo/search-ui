@@ -5,6 +5,7 @@
   "main": "./bin/js/CoveoJsSearch.js",
   "types": "./bin/ts/CoveoJsSearch.d.ts",
   "scripts": {
+    "dev": "gulp dev",
     "test": "npm run unitTests",
     "unitTests": "gulp unitTests && gulp coverage",
     "accessibilityTests": "gulp accessibilityTests",

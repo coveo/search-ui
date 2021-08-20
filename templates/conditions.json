@@ -265,6 +265,48 @@
     ],
     "layout": "list"
   },
+  "SlackMessage": {
+    "priority": 1,
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["slackmessage"]
+      },
+      {
+        "field": "slackmessagetype",
+        "values": ["Normal"]
+      }
+    ],
+    "layout": "list"
+  },
+  "SlackMessageThread": {
+    "priority": 2,
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["slackmessage"]
+      },
+      {
+        "field": "slackmessagetype",
+        "values": ["ThreadStart"]
+      }
+    ],
+    "layout": "list"
+  },
+  "SlackMessageReply": {
+    "priority": 3,
+    "fieldsToMatch": [
+      {
+        "field": "filetype",
+        "values": ["slackmessage"]
+      },
+      {
+        "field": "slackmessagetype",
+        "values": ["Reply"]
+      }
+    ],
+    "layout": "list"
+  },
   "CardYouTubeVideo": {
     "priority": 2,
     "fieldsToMatch": [
