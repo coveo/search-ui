@@ -340,8 +340,7 @@ export class SearchEndpoint implements ISearchEndpoint {
     callOptions?: IEndpointCallOptions,
     callParams?: IEndpointCallParameters
   ) {
-    const token = options.handshakeToken;
-    const call = this.buildCompleteCall({ token }, callOptions, callParams);
+    const call = this.buildCompleteCall(options, callOptions, callParams);
     const data = await this.performOneCall<{ token: string }>(call.params, call.options);
 
     if (!data.token) {
