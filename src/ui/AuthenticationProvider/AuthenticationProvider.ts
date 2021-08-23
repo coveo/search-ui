@@ -239,12 +239,16 @@ export class AuthenticationProvider extends Component {
     const newHash = entries.filter(param => param !== handshakeEntry).join(delimiter);
     const adjustedHash = this.isSharepointHash ? `/${newHash}` : newHash;
 
-    window.history.replaceState(null, '', `#${adjustedHash}`);
+    this._window.history.replaceState(null, '', `#${adjustedHash}`);
   }
 
   private loadAccessTokenFromStorage() {
-    const token = localStorage.getItem(accessTokenStorageKey);
+    const token = this.getAccessTokenFromStorage();
     token && this.queryController.getEndpoint().accessToken.updateToken(token);
+  }
+
+  private getAccessTokenFromStorage() {
+    return localStorage.getItem(accessTokenStorageKey);
   }
 
   private handleBuildingCallOptions(args: IBuildingCallOptionsEventArgs) {
@@ -252,6 +256,15 @@ export class AuthenticationProvider extends Component {
   }
 
   private handleQueryError(args: IQueryErrorEventArgs) {
+    const token = this.getAccessTokenFromStorage();
+    const shouldClearToken = this.shouldClearTokenFollowingErrorEvent(args);
+
+    if (token && shouldClearToken) {
+      localStorage.removeItem(accessTokenStorageKey);
+      this._window.location.reload();
+      return;
+    }
+
     let missingAuthError = <MissingAuthenticationError>args.error;
 
     if (
@@ -266,6 +279,11 @@ export class AuthenticationProvider extends Component {
       this.logger.error('The AuthenticationProvider is in a redirect loop. This may be due to a back-end configuration problem.');
       this.redirectCount = -1;
     }
+  }
+
+  private shouldClearTokenFollowingErrorEvent(args: IQueryErrorEventArgs) {
+    const error = args.error.name;
+    return error === 'InvalidTokenException' || error === 'ExpiredTokenException';
   }
 
   private authenticateWithProvider() {

@@ -339,6 +339,52 @@ export function AuthenticationProviderTest() {
       });
     });
 
+    describe('when encountering an invalid token error', () => {
+      let fakeWindow: Window;
+
+      function triggerInvalidTokenError() {
+        const error = { name: 'InvalidTokenException' };
+        $$(test.env.root).trigger(QueryEvents.queryError, { error });
+      }
+
+      function triggerExpiredTokenError() {
+        const error = { name: 'ExpiredTokenException' };
+        $$(test.env.root).trigger(QueryEvents.queryError, { error });
+      }
+
+      beforeEach(() => {
+        fakeWindow = Mock.mockWindow();
+        test.cmp._window = fakeWindow;
+      });
+
+      describe('if there is an invalid access token in storage', () => {
+        beforeEach(() => {
+          localStorage.setItem(accessTokenStorageKey, 'invalid token');
+          triggerInvalidTokenError();
+        });
+
+        it('clears the access token from localstorage', () => {
+          expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
+        });
+
+        it('reloads the page', () => {
+          expect(fakeWindow.location.reload).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      it('if there is no access token in storage, it does not reload the page', () => {
+        triggerInvalidTokenError();
+        expect(fakeWindow.location.reload).not.toHaveBeenCalled();
+      });
+
+      it('if there is an expired access token is in storage, it clears the token', () => {
+        localStorage.setItem(accessTokenStorageKey, 'expired token');
+        triggerExpiredTokenError();
+
+        expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
+      });
+    });
+
     describe('exposes options', function () {
       it('name should push name in buildingCallOptions', function () {
         options = { name: 'testpatate' };
