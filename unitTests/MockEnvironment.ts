@@ -200,7 +200,8 @@ export function mockWindow(): Window {
     href: '',
     hash: '',
     pathname: '',
-    search: ''
+    search: '',
+    reload: () => {}
   };
   mockWindow.location.assign = mockWindow.location.replace = (newHref: string) => {
     newHref = newHref || '';
@@ -220,6 +221,7 @@ export function mockWindow(): Window {
   };
   spyOn(mockWindow.location, 'replace').and.callThrough();
   spyOn(mockWindow.location, 'assign').and.callThrough();
+  spyOn(mockWindow.location, 'reload').and.callThrough();
   mockWindow.addEventListener = jasmine.createSpy('addEventListener');
   mockWindow.removeEventListener = jasmine.createSpy('removeEventListener');
   mockWindow.dispatchEvent = jasmine.createSpy('dispatchEvent');

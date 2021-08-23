@@ -20,6 +20,7 @@ import { HashUtils } from '../../utils/HashUtils';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 
 export const accessTokenStorageKey = 'coveo-auth-provider-access-token';
+const handshakeTokenParamName = 'handshake_token';
 
 export interface IAuthenticationProviderOptions {
   name?: string;
@@ -40,6 +41,7 @@ export interface IAuthenticationProviderOptions {
  */
 export class AuthenticationProvider extends Component {
   static ID = 'AuthenticationProvider';
+  static handshakeInProgress = false;
 
   static doExport = () => {
     exportGlobally({
@@ -144,15 +146,29 @@ export class AuthenticationProvider extends Component {
   }
 
   private getHandshakeTokenFromUrl() {
-    const rawHash = HashUtils.getHash();
-    const hasSlashAfterHash = rawHash.indexOf('#/') === 0;
-    const hash = hasSlashAfterHash ? `#${rawHash.slice(2)}` : rawHash;
-    const token = HashUtils.getValue('handshake_token', hash);
-
+    const hash = this.getHashAfterAdjustingForSharepoint();
+    const token = HashUtils.getValue(handshakeTokenParamName, hash);
     return typeof token === 'string' ? token : '';
   }
 
+  private getHashAfterAdjustingForSharepoint() {
+    const hash = HashUtils.getHash();
+    return this.isSharepointHash ? `#${hash.slice(2)}` : hash;
+  }
+
+  private get isSharepointHash() {
+    const rawHash = HashUtils.getHash();
+    return rawHash.indexOf('#/') === 0;
+  }
+
   private onAfterComponentsInitialization(args: IInitializationEventArgs) {
+    if (AuthenticationProvider.handshakeInProgress) {
+      const promise = this.waitForHandshakeToFinish().then(() => this.loadAccessTokenFromStorage());
+
+      args.defer.push(promise);
+      return;
+    }
+
     const handshakeToken = this.getHandshakeTokenFromUrl();
 
     if (!handshakeToken) {
@@ -163,10 +179,14 @@ export class AuthenticationProvider extends Component {
       return;
     }
 
+    this.enableHandshakeInProgressFlag();
+
     const promise = this.exchangeHandshakeToken(handshakeToken)
       .then(token => this.storeAccessToken(token))
+      .then(() => this.removeHandshakeTokenFromUrl())
       .then(() => this.loadAccessTokenFromStorage())
-      .catch(e => this.logger.error(e));
+      .catch(e => this.logger.error(e))
+      .finally(() => this.disableHandshakeInProgressFlag());
 
     args.defer.push(promise);
   }
@@ -188,9 +208,47 @@ export class AuthenticationProvider extends Component {
     localStorage.setItem(accessTokenStorageKey, accessToken);
   }
 
+  private waitForHandshakeToFinish() {
+    return new Promise(resolve => {
+      const interval = setInterval(() => {
+        if (AuthenticationProvider.handshakeInProgress) {
+          return;
+        }
+
+        clearInterval(interval);
+        resolve();
+      }, 100);
+    });
+  }
+
+  private enableHandshakeInProgressFlag() {
+    AuthenticationProvider.handshakeInProgress = true;
+  }
+
+  private disableHandshakeInProgressFlag() {
+    AuthenticationProvider.handshakeInProgress = false;
+  }
+
+  private removeHandshakeTokenFromUrl() {
+    const delimiter = `&`;
+    const hash = this.getHashAfterAdjustingForSharepoint();
+    const token = this.getHandshakeTokenFromUrl();
+    const handshakeEntry = `${handshakeTokenParamName}=${token}`;
+
+    const entries = hash.substr(1).split(delimiter);
+    const newHash = entries.filter(param => param !== handshakeEntry).join(delimiter);
+    const adjustedHash = this.isSharepointHash ? `/${newHash}` : newHash;
+
+    this._window.history.replaceState(null, '', `#${adjustedHash}`);
+  }
+
   private loadAccessTokenFromStorage() {
-    const token = localStorage.getItem(accessTokenStorageKey);
+    const token = this.getAccessTokenFromStorage();
     token && this.queryController.getEndpoint().accessToken.updateToken(token);
+  }
+
+  private getAccessTokenFromStorage() {
+    return localStorage.getItem(accessTokenStorageKey);
   }
 
   private handleBuildingCallOptions(args: IBuildingCallOptionsEventArgs) {
@@ -198,6 +256,15 @@ export class AuthenticationProvider extends Component {
   }
 
   private handleQueryError(args: IQueryErrorEventArgs) {
+    const token = this.getAccessTokenFromStorage();
+    const shouldClearToken = this.shouldClearTokenFollowingErrorEvent(args);
+
+    if (token && shouldClearToken) {
+      localStorage.removeItem(accessTokenStorageKey);
+      this._window.location.reload();
+      return;
+    }
+
     let missingAuthError = <MissingAuthenticationError>args.error;
 
     if (
@@ -212,6 +279,11 @@ export class AuthenticationProvider extends Component {
       this.logger.error('The AuthenticationProvider is in a redirect loop. This may be due to a back-end configuration problem.');
       this.redirectCount = -1;
     }
+  }
+
+  private shouldClearTokenFollowingErrorEvent(args: IQueryErrorEventArgs) {
+    const error = args.error.name;
+    return error === 'InvalidTokenException' || error === 'ExpiredTokenException';
   }
 
   private authenticateWithProvider() {
