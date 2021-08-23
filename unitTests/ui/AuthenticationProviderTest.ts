@@ -14,6 +14,7 @@ import { SearchEndpoint } from '../../src/BaseModules';
 import { InitializationEvents } from '../../src/EventsModules';
 import { IInitializationEventArgs } from '../../src/events/InitializationEvents';
 import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
+import { Utils } from '../../src/UtilsModules';
 
 export function AuthenticationProviderTest() {
   describe('AuthenticationProvider', function () {
@@ -100,12 +101,18 @@ export function AuthenticationProviderTest() {
 
       beforeEach(() => {
         window.location.hash = `handshake_token=${handshakeToken}`;
+        AuthenticationProvider.handshakeInProgress = false;
 
         initAuthenticationProvider();
         setupEndpoint();
 
         exchangeTokenSpy = spyOn(test.cmp.queryController.getEndpoint(), 'exchangeHandshakeToken');
         exchangeTokenSpy.and.returnValue(Promise.resolve(accessToken));
+      });
+
+      it('sets the handshake-in-progress flag to true', () => {
+        triggerAfterComponentsInitialization();
+        expect(AuthenticationProvider.handshakeInProgress).toBe(true);
       });
 
       it('exchanges the token', () => {
@@ -188,20 +195,6 @@ export function AuthenticationProviderTest() {
         expect(exchangeTokenSpy).toHaveBeenCalledWith({ handshakeToken: 'test>token' });
       });
 
-      it(`when the exchange throws an error, it logs an error`, async done => {
-        const errorMessage = 'unable to exchange token';
-        exchangeTokenSpy.and.returnValue(Promise.reject(errorMessage));
-
-        const logggerSpy = spyOn(test.cmp.logger, 'error');
-        triggerAfterComponentsInitialization();
-
-        await Promise.resolve();
-        await Promise.resolve();
-
-        expect(logggerSpy).toHaveBeenCalledWith(errorMessage);
-        done();
-      });
-
       it('adds an entry to the initialization args #defer array', () => {
         triggerAfterComponentsInitialization();
         expect(initializationArgs.defer.length).toBe(1);
@@ -209,17 +202,28 @@ export function AuthenticationProviderTest() {
 
       it('adds the access token to local storage', async done => {
         triggerAfterComponentsInitialization();
-        await Promise.resolve();
+
+        await Utils.resolveAfter(0);
 
         const token = localStorage.getItem(accessTokenStorageKey);
         expect(token).toBe(accessToken);
         done();
       });
 
+      it('sets the handshake-in-progress flag to false', async done => {
+        triggerAfterComponentsInitialization();
+
+        await Utils.resolveAfter(0);
+
+        expect(AuthenticationProvider.handshakeInProgress).toBe(false);
+        done();
+      });
+
       it('it removes the handshake token from the url', async done => {
         window.location.hash = `a=b&handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
-        await Promise.resolve();
+
+        await Utils.resolveAfter(0);
 
         expect(window.location.hash).toBe(`#a=b`);
         done();
@@ -228,7 +232,8 @@ export function AuthenticationProviderTest() {
       it('when the hash starts with a /, it removes the handshake token from the url but keeps the slash', async done => {
         window.location.hash = `/handshake_token=${handshakeToken}`;
         triggerAfterComponentsInitialization();
-        await Promise.resolve();
+
+        await Utils.resolveAfter(0);
 
         expect(window.location.hash).toBe(`#/`);
         done();
@@ -237,19 +242,146 @@ export function AuthenticationProviderTest() {
       it('when the handshake token is between two parameters, it removes the handshake token correctly', async done => {
         window.location.hash = `/a=b&handshake_token=${handshakeToken}&c=d`;
         triggerAfterComponentsInitialization();
-        await Promise.resolve();
+
+        await Utils.resolveAfter(0);
 
         expect(window.location.hash).toBe(`#/a=b&c=d`);
+        done();
+      });
+
+      it('when the hash starts with a /, it removes the handshake token from the url but keeps the slash', async done => {
+        window.location.hash = `/a=b&handshake_token=${handshakeToken}`;
+        triggerAfterComponentsInitialization();
+
+        await Utils.resolveAfter(0);
+
+        expect(window.location.hash).toBe(`#/a=b`);
         done();
       });
 
       it('updates the endpoint to use the access token', async done => {
         const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
         triggerAfterComponentsInitialization();
-        await Promise.resolve();
+
+        await Utils.resolveAfter(0);
 
         expect(spy).toHaveBeenCalledWith(accessToken);
         done();
+      });
+    });
+
+    describe('url hash contains a handshake token, when the exchange throws an error', () => {
+      const errorMessage = 'unable to exchange token';
+      let exchangeTokenSpy: jasmine.Spy;
+
+      beforeEach(() => {
+        window.location.hash = `handshake_token=token`;
+
+        initAuthenticationProvider();
+        setupEndpoint();
+
+        exchangeTokenSpy = spyOn(test.cmp.queryController.getEndpoint(), 'exchangeHandshakeToken');
+        exchangeTokenSpy.and.returnValue(Promise.reject(errorMessage));
+      });
+
+      it(`it logs an error`, async done => {
+        const logggerSpy = spyOn(test.cmp.logger, 'error');
+        triggerAfterComponentsInitialization();
+
+        await Utils.resolveAfter(0);
+
+        expect(logggerSpy).toHaveBeenCalledWith(errorMessage);
+        done();
+      });
+
+      it('sets the handshake-in-progress flag to false', async done => {
+        triggerAfterComponentsInitialization();
+
+        await Utils.resolveAfter(0);
+
+        expect(AuthenticationProvider.handshakeInProgress).toBe(false);
+        done();
+      });
+    });
+
+    describe(`a handshake is in progress`, () => {
+      const accessToken = 'access-token';
+
+      beforeEach(() => {
+        AuthenticationProvider.handshakeInProgress = true;
+
+        initAuthenticationProvider();
+        setupEndpoint();
+      });
+
+      it('when the handshake completes, it loads the access token', async done => {
+        jasmine.clock().install();
+        const spy = spyOn(test.cmp.queryController.getEndpoint().accessToken, 'updateToken');
+        triggerAfterComponentsInitialization();
+
+        jasmine.clock().tick(500);
+
+        localStorage.setItem(accessTokenStorageKey, accessToken);
+        AuthenticationProvider.handshakeInProgress = false;
+
+        jasmine.clock().tick(100);
+        jasmine.clock().uninstall();
+
+        await Utils.resolveAfter(0);
+
+        expect(spy).toHaveBeenCalledWith(accessToken);
+        done();
+      });
+
+      it('adds an entry to the initialization args #defer array', () => {
+        triggerAfterComponentsInitialization();
+        expect(initializationArgs.defer.length).toBe(1);
+      });
+    });
+
+    describe('when encountering an invalid token error', () => {
+      let fakeWindow: Window;
+
+      function triggerInvalidTokenError() {
+        const error = { name: 'InvalidTokenException' };
+        $$(test.env.root).trigger(QueryEvents.queryError, { error });
+      }
+
+      function triggerExpiredTokenError() {
+        const error = { name: 'ExpiredTokenException' };
+        $$(test.env.root).trigger(QueryEvents.queryError, { error });
+      }
+
+      beforeEach(() => {
+        fakeWindow = Mock.mockWindow();
+        test.cmp._window = fakeWindow;
+      });
+
+      describe('if there is an invalid access token in storage', () => {
+        beforeEach(() => {
+          localStorage.setItem(accessTokenStorageKey, 'invalid token');
+          triggerInvalidTokenError();
+        });
+
+        it('clears the access token from localstorage', () => {
+          expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
+        });
+
+        it('reloads the page', () => {
+          expect(fakeWindow.location.reload).toHaveBeenCalledTimes(1);
+        });
+      });
+
+      it('if there is no access token in storage, it does not reload the page', () => {
+        triggerInvalidTokenError();
+        expect(fakeWindow.location.reload).not.toHaveBeenCalled();
+      });
+
+      it('if there is an expired access token is in storage, it clears the token', () => {
+        localStorage.setItem(accessTokenStorageKey, 'expired token');
+        triggerExpiredTokenError();
+
+        expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
       });
     });
 
