@@ -6,7 +6,7 @@ import { QueryEvents, Initialization, $$ } from '../../Core';
 import { IQuerySuccessEventArgs } from '../../events/QueryEvents';
 import { IQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import 'styling/_SmartSnippet';
-import { find } from 'underscore';
+import { find, map, flatten, compact } from 'underscore';
 import { IQueryResult } from '../../rest/QueryResult';
 import { UserFeedbackBanner } from './UserFeedbackBanner';
 import {
@@ -136,7 +136,7 @@ export class SmartSnippet extends Component {
     hrefTemplate: ComponentOptions.buildStringOption()
   };
 
-  private lastRenderedResult: IQueryResult;
+  private lastRenderedResult: IQueryResult = null;
   private searchUid: string;
   private questionContainer: HTMLElement;
   private shadowContainer: HTMLElement;
@@ -258,8 +258,12 @@ export class SmartSnippet extends Component {
    * @warning This method only works for the demo. In practice, the source of the answer will not always be part of the results.
    */
   private getCorrespondingResult(questionAnswer: IQuestionAnswerResponse) {
+    const lastResults = this.queryController.getLastResults().results;
+    const childResults = flatten(map(lastResults, lastResult => lastResult.childResults)) as IQueryResult[];
+    const attachments = flatten(map(lastResults, lastResult => lastResult.attachments)) as IQueryResult[];
+
     return find(
-      this.queryController.getLastResults().results,
+      compact(lastResults.concat(childResults, attachments)),
       result => result.raw[questionAnswer.documentId.contentIdKey] === questionAnswer.documentId.contentIdValue
     );
   }
@@ -287,6 +291,8 @@ export class SmartSnippet extends Component {
     this.lastRenderedResult = this.getCorrespondingResult(questionAnswer);
     if (this.lastRenderedResult) {
       this.renderSource();
+    } else {
+      this.lastRenderedResult = null;
     }
   }
 
