@@ -240,6 +240,10 @@ export class Dom {
       return false;
     }
 
+    if (this.hasClass('coveo-hidden-dependant-facet')) {
+      return false;
+    }
+
     return true;
   }
 

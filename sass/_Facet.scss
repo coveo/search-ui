@@ -29,7 +29,8 @@
 }
 
 .coveo-facet-empty,
-.coveo-hidden {
+.coveo-hidden,
+.coveo-hidden-dependant-facet {
   display: none;
   &.coveo-with-placeholder {
     display: block;

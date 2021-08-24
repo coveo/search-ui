@@ -36,7 +36,7 @@ export class DependsOnManager {
   }
 
   private setupDependentFacet() {
-    $$(this.facet.ref.element).addClass('coveo-hidden');
+    $$(this.facet.ref.element).addClass('coveo-hidden-dependant-facet');
     this.parentFacetRef = this.getParentFacet(this.facet.ref);
 
     if (this.parentFacetRef) {
@@ -104,12 +104,12 @@ export class DependsOnManager {
     this.dependentFacets.forEach(dependentFacet => {
       const condition = this.getDependsOnCondition(dependentFacet);
       if (condition(this.facet.ref)) {
-        $$(dependentFacet.element).removeClass('coveo-hidden');
+        $$(dependentFacet.element).removeClass('coveo-hidden-dependant-facet');
         return dependentFacet.enable();
       }
 
       dependentFacet.disable();
-      $$(dependentFacet.element).addClass('coveo-hidden');
+      $$(dependentFacet.element).addClass('coveo-hidden-dependant-facet');
     });
   }
 
