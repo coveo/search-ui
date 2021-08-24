@@ -93,8 +93,7 @@ export function SmartSnippetTest() {
       await test.cmp.loading;
     }
 
-    async function triggerQuestionAnswerQuery(withSource: boolean) {
-      const results = withSource ? [mockResult()] : [];
+    async function triggerQuestionAnswerQuery(withSource: boolean, results = withSource ? [mockResult()] : []) {
       await triggerQuerySuccess({
         results: <IQueryResults>{
           results,
@@ -110,6 +109,57 @@ export function SmartSnippetTest() {
     function getShadowRoot() {
       return getFirstChild(ClassNames.SHADOW_CLASSNAME).shadowRoot;
     }
+
+    describe('when resolving result to build result link', () => {
+      const expectedHref = 'https://a-good-uri.com/';
+
+      beforeEach(() => {
+        instantiateSmartSnippet(null);
+        document.body.appendChild(test.env.root);
+      });
+
+      function expectValidHref() {
+        expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).href).toEqual(expectedHref);
+        expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).innerText).toEqual(expectedHref);
+        expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME).href).toEqual(expectedHref);
+        test.env.root.remove();
+      }
+
+      it('resolve from top results', async done => {
+        const mockResults = [mockResult(), mockResult(), mockResult()];
+        mockResults[0].raw[sourceId.contentIdKey] = 'nope';
+        mockResults[1].raw[sourceId.contentIdKey] = 'not good';
+        mockResults[2].clickUri = expectedHref;
+
+        await triggerQuestionAnswerQuery(true, mockResults);
+        expectValidHref();
+        done();
+      });
+
+      it('resolve from child results', async done => {
+        const childResult = mockResult();
+        childResult.clickUri = expectedHref;
+        const mockResults = [mockResult()];
+        mockResults[0].raw[sourceId.contentIdKey] = 'nope';
+        mockResults[0].childResults = [childResult];
+
+        await triggerQuestionAnswerQuery(true, mockResults);
+        expectValidHref();
+        done();
+      });
+
+      it('resolve from attachment', async done => {
+        const attachment = mockResult();
+        attachment.clickUri = expectedHref;
+        const mockResults = [mockResult()];
+        mockResults[0].raw[sourceId.contentIdKey] = 'nope';
+        mockResults[0].attachments = [attachment];
+
+        await triggerQuestionAnswerQuery(true, mockResults);
+        expectValidHref();
+        done();
+      });
+    });
 
     it('instantiates the heightLimiter using the maximumSnippetHeight option', () => {
       let maximumSnippetHeight = 123;
