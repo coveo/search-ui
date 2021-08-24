@@ -93,7 +93,7 @@ export function DependsOnManagerTest() {
 
       it('shows the facet', () => {
         const facet = $$(dependentMock.facet.ref.element);
-        expect(facet.hasClass('coveo-hidden')).toBe(false);
+        expect(facet.hasClass('coveo-hidden-dependant-facet')).toBe(false);
       });
     });
 
@@ -108,10 +108,10 @@ export function DependsOnManagerTest() {
 
       it('hides the facet', () => {
         const facet = $$(dependentMock.facet.ref.element);
-        facet.removeClass('coveo-hidden');
+        facet.removeClass('coveo-hidden-dependant-facet');
 
         $$(root).trigger(QueryEvents.buildingQuery);
-        expect(facet.hasClass('coveo-hidden')).toBe(true);
+        expect(facet.hasClass('coveo-hidden-dependant-facet')).toBe(true);
       });
     });
 
@@ -138,18 +138,18 @@ export function DependsOnManagerTest() {
 
       it('should hide the first facet', () => {
         const facet = $$(dependentMock.facet.ref.element);
-        facet.removeClass('coveo-hidden');
+        facet.removeClass('coveo-hidden-dependant-facet');
 
         $$(root).trigger(QueryEvents.buildingQuery);
-        expect(facet.hasClass('coveo-hidden')).toBe(true);
+        expect(facet.hasClass('coveo-hidden-dependant-facet')).toBe(true);
       });
 
       it('should hide the second facet', () => {
         const facet = $$(dependent2Mock.facet.ref.element);
-        facet.removeClass('coveo-hidden');
+        facet.removeClass('coveo-hidden-dependant-facet');
 
         $$(root).trigger(QueryEvents.buildingQuery);
-        expect(facet.hasClass('coveo-hidden')).toBe(true);
+        expect(facet.hasClass('coveo-hidden-dependant-facet')).toBe(true);
       });
     });
 
@@ -178,18 +178,18 @@ export function DependsOnManagerTest() {
 
       it('should show the first facet', () => {
         const facet = $$(dependentMock.facet.ref.element);
-        facet.addClass('coveo-hidden');
+        facet.addClass('coveo-hidden-dependant-facet');
 
         $$(root).trigger(QueryEvents.buildingQuery);
-        expect(facet.hasClass('coveo-hidden')).toBe(false);
+        expect(facet.hasClass('coveo-hidden-dependant-facet')).toBe(false);
       });
 
       it('should hide the second facet', () => {
         const facet = $$(dependent2Mock.facet.ref.element);
-        facet.removeClass('coveo-hidden');
+        facet.removeClass('coveo-hidden-dependant-facet');
 
         $$(root).trigger(QueryEvents.buildingQuery);
-        expect(facet.hasClass('coveo-hidden')).toBe(true);
+        expect(facet.hasClass('coveo-hidden-dependant-facet')).toBe(true);
       });
     });
 
@@ -218,18 +218,18 @@ export function DependsOnManagerTest() {
 
       it('should show the first facet', () => {
         const facet = $$(dependentMock.facet.ref.element);
-        facet.addClass('coveo-hidden');
+        facet.addClass('coveo-hidden-dependant-facet');
 
         $$(root).trigger(QueryEvents.buildingQuery);
-        expect(facet.hasClass('coveo-hidden')).toBe(false);
+        expect(facet.hasClass('coveo-hidden-dependant-facet')).toBe(false);
       });
 
       it('should show the second facet', () => {
         const facet = $$(dependent2Mock.facet.ref.element);
-        facet.addClass('coveo-hidden');
+        facet.addClass('coveo-hidden-dependant-facet');
 
         $$(root).trigger(QueryEvents.buildingQuery);
-        expect(facet.hasClass('coveo-hidden')).toBe(false);
+        expect(facet.hasClass('coveo-hidden-dependant-facet')).toBe(false);
       });
     });
 
