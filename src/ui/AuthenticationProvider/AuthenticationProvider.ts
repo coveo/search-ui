@@ -146,17 +146,17 @@ export class AuthenticationProvider extends Component {
   }
 
   private getHandshakeTokenFromUrl() {
-    const hash = this.getHashAfterAdjustingForSharepoint();
+    const hash = this.getHashAfterAdjustingForAngular();
     const token = HashUtils.getValue(handshakeTokenParamName, hash);
     return typeof token === 'string' ? token : '';
   }
 
-  private getHashAfterAdjustingForSharepoint() {
+  private getHashAfterAdjustingForAngular() {
     const hash = HashUtils.getHash();
-    return this.isSharepointHash ? `#${hash.slice(2)}` : hash;
+    return this.isAngularHash ? `#${hash.slice(2)}` : hash;
   }
 
-  private get isSharepointHash() {
+  private get isAngularHash() {
     const rawHash = HashUtils.getHash();
     return rawHash.indexOf('#/') === 0;
   }
@@ -231,13 +231,13 @@ export class AuthenticationProvider extends Component {
 
   private removeHandshakeTokenFromUrl() {
     const delimiter = `&`;
-    const hash = this.getHashAfterAdjustingForSharepoint();
+    const hash = this.getHashAfterAdjustingForAngular();
     const token = this.getHandshakeTokenFromUrl();
     const handshakeEntry = `${handshakeTokenParamName}=${token}`;
 
     const entries = hash.substr(1).split(delimiter);
     const newHash = entries.filter(param => param !== handshakeEntry).join(delimiter);
-    const adjustedHash = this.isSharepointHash ? `/${newHash}` : newHash;
+    const adjustedHash = this.isAngularHash ? `/${newHash}` : newHash;
 
     this._window.history.replaceState(null, '', `#${adjustedHash}`);
   }
