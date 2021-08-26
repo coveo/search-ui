@@ -3325,6 +3325,9 @@ var Dom = /** @class */ (function () {
         if (this.hasClass('coveo-hidden')) {
             return false;
         }
+        if (this.hasClass('coveo-hidden-dependant-facet')) {
+            return false;
+        }
         return true;
     };
     /**
@@ -15369,8 +15372,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10089.1',
-    product: '2.10089.1',
+    lib: '2.10089.2',
+    product: '2.10089.2',
     supportedApiVersion: 2
 };
 
