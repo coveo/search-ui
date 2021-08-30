@@ -5,7 +5,7 @@ node('linux && docker') {
   withEnv([
     'npm_config_cache=npm-cache'
   ]){
-    withDockerContainer(image: 'nikolaik/python-nodejs:python3.8-nodejs10', args: '-u=root') {
+    withDockerContainer(image: 'nikolaik/python-nodejs:python3.8-nodejs14', args: '-u=root') {
       stage('Install') {
         sh 'yarn install'
       }
