@@ -2,20 +2,22 @@ import { findLastIndex } from 'underscore';
 import { LocalStorageUtils } from '../../Core';
 import { Cookie } from '../../utils/CookieUtils';
 import { buildHistoryStore } from '../../utils/HistoryStore';
+import { SafeLocalStorage } from '../../utils/LocalStorageUtils';
 
 export class AnalyticsInformation {
   private readonly visitorIdKey = 'visitorId';
   private readonly clientIdKey = 'clientId';
+  private readonly storage = new SafeLocalStorage();
 
   public get clientId() {
     // Yes, its backwards: We are using a key named "visitorId" to fetched something for "clientId"
     // This is done to synchronize with https://github.com/coveo/coveo.analytics.js
     // This is intentional.
-    return localStorage.getItem(this.visitorIdKey) || null;
+    return this.storage.getItem(this.visitorIdKey) || null;
   }
 
   public set clientId(id: string) {
-    localStorage.setItem(this.visitorIdKey, id);
+    this.storage.setItem(this.visitorIdKey, id);
   }
 
   public get lastPageId() {
@@ -42,7 +44,7 @@ export class AnalyticsInformation {
   }
 
   private clearLocalStorage() {
-    localStorage.removeItem(this.visitorIdKey);
+    this.storage.removeItem(this.visitorIdKey);
     new LocalStorageUtils(this.clientIdKey).remove();
   }
 
