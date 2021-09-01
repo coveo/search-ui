@@ -11,11 +11,25 @@ export class AnalyticsInformation {
     // Yes, its backwards: We are using a key named "visitorId" to fetched something for "clientId"
     // This is done to synchronize with https://github.com/coveo/coveo.analytics.js
     // This is intentional.
-    return localStorage.getItem(this.visitorIdKey) || null;
+    try {
+      return localStorage.getItem(this.visitorIdKey) || null;
+    } catch (e) {
+      console.warn(
+        'Unable to get the visitorId.\nTo resolve this message, adjust your browser settings to allow third-party cookies and data.',
+        e
+      );
+    }
   }
 
   public set clientId(id: string) {
-    localStorage.setItem(this.visitorIdKey, id);
+    try {
+      localStorage.setItem(this.visitorIdKey, id);
+    } catch(e) {
+      console.warn(
+        'Unable to set the visitorId.\nTo resolve this message, adjust your browser settings to allow third-party cookies and data.',
+        e
+      );    
+    }
   }
 
   public get lastPageId() {
@@ -42,8 +56,15 @@ export class AnalyticsInformation {
   }
 
   private clearLocalStorage() {
-    localStorage.removeItem(this.visitorIdKey);
-    new LocalStorageUtils(this.clientIdKey).remove();
+     try {
+       localStorage.removeItem(this.visitorIdKey);
+       new LocalStorageUtils(this.clientIdKey).remove();
+     } catch (e) {
+       console.warn(
+         'Unable to set the visitorId.\nTo resolve this message, adjust your browser settings to allow third-party cookies and data.',
+         e
+       );
+     }
   }
 
   private clearCookies() {
