@@ -5,6 +5,10 @@ var localStorage: Storage;
 try {
   localStorage = window.localStorage;
 } catch (error) {
+  console.warn(
+    'Unable to access localStorage. Certain features like analytics will not work. If this is unintended, consider adjusting your browser settings to allow third-party cookies and data.\n\n',
+    error
+  );
   localStorage = null;
 }
 
