@@ -28,7 +28,7 @@ export class AnalyticsInformation {
       console.warn(
         'Unable to set the visitorId.\nTo resolve this message, adjust your browser settings to allow third-party cookies and data.',
         e
-      );    
+      );
     }
   }
 
