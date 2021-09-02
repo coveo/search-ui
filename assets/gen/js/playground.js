@@ -3112,7 +3112,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var underscore_1 = __webpack_require__(0);
 var Assert_1 = __webpack_require__(2);
 var Logger_1 = __webpack_require__(4);
-var JQueryutils_1 = __webpack_require__(43);
+var JQueryutils_1 = __webpack_require__(44);
 var Utils_1 = __webpack_require__(3);
 var DeviceUtils_1 = __webpack_require__(21);
 /**
@@ -4689,7 +4689,7 @@ var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
 // The largest integer that can be represented exactly.
 var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(42)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(43)))
 
 /***/ }),
 /* 6 */
@@ -4853,7 +4853,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(3);
-var JQueryutils_1 = __webpack_require__(43);
+var JQueryutils_1 = __webpack_require__(44);
 var Dom_1 = __webpack_require__(1);
 var QueryStateModel_1 = __webpack_require__(9);
 var ComponentStateModel_1 = __webpack_require__(49);
@@ -6803,14 +6803,14 @@ var ComponentOptionsModel_1 = __webpack_require__(23);
 var ComponentStateModel_1 = __webpack_require__(49);
 var QueryStateModel_1 = __webpack_require__(9);
 var Dom_1 = __webpack_require__(1);
-var HashUtils_1 = __webpack_require__(34);
-var JQueryutils_1 = __webpack_require__(43);
+var HashUtils_1 = __webpack_require__(35);
+var JQueryutils_1 = __webpack_require__(44);
 var Utils_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(10);
 var Component_1 = __webpack_require__(7);
 var SearchInterface_1 = __webpack_require__(16);
 var InitializationHelper_1 = __webpack_require__(307);
-var RegisteredNamedMethods_1 = __webpack_require__(35);
+var RegisteredNamedMethods_1 = __webpack_require__(36);
 /**
  * The main purpose of this class is to initialize the framework (a.k.a the code executed when calling `Coveo.init`).<br/>
  * It's also in charge or registering the available components, as well as the method that we expost to the global Coveo scope.<br/>
@@ -7940,7 +7940,7 @@ var ComponentOptionsLoader_1 = __webpack_require__(221);
 var ComponentOptionsMerger_1 = __webpack_require__(222);
 var ComponentOptionsPostProcessor_1 = __webpack_require__(223);
 var ComponentOptionsValidator_1 = __webpack_require__(224);
-var IComponentOptions_1 = __webpack_require__(36);
+var IComponentOptions_1 = __webpack_require__(37);
 var TemplateComponentOptions_1 = __webpack_require__(225);
 var camelCaseToHyphenRegex = /([A-Z])|\W+(\w)/g;
 var fieldsSeperator = /\s*,\s*/;
@@ -8683,7 +8683,7 @@ var Model_1 = __webpack_require__(13);
 var QueryStateModel_1 = __webpack_require__(9);
 var SearchEndpoint_1 = __webpack_require__(25);
 var Dom_1 = __webpack_require__(1);
-var HashUtils_1 = __webpack_require__(34);
+var HashUtils_1 = __webpack_require__(35);
 var Utils_1 = __webpack_require__(3);
 var AnalyticsActionListMeta_1 = __webpack_require__(10);
 var NoopAnalyticsClient_1 = __webpack_require__(66);
@@ -8695,7 +8695,7 @@ var RootComponent_1 = __webpack_require__(28);
 var Debug_1 = __webpack_require__(230);
 var MissingTermManager_1 = __webpack_require__(237);
 var OmniboxAnalytics_1 = __webpack_require__(294);
-var ResponsiveComponents_1 = __webpack_require__(44);
+var ResponsiveComponents_1 = __webpack_require__(45);
 var FacetColumnAutoLayoutAdjustment_1 = __webpack_require__(295);
 var FacetValueStateHandler_1 = __webpack_require__(296);
 var ComponentsTypes_1 = __webpack_require__(69);
@@ -9998,7 +9998,7 @@ exports.StringUtils = StringUtils;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 // Not sure about this : In year 2033 who's to say that this list won't be 50 pages long !
-var ResponsiveComponents_1 = __webpack_require__(44);
+var ResponsiveComponents_1 = __webpack_require__(45);
 var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 var DeviceUtils = /** @class */ (function () {
     function DeviceUtils() {
@@ -10443,7 +10443,7 @@ var AccessToken_1 = __webpack_require__(86);
 var BackOffRequest_1 = __webpack_require__(136);
 var Plan_1 = __webpack_require__(144);
 var underscore_1 = __webpack_require__(0);
-var AnalyticsInformation_1 = __webpack_require__(45);
+var AnalyticsInformation_1 = __webpack_require__(46);
 var DefaultSearchEndpointOptions = /** @class */ (function () {
     function DefaultSearchEndpointOptions() {
         this.version = 'v2';
@@ -11936,7 +11936,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var HistoryStore_1 = __webpack_require__(61);
 var _ = __webpack_require__(0);
 var QueryEvents_1 = __webpack_require__(6);
-var ExternalModulesShim_1 = __webpack_require__(41);
+var ExternalModulesShim_1 = __webpack_require__(42);
 var Assert_1 = __webpack_require__(2);
 var Defer_1 = __webpack_require__(31);
 var SearchEndpointWithDefaultCallOptions_1 = __webpack_require__(168);
@@ -11944,7 +11944,7 @@ var BaseComponent_1 = __webpack_require__(15);
 var QueryBuilder_1 = __webpack_require__(80);
 var RootComponent_1 = __webpack_require__(28);
 var Dom_1 = __webpack_require__(1);
-var LocalStorageUtils_1 = __webpack_require__(48);
+var LocalStorageUtils_1 = __webpack_require__(34);
 var QueryUtils_1 = __webpack_require__(22);
 var UrlUtils_1 = __webpack_require__(26);
 var Utils_1 = __webpack_require__(3);
@@ -12529,7 +12529,7 @@ var Logger_1 = __webpack_require__(4);
 var Dom_1 = __webpack_require__(1);
 var TemplateConditionEvaluator_1 = __webpack_require__(95);
 var TemplateFieldsEvaluator_1 = __webpack_require__(227);
-var ResponsiveComponents_1 = __webpack_require__(44);
+var ResponsiveComponents_1 = __webpack_require__(45);
 var _ = __webpack_require__(0);
 var Initialization_1 = __webpack_require__(12);
 var Utils_1 = __webpack_require__(3);
@@ -12839,10 +12839,127 @@ exports.ResultListEvents = ResultListEvents;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {module.exports = global["Globalize"] = __webpack_require__(154);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(42)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(43)))
 
 /***/ }),
 /* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var localStorage;
+// This check must be made in a try/catch. If cookies are disabled for a
+// browser then window.localStorage will throw an undefined exception.
+try {
+    localStorage = window.localStorage;
+}
+catch (error) {
+    console.warn('Unable to access localStorage. Certain features like analytics will not work. If this is unintended, consider adjusting your browser settings to allow third-party cookies and data.\n\n', error);
+    localStorage = null;
+}
+exports.localStorageExists = !!localStorage;
+var LocalStorageUtils = /** @class */ (function () {
+    function LocalStorageUtils(id) {
+        this.id = id;
+    }
+    LocalStorageUtils.prototype.save = function (data) {
+        try {
+            if (localStorage != null) {
+                localStorage.setItem(this.getLocalStorageKey(), JSON.stringify(data));
+            }
+        }
+        catch (error) { }
+    };
+    LocalStorageUtils.prototype.load = function () {
+        try {
+            if (localStorage == null) {
+                return null;
+            }
+            var value = localStorage.getItem(this.getLocalStorageKey());
+            return value && JSON.parse(value);
+        }
+        catch (error) {
+            return null;
+        }
+    };
+    LocalStorageUtils.prototype.remove = function (key) {
+        try {
+            if (localStorage != null) {
+                if (key == undefined) {
+                    localStorage.removeItem(this.getLocalStorageKey());
+                }
+                else {
+                    var oldObj = this.load();
+                    delete oldObj[key];
+                    this.save(oldObj);
+                }
+            }
+        }
+        catch (error) { }
+    };
+    LocalStorageUtils.prototype.getLocalStorageKey = function () {
+        return 'coveo-' + this.id;
+    };
+    return LocalStorageUtils;
+}());
+exports.LocalStorageUtils = LocalStorageUtils;
+var SafeLocalStorage = /** @class */ (function () {
+    function SafeLocalStorage() {
+    }
+    SafeLocalStorage.prototype.getItem = function (key) {
+        try {
+            return localStorage.getItem(key);
+        }
+        catch (e) {
+            return null;
+        }
+    };
+    SafeLocalStorage.prototype.removeItem = function (key) {
+        try {
+            localStorage.removeItem(key);
+        }
+        catch (e) { }
+    };
+    SafeLocalStorage.prototype.setItem = function (key, value) {
+        try {
+            localStorage.setItem(key, value);
+        }
+        catch (e) { }
+    };
+    SafeLocalStorage.prototype.clear = function () {
+        try {
+            localStorage.clear();
+        }
+        catch (e) { }
+    };
+    SafeLocalStorage.prototype.key = function (index) {
+        try {
+            return localStorage.key(index);
+        }
+        catch (e) {
+            return null;
+        }
+    };
+    Object.defineProperty(SafeLocalStorage.prototype, "length", {
+        get: function () {
+            try {
+                return localStorage.length;
+            }
+            catch (e) {
+                return 0;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return SafeLocalStorage;
+}());
+exports.SafeLocalStorage = SafeLocalStorage;
+
+
+/***/ }),
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13090,7 +13207,7 @@ exports.HashUtils = HashUtils;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13680,7 +13797,7 @@ Initialization_1.Initialization.registerNamedMethod('require', function (modules
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13712,7 +13829,7 @@ var ComponentOptionsType;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13802,13 +13919,13 @@ exports.UnderscoreTemplate = UnderscoreTemplate;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(18);
 var core = __webpack_require__(19);
 var ctx = __webpack_require__(244);
-var hide = __webpack_require__(39);
+var hide = __webpack_require__(40);
 var has = __webpack_require__(54);
 var PROTOTYPE = 'prototype';
 
@@ -13870,7 +13987,7 @@ module.exports = $export;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP = __webpack_require__(70);
@@ -13884,7 +14001,7 @@ module.exports = __webpack_require__(53) ? function (object, key, value) {
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13914,7 +14031,7 @@ __export(__webpack_require__(79));
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13925,7 +14042,7 @@ exports.LocaleString = __webpack_require__(153);
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 var g;
@@ -13952,7 +14069,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13987,7 +14104,7 @@ exports.JQueryUtils = JQueryUtils;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14115,30 +14232,32 @@ exports.ResponsiveComponents = ResponsiveComponents;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var underscore_1 = __webpack_require__(0);
-var Core_1 = __webpack_require__(40);
+var Core_1 = __webpack_require__(41);
 var CookieUtils_1 = __webpack_require__(109);
 var HistoryStore_1 = __webpack_require__(61);
+var LocalStorageUtils_1 = __webpack_require__(34);
 var AnalyticsInformation = /** @class */ (function () {
     function AnalyticsInformation() {
         this.visitorIdKey = 'visitorId';
         this.clientIdKey = 'clientId';
+        this.storage = new LocalStorageUtils_1.SafeLocalStorage();
     }
     Object.defineProperty(AnalyticsInformation.prototype, "clientId", {
         get: function () {
             // Yes, its backwards: We are using a key named "visitorId" to fetched something for "clientId"
             // This is done to synchronize with https://github.com/coveo/coveo.analytics.js
             // This is intentional.
-            return localStorage.getItem(this.visitorIdKey) || null;
+            return this.storage.getItem(this.visitorIdKey) || null;
         },
         set: function (id) {
-            localStorage.setItem(this.visitorIdKey, id);
+            this.storage.setItem(this.visitorIdKey, id);
         },
         enumerable: true,
         configurable: true
@@ -14175,7 +14294,7 @@ var AnalyticsInformation = /** @class */ (function () {
         this.clearCookies();
     };
     AnalyticsInformation.prototype.clearLocalStorage = function () {
-        localStorage.removeItem(this.visitorIdKey);
+        this.storage.removeItem(this.visitorIdKey);
         new Core_1.LocalStorageUtils(this.clientIdKey).remove();
     };
     AnalyticsInformation.prototype.clearCookies = function () {
@@ -14188,7 +14307,7 @@ exports.AnalyticsInformation = AnalyticsInformation;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14211,7 +14330,7 @@ exports.Options = Options;
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14259,69 +14378,6 @@ var AnalyticsEvents = /** @class */ (function () {
     return AnalyticsEvents;
 }());
 exports.AnalyticsEvents = AnalyticsEvents;
-
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var localStorage;
-// This check must be made in a try/catch. If cookies are disabled for a
-// browser then window.localStorage will throw an undefined exception.
-try {
-    localStorage = window.localStorage;
-}
-catch (error) {
-    localStorage = null;
-}
-var LocalStorageUtils = /** @class */ (function () {
-    function LocalStorageUtils(id) {
-        this.id = id;
-    }
-    LocalStorageUtils.prototype.save = function (data) {
-        try {
-            if (localStorage != null) {
-                localStorage.setItem(this.getLocalStorageKey(), JSON.stringify(data));
-            }
-        }
-        catch (error) { }
-    };
-    LocalStorageUtils.prototype.load = function () {
-        try {
-            if (localStorage == null) {
-                return null;
-            }
-            var value = localStorage.getItem(this.getLocalStorageKey());
-            return value && JSON.parse(value);
-        }
-        catch (error) {
-            return null;
-        }
-    };
-    LocalStorageUtils.prototype.remove = function (key) {
-        try {
-            if (localStorage != null) {
-                if (key == undefined) {
-                    localStorage.removeItem(this.getLocalStorageKey());
-                }
-                else {
-                    var oldObj = this.load();
-                    delete oldObj[key];
-                    this.save(oldObj);
-                }
-            }
-        }
-        catch (error) { }
-    };
-    LocalStorageUtils.prototype.getLocalStorageKey = function () {
-        return 'coveo-' + this.id;
-    };
-    return LocalStorageUtils;
-}());
-exports.LocalStorageUtils = LocalStorageUtils;
 
 
 /***/ }),
@@ -14577,7 +14633,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Options_1 = __webpack_require__(46);
+var Options_1 = __webpack_require__(47);
 var Utils_1 = __webpack_require__(3);
 var Strings_1 = __webpack_require__(8);
 var _ = __webpack_require__(0);
@@ -14940,7 +14996,7 @@ var Assert_1 = __webpack_require__(2);
 var TimeSpanUtils_1 = __webpack_require__(59);
 var DeviceUtils_1 = __webpack_require__(21);
 var Utils_1 = __webpack_require__(3);
-var JQueryutils_1 = __webpack_require__(43);
+var JQueryutils_1 = __webpack_require__(44);
 var _ = __webpack_require__(0);
 var UrlUtils_1 = __webpack_require__(26);
 // In ie8, XMLHttpRequest has no status property, so let's use this enum instead
@@ -15372,8 +15428,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10089.2',
-    product: '2.10089.2',
+    lib: '2.10089.3',
+    product: '2.10089.3',
     supportedApiVersion: 2
 };
 
@@ -16629,7 +16685,7 @@ exports.HtmlTemplate = HtmlTemplate;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Template_1 = __webpack_require__(29);
 var Assert_1 = __webpack_require__(2);
-var UnderscoreTemplate_1 = __webpack_require__(37);
+var UnderscoreTemplate_1 = __webpack_require__(38);
 var HtmlTemplate_1 = __webpack_require__(67);
 var _ = __webpack_require__(0);
 /**
@@ -16992,7 +17048,7 @@ var Component_1 = __webpack_require__(7);
 var QueryController_1 = __webpack_require__(27);
 var Defer_1 = __webpack_require__(31);
 var APIAnalyticsBuilder_1 = __webpack_require__(112);
-var AnalyticsEvents_1 = __webpack_require__(47);
+var AnalyticsEvents_1 = __webpack_require__(48);
 var AnalyticsActionListMeta_1 = __webpack_require__(10);
 var QueryStateModel_1 = __webpack_require__(9);
 var underscore_1 = __webpack_require__(0);
@@ -17183,7 +17239,7 @@ var DomUtils_1 = __webpack_require__(302);
 exports.DomUtils = DomUtils_1.DomUtils;
 var EmailUtils_1 = __webpack_require__(304);
 exports.EmailUtils = EmailUtils_1.EmailUtils;
-var HashUtils_1 = __webpack_require__(34);
+var HashUtils_1 = __webpack_require__(35);
 exports.HashUtils = HashUtils_1.HashUtils;
 var HighlightUtils_1 = __webpack_require__(81);
 exports.HighlightUtils = HighlightUtils_1.HighlightUtils;
@@ -17193,7 +17249,7 @@ exports.HTMLUtils = HtmlUtils_1.HTMLUtils;
 var KeyboardUtils_1 = __webpack_require__(51);
 exports.KEYBOARD = KeyboardUtils_1.KEYBOARD;
 exports.KeyboardUtils = KeyboardUtils_1.KeyboardUtils;
-var LocalStorageUtils_1 = __webpack_require__(48);
+var LocalStorageUtils_1 = __webpack_require__(34);
 exports.LocalStorageUtils = LocalStorageUtils_1.LocalStorageUtils;
 var OSUtils_1 = __webpack_require__(119);
 exports.OSUtils = OSUtils_1.OSUtils;
@@ -18309,7 +18365,7 @@ var L10N_1 = __webpack_require__(90);
 exports.L10N = L10N_1.L10N;
 var Logger_1 = __webpack_require__(4);
 exports.Logger = Logger_1.Logger;
-var Options_1 = __webpack_require__(46);
+var Options_1 = __webpack_require__(47);
 exports.Options = Options_1.Options;
 var Strings_1 = __webpack_require__(8);
 exports.l = Strings_1.l;
@@ -18326,7 +18382,7 @@ if (false) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExternalModulesShim_1 = __webpack_require__(41);
+var ExternalModulesShim_1 = __webpack_require__(42);
 var _ = __webpack_require__(0);
 String.toLocaleString = ExternalModulesShim_1.LocaleString;
 var pluralRegex = /<pl>(((?!<\/pl>).)*)<\/pl>/g;
@@ -18439,7 +18495,7 @@ var Logger_1 = __webpack_require__(4);
 var AnalyticsEndpointCaller_1 = __webpack_require__(156);
 var UrlUtils_1 = __webpack_require__(26);
 var Utils_1 = __webpack_require__(3);
-var AnalyticsInformation_1 = __webpack_require__(45);
+var AnalyticsInformation_1 = __webpack_require__(46);
 var AnalyticsEndpoint = /** @class */ (function () {
     function AnalyticsEndpoint(options) {
         this.options = options;
@@ -18664,7 +18720,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(2);
 var InitializationEvents_1 = __webpack_require__(11);
 var Dom_1 = __webpack_require__(1);
-var HashUtils_1 = __webpack_require__(34);
+var HashUtils_1 = __webpack_require__(35);
 var Defer_1 = __webpack_require__(31);
 var RootComponent_1 = __webpack_require__(28);
 var Utils_1 = __webpack_require__(3);
@@ -18936,7 +18992,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var LocalStorageUtils_1 = __webpack_require__(48);
+var LocalStorageUtils_1 = __webpack_require__(34);
 var Model_1 = __webpack_require__(13);
 var Logger_1 = __webpack_require__(4);
 var Assert_1 = __webpack_require__(2);
@@ -18964,7 +19020,7 @@ var LocalStorageHistoryController = /** @class */ (function (_super) {
         _this.model = model;
         _this.queryController = queryController;
         _this.omit = [];
-        if (!windoh['localStorage']) {
+        if (!LocalStorageUtils_1.localStorageExists) {
             new Logger_1.Logger(element).info('No local storage available in current browser. LocalStorageHistoryController cannot initialize itself', _this);
         }
         else {
@@ -19028,7 +19084,7 @@ exports.LocalStorageHistoryController = LocalStorageHistoryController;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var StringUtils_1 = __webpack_require__(20);
-var ResponsiveComponents_1 = __webpack_require__(44);
+var ResponsiveComponents_1 = __webpack_require__(45);
 var _ = __webpack_require__(0);
 var TemplateConditionEvaluator = /** @class */ (function () {
     function TemplateConditionEvaluator() {
@@ -19251,7 +19307,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Template_1 = __webpack_require__(29);
-var UnderscoreTemplate_1 = __webpack_require__(37);
+var UnderscoreTemplate_1 = __webpack_require__(38);
 var TemplateCache_1 = __webpack_require__(68);
 var Assert_1 = __webpack_require__(2);
 var Dom_1 = __webpack_require__(1);
@@ -19516,9 +19572,9 @@ module.exports = (
 "use strict";
 
 var LIBRARY = __webpack_require__(103);
-var $export = __webpack_require__(38);
+var $export = __webpack_require__(39);
 var redefine = __webpack_require__(268);
-var hide = __webpack_require__(39);
+var hide = __webpack_require__(40);
 var Iterators = __webpack_require__(56);
 var $iterCreate = __webpack_require__(269);
 var setToStringTag = __webpack_require__(107);
@@ -19720,14 +19776,14 @@ var Logger_1 = __webpack_require__(4);
 var AnalyticsActionListMeta_1 = __webpack_require__(10);
 var Defer_1 = __webpack_require__(31);
 var Dom_1 = __webpack_require__(1);
-var AnalyticsEvents_1 = __webpack_require__(47);
+var AnalyticsEvents_1 = __webpack_require__(48);
 var APIAnalyticsBuilder_1 = __webpack_require__(112);
 var QueryStateModel_1 = __webpack_require__(9);
 var Component_1 = __webpack_require__(7);
 var Version_1 = __webpack_require__(60);
 var QueryUtils_1 = __webpack_require__(22);
 var _ = __webpack_require__(0);
-var AnalyticsInformation_1 = __webpack_require__(45);
+var AnalyticsInformation_1 = __webpack_require__(46);
 var LiveAnalyticsClient = /** @class */ (function () {
     function LiveAnalyticsClient(endpoint, rootElement, userId, userDisplayName, anonymous, splitTestRunName, splitTestRunVersion, originLevel1, sendToCloud, bindings) {
         this.endpoint = endpoint;
@@ -20500,7 +20556,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Options_1 = __webpack_require__(46);
+var Options_1 = __webpack_require__(47);
 var HighlightUtils_1 = __webpack_require__(81);
 var StringUtils_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(3);
@@ -23868,7 +23924,7 @@ return Promise$1;
 
 
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(147), __webpack_require__(42)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(147), __webpack_require__(43)))
 
 /***/ }),
 /* 147 */
@@ -24116,7 +24172,7 @@ var Version_1 = __webpack_require__(60);
 exports.version = Version_1.version;
 var SearchEndpoint_1 = __webpack_require__(25);
 exports.SearchEndpoint = SearchEndpoint_1.SearchEndpoint;
-__export(__webpack_require__(41));
+__export(__webpack_require__(42));
 // Default language needs to be set after external module, since this is where l10n will be imported
 var DefaultLanguage_1 = __webpack_require__(63);
 DefaultLanguage_1.defaultLanguage();
@@ -24320,7 +24376,7 @@ exports.AnalyticsEndpointCaller = AnalyticsEndpointCaller;
 Object.defineProperty(exports, "__esModule", { value: true });
 var AdvancedSearchEvents_1 = __webpack_require__(158);
 exports.AdvancedSearchEvents = AdvancedSearchEvents_1.AdvancedSearchEvents;
-var AnalyticsEvents_1 = __webpack_require__(47);
+var AnalyticsEvents_1 = __webpack_require__(48);
 exports.AnalyticsEvents = AnalyticsEvents_1.AnalyticsEvents;
 var BreadcrumbEvents_1 = __webpack_require__(159);
 exports.BreadcrumbEvents = BreadcrumbEvents_1.BreadcrumbEvents;
@@ -24905,8 +24961,8 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(35));
-var IComponentOptions_1 = __webpack_require__(36);
+__export(__webpack_require__(36));
+var IComponentOptions_1 = __webpack_require__(37);
 exports.ComponentOptionsType = IComponentOptions_1.ComponentOptionsType;
 var ComponentOptions_1 = __webpack_require__(14);
 exports.ComponentOptions = ComponentOptions_1.ComponentOptions;
@@ -26578,7 +26634,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Globalize = __webpack_require__(33);
 var underscore_1 = __webpack_require__(0);
 var Strings_1 = __webpack_require__(8);
-var RegisteredNamedMethods_1 = __webpack_require__(35);
+var RegisteredNamedMethods_1 = __webpack_require__(36);
 var Dom_1 = __webpack_require__(1);
 var QuerySummaryUtils = /** @class */ (function () {
     function QuerySummaryUtils() {
@@ -26898,7 +26954,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var underscore_1 = __webpack_require__(0);
 var Logger_1 = __webpack_require__(4);
 var Utils_1 = __webpack_require__(3);
-var IComponentOptions_1 = __webpack_require__(36);
+var IComponentOptions_1 = __webpack_require__(37);
 var ComponentOptionLoader = /** @class */ (function () {
     function ComponentOptionLoader(element, values, optionName, optionDefinition) {
         this.element = element;
@@ -26980,7 +27036,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Strings_1 = __webpack_require__(8);
 var Utils_1 = __webpack_require__(3);
-var IComponentOptions_1 = __webpack_require__(36);
+var IComponentOptions_1 = __webpack_require__(37);
 var ComponentOptionsMerger = /** @class */ (function () {
     function ComponentOptionsMerger(optionDefinition, valueToMerge, optionsDictionary) {
         this.optionDefinition = optionDefinition;
@@ -27088,9 +27144,9 @@ var Utils_1 = __webpack_require__(3);
 var HtmlTemplate_1 = __webpack_require__(67);
 var TemplateCache_1 = __webpack_require__(68);
 var TemplateList_1 = __webpack_require__(98);
-var UnderscoreTemplate_1 = __webpack_require__(37);
+var UnderscoreTemplate_1 = __webpack_require__(38);
 var ComponentOptions_1 = __webpack_require__(14);
-var IComponentOptions_1 = __webpack_require__(36);
+var IComponentOptions_1 = __webpack_require__(37);
 var TemplateComponentOptions = /** @class */ (function () {
     function TemplateComponentOptions() {
     }
@@ -28167,7 +28223,7 @@ __webpack_require__(229);
 var QueryEvents_1 = __webpack_require__(6);
 var InitializationEvents_1 = __webpack_require__(11);
 var ResultListEvents_1 = __webpack_require__(32);
-var HashUtils_1 = __webpack_require__(34);
+var HashUtils_1 = __webpack_require__(35);
 var ComponentsTypes_1 = __webpack_require__(69);
 var InitializationPlaceholder = /** @class */ (function () {
     function InitializationPlaceholder(root) {
@@ -28393,7 +28449,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var ComponentOptions_1 = __webpack_require__(14);
-var LocalStorageUtils_1 = __webpack_require__(48);
+var LocalStorageUtils_1 = __webpack_require__(34);
 var ResultListEvents_1 = __webpack_require__(32);
 var DebugEvents_1 = __webpack_require__(64);
 var Dom_1 = __webpack_require__(1);
@@ -28401,7 +28457,7 @@ var StringUtils_1 = __webpack_require__(20);
 var SearchEndpoint_1 = __webpack_require__(25);
 var RootComponent_1 = __webpack_require__(28);
 var BaseComponent_1 = __webpack_require__(15);
-var ExternalModulesShim_1 = __webpack_require__(41);
+var ExternalModulesShim_1 = __webpack_require__(42);
 var Globalize = __webpack_require__(33);
 var _ = __webpack_require__(0);
 __webpack_require__(231);
@@ -29452,7 +29508,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__(238);
 var Dom_1 = __webpack_require__(1);
 var AnalyticsActionListMeta_1 = __webpack_require__(10);
-var Core_1 = __webpack_require__(40);
+var Core_1 = __webpack_require__(41);
 var SVGIcons_1 = __webpack_require__(50);
 var Model_1 = __webpack_require__(13);
 var QueryStateModel_1 = __webpack_require__(9);
@@ -31656,7 +31712,7 @@ module.exports = function create(P, D) {
 /* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $export = __webpack_require__(38);
+var $export = __webpack_require__(39);
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 $export($export.S, 'Object', { create: __webpack_require__(101) });
 
@@ -31900,7 +31956,7 @@ module.exports = __webpack_require__(19).Array.isArray;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
-var $export = __webpack_require__(38);
+var $export = __webpack_require__(39);
 
 $export($export.S, 'Array', { isArray: __webpack_require__(261) });
 
@@ -31965,7 +32021,7 @@ module.exports = __webpack_require__(274);
 
 __webpack_require__(265);
 var global = __webpack_require__(18);
-var hide = __webpack_require__(39);
+var hide = __webpack_require__(40);
 var Iterators = __webpack_require__(56);
 var TO_STRING_TAG = __webpack_require__(30)('toStringTag');
 
@@ -32045,7 +32101,7 @@ module.exports = function (done, value) {
 /* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(39);
+module.exports = __webpack_require__(40);
 
 
 /***/ }),
@@ -32060,7 +32116,7 @@ var setToStringTag = __webpack_require__(107);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-__webpack_require__(39)(IteratorPrototype, __webpack_require__(30)('iterator'), function () { return this; });
+__webpack_require__(40)(IteratorPrototype, __webpack_require__(30)('iterator'), function () { return this; });
 
 module.exports = function (Constructor, NAME, next) {
   Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
@@ -32229,7 +32285,7 @@ module.exports = __webpack_require__(19).parseInt;
 /* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $export = __webpack_require__(38);
+var $export = __webpack_require__(39);
 var $parseInt = __webpack_require__(281);
 // 18.2.5 parseInt(string, radix)
 $export($export.G + $export.F * (parseInt != $parseInt), { parseInt: $parseInt });
@@ -32254,7 +32310,7 @@ module.exports = $parseInt(ws + '08') !== 8 || $parseInt(ws + '0x16') !== 22 ? f
 /* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $export = __webpack_require__(38);
+var $export = __webpack_require__(39);
 var defined = __webpack_require__(55);
 var fails = __webpack_require__(72);
 var spaces = __webpack_require__(108);
@@ -35373,7 +35429,7 @@ var Dom_1 = __webpack_require__(1);
 var Logger_1 = __webpack_require__(4);
 var QueryEvents_1 = __webpack_require__(6);
 var underscore_1 = __webpack_require__(0);
-var RegisteredNamedMethods_1 = __webpack_require__(35);
+var RegisteredNamedMethods_1 = __webpack_require__(36);
 var FacetColumnAutoLayoutAdjustment = /** @class */ (function () {
     function FacetColumnAutoLayoutAdjustment() {
     }
@@ -35763,7 +35819,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(2);
-var Options_1 = __webpack_require__(46);
+var Options_1 = __webpack_require__(47);
 var Utils_1 = __webpack_require__(3);
 var Globalize = __webpack_require__(33);
 var DefaultCurrencyToStringOptions = /** @class */ (function (_super) {
@@ -40368,9 +40424,9 @@ var FileTypes_1 = __webpack_require__(303);
 var Utils_1 = __webpack_require__(3);
 var StringUtils_1 = __webpack_require__(20);
 var SVGIcons_1 = __webpack_require__(50);
-var RegisteredNamedMethods_1 = __webpack_require__(35);
+var RegisteredNamedMethods_1 = __webpack_require__(36);
 var Logger_1 = __webpack_require__(4);
-var Core_1 = __webpack_require__(40);
+var Core_1 = __webpack_require__(41);
 var Assert_1 = __webpack_require__(2);
 var DomUtils = /** @class */ (function () {
     function DomUtils() {
@@ -40819,7 +40875,7 @@ exports.InitializationHelper = InitializationHelper;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utils_1 = __webpack_require__(3);
-var Core_1 = __webpack_require__(40);
+var Core_1 = __webpack_require__(41);
 var underscore_1 = __webpack_require__(0);
 /**
  * Set of utilities to determine where to load the lazy chunks from.
@@ -40927,9 +40983,9 @@ var GlobalExports_1 = __webpack_require__(24);
 var PendingSearchEvent_1 = __webpack_require__(78);
 var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(113);
 var AccessToken_1 = __webpack_require__(86);
-var AnalyticsEvents_1 = __webpack_require__(47);
+var AnalyticsEvents_1 = __webpack_require__(48);
 var QueryUtils_1 = __webpack_require__(22);
-var AnalyticsInformation_1 = __webpack_require__(45);
+var AnalyticsInformation_1 = __webpack_require__(46);
 /**
  * The `Analytics` component can log user actions performed in the search interface and send them to a REST web service
  * exposed through the Coveo Cloud Platform.
@@ -50485,7 +50541,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(42)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(43)))
 
 /***/ }),
 /* 322 */
@@ -50502,7 +50558,7 @@ var TemplateCache_1 = __webpack_require__(68);
 exports.TemplateCache = TemplateCache_1.TemplateCache;
 var HtmlTemplate_1 = __webpack_require__(67);
 exports.HtmlTemplate = HtmlTemplate_1.HtmlTemplate;
-var UnderscoreTemplate_1 = __webpack_require__(37);
+var UnderscoreTemplate_1 = __webpack_require__(38);
 exports.UnderscoreTemplate = UnderscoreTemplate_1.UnderscoreTemplate;
 
 
@@ -50514,7 +50570,7 @@ exports.UnderscoreTemplate = UnderscoreTemplate_1.UnderscoreTemplate;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(2);
-var UnderscoreTemplate_1 = __webpack_require__(37);
+var UnderscoreTemplate_1 = __webpack_require__(38);
 var Utils_1 = __webpack_require__(3);
 /**
  * Allow to register and return template helpers (essentially: Utility functions that can be executed in the context of a template to render complex elements).
