@@ -18,6 +18,7 @@ import 'styling/_AuthenticationProvider';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { HashUtils } from '../../utils/HashUtils';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
+import { SafeLocalStorage } from '../../utils/LocalStorageUtils';
 
 export const accessTokenStorageKey = 'coveo-auth-provider-access-token';
 const handshakeTokenParamName = 'handshake_token';
@@ -102,6 +103,7 @@ export class AuthenticationProvider extends Component {
 
   private handlers: ((...args: any[]) => void)[];
   private redirectCount: number;
+  private storage = new SafeLocalStorage();
 
   /**
    * Creates a new `AuthenticationProvider` component.
@@ -199,13 +201,13 @@ export class AuthenticationProvider extends Component {
   }
 
   private exchangeHandshakeToken(handshakeToken: string) {
-    const accessToken = localStorage.getItem(accessTokenStorageKey);
+    const accessToken = this.storage.getItem(accessTokenStorageKey);
     const options = accessToken ? { handshakeToken, accessToken } : { handshakeToken };
     return this.queryController.getEndpoint().exchangeHandshakeToken(options);
   }
 
   private storeAccessToken(accessToken: string) {
-    localStorage.setItem(accessTokenStorageKey, accessToken);
+    this.storage.setItem(accessTokenStorageKey, accessToken);
   }
 
   private waitForHandshakeToFinish() {
@@ -248,7 +250,7 @@ export class AuthenticationProvider extends Component {
   }
 
   private getAccessTokenFromStorage() {
-    return localStorage.getItem(accessTokenStorageKey);
+    return this.storage.getItem(accessTokenStorageKey);
   }
 
   private handleBuildingCallOptions(args: IBuildingCallOptionsEventArgs) {
@@ -260,7 +262,7 @@ export class AuthenticationProvider extends Component {
     const shouldClearToken = this.shouldClearTokenFollowingErrorEvent(args);
 
     if (token && shouldClearToken) {
-      localStorage.removeItem(accessTokenStorageKey);
+      this.storage.removeItem(accessTokenStorageKey);
       this._window.location.reload();
       return;
     }

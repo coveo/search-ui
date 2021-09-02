@@ -103,7 +103,6 @@ export class ResultsPreferences extends Component {
     this.preferencesPanel = $$(this.element).closest(Component.computeCssClassNameForType('PreferencesPanel'));
     this.preferencePanelLocalStorage = new StorageUtils(ResultsPreferences.ID);
     Assert.exists(this.componentOptionsModel);
-    Assert.exists(window.localStorage);
     Assert.exists(this.preferencesPanel);
 
     this.preferences = this.preferencePanelLocalStorage.load() || {};

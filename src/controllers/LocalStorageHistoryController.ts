@@ -1,4 +1,4 @@
-import { LocalStorageUtils } from '../utils/LocalStorageUtils';
+import { localStorageExists, LocalStorageUtils } from '../utils/LocalStorageUtils';
 import { Model } from '../models/Model';
 import { QueryController } from './QueryController';
 import { Logger } from '../misc/Logger';
@@ -29,7 +29,7 @@ export class LocalStorageHistoryController extends RootComponent implements IHis
    */
   constructor(element: HTMLElement, public windoh: Window, public model: Model, public queryController: QueryController) {
     super(element, LocalStorageHistoryController.ID);
-    if (!windoh['localStorage']) {
+    if (!localStorageExists) {
       new Logger(element).info(
         'No local storage available in current browser. LocalStorageHistoryController cannot initialize itself',
         this
