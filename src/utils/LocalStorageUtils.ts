@@ -57,6 +57,8 @@ export class LocalStorageUtils<T> {
 }
 
 export class SafeLocalStorage implements Storage {
+  [key: string]: any;
+
   public getItem(key: string) {
     try {
       return localStorage.getItem(key);
