@@ -20,7 +20,6 @@ import { HashUtils } from '../../utils/HashUtils';
 import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { SafeLocalStorage } from '../../utils/LocalStorageUtils';
 
-export const accessTokenStorageKey = 'coveo-auth-provider-access-token';
 const handshakeTokenParamName = 'handshake_token';
 
 export interface IAuthenticationProviderOptions {
@@ -201,13 +200,18 @@ export class AuthenticationProvider extends Component {
   }
 
   private exchangeHandshakeToken(handshakeToken: string) {
-    const accessToken = this.storage.getItem(accessTokenStorageKey);
+    const accessToken = this.getAccessTokenFromStorage();
     const options = accessToken ? { handshakeToken, accessToken } : { handshakeToken };
     return this.queryController.getEndpoint().exchangeHandshakeToken(options);
   }
 
   private storeAccessToken(accessToken: string) {
-    this.storage.setItem(accessTokenStorageKey, accessToken);
+    this.storage.setItem(this.accessTokenStorageKey, accessToken);
+  }
+
+  private get accessTokenStorageKey() {
+    const { organizationId } = this.queryController.getEndpoint().options.queryStringArguments;
+    return `coveo-auth-provider-access-token-${organizationId}`;
   }
 
   private waitForHandshakeToFinish() {
@@ -250,7 +254,7 @@ export class AuthenticationProvider extends Component {
   }
 
   private getAccessTokenFromStorage() {
-    return this.storage.getItem(accessTokenStorageKey);
+    return this.storage.getItem(this.accessTokenStorageKey);
   }
 
   private handleBuildingCallOptions(args: IBuildingCallOptionsEventArgs) {
@@ -262,7 +266,7 @@ export class AuthenticationProvider extends Component {
     const shouldClearToken = this.shouldClearTokenFollowingErrorEvent(args);
 
     if (token && shouldClearToken) {
-      this.storage.removeItem(accessTokenStorageKey);
+      this.storage.removeItem(this.accessTokenStorageKey);
       this._window.location.reload();
       return;
     }
@@ -284,8 +288,9 @@ export class AuthenticationProvider extends Component {
   }
 
   private shouldClearTokenFollowingErrorEvent(args: IQueryErrorEventArgs) {
+    const exceptions = ['InvalidTokenException', 'ExpiredTokenException', 'InvalidAuthenticationProviderException'];
     const error = args.error.name;
-    return error === 'InvalidTokenException' || error === 'ExpiredTokenException';
+    return exceptions.indexOf(error) !== -1;
   }
 
   private authenticateWithProvider() {
