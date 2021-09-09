@@ -1,5 +1,5 @@
 import * as Mock from '../MockEnvironment';
-import { AuthenticationProvider, accessTokenStorageKey } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
+import { AuthenticationProvider } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { ModalBox } from '../../src/ExternalModulesShim';
 import { IAuthenticationProviderOptions } from '../../src/ui/AuthenticationProvider/AuthenticationProvider';
 import { IBuildingCallOptionsEventArgs } from '../../src/events/QueryEvents';
@@ -18,6 +18,8 @@ import { Utils } from '../../src/UtilsModules';
 
 export function AuthenticationProviderTest() {
   describe('AuthenticationProvider', function () {
+    const organizationId = 'testorganization';
+    const accessTokenStorageKey = `coveo-auth-provider-access-token-${organizationId}`;
     let initializationArgs: IInitializationEventArgs;
     let options: IAuthenticationProviderOptions;
     let test: Mock.IBasicComponentSetup<AuthenticationProvider>;
@@ -35,7 +37,10 @@ export function AuthenticationProviderTest() {
     }
 
     function setupEndpoint() {
-      const endpoint = new SearchEndpoint({ restUri: 'https://platform.cloud.coveo.com/rest/search' });
+      const endpoint = new SearchEndpoint({
+        restUri: 'https://platform.cloud.coveo.com/rest/search',
+        queryStringArguments: { organizationId }
+      });
       test.env.queryController.getEndpoint = () => endpoint;
     }
 
@@ -352,9 +357,15 @@ export function AuthenticationProviderTest() {
         $$(test.env.root).trigger(QueryEvents.queryError, { error });
       }
 
+      function triggerInvalidAuthenticationProviderError() {
+        const error = { name: 'InvalidAuthenticationProviderException' };
+        $$(test.env.root).trigger(QueryEvents.queryError, { error });
+      }
+
       beforeEach(() => {
         fakeWindow = Mock.mockWindow();
         test.cmp._window = fakeWindow;
+        setupEndpoint();
       });
 
       describe('if there is an invalid access token in storage', () => {
@@ -380,6 +391,13 @@ export function AuthenticationProviderTest() {
       it('if there is an expired access token is in storage, it clears the token', () => {
         localStorage.setItem(accessTokenStorageKey, 'expired token');
         triggerExpiredTokenError();
+
+        expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
+      });
+
+      it('if there is a token with an invalid authentication provider in storage, it clears the token', () => {
+        localStorage.setItem(accessTokenStorageKey, 'token with invalid auth provider');
+        triggerInvalidAuthenticationProviderError();
 
         expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
       });
