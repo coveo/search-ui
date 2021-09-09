@@ -19,7 +19,7 @@ import { Utils } from '../../src/UtilsModules';
 export function AuthenticationProviderTest() {
   describe('AuthenticationProvider', function () {
     const organizationId = 'testorganization';
-    const accessTokenStorageKey = `${organizationId}-auth-provider-access-token`;
+    const accessTokenStorageKey = `coveo-auth-provider-access-token-${organizationId}`;
     let initializationArgs: IInitializationEventArgs;
     let options: IAuthenticationProviderOptions;
     let test: Mock.IBasicComponentSetup<AuthenticationProvider>;

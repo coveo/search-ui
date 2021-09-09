@@ -211,7 +211,7 @@ export class AuthenticationProvider extends Component {
 
   private get accessTokenStorageKey() {
     const { organizationId } = this.queryController.getEndpoint().options.queryStringArguments;
-    return `${organizationId}-auth-provider-access-token`;
+    return `coveo-auth-provider-access-token-${organizationId}`;
   }
 
   private waitForHandshakeToFinish() {
