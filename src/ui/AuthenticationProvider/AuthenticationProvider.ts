@@ -288,8 +288,9 @@ export class AuthenticationProvider extends Component {
   }
 
   private shouldClearTokenFollowingErrorEvent(args: IQueryErrorEventArgs) {
+    const exceptions = ['InvalidTokenException', 'ExpiredTokenException', 'InvalidAuthenticationProviderException'];
     const error = args.error.name;
-    return error === 'InvalidTokenException' || error === 'ExpiredTokenException';
+    return exceptions.indexOf(error) !== -1;
   }
 
   private authenticateWithProvider() {

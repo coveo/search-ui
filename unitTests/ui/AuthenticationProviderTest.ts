@@ -357,6 +357,11 @@ export function AuthenticationProviderTest() {
         $$(test.env.root).trigger(QueryEvents.queryError, { error });
       }
 
+      function triggerInvalidAuthenticationProviderError() {
+        const error = { name: 'InvalidAuthenticationProviderException' };
+        $$(test.env.root).trigger(QueryEvents.queryError, { error });
+      }
+
       beforeEach(() => {
         fakeWindow = Mock.mockWindow();
         test.cmp._window = fakeWindow;
@@ -386,6 +391,13 @@ export function AuthenticationProviderTest() {
       it('if there is an expired access token is in storage, it clears the token', () => {
         localStorage.setItem(accessTokenStorageKey, 'expired token');
         triggerExpiredTokenError();
+
+        expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
+      });
+
+      it('if there is a token with an invalid authentication provider in storage, it clears the token', () => {
+        localStorage.setItem(accessTokenStorageKey, 'token with invalid auth provider');
+        triggerInvalidAuthenticationProviderError();
 
         expect(localStorage.getItem(accessTokenStorageKey)).toBe(null);
       });
