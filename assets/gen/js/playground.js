@@ -15428,8 +15428,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10089.3',
-    product: '2.10089.3',
+    lib: '2.10089.4',
+    product: '2.10089.4',
     supportedApiVersion: 2
 };
 
