@@ -11,6 +11,10 @@ export class SVGIcons {
 
     mainClear: require(`svg/main-clear`),
     clearSmall: require(`svg/clear-small`),
+    clear: require(`svg/clear`),
+    close: require(`svg/close`),
+    delete: require(`svg/delete`),
+    save: require(`svg/save`),
     checkYes: require(`svg/check-yes`),
     orAnd: require(`svg/or-and`),
     sort: require(`svg/sort`),

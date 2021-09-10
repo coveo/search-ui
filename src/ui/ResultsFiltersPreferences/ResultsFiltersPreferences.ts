@@ -303,7 +303,7 @@ export class ResultsFiltersPreferences extends Component {
       {
         className: 'coveo-save'
       },
-      SVGIcons.icons.checkboxHookExclusionMore
+      SVGIcons.icons.save
     );
     SVGDom.addClassToSVGInContainer(saveFormButton.el, 'coveo-save-svg');
 
@@ -312,7 +312,7 @@ export class ResultsFiltersPreferences extends Component {
       {
         className: 'coveo-close'
       },
-      SVGIcons.icons.checkboxHookExclusionMore
+      SVGIcons.icons.close
     );
     SVGDom.addClassToSVGInContainer(closeFormButton.el, 'coveo-close-svg');
 
@@ -415,7 +415,7 @@ export class ResultsFiltersPreferences extends Component {
           {
             className: 'coveo-delete'
           },
-          SVGIcons.icons.checkboxHookExclusionMore
+          SVGIcons.icons.delete
         ).el;
         SVGDom.addClassToSVGInContainer(deleteElement, 'coveo-delete-svg');
         const filterElement = this.getFilterElementByCaption(filter.caption);
