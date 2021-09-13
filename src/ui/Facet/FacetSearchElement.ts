@@ -44,11 +44,7 @@ export class FacetSearchElement {
 
     this.hideFacetSearchWaitingAnimation();
 
-    this.clear = $$(
-      'div',
-      { className: 'coveo-facet-search-clear', title: l('Clear', l('Search')) },
-      SVGIcons.icons.checkboxHookExclusionMore
-    ).el;
+    this.clear = $$('div', { className: 'coveo-facet-search-clear', title: l('Clear', l('Search')) }, SVGIcons.icons.clear).el;
     SVGDom.addClassToSVGInContainer(this.clear, 'coveo-facet-search-clear-svg');
     this.clear.style.display = 'none';
     this.search.appendChild(this.clear);

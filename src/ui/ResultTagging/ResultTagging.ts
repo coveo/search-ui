@@ -189,7 +189,7 @@ export class ResultTagging extends Component {
       {
         className: 'coveo-result-tagging-delete-icon'
       },
-      SVGIcons.icons.checkboxHookExclusionMore
+      SVGIcons.icons.delete
     );
     SVGDom.addClassToSVGInContainer(deleteIcon.el, 'coveo-result-tagging-delete-icon-svg');
     tag.el.appendChild(deleteIcon.el);
@@ -260,7 +260,7 @@ export class ResultTagging extends Component {
       {
         className: 'coveo-result-tagging-clear-icon'
       },
-      SVGIcons.icons.checkboxHookExclusionMore
+      SVGIcons.icons.clear
     );
     SVGDom.addClassToSVGInContainer(icon.el, 'coveo-result-tagging-clear-icon-svg');
     let clickable = $$('span');
