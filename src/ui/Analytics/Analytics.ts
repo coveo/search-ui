@@ -114,8 +114,14 @@ export class Analytics extends Component {
           return AnalyticsEndpoint.getURLFromSearchEndpoint(SearchEndpoint.defaultEndpoint);
         }
 
-        const [basePlatform] = value.split('/rest');
-        return basePlatform + '/rest';
+        const isLegacy = value.indexOf('usageanalytics') !== -1;
+
+        if (isLegacy) {
+          const [basePlatform] = value.split('/rest');
+          return basePlatform + '/rest';
+        }
+
+        return value;
       }
     }),
 

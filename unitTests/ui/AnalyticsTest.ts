@@ -316,13 +316,23 @@ export function AnalyticsTest() {
           expect(analyticsClient().endpoint.endpointCaller.options.accessToken).toBe('qwerty123');
         });
 
-        it(`when an endpoint is defined that does not end with /rest,
+        it(`when a legacy usage analytics endpoint is defined that does not end with /rest,
         it ensures the endpoint ends with /rest`, () => {
-          const endpoint = 'https://usageanalyticshipaa.cloud.coveo.com';
+          const endpoints = ['https://usageanalytics.coveo.com', 'https://usageanalyticshipaa.cloud.coveo.com'];
+
+          endpoints.forEach(endpoint => {
+            options = { endpoint };
+            initAnalytics();
+            expect(test.cmp.options.endpoint).toBe(`${endpoint}/rest`);
+          });
+        });
+
+        it(`when a non-legacy endpoint is defined (i.e. not usageanalytics), it is not modified`, () => {
+          const endpoint = 'https://platformhipaa.cloud.coveo.com/rest/ua';
           options = { endpoint };
           initAnalytics();
 
-          expect(test.cmp.options.endpoint).toBe(`${endpoint}/rest`);
+          expect(test.cmp.options.endpoint).toBe(endpoint);
         });
 
         it(`when an endpoint is defined that ends with /rest,
