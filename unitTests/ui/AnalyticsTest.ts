@@ -318,13 +318,11 @@ export function AnalyticsTest() {
 
         it(`when a legacy usage analytics endpoint is defined that does not end with /rest,
         it ensures the endpoint ends with /rest`, () => {
-          const endpoints = ['https://usageanalytics.coveo.com', 'https://usageanalyticshipaa.cloud.coveo.com'];
+          const endpoint = 'https://usageanalyticshipaa.cloud.coveo.com';
 
-          endpoints.forEach(endpoint => {
-            options = { endpoint };
-            initAnalytics();
-            expect(test.cmp.options.endpoint).toBe(`${endpoint}/rest`);
-          });
+          options = { endpoint };
+          initAnalytics();
+          expect(test.cmp.options.endpoint).toBe(`${endpoint}/rest`);
         });
 
         it(`when a non-legacy endpoint is defined (i.e. not usageanalytics), it is not modified`, () => {
