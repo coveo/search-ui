@@ -110,11 +110,8 @@ export class UrlUtils {
           }
         }
 
-        if (!this.isEncoded(value)) {
-          return [this.removeProblematicChars(key), Utils.safeEncodeURIComponent(value)].join('=');
-        } else {
-          return [this.removeProblematicChars(key), value].join('=');
-        }
+        const decodedValue = decodeURIComponent(value);
+        return [this.removeProblematicChars(key), Utils.safeEncodeURIComponent(decodedValue)].join('=');
       });
       queryNormalized = queryNormalized.concat(mapped);
     }
