@@ -18,7 +18,7 @@ import {
 import { HeightLimiter } from './HeightLimiter';
 import { ExplanationModal, IReason } from './ExplanationModal';
 import { l } from '../../strings/Strings';
-import { attachShadow } from '../../misc/AttachShadowPolyfill';
+import { attachShadow, attachWithoutShadow } from '../../misc/AttachShadowPolyfill';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { getDefaultSnippetStyle } from './SmartSnippetCommon';
@@ -76,6 +76,7 @@ export interface ISmartSnippetOptions {
   maximumSnippetHeight: number;
   titleField: IFieldOption;
   hrefTemplate?: string;
+  withoutShadow?: boolean;
 }
 /**
  * The SmartSnippet component displays the excerpt of a document that would be most likely to answer a particular query.
@@ -133,7 +134,19 @@ export class SmartSnippet extends Component {
      *
      * Default value is `undefined`.
      */
-    hrefTemplate: ComponentOptions.buildStringOption()
+    hrefTemplate: ComponentOptions.buildStringOption(),
+
+    /**
+     * Specify if the SmartSnippet should be displayed inside an iframe or not.
+     *
+     * Use this option in specific cases where your environment has limitations around iframe usage.
+     *
+     * **Examples:**
+     *
+     * ```html
+     * <div class='CoveoSmartSnippet' data-without-shadow='true'></div>
+     */
+    withoutShadow: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   private lastRenderedResult: IQueryResult = null;
@@ -217,7 +230,8 @@ export class SmartSnippet extends Component {
   private buildShadow() {
     this.shadowContainer = $$('div', { className: SHADOW_CLASSNAME }).el;
     this.snippetContainer = $$('section', { className: CONTENT_CLASSNAME }).el;
-    this.shadowLoading = attachShadow(this.shadowContainer, {
+    const attachShadowPromise = this.options.withoutShadow ? attachWithoutShadow : attachShadow;
+    this.shadowLoading = attachShadowPromise(this.shadowContainer, {
       mode: 'open',
       title: l('AnswerSnippet'),
       onSizeChanged: () => this.handleAnswerSizeChanged()

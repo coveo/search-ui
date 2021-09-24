@@ -2,7 +2,7 @@ import { IRelatedQuestionAnswerResponse } from '../../rest/QuestionAnswerRespons
 import { uniqueId } from 'underscore';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { attachShadow } from '../../misc/AttachShadowPolyfill';
+import { attachShadow, attachWithoutShadow } from '../../misc/AttachShadowPolyfill';
 import { $$, Dom } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { IQueryResult } from '../../rest/QueryResult';
@@ -53,7 +53,8 @@ export class SmartSnippetCollapsibleSuggestion {
     private readonly bindings: IComponentBindings,
     private readonly innerCSS: string,
     private readonly searchUid: string,
-    private readonly source?: IQueryResult
+    private readonly source?: IQueryResult,
+    private readonly withoutShadow?: boolean
   ) {}
 
   public get loading() {
@@ -114,9 +115,12 @@ export class SmartSnippetCollapsibleSuggestion {
     const shadowContainer = $$('div', { className: SHADOW_CLASSNAME });
     this.snippetAndSourceContainer = $$('div', { className: QUESTION_SNIPPET_CONTAINER_CLASSNAME }, shadowContainer);
     this.collapsibleContainer = $$('div', { className: QUESTION_SNIPPET_CLASSNAME, id: this.snippetId }, this.snippetAndSourceContainer);
-    this.contentLoaded = attachShadow(shadowContainer.el, { mode: 'open', title: l('AnswerSpecificSnippet', title) }).then(shadowRoot => {
-      shadowRoot.appendChild(this.buildAnswerSnippetContent(innerHTML, style).el);
-    });
+    const attachShadowPromise = this.withoutShadow ? attachWithoutShadow : attachShadow;
+    this.contentLoaded = attachShadowPromise(shadowContainer.el, { mode: 'open', title: l('AnswerSpecificSnippet', title) }).then(
+      shadowRoot => {
+        shadowRoot.appendChild(this.buildAnswerSnippetContent(innerHTML, style).el);
+      }
+    );
     if (this.source) {
       this.snippetAndSourceContainer.append(this.buildSourceUrl());
       this.snippetAndSourceContainer.append(this.buildSourceTitle());
