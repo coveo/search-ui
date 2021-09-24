@@ -131,6 +131,26 @@ export function UrlUtilsTest() {
       expect(url).toBe(`https://a.com?123=4${Utils.safeEncodeURIComponent(' ')}56&abc=${Utils.safeEncodeURIComponent('&')}def`);
     });
 
+    it(`when a query record value contains both encoded and unencoded characters,
+    it encodes all characters once`, () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        query: { redirectUri: 'https://b.com/#q=hello%20world' }
+      });
+
+      expect(url).toBe(`https://a.com?redirectUri=https%3A%2F%2Fb.com%2F%23q%3Dhello%20world`);
+    });
+
+    it(`when a query string parameter contains both encoded and unencoded characters,
+    it encodes all characters once`, () => {
+      const url = UrlUtils.normalizeAsString({
+        paths: ['https://a.com/'],
+        queryAsString: ['q=/hello%20world']
+      });
+
+      expect(url).toBe('https://a.com?q=%2Fhello%20world');
+    });
+
     it('should remove query string parameter that are an empty string', () => {
       const url = UrlUtils.normalizeAsString({
         paths: ['https://a.com/'],

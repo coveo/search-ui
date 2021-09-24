@@ -110,11 +110,7 @@ export class UrlUtils {
           }
         }
 
-        if (!this.isEncoded(value)) {
-          return [this.removeProblematicChars(key), Utils.safeEncodeURIComponent(value)].join('=');
-        } else {
-          return [this.removeProblematicChars(key), value].join('=');
-        }
+        return [this.removeProblematicChars(key), this.decodeThenEncode(value)].join('=');
       });
       queryNormalized = queryNormalized.concat(mapped);
     }
@@ -173,9 +169,7 @@ export class UrlUtils {
     }
 
     key = this.removeProblematicChars(key);
-    if (!this.isEncoded(value)) {
-      value = Utils.safeEncodeURIComponent(value);
-    }
+    value = this.decodeThenEncode(value);
 
     return `${key}=${value}`;
   }
@@ -189,8 +183,9 @@ export class UrlUtils {
     return value;
   }
 
-  private static isEncoded(value: string) {
-    return value != decodeURIComponent(value);
+  private static decodeThenEncode(value: string) {
+    const decoded = decodeURIComponent(value);
+    return Utils.safeEncodeURIComponent(decoded);
   }
 
   private static isInvalidQueryStringValue(value: any) {
