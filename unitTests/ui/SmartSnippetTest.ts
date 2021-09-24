@@ -227,6 +227,18 @@ export function SmartSnippetTest() {
       done();
     });
 
+    it('omits the iframe when the option withoutFrame is true', async done => {
+      const IFRAME_CLASSNAME = 'coveo-shadow-iframe';
+      instantiateSmartSnippet(null, {
+        withoutFrame: true
+      });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      expect(getFirstChild(IFRAME_CLASSNAME).nodeName).toEqual('DIV');
+      test.env.root.remove();
+      done();
+    });
+
     describe('with styling without a source', () => {
       beforeEach(async done => {
         instantiateSmartSnippet(style);

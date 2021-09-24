@@ -76,7 +76,7 @@ export interface ISmartSnippetOptions {
   maximumSnippetHeight: number;
   titleField: IFieldOption;
   hrefTemplate?: string;
-  withoutShadow?: boolean;
+  withoutFrame?: boolean;
 }
 /**
  * The SmartSnippet component displays the excerpt of a document that would be most likely to answer a particular query.
@@ -144,9 +144,9 @@ export class SmartSnippet extends Component {
      * **Examples:**
      *
      * ```html
-     * <div class='CoveoSmartSnippet' data-without-shadow='true'></div>
+     * <div class='CoveoSmartSnippet' data-without-frame='true'></div>
      */
-    withoutShadow: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    withoutFrame: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   private lastRenderedResult: IQueryResult = null;
@@ -230,7 +230,7 @@ export class SmartSnippet extends Component {
   private buildShadow() {
     this.shadowContainer = $$('div', { className: SHADOW_CLASSNAME }).el;
     this.snippetContainer = $$('section', { className: CONTENT_CLASSNAME }).el;
-    const attachShadowPromise = this.options.withoutShadow ? attachWithoutShadow : attachShadow;
+    const attachShadowPromise = this.options.withoutFrame ? attachWithoutShadow : attachShadow;
     this.shadowLoading = attachShadowPromise(this.shadowContainer, {
       mode: 'open',
       title: l('AnswerSnippet'),

@@ -25,7 +25,7 @@ export const SmartSnippetSuggestionsClassNames = {
 };
 
 export interface ISmartSnippetSuggestionsOptions {
-  withoutShadow?: boolean;
+  withoutFrame?: boolean;
 }
 
 /**
@@ -55,7 +55,7 @@ export class SmartSnippetSuggestions extends Component {
      * ```html
      * <div class='CoveoSmartSnippetSuggestions' data-without-shadow='true'></div>
      */
-    withoutShadow: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    withoutFrame: ComponentOptions.buildBooleanOption({ defaultValue: false })
   };
 
   private readonly titleId = uniqueId(QUESTIONS_LIST_TITLE_CLASSNAME);
@@ -125,7 +125,7 @@ export class SmartSnippetSuggestions extends Component {
             : innerCSS,
           this.searchUid,
           this.getCorrespondingResult(questionAnswer),
-          this.options.withoutShadow
+          this.options.withoutFrame
         )
     );
     const container = $$(
