@@ -4,39 +4,34 @@ import 'styling/_AttachShadowPolyfill';
 export interface IShadowOptions {
   title: string;
   onSizeChanged?: Function;
+  useIFrame?: Boolean;
 }
 
 export async function attachShadow(element: HTMLElement, options: IShadowOptions & ShadowRootInit): Promise<HTMLElement> {
-  const iframe = $$('iframe', { className: 'coveo-shadow-iframe', scrolling: 'no', title: options.title }).el as HTMLIFrameElement;
-  const onLoad = new Promise(resolve => iframe.addEventListener('load', () => resolve()));
-  element.appendChild(iframe);
-  await onLoad;
-
-  const iframeBody = iframe.contentDocument.body as HTMLBodyElement;
-  iframeBody.style.margin = '0';
-  const shadowRoot = $$('div', { style: 'overflow: auto;' }).el;
-  iframeBody.appendChild(shadowRoot);
-  autoUpdateHeight(iframe, shadowRoot, options.onSizeChanged);
-  if (options.mode === 'open') {
-    Object.defineProperty(element, 'shadowRoot', { get: () => shadowRoot });
+  let autoUpdateContainer: HTMLElement;
+  let contentBody: HTMLElement;
+  if (options.useIFrame) {
+    const iframe = $$('iframe', { className: 'coveo-shadow-iframe', scrolling: 'no', title: options.title }).el as HTMLIFrameElement;
+    const onLoad = new Promise(resolve => iframe.addEventListener('load', () => resolve()));
+    element.appendChild(iframe);
+    await onLoad;
+    contentBody = iframe.contentDocument.body as HTMLBodyElement;
+    autoUpdateContainer = iframe;
+  } else {
+    autoUpdateContainer = $$('div', { className: 'coveo-shadow-iframe', scrolling: 'no', title: options.title }).el as HTMLElement;
+    contentBody = autoUpdateContainer;
+    element.appendChild(autoUpdateContainer);
   }
 
-  return shadowRoot;
-}
-
-export async function attachWithoutShadow(element: HTMLElement, options: IShadowOptions & ShadowRootInit): Promise<HTMLElement> {
-  const container = $$('div', { className: 'coveo-shadow-iframe', scrolling: 'no', title: options.title }).el as HTMLElement;
-  element.appendChild(container);
-
-  container.style.margin = '0';
-  const shadowRoot = $$('div', { style: 'overflow: auto;' }).el;
-  container.appendChild(shadowRoot);
-  autoUpdateHeight(container, shadowRoot, options.onSizeChanged);
+  contentBody.style.margin = '0';
+  const shadowRootContainer = $$('div', { style: 'overflow: auto;' }).el;
+  contentBody.appendChild(shadowRootContainer);
+  autoUpdateHeight(autoUpdateContainer, shadowRootContainer, options.onSizeChanged);
   if (options.mode === 'open') {
-    Object.defineProperty(element, 'shadowRoot', { get: () => shadowRoot });
+    Object.defineProperty(element, 'shadowRoot', { get: () => shadowRootContainer });
   }
 
-  return shadowRoot;
+  return shadowRootContainer;
 }
 
 function autoUpdateHeight(elementToResize: HTMLElement, content: HTMLElement, onUpdate?: Function) {

@@ -227,10 +227,20 @@ export function SmartSnippetTest() {
       done();
     });
 
-    it('omits the iframe when the option withoutFrame is true', async done => {
+    it('creates an iframe if the option withIFrame is omitted', async done => {
+      const IFRAME_CLASSNAME = 'coveo-shadow-iframe';
+      instantiateSmartSnippet(null);
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      expect(getFirstChild(IFRAME_CLASSNAME).nodeName).toEqual('IFRAME');
+      test.env.root.remove();
+      done();
+    });
+
+    it("doesn't create an iframe if the option useIFrame is false", async done => {
       const IFRAME_CLASSNAME = 'coveo-shadow-iframe';
       instantiateSmartSnippet(null, {
-        withoutFrame: true
+        useIFrame: false
       });
       document.body.appendChild(test.env.root);
       await triggerQuestionAnswerQuery(true);

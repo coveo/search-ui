@@ -2,7 +2,7 @@ import { IRelatedQuestionAnswerResponse } from '../../rest/QuestionAnswerRespons
 import { uniqueId } from 'underscore';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { SVGIcons } from '../../utils/SVGIcons';
-import { attachShadow, attachWithoutShadow } from '../../misc/AttachShadowPolyfill';
+import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { $$, Dom } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { IQueryResult } from '../../rest/QueryResult';
@@ -54,7 +54,7 @@ export class SmartSnippetCollapsibleSuggestion {
     private readonly innerCSS: string,
     private readonly searchUid: string,
     private readonly source?: IQueryResult,
-    private readonly withoutFrame?: boolean
+    private readonly useIFrame?: boolean
   ) {}
 
   public get loading() {
@@ -115,12 +115,13 @@ export class SmartSnippetCollapsibleSuggestion {
     const shadowContainer = $$('div', { className: SHADOW_CLASSNAME });
     this.snippetAndSourceContainer = $$('div', { className: QUESTION_SNIPPET_CONTAINER_CLASSNAME }, shadowContainer);
     this.collapsibleContainer = $$('div', { className: QUESTION_SNIPPET_CLASSNAME, id: this.snippetId }, this.snippetAndSourceContainer);
-    const attachShadowPromise = this.withoutFrame ? attachWithoutShadow : attachShadow;
-    this.contentLoaded = attachShadowPromise(shadowContainer.el, { mode: 'open', title: l('AnswerSpecificSnippet', title) }).then(
-      shadowRoot => {
-        shadowRoot.appendChild(this.buildAnswerSnippetContent(innerHTML, style).el);
-      }
-    );
+    this.contentLoaded = attachShadow(shadowContainer.el, {
+      mode: 'open',
+      title: l('AnswerSpecificSnippet', title),
+      useIFrame: this.useIFrame
+    }).then(shadowRoot => {
+      shadowRoot.appendChild(this.buildAnswerSnippetContent(innerHTML, style).el);
+    });
     if (this.source) {
       this.snippetAndSourceContainer.append(this.buildSourceUrl());
       this.snippetAndSourceContainer.append(this.buildSourceTitle());

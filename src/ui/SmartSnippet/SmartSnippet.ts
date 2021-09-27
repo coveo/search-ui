@@ -18,7 +18,7 @@ import {
 import { HeightLimiter } from './HeightLimiter';
 import { ExplanationModal, IReason } from './ExplanationModal';
 import { l } from '../../strings/Strings';
-import { attachShadow, attachWithoutShadow } from '../../misc/AttachShadowPolyfill';
+import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { getDefaultSnippetStyle } from './SmartSnippetCommon';
@@ -76,7 +76,7 @@ export interface ISmartSnippetOptions {
   maximumSnippetHeight: number;
   titleField: IFieldOption;
   hrefTemplate?: string;
-  withoutFrame?: boolean;
+  useIFrame?: boolean;
 }
 /**
  * The SmartSnippet component displays the excerpt of a document that would be most likely to answer a particular query.
@@ -145,8 +145,9 @@ export class SmartSnippet extends Component {
      *
      * ```html
      * <div class='CoveoSmartSnippet' data-without-frame='true'></div>
+     * ```
      */
-    withoutFrame: ComponentOptions.buildBooleanOption({ defaultValue: false })
+    useIFrame: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   private lastRenderedResult: IQueryResult = null;
@@ -230,11 +231,11 @@ export class SmartSnippet extends Component {
   private buildShadow() {
     this.shadowContainer = $$('div', { className: SHADOW_CLASSNAME }).el;
     this.snippetContainer = $$('section', { className: CONTENT_CLASSNAME }).el;
-    const attachShadowPromise = this.options.withoutFrame ? attachWithoutShadow : attachShadow;
-    this.shadowLoading = attachShadowPromise(this.shadowContainer, {
+    this.shadowLoading = attachShadow(this.shadowContainer, {
       mode: 'open',
       title: l('AnswerSnippet'),
-      onSizeChanged: () => this.handleAnswerSizeChanged()
+      onSizeChanged: () => this.handleAnswerSizeChanged(),
+      useIFrame: this.options.useIFrame
     }).then(shadow => {
       shadow.appendChild(this.snippetContainer);
       const style = this.buildStyle();

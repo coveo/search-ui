@@ -366,15 +366,15 @@ export function SmartSnippetSuggestionsTest() {
       });
     });
 
-    describe('with the withoutFrame option', () => {
+    describe('with the useIFrame option', () => {
       afterEach(() => {
         test.env.root.remove();
       });
 
-      it('renders a div instead of an iframe when the option is true', async done => {
+      it('renders a div instead of an iframe when the option is false', async done => {
         const IFRAME_CLASSNAME = 'coveo-shadow-iframe';
         instantiateSmartSnippetSuggestions(null, {
-          withoutFrame: true
+          useIFrame: false
         });
         document.body.appendChild(test.env.root);
         await triggerQuestionAnswerQuery(true);
@@ -384,9 +384,7 @@ export function SmartSnippetSuggestionsTest() {
 
       it('renders an iframe by default', async done => {
         const IFRAME_CLASSNAME = 'coveo-shadow-iframe';
-        instantiateSmartSnippetSuggestions(null, {
-          withoutFrame: false
-        });
+        instantiateSmartSnippetSuggestions(null);
         document.body.appendChild(test.env.root);
         await triggerQuestionAnswerQuery(true);
         expect(test.cmp.element.querySelector(`.${IFRAME_CLASSNAME}`).nodeName).toEqual('IFRAME');
