@@ -224,7 +224,9 @@ export class ResultLink extends Component {
      */
     onClick: ComponentOptions.buildCustomOption<(e: Event, result: IQueryResult) => any>(() => {
       return null;
-    })
+    }),
+
+    logAnalytics: ComponentOptions.buildCustomOption<(href: string) => void>(() => null)
   };
 
   private toExecuteOnOpen: (e?: Event) => void;
@@ -269,7 +271,7 @@ export class ResultLink extends Component {
       // It's still only one "click" event as far as UA is concerned.
       // Also need to handle "longpress" on mobile (the contextual menu), which we assume to be 1 s long.
 
-      const executeOnlyOnce = once(() => this.logOpenDocument());
+      const executeOnlyOnce = once(() => this.logAnalytics());
 
       $$(element).on(['contextmenu', 'click', 'mousedown', 'mouseup'], executeOnlyOnce);
       let longPressTimer: number;
@@ -300,7 +302,7 @@ export class ResultLink extends Component {
    */
   public openLink(logAnalytics = true) {
     if (logAnalytics) {
-      this.logOpenDocument();
+      this.logAnalytics();
     }
     window.location.href = this.getResultUri();
   }
@@ -311,7 +313,7 @@ export class ResultLink extends Component {
    */
   public openLinkInNewWindow(logAnalytics = true) {
     if (logAnalytics) {
-      this.logOpenDocument();
+      this.logAnalytics();
     }
     window.open(this.getResultUri(), '_blank');
   }
@@ -327,7 +329,7 @@ export class ResultLink extends Component {
   public openLinkInOutlook(logAnalytics = true) {
     if (this.hasOutlookField()) {
       if (logAnalytics) {
-        this.logOpenDocument();
+        this.logAnalytics();
       }
       this.openLink();
     }
@@ -343,7 +345,7 @@ export class ResultLink extends Component {
   public openLinkAsConfigured(logAnalytics = true) {
     if (this.toExecuteOnOpen) {
       if (logAnalytics) {
-        this.logOpenDocument();
+        this.logAnalytics();
       }
       this.toExecuteOnOpen();
     }
@@ -454,23 +456,31 @@ export class ResultLink extends Component {
     }
   }
 
-  private logOpenDocument = debounce(
+  private logDocumentOpen(href: string) {
+    this.usageAnalytics.logClickEvent(
+      analyticsActionCauseList.documentOpen,
+      {
+        documentURL: href,
+        documentTitle: this.result.title,
+        author: Utils.getFieldValue(this.result, 'author')
+      },
+      this.result,
+      this.root
+    );
+  }
+
+  private logAnalytics = debounce(
     () => {
       this.queryController.saveLastQuery();
       let documentURL = $$(this.element).getAttribute('href');
       if (documentURL == undefined || documentURL == '') {
         documentURL = this.escapedClickUri;
       }
-      this.usageAnalytics.logClickEvent(
-        analyticsActionCauseList.documentOpen,
-        {
-          documentURL: documentURL,
-          documentTitle: this.result.title,
-          author: Utils.getFieldValue(this.result, 'author')
-        },
-        this.result,
-        this.root
-      );
+      if (this.options.logAnalytics) {
+        this.options.logAnalytics(documentURL);
+      } else {
+        this.logDocumentOpen(documentURL);
+      }
       Defer.flush();
     },
     1500,

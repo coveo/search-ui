@@ -6,9 +6,14 @@ import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { $$, Dom } from '../../utils/Dom';
 import { l } from '../../strings/Strings';
 import { IQueryResult } from '../../rest/QueryResult';
-import { analyticsActionCauseList, IAnalyticsSmartSnippetSuggestionMeta } from '../Analytics/AnalyticsActionListMeta';
+import {
+  analyticsActionCauseList,
+  IAnalyticsSmartSnippetSuggestionMeta,
+  IAnalyticsSmartSnippetSuggestionOpenSourceMeta
+} from '../Analytics/AnalyticsActionListMeta';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IComponentBindings } from '../Base/ComponentBindings';
+import { Utils } from '../../utils/Utils';
 
 const QUESTION_CLASSNAME = `coveo-smart-snippet-suggestions-question`;
 const QUESTION_TITLE_CLASSNAME = `${QUESTION_CLASSNAME}-title`;
@@ -142,7 +147,12 @@ export class SmartSnippetCollapsibleSuggestion {
   private buildLink(text: string, className: string) {
     const element = $$('a', { className: `CoveoResultLink ${className}` }).el as HTMLAnchorElement;
     element.innerText = text;
-    new ResultLink(element, {}, { ...this.bindings, resultElement: this.collapsibleContainer.el }, this.source);
+    new ResultLink(
+      element,
+      { logAnalytics: href => this.sendOpenSourceAnalytics(element, href) },
+      { ...this.bindings, resultElement: this.collapsibleContainer.el },
+      this.source
+    );
     return element;
   }
 
@@ -184,6 +194,20 @@ export class SmartSnippetCollapsibleSuggestion {
         documentId: this.questionAnswer.documentId
       },
       this.checkbox.el
+    );
+  }
+
+  private sendOpenSourceAnalytics(element: HTMLElement, href: string) {
+    return this.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionOpenSourceMeta>(
+      analyticsActionCauseList.openSmartSnippetSuggestionSource,
+      {
+        searchQueryUid: this.searchUid,
+        documentTitle: this.source.title,
+        author: Utils.getFieldValue(this.source, 'author'),
+        documentURL: href,
+        documentId: this.questionAnswer.documentId
+      },
+      element
     );
   }
 }
