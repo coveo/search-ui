@@ -8,7 +8,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
 const analyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 let bail;
 let plugins = [];
@@ -18,7 +17,7 @@ if (analyze) {
   plugins.push(new analyzer());
 }
 if (minimize) {
-  plugins.push(new UglifyJsPlugin({ sourceMap: true }));
+  plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true }));
 }
 
 plugins.push(
@@ -112,9 +111,6 @@ const getBaseFileName = () => {
   return minimize ? '[name].min' : '[name]';
 };
 
-/**
- * @type {import('webpack').Configuration}
- */
 module.exports = {
   entry: {
     'CoveoJsSearch.Lazy': ['./src/Lazy.ts'],
