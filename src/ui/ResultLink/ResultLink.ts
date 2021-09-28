@@ -226,6 +226,30 @@ export class ResultLink extends Component {
       return null;
     }),
 
+    /**
+     * Specify this option to override analytics when this result link is pressed.
+     *
+     * **Example:**
+     * ```javascript
+     * const resultLink = new Coveo.ResultLink(
+     *   linkElement,
+     *   {
+     *     logAnalytics: (href) => Coveo.logCustomEvent(
+     *         Coveo.analyticsActionCauseList.openSmartSnippetSource,
+     *         {
+     *           searchQueryUid: searchInterface.queryController.lastSearchUid,
+     *           documentTitle: result.title,
+     *           author: Utils.getFieldValue(result, 'author'),
+     *           documentURL: href
+     *         },
+     *         element
+     *       )
+     *   },
+     *   searchInterface.getBindings(),
+     *   result
+     * )
+     * ```
+     */
     logAnalytics: ComponentOptions.buildCustomOption<(href: string) => void>(() => null)
   };
 
