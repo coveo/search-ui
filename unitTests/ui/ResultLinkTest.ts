@@ -323,7 +323,7 @@ export function ResultLinkTest() {
       });
 
       it('should not log analytics when logAnalytics is set', () => {
-        let element = $$('a');
+        const element = $$('a');
         test = Mock.advancedResultComponentSetup<ResultLink>(
           ResultLink,
           fakeResult,
@@ -336,9 +336,9 @@ export function ResultLinkTest() {
         expect(test.cmp.usageAnalytics.logClickEvent).not.toHaveBeenCalled();
       });
 
-      it('should call logAnalytics when it is set', () => {
-        let element = $$('a');
-        let logAnalyticsSpy = jasmine.createSpy('logAnalytics');
+      it("should call logAnalytics when it's set", () => {
+        const element = $$('a');
+        const logAnalyticsSpy = jasmine.createSpy('logAnalytics');
         test = Mock.advancedResultComponentSetup<ResultLink>(
           ResultLink,
           fakeResult,
