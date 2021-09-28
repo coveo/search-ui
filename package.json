@@ -155,8 +155,8 @@
   },
   "dependencies": {
     "coveo.analytics": "^0.7.0",
-    "d3": "^7.0.0",
-    "d3-scale": "^4.0.0",
+    "d3": "^4.2.1",
+    "d3-scale": "^1.0.3",
     "es6-promise": "^4.0.5",
     "exponential-backoff": "^2.2.0",
     "jstimezonedetect": "^1.0.6",
@@ -177,7 +177,8 @@
     "mem": "^4.0.0",
     "js-yaml": "^3.13.1",
     "braces": "^2.3.1",
-    "@types/node": "~10.5.4"
+    "@types/node": "~10.5.4",
+    "d3-color": "^3.0.1"
   },
   "snyk": true
 }
