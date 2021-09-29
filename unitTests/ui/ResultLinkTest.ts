@@ -322,6 +322,35 @@ export function ResultLinkTest() {
         );
       });
 
+      it('should not log analytics when logAnalytics is set', () => {
+        const element = $$('a');
+        test = Mock.advancedResultComponentSetup<ResultLink>(
+          ResultLink,
+          fakeResult,
+          new Mock.AdvancedComponentSetupOptions(element.el, { logAnalytics: () => {} })
+        );
+        spyOn(test.cmp, 'openLink');
+
+        $$(test.cmp.element).trigger('click');
+
+        expect(test.cmp.usageAnalytics.logClickEvent).not.toHaveBeenCalled();
+      });
+
+      it("should call logAnalytics when it's set", () => {
+        const element = $$('a');
+        const logAnalyticsSpy = jasmine.createSpy('logAnalytics');
+        test = Mock.advancedResultComponentSetup<ResultLink>(
+          ResultLink,
+          fakeResult,
+          new Mock.AdvancedComponentSetupOptions(element.el, { logAnalytics: logAnalyticsSpy })
+        );
+        spyOn(test.cmp, 'openLink');
+
+        $$(test.cmp.element).trigger('click');
+
+        expect(logAnalyticsSpy).toHaveBeenCalledTimes(1);
+      });
+
       it('should use the clickUri if the href is empty', () => {
         $$(test.cmp.element).trigger('click');
 
