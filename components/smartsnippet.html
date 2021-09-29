@@ -92,7 +92,7 @@
 					<ul class="dropdown">
 						<li><a href="https://coveo.github.io/search-ui/" target="_blank">JavaScript Search Framework</a></li>
 						<!-- <li><a href="#">Atomic</a></li> -->
-						<li><a href="https://docs.coveo.com/en/headless//reference/">Headless</a></li>
+						<li><a href="https://docs.coveo.com/en/headless/latest/reference/">Headless</a></li>
 						<li><a href="https://docs.coveo.com/en/12/">Push API</a></li>
 						<li><a href="https://docs.coveo.com/en/8/">Field API</a></li>
 						<li><a href="https://docs.coveo.com/en/13/">Search API</a></li>
@@ -275,6 +275,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="smartsnippet.html#options.hreftemplate" class="tsd-kind-icon">href<wbr>Template</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="smartsnippet.html#options.maximumsnippetheight" class="tsd-kind-icon">maximum<wbr>Snippet<wbr>Height</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="smartsnippet.html#options.titlefield" class="tsd-kind-icon">title<wbr>Field</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="smartsnippet.html#options.useiframe" class="tsd-kind-icon">useIFrame</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited">
@@ -675,8 +676,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SmartSnippet/SmartSnippet.ts#L136">ui/SmartSnippet/SmartSnippet.ts
-							:136</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SmartSnippet/SmartSnippet.ts#L138">ui/SmartSnippet/SmartSnippet.ts
+							:138</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -710,8 +711,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SmartSnippet/SmartSnippet.ts#L104">ui/SmartSnippet/SmartSnippet.ts
-							:104</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SmartSnippet/SmartSnippet.ts#L106">ui/SmartSnippet/SmartSnippet.ts
+							:106</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -743,8 +744,8 @@
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SmartSnippet/SmartSnippet.ts#L109">ui/SmartSnippet/SmartSnippet.ts
-							:109</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SmartSnippet/SmartSnippet.ts#L111">ui/SmartSnippet/SmartSnippet.ts
+							:111</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -762,6 +763,38 @@
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
 						<pre>data-title-field&#x3D;&#x27;@foo&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.useiframe" class="tsd-anchor"></a>
+					<h3>useIFrame</h3>
+					<div class="tsd-signature tsd-kind-icon">useIFrame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SmartSnippet/SmartSnippet.ts#L151">ui/SmartSnippet/SmartSnippet.ts
+							:151</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>Specify if the SmartSnippet should be displayed inside an iframe or not.</p>
+						</div>
+						<p>Use this option in specific cases where your environment has limitations around iframe usage.</p>
+						<p><strong>Examples:</strong></p>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSmartSnippet'</span> <span class="hljs-attr">data-without-frame</span>=<span class="hljs-string">'true'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>true</code></p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-use-i-frame&#x3D;&#x27;true&#x27;
+data-use-i-frame&#x3D;&#x27;false&#x27;</pre>
 					</div>
 				</section>
 			</section>

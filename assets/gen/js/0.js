@@ -41,17 +41,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var RankingInfoTable_1 = __webpack_require__(334);
-var MetaDataTable_1 = __webpack_require__(339);
+var RankingInfoTable_1 = __webpack_require__(338);
+var MetaDataTable_1 = __webpack_require__(343);
 var Dom_1 = __webpack_require__(1);
 var ExternalModulesShim_1 = __webpack_require__(42);
 var Core_1 = __webpack_require__(41);
-var RelevanceInspectorTabs_1 = __webpack_require__(340);
-__webpack_require__(341);
-var ExecutionReport_1 = __webpack_require__(329);
-var AvailableFieldsTable_1 = __webpack_require__(349);
+var RelevanceInspectorTabs_1 = __webpack_require__(344);
+__webpack_require__(345);
+var ExecutionReport_1 = __webpack_require__(333);
+var AvailableFieldsTable_1 = __webpack_require__(353);
 var underscore_1 = __webpack_require__(0);
-var InlineRankingInfo_1 = __webpack_require__(350);
+var InlineRankingInfo_1 = __webpack_require__(354);
 var RelevanceInspector = /** @class */ (function () {
     function RelevanceInspector(element, bindings) {
         var _this = this;
@@ -224,7 +224,7 @@ exports.RelevanceInspector = RelevanceInspector;
 
 /***/ }),
 
-/***/ 328:
+/***/ 332:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -273,10 +273,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var AgGrid_1 = __webpack_require__(335);
+var AgGrid_1 = __webpack_require__(339);
 var underscore_1 = __webpack_require__(0);
 var UtilsModules_1 = __webpack_require__(79);
-var ResultLink_1 = __webpack_require__(336);
+var ResultLink_1 = __webpack_require__(340);
 exports.defaultGridOptions = {
     domLayout: 'autoHeight',
     enableColResize: true,
@@ -469,7 +469,7 @@ exports.GenericHtmlRenderer = GenericHtmlRenderer;
 
 /***/ }),
 
-/***/ 329:
+/***/ 333:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -510,15 +510,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReportAuthenticationSection_1 = __webpack_require__(343);
-var ExecutionReportResolvedPipelineSection_1 = __webpack_require__(344);
-var ExecutionReportQueryOverrideSection_1 = __webpack_require__(345);
-var ExecutionReportSimpleSection_1 = __webpack_require__(333);
-var ExecutionReportEffectiveIndexQuerySection_1 = __webpack_require__(346);
+var ExecutionReportAuthenticationSection_1 = __webpack_require__(347);
+var ExecutionReportResolvedPipelineSection_1 = __webpack_require__(348);
+var ExecutionReportQueryOverrideSection_1 = __webpack_require__(349);
+var ExecutionReportSimpleSection_1 = __webpack_require__(337);
+var ExecutionReportEffectiveIndexQuerySection_1 = __webpack_require__(350);
 var UtilsModules_1 = __webpack_require__(79);
-var ExecutionReportRankingModifiers_1 = __webpack_require__(347);
+var ExecutionReportRankingModifiers_1 = __webpack_require__(351);
 var Core_1 = __webpack_require__(41);
-var ExecutionReportITDSection_1 = __webpack_require__(348);
+var ExecutionReportITDSection_1 = __webpack_require__(352);
 var EXECUTION_REPORT_SECTION;
 (function (EXECUTION_REPORT_SECTION) {
     EXECUTION_REPORT_SECTION["PERFORM_AUTHENTICATION"] = "PerformAuthentication";
@@ -668,13 +668,13 @@ exports.ExecutionReport = ExecutionReport;
 
 /***/ }),
 
-/***/ 330:
+/***/ 334:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableBuilder_1 = __webpack_require__(328);
+var TableBuilder_1 = __webpack_require__(332);
 var underscore_1 = __webpack_require__(0);
 var Dom_1 = __webpack_require__(1);
 var defaultNullOutput = '-- NULL --';
@@ -757,7 +757,7 @@ exports.GenericValueOutput = GenericValueOutput;
 
 /***/ }),
 
-/***/ 331:
+/***/ 335:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -771,7 +771,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var GenericValueOutput_1 = __webpack_require__(330);
+var GenericValueOutput_1 = __webpack_require__(334);
 var ExecutionReportGenericSection = /** @class */ (function () {
     function ExecutionReportGenericSection() {
     }
@@ -795,7 +795,7 @@ exports.ExecutionReportGenericSection = ExecutionReportGenericSection;
 
 /***/ }),
 
-/***/ 332:
+/***/ 336:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -909,7 +909,7 @@ var parseQREWeights = function (value) {
 
 /***/ }),
 
-/***/ 333:
+/***/ 337:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -958,11 +958,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(329);
+var ExecutionReport_1 = __webpack_require__(333);
 var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(331);
-var GenericValueOutput_1 = __webpack_require__(330);
-var TableBuilder_1 = __webpack_require__(328);
+var ExecutionReportGenericSection_1 = __webpack_require__(335);
+var GenericValueOutput_1 = __webpack_require__(334);
+var TableBuilder_1 = __webpack_require__(332);
 var ExecutionReportSimpleSection = /** @class */ (function () {
     function ExecutionReportSimpleSection(topLevelProperty, secondLevelProperty, sectionTitle) {
         this.topLevelProperty = topLevelProperty;
@@ -1015,7 +1015,7 @@ exports.ExecutionReportSimpleSection = ExecutionReportSimpleSection;
 
 /***/ }),
 
-/***/ 334:
+/***/ 338:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1064,9 +1064,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var RankingInfoParser_1 = __webpack_require__(332);
+var RankingInfoParser_1 = __webpack_require__(336);
 var underscore_1 = __webpack_require__(0);
-var TableBuilder_1 = __webpack_require__(328);
+var TableBuilder_1 = __webpack_require__(332);
 var Dom_1 = __webpack_require__(1);
 var RankingInfoTable = /** @class */ (function () {
     function RankingInfoTable(results, bindings) {
@@ -1165,7 +1165,7 @@ exports.RankingInfoTable = RankingInfoTable;
 
 /***/ }),
 
-/***/ 335:
+/***/ 339:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1236,7 +1236,7 @@ var addAgGridScriptsToDocument = function (doc) {
 
 /***/ }),
 
-/***/ 336:
+/***/ 340:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1270,7 +1270,7 @@ var StreamHighlightUtils_1 = __webpack_require__(116);
 var StringUtils_1 = __webpack_require__(20);
 var underscore_1 = __webpack_require__(0);
 var GlobalExports_1 = __webpack_require__(24);
-__webpack_require__(337);
+__webpack_require__(341);
 var AccessibleButton_1 = __webpack_require__(121);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
@@ -1296,17 +1296,18 @@ var ResultLink = /** @class */ (function (_super) {
         _this.bindings = bindings;
         _this.result = result;
         _this.os = os;
-        _this.logOpenDocument = underscore_1.debounce(function () {
+        _this.logAnalytics = underscore_1.debounce(function () {
             _this.queryController.saveLastQuery();
             var documentURL = Dom_1.$$(_this.element).getAttribute('href');
             if (documentURL == undefined || documentURL == '') {
                 documentURL = _this.escapedClickUri;
             }
-            _this.usageAnalytics.logClickEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.documentOpen, {
-                documentURL: documentURL,
-                documentTitle: _this.result.title,
-                author: Utils_1.Utils.getFieldValue(_this.result, 'author')
-            }, _this.result, _this.root);
+            if (_this.options.logAnalytics) {
+                _this.options.logAnalytics(documentURL);
+            }
+            else {
+                _this.logDocumentOpen(documentURL);
+            }
             Defer_1.Defer.flush();
         }, 1500, true);
         var initialOptions = ComponentOptions_1.ComponentOptions.initComponentOptions(element, ResultLink, options);
@@ -1326,7 +1327,7 @@ var ResultLink = /** @class */ (function (_super) {
             // it should not matter if the end user open the same link multiple times with different methods.
             // It's still only one "click" event as far as UA is concerned.
             // Also need to handle "longpress" on mobile (the contextual menu), which we assume to be 1 s long.
-            var executeOnlyOnce_1 = underscore_1.once(function () { return _this.logOpenDocument(); });
+            var executeOnlyOnce_1 = underscore_1.once(function () { return _this.logAnalytics(); });
             Dom_1.$$(element).on(['contextmenu', 'click', 'mousedown', 'mouseup'], executeOnlyOnce_1);
             var longPressTimer_1;
             Dom_1.$$(element).on('touchstart', function () {
@@ -1358,7 +1359,7 @@ var ResultLink = /** @class */ (function (_super) {
     ResultLink.prototype.openLink = function (logAnalytics) {
         if (logAnalytics === void 0) { logAnalytics = true; }
         if (logAnalytics) {
-            this.logOpenDocument();
+            this.logAnalytics();
         }
         window.location.href = this.getResultUri();
     };
@@ -1369,7 +1370,7 @@ var ResultLink = /** @class */ (function (_super) {
     ResultLink.prototype.openLinkInNewWindow = function (logAnalytics) {
         if (logAnalytics === void 0) { logAnalytics = true; }
         if (logAnalytics) {
-            this.logOpenDocument();
+            this.logAnalytics();
         }
         window.open(this.getResultUri(), '_blank');
     };
@@ -1385,7 +1386,7 @@ var ResultLink = /** @class */ (function (_super) {
         if (logAnalytics === void 0) { logAnalytics = true; }
         if (this.hasOutlookField()) {
             if (logAnalytics) {
-                this.logOpenDocument();
+                this.logAnalytics();
             }
             this.openLink();
         }
@@ -1401,7 +1402,7 @@ var ResultLink = /** @class */ (function (_super) {
         if (logAnalytics === void 0) { logAnalytics = true; }
         if (this.toExecuteOnOpen) {
             if (logAnalytics) {
-                this.logOpenDocument();
+                this.logAnalytics();
             }
             this.toExecuteOnOpen();
         }
@@ -1507,6 +1508,13 @@ var ResultLink = /** @class */ (function (_super) {
         else {
             return false;
         }
+    };
+    ResultLink.prototype.logDocumentOpen = function (href) {
+        this.usageAnalytics.logClickEvent(AnalyticsActionListMeta_1.analyticsActionCauseList.documentOpen, {
+            documentURL: href,
+            documentTitle: this.result.title,
+            author: Utils_1.Utils.getFieldValue(this.result, 'author')
+        }, this.result, this.root);
     };
     ResultLink.prototype.filterProtocol = function (uri) {
         var isAbsolute = /^(https?|ftp|file|mailto|tel):/i.test(uri);
@@ -1740,7 +1748,32 @@ var ResultLink = /** @class */ (function (_super) {
          */
         onClick: ComponentOptions_1.ComponentOptions.buildCustomOption(function () {
             return null;
-        })
+        }),
+        /**
+         * Specify this option to override analytics when this result link is pressed.
+         *
+         * **Example:**
+         * ```javascript
+         * const resultLink = new Coveo.ResultLink(
+         *   linkElement,
+         *   {
+         *     logAnalytics: (href) => Coveo.logCustomEvent(
+         *         Coveo.analyticsActionCauseList.openSmartSnippetSource,
+         *         {
+         *           searchQueryUid: searchInterface.queryController.lastSearchUid,
+         *           documentTitle: result.title,
+         *           author: Utils.getFieldValue(result, 'author'),
+         *           documentURL: href
+         *         },
+         *         element
+         *       )
+         *   },
+         *   searchInterface.getBindings(),
+         *   result
+         * )
+         * ```
+         */
+        logAnalytics: ComponentOptions_1.ComponentOptions.buildCustomOption(function () { return null; })
     };
     return ResultLink;
 }(Component_1.Component));
@@ -1750,13 +1783,13 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultLink);
 
 /***/ }),
 
-/***/ 337:
+/***/ 341:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(338);
+var content = __webpack_require__(342);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1764,7 +1797,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(327)(content, options);
+var update = __webpack_require__(331)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -1782,10 +1815,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 338:
+/***/ 342:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(326)();
+exports = module.exports = __webpack_require__(330)();
 // imports
 
 
@@ -1797,7 +1830,7 @@ exports.push([module.i, "/*\n* @param direction vertical or horizontal\n* @param
 
 /***/ }),
 
-/***/ 339:
+/***/ 343:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1846,7 +1879,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableBuilder_1 = __webpack_require__(328);
+var TableBuilder_1 = __webpack_require__(332);
 var underscore_1 = __webpack_require__(0);
 var Dom_1 = __webpack_require__(1);
 var StringUtils_1 = __webpack_require__(20);
@@ -2056,7 +2089,7 @@ exports.FieldValuesRenderer = FieldValuesRenderer;
 
 /***/ }),
 
-/***/ 340:
+/***/ 344:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2136,13 +2169,13 @@ exports.RelevanceInspectorTabs = RelevanceInspectorTabs;
 
 /***/ }),
 
-/***/ 341:
+/***/ 345:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(342);
+var content = __webpack_require__(346);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2150,7 +2183,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(327)(content, options);
+var update = __webpack_require__(331)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -2168,10 +2201,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 342:
+/***/ 346:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(326)();
+exports = module.exports = __webpack_require__(330)();
 // imports
 
 
@@ -2183,7 +2216,7 @@ exports.push([module.i, "/*\n* @param direction vertical or horizontal\n* @param
 
 /***/ }),
 
-/***/ 343:
+/***/ 347:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2232,11 +2265,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(329);
-var TableBuilder_1 = __webpack_require__(328);
+var ExecutionReport_1 = __webpack_require__(333);
+var TableBuilder_1 = __webpack_require__(332);
 var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(331);
-var GenericValueOutput_1 = __webpack_require__(330);
+var ExecutionReportGenericSection_1 = __webpack_require__(335);
+var GenericValueOutput_1 = __webpack_require__(334);
 var ExecutionReportAuthenticationSection = /** @class */ (function () {
     function ExecutionReportAuthenticationSection() {
     }
@@ -2331,7 +2364,7 @@ exports.ExecutionReportAuthenticationSection = ExecutionReportAuthenticationSect
 
 /***/ }),
 
-/***/ 344:
+/***/ 348:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2380,11 +2413,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(329);
+var ExecutionReport_1 = __webpack_require__(333);
 var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(331);
-var TableBuilder_1 = __webpack_require__(328);
-var GenericValueOutput_1 = __webpack_require__(330);
+var ExecutionReportGenericSection_1 = __webpack_require__(335);
+var TableBuilder_1 = __webpack_require__(332);
+var GenericValueOutput_1 = __webpack_require__(334);
 var ExecutionReportResolvedPipelineSection = /** @class */ (function () {
     function ExecutionReportResolvedPipelineSection() {
     }
@@ -2417,7 +2450,7 @@ exports.ExecutionReportResolvedPipelineSection = ExecutionReportResolvedPipeline
 
 /***/ }),
 
-/***/ 345:
+/***/ 349:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2466,11 +2499,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(329);
+var ExecutionReport_1 = __webpack_require__(333);
 var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(331);
-var TableBuilder_1 = __webpack_require__(328);
-var GenericValueOutput_1 = __webpack_require__(330);
+var ExecutionReportGenericSection_1 = __webpack_require__(335);
+var TableBuilder_1 = __webpack_require__(332);
+var GenericValueOutput_1 = __webpack_require__(334);
 var ExecutionReportQueryOverrideSection = /** @class */ (function () {
     function ExecutionReportQueryOverrideSection() {
     }
@@ -2503,7 +2536,7 @@ exports.ExecutionReportQueryOverrideSection = ExecutionReportQueryOverrideSectio
 
 /***/ }),
 
-/***/ 346:
+/***/ 350:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2544,9 +2577,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(329);
+var ExecutionReport_1 = __webpack_require__(333);
 var underscore_1 = __webpack_require__(0);
-var GenericValueOutput_1 = __webpack_require__(330);
+var GenericValueOutput_1 = __webpack_require__(334);
 var Dom_1 = __webpack_require__(1);
 var collapsibleSectionsInReport = ['Facets', 'RankingOverrides', 'RankingExpressions'];
 var ExecutionReportEffectiveIndexQuerySection = /** @class */ (function () {
@@ -2598,7 +2631,7 @@ exports.ExecutionReportEffectiveIndexQuerySection = ExecutionReportEffectiveInde
 
 /***/ }),
 
-/***/ 347:
+/***/ 351:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2647,10 +2680,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(329);
-var TableBuilder_1 = __webpack_require__(328);
+var ExecutionReport_1 = __webpack_require__(333);
+var TableBuilder_1 = __webpack_require__(332);
 var underscore_1 = __webpack_require__(0);
-var GenericValueOutput_1 = __webpack_require__(330);
+var GenericValueOutput_1 = __webpack_require__(334);
 var QueryBuilder_1 = __webpack_require__(80);
 var ExecutionReportRankingModifiers = /** @class */ (function () {
     function ExecutionReportRankingModifiers() {
@@ -2743,7 +2776,7 @@ exports.ExecutionReportRankingModifiers = ExecutionReportRankingModifiers;
 
 /***/ }),
 
-/***/ 348:
+/***/ 352:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2784,13 +2817,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(329);
+var ExecutionReport_1 = __webpack_require__(333);
 var underscore_1 = __webpack_require__(0);
-var TableBuilder_1 = __webpack_require__(328);
+var TableBuilder_1 = __webpack_require__(332);
 var Dom_1 = __webpack_require__(1);
 var Utils_1 = __webpack_require__(3);
 var StreamHighlightUtils_1 = __webpack_require__(116);
-var ExecutionReportSimpleSection_1 = __webpack_require__(333);
+var ExecutionReportSimpleSection_1 = __webpack_require__(337);
 var ExecutionReportITDSection = /** @class */ (function () {
     function ExecutionReportITDSection() {
     }
@@ -2901,7 +2934,7 @@ exports.ExecutionReportITDSection = ExecutionReportITDSection;
 
 /***/ }),
 
-/***/ 349:
+/***/ 353:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2950,9 +2983,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableBuilder_1 = __webpack_require__(328);
+var TableBuilder_1 = __webpack_require__(332);
 var underscore_1 = __webpack_require__(0);
-var GenericValueOutput_1 = __webpack_require__(330);
+var GenericValueOutput_1 = __webpack_require__(334);
 var UtilsModules_1 = __webpack_require__(79);
 var QueryBuilder_1 = __webpack_require__(80);
 var PopupUtils_1 = __webpack_require__(120);
@@ -3238,13 +3271,13 @@ exports.AvailableFieldsDatasource = AvailableFieldsDatasource;
 
 /***/ }),
 
-/***/ 350:
+/***/ 354:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var RankingInfoParser_1 = __webpack_require__(332);
+var RankingInfoParser_1 = __webpack_require__(336);
 var Dom_1 = __webpack_require__(1);
 var underscore_1 = __webpack_require__(0);
 var Utils_1 = __webpack_require__(3);

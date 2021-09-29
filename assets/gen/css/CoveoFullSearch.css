@@ -1582,6 +1582,21 @@
   background-size: 56px 64px;
 }
 
+.coveo-filetype-slack,
+.coveo-icon.filetype.Slackmessage,
+.coveo-icon.filetype.slackmessage,
+.coveo-icon.filetype.Slackchannel,
+.coveo-icon.filetype.slackchannel,
+.coveo-icon.filetype.Slackfile,
+.coveo-icon.filetype.slackfile,
+.coveo-icon.filetype.Slackuser,
+.coveo-icon.filetype.slackuser {
+  display: inline-block;
+  width: 124px;
+  height: 124px;
+  background-size: 124px 124px;
+}
+
 .coveo-filetype-attachment-small,
 .coveo-icon.objecttype.coveo-small.Attachment,
 .coveo-icon.objecttype.coveo-small.attachment,
@@ -2313,6 +2328,21 @@
   width: 28px;
   height: 32px;
   background-size: 28px 32px;
+}
+
+.coveo-filetype-slack-small,
+.coveo-icon.filetype.coveo-small.Slackmessage,
+.coveo-icon.filetype.coveo-small.slackmessage,
+.coveo-icon.filetype.coveo-small.Slackchannel,
+.coveo-icon.filetype.coveo-small.slackchannel,
+.coveo-icon.filetype.coveo-small.Slackfile,
+.coveo-icon.filetype.coveo-small.slackfile,
+.coveo-icon.filetype.coveo-small.Slackuser,
+.coveo-icon.filetype.coveo-small.slackuser {
+  display: inline-block;
+  width: 62px;
+  height: 62px;
+  background-size: 62px 62px;
 }
 
 .coveo-filetype-attachment,
@@ -4373,6 +4403,27 @@
 .coveo-filetype-salesforce-standard-work-type,
 .coveo-filetype-salesforce-standard-work-type-small {
   background-image: url( ../image/salesforce-standard-work-type.svg);
+}
+
+.coveo-filetype-slack,
+.coveo-icon.filetype.Slackmessage,
+.coveo-icon.filetype.slackmessage,
+.coveo-icon.filetype.Slackchannel,
+.coveo-icon.filetype.slackchannel,
+.coveo-icon.filetype.Slackfile,
+.coveo-icon.filetype.slackfile,
+.coveo-icon.filetype.Slackuser,
+.coveo-icon.filetype.slackuser,
+.coveo-filetype-slack-small,
+.coveo-icon.filetype.coveo-small.Slackmessage,
+.coveo-icon.filetype.coveo-small.slackmessage,
+.coveo-icon.filetype.coveo-small.Slackchannel,
+.coveo-icon.filetype.coveo-small.slackchannel,
+.coveo-icon.filetype.coveo-small.Slackfile,
+.coveo-icon.filetype.coveo-small.slackfile,
+.coveo-icon.filetype.coveo-small.Slackuser,
+.coveo-icon.filetype.coveo-small.slackuser {
+  background-image: url( ../image/slack.svg);
 }
 
 .coveo-filetype-user,
