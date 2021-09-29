@@ -82,6 +82,7 @@ function externalDefs() {
     .pipe(replace(/never/gm, 'void'))
     .pipe(replace(/undefined/g, 'any'))
     .pipe(replace(/Partial<[A-z]*>/g, 'any'))
+    .pipe(replace(/const version: string;/g, ''))
     .pipe(gulp.dest('./bin/ts'));
 }
 
