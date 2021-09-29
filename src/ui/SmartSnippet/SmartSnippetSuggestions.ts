@@ -11,6 +11,7 @@ import { l } from '../../strings/Strings';
 import { Initialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
 import { getDefaultSnippetStyle } from './SmartSnippetCommon';
+import { ComponentOptions } from '../Base/ComponentOptions';
 
 const BASE_CLASSNAME = 'coveo-smart-snippet-suggestions';
 const HAS_QUESTIONS_CLASSNAME = `${BASE_CLASSNAME}-has-questions`;
@@ -22,6 +23,10 @@ export const SmartSnippetSuggestionsClassNames = {
   QUESTIONS_LIST_CLASSNAME,
   QUESTIONS_LIST_TITLE_CLASSNAME
 };
+
+export interface ISmartSnippetSuggestionsOptions {
+  useIFrame?: boolean;
+}
 
 /**
  * The SmartSnippetSuggestions component displays additional queries for which a Coveo Smart Snippets model can provide relevant excerpts.
@@ -35,6 +40,25 @@ export class SmartSnippetSuggestions extends Component {
     });
   };
 
+  /**
+   * The options for the SmartSnippetSuggestions
+   * @componentOptions
+   */
+  static options: ISmartSnippetSuggestionsOptions = {
+    /**
+     * Specify if the SmartSnippetSuggestion snippet should be displayed inside an iframe or not.
+     *
+     * Use this option in specific cases where your environment has limitations around iframe usage.
+     *
+     * **Examples:**
+     *
+     * ```html
+     * <div class='CoveoSmartSnippetSuggestions' data-without-shadow='true'></div>
+     * ```
+     */
+    useIFrame: ComponentOptions.buildBooleanOption({ defaultValue: true })
+  };
+
   private readonly titleId = uniqueId(QUESTIONS_LIST_TITLE_CLASSNAME);
   private contentLoaded: Promise<SmartSnippetCollapsibleSuggestion[]>;
   private title: Dom;
@@ -42,8 +66,9 @@ export class SmartSnippetSuggestions extends Component {
   private renderedQuestionAnswer: IQuestionAnswerResponse;
   private searchUid: string;
 
-  constructor(public element: HTMLElement, public options?: {}, bindings?: IComponentBindings) {
+  constructor(public element: HTMLElement, public options?: ISmartSnippetSuggestionsOptions, bindings?: IComponentBindings) {
     super(element, SmartSnippetSuggestions.ID, bindings);
+    this.options = ComponentOptions.initComponentOptions(element, SmartSnippetSuggestions, options);
     this.bind.onRootElement(QueryEvents.deferredQuerySuccess, (data: IQuerySuccessEventArgs) => this.handleQuerySuccess(data));
   }
 
@@ -100,7 +125,8 @@ export class SmartSnippetSuggestions extends Component {
             ? getDefaultSnippetStyle(SmartSnippetCollapsibleSuggestionClassNames.RAW_CONTENT_CLASSNAME)
             : innerCSS,
           this.searchUid,
-          this.getCorrespondingResult(questionAnswer)
+          this.getCorrespondingResult(questionAnswer),
+          this.options.useIFrame
         )
     );
     const container = $$(

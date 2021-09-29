@@ -1,7 +1,11 @@
 import { IQuerySuccessEventArgs, QueryEvents } from '../../src/events/QueryEvents';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { IQuestionAnswerResponse, IRelatedQuestionAnswerResponse } from '../../src/rest/QuestionAnswerResponse';
-import { SmartSnippetSuggestions, SmartSnippetSuggestionsClassNames } from '../../src/ui/SmartSnippet/SmartSnippetSuggestions';
+import {
+  ISmartSnippetSuggestionsOptions,
+  SmartSnippetSuggestions,
+  SmartSnippetSuggestionsClassNames
+} from '../../src/ui/SmartSnippet/SmartSnippetSuggestions';
 import { advancedComponentSetup, AdvancedComponentSetupOptions, IBasicComponentSetup } from '../MockEnvironment';
 import { SmartSnippetCollapsibleSuggestionClassNames } from '../../src/ui/SmartSnippet/SmartSnippetCollapsibleSuggestion';
 import { $$ } from '../../src/utils/Dom';
@@ -117,10 +121,10 @@ export function SmartSnippetSuggestionsTest() {
     let test: IBasicComponentSetup<SmartSnippetSuggestions>;
     let searchUid: string;
 
-    function instantiateSmartSnippetSuggestions(styling: string) {
+    function instantiateSmartSnippetSuggestions(styling: string, options: Partial<ISmartSnippetSuggestionsOptions> = {}) {
       test = advancedComponentSetup<SmartSnippetSuggestions>(
         SmartSnippetSuggestions,
-        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling)])).el)
+        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling)])).el, options)
       );
     }
 
@@ -359,6 +363,32 @@ export function SmartSnippetSuggestionsTest() {
             });
           });
         });
+      });
+    });
+
+    describe('with the useIFrame option', () => {
+      afterEach(() => {
+        test.env.root.remove();
+      });
+
+      it('renders a div instead of an iframe when the option is false', async done => {
+        const IFRAME_CLASSNAME = 'coveo-shadow-iframe';
+        instantiateSmartSnippetSuggestions(null, {
+          useIFrame: false
+        });
+        document.body.appendChild(test.env.root);
+        await triggerQuestionAnswerQuery(true);
+        expect(test.cmp.element.querySelector(`.${IFRAME_CLASSNAME}`).nodeName).toEqual('DIV');
+        done();
+      });
+
+      it('renders an iframe by default', async done => {
+        const IFRAME_CLASSNAME = 'coveo-shadow-iframe';
+        instantiateSmartSnippetSuggestions(null);
+        document.body.appendChild(test.env.root);
+        await triggerQuestionAnswerQuery(true);
+        expect(test.cmp.element.querySelector(`.${IFRAME_CLASSNAME}`).nodeName).toEqual('IFRAME');
+        done();
       });
     });
 
