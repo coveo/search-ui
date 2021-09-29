@@ -58,7 +58,8 @@ export class SmartSnippetCollapsibleSuggestion {
     private readonly bindings: IComponentBindings,
     private readonly innerCSS: string,
     private readonly searchUid: string,
-    private readonly source?: IQueryResult
+    private readonly source?: IQueryResult,
+    private readonly useIFrame?: boolean
   ) {}
 
   public get loading() {
@@ -119,7 +120,11 @@ export class SmartSnippetCollapsibleSuggestion {
     const shadowContainer = $$('div', { className: SHADOW_CLASSNAME });
     this.snippetAndSourceContainer = $$('div', { className: QUESTION_SNIPPET_CONTAINER_CLASSNAME }, shadowContainer);
     this.collapsibleContainer = $$('div', { className: QUESTION_SNIPPET_CLASSNAME, id: this.snippetId }, this.snippetAndSourceContainer);
-    this.contentLoaded = attachShadow(shadowContainer.el, { mode: 'open', title: l('AnswerSpecificSnippet', title) }).then(shadowRoot => {
+    this.contentLoaded = attachShadow(shadowContainer.el, {
+      mode: 'open',
+      title: l('AnswerSpecificSnippet', title),
+      useIFrame: this.useIFrame
+    }).then(shadowRoot => {
       shadowRoot.appendChild(this.buildAnswerSnippetContent(innerHTML, style).el);
     });
     if (this.source) {

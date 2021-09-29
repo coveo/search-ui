@@ -77,6 +77,7 @@ export interface ISmartSnippetOptions {
   maximumSnippetHeight: number;
   titleField: IFieldOption;
   hrefTemplate?: string;
+  useIFrame?: boolean;
 }
 /**
  * The SmartSnippet component displays the excerpt of a document that would be most likely to answer a particular query.
@@ -134,7 +135,20 @@ export class SmartSnippet extends Component {
      *
      * Default value is `undefined`.
      */
-    hrefTemplate: ComponentOptions.buildStringOption()
+    hrefTemplate: ComponentOptions.buildStringOption(),
+
+    /**
+     * Specify if the SmartSnippet should be displayed inside an iframe or not.
+     *
+     * Use this option in specific cases where your environment has limitations around iframe usage.
+     *
+     * **Examples:**
+     *
+     * ```html
+     * <div class='CoveoSmartSnippet' data-without-frame='true'></div>
+     * ```
+     */
+    useIFrame: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
 
   private lastRenderedResult: IQueryResult = null;
@@ -221,7 +235,8 @@ export class SmartSnippet extends Component {
     this.shadowLoading = attachShadow(this.shadowContainer, {
       mode: 'open',
       title: l('AnswerSnippet'),
-      onSizeChanged: () => this.handleAnswerSizeChanged()
+      onSizeChanged: () => this.handleAnswerSizeChanged(),
+      useIFrame: this.options.useIFrame
     }).then(shadow => {
       shadow.appendChild(this.snippetContainer);
       const style = this.buildStyle();
