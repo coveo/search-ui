@@ -14,9 +14,7 @@ node('linux && docker') {
         sh 'yarn run injectVersion'
         sh 'yarn run build'
 
-        if (tag) {
-          sh 'yarn run minimize'
-        }
+        sh 'yarn run minimize'
       }
 
       stage('Install Chrome') {
