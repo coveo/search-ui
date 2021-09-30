@@ -639,7 +639,7 @@ class SliderCaption {
 }
 
 class SliderGraph {
-  private svg: any;
+  private svg: d3.Selection<SVGElement, any, null, undefined>;
   private x: any;
   private y: any;
   private oldData: ISliderGraphData[];
@@ -649,9 +649,7 @@ class SliderGraph {
   private tooltipCaption: HTMLElement;
 
   constructor(public slider: Slider) {
-    this.svg = d3select(slider.element)
-      .append('svg')
-      .append('g');
+    this.svg = d3select(slider.element).append('svg').append('g');
     this.x = scaleBand();
     this.y = scaleLinear();
     this.slider.options.graph.margin = Utils.extendDeep(
@@ -798,7 +796,12 @@ class SliderGraph {
     this.svg.attr('transform', 'translate(' + this.slider.options.graph.margin.left + ',' + this.slider.options.graph.margin.top + ')');
   }
 
-  private renderGraphBars(bars: d3.selection.Update<ISliderGraphData>, width: number, height: number, currentSliderValues: number[]) {
+  private renderGraphBars(
+    bars: d3.Selection<d3.BaseType, ISliderGraphData, SVGElement, any>,
+    width: number,
+    height: number,
+    currentSliderValues: number[]
+  ) {
     bars
       .enter()
       .append('rect')
@@ -812,7 +815,11 @@ class SliderGraph {
       .on('mouseout', this.getFunctionForMouseOut());
   }
 
-  private setGraphBarsTransition(bars: d3.Transition<ISliderGraphData>, height: number, currentSliderValues: number[]) {
+  private setGraphBarsTransition(
+    bars: d3.Selection<d3.BaseType, ISliderGraphData, SVGElement, any>,
+    height: number,
+    currentSliderValues: number[]
+  ) {
     bars
       .transition()
       .attr('x', this.getFunctionForX())

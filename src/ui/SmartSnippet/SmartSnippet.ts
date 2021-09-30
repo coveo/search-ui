@@ -13,7 +13,8 @@ import {
   analyticsActionCauseList,
   IAnalyticsNoMeta,
   IAnalyticsSmartSnippetFeedbackMeta,
-  AnalyticsSmartSnippetFeedbackReason
+  AnalyticsSmartSnippetFeedbackReason,
+  IAnalyticsSmartSnippetOpenSourceMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
 import { ExplanationModal, IReason } from './ExplanationModal';
@@ -341,7 +342,7 @@ export class SmartSnippet extends Component {
     element.addClass(className);
     new ResultLink(
       element.el,
-      { hrefTemplate: this.options.hrefTemplate },
+      { hrefTemplate: this.options.hrefTemplate, logAnalytics: href => this.sendClickSourceAnalytics(element.el, href) },
       { ...this.getBindings(), resultElement: this.element },
       this.lastRenderedResult
     );
@@ -410,6 +411,19 @@ export class SmartSnippet extends Component {
         details
       },
       this.element
+    );
+  }
+
+  private sendClickSourceAnalytics(element: HTMLElement, href: string) {
+    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetOpenSourceMeta>(
+      analyticsActionCauseList.openSmartSnippetSource,
+      {
+        searchQueryUid: this.searchUid,
+        documentTitle: this.lastRenderedResult.title,
+        author: Utils.getFieldValue(this.lastRenderedResult, 'author'),
+        documentURL: href
+      },
+      element
     );
   }
 }
