@@ -144,7 +144,7 @@ export class SmartSnippet extends Component {
      * **Examples:**
      *
      * ```html
-     * <div class='CoveoSmartSnippet' data-without-frame='true'></div>
+     * <div class='CoveoSmartSnippet' data-use-i-frame='true'></div>
      * ```
      */
     useIFrame: ComponentOptions.buildBooleanOption({ defaultValue: true })
