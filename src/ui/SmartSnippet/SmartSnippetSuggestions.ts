@@ -55,6 +55,8 @@ export class SmartSnippetSuggestions extends Component {
      * ```html
      * <div class='CoveoSmartSnippetSuggestions' data-use-i-frame='true'></div>
      * ```
+     *
+     * Default value is `true`.
      */
     useIFrame: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
