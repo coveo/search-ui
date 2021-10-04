@@ -26,7 +26,7 @@ export interface IAnalyticsEndpointOptions {
 export class AnalyticsEndpoint {
   logger: Logger;
 
-  static DEFAULT_ANALYTICS_URI = 'https://platform.cloud.coveo.com/rest/ua';
+  static DEFAULT_ANALYTICS_URI = 'https://analytics.cloud.coveo.com/rest/ua';
   static DEFAULT_ANALYTICS_VERSION = 'v15';
   static CUSTOM_ANALYTICS_VERSION = undefined;
 
@@ -52,7 +52,7 @@ export class AnalyticsEndpoint {
       return this.DEFAULT_ANALYTICS_URI;
     }
 
-    const [basePlatform] = endpoint.options.restUri.split('/rest');
+    const [basePlatform] = endpoint.options.restUri.replace('platform', 'analytics').split('/rest');
     return basePlatform + '/rest/ua';
   }
 

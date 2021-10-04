@@ -28,11 +28,40 @@ export function AnalyticsEndpointTest() {
       jasmine.Ajax.uninstall();
     });
 
-    it('exposes a method to resolve URL from a valid SearchEndpoint', () => {
-      const searchEndpoint = new SearchEndpoint({
-        restUri: 'https://platform-eu.cloud.coveo.com/rest/search'
+    it('exposes a method to resolve URL', () => {
+      const expectations = [
+        {
+          in: 'https://platformdev.cloud.coveo.com/rest/search',
+          out: 'https://analyticsdev.cloud.coveo.com/rest/ua'
+        },
+        {
+          in: 'https://platformqa.cloud.coveo.com/rest/search',
+          out: 'https://analyticsqa.cloud.coveo.com/rest/ua'
+        },
+        {
+          in: 'https://platform.cloud.coveo.com/rest/search',
+          out: 'https://analytics.cloud.coveo.com/rest/ua'
+        },
+        {
+          in: 'https://platformhipaa.cloud.coveo.com/rest/search',
+          out: 'https://analyticshipaa.cloud.coveo.com/rest/ua'
+        },
+        {
+          in: 'https://platform-eu.cloud.coveo.com/rest/search',
+          out: 'https://analytics-eu.cloud.coveo.com/rest/ua'
+        },
+        {
+          in: 'https://platform-au.cloud.coveo.com/rest/search',
+          out: 'https://analytics-au.cloud.coveo.com/rest/ua'
+        }
+      ];
+
+      expectations.forEach(expectation => {
+        const searchEndpoint = new SearchEndpoint({
+          restUri: expectation.in
+        });
+        expect(AnalyticsEndpoint.getURLFromSearchEndpoint(searchEndpoint)).toBe(expectation.out);
       });
-      expect(AnalyticsEndpoint.getURLFromSearchEndpoint(searchEndpoint)).toBe('https://platform-eu.cloud.coveo.com/rest/ua');
     });
 
     it('exposes a method to resolve URL from an invalid SearchEndpoint', () => {
@@ -46,11 +75,11 @@ export function AnalyticsEndpointTest() {
       const searchEndpoint = new SearchEndpoint({
         restUri: 'https://platform-eu.cloud.coveo.com/rest/search/rest/v2/rest/foo'
       });
-      expect(AnalyticsEndpoint.getURLFromSearchEndpoint(searchEndpoint)).toBe('https://platform-eu.cloud.coveo.com/rest/ua');
+      expect(AnalyticsEndpoint.getURLFromSearchEndpoint(searchEndpoint)).toBe('https://analytics-eu.cloud.coveo.com/rest/ua');
     });
 
     it('exposes a method to resolve URL if the search endpoint is undefined', () => {
-      expect(AnalyticsEndpoint.getURLFromSearchEndpoint(undefined)).toBe('https://platform.cloud.coveo.com/rest/ua');
+      expect(AnalyticsEndpoint.getURLFromSearchEndpoint(undefined)).toBe('https://analytics.cloud.coveo.com/rest/ua');
     });
 
     it('allow to get the current visit id', done => {
