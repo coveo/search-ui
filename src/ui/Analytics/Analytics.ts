@@ -637,12 +637,14 @@ export class Analytics extends Component {
 
   private handleDoNotTrack() {
     if (this.doNotTrack()) {
-      this.logger.info('Coveo Analytics tracking disabled due to doNotTrack');
+      this.logger.warn('Coveo Analytics tracking disabled due to doNotTrack');
       this.disable();
     }
   }
 
   private doNotTrack() {
-    return [true, 'yes', '1', 1].indexOf(navigator.doNotTrack || window.doNotTrack || (<any>navigator).msDoNotTrack);
+    const doNotTrack = [true, 'yes', '1', 1].indexOf(navigator.doNotTrack || window.doNotTrack || (<any>navigator).msDoNotTrack);
+    const globalPrivacyControl = (<any>navigator).globalPrivacyControl;
+    return doNotTrack || globalPrivacyControl;
   }
 }
