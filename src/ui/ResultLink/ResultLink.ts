@@ -227,7 +227,7 @@ export class ResultLink extends Component {
     }),
 
     /**
-     * Specify this option to override analytics when this result link is pressed.
+     * Specify this option to log additional analytics when this result link is pressed.
      *
      * **Example:**
      * ```javascript
@@ -500,10 +500,9 @@ export class ResultLink extends Component {
       if (documentURL == undefined || documentURL == '') {
         documentURL = this.escapedClickUri;
       }
+      this.logDocumentOpen(documentURL);
       if (this.options.logAnalytics) {
         this.options.logAnalytics(documentURL);
-      } else {
-        this.logDocumentOpen(documentURL);
       }
       Defer.flush();
     },

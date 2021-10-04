@@ -322,7 +322,7 @@ export function ResultLinkTest() {
         );
       });
 
-      it('should not log analytics when logAnalytics is set', () => {
+      it('should still log analytics when logAnalytics is set', () => {
         const element = $$('a');
         test = Mock.advancedResultComponentSetup<ResultLink>(
           ResultLink,
@@ -333,7 +333,7 @@ export function ResultLinkTest() {
 
         $$(test.cmp.element).trigger('click');
 
-        expect(test.cmp.usageAnalytics.logClickEvent).not.toHaveBeenCalled();
+        expect(test.cmp.usageAnalytics.logClickEvent).toHaveBeenCalledTimes(1);
       });
 
       it("should call logAnalytics when it's set", () => {

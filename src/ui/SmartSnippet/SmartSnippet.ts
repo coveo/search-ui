@@ -145,8 +145,10 @@ export class SmartSnippet extends Component {
      * **Examples:**
      *
      * ```html
-     * <div class='CoveoSmartSnippet' data-without-frame='true'></div>
+     * <div class='CoveoSmartSnippet' data-use-i-frame='true'></div>
      * ```
+     *
+     * Default value is `true`.
      */
     useIFrame: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
@@ -413,7 +415,7 @@ export class SmartSnippet extends Component {
   }
 
   private sendClickSourceAnalytics(element: HTMLElement, href: string) {
-    return this.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetOpenSourceMeta>(
+    return this.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetOpenSourceMeta>(
       analyticsActionCauseList.openSmartSnippetSource,
       {
         searchQueryUid: this.searchUid,
@@ -421,6 +423,7 @@ export class SmartSnippet extends Component {
         author: Utils.getFieldValue(this.lastRenderedResult, 'author'),
         documentURL: href
       },
+      this.lastRenderedResult,
       element
     );
   }

@@ -203,7 +203,7 @@ export class SmartSnippetCollapsibleSuggestion {
   }
 
   private sendOpenSourceAnalytics(element: HTMLElement, href: string) {
-    return this.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionOpenSourceMeta>(
+    return this.bindings.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetSuggestionOpenSourceMeta>(
       analyticsActionCauseList.openSmartSnippetSuggestionSource,
       {
         searchQueryUid: this.searchUid,
@@ -212,6 +212,7 @@ export class SmartSnippetCollapsibleSuggestion {
         documentURL: href,
         documentId: this.questionAnswer.documentId
       },
+      this.source,
       element
     );
   }
