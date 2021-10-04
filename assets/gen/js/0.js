@@ -1302,11 +1302,9 @@ var ResultLink = /** @class */ (function (_super) {
             if (documentURL == undefined || documentURL == '') {
                 documentURL = _this.escapedClickUri;
             }
+            _this.logDocumentOpen(documentURL);
             if (_this.options.logAnalytics) {
                 _this.options.logAnalytics(documentURL);
-            }
-            else {
-                _this.logDocumentOpen(documentURL);
             }
             Defer_1.Defer.flush();
         }, 1500, true);
@@ -1750,7 +1748,7 @@ var ResultLink = /** @class */ (function (_super) {
             return null;
         }),
         /**
-         * Specify this option to override analytics when this result link is pressed.
+         * Specify this option to log additional analytics when this result link is pressed.
          *
          * **Example:**
          * ```javascript
