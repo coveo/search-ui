@@ -53,8 +53,10 @@ export class SmartSnippetSuggestions extends Component {
      * **Examples:**
      *
      * ```html
-     * <div class='CoveoSmartSnippetSuggestions' data-without-shadow='true'></div>
+     * <div class='CoveoSmartSnippetSuggestions' data-use-i-frame='true'></div>
      * ```
+     *
+     * Default value is `true`.
      */
     useIFrame: ComponentOptions.buildBooleanOption({ defaultValue: true })
   };
