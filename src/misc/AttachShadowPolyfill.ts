@@ -8,17 +8,17 @@ export interface IShadowOptions {
 }
 
 export async function attachShadow(element: HTMLElement, options: IShadowOptions & ShadowRootInit): Promise<HTMLElement> {
-  let autoUpdateContainer: HTMLElement;
+  const elementOptions = { className: 'coveo-shadow-iframe', scrolling: 'no', title: options.title };
+  let autoUpdateContainer: HTMLIFrameElement | HTMLElement;
   let contentBody: HTMLElement;
   if (options.useIFrame) {
-    const iframe = $$('iframe', { className: 'coveo-shadow-iframe', scrolling: 'no', title: options.title }).el as HTMLIFrameElement;
-    const onLoad = new Promise(resolve => iframe.addEventListener('load', () => resolve()));
-    element.appendChild(iframe);
+    autoUpdateContainer = $$('iframe', elementOptions).el;
+    const onLoad = new Promise(resolve => autoUpdateContainer.addEventListener('load', () => resolve()));
+    element.appendChild(autoUpdateContainer);
     await onLoad;
-    contentBody = iframe.contentDocument.body as HTMLBodyElement;
-    autoUpdateContainer = iframe;
+    contentBody = (autoUpdateContainer as HTMLIFrameElement).contentDocument.body;
   } else {
-    autoUpdateContainer = $$('div', { className: 'coveo-shadow-iframe', scrolling: 'no', title: options.title }).el as HTMLElement;
+    autoUpdateContainer = $$('div', elementOptions).el;
     contentBody = autoUpdateContainer;
     element.appendChild(autoUpdateContainer);
   }
