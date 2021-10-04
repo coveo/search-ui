@@ -27,6 +27,7 @@ export function InitializationTest() {
     let queryBox: HTMLElement;
 
     beforeEach(() => {
+      Simulate.doNoTrack = undefined;
       root = document.createElement('div');
       $$(root).addClass('CoveoSearchInterface');
       endpoint = Mock.mockSearchEndpoint();
@@ -583,24 +584,6 @@ export function InitializationTest() {
           });
         });
       });
-    });
-
-    it('when analytics is active, it will send action history on automatic query', async () => {
-      const key = '__coveo.analytics.history';
-
-      localStorage.removeItem(key);
-      expect(localStorage.getItem(key)).toBeNull();
-
-      const analyticsElement = $$('div', { className: 'CoveoAnalytics', 'data-token': 'el-tokeno' }).el;
-      root.appendChild(analyticsElement);
-
-      await Initialization.initializeFramework(root, searchInterfaceOptions, () => {
-        return Initialization.initSearchInterface(root, searchInterfaceOptions);
-      });
-
-      const actionHistory = localStorage.getItem(key);
-      expect(actionHistory).not.toBeNull();
-      expect(JSON.parse(actionHistory)[0].name).toEqual('Query');
     });
 
     describe('when initializing recommendation interface', () => {

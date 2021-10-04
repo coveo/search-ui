@@ -49,7 +49,15 @@ export interface ISimulateQueryData {
   origin?: Component;
 }
 
+Object.defineProperty(navigator, 'doNotTrack', {
+  get: function () {
+    return Simulate.doNoTrack;
+  }
+});
+
 export class Simulate {
+  public static doNoTrack = undefined;
+
   static isPhantomJs() {
     return navigator.userAgent.indexOf('PhantomJS') != -1;
   }

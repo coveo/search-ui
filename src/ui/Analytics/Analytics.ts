@@ -25,6 +25,7 @@ import { AccessToken } from '../../rest/AccessToken';
 import { AnalyticsEvents, IAnalyticsEventArgs } from '../../events/AnalyticsEvents';
 import { QueryUtils } from '../../utils/QueryUtils';
 import { AnalyticsInformation } from './AnalyticsInformation';
+import { InitializationEvents } from '../../events/InitializationEvents';
 
 export interface IAnalyticsOptions {
   user?: string;
@@ -246,6 +247,7 @@ export class Analytics extends Component {
 
     this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs) => this.handleQueryError(data));
+    this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => this.handleDoNotTrack());
 
     if (this.options.autoPushToGtmDataLayer && this.isGtmDataLayerInitialized) {
       this.bind.onRootElement(AnalyticsEvents.analyticsEventReady, (data: IAnalyticsEventArgs) => this.pushToGtmDataLayer(data));
@@ -631,5 +633,18 @@ export class Analytics extends Component {
     } else {
       return new Analytics(element, options, bindings).client;
     }
+  }
+
+  private handleDoNotTrack() {
+    if (this.doNotTrack()) {
+      this.logger.warn('Coveo Analytics tracking disabled due to doNotTrack');
+      this.disable();
+    }
+  }
+
+  private doNotTrack() {
+    const doNotTrack = [true, 'yes', '1', 1].indexOf(navigator.doNotTrack || window.doNotTrack || (<any>navigator).msDoNotTrack);
+    const globalPrivacyControl = (<any>navigator).globalPrivacyControl;
+    return doNotTrack !== -1 || globalPrivacyControl;
   }
 }
