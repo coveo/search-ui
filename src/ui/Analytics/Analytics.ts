@@ -645,6 +645,6 @@ export class Analytics extends Component {
   private doNotTrack() {
     const doNotTrack = [true, 'yes', '1', 1].indexOf(navigator.doNotTrack || window.doNotTrack || (<any>navigator).msDoNotTrack);
     const globalPrivacyControl = (<any>navigator).globalPrivacyControl;
-    return doNotTrack || globalPrivacyControl;
+    return doNotTrack !== -1 || globalPrivacyControl;
   }
 }
