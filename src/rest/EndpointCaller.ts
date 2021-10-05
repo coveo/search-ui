@@ -296,8 +296,19 @@ export class EndpointCaller implements IEndpointCaller {
       xmlHttpRequest.onreadystatechange = ev => {
         if (xmlHttpRequest.readyState == XMLHttpRequestStatus.OPENED && !sent) {
           sent = true;
-          xmlHttpRequest.withCredentials = true;
 
+          const calculateWithCredentials = () => {
+            // allows for custom xmlhttprequest value to be used from ISearchEndpointOptions
+            // https://coveo.github.io/search-ui/interfaces/isearchendpointoptions.html#xmlhttprequest
+            if(xmlHttpRequest.withCredentials === false) return false;
+            // ISearchEndpointOptions.anonymous
+            // https://coveo.github.io/search-ui/interfaces/isearchendpointoptions.html#anonymous
+            if(this.options.anonymous) return false;
+            return true;
+          }
+          
+          xmlHttpRequest.withCredentials = calculateWithCredentials();
+          
           _.each(requestInfo.headers, (headerValue, headerKey) => {
             xmlHttpRequest.setRequestHeader(headerKey, headerValue);
           });
