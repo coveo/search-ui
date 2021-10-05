@@ -1302,9 +1302,11 @@ var ResultLink = /** @class */ (function (_super) {
             if (documentURL == undefined || documentURL == '') {
                 documentURL = _this.escapedClickUri;
             }
-            _this.logDocumentOpen(documentURL);
             if (_this.options.logAnalytics) {
                 _this.options.logAnalytics(documentURL);
+            }
+            else {
+                _this.logDocumentOpen(documentURL);
             }
             Defer_1.Defer.flush();
         }, 1500, true);
