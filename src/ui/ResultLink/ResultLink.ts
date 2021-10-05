@@ -500,9 +500,10 @@ export class ResultLink extends Component {
       if (documentURL == undefined || documentURL == '') {
         documentURL = this.escapedClickUri;
       }
-      this.logDocumentOpen(documentURL);
       if (this.options.logAnalytics) {
         this.options.logAnalytics(documentURL);
+      } else {
+        this.logDocumentOpen(documentURL);
       }
       Defer.flush();
     },
