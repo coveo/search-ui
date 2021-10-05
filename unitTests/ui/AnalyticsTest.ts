@@ -71,6 +71,15 @@ export function AnalyticsTest() {
         test = null;
       });
 
+      it('disable if navigator.doNotTrack is used', () => {
+        test = Mock.basicComponentSetup<Analytics>(Analytics);
+        Simulate.doNoTrack = '1';
+        Simulate.initialization(test.env);
+        expect(test.cmp.client instanceof NoopAnalyticsClient).toBe(true);
+        expect(test.cmp.disabled).toBe(true);
+        Simulate.doNoTrack = undefined;
+      });
+
       it('use URL from default endpoint if not specified', () => {
         expect(test.cmp.options.endpoint).toBe(SearchEndpoint.endpoints['default'].options.restUri + '/rest/ua');
       });
