@@ -52,7 +52,7 @@ export class AnalyticsEndpoint {
       return this.DEFAULT_ANALYTICS_URI;
     }
 
-    const [basePlatform] = endpoint.options.restUri.replace('platform', 'analytics').split('/rest');
+    const [basePlatform] = endpoint.options.restUri.replace(/^(https?:\/\/)platform/, '$1analytics').split('/rest');
     return basePlatform + '/rest/ua';
   }
 
