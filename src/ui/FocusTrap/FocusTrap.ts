@@ -2,6 +2,10 @@ import { Defer } from '../../misc/Defer';
 import { without, chain } from 'underscore';
 import { $$, Dom } from '../../utils/Dom';
 
+export interface FocusTrapOptions {
+  focusableSelector: string;
+}
+
 export class FocusTrap {
   private focusInEvent: (e: FocusEvent) => void;
   private focusOutEvent: (e: FocusEvent) => void;
@@ -9,13 +13,18 @@ export class FocusTrap {
   private enabled: boolean;
 
   private get focusableElements(): HTMLElement[] {
-    return chain(Dom.nodeListToArray(this.container.querySelectorAll('[tabindex], button')))
+    return chain(Dom.nodeListToArray(this.container.querySelectorAll(this.options.focusableSelector)))
       .filter(element => $$(element).isVisible())
       .sortBy(element => element.tabIndex)
       .value();
   }
 
-  constructor(private container: HTMLElement) {
+  constructor(
+    private container: HTMLElement,
+    private options: FocusTrapOptions = {
+      focusableSelector: '[tabindex], button'
+    }
+  ) {
     this.hiddenElements = [];
     this.enable();
   }
