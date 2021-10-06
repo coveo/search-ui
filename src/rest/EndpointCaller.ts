@@ -169,6 +169,13 @@ export interface IEndpointCallerOptions {
    * If not specified, the native one is used.
    */
   xmlHttpRequest?: new () => XMLHttpRequest;
+
+  /**
+   * Specifies that the request (and the Coveo Search API) does not need any kind of authentication.<br/>
+   * This flag is only needed for specific setups when your requests are being blocked by your browser. If your queries are executing correctly, you do not need to bother.<br/>
+   * Setting this flag will prevent the withCredentials option to be set on the XMLHttpRequest, allowing performing cross-domain requests on a server that returns * in the Access-Control-Allow-Origin HTTP header.
+   */
+  anonymous?: boolean;
 }
 
 // In ie8, XMLHttpRequest has no status property, so let's use this enum instead
@@ -296,7 +303,7 @@ export class EndpointCaller implements IEndpointCaller {
       xmlHttpRequest.onreadystatechange = ev => {
         if (xmlHttpRequest.readyState == XMLHttpRequestStatus.OPENED && !sent) {
           sent = true;
-          xmlHttpRequest.withCredentials = true;
+          xmlHttpRequest.withCredentials = !this.options.anonymous;
 
           _.each(requestInfo.headers, (headerValue, headerKey) => {
             xmlHttpRequest.setRequestHeader(headerKey, headerValue);
