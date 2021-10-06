@@ -1,6 +1,6 @@
 import { Defer } from '../../misc/Defer';
-import { sortBy, without } from 'underscore';
-import { $$ } from '../../utils/Dom';
+import { without, chain } from 'underscore';
+import { $$, Dom } from '../../utils/Dom';
 
 export class FocusTrap {
   private focusInEvent: (e: FocusEvent) => void;
@@ -9,7 +9,10 @@ export class FocusTrap {
   private enabled: boolean;
 
   private get focusableElements(): HTMLElement[] {
-    return sortBy(this.container.querySelectorAll('[tabindex]'), element => element.tabIndex);
+    return chain(Dom.nodeListToArray(this.container.querySelectorAll('[tabindex], button')))
+      .filter(element => $$(element).isVisible())
+      .sortBy(element => element.tabIndex)
+      .value();
   }
 
   constructor(private container: HTMLElement) {
