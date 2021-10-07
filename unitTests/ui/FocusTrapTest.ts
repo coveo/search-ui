@@ -20,9 +20,7 @@ export function FocusTrapTest() {
       }) as FocusEvent;
     }
 
-    function buildFocusable(id: string) {
-      const element = $$('div', { id });
-      element.el.tabIndex = 0;
+    function addSpy(element: Dom) {
       spyOn(element.el, 'focus').and.callFake(() => {
         focusTrap['onFocusIn'](mockFocusInEvent(currentlyActiveElement, element.el));
         if (currentlyActiveElement) {
@@ -30,6 +28,18 @@ export function FocusTrapTest() {
         }
         currentlyActiveElement = element.el;
       });
+    }
+
+    function buildTabIndexDiv(id: string) {
+      const element = $$('div', { id });
+      element.el.tabIndex = 0;
+      addSpy(element);
+      return element;
+    }
+
+    function buildButton(id: string) {
+      const element = $$('button', { id });
+      addSpy(element);
       return element;
     }
 
@@ -37,13 +47,13 @@ export function FocusTrapTest() {
       rootContainer = $$(
         'div',
         {},
-        (firstOuterFocusableElement = buildFocusable('out-first')),
+        (firstOuterFocusableElement = buildButton('out-first')),
         (trapContainer = $$(
           'div',
           {},
-          ...(trappedFocusableElements = [buildFocusable('in-first'), buildFocusable('in-second'), buildFocusable('in-third')])
+          ...(trappedFocusableElements = [buildTabIndexDiv('in-first'), buildButton('in-second'), buildTabIndexDiv('in-third')])
         )),
-        (lastOuterFocusableElement = buildFocusable('out-last'))
+        (lastOuterFocusableElement = buildTabIndexDiv('out-last'))
       );
     }
 

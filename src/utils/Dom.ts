@@ -224,11 +224,11 @@ export class Dom {
    * This is not meant to be a "foolproof" method, but only a superficial "best effort" detection is performed.
    */
   public isVisible() {
-    if (this.el.style.display == 'none') {
+    if (this.css('display') === 'none') {
       return false;
     }
 
-    if (this.el.style.visibility == 'hidden') {
+    if (this.css('visibility') === 'hidden') {
       return false;
     }
 
