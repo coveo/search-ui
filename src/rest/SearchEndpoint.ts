@@ -122,9 +122,9 @@ export class SearchEndpoint implements ISearchEndpoint {
       _.extend(
         {
           restUri: 'https://platform.cloud.coveo.com/rest/search',
-          accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
+          accessToken: 'xee4c15da-a012-4241-93d3-72a144e23bb5',
           queryStringArguments: {
-            organizationId: 'searchuisamples',
+            organizationId: 'coveointernaltesting1',
             viewAllContent: 1
           }
         },
