@@ -13,16 +13,18 @@ export function EndpointCallerTest() {
         jasmine.Ajax.uninstall();
       });
 
+      const basicCallParams = {
+        method: 'POST',
+        requestData: {},
+        url: 'this is an XMLHTTPRequest',
+        queryString: [],
+        responseType: 'text',
+        errorsAsSuccess: false
+      };
+
       it('should use XMLHTTPRequest by default', function () {
         var endpointCaller = new EndpointCaller();
-        endpointCaller.call({
-          method: 'POST',
-          requestData: {},
-          url: 'this is an XMLHTTPRequest',
-          queryString: [],
-          responseType: 'text',
-          errorsAsSuccess: false
-        });
+        endpointCaller.call(basicCallParams);
         expect(jasmine.Ajax.requests.mostRecent().url).toBe('this is an XMLHTTPRequest');
       });
 
@@ -30,43 +32,40 @@ export function EndpointCallerTest() {
         class CustomXMLHttpRequest extends XMLHttpRequest {}
 
         var endpointCaller = new EndpointCaller({ xmlHttpRequest: CustomXMLHttpRequest });
-        endpointCaller.call({
-          method: 'POST',
-          requestData: {},
-          url: 'this is an XMLHTTPRequest',
-          queryString: [],
-          responseType: 'text',
-          errorsAsSuccess: false
-        });
+        endpointCaller.call(basicCallParams);
         expect(jasmine.Ajax.requests.mostRecent() instanceof CustomXMLHttpRequest).toBe(true);
+      });
+
+      it('should set withCredentials to "true" by default', function () {
+        var endpointCaller = new EndpointCaller();
+        endpointCaller.call(basicCallParams);
+        expect(jasmine.Ajax.requests.mostRecent().withCredentials).toBe(true);
+      });
+
+      it('should set withCredentials to "true" when anonymous is "false"', function () {
+        var endpointCaller = new EndpointCaller({ anonymous: false });
+        endpointCaller.call(basicCallParams);
+        expect(jasmine.Ajax.requests.mostRecent().withCredentials).toBe(true);
+      });
+
+      it('should set withCredentials to "false" when anonymous is "true"', function () {
+        var endpointCaller = new EndpointCaller({ anonymous: true });
+        endpointCaller.call(basicCallParams);
+        expect(jasmine.Ajax.requests.mostRecent().withCredentials).toBe(false);
       });
 
       it('should set the auth if provided', function () {
         var endpointCaller = new EndpointCaller({
           accessToken: 'myToken'
         });
-        endpointCaller.call({
-          method: 'POST',
-          requestData: {},
-          url: 'this is an XMLHTTPRequest',
-          queryString: [],
-          responseType: 'text',
-          errorsAsSuccess: false
-        });
+        endpointCaller.call(basicCallParams);
         expect(jasmine.Ajax.requests.mostRecent().requestHeaders['Authorization']).toBe('Bearer myToken');
 
         endpointCaller = new EndpointCaller({
           username: 'john@doe.com',
           password: 'hunter123'
         });
-        endpointCaller.call({
-          method: 'POST',
-          requestData: {},
-          url: 'this is an XMLHTTPRequest',
-          queryString: [],
-          responseType: 'text',
-          errorsAsSuccess: false
-        });
+        endpointCaller.call(basicCallParams);
         expect(jasmine.Ajax.requests.mostRecent().requestHeaders['Authorization']).toBe('Basic ' + btoa('john@doe.com:hunter123'));
       });
     });

@@ -53,9 +53,16 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
     }
   }
 
+  private get focusableSelector() {
+    const facetElements = '[data-field]:not(.coveo-facet-empty) [tabindex]';
+    const dynamicFacetsElements = '[data-field]:not(.coveo-hidden) button';
+    const modalButton = '.coveo-facet-modal-close-button';
+    return [facetElements, dynamicFacetsElements, modalButton].join(' , ');
+  }
+
   private ensureFocusTrap() {
     if (!this.focusTrap) {
-      this.focusTrap = new FocusTrap(this.element.el);
+      this.focusTrap = new FocusTrap(this.element.el, { focusableSelector: this.focusableSelector });
     }
   }
 
