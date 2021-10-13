@@ -3313,10 +3313,10 @@ var Dom = /** @class */ (function () {
      * This is not meant to be a "foolproof" method, but only a superficial "best effort" detection is performed.
      */
     Dom.prototype.isVisible = function () {
-        if (this.el.style.display == 'none') {
+        if (this.css('display') === 'none') {
             return false;
         }
-        if (this.el.style.visibility == 'hidden') {
+        if (this.css('visibility') === 'hidden') {
             return false;
         }
         if (this.hasClass('coveo-tab-disabled')) {
@@ -15142,7 +15142,7 @@ var EndpointCaller = /** @class */ (function () {
             xmlHttpRequest.onreadystatechange = function (ev) {
                 if (xmlHttpRequest.readyState == XMLHttpRequestStatus.OPENED && !sent) {
                     sent = true;
-                    xmlHttpRequest.withCredentials = true;
+                    xmlHttpRequest.withCredentials = !_this.options.anonymous;
                     _.each(requestInfo.headers, function (headerValue, headerKey) {
                         xmlHttpRequest.setRequestHeader(headerKey, headerValue);
                     });
@@ -15454,8 +15454,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10090.3',
-    product: '2.10090.3',
+    lib: '2.10090.4',
+    product: '2.10090.4',
     supportedApiVersion: 2
 };
 
@@ -27389,6 +27389,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root
     'ǲ': 'D',
     'ǅ': 'D',
     'Đ': 'D',
+    'Ð': 'D',
     'Ƌ': 'D',
     'Ǳ': 'DZ',
     'Ǆ': 'DZ',
@@ -27456,6 +27457,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root
     'Ɨ': 'I',
     'Ĩ': 'I',
     'Ḭ': 'I',
+    'І': 'I',
     'Ꝺ': 'D',
     'Ꝼ': 'F',
     'Ᵹ': 'G',
@@ -27656,6 +27658,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root
     'Ȳ': 'Y',
     'Ɏ': 'Y',
     'Ỹ': 'Y',
+    'Ї': 'YI',
     'Ź': 'Z',
     'Ž': 'Z',
     'Ẑ': 'Z',
@@ -27665,6 +27668,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root
     'Ȥ': 'Z',
     'Ẕ': 'Z',
     'Ƶ': 'Z',
+    'Þ': 'TH',
     'Ĳ': 'IJ',
     'Œ': 'OE',
     'ᴀ': 'A',
@@ -27776,6 +27780,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root
     'đ': 'd',
     'ɖ': 'd',
     'ƌ': 'd',
+    'ð': 'd',
     'ı': 'i',
     'ȷ': 'j',
     'ɟ': 'j',
@@ -27854,6 +27859,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root
     'ɨ': 'i',
     'ĩ': 'i',
     'ḭ': 'i',
+    'і': 'i',
     'ꝺ': 'd',
     'ꝼ': 'f',
     'ᵹ': 'g',
@@ -28120,6 +28126,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root
     'ẙ': 'y',
     'ɏ': 'y',
     'ỹ': 'y',
+    'ї': 'yi',
     'ź': 'z',
     'ž': 'z',
     'ẑ': 'z',
@@ -28134,6 +28141,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root
     'ʐ': 'z',
     'ƶ': 'z',
     'ɀ': 'z',
+    'þ': 'th',
     'ﬀ': 'ff',
     'ﬃ': 'ffi',
     'ﬄ': 'ffl',
@@ -28159,6 +28167,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root
     'Е': 'E',
     'Н': 'N',
     'Г': 'G',
+    'Ґ': 'G',
     'Ш': 'SH',
     'Щ': 'SCH',
     'З': 'Z',
@@ -28172,6 +28181,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root
     'е': 'e',
     'н': 'n',
     'г': 'g',
+    'ґ': 'g',
     'ш': 'sh',
     'щ': 'sch',
     'з': 'z',
