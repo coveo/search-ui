@@ -3,7 +3,7 @@ import { IHighlight } from '../rest/Highlight';
 import { $$ } from '../utils/Dom';
 import { IQueryResult } from '../rest/QueryResult';
 import { Logger } from '../misc/Logger';
-import * as latinize from 'latinize';
+import { latinize } from './Latinize';
 import * as _ from 'underscore';
 
 export class StringUtils {
