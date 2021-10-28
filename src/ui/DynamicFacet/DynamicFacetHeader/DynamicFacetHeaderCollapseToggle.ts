@@ -40,6 +40,7 @@ export class DynamicFacetHeaderCollapseToggle {
 
     node.setAttribute('aria-label', label);
     node.setAttribute('title', label);
+    node.setAttribute('aria-expanded', (!isCollapsed).toString());
 
     node.toggleClass('coveo-dynamic-facet-header-expand', isCollapsed);
     node.toggleClass('coveo-dynamic-facet-header-collapse', !isCollapsed);
