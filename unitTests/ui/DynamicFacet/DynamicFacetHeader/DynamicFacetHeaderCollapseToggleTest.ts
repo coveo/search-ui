@@ -28,6 +28,10 @@ export function DynamicFacetHeaderCollapseToggleTest() {
       return $$(collapseToggle.element).find('.coveo-dynamic-facet-header-expand');
     }
 
+    function getAriaExpandedState(el: HTMLElement) {
+      return $$(el).getAttribute('aria-expanded');
+    }
+
     it(`should create a collapse button`, () => {
       expect(getCollapseButton()).toBeTruthy();
       expect(getExpandButton()).toBeFalsy();
@@ -39,6 +43,7 @@ export function DynamicFacetHeaderCollapseToggleTest() {
 
       expect(getCollapseButton()).toBeFalsy();
       expect(getExpandButton()).toBeTruthy();
+      expect(getAriaExpandedState(getExpandButton())).toEqual('false');
     });
 
     it(`when calling toggleButtons with isCollapsed to false
@@ -48,6 +53,7 @@ export function DynamicFacetHeaderCollapseToggleTest() {
 
       expect(getCollapseButton()).toBeTruthy();
       expect(getExpandButton()).toBeFalsy();
+      expect(getAriaExpandedState(getCollapseButton())).toEqual('true');
     });
 
     it(`when clicking on the collapse button
