@@ -32,6 +32,10 @@ export function DynamicFacetValuesTest() {
       dynamicFacetValues.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet, { values: mockFacetValues }));
     }
 
+    function facetValueList() {
+      return dynamicFacetValues.render();
+    }
+
     function moreButton() {
       const element = dynamicFacetValues.render();
       return $$(element).find('.coveo-dynamic-facet-show-more');
@@ -51,6 +55,11 @@ export function DynamicFacetValuesTest() {
       const element = dynamicFacetValues.render();
       return $$(element).find('.coveo-dynamic-facet-collapsed-values');
     }
+
+    it('the facet value list element has role set to group', () => {
+      const list = facetValueList();
+      expect($$(list).getAttribute('role')).toBe('group');
+    });
 
     it('should return allFacetValues correctly', () => {
       expect(dynamicFacetValues.allFacetValues.length).toBe(mockFacetValues.length);
