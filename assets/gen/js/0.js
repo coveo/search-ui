@@ -1255,7 +1255,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(7);
 var ComponentOptions_1 = __webpack_require__(14);
 var ComponentOptionsModel_1 = __webpack_require__(23);
-var AnalyticsActionListMeta_1 = __webpack_require__(10);
+var AnalyticsActionListMeta_1 = __webpack_require__(11);
 var ResultListEvents_1 = __webpack_require__(32);
 var HighlightUtils_1 = __webpack_require__(81);
 var DeviceUtils_1 = __webpack_require__(21);
