@@ -35,8 +35,14 @@ export class AriaLive implements IAriaLive {
 
   private addQueryEventListeners() {
     const root = $$(this.root);
+    root.on(QueryEvents.duringQuery, () => this.onDuringQuery());
     root.on(QueryEvents.querySuccess, (e, args: IQuerySuccessEventArgs) => this.onQuerySuccess(args));
     root.on(QueryEvents.queryError, (e, args: IQueryErrorEventArgs) => this.onQueryError(args));
+  }
+
+  private onDuringQuery() {
+    const message = l('UpdatingResults');
+    this.updateText(message);
   }
 
   private onQuerySuccess(args: IQuerySuccessEventArgs) {

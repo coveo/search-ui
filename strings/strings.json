@@ -7606,5 +7606,9 @@
   "OrganizationWillResume": {
     "en": "Your organization is resuming and will be available shortly.",
     "fr": "Votre organisation redeviendra active et sera bientôt disponible."
+  },
+  "UpdatingResults": {
+    "en": "Updating results",
+    "fr": "Mise à jour des résultats"
   }
 }
