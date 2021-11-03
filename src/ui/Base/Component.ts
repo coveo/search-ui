@@ -262,6 +262,8 @@ export class ComponentEvents {
  * The base class for every component in the framework.
  */
 export class Component extends BaseComponent {
+  static globallyConfiguredOptions: Object = {};
+
   static ComponentEventClass: typeof ComponentEvents = ComponentEvents;
   /**
    * Allows the component to bind events and execute them only when it is enabled.
