@@ -272,6 +272,7 @@ export class ResultLink extends Component {
     public os?: OS_NAME
   ) {
     super(element, ResultLink.ID, bindings);
+
     const globalOptions = this.searchInterface.options.originalOptionsObject[ResultLink.ID] || {};
     const initialOptions = ComponentOptions.initComponentOptions(element, ResultLink, { ...globalOptions, ...options });
     const resultLinkOptions = this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink);
