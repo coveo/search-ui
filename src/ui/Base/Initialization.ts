@@ -785,7 +785,6 @@ export class LazyInitialization {
           // also for the element id. Merge them and pass those to the factory method.
           let optionsToUse;
           if (Utils.exists(initParameters.options)) {
-            Component.globallyConfiguredOptions = initParameters.options;
             const optionsForComponentClass = initParameters.options[componentClassId];
             const optionsForElementId = initParameters.options[matchingElement.id];
             const initOptions = initParameters.options['initOptions'] ? initParameters.options['initOptions'][componentClassId] : {};
