@@ -7,12 +7,17 @@ import { DynamicFacetHeaderButton } from './DynamicFacetHeaderButton';
 import { DynamicFacetHeaderCollapseToggle } from './DynamicFacetHeaderCollapseToggle';
 
 export interface IDynamicFacetHeaderOptions {
+  id: string;
   title: string;
   enableCollapse: boolean;
   toggleCollapse: () => void;
   collapse: () => void;
   expand: () => void;
   clear: () => void;
+}
+
+export function getDynamicFacetHeaderId(facetId: string) {
+  return `${facetId}-facet-heading`;
 }
 
 export class DynamicFacetHeader {
@@ -65,7 +70,8 @@ export class DynamicFacetHeader {
       'h2',
       {
         className: 'coveo-dynamic-facet-header-title',
-        ariaLabel: `${l('FacetTitle', this.options.title)}`
+        ariaLabel: `${l('FacetTitle', this.options.title)}`,
+        id: getDynamicFacetHeaderId(this.options.id)
       },
       $$('span', { ariaHidden: true, title: this.options.title }, this.options.title)
     );

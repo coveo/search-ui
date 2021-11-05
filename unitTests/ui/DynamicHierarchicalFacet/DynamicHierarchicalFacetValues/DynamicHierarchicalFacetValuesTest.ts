@@ -17,6 +17,10 @@ export function DynamicHierarchicalFacetValuesTest() {
       facet.values = new DynamicHierarchicalFacetValues(facet);
     });
 
+    function facetValueList() {
+      return facet.values.render();
+    }
+
     function moreButton() {
       const element = facet.values.render();
       return $$(element).find('.coveo-dynamic-hierarchical-facet-show-more');
@@ -26,6 +30,11 @@ export function DynamicHierarchicalFacetValuesTest() {
       const element = facet.values.render();
       return $$(element).find('.coveo-dynamic-hierarchical-facet-show-less');
     }
+
+    it('the facet value list element has an aria-labelledby', () => {
+      const list = facetValueList();
+      expect($$(list).getAttribute('aria-labelledby')).toBe(`${facet.options.id}-facet-heading`);
+    });
 
     describe('testing createFromResponse', () => {
       let response: IFacetResponse;

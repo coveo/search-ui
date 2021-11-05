@@ -8,6 +8,7 @@ export function DynamicFacetHeaderTest() {
 
     beforeEach(() => {
       options = {
+        id: 'id',
         title: 'hello',
         clear: jasmine.createSpy('clear'),
         enableCollapse: true,
@@ -41,6 +42,7 @@ export function DynamicFacetHeaderTest() {
     it('should create an accessible title', () => {
       expect($$(titleElement()).getAttribute('aria-label')).toBeTruthy();
       expect($$(titleElement()).find('span').innerHTML).toBe(options.title);
+      expect($$(titleElement()).getAttribute('id')).toBe(`${options.id}-facet-heading`);
     });
 
     it('should create a hidden waitAnimationElement', () => {
