@@ -106,6 +106,7 @@ export class DynamicHierarchicalFacetTestUtils {
     facet.searchInterface = Mock.mockSearchInterface();
     facet.header = Mock.mock(DynamicFacetHeader);
     facet.header.options = {
+      id: options.id,
       clear: () => {},
       collapse: () => {},
       expand: () => {},

@@ -762,6 +762,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
   private createAndAppendHeader() {
     this.header = new DynamicFacetHeader({
+      id: this.options.id,
       title: this.options.title,
       enableCollapse: this.options.enableCollapse,
       clear: () => this.clear(),
