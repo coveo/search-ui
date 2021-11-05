@@ -74,7 +74,7 @@ export class DynamicHierarchicalFacetValue implements IDynamicHierarchicalFacetV
 
   public get selectAriaLabel() {
     const resultCount = l('ResultCount', this.formattedCount, this.numberOfResults);
-    return `${l('IncludeValueWithResultCount', this.displayValue, resultCount)}`;
+    return `${this.displayValue} ${resultCount}`;
   }
 
   public get formattedCount(): string {
