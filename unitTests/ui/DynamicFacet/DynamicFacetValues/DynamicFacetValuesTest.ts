@@ -56,9 +56,9 @@ export function DynamicFacetValuesTest() {
       return $$(element).find('.coveo-dynamic-facet-collapsed-values');
     }
 
-    it('the facet value list element has role set to group', () => {
+    it('the facet value list element has an aria-labelledby', () => {
       const list = facetValueList();
-      expect($$(list).getAttribute('role')).toBe('group');
+      expect($$(list).getAttribute('aria-labelledby')).toBe(`${facet.options.id}-facet-heading`);
     });
 
     it('should return allFacetValues correctly', () => {
