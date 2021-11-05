@@ -1251,6 +1251,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(7);
 var ComponentOptions_1 = __webpack_require__(14);
@@ -1310,7 +1318,8 @@ var ResultLink = /** @class */ (function (_super) {
             }
             Defer_1.Defer.flush();
         }, 1500, true);
-        var initialOptions = ComponentOptions_1.ComponentOptions.initComponentOptions(element, ResultLink, options);
+        var globalOptions = _this.searchInterface.options.originalOptionsObject[ResultLink.ID] || {};
+        var initialOptions = ComponentOptions_1.ComponentOptions.initComponentOptions(element, ResultLink, __assign({}, globalOptions, options));
         var resultLinkOptions = _this.componentOptionsModel.get(ComponentOptionsModel_1.ComponentOptionsModel.attributesEnum.resultLink);
         _this.options = underscore_1.extend({}, initialOptions, resultLinkOptions);
         _this.result = result || _this.resolveResult();
