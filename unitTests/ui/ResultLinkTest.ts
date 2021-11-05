@@ -1,5 +1,6 @@
 import * as Mock from '../MockEnvironment';
 import { ResultLink } from '../../src/ui/ResultLink/ResultLink';
+import { IResultsComponentBindings } from '../../src/UIBaseModules';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { HighlightUtils } from '../../src/utils/HighlightUtils';
 import { $$ } from '../../src/utils/Dom';
@@ -44,6 +45,45 @@ export function ResultLinkTest() {
 
     it('should have its tabindex value set to 0', () => {
       expect(test.cmp.element.getAttribute('tabindex')).toBe('0');
+    });
+
+    describe('with global result link options', () => {
+      function createEnvWithGlobalResultLinkOptions() {
+        const searchInterface = test.env.searchInterface;
+        searchInterface.options.originalOptionsObject = {
+          [ResultLink.ID]: {
+            alwaysOpenInNewWindow: true
+          }
+        };
+
+        return new Mock.MockEnvironmentBuilder().withResult(fakeResult).withSearchInterface(searchInterface);
+      }
+
+      it('the global options are used', () => {
+        const env = createEnvWithGlobalResultLinkOptions();
+        const cmp = new ResultLink(
+          env.getBindings().element,
+          {},
+          (env.getBindings() as any) as IResultsComponentBindings,
+          env.result,
+          env.os
+        );
+        expect(cmp.options.alwaysOpenInNewWindow).toBe(true);
+      });
+
+      it(`when options are defined on the result link component,
+      the local options override the global options`, () => {
+        const env = createEnvWithGlobalResultLinkOptions();
+        const cmp = new ResultLink(
+          env.getBindings().element,
+          { alwaysOpenInNewWindow: false },
+          (env.getBindings() as any) as IResultsComponentBindings,
+          env.result,
+          env.os
+        );
+
+        expect(cmp.options.alwaysOpenInNewWindow).toBe(false);
+      });
     });
 
     describe(`when the template contains two ${ResultLink.ID} elements`, () => {
