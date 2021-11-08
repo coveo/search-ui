@@ -7354,6 +7354,10 @@
     "en": "{0} <span class=\"coveo-omnibox-suggestion-category\">in {1}</span>",
     "fr": "{0} <span class=\"coveo-omnibox-suggestion-category\">dans {1}</span>"
   },
+  "Result": {
+    "en": "Result",
+    "fr": "Résultat"
+  },
   "ResultCount": {
     "en": "{0} result<pl>s</pl>",
     "fr": "{0} résultat<pl>s</pl>"
