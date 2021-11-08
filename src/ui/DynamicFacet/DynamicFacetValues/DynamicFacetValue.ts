@@ -63,7 +63,7 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   public get selectAriaLabel() {
     const resultCount = l('ResultCount', this.formattedCount, this.numberOfResults);
 
-    return `${l('IncludeValueWithResultCount', this.displayValue, resultCount)}`;
+    return `${this.displayValue} ${resultCount}`;
   }
 
   private get isRange() {

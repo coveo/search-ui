@@ -46,6 +46,10 @@ export function ResultLinkTest() {
       expect(test.cmp.element.getAttribute('tabindex')).toBe('0');
     });
 
+    it('should have an aria-label to prevent screen readers from reading the #title attribute', () => {
+      expect(test.cmp.element.getAttribute('aria-label')).toBe('Result');
+    });
+
     describe(`when the template contains two ${ResultLink.ID} elements`, () => {
       let template: HTMLElement;
 

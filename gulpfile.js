@@ -40,3 +40,4 @@ exports.testString = testString;
 exports.unitTests = unitTests;
 exports.accessibilityTests = accessibilityTests;
 exports.templates = templates;
+exports.strings = buildStrings;
