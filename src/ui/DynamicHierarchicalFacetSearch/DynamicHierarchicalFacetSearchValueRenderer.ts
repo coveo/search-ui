@@ -45,13 +45,10 @@ export class DynamicHierarchicalFacetSearchValueRenderer {
 
   private get label() {
     const { start, end } = this.pathToRender;
+    const resultCount = l('ResultCount', this.facetValue.numberOfResults, this.facetValue.numberOfResults);
     return l(
       'HierarchicalFacetValueIndentedUnder',
-      l(
-        'IncludeValueWithResultCount',
-        this.facetValue.displayValue,
-        l('ResultCount', this.facetValue.numberOfResults, this.facetValue.numberOfResults)
-      ),
+      `${this.facetValue.displayValue} ${resultCount}`,
       [...start, ...(end || [])].join(', ')
     );
   }

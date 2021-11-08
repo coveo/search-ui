@@ -8,6 +8,7 @@ import { l } from '../../../strings/Strings';
 import { IDynamicFacet, IValueCreator, IDynamicFacetValue, IDynamicFacetValues } from '../IDynamicFacet';
 import { DynamicFacetValueShowMoreLessButton } from './DynamicFacetValueMoreLessButton';
 import { Utils } from '../../../utils/Utils';
+import { getDynamicFacetHeaderId } from '../DynamicFacetHeader/DynamicFacetHeader';
 
 export interface IDynamicFacetValueCreatorKlass {
   new (facet: IDynamicFacet): IValueCreator;
@@ -15,7 +16,8 @@ export interface IDynamicFacetValueCreatorKlass {
 
 export class DynamicFacetValues implements IDynamicFacetValues {
   private facetValues: IDynamicFacetValue[];
-  private list = $$('ul', { className: 'coveo-dynamic-facet-values' }).el;
+  private list = $$('ul', { className: 'coveo-dynamic-facet-values', 'aria-labelledby': getDynamicFacetHeaderId(this.facet.options.id) })
+    .el;
   private valueCreator: IValueCreator;
 
   constructor(private facet: IDynamicFacet, creatorKlass: IDynamicFacetValueCreatorKlass) {

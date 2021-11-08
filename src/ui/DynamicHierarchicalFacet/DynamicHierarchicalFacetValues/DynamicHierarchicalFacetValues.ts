@@ -11,11 +11,15 @@ import { DynamicFacetValueShowMoreLessButton } from '../../DynamicFacet/DynamicF
 import { IDynamicHierarchicalFacetValues, IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../IDynamicHierarchicalFacet';
 import { SVGIcons } from '../../../utils/SVGIcons';
 import { HashUtils } from '../../../utils/HashUtils';
+import { getDynamicFacetHeaderId } from '../../DynamicFacet/DynamicFacetHeader/DynamicFacetHeader';
 
 export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacetValues {
   private facetValues: IDynamicHierarchicalFacetValue[] = [];
   private _selectedPath: string[] = [];
-  private list = $$('ul', { className: 'coveo-dynamic-hierarchical-facet-values' }).el;
+  private list = $$('ul', {
+    className: 'coveo-dynamic-hierarchical-facet-values',
+    'aria-labelledby': getDynamicFacetHeaderId(this.facet.options.id)
+  }).el;
 
   constructor(private facet: IDynamicHierarchicalFacet) {}
 
