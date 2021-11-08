@@ -273,7 +273,8 @@ export class ResultLink extends Component {
   ) {
     super(element, ResultLink.ID, bindings);
 
-    const initialOptions = ComponentOptions.initComponentOptions(element, ResultLink, options);
+    const globalOptions = this.searchInterface.options.originalOptionsObject[ResultLink.ID] || {};
+    const initialOptions = ComponentOptions.initComponentOptions(element, ResultLink, { ...globalOptions, ...options });
     const resultLinkOptions = this.componentOptionsModel.get(ComponentOptionsModel.attributesEnum.resultLink);
     this.options = extend({}, initialOptions, resultLinkOptions);
 
