@@ -1,4 +1,5 @@
 import { AriaLive } from '../../src/ui/AriaLive/AriaLive';
+import { QueryEvents } from '../../src/events/QueryEvents';
 import { $$ } from '../../src/Core';
 import { Simulate } from '../Simulate';
 import { MockEnvironmentBuilder, IMockEnvironment } from '../MockEnvironment';
@@ -38,6 +39,11 @@ export const AriaLiveTest = () => {
       ariaLive.updateText(text);
 
       expect(ariaLiveEl().textContent).toBe(`${text}\u00A0`);
+    });
+
+    it('During a query, it announces that results are updating', () => {
+      $$(env.root).trigger(QueryEvents.duringQuery);
+      expect(ariaLiveEl().textContent).toBe('Updating results');
     });
 
     it(`when triggering a successful query with results,

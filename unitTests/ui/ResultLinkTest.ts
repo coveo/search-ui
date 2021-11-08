@@ -47,6 +47,10 @@ export function ResultLinkTest() {
       expect(test.cmp.element.getAttribute('tabindex')).toBe('0');
     });
 
+    it('should have an aria-label to prevent screen readers from reading the #title attribute', () => {
+      expect(test.cmp.element.getAttribute('aria-label')).toBe('Result');
+    });
+
     describe('with global result link options', () => {
       function createEnvWithGlobalResultLinkOptions() {
         const searchInterface = test.env.searchInterface;

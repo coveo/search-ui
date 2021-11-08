@@ -42,6 +42,11 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
       return (renderer = new DynamicHierarchicalFacetSearchValueRenderer(initializeFacetValue(parents), initializeFacet()));
     }
 
+    function getFacetValueLabel() {
+      const resultCount = l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults);
+      return `${facetValue.displayValue} ${resultCount}`;
+    }
+
     describe('without any parent', () => {
       beforeEach(() => {
         initializeRenderer();
@@ -88,15 +93,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
         });
 
         it('should have an accessible label', () => {
-          const expectedLabel = l(
-            'HierarchicalFacetValueIndentedUnder',
-            l(
-              'IncludeValueWithResultCount',
-              facetValue.displayValue,
-              l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
-            ),
-            l('AllCategories')
-          );
+          const expectedLabel = l('HierarchicalFacetValueIndentedUnder', getFacetValueLabel(), l('AllCategories'));
           expect(render.getAttribute('aria-label')).toEqual(expectedLabel);
         });
 
@@ -141,15 +138,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
       });
 
       it('should show the parent value in the label', () => {
-        const expectedLabel = l(
-          'HierarchicalFacetValueIndentedUnder',
-          l(
-            'IncludeValueWithResultCount',
-            facetValue.displayValue,
-            l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
-          ),
-          parentValue
-        );
+        const expectedLabel = l('HierarchicalFacetValueIndentedUnder', getFacetValueLabel(), parentValue);
         expect(render.getAttribute('aria-label')).toEqual(expectedLabel);
       });
 
@@ -170,15 +159,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
       });
 
       it('should show every parent value in the label', () => {
-        const expectedLabel = l(
-          'HierarchicalFacetValueIndentedUnder',
-          l(
-            'IncludeValueWithResultCount',
-            facetValue.displayValue,
-            l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
-          ),
-          parentValues.join(', ')
-        );
+        const expectedLabel = l('HierarchicalFacetValueIndentedUnder', getFacetValueLabel(), parentValues.join(', '));
         expect(render.getAttribute('aria-label')).toEqual(expectedLabel);
       });
 
@@ -224,11 +205,7 @@ export function DynamicHierarchicalFacetSearchValueRendererTest() {
       it('should only show the first and last two values in the label', () => {
         const expectedLabel = l(
           'HierarchicalFacetValueIndentedUnder',
-          l(
-            'IncludeValueWithResultCount',
-            facetValue.displayValue,
-            l('ResultCount', facetValue.numberOfResults, facetValue.numberOfResults)
-          ),
+          getFacetValueLabel(),
           [parentValues[0], parentValues[2], parentValues[3]].join(', ')
         );
         expect(render.getAttribute('aria-label')).toEqual(expectedLabel);

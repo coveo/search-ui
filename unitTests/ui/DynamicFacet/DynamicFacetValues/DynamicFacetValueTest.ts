@@ -147,7 +147,7 @@ export function DynamicFacetValueTest() {
 
     describe('when the value has the state "idle"', () => {
       it('should return the correct aria-label', () => {
-        const expectedAriaLabel = `Inclusion filter on ${dynamicFacetValue.value}; ${dynamicFacetValue.formattedCount} results`;
+        const expectedAriaLabel = `${dynamicFacetValue.value} ${dynamicFacetValue.formattedCount} results`;
         expect(dynamicFacetValue.selectAriaLabel).toBe(expectedAriaLabel);
       });
 
@@ -166,7 +166,7 @@ export function DynamicFacetValueTest() {
       });
 
       it('should return the correct aria-label', () => {
-        const expectedAriaLabel = `Inclusion filter on ${dynamicFacetValue.value}; ${dynamicFacetValue.formattedCount} results`;
+        const expectedAriaLabel = `${dynamicFacetValue.value} ${dynamicFacetValue.formattedCount} results`;
         expect(dynamicFacetValue.selectAriaLabel).toBe(expectedAriaLabel);
       });
 
