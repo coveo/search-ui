@@ -9,6 +9,7 @@ export function DynamicFacetHeaderCollapseToggleTest() {
 
     beforeEach(() => {
       options = {
+        id: 'id',
         title: 'hello',
         clear: jasmine.createSpy('clear'),
         enableCollapse: true,
