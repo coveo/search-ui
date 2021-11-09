@@ -164,6 +164,8 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
     /**
      * Specifies the index field whose values the facet should use.
      *
+     * The field must of the `string` type.
+     *
      * This requires the given field to be configured correctly in the index as a *Facet field* (see
      * [Add or Edit Fields](https://docs.coveo.com/en/1982/)).
      *

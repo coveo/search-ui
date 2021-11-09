@@ -112,6 +112,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     /**
      * The name of the field on which to base this facet.
      *
+     * The field must of the `string` type.
+     *
      * Must be prefixed by `@`, and must reference an existing field whose
      * **Facet** option is enabled.
      *
