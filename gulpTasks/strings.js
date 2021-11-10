@@ -6,7 +6,7 @@ function buildStrings(cb) {
   dict.merge(strings.load('./strings/strings.json', { module: 'Coveo' }));
 
   dict.writeDeclarationFile('./src/strings/Strings.ts');
-  dict.writeDefaultLanguage('./src/strings/DefaultLanguage.ts', 'en', './strings/cultures/globalize.culture.en-US.js', true);
+  dict.writeDefaultLanguage('./src/strings/DefaultLanguage.ts', 'en');
   dict.writeLanguageFile('./bin/js/cultures/en.js', 'en', './strings/cultures/globalize.culture.en-US.js', false);
   dict.writeLanguageFile('./bin/js/cultures/fr.js', 'fr', './strings/cultures/globalize.culture.fr-FR.js', false);
   dict.writeLanguageFile('./bin/js/cultures/cs.js', 'cs', './strings/cultures/globalize.culture.cs.js', false);
