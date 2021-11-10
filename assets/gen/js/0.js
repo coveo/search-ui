@@ -1265,7 +1265,7 @@ var ComponentOptions_1 = __webpack_require__(14);
 var ComponentOptionsModel_1 = __webpack_require__(23);
 var AnalyticsActionListMeta_1 = __webpack_require__(11);
 var ResultListEvents_1 = __webpack_require__(32);
-var HighlightUtils_1 = __webpack_require__(81);
+var HighlightUtils_1 = __webpack_require__(82);
 var DeviceUtils_1 = __webpack_require__(21);
 var OSUtils_1 = __webpack_require__(119);
 var Initialization_1 = __webpack_require__(12);
@@ -1280,6 +1280,7 @@ var underscore_1 = __webpack_require__(0);
 var GlobalExports_1 = __webpack_require__(24);
 __webpack_require__(341);
 var AccessibleButton_1 = __webpack_require__(121);
+var MiscModules_1 = __webpack_require__(81);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.
@@ -1356,6 +1357,7 @@ var ResultLink = /** @class */ (function (_super) {
         if (/^\s*$/.test(this.element.innerHTML)) {
             var title = this.getDisplayedTitle();
             this.element.innerHTML = title;
+            this.element.setAttribute('aria-label', MiscModules_1.l('Result'));
             if (!this.element.title) {
                 this.element.title = this.getDisplayedTitleAsText();
             }

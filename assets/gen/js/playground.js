@@ -10461,13 +10461,13 @@ var Version_1 = __webpack_require__(60);
 var AjaxError_1 = __webpack_require__(127);
 var MissingAuthenticationError_1 = __webpack_require__(128);
 var QueryUtils_1 = __webpack_require__(22);
-var QueryError_1 = __webpack_require__(82);
+var QueryError_1 = __webpack_require__(83);
 var Utils_1 = __webpack_require__(3);
 var _ = __webpack_require__(0);
 var HistoryStore_1 = __webpack_require__(61);
 var TimeSpanUtils_1 = __webpack_require__(59);
 var UrlUtils_1 = __webpack_require__(26);
-var AccessToken_1 = __webpack_require__(86);
+var AccessToken_1 = __webpack_require__(87);
 var BackOffRequest_1 = __webpack_require__(136);
 var Plan_1 = __webpack_require__(144);
 var underscore_1 = __webpack_require__(0);
@@ -12990,7 +12990,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Assert_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(3);
 var _ = __webpack_require__(0);
-var MiscModules_1 = __webpack_require__(89);
+var MiscModules_1 = __webpack_require__(81);
 var HashUtils = /** @class */ (function () {
     function HashUtils() {
     }
@@ -14042,7 +14042,7 @@ if (!(promise instanceof Function)) {
 var CoveoUnderscore_1 = __webpack_require__(148);
 exports._ = CoveoUnderscore_1.underscoreInstance;
 __export(__webpack_require__(149));
-__export(__webpack_require__(89));
+__export(__webpack_require__(81));
 __export(__webpack_require__(155));
 __export(__webpack_require__(157));
 __export(__webpack_require__(167));
@@ -15454,8 +15454,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10091.1',
-    product: '2.10091.1',
+    lib: '2.10091.2',
+    product: '2.10091.2',
     supportedApiVersion: 2
 };
 
@@ -15493,7 +15493,7 @@ function buildCookieHistoryStore() {
 
 "use strict";
 
-var detector = __webpack_require__(85);
+var detector = __webpack_require__(86);
 var cookieutils_1 = __webpack_require__(130);
 exports.preferredStorage = null;
 function getAvailableStorage() {
@@ -16341,6 +16341,7 @@ var dict = {
     "WithinLastYear": "Within last year",
     "RelevanceInspector": "Relevance Inspector",
     "KeywordInCategory": "{0} <span class=\"coveo-omnibox-suggestion-category\">in {1}</span>",
+    "Result": "Result",
     "ResultCount": "{0} result<pl>s</pl>",
     "ShowingResults": "{0} result<pl>s</pl>",
     "ShowingResultsWithQuery": "{0} result<pl>s</pl> for {1}",
@@ -16404,6 +16405,7 @@ var dict = {
     "Breadcrumb": "Active filters",
     "OrganizationIsPaused": "Your Coveo organization is paused due to inactivity and search is currently unavailable.",
     "OrganizationWillResume": "Your organization is resuming and will be available shortly.",
+    "UpdatingResults": "Updating results",
 };
 function defaultLanguage() {
     var locales = String["locales"] || (String["locales"] = {});
@@ -17275,7 +17277,7 @@ var EmailUtils_1 = __webpack_require__(308);
 exports.EmailUtils = EmailUtils_1.EmailUtils;
 var HashUtils_1 = __webpack_require__(35);
 exports.HashUtils = HashUtils_1.HashUtils;
-var HighlightUtils_1 = __webpack_require__(81);
+var HighlightUtils_1 = __webpack_require__(82);
 exports.HighlightUtils = HighlightUtils_1.HighlightUtils;
 exports.StringAndHoles = HighlightUtils_1.StringAndHoles;
 var HtmlUtils_1 = __webpack_require__(309);
@@ -17648,6 +17650,31 @@ exports.QueryBuilder = QueryBuilder;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var Assert_1 = __webpack_require__(2);
+exports.Assert = Assert_1.Assert;
+var Defer_1 = __webpack_require__(31);
+exports.Defer = Defer_1.Defer;
+var L10N_1 = __webpack_require__(90);
+exports.L10N = L10N_1.L10N;
+var Logger_1 = __webpack_require__(4);
+exports.Logger = Logger_1.Logger;
+var Options_1 = __webpack_require__(47);
+exports.Options = Options_1.Options;
+var Strings_1 = __webpack_require__(8);
+exports.l = Strings_1.l;
+var Logger_2 = __webpack_require__(4);
+if (false) {
+    Logger_2.Logger.disable();
+}
+
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 var Utils_1 = __webpack_require__(3);
 var Assert_1 = __webpack_require__(2);
 var _ = __webpack_require__(0);
@@ -17905,7 +17932,7 @@ exports.HighlightUtils = HighlightUtils;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17928,12 +17955,12 @@ exports.QueryError = QueryError;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var history_1 = __webpack_require__(84);
+var history_1 = __webpack_require__(85);
 __webpack_require__(131);
 exports.Version = 'v15';
 exports.Endpoints = {
@@ -18017,13 +18044,13 @@ exports.default = Client;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var storage_1 = __webpack_require__(62);
-var detector = __webpack_require__(85);
+var detector = __webpack_require__(86);
 exports.STORE_KEY = '__coveo.analytics.history';
 exports.MAX_NUMBER_OF_HISTORY_ELEMENTS = 20;
 exports.MIN_THRESHOLD_FOR_DUPLICATE_VALUE = 1000 * 60;
@@ -18121,7 +18148,7 @@ exports.default = HistoryStore;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18164,7 +18191,7 @@ exports.hasDocumentLocation = hasDocumentLocation;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18292,7 +18319,7 @@ exports.AccessToken = AccessToken;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18334,7 +18361,7 @@ exports.getSanitizedOptions = getSanitizedOptions;
 //# sourceMappingURL=options.js.map
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18383,31 +18410,6 @@ var Delay = /** @class */ (function () {
 }());
 exports.Delay = Delay;
 //# sourceMappingURL=delay.base.js.map
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Assert_1 = __webpack_require__(2);
-exports.Assert = Assert_1.Assert;
-var Defer_1 = __webpack_require__(31);
-exports.Defer = Defer_1.Defer;
-var L10N_1 = __webpack_require__(90);
-exports.L10N = L10N_1.L10N;
-var Logger_1 = __webpack_require__(4);
-exports.Logger = Logger_1.Logger;
-var Options_1 = __webpack_require__(47);
-exports.Options = Options_1.Options;
-var Strings_1 = __webpack_require__(8);
-exports.l = Strings_1.l;
-var Logger_2 = __webpack_require__(4);
-if (false) {
-    Logger_2.Logger.disable();
-}
-
 
 /***/ }),
 /* 90 */
@@ -20591,7 +20593,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Options_1 = __webpack_require__(47);
-var HighlightUtils_1 = __webpack_require__(81);
+var HighlightUtils_1 = __webpack_require__(82);
 var StringUtils_1 = __webpack_require__(20);
 var Utils_1 = __webpack_require__(3);
 var Dom_1 = __webpack_require__(1);
@@ -21620,11 +21622,11 @@ exports.MissingAuthenticationError = MissingAuthenticationError;
 
 "use strict";
 
-var analytics = __webpack_require__(83);
+var analytics = __webpack_require__(84);
 exports.analytics = analytics;
 var SimpleAnalytics = __webpack_require__(132);
 exports.SimpleAnalytics = SimpleAnalytics;
-var history = __webpack_require__(84);
+var history = __webpack_require__(85);
 exports.history = history;
 var donottrack = __webpack_require__(135);
 exports.donottrack = donottrack;
@@ -22159,7 +22161,7 @@ exports.Cookie = Cookie;
 
 "use strict";
 
-var analytics = __webpack_require__(83);
+var analytics = __webpack_require__(84);
 var objectassign_1 = __webpack_require__(133);
 var utils_1 = __webpack_require__(134);
 var SimpleAPI = (function () {
@@ -22441,7 +22443,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var options_1 = __webpack_require__(87);
+var options_1 = __webpack_require__(88);
 var delay_factory_1 = __webpack_require__(138);
 function backOff(request, options) {
     if (options === void 0) { options = {}; }
@@ -22599,7 +22601,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var delay_base_1 = __webpack_require__(88);
+var delay_base_1 = __webpack_require__(89);
 var SkipFirstDelay = /** @class */ (function (_super) {
     __extends(SkipFirstDelay, _super);
     function SkipFirstDelay() {
@@ -22638,7 +22640,7 @@ exports.SkipFirstDelay = SkipFirstDelay;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var options_1 = __webpack_require__(87);
+var options_1 = __webpack_require__(88);
 var full_jitter_1 = __webpack_require__(141);
 var no_jitter_1 = __webpack_require__(142);
 function JitterFactory(options) {
@@ -22700,7 +22702,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var delay_base_1 = __webpack_require__(88);
+var delay_base_1 = __webpack_require__(89);
 var AlwaysDelay = /** @class */ (function (_super) {
     __extends(AlwaysDelay, _super);
     function AlwaysDelay() {
@@ -24338,7 +24340,7 @@ var AnalyticsEndpoint_1 = __webpack_require__(91);
 exports.AnalyticsEndpoint = AnalyticsEndpoint_1.AnalyticsEndpoint;
 var EndpointCaller_1 = __webpack_require__(58);
 exports.EndpointCaller = EndpointCaller_1.EndpointCaller;
-var QueryError_1 = __webpack_require__(82);
+var QueryError_1 = __webpack_require__(83);
 exports.QueryError = QueryError_1.QueryError;
 
 
@@ -26624,8 +26626,13 @@ var AriaLive = /** @class */ (function () {
     AriaLive.prototype.addQueryEventListeners = function () {
         var _this = this;
         var root = Dom_1.$$(this.root);
+        root.on(QueryEvents_1.QueryEvents.duringQuery, function () { return _this.onDuringQuery(); });
         root.on(QueryEvents_1.QueryEvents.querySuccess, function (e, args) { return _this.onQuerySuccess(args); });
         root.on(QueryEvents_1.QueryEvents.queryError, function (e, args) { return _this.onQueryError(args); });
+    };
+    AriaLive.prototype.onDuringQuery = function () {
+        var message = Strings_1.l('UpdatingResults');
+        this.updateText(message);
     };
     AriaLive.prototype.onQuerySuccess = function (args) {
         var message = this.messageForResultCount(args);
@@ -41034,7 +41041,7 @@ var _ = __webpack_require__(0);
 var GlobalExports_1 = __webpack_require__(24);
 var PendingSearchEvent_1 = __webpack_require__(78);
 var PendingSearchAsYouTypeSearchEvent_1 = __webpack_require__(113);
-var AccessToken_1 = __webpack_require__(86);
+var AccessToken_1 = __webpack_require__(87);
 var AnalyticsEvents_1 = __webpack_require__(48);
 var QueryUtils_1 = __webpack_require__(22);
 var AnalyticsInformation_1 = __webpack_require__(46);
