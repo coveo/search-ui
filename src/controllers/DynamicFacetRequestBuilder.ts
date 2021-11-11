@@ -1,3 +1,4 @@
+import { isUndefined } from 'underscore';
 import { FacetType, IFacetRequest } from '../rest/Facet/FacetRequest';
 import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 import { IQuery } from '../rest/Query';
@@ -30,4 +31,9 @@ export class DynamicFacetRequestBuilder {
 
     return this.request.filterFacetCount;
   }
+}
+
+export function determineFilterFacetCount(options: { filterFacetCount?: boolean }) {
+  const { filterFacetCount } = options;
+  return isUndefined(filterFacetCount) ? true : filterFacetCount;
 }

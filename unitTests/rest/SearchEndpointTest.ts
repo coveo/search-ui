@@ -809,7 +809,8 @@ export function SearchEndpointTest() {
 
         it('for facetSearch', done => {
           const promiseSuccess = ep.facetSearch({
-            field: 'test'
+            field: 'test',
+            filterFacetCount: true
           });
 
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '/facet?');
