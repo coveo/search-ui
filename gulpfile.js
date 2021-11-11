@@ -17,9 +17,9 @@ const { injectVersion } = require('./gulpTasks/injectVersion');
 
 const src = series(compile, definitions);
 
-const build = series(setNodeProdEnv, parallel(fileTypes, iconList, setup, templates), src);
+const build = series(setNodeProdEnv, parallel(iconList, setup, templates), src);
 
-const defaultTask = series(buildStrings, parallel(buildLegacy, build, doc));
+const defaultTask = series(fileTypes, buildStrings, parallel(buildLegacy, build, doc));
 
 exports.default = defaultTask;
 exports.compileTSOnly = compileTSOnly;
