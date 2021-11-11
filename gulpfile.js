@@ -14,12 +14,13 @@ const { zipForGitReleases, zipForVeracode } = require('./gulpTasks/zip');
 const { coverage, uploadCoverage, unitTests, accessibilityTests } = require('./gulpTasks/test');
 const { docsitemap } = require('./gulpTasks/docsitemap');
 const { injectVersion } = require('./gulpTasks/injectVersion');
+const del = require('del');
 
+const cleanBin = () => del(['./bin']);
 const src = series(compile, definitions);
 
 const build = series(setNodeProdEnv, parallel(iconList, setup, templates), src);
-
-const defaultTask = series(fileTypes, buildStrings, parallel(buildLegacy, build, doc));
+const defaultTask = series(cleanBin, fileTypes, buildStrings, parallel(buildLegacy, build, doc));
 
 exports.default = defaultTask;
 exports.compileTSOnly = compileTSOnly;
