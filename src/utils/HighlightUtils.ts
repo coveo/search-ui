@@ -2,6 +2,7 @@ import { Utils } from './Utils';
 import { IHighlight } from '../rest/Highlight';
 import { Assert } from '../misc/Assert';
 import * as _ from 'underscore';
+import { $$ } from './Dom';
 
 export interface IStringHole {
   begin: number;
@@ -276,5 +277,35 @@ export class HighlightUtils {
       highlighted += _.escape(content.slice(last));
     }
     return highlighted;
+  }
+
+  static highlight(text: string, match: string, className: string): HTMLElement[] {
+    const elements: HTMLElement[] = [];
+    const regex = RegExp(match, 'i');
+    const parts = text.split(regex);
+    const lastPart = parts.pop();
+
+    let index = 0;
+
+    parts.forEach(part => {
+      if (part) {
+        const unhighlighted = $$('span', {}, part);
+        elements.push(unhighlighted.el);
+        index += part.length;
+      }
+
+      const matchedSubstring = text.substring(index, index + match.length);
+      const highlighted = $$('span', { class: className }, matchedSubstring);
+
+      elements.push(highlighted.el);
+      index += match.length;
+    });
+
+    if (lastPart) {
+      const last = $$('span', {}, lastPart);
+      elements.push(last.el);
+    }
+
+    return elements;
   }
 }
