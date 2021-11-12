@@ -289,23 +289,31 @@ export class HighlightUtils {
 
     parts.forEach(part => {
       if (part) {
-        const unhighlighted = $$('span', {}, part);
+        const unhighlighted = createSpanWithText(part);
+
         elements.push(unhighlighted.el);
         index += part.length;
       }
 
       const matchedSubstring = text.substring(index, index + match.length);
-      const highlighted = $$('span', { class: className }, matchedSubstring);
+      const highlighted = createSpanWithText(matchedSubstring);
+      highlighted.addClass(className);
 
       elements.push(highlighted.el);
       index += match.length;
     });
 
     if (lastPart) {
-      const last = $$('span', {}, lastPart);
+      const last = createSpanWithText(lastPart);
       elements.push(last.el);
     }
 
     return elements;
   }
+}
+
+function createSpanWithText(text: string) {
+  const span = $$('span');
+  span.text(text);
+  return span;
 }

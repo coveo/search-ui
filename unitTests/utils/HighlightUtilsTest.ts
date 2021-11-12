@@ -245,6 +245,32 @@ export function HighlightUtilsTest() {
         expect(result[2].textContent).toBe('a');
         expect(result[2].className).toBe(highlightClass);
       });
+
+      it('when the text contains valid html, it treats it as text', () => {
+        const text = '<script>hax</script>';
+        const result = HighlightUtils.highlight(text, 'hax', highlightClass);
+
+        expect(result.length).toBe(3);
+
+        expect(result[0].textContent).toBe('<script>');
+        expect(result[0].className).toBe('');
+
+        expect(result[1].textContent).toBe('hax');
+        expect(result[1].className).toBe(highlightClass);
+
+        expect(result[2].textContent).toBe('</script>');
+        expect(result[2].className).toBe('');
+      });
+
+      it('when the match contains valid html, it treats it as text', () => {
+        const text = '<script>hax</script>';
+        const result = HighlightUtils.highlight(text, text, highlightClass);
+
+        expect(result.length).toBe(1);
+
+        expect(result[0].textContent).toBe(text);
+        expect(result[0].className).toBe(highlightClass);
+      });
     });
   });
 }
