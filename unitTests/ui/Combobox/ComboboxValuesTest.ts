@@ -126,12 +126,6 @@ export function ComboboxValuesTest() {
         expect(element.innerHTML).toBe('<span>h</span><span class="coveo-highlight">e</span><span>llo</span>');
       });
 
-      it('does not escape & character', () => {
-        triggerRenderFromResponse(['&']);
-        const element = $$(comboboxValues.element).findAll('.coveo-checkbox-span-label')[0];
-        expect(element.textContent).toBe('&');
-      });
-
       it('should highlight text that matches the input value when a child has the right class', () => {
         const createValuesFromResponseWithWrapper = (response: string[]) => {
           return response.map(value => {
@@ -149,6 +143,12 @@ export function ComboboxValuesTest() {
         triggerRenderFromResponse(['hello']);
         const element = $$(comboboxValues.element).findAll('.coveo-checkbox-span-label')[0];
         expect(element.innerHTML).toBe('<span>h</span><span class="coveo-highlight">e</span><span>llo</span>');
+      });
+
+      it('does not escape & character', () => {
+        triggerRenderFromResponse(['&']);
+        const element = $$(comboboxValues.element).findAll('.coveo-checkbox-span-label')[0];
+        expect(element.textContent).toBe('&');
       });
 
       describe('when a value is clicked', () => {
