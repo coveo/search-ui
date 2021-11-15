@@ -6,7 +6,6 @@ import { findIndex } from 'underscore';
 import { IQueryResults } from '../rest/QueryResults';
 import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
 import { DynamicFacetRequestBuilder } from './DynamicFacetRequestBuilder';
-import { IQuery } from '../rest/Query';
 
 export class DynamicFacetQueryController {
   protected requestBuilder: DynamicFacetRequestBuilder;
@@ -79,15 +78,15 @@ export class DynamicFacetQueryController {
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
-    queryBuilder.facetRequests.push(this.buildFacetRequest(queryBuilder.build()));
+    queryBuilder.facetRequests.push(this.buildFacetRequest());
     if (this.freezeFacetOrder) {
       queryBuilder.facetOptions.freezeFacetOrder = true;
     }
   }
 
-  public buildFacetRequest(query: IQuery): IFacetRequest {
+  public buildFacetRequest(): IFacetRequest {
     return {
-      ...this.requestBuilder.buildBaseRequestForQuery(query),
+      ...this.requestBuilder.buildBaseRequestForQuery(),
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: this.freezeCurrentValues,
@@ -104,11 +103,11 @@ export class DynamicFacetQueryController {
 
     const previousFacetRequestIndex = findIndex(query.facets, { facetId: this.facet.options.id });
     if (previousFacetRequestIndex !== -1) {
-      query.facets[previousFacetRequestIndex] = this.buildFacetRequest(query);
+      query.facets[previousFacetRequestIndex] = this.buildFacetRequest();
     } else if (query.facets) {
-      query.facets.push(this.buildFacetRequest(query));
+      query.facets.push(this.buildFacetRequest());
     } else {
-      query.facets = [this.buildFacetRequest(query)];
+      query.facets = [this.buildFacetRequest()];
     }
 
     return this.facet.queryController.getEndpoint().search(query);

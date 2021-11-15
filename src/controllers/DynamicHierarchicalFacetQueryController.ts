@@ -7,7 +7,6 @@ import { IQueryResults } from '../rest/QueryResults';
 import { findIndex } from 'underscore';
 import { IDynamicHierarchicalFacet, IDynamicHierarchicalFacetValue } from '../ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 import { DynamicFacetRequestBuilder } from './DynamicFacetRequestBuilder';
-import { IQuery } from '../rest/Query';
 import { FacetSortCriteria } from '../rest/Facet/FacetSortCriteria';
 
 export class DynamicHierarchicalFacetQueryController {
@@ -59,15 +58,15 @@ export class DynamicHierarchicalFacetQueryController {
   public putFacetIntoQueryBuilder(queryBuilder: QueryBuilder) {
     Assert.exists(queryBuilder);
 
-    queryBuilder.facetRequests.push(this.buildFacetRequest(queryBuilder.build()));
+    queryBuilder.facetRequests.push(this.buildFacetRequest());
     if (this.freezeFacetOrder) {
       queryBuilder.facetOptions.freezeFacetOrder = this.freezeFacetOrder;
     }
   }
 
-  public buildFacetRequest(query: IQuery): IFacetRequest {
+  public buildFacetRequest(): IFacetRequest {
     return {
-      ...this.requestBuilder.buildBaseRequestForQuery(query),
+      ...this.requestBuilder.buildBaseRequestForQuery(),
       currentValues: this.currentValues,
       preventAutoSelect: this.preventAutoSelection,
       numberOfValues: this.facet.values.hasSelectedValue ? 1 : this.numberOfValuesToRequest,
@@ -83,11 +82,11 @@ export class DynamicHierarchicalFacetQueryController {
 
     const previousFacetRequestIndex = findIndex(query.facets, { facetId: this.facet.options.id });
     if (previousFacetRequestIndex !== -1) {
-      query.facets[previousFacetRequestIndex] = this.buildFacetRequest(query);
+      query.facets[previousFacetRequestIndex] = this.buildFacetRequest();
     } else if (query.facets) {
-      query.facets.push(this.buildFacetRequest(query));
+      query.facets.push(this.buildFacetRequest());
     } else {
-      query.facets = [this.buildFacetRequest(query)];
+      query.facets = [this.buildFacetRequest()];
     }
 
     return this.facet.queryController.getEndpoint().search(query);

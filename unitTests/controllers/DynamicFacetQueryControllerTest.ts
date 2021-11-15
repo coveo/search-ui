@@ -34,7 +34,7 @@ export function DynamicFacetQueryControllerTest() {
     }
 
     function facetRequest() {
-      return dynamicFacetQueryController.buildFacetRequest(queryBuilder.build());
+      return dynamicFacetQueryController.buildFacetRequest();
     }
 
     function queryFacetRequests() {
@@ -240,7 +240,7 @@ export function DynamicFacetQueryControllerTest() {
         dynamicFacetQueryController.getQueryResults();
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            facets: [dynamicFacetQueryController.buildFacetRequest(new QueryBuilder().build())]
+            facets: [dynamicFacetQueryController.buildFacetRequest()]
           })
         );
       });
@@ -254,7 +254,7 @@ export function DynamicFacetQueryControllerTest() {
 
         expect(mockEndpoint.search).toHaveBeenCalledWith(
           jasmine.objectContaining({
-            facets: [queryFacetRequests()[0], dynamicFacetQueryController.buildFacetRequest(new QueryBuilder().build())]
+            facets: [queryFacetRequests()[0], dynamicFacetQueryController.buildFacetRequest()]
           })
         );
       });

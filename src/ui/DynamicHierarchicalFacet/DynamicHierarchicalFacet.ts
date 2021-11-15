@@ -212,7 +212,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * See also the [`Folding`]{@link Folding} and [`FoldingForThread`]{@link FoldingForThread} components.
      *
-     * **Default:** `false` if folded results are requested; `true` otherwise.
+     * **Default:** `true`.
      */
     filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
 
