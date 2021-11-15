@@ -3,6 +3,7 @@ import { DynamicHierarchicalFacetTestUtils } from '../ui/DynamicHierarchicalFace
 import { DynamicHierarchicalFacet } from '../../src/ui/DynamicHierarchicalFacet/DynamicHierarchicalFacet';
 import { IFacetSearchRequest, FacetSearchType } from '../../src/rest/Facet/FacetSearchRequest';
 import { flatten } from 'underscore';
+import { IDynamicHierarchicalFacetOptions } from '../../src/ui/DynamicHierarchicalFacet/IDynamicHierarchicalFacet';
 
 export function HierarchicalFacetSearchControllerTest() {
   describe('HierarchicalFacetSearchController', () => {
@@ -13,18 +14,19 @@ export function HierarchicalFacetSearchControllerTest() {
 
     beforeEach(() => {
       initializeComponents();
-      facetSearchSpy = facet.queryController.getEndpoint().facetSearch as jasmine.Spy;
     });
 
-    function initializeComponents() {
+    function initializeComponents(options: Partial<IDynamicHierarchicalFacetOptions> = {}) {
       facet = DynamicHierarchicalFacetTestUtils.createAdvancedFakeFacet({
         field: 'field',
         delimitingCharacter: '-',
-        basePath: ['test', 'hello']
+        basePath: ['test', 'hello'],
+        ...options
       }).cmp;
       facet.values.createFromResponse(DynamicHierarchicalFacetTestUtils.getCompleteFacetResponse(facet));
 
       facetSearchController = new HierarchicalFacetSearchController(facet);
+      facetSearchSpy = facet.queryController.getEndpoint().facetSearch as jasmine.Spy;
     }
 
     it('should trigger a facet search request with the right parameters', () => {
@@ -33,6 +35,7 @@ export function HierarchicalFacetSearchControllerTest() {
 
       const expectedRequest: IFacetSearchRequest = {
         field: facet.fieldName,
+        filterFacetCount: true,
         type: FacetSearchType.hierarchical,
         numberOfValues: facet.options.numberOfValues * facetValuesMultiplier,
         ignorePaths: [flatten(facet.values.selectedPath, true)],
@@ -44,6 +47,14 @@ export function HierarchicalFacetSearchControllerTest() {
       };
 
       expect(facetSearchSpy).toHaveBeenCalledWith(expectedRequest);
+    });
+
+    it(`when facet option #filterFacetCount is false,
+    the facet search request #filterFacetCount is also false`, () => {
+      initializeComponents({ filterFacetCount: false });
+      facetSearchController.search('');
+
+      expect(facetSearchSpy.calls.mostRecent().args[0].filterFacetCount).toBe(false);
     });
 
     it(`when calling fetchMoreResults

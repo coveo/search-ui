@@ -1,14 +1,13 @@
 import { DynamicFacetQueryController } from './DynamicFacetQueryController';
 import { IFacetRequest, IFacetRequestValue } from '../rest/Facet/FacetRequest';
-import { IQuery } from '../rest/Query';
 import { IDynamicFacetRange } from '../ui/DynamicFacet/IDynamicFacetRange';
 
 export class DynamicFacetRangeQueryController extends DynamicFacetQueryController {
   protected facet: IDynamicFacetRange;
 
-  public buildFacetRequest(query: IQuery): IFacetRequest {
+  public buildFacetRequest(): IFacetRequest {
     return {
-      ...this.requestBuilder.buildBaseRequestForQuery(query),
+      ...this.requestBuilder.buildBaseRequestForQuery(),
       currentValues: this.currentValues,
       numberOfValues: this.numberOfValues,
       freezeCurrentValues: false,

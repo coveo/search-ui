@@ -23,6 +23,18 @@ export interface IFacetSearchRequest {
    */
   field: string;
   /**
+   * Whether to exclude folded result parents when estimating result counts for facet values.
+   *
+   * **Note:** The target folding field must be a facet field with the **Use cache for nested queries** options enabled (see [Add or Edit a Field](https://docs.coveo.com/en/1982)).
+   *
+   * See also the [`Folding`]{@link Folding} and [`FoldingForThread`]{@link FoldingForThread} components.
+   *
+   * **Default:** `true`.
+   *
+   * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
+   */
+  filterFacetCount: boolean;
+  /**
    * The kind of facet values against which the search request is being made.
    *
    * **Default:** `specific`

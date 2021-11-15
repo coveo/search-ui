@@ -300,7 +300,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      *
      * See also the [`Folding`]{@link Folding} and [`FoldingForThread`]{@link FoldingForThread} components.
      *
-     * **Default:** `false` if folded results are requested; `true` otherwise.
+     * **Default:** `true`.
      *
      * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
      */

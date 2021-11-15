@@ -4,6 +4,7 @@ import { QueryUtils } from '../utils/QueryUtils';
 import { DateUtils } from '../utils/DateUtils';
 import { IDynamicFacet } from '../ui/DynamicFacet/IDynamicFacet';
 import { IFacetSearchRequest } from '../rest/Facet/FacetSearchRequest';
+import { determineFilterFacetCount } from './DynamicFacetRequestBuilder';
 
 export class FacetSearchController {
   private terms = '';
@@ -54,8 +55,10 @@ export class FacetSearchController {
 
   private get request(): IFacetSearchRequest {
     const optionalLeadingWildcard = this.facet.options.useLeadingWildcardInFacetSearch ? '*' : '';
+
     return {
       field: this.facet.fieldName,
+      filterFacetCount: determineFilterFacetCount(this.facet.options),
       numberOfValues: this.numberOfValues,
       ignoreValues: this.facet.values.activeValues.map(value => value.value),
       captions: this.captions,

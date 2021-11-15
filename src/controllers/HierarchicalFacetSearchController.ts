@@ -2,6 +2,7 @@ import { IDynamicHierarchicalFacet } from '../ui/DynamicHierarchicalFacet/IDynam
 import { FacetSearchType, IFacetSearchRequest } from '../rest/Facet/FacetSearchRequest';
 import { flatten } from 'underscore';
 import { IFacetSearchResponse } from '../rest/Facet/FacetSearchResponse';
+import { determineFilterFacetCount } from './DynamicFacetRequestBuilder';
 
 export class HierarchicalFacetSearchController {
   private terms = '';
@@ -23,6 +24,7 @@ export class HierarchicalFacetSearchController {
   private get request(): IFacetSearchRequest {
     return {
       field: this.facet.fieldName,
+      filterFacetCount: determineFilterFacetCount(this.facet.options),
       type: FacetSearchType.hierarchical,
       numberOfValues: this.numberOfValues,
       ignorePaths: this.ignoredPaths,

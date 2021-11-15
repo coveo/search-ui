@@ -2,7 +2,6 @@ import { DynamicFacetRangeQueryController } from '../../src/controllers/DynamicF
 import { DynamicFacetRangeTestUtils } from '../ui/DynamicFacet/DynamicFacetRangeTestUtils';
 import { DynamicFacetRange } from '../../src/ui/DynamicFacet/DynamicFacetRange';
 import { IDynamicFacetRangeOptions } from '../../src/ui/DynamicFacet/IDynamicFacetRange';
-import { QueryBuilder } from '../../src/Core';
 import { FacetValueState } from '../../src/rest/Facet/FacetValueState';
 import { FacetRangeSortOrder } from '../../src/rest/Facet/FacetRangeSortOrder';
 
@@ -24,7 +23,7 @@ export function DynamicFacetRangeQueryControllerTest() {
     }
 
     function facetRequest() {
-      return dynamicFacetRangeQueryController.buildFacetRequest(new QueryBuilder().build());
+      return dynamicFacetRangeQueryController.buildFacetRequest();
     }
 
     it('should send the right basic facetRequest parameters', () => {

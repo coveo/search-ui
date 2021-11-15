@@ -14,7 +14,6 @@ export function FacetSearchControllerTest() {
 
     beforeEach(() => {
       initializeComponents();
-      facetSearchSpy = facet.queryController.getEndpoint().facetSearch as jasmine.Spy;
     });
 
     function initializeComponents(options?: IDynamicFacetOptions) {
@@ -22,6 +21,7 @@ export function FacetSearchControllerTest() {
       facet.values.createFromResponse(DynamicFacetTestUtils.getCompleteFacetResponse(facet));
 
       facetSearchController = new FacetSearchController(facet);
+      facetSearchSpy = facet.queryController.getEndpoint().facetSearch as jasmine.Spy;
     }
 
     it('should trigger a facet search request with the right parameters', () => {
@@ -30,6 +30,7 @@ export function FacetSearchControllerTest() {
 
       const expectedRequest: IFacetSearchRequest = {
         field: facet.fieldName,
+        filterFacetCount: true,
         numberOfValues: facet.options.numberOfValues * facetValuesMultiplier,
         ignoreValues: facet.values.activeValues.map(value => value.value),
         captions: {},
@@ -38,6 +39,14 @@ export function FacetSearchControllerTest() {
       };
 
       expect(facetSearchSpy).toHaveBeenCalledWith(expectedRequest);
+    });
+
+    it(`when facet option #filterFacetCount is false,
+    the facet search request #filterFacetCount is also false`, () => {
+      initializeComponents({ filterFacetCount: false });
+      facetSearchController.search('');
+
+      expect(facetSearchSpy.calls.mostRecent().args[0].filterFacetCount).toBe(false);
     });
 
     it(`when calling fetchMoreResults
