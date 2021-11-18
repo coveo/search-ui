@@ -2,7 +2,7 @@ import { ICombobox, IComboboxValues, IComboboxValue } from './ICombobox';
 import { $$ } from '../../utils/Dom';
 import { find } from 'underscore';
 import { l } from '../../strings/Strings';
-import { escape } from 'underscore';
+import { HighlightUtils } from '../../UtilsModules';
 
 export class ComboboxValues implements IComboboxValues {
   public element: HTMLElement;
@@ -65,13 +65,16 @@ export class ComboboxValues implements IComboboxValues {
 
   private highlightCurrentQueryInSearchResults(searchResult: HTMLElement) {
     if (this.combobox.options.highlightValueClassName) {
-      const regex = new RegExp('(' + this.combobox.element.querySelector('input').value + ')', 'ig');
+      const query = this.combobox.element.querySelector('input').value;
       const result = $$(searchResult).hasClass(this.combobox.options.highlightValueClassName)
         ? searchResult
         : $$(searchResult).find(`.${this.combobox.options.highlightValueClassName}`);
       if (result) {
-        const text = escape($$(result).text());
-        result.innerHTML = text.replace(regex, '<span class="coveo-highlight">$1</span>');
+        const text = $$(result).text();
+        const nodes = HighlightUtils.highlight(text, query, 'coveo-highlight');
+
+        $$(result).empty();
+        nodes.forEach(node => result.appendChild(node));
       }
     }
   }
