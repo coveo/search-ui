@@ -44,6 +44,7 @@ export class ResponsiveDropdownModalContent implements IResponsiveDropdownConten
         'button',
         {
           className: 'coveo-facet-modal-close-button',
+          type: 'button',
           ariaLabel: this.closeButtonLabel
         },
         SVGIcons.icons.mainClear

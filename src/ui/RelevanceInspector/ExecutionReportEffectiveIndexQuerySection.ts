@@ -34,7 +34,8 @@ export class ExecutionReportEffectiveIndexQuerySection implements IExecutionRepo
           const btn = $$(
             'button',
             {
-              className: 'coveo-button'
+              className: 'coveo-button',
+              type: 'button'
             },
             paramKey
           );

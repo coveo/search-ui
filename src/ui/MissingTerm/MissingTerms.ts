@@ -164,7 +164,7 @@ export class MissingTerms extends Component {
 
   private makeTermClickableIfEnabled(term: string): Dom {
     if (this.options.clickable) {
-      const termElement = $$('button', { className: 'coveo-missing-term coveo-clickable' }, term);
+      const termElement = $$('button', { className: 'coveo-missing-term coveo-clickable', type: 'button' }, term);
       termElement.on('click', () => {
         this.addTermForcedToAppear(term);
         this.logAnalyticsAddMissingTerm(term);
@@ -196,7 +196,11 @@ export class MissingTerms extends Component {
       $$(allMissingTerms[index]).hide();
     }
     const nbMoreResults = allMissingTerms.length - this.options.numberOfTerms;
-    const showMore = $$('button', { className: 'coveo-missing-term-show-more coveo-clickable' }, l('NMore', [nbMoreResults]));
+    const showMore = $$(
+      'button',
+      { className: 'coveo-missing-term-show-more coveo-clickable', type: 'button' },
+      l('NMore', [nbMoreResults])
+    );
 
     showMore.on('click', () => {
       this.showAllHiddenMissingTerms();
