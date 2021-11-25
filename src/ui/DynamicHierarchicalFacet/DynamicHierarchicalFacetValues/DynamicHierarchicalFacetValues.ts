@@ -169,7 +169,11 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
   private prependAllCategories() {
     const clearButton = $$(
       'button',
-      { className: 'coveo-dynamic-hierarchical-facet-all', title: this.facet.options.clearLabel },
+      {
+        className: 'coveo-dynamic-hierarchical-facet-all',
+        type: 'button',
+        title: this.facet.options.clearLabel
+      },
       this.facet.options.clearLabel
     );
     clearButton.toggleClass('coveo-show-when-collapsed', this.facet.values.selectedPath.length === 1);

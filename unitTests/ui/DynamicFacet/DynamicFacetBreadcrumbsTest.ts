@@ -70,6 +70,12 @@ export function DynamicFacetBreadcrumbsTest() {
       });
     });
 
+    it('should have the correct type for every selected value', () => {
+      _.each(valueElements(), (breadcrumb, index) => {
+        expect(breadcrumb.getAttribute('type')).toBe(`button`);
+      });
+    });
+
     describe('when the breadcrumb has more values than the numberOfValuesInBreadcrumb option', () => {
       beforeEach(() => {
         baseOptions.numberOfValuesInBreadcrumb = 3;

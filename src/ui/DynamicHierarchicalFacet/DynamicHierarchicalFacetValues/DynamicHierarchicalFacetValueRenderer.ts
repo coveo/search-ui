@@ -11,6 +11,7 @@ export class DynamicHierarchicalFacetValueRenderer {
   public render() {
     this.button = $$('button', {
       className: 'coveo-dynamic-hierarchical-facet-value',
+      type: 'button',
       ariaLabel: this.facetValue.selectAriaLabel
     });
     this.button.on('click', () => this.selectAction());

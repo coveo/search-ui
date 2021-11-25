@@ -38,12 +38,7 @@ export class Playground {
   }
 
   public isComponentPage() {
-    return (
-      $$(this.getTitle())
-        .text()
-        .toLowerCase()
-        .indexOf('component') != -1
-    );
+    return $$(this.getTitle()).text().toLowerCase().indexOf('component') != -1;
   }
 
   public getComponentName() {
@@ -113,8 +108,8 @@ export class Playground {
 
   public initializePreview() {
     const previewContainer = $$(document.body).find('.preview-container');
-    this.showButton = $$('button', { className: 'preview-toggle' }, `Show a live example of ${this.getComponentName()}`);
-    this.hideButton = $$('button', { className: 'preview-toggle' }, 'Hide example');
+    this.showButton = $$('button', { type: 'button', className: 'preview-toggle' }, `Show a live example of ${this.getComponentName()}`);
+    this.hideButton = $$('button', { type: 'button', className: 'preview-toggle' }, 'Hide example');
     this.componentContainer = $$('div', { className: 'component-container' });
     this.componentContainer.hide();
     this.hideButton.hide();

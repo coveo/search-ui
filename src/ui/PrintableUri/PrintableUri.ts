@@ -234,7 +234,7 @@ export class PrintableUri extends Component {
   }
 
   private buildEllipsis(action: (e: Event) => void) {
-    const button = $$('button', {}, '...');
+    const button = $$('button', { type: 'button' }, '...');
     const element = $$(
       'span',
       {
@@ -243,11 +243,7 @@ export class PrintableUri extends Component {
       },
       button
     ).el;
-    new AccessibleButton()
-      .withElement(button)
-      .withLabel(l('CollapsedUriParts'))
-      .withSelectAction(action)
-      .build();
+    new AccessibleButton().withElement(button).withLabel(l('CollapsedUriParts')).withSelectAction(action).build();
     return element;
   }
 

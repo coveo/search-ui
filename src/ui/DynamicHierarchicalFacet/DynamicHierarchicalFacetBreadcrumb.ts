@@ -31,6 +31,7 @@ export class DynamicHierarchicalFacetBreadcrumb {
     const valueElement = $$(
       'button',
       {
+        type: 'button',
         className: 'coveo-dynamic-facet-breadcrumb-value',
         ariaLabel: l('RemoveFilterOn', caption)
       },

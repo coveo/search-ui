@@ -70,6 +70,7 @@ export class MissingTermManager {
       const termContainer = $$(
         'button',
         {
+          type: 'button',
           className: 'coveo-missing-term-breadcrumb-value coveo-accessible-button'
         },
         $$('span', { className: 'coveo-missing-term-breadcrumb-caption' }, escape(term)),
