@@ -1,6 +1,6 @@
 import { AriaLive } from '../../src/ui/AriaLive/AriaLive';
 import { QueryEvents } from '../../src/events/QueryEvents';
-import { $$ } from '../../src/Core';
+import { $$, OmniboxEvents } from '../../src/Core';
 import { Simulate } from '../Simulate';
 import { MockEnvironmentBuilder, IMockEnvironment } from '../MockEnvironment';
 import { FakeResults } from '../Fake';
@@ -76,6 +76,38 @@ export const AriaLiveTest = () => {
       const message = ariaLiveEl().textContent;
 
       expect(message).toContain('error');
+    });
+
+    describe('when fetching query suggestions', () => {
+      describe('when there are no suggestions', () => {
+        beforeEach(() => {
+          Simulate.querySuggest(env, '', []);
+        });
+
+        it('updates the text', () => {
+          expect(ariaLiveEl().textContent).toContain(' no ');
+        });
+      });
+
+      describe('when there are 5 suggestions', () => {
+        beforeEach(() => {
+          Simulate.querySuggest(env, '', ['', '', '', '', '']);
+        });
+
+        it('does not update the text', () => {
+          expect(ariaLiveEl().textContent).toEqual('');
+        });
+
+        describe('when the suggestions are rendered', () => {
+          beforeEach(() => {
+            $$(env.root).trigger(OmniboxEvents.querySuggestRendered);
+          });
+
+          it('updates the text', () => {
+            expect(ariaLiveEl().textContent).toContain('5');
+          });
+        });
+      });
     });
   });
 };
