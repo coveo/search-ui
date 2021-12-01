@@ -91,7 +91,7 @@ export const AriaLiveTest = () => {
 
       describe('when there are 5 suggestions', () => {
         beforeEach(() => {
-          Simulate.querySuggest(env, '', new Array<string>(5).fill(''));
+          Simulate.querySuggest(env, '', ['', '', '', '', '']);
         });
 
         it('does not update the text', () => {
