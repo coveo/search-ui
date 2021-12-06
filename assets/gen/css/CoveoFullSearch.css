@@ -1374,6 +1374,15 @@
 .coveo-filetype-salesforce-standard-work-order-item,
 .coveo-filetype-salesforce-standard-work-order,
 .coveo-filetype-salesforce-standard-work-type,
+.coveo-filetype-slack,
+.coveo-icon.filetype.Slackmessage,
+.coveo-icon.filetype.slackmessage,
+.coveo-icon.filetype.Slackchannel,
+.coveo-icon.filetype.slackchannel,
+.coveo-icon.filetype.Slackfile,
+.coveo-icon.filetype.slackfile,
+.coveo-icon.filetype.Slackuser,
+.coveo-icon.filetype.slackuser,
 .coveo-filetype-user,
 .coveo-icon.objecttype.People,
 .coveo-icon.objecttype.people,
@@ -1580,21 +1589,6 @@
   width: 56px;
   height: 64px;
   background-size: 56px 64px;
-}
-
-.coveo-filetype-slack,
-.coveo-icon.filetype.Slackmessage,
-.coveo-icon.filetype.slackmessage,
-.coveo-icon.filetype.Slackchannel,
-.coveo-icon.filetype.slackchannel,
-.coveo-icon.filetype.Slackfile,
-.coveo-icon.filetype.slackfile,
-.coveo-icon.filetype.Slackuser,
-.coveo-icon.filetype.slackuser {
-  display: inline-block;
-  width: 124px;
-  height: 124px;
-  background-size: 124px 124px;
 }
 
 .coveo-filetype-attachment-small,
@@ -2122,6 +2116,15 @@
 .coveo-filetype-salesforce-standard-work-order-item-small,
 .coveo-filetype-salesforce-standard-work-order-small,
 .coveo-filetype-salesforce-standard-work-type-small,
+.coveo-filetype-slack-small,
+.coveo-icon.filetype.coveo-small.Slackmessage,
+.coveo-icon.filetype.coveo-small.slackmessage,
+.coveo-icon.filetype.coveo-small.Slackchannel,
+.coveo-icon.filetype.coveo-small.slackchannel,
+.coveo-icon.filetype.coveo-small.Slackfile,
+.coveo-icon.filetype.coveo-small.slackfile,
+.coveo-icon.filetype.coveo-small.Slackuser,
+.coveo-icon.filetype.coveo-small.slackuser,
 .coveo-filetype-user-small,
 .coveo-icon.objecttype.coveo-small.People,
 .coveo-icon.objecttype.coveo-small.people,
@@ -2328,21 +2331,6 @@
   width: 28px;
   height: 32px;
   background-size: 28px 32px;
-}
-
-.coveo-filetype-slack-small,
-.coveo-icon.filetype.coveo-small.Slackmessage,
-.coveo-icon.filetype.coveo-small.slackmessage,
-.coveo-icon.filetype.coveo-small.Slackchannel,
-.coveo-icon.filetype.coveo-small.slackchannel,
-.coveo-icon.filetype.coveo-small.Slackfile,
-.coveo-icon.filetype.coveo-small.slackfile,
-.coveo-icon.filetype.coveo-small.Slackuser,
-.coveo-icon.filetype.coveo-small.slackuser {
-  display: inline-block;
-  width: 62px;
-  height: 62px;
-  background-size: 62px 62px;
 }
 
 .coveo-filetype-attachment,
