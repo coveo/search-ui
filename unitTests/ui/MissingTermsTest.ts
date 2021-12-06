@@ -5,7 +5,7 @@ import { FakeResults } from '../Fake';
 import { IQueryResult } from '../../src/rest/QueryResult';
 
 export function MissingTermsTest() {
-  describe('MissingTerm', () => {
+  describe('MissingTerms', () => {
     let test: Mock.IBasicComponentSetup<MissingTerms>;
     let fakeResult: IQueryResult;
 
@@ -13,10 +13,14 @@ export function MissingTermsTest() {
       const test = Mock.advancedResultComponentSetup<MissingTerms>(
         MissingTerms,
         fakeResult,
-        new Mock.AdvancedComponentSetupOptions(null, option, (env: Mock.MockEnvironmentBuilder): Mock.MockEnvironmentBuilder => {
-          env.withLiveQueryStateModel().queryStateModel.set('q', query);
-          return env;
-        })
+        new Mock.AdvancedComponentSetupOptions(
+          null,
+          option,
+          (env: Mock.MockEnvironmentBuilder): Mock.MockEnvironmentBuilder => {
+            env.withLiveQueryStateModel().queryStateModel.set('q', query);
+            return env;
+          }
+        )
       );
       const analyticsElement = $$('div', {
         className: 'CoveoAnalytics'
@@ -52,7 +56,7 @@ export function MissingTermsTest() {
         });
 
         it(`true,
-        it should log a addMissingTerm event when it is clicked`, function() {
+        it should log a addMissingTerm event when it is clicked`, function () {
           const query = 'This is my query';
           fakeResult.absentTerms = ['This'];
           test = mockComponent(query);
@@ -106,9 +110,7 @@ export function MissingTermsTest() {
         });
 
         it('when the show more button is clicked, show all the missing terms', () => {
-          $$(test.cmp.element)
-            .find('.coveo-missing-term-show-more')
-            .click();
+          $$(test.cmp.element).find('.coveo-missing-term-show-more').click();
           const visibleMissingTerm = $$(test.cmp.element)
             .findAll('.coveo-missing-term')
             .filter(element => {
@@ -118,6 +120,7 @@ export function MissingTermsTest() {
         });
       });
     });
+
     describe('when the langage is', () => {
       const getMissingTerms = () => {
         return test.cmp.queryStateModel.get('missingTerms');
@@ -287,6 +290,44 @@ export function MissingTermsTest() {
             });
           });
         });
+      });
+    });
+
+    describe('with attachments & child results', () => {
+      it('should only display missing terms that are returned both by the result & its attachments', () => {
+        const attachment = FakeResults.createFakeResult();
+        attachment.absentTerms = ['hello', 'bye'];
+
+        fakeResult.absentTerms = ['hello', 'world'];
+        fakeResult.attachments = [attachment];
+
+        test = mockComponent('hello world bye');
+        expect(test.cmp.missingTerms).toEqual(['hello']);
+      });
+
+      it('should only display missing terms that are returned both by the result & its child results', () => {
+        const childResult = FakeResults.createFakeResult();
+        childResult.absentTerms = ['hello', 'bye'];
+
+        fakeResult.absentTerms = ['hello', 'world'];
+        fakeResult.childResults = [childResult];
+
+        test = mockComponent('hello world bye');
+        expect(test.cmp.missingTerms).toEqual(['hello']);
+      });
+
+      it('should only display missing terms that are returned by the result, its attachments & its child results', () => {
+        const childResult = FakeResults.createFakeResult();
+        childResult.absentTerms = ['hello', 'world', 'forever'];
+        const attachment = FakeResults.createFakeResult();
+        attachment.absentTerms = ['hello', 'world', 'bye'];
+
+        fakeResult.absentTerms = ['hello', 'world', 'bye'];
+        fakeResult.attachments = [attachment];
+        fakeResult.childResults = [childResult];
+
+        test = mockComponent('hello world bye forever');
+        expect(test.cmp.missingTerms).toEqual(['hello', 'world']);
       });
     });
   });

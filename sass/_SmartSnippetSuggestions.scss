@@ -61,6 +61,10 @@
         &-content {
           padding: 16px $inner-padding 24px $inner-padding;
         }
+
+        &-hidden * {
+          display: none;
+        }
       }
 
       @at-root a.CoveoResultLink.coveo-smart-snippet-suggestions-question-source {

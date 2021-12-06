@@ -9,6 +9,7 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { MissingTermManager } from './MissingTermManager';
 import XRegExp = require('xregexp');
+import { intersection } from 'underscore';
 
 export interface IMissingTermsOptions {
   caption?: string;
@@ -46,8 +47,8 @@ export class MissingTerms extends Component {
     /**
      * The maximum number of missing term to be displayed
      *
-     * **Default:** `5`
-     * **Minimum value:** `1`
+     * **Default:** `5`
+     * **Minimum value:** `1`
      */
     numberOfTerms: ComponentOptions.buildNumberOption({
       defaultValue: 5,
@@ -81,13 +82,32 @@ export class MissingTerms extends Component {
     this.options = ComponentOptions.initComponentOptions(element, MissingTerms, options);
     this.addMissingTerms();
   }
+
+  private get absentTerms() {
+    let absentTerms = this.result.absentTerms;
+
+    if (this.result.attachments) {
+      absentTerms = this.intersectAbsentTerms(absentTerms, this.result.attachments);
+    }
+
+    if (this.result.childResults) {
+      absentTerms = this.intersectAbsentTerms(absentTerms, this.result.childResults);
+    }
+
+    return absentTerms;
+  }
+
+  private intersectAbsentTerms(absentTerms: string[], results: IQueryResult[]) {
+    return intersection(absentTerms, ...results.map(result => result.absentTerms));
+  }
+
   /**
-   *Returns all original basic query expression terms that were not matched by the result item the component instance is associated with.
+   * Returns all original basic query expression terms that were not matched by the result item the component instance is associated with.
    */
   public get missingTerms(): string[] {
     const terms = [];
 
-    for (const term of this.result.absentTerms) {
+    for (const term of this.absentTerms) {
       const regex = this.createWordBoundaryDelimitedRegex(term);
       const query = this.queryStateModel.get('q');
       const result = regex.exec(query);
