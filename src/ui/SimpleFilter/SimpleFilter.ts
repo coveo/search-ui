@@ -480,7 +480,8 @@ export class SimpleFilter extends Component {
       {
         title: l('DeselectFilterValues', this.options.title),
         'aria-label': l('Clear', this.options.title),
-        className: 'coveo-simplefilter-eraser'
+        className: 'coveo-simplefilter-eraser',
+        type: 'button'
       },
       SVGIcons.icons.mainClear
     );

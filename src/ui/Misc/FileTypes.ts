@@ -32,7 +32,7 @@ export class FileTypes {
     }
   }
 
-  static getObjectType(objecttype: string): IFileTypeInfo {
+  static getObjectType(objecttype: string, fallbackOnLocalization = true): IFileTypeInfo {
     // We must use lowercase filetypes because that's how the CSS classes
     // are generated (they are case sensitive, alas).
     const loweredCaseObjecttype = objecttype.toLowerCase();
@@ -43,13 +43,13 @@ export class FileTypes {
     // Some strings are sent as `objecttype_[...]` to specify a dictionary to use. If there's no match, try using
     // the main dictionary by using the original value.
     if (localizedString.toLowerCase() == variableValue.toLowerCase()) {
-      localizedString = l(objecttype);
+      localizedString = fallbackOnLocalization ? l(objecttype) : objecttype;
     }
 
     return this.safelyBuildFileTypeInfo('objecttype', loweredCaseObjecttype, localizedString);
   }
 
-  static getFileType(filetype: string): IFileTypeInfo {
+  static getFileType(filetype: string, fallbackOnLocalization = true): IFileTypeInfo {
     // We must use lowercase filetypes because that's how the CSS classes
     // are generated (they are case sensitive, alas).
     let loweredCaseFiletype = filetype.toLowerCase();
@@ -66,7 +66,7 @@ export class FileTypes {
     if (localizedString.toLowerCase() == variableValue.toLowerCase()) {
       // Some strings are sent as `filetype_[...]` to specify a dictionary to use. If there's no match, try using
       // The main dictionary by using the original value.
-      localizedString = l(filetype);
+      localizedString = fallbackOnLocalization ? l(filetype) : filetype;
     }
 
     return this.safelyBuildFileTypeInfo('filetype', loweredCaseFiletype, localizedString);

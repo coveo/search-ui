@@ -152,7 +152,7 @@ export class UserFeedbackBanner {
   }
 
   private buildButton(options: IButtonOptions) {
-    const button = $$('button', { ...(options.attributes || {}), className: options.className }).el;
+    const button = $$('button', { ...(options.attributes || {}), className: options.className, type: 'button' }).el;
 
     if (options.icon) {
       const icon = $$('span', { className: options.icon.className }, options.icon.content).el;

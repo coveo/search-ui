@@ -137,7 +137,7 @@ export class ExplanationModal {
   }
 
   private buildSendButton() {
-    const button = $$('button', { className: SEND_BUTTON_CLASSNAME }, l('Send'));
+    const button = $$('button', { className: SEND_BUTTON_CLASSNAME, type: 'button' }, l('Send'));
     button.on('click', () => {
       this.selectedReason.onSelect();
       this.shouldCallCloseEvent = false;
@@ -147,7 +147,7 @@ export class ExplanationModal {
   }
 
   private buildCancelButton() {
-    const button = $$('button', { className: CANCEL_BUTTON_CLASSNAME }, l('Cancel'));
+    const button = $$('button', { className: CANCEL_BUTTON_CLASSNAME, type: 'button' }, l('Cancel'));
     button.on('click', () => this.modal.close());
     return button.el;
   }

@@ -7614,5 +7614,13 @@
   "UpdatingResults": {
     "en": "Updating results",
     "fr": "Chargement des résultats"
+  },
+  "QuerySuggestionsAvailable": {
+    "en": "{0} search suggestion<pl>s are</pl> available.",
+    "fr": "{0} suggestion<pl>s</pl> de recherche disponible."
+  },
+  "QuerySuggestionsUnavailable": {
+    "en": "There are no search suggestions.",
+    "fr": "Il n'y a pas de suggestions de recherche."
   }
 }

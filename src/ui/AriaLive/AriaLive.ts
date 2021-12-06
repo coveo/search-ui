@@ -3,6 +3,8 @@ import { $$ } from '../../utils/Dom';
 import { QueryEvents, IQuerySuccessEventArgs, IQueryErrorEventArgs } from '../../events/QueryEvents';
 import { QuerySummaryUtils } from '../../utils/QuerySummaryUtils';
 import { l } from '../../strings/Strings';
+import { OmniboxEvents } from '../../EventsModules';
+import { IQuerySuggestSuccessArgs } from '../../events/OmniboxEvents';
 
 export interface IAriaLive {
   updateText: (text: string) => void;
@@ -10,6 +12,7 @@ export interface IAriaLive {
 
 export class AriaLive implements IAriaLive {
   private ariaLiveEl: HTMLElement;
+  private querySuggestions = 0;
 
   constructor(private root: HTMLElement) {
     this.initAriaLiveEl();
@@ -38,6 +41,10 @@ export class AriaLive implements IAriaLive {
     root.on(QueryEvents.duringQuery, () => this.onDuringQuery());
     root.on(QueryEvents.querySuccess, (e, args: IQuerySuccessEventArgs) => this.onQuerySuccess(args));
     root.on(QueryEvents.queryError, (e, args: IQueryErrorEventArgs) => this.onQueryError(args));
+    root.on(OmniboxEvents.querySuggestSuccess, (e, args: IQuerySuggestSuccessArgs) =>
+      args.completions.length ? (this.querySuggestions = args.completions.length) : this.onNoQuerySuggest()
+    );
+    root.on(OmniboxEvents.querySuggestRendered, () => this.onQuerySuggest());
   }
 
   private onDuringQuery() {
@@ -47,6 +54,16 @@ export class AriaLive implements IAriaLive {
 
   private onQuerySuccess(args: IQuerySuccessEventArgs) {
     const message = this.messageForResultCount(args);
+    this.updateText(message);
+  }
+
+  private onQuerySuggest() {
+    const message = l('QuerySuggestionsAvailable', this.querySuggestions, this.querySuggestions);
+    this.updateText(message);
+  }
+
+  private onNoQuerySuggest() {
+    const message = l('QuerySuggestionsUnavailable');
     this.updateText(message);
   }
 

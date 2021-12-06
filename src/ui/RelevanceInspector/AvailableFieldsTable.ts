@@ -89,7 +89,8 @@ export class AvailableFieldsSampleValue implements agGridModule.ICellRendererCom
     const btn = $$(
       'button',
       {
-        className: 'coveo-button coveo-available-fields-table-button'
+        className: 'coveo-button coveo-available-fields-table-button',
+        type: 'button'
       },
       'Hover For Sample Values'
     );

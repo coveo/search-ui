@@ -15,7 +15,7 @@ export class FacetUtils {
   }
 
   static getDisplayValueFromValueCaption(value: string, field: string, valueCaption: Record<string, string>) {
-    const returnValue = this.tryToGetTranslatedCaption(field, value);
+    const returnValue = this.tryToGetTranslatedCaption(field, value, false);
     return valueCaption[value] || returnValue;
   }
 
@@ -93,17 +93,17 @@ export class FacetUtils {
     }
   }
 
-  static tryToGetTranslatedCaption(field: string, value: string) {
+  static tryToGetTranslatedCaption(field: string, value: string, fallbackOnLocalization = true) {
     let found: string;
 
     if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@filetype')) {
-      found = FileTypes.getFileType(value).caption;
+      found = FileTypes.getFileType(value, fallbackOnLocalization).caption;
     } else if (QueryUtils.isStratusAgnosticField(field.toLowerCase(), '@objecttype')) {
-      found = FileTypes.getObjectType(value).caption;
+      found = FileTypes.getObjectType(value, fallbackOnLocalization).caption;
     } else if (FacetUtils.isMonthFieldValue(field, value)) {
       const month = parseInt(value, 10);
       found = DateUtils.monthToString(month - 1);
-    } else {
+    } else if (fallbackOnLocalization) {
       found = l(value);
     }
     return found != undefined && Utils.isNonEmptyString(found) ? found : value;

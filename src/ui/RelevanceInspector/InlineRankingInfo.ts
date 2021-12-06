@@ -41,7 +41,7 @@ export class InlineRankingInfo {
   private buildTogglableTermsSection(container: Dom) {
     const termsButton = $$(
       'button',
-      { className: 'coveo-button coveo-relevance-inspector-inline-ranking-button' },
+      { className: 'coveo-button coveo-relevance-inspector-inline-ranking-button', type: 'button' },
       'Toggle Terms Relevancy Breakdown'
     );
     container.append(termsButton.el);
@@ -59,7 +59,11 @@ export class InlineRankingInfo {
   }
 
   private buildTogglableQRESection(container: Dom) {
-    const qreButton = $$('button', { className: 'coveo-button coveo-relevance-inspector-inline-ranking-button' }, 'Toggle QRE Breakdown');
+    const qreButton = $$(
+      'button',
+      { className: 'coveo-button coveo-relevance-inspector-inline-ranking-button', type: 'button' },
+      'Toggle QRE Breakdown'
+    );
     container.append(qreButton.el);
     const qreSection = $$('ul', { className: 'coveo-relevance-inspector-inline-ranking-terms' });
 
