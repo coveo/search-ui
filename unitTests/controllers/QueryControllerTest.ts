@@ -7,6 +7,7 @@ import * as Mock from '../MockEnvironment';
 import { ExecutionPlan } from '../../src/rest/Plan';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import * as HistoryStore from '../../src/utils/HistoryStore';
+import { IQueryResults } from '../../src/rest/QueryResults';
 
 export function QueryControllerTest() {
   describe('QueryController', () => {
@@ -24,6 +25,7 @@ export function QueryControllerTest() {
     beforeEach(() => {
       const env = new Mock.MockEnvironmentBuilder().build();
       searchInterface = env.searchInterface;
+      searchInterface.options = { enableHistory: true };
 
       initQueryController();
     });
@@ -459,6 +461,65 @@ export function QueryControllerTest() {
           test.cmp.historyStore.setHistory(['a']);
           expect(localStorage.getItem(key)).toBeFalsy();
         });
+      });
+    });
+
+    describe('coveo-lastQueryHash local storage', () => {
+      const key = 'coveo-lastQueryHash';
+      const fakeResults: () => IQueryResults = () => ({ ...FakeResults.createFakeResults(), pipeline: 'commerce', searchUid: '123' });
+      const expireTime = () => new Date().getTime() + 1000 * 60 * 30;
+      beforeEach(() => {
+        localStorage.clear();
+        (test.env.searchEndpoint.search as jasmine.Spy).and.returnValue(Promise.resolve(fakeResults()));
+      });
+
+      it(`with no local storage value
+      after a query has been executed
+      calling saveLastQuery should save the last query hash to the local storage`, async done => {
+        await test.cmp.executeQuery();
+        test.cmp.saveLastQuery();
+
+        const queryHash = JSON.parse(localStorage.getItem(key));
+        expect(queryHash).toEqual(
+          jasmine.objectContaining({
+            expire: jasmine.any(Number),
+            uid: '123'
+          })
+        );
+        expect(JSON.parse(queryHash.hash)).toEqual({ pipeline: 'commerce', sortCriteria: 'relevancy' });
+        done();
+      });
+
+      it(`with a local storage value
+      after a query has been executed using the same parameters
+      the local storage item should be loaded 
+      and "original" search uid should be reused`, async done => {
+        const hash = JSON.stringify({ pipeline: 'commerce', sortCriteria: 'relevancy' });
+        const value = JSON.stringify({ expire: expireTime(), uid: '456', hash });
+        localStorage.setItem(key, value);
+
+        const results = await test.cmp.executeQuery();
+
+        expect(results.searchUid).toBe('456');
+        expect(results._reusedSearchUid).toBe(true);
+        expect(localStorage.getItem(key)).toBeFalsy();
+        done();
+      });
+
+      it(`with a local storage value
+      after a query has been executed using different parameters
+      the local storage item should be loaded 
+      but the "new" search uid should be used`, async done => {
+        const hash = JSON.stringify({ pipeline: 'commerce', sortCriteria: 'relevancy', q: 'Look at me, I am different' });
+        const value = JSON.stringify({ expire: expireTime(), uid: '456', hash });
+        localStorage.setItem(key, value);
+
+        const results = await test.cmp.executeQuery();
+
+        expect(results.searchUid).toBe('123');
+        expect(results._reusedSearchUid).toBeUndefined();
+        expect(localStorage.getItem(key)).toBeFalsy();
+        done();
       });
     });
   });
