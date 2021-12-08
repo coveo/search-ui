@@ -79,6 +79,14 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
       section: 'CommonOptions'
     }),
     /**
+     * The number of decimal to display when the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} is [`number`]{@link DynamicFacetRangeValueFormat.number}
+     *
+     * By default, the number will be the one returned by the index.
+     *
+     * @examples 2
+     */
+    numberOfDecimals: ComponentOptions.buildNumberOption(),
+    /**
      * The currency symbol to use if the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} is [`currency`]{@link DynamicFacetRangeValueFormat.currency}.
      *
      * By default, the component uses the currency associated with the currently loaded culture file (see [Changing the Language of Your Search Interface](https://docs.coveo.com/421/)).

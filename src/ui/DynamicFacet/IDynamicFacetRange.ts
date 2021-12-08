@@ -29,6 +29,7 @@ export interface IDynamicFacetRangeOptions extends IDynamicFacetOptions {
   valueSeparator?: string;
   valueFormat?: DynamicFacetRangeValueFormat;
   ranges?: IRangeValue[];
+  numberOfDecimals?: number;
   currencySymbol?: string;
   sortOrder?: FacetRangeSortOrder;
 }
