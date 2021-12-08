@@ -79,7 +79,7 @@ export class DynamicFacetRange extends DynamicFacet implements IComponentBinding
       section: 'CommonOptions'
     }),
     /**
-     * The number of decimal to display when the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} is [`number`]{@link DynamicFacetRangeValueFormat.number}
+     * The number of decimals to display when the [`valueFormat`]{@link DynamicFacetRange.options.valueFormat} is [`number`]{@link DynamicFacetRangeValueFormat.number}
      *
      * By default, the number will be the one returned by the index.
      *
