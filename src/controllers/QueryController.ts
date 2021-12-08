@@ -1,5 +1,5 @@
 import { buildHistoryStore, buildNullHistoryStore } from '../utils/HistoryStore';
-import { pick, extend, omit } from 'underscore';
+import { pick, extend, omit, forEach } from 'underscore';
 import {
   IBuildingCallOptionsEventArgs,
   IBuildingQueryEventArgs,
@@ -386,7 +386,7 @@ export class QueryController extends RootComponent {
       if (this.lastQueryResults == null) {
         this.lastQueryResults = results;
       } else {
-        results.results.forEach(result => {
+        forEach(results.results, result => {
           this.lastQueryResults.results.push(result);
         });
       }
@@ -686,7 +686,7 @@ export class QueryController extends RootComponent {
     let graph = Dom.createElement('div', { className: 'coveo-debug-durations' });
     let debugRef = BaseComponent.getComponentRef('Debug');
     dom.appendChild(graph);
-    debugRef.durationKeys.forEach((key: string) => {
+    forEach(debugRef.durationKeys, (key: string) => {
       let duration = queryResults[key];
       if (duration != null) {
         graph.appendChild(
