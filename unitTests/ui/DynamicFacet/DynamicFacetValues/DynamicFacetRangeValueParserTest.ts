@@ -50,7 +50,7 @@ export function DynamicFacetRangeValueParserTest() {
         });
 
         describe('testing formatDisplayValue', () => {
-          it(`when the value is a integer
+          it(`when the value is an integer
             should return the format correctly`, () => {
             const value = parser.formatDisplayValue({ start: 10, end: 20 });
             expect(value).toBe('10.00000 to 20.00000');
