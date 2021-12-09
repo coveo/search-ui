@@ -13,7 +13,7 @@ export function DynamicFacetRangeValueParserTest() {
       facet = DynamicFacetRangeTestUtils.createAdvancedFakeFacet(facetOptions).cmp;
     }
 
-    describe('testing with the number format', () => {
+    describe('testing with the number format & numberOfDecimals not defined', () => {
       beforeEach(() => {
         facetOptions = { valueFormat: DynamicFacetRangeValueFormat.number, valueSeparator: 'to' };
         initFacet();
@@ -38,6 +38,35 @@ export function DynamicFacetRangeValueParserTest() {
           should return the format correctly`, () => {
           const value = parser.formatDisplayValue({ start: 0.99, end: 1.001 });
           expect(value).toBe('0.99 to 1.001');
+        });
+      });
+
+      describe('testing with the number format & numberOfDecimals defined', () => {
+        beforeEach(() => {
+          facetOptions = { valueFormat: DynamicFacetRangeValueFormat.number, valueSeparator: 'to', numberOfDecimals: 5 };
+          initFacet();
+
+          parser = new DynamicFacetRangeValueParser(facet);
+        });
+
+        describe('testing formatDisplayValue', () => {
+          it(`when the value is an integer
+            should return the format correctly`, () => {
+            const value = parser.formatDisplayValue({ start: 10, end: 20 });
+            expect(value).toBe('10.00000 to 20.00000');
+          });
+
+          it(`when the value is a big integer
+            should return the format correctly`, () => {
+            const value = parser.formatDisplayValue({ start: 1000, end: 100000 });
+            expect(value).toBe('1,000.00000 to 100,000.00000');
+          });
+
+          it(`when the value is a float
+            should return the format correctly`, () => {
+            const value = parser.formatDisplayValue({ start: 0.995452324, end: 1.000000000001 });
+            expect(value).toBe('0.99545 to 1.00000');
+          });
         });
       });
 
