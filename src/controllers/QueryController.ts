@@ -1,5 +1,5 @@
 import { buildHistoryStore, buildNullHistoryStore } from '../utils/HistoryStore';
-import * as _ from 'underscore';
+import { pick, extend, omit, forEach } from 'underscore';
 import {
   IBuildingCallOptionsEventArgs,
   IBuildingQueryEventArgs,
@@ -196,7 +196,7 @@ export class QueryController extends RootComponent {
    * @returns {Promise<IQueryResults>}
    */
   public executeQuery(options?: IQueryOptions): Promise<IQueryResults> {
-    options = <IQueryOptions>_.extend(new DefaultQueryOptions(), options);
+    options = <IQueryOptions>extend(new DefaultQueryOptions(), options);
 
     this.closeModalBoxIfNeeded(options ? options.closeModalBox : undefined);
 
@@ -386,7 +386,7 @@ export class QueryController extends RootComponent {
       if (this.lastQueryResults == null) {
         this.lastQueryResults = results;
       } else {
-        _.forEach(results.results, result => {
+        forEach(results.results, result => {
           this.lastQueryResults.results.push(result);
         });
       }
@@ -488,7 +488,7 @@ export class QueryController extends RootComponent {
   // the entire query to the Search API. For other components, QueryStateModel or
   // listening to events like 'doneBuildingQuery' is the way to go.
   public getLastQueryHash(): string {
-    if (this.lastQueryHash != null) {
+    if (this.lastQueryHash) {
       return this.lastQueryHash;
     }
     this.loadLastQueryHash();
@@ -542,7 +542,7 @@ export class QueryController extends RootComponent {
   }
 
   private continueLastQueryBuilder(queryBuilder: QueryBuilder, count: number) {
-    _.extend(queryBuilder, this.lastQueryBuilder);
+    extend(queryBuilder, this.lastQueryBuilder);
     queryBuilder.firstResult = queryBuilder.firstResult + queryBuilder.numberOfResults;
     queryBuilder.numberOfResults = count;
   }
@@ -580,16 +580,37 @@ export class QueryController extends RootComponent {
       return true;
     }
 
-    const enableHistory = this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory;
-    return enableHistory && this.getLastQueryHash() == this.queryHash(query, queryResults);
+    const enableHistory = !!(this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory);
+    return enableHistory && this.compareWithLastQueryHash(this.queryHash(query, queryResults));
+  }
+
+  private compareWithLastQueryHash(queryHash: string) {
+    const lastParams = JSON.parse(this.getLastQueryHash());
+    const newParams = JSON.parse(queryHash);
+    return Utils.objectEqual(lastParams, newParams);
   }
 
   private queryHash(query: IQuery, queryResults?: IQueryResults): string {
-    let queryHash = JSON.stringify(_.omit(query, 'firstResult', 'groupBy', 'debug'));
-    if (queryResults != null) {
-      queryHash += queryResults.pipeline;
+    const queryKeys: (keyof IQuery)[] = [
+      'q',
+      'aq',
+      'cq',
+      'dq',
+      'searchHub',
+      'tab',
+      'pipeline',
+      'sortCriteria',
+      'recommendation',
+      'commerce'
+    ];
+
+    const queryParams = pick(query, ...queryKeys);
+
+    if (queryResults) {
+      queryParams.pipeline = queryResults.pipeline;
     }
-    return queryHash;
+
+    return JSON.stringify(queryParams);
   }
 
   private getCallOptions(): IEndpointCallOptions {
@@ -650,7 +671,7 @@ export class QueryController extends RootComponent {
 
     if (this.lastQueryResults != null) {
       info.queryDuration = () => this.buildQueryDurationSection(this.lastQueryResults);
-      info.results = () => _.omit(this.lastQueryResults, 'results');
+      info.results = () => omit(this.lastQueryResults, 'results');
     }
 
     if (this.currentError != null) {
@@ -665,7 +686,7 @@ export class QueryController extends RootComponent {
     let graph = Dom.createElement('div', { className: 'coveo-debug-durations' });
     let debugRef = BaseComponent.getComponentRef('Debug');
     dom.appendChild(graph);
-    _.forEach(debugRef.durationKeys, (key: string) => {
+    forEach(debugRef.durationKeys, (key: string) => {
       let duration = queryResults[key];
       if (duration != null) {
         graph.appendChild(
