@@ -6,6 +6,7 @@ import { DateUtils } from '../../../utils/DateUtils';
 import { IDynamicFacetRange, DynamicFacetRangeValueFormat } from '../IDynamicFacetRange';
 import { Logger } from '../../../misc/Logger';
 import { CurrencyUtils } from '../../../Core';
+import { isUndefined } from 'underscore';
 
 export class DynamicFacetRangeValueParser {
   constructor(private facet: IDynamicFacetRange) {}
@@ -31,7 +32,9 @@ export class DynamicFacetRangeValueParser {
   private formatDisplayValueFromLimit(value: RangeType) {
     switch (this.valueFormat) {
       case DynamicFacetRangeValueFormat.number:
-        const numberOfDecimals = NumberUtils.countDecimals(`${value}`);
+        const numberOfDecimals = isUndefined(this.facet.options.numberOfDecimals)
+          ? NumberUtils.countDecimals(`${value}`)
+          : this.facet.options.numberOfDecimals;
         return Globalize.format(value, `n${numberOfDecimals}`);
 
       case DynamicFacetRangeValueFormat.currency:
