@@ -257,7 +257,7 @@ export class FieldValue extends Component {
     this.result = this.result || this.resolveResult();
     Assert.exists(this.result);
 
-    if (TemplateFieldsEvaluator.evaluateFieldsToMatch(this.options.conditions, this.result) && this.getValue()) {
+    if (TemplateFieldsEvaluator.evaluateFieldsToMatch(this.options.conditions, this.result) && !Utils.isNullOrUndefined(this.getValue())) {
       this.initialize();
     } else if (this.element.parentElement != null) {
       this.element.parentElement.removeChild(this.element);
