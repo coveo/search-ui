@@ -20,9 +20,7 @@ export function FieldValueTest() {
     };
 
     const getTitle = () => {
-      return $$(test.cmp.element)
-        .find('span')
-        .getAttribute('title');
+      return $$(test.cmp.element).find('span').getAttribute('title');
     };
 
     beforeEach(() => {
@@ -358,37 +356,30 @@ export function FieldValueTest() {
       const dateTimeString = DateUtils.dateTimeToString(new Date(parseInt(fakeResult.raw.date)), fullDateOptions);
 
       initializeFieldValueComponent(options, fakeResult);
-      expect(
-        $$(test.cmp.element)
-          .find('span')
-          .getAttribute('title')
-      ).toEqual(dateString);
+      expect($$(test.cmp.element).find('span').getAttribute('title')).toEqual(dateString);
 
       options.helper = 'dateTime';
       initializeFieldValueComponent(options, fakeResult);
-      expect(
-        $$(test.cmp.element)
-          .find('span')
-          .getAttribute('title')
-      ).toEqual(dateTimeString);
+      expect($$(test.cmp.element).find('span').getAttribute('title')).toEqual(dateTimeString);
 
       options.helper = 'emailDateTime';
       initializeFieldValueComponent(options, fakeResult);
-      expect(
-        $$(test.cmp.element)
-          .find('span')
-          .getAttribute('title')
-      ).toEqual(dateTimeString);
+      expect($$(test.cmp.element).find('span').getAttribute('title')).toEqual(dateTimeString);
     });
 
     it("should not show a full date tooltip if it doesn't have the helper is not a date", () => {
       initializeFieldValueComponent({ field: '@string' });
 
-      expect(
-        $$(test.cmp.element)
-          .find('span')
-          .hasAttribute('title')
-      ).toBe(false);
+      expect($$(test.cmp.element).find('span').hasAttribute('title')).toBe(false);
+    });
+
+    it('should display a value if it is a falsy value', () => {
+      [0, -0, 'false', 'null', 'undefined', false].forEach(falsy => {
+        const fakeResult = FakeResults.createFakeResult();
+        fakeResult.raw['thefield'] = falsy;
+        initializeFieldValueComponent({ field: 'thefield' }, fakeResult);
+        expect($$(test.cmp.element).text()).toEqual(falsy.toString());
+      });
     });
   });
 }
