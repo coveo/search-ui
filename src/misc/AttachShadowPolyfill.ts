@@ -13,7 +13,6 @@ export async function attachShadow(element: HTMLElement, options: IShadowOptions
   let contentBody: HTMLElement;
   if (options.useIFrame) {
     autoUpdateContainer = $$('iframe', elementOptions).el;
-    autoUpdateContainer.setAttribute('tabindex', '-1');
     const onLoad = new Promise(resolve => autoUpdateContainer.addEventListener('load', () => resolve()));
     element.appendChild(autoUpdateContainer);
     await onLoad;
