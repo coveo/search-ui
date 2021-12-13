@@ -374,7 +374,7 @@ export function FieldValueTest() {
     });
 
     it('should display a value if it is a falsy value', () => {
-      [0, -0, 'false', 'null', 'undefined'].forEach(falsy => {
+      [0, -0, 'false', 'null', 'undefined', false].forEach(falsy => {
         const fakeResult = FakeResults.createFakeResult();
         fakeResult.raw['thefield'] = falsy;
         initializeFieldValueComponent({ field: 'thefield' }, fakeResult);
