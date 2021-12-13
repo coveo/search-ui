@@ -1,5 +1,5 @@
 import { ResponsiveDropdownHeader } from './ResponsiveDropdownHeader';
-import { IResponsiveDropdownContent } from './ResponsiveDropdownContent';
+import { IResponsiveDropdownContent, ResponsiveDropdownContent } from './ResponsiveDropdownContent';
 import { $$, Dom } from '../../../utils/Dom';
 import * as _ from 'underscore';
 import { AccessibleButton } from '../../../utils/AccessibleButton';
@@ -15,8 +15,6 @@ export enum ResponsiveDropdownEvent {
 type HandlerCall = { handler: Function; context: any };
 
 export class ResponsiveDropdown {
-  public static MODAL_CLASS_NAME = 'coveo-dropdown-modal';
-
   public isOpened: boolean = false;
   private onOpenHandlers: HandlerCall[] = [];
   private onCloseHandlers: HandlerCall[] = [];
@@ -30,7 +28,7 @@ export class ResponsiveDropdown {
     Assert.exists(dropdownHeader);
     Assert.exists(coveoRoot);
 
-    this.modal = new AccessibleModal(ResponsiveDropdown.MODAL_CLASS_NAME, this.coveoRoot.el);
+    this.modal = new AccessibleModal(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME, this.coveoRoot.el);
     this.saveContentPosition();
     this.enableScrollLocking(this.coveoRoot.el);
     this.bindOnClickDropdownHeaderEvent();

@@ -20,7 +20,7 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
     return false;
   }
 
-  constructor(componentName: string, public element: Dom, coveoRoot: Dom, minWidth: number, widthRatio: number) {}
+  constructor(public element: Dom) {}
 
   public positionDropdown() {
     this.setElementAttributes();

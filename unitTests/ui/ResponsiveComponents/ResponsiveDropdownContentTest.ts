@@ -16,7 +16,7 @@ export function ResponsiveDropdownContentTest() {
       root = $$('div');
       root.append(element.el);
       root.append($$('div', { className: ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS }).el);
-      responsiveDropdownContent = new ResponsiveDropdownContent(componentName, element, root, minWidth, widthRatio);
+      responsiveDropdownContent = new ResponsiveDropdownContent(element);
     });
 
     it('displays the dropdown when position dropdown is called', () => {

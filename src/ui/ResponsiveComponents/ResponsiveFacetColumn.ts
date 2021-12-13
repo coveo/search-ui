@@ -160,13 +160,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     if (this.facetsMobileModeOptions.isModal) {
       return new ResponsiveDropdownModalContent('facet', dropdownContentElement, l('CloseFiltersDropdown'), () => this.dropdown.close());
     }
-    return new ResponsiveDropdownContent(
-      'facet',
-      dropdownContentElement,
-      this.coveoRoot,
-      ResponsiveFacetColumn.DROPDOWN_MIN_WIDTH,
-      ResponsiveFacetColumn.DROPDOWN_WIDTH_RATIO
-    );
+    return new ResponsiveDropdownContent(dropdownContentElement);
   }
 
   private buildDropdownHeader() {
