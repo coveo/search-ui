@@ -147,12 +147,6 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
     let dropdown = responsiveDropdown ? responsiveDropdown : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
-    if (!this.facetsMobileModeOptions.displayOverlayWhileOpen) {
-      dropdown.disablePopupBackground();
-    }
-    if (this.facetsMobileModeOptions.preventScrolling) {
-      dropdown.enableScrollLocking(this.facetsMobileModeOptions.scrollContainer);
-    }
     return dropdown;
   }
 

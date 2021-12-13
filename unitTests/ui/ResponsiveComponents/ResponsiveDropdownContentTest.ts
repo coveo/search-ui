@@ -29,40 +29,10 @@ export function ResponsiveDropdownContentTest() {
       expect($$(responsiveDropdownContent.element).css('display')).toBe('none');
     });
 
-    it('has a minimal width', () => {
-      spyOn(root, 'width').and.returnValue(1);
-      responsiveDropdownContent.positionDropdown();
-      expect($$(responsiveDropdownContent.element).css('width')).toBe(minWidth.toString() + 'px');
-    });
-
-    it('uses a width ratio if it respect the minimal width', () => {
-      let rootWidth = minWidth * 2;
-      let expectedWidth = rootWidth * widthRatio;
-      spyOn(root, 'width').and.returnValue(rootWidth);
-
-      responsiveDropdownContent.positionDropdown();
-
-      expect($$(responsiveDropdownContent.element).css('width')).toBe(expectedWidth.toString() + 'px');
-    });
-
     it('removes inline styling on clean up', () => {
       responsiveDropdownContent.hideDropdown();
       responsiveDropdownContent.cleanUp();
       expect(responsiveDropdownContent.element.el.style.display).toBe('');
-    });
-
-    it('adds custom css class when position dropdown is called', () => {
-      responsiveDropdownContent.positionDropdown();
-      let expectedClass = `coveo-${componentName}-dropdown-content`;
-
-      expect(responsiveDropdownContent.element.hasClass(expectedClass)).toBe(true);
-    });
-
-    it('adds default css class when position dropdown is called', () => {
-      responsiveDropdownContent.positionDropdown();
-      let expectedClass = ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME;
-
-      expect(responsiveDropdownContent.element.hasClass(expectedClass)).toBe(true);
     });
 
     it('removes custom css class when hide dropdown is called', () => {
@@ -81,21 +51,6 @@ export function ResponsiveDropdownContentTest() {
       responsiveDropdownContent.hideDropdown();
 
       expect(responsiveDropdownContent.element.hasClass(expectedToBeRemovedClass)).toBe(false);
-    });
-
-    it('should be able to tell when a target element is contained inside an opened dropdown content', () => {
-      const target = $$('div');
-      responsiveDropdownContent.element.append(target.el);
-      responsiveDropdownContent.positionDropdown();
-      expect(ResponsiveDropdownContent.isTargetInsideOpenedDropdown(target)).toBeTruthy();
-    });
-
-    it('should be able to tell when a target element is contained inside a closed dropdown content', () => {
-      const target = $$('div');
-      responsiveDropdownContent.element.append(target.el);
-      responsiveDropdownContent.positionDropdown();
-      responsiveDropdownContent.hideDropdown();
-      expect(ResponsiveDropdownContent.isTargetInsideOpenedDropdown(target)).toBeFalsy();
     });
 
     it('should be able to tell when a target element is not contained inside an opened dropdown content', () => {

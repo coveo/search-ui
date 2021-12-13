@@ -78,18 +78,10 @@ export function ResponsiveFacetColumnTest() {
         expect(dropdown.dropdownContent instanceof ResponsiveDropdownContent).toBeTruthy();
       });
 
-      it('should show the background', () => {
-        expect(dropdown['popupBackgroundIsEnabled']).toBeTruthy();
-      });
-
       describe('when opened', () => {
         beforeEach(() => {
           column.handleResizeEvent();
           dropdown.open();
-        });
-
-        it('should allow scrolling on the body', () => {
-          expect(root.el.style.overflow).toBeFalsy();
         });
       });
     });
@@ -228,6 +220,7 @@ export function ResponsiveFacetColumnTest() {
             beforeEach(() => {
               dropdown.open();
               popupOpened.calls.reset();
+              popupClosed.calls.reset();
             });
 
             it('should trigger the closed event when closing the popup', () => {

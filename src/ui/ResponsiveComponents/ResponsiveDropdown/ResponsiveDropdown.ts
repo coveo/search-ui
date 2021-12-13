@@ -1,13 +1,11 @@
 import { ResponsiveDropdownHeader } from './ResponsiveDropdownHeader';
 import { IResponsiveDropdownContent } from './ResponsiveDropdownContent';
 import { $$, Dom } from '../../../utils/Dom';
-import { EventsUtils } from '../../../utils/EventsUtils';
 import * as _ from 'underscore';
 import { AccessibleButton } from '../../../utils/AccessibleButton';
-import { KeyboardUtils, KEYBOARD } from '../../../utils/KeyboardUtils';
-import { InitializationEvents } from '../../../events/InitializationEvents';
 import { Assert } from '../../../misc/Assert';
 import { l } from '../../../strings/Strings';
+import { AccessibleModal } from '../../../utils/AccessibleModal';
 
 export enum ResponsiveDropdownEvent {
   OPEN = 'responsiveDropdownOpen',
@@ -17,29 +15,25 @@ export enum ResponsiveDropdownEvent {
 type HandlerCall = { handler: Function; context: any };
 
 export class ResponsiveDropdown {
-  public static TRANSPARENT_BACKGROUND_OPACITY: string = '0.9';
-  public static DROPDOWN_BACKGROUND_CSS_CLASS_NAME: string = 'coveo-dropdown-background';
-  public static DROPDOWN_BACKGROUND_ACTIVE_CSS_CLASS_NAME: string = 'coveo-dropdown-background-active';
+  public static MODAL_CLASS_NAME = 'coveo-dropdown-modal';
 
   public isOpened: boolean = false;
   private onOpenHandlers: HandlerCall[] = [];
   private onCloseHandlers: HandlerCall[] = [];
-  private popupBackground: Dom;
-  private popupBackgroundIsEnabled: boolean = true;
   private scrollableContainerToLock: HTMLElement = null;
   private previousSibling: Dom;
   private parent: Dom;
+  private modal: AccessibleModal;
 
   constructor(public dropdownContent: IResponsiveDropdownContent, public dropdownHeader: ResponsiveDropdownHeader, public coveoRoot: Dom) {
     Assert.exists(dropdownContent);
     Assert.exists(dropdownHeader);
     Assert.exists(coveoRoot);
 
-    this.popupBackground = this.buildPopupBackground();
-    this.bindOnClickDropdownHeaderEvent();
+    this.modal = new AccessibleModal(ResponsiveDropdown.MODAL_CLASS_NAME, this.coveoRoot.el);
     this.saveContentPosition();
-    this.bindOnKeyboardEscapeEvent();
-    this.bindNukeEvents();
+    this.enableScrollLocking(this.coveoRoot.el);
+    this.bindOnClickDropdownHeaderEvent();
   }
 
   private set scrollLocked(lock: boolean) {
@@ -73,8 +67,17 @@ export class ResponsiveDropdown {
     _.each(this.onOpenHandlers, handlerCall => {
       handlerCall.handler.apply(handlerCall.context);
     });
-    this.showPopupBackground();
     this.lockScroll();
+
+    const title = $$('p');
+    title.text(this.dropdownHeader.element.text());
+    this.modal.open({
+      content: this.dropdownContent.element.el,
+      origin: this.dropdownHeader.element.el,
+      title: title.el,
+      validation: () => true
+    });
+
     $$(this.dropdownHeader.element).trigger(ResponsiveDropdownEvent.OPEN);
   }
 
@@ -86,13 +89,9 @@ export class ResponsiveDropdown {
 
     this.dropdownHeader.close();
     this.dropdownContent.hideDropdown();
-    this.hidePopupBackground();
     this.unlockScroll();
+    this.modal.close();
     $$(this.dropdownHeader.element).trigger(ResponsiveDropdownEvent.CLOSE);
-  }
-
-  public disablePopupBackground() {
-    this.popupBackgroundIsEnabled = false;
   }
 
   public enableScrollLocking(scrollableContainer: HTMLElement) {
@@ -107,59 +106,12 @@ export class ResponsiveDropdown {
       .build();
   }
 
-  private closeIfOpened = () => {
-    this.isOpened && this.close();
-  };
-
-  private bindOnKeyboardEscapeEvent() {
-    $$(document.documentElement).on('keyup', KeyboardUtils.keypressAction(KEYBOARD.ESCAPE, this.closeIfOpened));
-  }
-
-  private unbindOnKeyboardEscapeEvent() {
-    $$(document.documentElement).off('keyup', KeyboardUtils.keypressAction(KEYBOARD.ESCAPE, this.closeIfOpened));
-  }
-
-  private bindNukeEvents() {
-    $$(this.coveoRoot).on(InitializationEvents.nuke, () => {
-      this.unbindOnKeyboardEscapeEvent();
-    });
-  }
-
-  private showPopupBackground() {
-    if (this.popupBackgroundIsEnabled) {
-      this.coveoRoot.el.appendChild(this.popupBackground.el);
-      window.getComputedStyle(this.popupBackground.el).opacity;
-      this.popupBackground.el.style.opacity = ResponsiveDropdown.TRANSPARENT_BACKGROUND_OPACITY;
-      this.popupBackground.addClass(ResponsiveDropdown.DROPDOWN_BACKGROUND_ACTIVE_CSS_CLASS_NAME);
-    }
-  }
-
   private lockScroll() {
     this.scrollLocked = true;
   }
 
   private unlockScroll() {
     this.scrollLocked = false;
-  }
-
-  private hidePopupBackground() {
-    if (this.popupBackgroundIsEnabled) {
-      // forces the browser to reflow the element, so that the transition is applied.
-      window.getComputedStyle(this.popupBackground.el).opacity;
-      this.popupBackground.el.style.opacity = '0';
-      this.popupBackground.removeClass(ResponsiveDropdown.DROPDOWN_BACKGROUND_ACTIVE_CSS_CLASS_NAME);
-    }
-  }
-
-  private buildPopupBackground(): Dom {
-    let popupBackground = $$('div', { className: ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME });
-    EventsUtils.addPrefixedEvent(popupBackground.el, 'TransitionEnd', () => {
-      if (popupBackground.el.style.opacity == '0') {
-        popupBackground.detach();
-      }
-    });
-    popupBackground.on('click', () => this.close());
-    return popupBackground;
   }
 
   private saveContentPosition() {
