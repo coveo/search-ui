@@ -11956,7 +11956,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var HistoryStore_1 = __webpack_require__(61);
-var _ = __webpack_require__(0);
+var underscore_1 = __webpack_require__(0);
 var QueryEvents_1 = __webpack_require__(6);
 var ExternalModulesShim_1 = __webpack_require__(42);
 var Assert_1 = __webpack_require__(2);
@@ -12082,7 +12082,7 @@ var QueryController = /** @class */ (function (_super) {
      */
     QueryController.prototype.executeQuery = function (options) {
         var _this = this;
-        options = _.extend(new DefaultQueryOptions(), options);
+        options = underscore_1.extend(new DefaultQueryOptions(), options);
         this.closeModalBoxIfNeeded(options ? options.closeModalBox : undefined);
         this.logger.debug('Executing new query');
         this.cancelAnyCurrentPendingQuery();
@@ -12244,7 +12244,7 @@ var QueryController = /** @class */ (function (_super) {
                 _this.lastQueryResults = results;
             }
             else {
-                _.forEach(results.results, function (result) {
+                underscore_1.forEach(results.results, function (result) {
                     _this.lastQueryResults.results.push(result);
                 });
             }
@@ -12331,7 +12331,7 @@ var QueryController = /** @class */ (function (_super) {
     // the entire query to the Search API. For other components, QueryStateModel or
     // listening to events like 'doneBuildingQuery' is the way to go.
     QueryController.prototype.getLastQueryHash = function () {
-        if (this.lastQueryHash != null) {
+        if (this.lastQueryHash) {
             return this.lastQueryHash;
         }
         this.loadLastQueryHash();
@@ -12375,7 +12375,7 @@ var QueryController = /** @class */ (function (_super) {
         }
     };
     QueryController.prototype.continueLastQueryBuilder = function (queryBuilder, count) {
-        _.extend(queryBuilder, this.lastQueryBuilder);
+        underscore_1.extend(queryBuilder, this.lastQueryBuilder);
         queryBuilder.firstResult = queryBuilder.firstResult + queryBuilder.numberOfResults;
         queryBuilder.numberOfResults = count;
     };
@@ -12407,15 +12407,32 @@ var QueryController = /** @class */ (function (_super) {
         if (options.keepLastSearchUid === true) {
             return true;
         }
-        var enableHistory = this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory;
-        return enableHistory && this.getLastQueryHash() == this.queryHash(query, queryResults);
+        var enableHistory = !!(this.searchInterface && this.searchInterface.options && this.searchInterface.options.enableHistory);
+        return enableHistory && this.compareWithLastQueryHash(this.queryHash(query, queryResults));
+    };
+    QueryController.prototype.compareWithLastQueryHash = function (queryHash) {
+        var lastParams = JSON.parse(this.getLastQueryHash());
+        var newParams = JSON.parse(queryHash);
+        return Utils_1.Utils.objectEqual(lastParams, newParams);
     };
     QueryController.prototype.queryHash = function (query, queryResults) {
-        var queryHash = JSON.stringify(_.omit(query, 'firstResult', 'groupBy', 'debug'));
-        if (queryResults != null) {
-            queryHash += queryResults.pipeline;
+        var queryKeys = [
+            'q',
+            'aq',
+            'cq',
+            'dq',
+            'searchHub',
+            'tab',
+            'pipeline',
+            'sortCriteria',
+            'recommendation',
+            'commerce'
+        ];
+        var queryParams = underscore_1.pick.apply(void 0, [query].concat(queryKeys));
+        if (queryResults) {
+            queryParams.pipeline = queryResults.pipeline;
         }
-        return queryHash;
+        return JSON.stringify(queryParams);
     };
     QueryController.prototype.getCallOptions = function () {
         var args = {
@@ -12463,7 +12480,7 @@ var QueryController = /** @class */ (function (_super) {
         };
         if (this.lastQueryResults != null) {
             info.queryDuration = function () { return _this.buildQueryDurationSection(_this.lastQueryResults); };
-            info.results = function () { return _.omit(_this.lastQueryResults, 'results'); };
+            info.results = function () { return underscore_1.omit(_this.lastQueryResults, 'results'); };
         }
         if (this.currentError != null) {
             info.error = function () { return _this.currentError; };
@@ -12475,7 +12492,7 @@ var QueryController = /** @class */ (function (_super) {
         var graph = Dom_1.Dom.createElement('div', { className: 'coveo-debug-durations' });
         var debugRef = BaseComponent_1.BaseComponent.getComponentRef('Debug');
         dom.appendChild(graph);
-        _.forEach(debugRef.durationKeys, function (key) {
+        underscore_1.forEach(debugRef.durationKeys, function (key) {
             var duration = queryResults[key];
             if (duration != null) {
                 graph.appendChild(Dom_1.Dom.createElement('div', {
@@ -15454,8 +15471,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10092.1',
-    product: '2.10092.1',
+    lib: '2.10092.2',
+    product: '2.10092.2',
     supportedApiVersion: 2
 };
 
