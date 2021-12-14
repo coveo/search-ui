@@ -21,8 +21,6 @@ import { FacetsMobileModeEvents } from '../../events/FacetsMobileModeEvents';
 export class ResponsiveFacetColumn implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
 
-  private static DROPDOWN_MIN_WIDTH: number = 280;
-  private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
 
   private searchInterface: SearchInterface;
