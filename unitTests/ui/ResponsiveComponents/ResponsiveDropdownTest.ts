@@ -2,8 +2,6 @@ import { ResponsiveDropdown } from '../../../src/ui/ResponsiveComponents/Respons
 import { ResponsiveDropdownHeader } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
 import { ResponsiveDropdownContent } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
 import { $$, Dom } from '../../../src/utils/Dom';
-import { Simulate } from '../../Simulate';
-import { KEYBOARD } from '../../../src/Core';
 
 export function ResponsiveDropdownTest() {
   describe('ResponsiveDropdown', () => {
@@ -39,23 +37,6 @@ export function ResponsiveDropdownTest() {
       responsiveDropdown.open();
 
       expect(handler).toHaveBeenCalled();
-    });
-
-    it('should append a background when open is called', () => {
-      responsiveDropdown.open();
-      expect(root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_ACTIVE_CSS_CLASS_NAME}`)).not.toBeNull();
-    });
-
-    it('should not append a background when it is disabled and open is called', () => {
-      responsiveDropdown.disablePopupBackground();
-      responsiveDropdown.open();
-      expect(root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_CSS_CLASS_NAME}`)).toBeNull();
-    });
-
-    it('should hide the background when close is called', () => {
-      responsiveDropdown.open();
-      responsiveDropdown.close();
-      expect(root.find(`.${ResponsiveDropdown.DROPDOWN_BACKGROUND_ACTIVE_CSS_CLASS_NAME}`)).toBeNull();
     });
 
     describe('with scroll locking enabled', () => {
@@ -99,14 +80,6 @@ export function ResponsiveDropdownTest() {
       responsiveDropdown.close();
 
       expect(handler).toHaveBeenCalled();
-    });
-
-    it('should call close when the dropdown is opened and the escape key is pressed', () => {
-      responsiveDropdown.close = jasmine.createSpy('close');
-      responsiveDropdown.open();
-      Simulate.keyUp(document.documentElement, KEYBOARD.ESCAPE);
-
-      expect(responsiveDropdown.close).toHaveBeenCalled();
     });
   });
 }
