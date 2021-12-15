@@ -73,7 +73,10 @@ export class ResponsiveDropdown {
       content: this.dropdownContent.element.el,
       origin: this.dropdownHeader.element.el,
       title: title.el,
-      validation: () => true
+      validation: () => {
+        this.isOpened = false;
+        return true;
+      }
     });
 
     $$(this.dropdownHeader.element).trigger(ResponsiveDropdownEvent.OPEN);
