@@ -234,6 +234,10 @@ export function SmartSnippetSuggestionsTest() {
           done();
         });
 
+        it('the iframe of the second question has tabindex=-1', () => {
+          expect(findClass(ClassNames.SHADOW_CLASSNAME)[1].querySelector('iframe').getAttribute('tabindex')).toEqual('-1');
+        });
+
         it('has the has-question class', () => {
           expect(test.cmp.element.classList.contains(ClassNames.HAS_QUESTIONS_CLASSNAME)).toBeTruthy();
         });
@@ -314,6 +318,10 @@ export function SmartSnippetSuggestionsTest() {
           beforeEach(() => {
             resetAnalyticsSpyHistory();
             findClass(ClassNames.QUESTION_TITLE_CHECKBOX_CLASSNAME)[1].click();
+          });
+
+          it("the iframe doesn't have a tabindex", () => {
+            expect(findClass(ClassNames.SHADOW_CLASSNAME)[1].querySelector('iframe').hasAttribute('tabindex')).toBeFalsy();
           });
 
           it('sends expand analytics', () => {
