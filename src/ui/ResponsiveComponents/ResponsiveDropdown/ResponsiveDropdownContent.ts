@@ -1,10 +1,5 @@
-import { Dom, $$ } from '../../../utils/Dom';
-import PopperJs from 'popper.js';
-import { ResponsiveComponentsManager } from '../ResponsiveComponentsManager';
+import { Dom } from '../../../utils/Dom';
 import { Assert } from '../../../misc/Assert';
-import { l } from '../../../strings/Strings';
-import { ComponentOptions } from '../../Base/ComponentOptions';
-
 export interface IResponsiveDropdownContent {
   element: Dom;
 
@@ -16,13 +11,6 @@ export interface IResponsiveDropdownContent {
 export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
   public static DEFAULT_CSS_CLASS_NAME = 'coveo-dropdown-content';
 
-  private coveoRoot: Dom;
-  private cssClassName: string;
-
-  private widthRatio: number;
-  private minWidth: number;
-  private popperReference: PopperJs;
-
   public static isTargetInsideOpenedDropdown(target: Dom) {
     Assert.exists(target);
     const targetParentDropdown = target.parent(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
@@ -32,31 +20,13 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
     return false;
   }
 
-  constructor(componentName: string, public element: Dom, coveoRoot: Dom, minWidth: number, widthRatio: number) {
-    Assert.isString(componentName);
-    Assert.exists(element);
-    Assert.exists(coveoRoot);
-    Assert.isLargerOrEqualsThan(0, minWidth);
-    Assert.isLargerOrEqualsThan(0, widthRatio);
-    Assert.isSmallerOrEqualsThan(1, widthRatio);
-
-    this.cssClassName = `coveo-${componentName}-dropdown-content`;
-    this.coveoRoot = coveoRoot;
-    this.widthRatio = widthRatio;
-    this.minWidth = minWidth;
-  }
+  constructor(public element: Dom) {}
 
   public positionDropdown() {
     this.setElementAttributes();
-    this.createPopper();
   }
 
   public hideDropdown() {
-    if (this.popperReference) {
-      this.unbindPopperEvents();
-      this.popperReference.destroy();
-    }
-
     this.unsetElementAttributes();
   }
 
@@ -66,65 +36,14 @@ export class ResponsiveDropdownContent implements IResponsiveDropdownContent {
 
   private setElementAttributes() {
     this.element.show();
-    this.element.addClass(this.cssClassName);
-    this.element.addClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
-    this.element.setAttribute('role', 'group');
-    this.element.setAttribute('aria-label', l('FiltersDropdown'));
-
     this.setElementWidth();
   }
 
   private setElementWidth() {
-    let width = this.widthRatio * this.coveoRoot.width();
-    if (width <= this.minWidth) {
-      width = this.minWidth;
-    }
-    this.element.el.style.width = width.toString() + 'px';
+    this.element.el.style.width = '100%';
   }
 
   private unsetElementAttributes() {
     this.element.hide();
-    this.element.removeClass(this.cssClassName);
-    this.element.removeClass(ResponsiveDropdownContent.DEFAULT_CSS_CLASS_NAME);
-    this.element.setAttribute('role', null);
-    this.element.setAttribute('aria-label', null);
-  }
-
-  private get popperReferenceElement() {
-    return this.coveoRoot.find(`.${ResponsiveComponentsManager.DROPDOWN_HEADER_WRAPPER_CSS_CLASS}`);
-  }
-
-  private createPopper() {
-    this.popperReference = new PopperJs(this.popperReferenceElement, this.element.el, {
-      placement: 'bottom-end',
-      positionFixed: true,
-      modifiers: {
-        preventOverflow: {
-          boundariesElement: this.coveoRoot.el
-        },
-        computeStyle: {
-          gpuAcceleration: false
-        }
-      },
-      eventsEnabled: false
-    });
-
-    this.bindPopperEvents();
-  }
-
-  private get scrollableParent() {
-    return ComponentOptions.findParentScrolling(this.popperReferenceElement);
-  }
-
-  private bindPopperEvents() {
-    $$(this.scrollableParent).on(['scroll', 'resize'], () => {
-      this.popperReference.update();
-    });
-  }
-
-  private unbindPopperEvents() {
-    $$(this.scrollableParent).off(['scroll', 'resize'], () => {
-      this.popperReference.update();
-    });
   }
 }

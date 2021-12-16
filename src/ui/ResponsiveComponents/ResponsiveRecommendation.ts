@@ -131,7 +131,6 @@ export class ResponsiveRecommendation implements IResponsiveComponent {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
     let dropdown = responsiveDropdown ? responsiveDropdown : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
-    dropdown.disablePopupBackground();
     return dropdown;
   }
 
