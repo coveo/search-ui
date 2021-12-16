@@ -596,12 +596,14 @@ export class QueryController extends RootComponent {
       'aq',
       'cq',
       'dq',
+      'lq',
       'searchHub',
       'tab',
       'pipeline',
       'sortCriteria',
       'recommendation',
-      'commerce'
+      'commerce',
+      'facets'
     ];
 
     const queryParams = pick(query, ...queryKeys);
