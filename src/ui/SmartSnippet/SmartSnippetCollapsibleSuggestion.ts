@@ -171,13 +171,21 @@ export class SmartSnippetCollapsibleSuggestion {
     }
   }
 
+  private updateIFrameExpanded() {
+    const iframe = this.snippetAndSourceContainer.find('iframe');
+    if (!iframe) {
+      return;
+    }
+    this.expanded ? iframe.removeAttribute('tabindex') : iframe.setAttribute('tabindex', '-1');
+  }
+
   private updateExpanded() {
     this.checkbox.setAttribute('aria-expanded', this.expanded.toString());
     this.checkbox.setHtml(this.expanded ? SVGIcons.icons.arrowUp : SVGIcons.icons.arrowDown);
-    this.collapsibleContainer.setAttribute('tabindex', `${this.expanded ? 0 : -1}`);
     this.collapsibleContainer.setAttribute('aria-hidden', (!this.expanded).toString());
     this.collapsibleContainer.toggleClass(QUESTION_SNIPPET_HIDDEN_CLASSNAME, !this.expanded);
     this.collapsibleContainer.el.style.height = this.expanded ? `${this.snippetAndSourceContainer.el.clientHeight}px` : '0px';
+    this.updateIFrameExpanded();
   }
 
   private sendExpandAnalytics() {
