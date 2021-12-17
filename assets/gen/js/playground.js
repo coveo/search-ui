@@ -12421,12 +12421,14 @@ var QueryController = /** @class */ (function (_super) {
             'aq',
             'cq',
             'dq',
+            'lq',
             'searchHub',
             'tab',
             'pipeline',
             'sortCriteria',
             'recommendation',
-            'commerce'
+            'commerce',
+            'facets'
         ];
         var queryParams = underscore_1.pick.apply(void 0, [query].concat(queryKeys));
         if (queryResults) {
@@ -15471,8 +15473,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10092.5',
-    product: '2.10092.5',
+    lib: '2.10092.6',
+    product: '2.10092.6',
     supportedApiVersion: 2
 };
 
