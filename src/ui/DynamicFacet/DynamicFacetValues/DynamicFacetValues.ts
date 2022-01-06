@@ -9,6 +9,7 @@ import { IDynamicFacet, IValueCreator, IDynamicFacetValue, IDynamicFacetValues }
 import { DynamicFacetValueShowMoreLessButton } from './DynamicFacetValueMoreLessButton';
 import { Utils } from '../../../utils/Utils';
 import { getDynamicFacetHeaderId } from '../DynamicFacetHeader/DynamicFacetHeader';
+import { filterDuplicateFacetValues } from './DynamicFacetValueDuplicateResolver';
 
 export interface IDynamicFacetValueCreatorKlass {
   new (facet: IDynamicFacet): IValueCreator;
@@ -26,7 +27,8 @@ export class DynamicFacetValues implements IDynamicFacetValues {
   }
 
   public createFromResponse(response: IFacetResponse) {
-    this.facetValues = response.values.map((facetValue, index) => this.valueCreator.createFromResponse(facetValue, index));
+    const values = filterDuplicateFacetValues(response.values);
+    this.facetValues = values.map((facetValue, index) => this.valueCreator.createFromResponse(facetValue, index));
   }
 
   public reorderValues(order: string[]) {
