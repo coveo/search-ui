@@ -121,7 +121,7 @@ module.exports = {
     filename: getBaseFileName() + '.js',
     chunkFilename: getChunkFileName() + '.js',
     libraryTarget: 'umd',
-    umdNamedDefine: true,
+    umdNamedDefine: false,
     // See SwapVar.ts as for why this need to be a temporary variable
     library: 'Coveo__temporary',
     publicPath: 'js/',
