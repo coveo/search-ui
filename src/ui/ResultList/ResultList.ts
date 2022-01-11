@@ -212,10 +212,13 @@ export class ResultList extends Component {
      *
      * Setting this option to `true` ensures that the Coveo Search API does not return fields that are unnecessary for
      * the UI to function.
+     * 
+     * If you set this option to `true`, the fields referenced in your result folding templates won't be automatically resolved.
+     * In such a case, you must manually specify those fields using the [`fieldsToInclude`]{@link ResultList.options.fieldsToInclude} option.
      *
      * **Notes:**
      *
-     * - Many interfaces created with the JavaScript Search Interface Editor explicitly set this option to `true`.
+     * - Many interfaces created with the JavaScript Search Interface Editor explicitly set this option to `true`.   
      * - You cannot set this option to `true` in the Coveo for Sitecore integration.
      */
     autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
@@ -225,11 +228,16 @@ export class ResultList extends Component {
      *
      * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
      * `true`, the Coveo Search API returns the fields you specify for this option (if those fields are available) in
-     * addition to the fields which the `ResultList` automatically requests.
+     * addition to the fields which the `ResultList` automatically requests. Note that the `ResultList` doesn't
+     * automatically request fields for folding templates; in such a case, you must manually specify fields using
+     * this option to avoid empty results.
      *
-     * Otherwise, the Coveo Search API only returns the fields you specify for this option (if those fields are
-     * available), unless you leave this option undefined, in which case the Coveo Search API returns all available
-     * fields.
+     * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
+     * `false`, the Coveo Search API only returns the fields you specify for this option (if those fields are
+     * available).
+     * 
+     * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
+     * `false` and leave this option undefined, the Coveo Search API returns all available fields.
      */
     fieldsToInclude: ComponentOptions.buildFieldsOption({ includeInResults: true }),
 
