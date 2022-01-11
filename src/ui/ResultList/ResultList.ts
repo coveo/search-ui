@@ -228,9 +228,9 @@ export class ResultList extends Component {
      *
      * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
      * `true`, the Coveo Search API returns the fields you specify for this option (if those fields are available) in
-     * addition to the fields which the `ResultList` automatically requests. Note that the `ResultList` doesn't
-     * automatically request fields for folding templates; in such a case, you must manually specify fields using
-     * this option to avoid empty results.
+     * addition to the fields which the `ResultList` automatically requests. Note that the `autoSelectFieldsToInclude`
+     * option doesn't automatically request fields for folding templates; in such a case, you must manually specify 
+     * specify fields using this option to avoid empty results.
      *
      * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
      * `false`, the Coveo Search API only returns the fields you specify for this option (if those fields are
