@@ -10,6 +10,7 @@ import { HeightLimiterClassNames } from '../../src/ui/SmartSnippet/HeightLimiter
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { Utils } from '../../src/Core';
 import { getDefaultSnippetStyle } from '../../src/ui/SmartSnippet/SmartSnippetCommon';
+import { ExplanationModalClassNames } from '../../src/ui/SmartSnippet/ExplanationModal';
 
 export function SmartSnippetTest() {
   const sourceTitle = 'Google!';
@@ -353,24 +354,41 @@ export function SmartSnippetTest() {
           expect(getFirstChild(UserFeedbackBannerClassNames.THANK_YOU_BANNER_ACTIVE_CLASSNAME)).toBeNull();
         });
 
-        it('after clicking yes or no, the thank you banner should be active', () => {
-          getFirstChild(UserFeedbackBannerClassNames.NO_BUTTON_CLASSNAME).click();
-          expect(getFirstChild(UserFeedbackBannerClassNames.THANK_YOU_BANNER_ACTIVE_CLASSNAME)).not.toBeNull();
-        });
+        describe('after clicking no', () => {
+          beforeEach(() => {
+            getFirstChild(UserFeedbackBannerClassNames.NO_BUTTON_CLASSNAME).click();
+          });
 
-        it('after clicking yes or no and receiving a new answer, the thank you banner should not be active', async done => {
-          getFirstChild(UserFeedbackBannerClassNames.NO_BUTTON_CLASSNAME).click();
-          await triggerQuestionAnswerQuery(false);
-          expect(getFirstChild(UserFeedbackBannerClassNames.THANK_YOU_BANNER_ACTIVE_CLASSNAME)).toBeNull();
-          done();
-        });
+          it('the thank you banner should be active', () => {
+            expect(getFirstChild(UserFeedbackBannerClassNames.THANK_YOU_BANNER_ACTIVE_CLASSNAME)).not.toBeNull();
+          });
 
-        it('after clicking yes or no and receiving a new answer, it should still be possible to give the same answer', async done => {
-          getFirstChild(UserFeedbackBannerClassNames.NO_BUTTON_CLASSNAME).click();
-          await triggerQuestionAnswerQuery(false);
-          getFirstChild(UserFeedbackBannerClassNames.NO_BUTTON_CLASSNAME).click();
-          expect(getFirstChild(UserFeedbackBannerClassNames.THANK_YOU_BANNER_ACTIVE_CLASSNAME)).not.toBeNull();
-          done();
+          it('after receiving a new answer, the thank you banner should not be active', async done => {
+            await triggerQuestionAnswerQuery(false);
+            expect(getFirstChild(UserFeedbackBannerClassNames.THANK_YOU_BANNER_ACTIVE_CLASSNAME)).toBeNull();
+            done();
+          });
+
+          it('after receiving a new answer, it should still be possible to give the same answer', async done => {
+            await triggerQuestionAnswerQuery(false);
+            getFirstChild(UserFeedbackBannerClassNames.NO_BUTTON_CLASSNAME).click();
+            expect(getFirstChild(UserFeedbackBannerClassNames.THANK_YOU_BANNER_ACTIVE_CLASSNAME)).not.toBeNull();
+            done();
+          });
+
+          describe('after pressing explain why', () => {
+            beforeEach(() => {
+              getFirstChild(UserFeedbackBannerClassNames.EXPLAIN_WHY_CLASSNAME).click();
+            });
+
+            afterEach(() => {
+              (document.querySelector(`.${ExplanationModalClassNames.CANCEL_BUTTON_CLASSNAME}`) as HTMLElement).click();
+            });
+
+            it('should open a modal', () => {
+              expect(document.querySelector(`.${ExplanationModalClassNames.ROOT_CLASSNAME}`)).toBeTruthy();
+            });
+          });
         });
 
         it('should render the snippet followed by the source in the answer container', () => {
