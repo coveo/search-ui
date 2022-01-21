@@ -67,7 +67,7 @@ export class ExplanationModal {
   public open(origin: HTMLElement) {
     this.modal.open({
       origin,
-      title: l('UsefulnessFeedbackExplainWhyImperative'),
+      title: $$('span', {}, l('UsefulnessFeedbackExplainWhyImperative')).el,
       content: this.buildContent(),
       validation: () => {
         if (this.shouldCallCloseEvent) {
