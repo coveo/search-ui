@@ -44,8 +44,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var RankingInfoTable_1 = __webpack_require__(338);
 var MetaDataTable_1 = __webpack_require__(343);
 var Dom_1 = __webpack_require__(1);
-var ExternalModulesShim_1 = __webpack_require__(42);
-var Core_1 = __webpack_require__(41);
+var ExternalModulesShim_1 = __webpack_require__(33);
+var Core_1 = __webpack_require__(32);
 var RelevanceInspectorTabs_1 = __webpack_require__(344);
 __webpack_require__(345);
 var ExecutionReport_1 = __webpack_require__(333);
@@ -517,7 +517,7 @@ var ExecutionReportSimpleSection_1 = __webpack_require__(337);
 var ExecutionReportEffectiveIndexQuerySection_1 = __webpack_require__(350);
 var UtilsModules_1 = __webpack_require__(79);
 var ExecutionReportRankingModifiers_1 = __webpack_require__(351);
-var Core_1 = __webpack_require__(41);
+var Core_1 = __webpack_require__(32);
 var ExecutionReportITDSection_1 = __webpack_require__(352);
 var EXECUTION_REPORT_SECTION;
 (function (EXECUTION_REPORT_SECTION) {
@@ -802,7 +802,7 @@ exports.ExecutionReportGenericSection = ExecutionReportGenericSection;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var underscore_1 = __webpack_require__(0);
-var StringUtils_1 = __webpack_require__(20);
+var StringUtils_1 = __webpack_require__(19);
 var Dom_1 = __webpack_require__(1);
 exports.buildListOfTermsElement = function (weightPerTerm) {
     var listItems = underscore_1.map(weightPerTerm, function (value, key) {
@@ -1261,23 +1261,23 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(14);
+var ComponentOptions_1 = __webpack_require__(24);
 var ComponentOptionsModel_1 = __webpack_require__(23);
-var AnalyticsActionListMeta_1 = __webpack_require__(11);
-var ResultListEvents_1 = __webpack_require__(32);
+var AnalyticsActionListMeta_1 = __webpack_require__(10);
+var ResultListEvents_1 = __webpack_require__(34);
 var HighlightUtils_1 = __webpack_require__(82);
-var DeviceUtils_1 = __webpack_require__(21);
+var DeviceUtils_1 = __webpack_require__(20);
 var OSUtils_1 = __webpack_require__(120);
 var Initialization_1 = __webpack_require__(12);
-var QueryUtils_1 = __webpack_require__(22);
+var QueryUtils_1 = __webpack_require__(21);
 var Assert_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(3);
-var Defer_1 = __webpack_require__(31);
+var Defer_1 = __webpack_require__(22);
 var Dom_1 = __webpack_require__(1);
 var StreamHighlightUtils_1 = __webpack_require__(117);
-var StringUtils_1 = __webpack_require__(20);
+var StringUtils_1 = __webpack_require__(19);
 var underscore_1 = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(24);
+var GlobalExports_1 = __webpack_require__(25);
 __webpack_require__(341);
 var AccessibleButton_1 = __webpack_require__(122);
 var MiscModules_1 = __webpack_require__(81);
@@ -1893,8 +1893,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var TableBuilder_1 = __webpack_require__(332);
 var underscore_1 = __webpack_require__(0);
 var Dom_1 = __webpack_require__(1);
-var StringUtils_1 = __webpack_require__(20);
-var DateUtils_1 = __webpack_require__(57);
+var StringUtils_1 = __webpack_require__(19);
+var DateUtils_1 = __webpack_require__(56);
 var TextInput_1 = __webpack_require__(118);
 var MetaDataTable = /** @class */ (function () {
     function MetaDataTable(results, bindings) {
