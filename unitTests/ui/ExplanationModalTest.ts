@@ -86,7 +86,7 @@ export function ExplanationModalTest() {
       });
 
       it('should give the modal the right title', () => {
-        expect(getAccessibleModalOpenParameters().title).toEqual(l('UsefulnessFeedbackExplainWhyImperative'));
+        expect(getAccessibleModalOpenParameters().title.innerText).toEqual(l('UsefulnessFeedbackExplainWhyImperative'));
       });
 
       it('should give the root the right class', () => {
