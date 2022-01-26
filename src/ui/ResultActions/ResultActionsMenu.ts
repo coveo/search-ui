@@ -104,7 +104,7 @@ export class ResultActionsMenu extends Component {
 
   private initializeParentResult() {
     // Find the result containing this ResultActionsMenu
-    this.parentResult = $$(this.element).closest('CoveoResult');
+    this.parentResult = $$(this.element).closest('CoveoResult') || $$(this.element).closest('coveo-result-folding-child-result');
     Assert.check(this.parentResult !== undefined, 'ResultActionsMenu needs to be a child of a Result');
 
     $$(this.parentResult).addClass('coveo-clickable');
