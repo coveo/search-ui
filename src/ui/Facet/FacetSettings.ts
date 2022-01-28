@@ -14,6 +14,7 @@ import { Utils } from '../../utils/Utils';
 import { analyticsActionCauseList, IAnalyticsFacetMeta } from '../Analytics/AnalyticsActionListMeta';
 import { Facet } from './Facet';
 import { FacetSort, IFacetSortDescription } from './FacetSort';
+import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 
 export interface IFacetSettingsKlass {
   new (sorts: string[], facet: Facet): FacetSettings;
@@ -300,7 +301,7 @@ export class FacetSettings extends FacetSort {
       this.facet.updateSort('nosort');
       if (this.customSortDirectionChange) {
         this.customSortDirectionChange = false;
-        this.facet.queryController.executeQuery();
+        this.facet.queryController.executeQuery({ closeModalBox: !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.facet.root)) });
       }
     }
   }

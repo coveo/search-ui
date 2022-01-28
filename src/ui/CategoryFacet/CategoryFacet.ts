@@ -48,6 +48,7 @@ import {
 } from '../../utils/DependsOnManager';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { CategoryFacetValuesTree } from './CategoryFacetValuesTree';
+import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 
 export interface ICategoryFacetOptions extends IResponsiveComponentOptions, IDependsOnCompatibleFacetOptions {
   field: IFieldOption;
@@ -516,7 +517,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public async executeQuery() {
     this.showWaitingAnimation();
     try {
-      await this.queryController.executeQuery();
+      await this.queryController.executeQuery({ closeModalBox: !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) });
     } finally {
       this.hideWaitingAnimation();
     }
