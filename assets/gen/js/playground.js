@@ -5180,6 +5180,10 @@ var Component = /** @class */ (function (_super) {
             jQuery(element).data(result);
         }
     };
+    Component.bindFoldedResultToElement = function (element) {
+        Assert_1.Assert.exists(element);
+        Dom_1.$$(element).addClass('coveo-result-folding-child-result');
+    };
     Component.resolveRoot = function (element) {
         Assert_1.Assert.exists(element);
         var resolvedSearchInterface = Component.resolveBinding(element, SearchInterface_1.SearchInterface);
@@ -15473,8 +15477,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10093.1',
-    product: '2.10093.1',
+    lib: '2.10093.2',
+    product: '2.10093.2',
     supportedApiVersion: 2
 };
 
@@ -47913,7 +47917,7 @@ var ResponsiveDropdown = /** @class */ (function () {
             origin: this.dropdownHeader.element.el,
             title: title.el,
             validation: function () {
-                _this.isOpened = false;
+                _this.close();
                 return true;
             }
         });
