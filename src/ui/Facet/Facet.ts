@@ -1268,7 +1268,7 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
     const options: IQueryOptions = {
-      ...(beforeExecuteQuery ? beforeExecuteQuery : { ignoreWarningSearchEvent: true }),
+      ...(beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true }),
       closeModalBox: !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root))
     };
     this.queryController.executeQuery(options);
