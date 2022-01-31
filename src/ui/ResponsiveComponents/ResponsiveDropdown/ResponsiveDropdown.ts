@@ -74,7 +74,7 @@ export class ResponsiveDropdown {
       origin: this.dropdownHeader.element.el,
       title: title.el,
       validation: () => {
-        this.isOpened = false;
+        this.close();
         return true;
       }
     });
