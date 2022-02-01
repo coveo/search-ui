@@ -51,6 +51,8 @@ export class DidYouMean extends Component {
 
   private hideNext: boolean;
 
+  private ignoreNextNoResults: boolean;
+
   /**
    * Creates a new DidYouMean component.
    * @param element The HTMLElement on which to instantiate the component.
@@ -66,6 +68,8 @@ export class DidYouMean extends Component {
     Assert.exists(this.options);
 
     this.hideNext = true;
+
+    this.ignoreNextNoResults = false;
 
     this.correctedTerm = null;
 
@@ -105,8 +109,14 @@ export class DidYouMean extends Component {
   }
 
   private handleNoResults(data: INoResultsEventArgs) {
+    if (this.ignoreNextNoResults) {
+      this.logger.warn('Query is being automatically corrected twice while returning no results.');
+      return;
+    }
+
     // We do not auto-correct on search-as-you-type queries
     if (Utils.isNonEmptyArray(data.results.queryCorrections) && !data.searchAsYouType && this.options.enableAutoCorrection) {
+      this.ignoreNextNoResults = true;
       let originalQuery = this.queryStateModel.get(QueryStateModel.attributesEnum.q);
       this.correctedTerm = data.results.queryCorrections[0].correctedQuery;
       let correctedSentence = this.buildCorrectedSentence(data.results.queryCorrections[0]);
@@ -134,6 +144,7 @@ export class DidYouMean extends Component {
   private handleProcessNewQueryResults(data: IQuerySuccessEventArgs) {
     Assert.exists(data);
     Assert.exists(data.results);
+    this.ignoreNextNoResults = false;
 
     let results = data.results;
     this.logger.trace('Received query results from new query', results);
