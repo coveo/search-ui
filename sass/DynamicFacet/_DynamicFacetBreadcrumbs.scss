@@ -14,9 +14,10 @@
   @include breadcrumb-value-clear();
 }
 
-ul.coveo-dynamic-facet-breadcrumb.coveo-breadcrumb-item {
-  display: block;
+ul.coveo-dynamic-facet-breadcrumb-values {
+  display: inline-block;
   list-style: none;
+  margin: 0;
   padding: 0;
 }
 
