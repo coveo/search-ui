@@ -56,6 +56,11 @@ export class DynamicFacetValue implements IDynamicFacetValue {
     return value.toLowerCase() === this.value.toLowerCase();
   }
 
+  public focus() {
+    const checkbox = this.renderedElement.querySelector<HTMLElement>('.coveo-checkbox-button');
+    checkbox.focus();
+  }
+
   public get formattedCount(): string {
     return Globalize.format(this.numberOfResults, 'n0');
   }
