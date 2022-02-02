@@ -103,6 +103,44 @@ export function DidYouMeanTest() {
             expect(spy).toHaveBeenCalledWith(QueryStateModel.attributesEnum.q, 'this is the corrected query');
           });
 
+          it('should only autocorrect the query once when receiving 2 responses with corrections and no results', () => {
+            const spy = jasmine.createSpy('queryStateModelSpy');
+            test.env.queryStateModel.set = spy;
+
+            Simulate.query(test.env, {
+              results: FakeResults.createFakeResults(0),
+              queryCorrections: [fakeQueryCorrection]
+            });
+
+            Simulate.query(test.env, {
+              results: FakeResults.createFakeResults(0),
+              queryCorrections: [fakeQueryCorrection]
+            });
+
+            expect(spy).toHaveBeenCalledTimes(1);
+          });
+
+          it('should allow to autocorrect more than once when receiving at least 1 request with results', () => {
+            const spy = jasmine.createSpy('queryStateModelSpy');
+            test.env.queryStateModel.set = spy;
+
+            Simulate.query(test.env, {
+              results: FakeResults.createFakeResults(0),
+              queryCorrections: [fakeQueryCorrection]
+            });
+
+            Simulate.query(test.env, {
+              results: FakeResults.createFakeResults(1)
+            });
+
+            Simulate.query(test.env, {
+              results: FakeResults.createFakeResults(0),
+              queryCorrections: [fakeQueryCorrection]
+            });
+
+            expect(spy).toHaveBeenCalledTimes(2);
+          });
+
           it('should send an analytics event when query is autocorrected', () => {
             const analyticsSpy = jasmine.createSpy('analyticsSpy');
             test.cmp.usageAnalytics.logSearchEvent = analyticsSpy;
