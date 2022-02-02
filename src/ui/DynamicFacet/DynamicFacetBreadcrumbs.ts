@@ -14,7 +14,7 @@ export class DynamicFacetBreadcrumbs {
   }
 
   private create() {
-    this.element = $$('div', { className: 'coveo-dynamic-facet-breadcrumb coveo-breadcrumb-item' }).el;
+    this.element = $$('ul', { className: 'coveo-dynamic-facet-breadcrumb coveo-breadcrumb-item' }).el;
     this.createAndAppendTitle();
 
     const activeFacetValues = this.facet.values.activeValues;
@@ -34,12 +34,10 @@ export class DynamicFacetBreadcrumbs {
   }
 
   private createAndAppendBreadcrumbValues(facetValues: IDynamicFacetValue[]) {
-    const valuesElement = $$('ul', { className: 'coveo-dynamic-facet-breadcrumb-values' }).el;
-    facetValues.forEach(facetValue => this.createAndAppendBreadcrumbValue(valuesElement, facetValue));
-    this.element.appendChild(valuesElement);
+    facetValues.forEach(facetValue => this.createAndAppendBreadcrumbValue(facetValue));
   }
 
-  private createAndAppendBreadcrumbValue(container: HTMLElement, facetValue: IDynamicFacetValue) {
+  private createAndAppendBreadcrumbValue(facetValue: IDynamicFacetValue) {
     const listContainer = $$('li', { className: 'coveo-dynamic-facet-breadcrumb-value-list-item' }).el;
     const valueElement = $$(
       'button',
@@ -55,7 +53,7 @@ export class DynamicFacetBreadcrumbs {
 
     $$(valueElement).on('click', () => this.valueSelectAction(facetValue));
     listContainer.appendChild(valueElement);
-    container.appendChild(listContainer);
+    this.element.appendChild(listContainer);
   }
 
   private valueSelectAction(facetValue: IDynamicFacetValue) {
