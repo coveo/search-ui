@@ -55,5 +55,10 @@ export function ResultActionsMenuTest() {
       component.trigger('mouseenter');
       expect(componentHasShowClass()).toBe(false);
     });
+
+    it('when set inside a folded result, it resolves the parent correctly', () => {
+      test = Mock.basicFoldedResultComponentSetup<ResultActionsMenu>(ResultActionsMenu);
+      expect(test.cmp.parentResult).toBeDefined();
+    });
   });
 }
