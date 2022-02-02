@@ -57,7 +57,13 @@ export class DynamicFacetValue implements IDynamicFacetValue {
   }
 
   public focus() {
+    if (!this.renderedElement) {
+      return;
+    }
     const checkbox = this.renderedElement.querySelector<HTMLElement>('.coveo-checkbox-button');
+    if (!checkbox) {
+      return;
+    }
     checkbox.focus();
   }
 
