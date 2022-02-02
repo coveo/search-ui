@@ -40,6 +40,7 @@ export class MockEnvironmentBuilder {
   public root: HTMLElement = $$('div').el;
   public element: HTMLElement = $$('div').el;
   public result: IQueryResult = undefined;
+  public isFoldedResult = false;
   public searchEndpoint = mockSearchEndpoint();
   public searchInterface = mockSearchInterface();
   public queryController = mockQueryController();
@@ -83,6 +84,13 @@ export class MockEnvironmentBuilder {
 
   public withResult(result: IQueryResult = FakeResults.createFakeResult()): MockEnvironmentBuilder {
     this.result = result;
+    this.isFoldedResult = false;
+    return this;
+  }
+
+  public withFoldedResult(result: IQueryResult = FakeResults.createFakeResult()): MockEnvironmentBuilder {
+    this.result = result;
+    this.isFoldedResult = true;
     return this;
   }
 
@@ -128,7 +136,8 @@ export class MockEnvironmentBuilder {
     };
 
     if (this.result) {
-      Component.bindResultToElement(this.element, this.result);
+      const bind = this.isFoldedResult ? Component.bindFoldedResultToElement : Component.bindResultToElement;
+      bind(this.element, this.result);
     }
     this.built = true;
     return this.getBindings();
@@ -337,6 +346,14 @@ export function basicComponentSetupWithModalBox<T>(klass, options = {}) {
 
 export function basicResultComponentSetup<T>(klass, options = {}) {
   const envBuilder = new MockEnvironmentBuilder().withResult();
+  return {
+    env: envBuilder.build(),
+    cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result)
+  };
+}
+
+export function basicFoldedResultComponentSetup<T>(klass, options = {}) {
+  const envBuilder = new MockEnvironmentBuilder().withFoldedResult();
   return {
     env: envBuilder.build(),
     cmp: <T>new klass(envBuilder.getBindings().element, options, envBuilder.getBindings(), envBuilder.result)

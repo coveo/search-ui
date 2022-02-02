@@ -66,6 +66,8 @@ import { OmniboxValuesList } from './OmniboxValuesList';
 import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
 import { IFieldValueCompatibleFacet } from '../FieldValue/IFieldValueCompatibleFacet';
+import { IQueryOptions } from '../../controllers/QueryController';
+import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 
 type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
 type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
@@ -1265,11 +1267,11 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
   }
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
-    if (!beforeExecuteQuery) {
-      this.queryController.executeQuery({ ignoreWarningSearchEvent: true });
-    } else {
-      this.queryController.executeQuery({ beforeExecuteQuery });
-    }
+    const options: IQueryOptions = {
+      ...(beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true }),
+      closeModalBox: !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root))
+    };
+    this.queryController.executeQuery(options);
     this.showWaitingAnimation();
   }
 
