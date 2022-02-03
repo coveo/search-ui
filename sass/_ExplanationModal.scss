@@ -3,6 +3,10 @@
 .coveo-user-explanation-modal {
   $modal: &;
 
+  .coveo-small-close {
+    display: none;
+  }
+
   &-explanation-section {
     display: flex;
     flex-wrap: wrap;
