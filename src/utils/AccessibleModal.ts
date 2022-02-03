@@ -136,13 +136,8 @@ export class AccessibleModal {
     closeButton.tabIndex = 0;
     closeButton.focus();
     $$(closeButton).on(
-      'keydown',
-      KeyboardUtils.keypressAction(KEYBOARD.ENTER, () =>
-        $$(closeButton).one(
-          'keyup',
-          KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => closeButton.click())
-        )
-      )
+      'keyup',
+      KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => closeButton.click())
     );
   }
 
