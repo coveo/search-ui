@@ -108,6 +108,14 @@ export class DynamicFacetValues implements IDynamicFacetValues {
     return newFacetValue;
   }
 
+  public focus(value: string) {
+    const facetValue = find(this.facetValues, facetValue => facetValue.equals(value));
+    if (!facetValue) {
+      return;
+    }
+    facetValue.focus();
+  }
+
   private buildShowLess() {
     const showLess = new DynamicFacetValueShowMoreLessButton({
       className: 'coveo-dynamic-facet-show-less',
