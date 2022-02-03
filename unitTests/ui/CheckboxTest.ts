@@ -49,8 +49,8 @@ export function CheckboxTest() {
       expect(button.getAttribute('aria-label')).toEqual(ariaLabel);
     });
 
-    it("the button's aria-pressed should be false", () => {
-      expect(button.getAttribute('aria-pressed')).toEqual('false');
+    it("the button's aria-checked should be false", () => {
+      expect(button.getAttribute('aria-checked')).toEqual('false');
     });
 
     describe('after being selected', () => {
@@ -71,8 +71,8 @@ export function CheckboxTest() {
         expect(spyChange).toHaveBeenCalledTimes(1);
       });
 
-      it("the button's aria-pressed should be true", () => {
-        expect(button.getAttribute('aria-pressed')).toEqual('true');
+      it("the button's aria-checked should be true", () => {
+        expect(button.getAttribute('aria-checked')).toEqual('true');
       });
 
       describe('then toggled', () => {
@@ -84,8 +84,8 @@ export function CheckboxTest() {
           expect(checkbox.isSelected()).toBe(false);
         });
 
-        it("the button's aria-pressed should be false", () => {
-          expect(button.getAttribute('aria-pressed')).toEqual('false');
+        it("the button's aria-checked should be false", () => {
+          expect(button.getAttribute('aria-checked')).toEqual('false');
         });
       });
     });
@@ -99,8 +99,8 @@ export function CheckboxTest() {
         expect(spyChange).not.toHaveBeenCalled();
       });
 
-      it("the button's aria-pressed should be true", () => {
-        expect(button.getAttribute('aria-pressed')).toEqual('true');
+      it("the button's aria-checked should be true", () => {
+        expect(button.getAttribute('aria-checked')).toEqual('true');
       });
     });
 
