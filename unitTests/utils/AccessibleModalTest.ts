@@ -122,7 +122,8 @@ export function AccessibleModalTest() {
         expect(closeButton.focus).toHaveBeenCalledTimes(1);
       });
 
-      it('clicks on the close button when enter is pressed', () => {
+      it('clicks on the close button when enter is pressed (keydown then keyup)', () => {
+        Simulate.keyDown(closeButton, KEYBOARD.ENTER);
         Simulate.keyUp(closeButton, KEYBOARD.ENTER);
         expect(closeButtonClickSpy).toHaveBeenCalledTimes(1);
       });
