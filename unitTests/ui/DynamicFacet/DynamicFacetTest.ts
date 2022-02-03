@@ -46,6 +46,7 @@ export function DynamicFacetTest() {
       spyOn(test.cmp, 'reset').and.callThrough();
       spyOn(test.cmp, 'enableFreezeFacetOrderFlag').and.callThrough();
       spyOn(test.cmp, 'scrollToTop').and.callThrough();
+      spyOn(test.cmp, 'focusValueAfterRerender').and.callThrough();
       spyOn(test.cmp, 'logAnalyticsEvent').and.callThrough();
       spyOn(test.cmp, 'selectMultipleValues').and.callThrough();
       spyOn(test.cmp, 'deselectMultipleValues').and.callThrough();
@@ -145,6 +146,18 @@ export function DynamicFacetTest() {
 
       expect(test.cmp.values.get(mockFacetValues[0].value).isSelected).toBe(true);
       testQueryStateModelValues();
+    });
+
+    it('does not focus on the value after selecting it with a function', () => {
+      test.cmp.selectValue(mockFacetValues[0].value);
+      expect(test.cmp.focusValueAfterRerender).not.toHaveBeenCalled();
+    });
+
+    it('focuses on the value after clicking it', () => {
+      test.cmp.ensureDom();
+      const facetValue = mockFacetValues[0].value;
+      test.cmp.element.querySelector<HTMLElement>(`[data-value="${facetValue}"] button`).click();
+      expect(test.cmp.focusValueAfterRerender).toHaveBeenCalledWith(facetValue);
     });
 
     it('allows to select a value that did not previously exist', () => {

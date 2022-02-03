@@ -446,6 +446,11 @@ export class Component extends BaseComponent {
     }
   }
 
+  static bindFoldedResultToElement(element: HTMLElement) {
+    Assert.exists(element);
+    $$(element).addClass('coveo-result-folding-child-result');
+  }
+
   static resolveRoot(element: HTMLElement): HTMLElement {
     Assert.exists(element);
     const resolvedSearchInterface = Component.resolveBinding(element, SearchInterface);
