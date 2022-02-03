@@ -167,14 +167,14 @@ export function ResponsiveFacetColumnTest() {
             it('should trigger the closed event when closing the popup', () => {
               dropdown.close();
               expect(popupOpened).not.toHaveBeenCalled();
-              expect(popupClosed).toHaveBeenCalledTimes(1);
+              expect(popupClosed).toHaveBeenCalled();
             });
 
             it('should trigger the closed event when large mode is activated', () => {
               setScreenWidth(TEST_SCREEN_WIDTH_DESKTOP);
               column.handleResizeEvent();
               expect(popupOpened).not.toHaveBeenCalled();
-              expect(popupClosed).toHaveBeenCalledTimes(1);
+              expect(popupClosed).toHaveBeenCalled();
             });
           });
         });
