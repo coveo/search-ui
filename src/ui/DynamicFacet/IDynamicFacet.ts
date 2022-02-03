@@ -60,6 +60,7 @@ export interface IDynamicFacet
   deselectValue(value: string): void;
   deselectMultipleValues(values: string[]): void;
   toggleSelectValue(value: string): void;
+  focusValueAfterRerender(value: string): void;
   showMoreValues(additionalNumberOfValues?: number): void;
   showLessValues(): void;
   reset(): void;
@@ -109,6 +110,7 @@ export interface IDynamicFacetValue extends IDynamicFacetValueProperties {
   toggleSelect(): void;
   deselect(): void;
   equals(arg: string | IDynamicFacetValue): boolean;
+  focus(): void;
 
   logSelectActionToAnalytics(): void;
 }
@@ -119,6 +121,7 @@ export interface IDynamicFacetValues {
   clearAll(): void;
   hasSelectedValue(arg: string | IDynamicFacetValue): boolean;
   get(arg: string | IDynamicFacetValue): IDynamicFacetValue;
+  focus(value: string): void;
   render(): HTMLElement;
 
   allValues: string[];
