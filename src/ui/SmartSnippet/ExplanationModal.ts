@@ -54,7 +54,13 @@ export class ExplanationModal {
   private shouldCallCloseEvent = false;
 
   constructor(public options: IExplanationModalOptions) {
-    this.modal = new AccessibleModal(ROOT_CLASSNAME, this.options.ownerElement, this.options.modalBoxModule);
+    this.modal = new AccessibleModal(ROOT_CLASSNAME, this.options.ownerElement, this.options.modalBoxModule, {
+      focusOnOpen: () => this.sendButton()
+    });
+  }
+
+  private sendButton(): HTMLElement {
+    return this.modal.element.querySelector(`.${REASONS_CLASSNAME} input`);
   }
 
   public get details() {
