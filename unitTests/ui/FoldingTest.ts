@@ -239,6 +239,9 @@ export function FoldingTest() {
           query.expression.add('should be there');
           query.advancedExpression.add('should not be there');
           query.firstResult = 9999;
+          query.facetRequests = [{ facetId: 'facet', field: '@facet' }];
+          query.categoryFacets = [{ field: '@category' }];
+          query.facetOptions = { freezeFacetOrder: true };
           fakeResults._folded = null;
           queryData = Simulate.query(test.env, {
             query: query.build(),
@@ -271,6 +274,30 @@ export function FoldingTest() {
           expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
             jasmine.objectContaining({
               aq: '@fieldname=fieldvalue'
+            })
+          );
+        });
+
+        it('and clear facets', () => {
+          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              facets: []
+            })
+          );
+        });
+
+        it('and clear categoryFacets', () => {
+          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              categoryFacets: []
+            })
+          );
+        });
+
+        it('and clear facetOptions', () => {
+          expect(test.env.queryController.getEndpoint().search).toHaveBeenCalledWith(
+            jasmine.objectContaining({
+              facetOptions: {}
             })
           );
         });
