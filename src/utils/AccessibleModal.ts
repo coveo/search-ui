@@ -11,6 +11,7 @@ import { DomUtils } from '../Core';
 export interface IAccessibleModalOptions {
   overlayClose?: boolean;
   sizeMod: 'small' | 'normal' | 'big';
+  focusOnOpen?(): HTMLElement;
 }
 
 export interface IAccessibleModalOpenParameters {
@@ -127,18 +128,27 @@ export class AccessibleModal {
       this.headerElement.setAttribute('aria-label', title);
     }
     this.makeCloseButtonAccessible();
+    this.updateFocus();
+  }
+
+  private get closeButton(): HTMLElement {
+    return this.element.querySelector('.coveo-small-close');
   }
 
   private makeCloseButtonAccessible() {
-    const closeButton: HTMLElement = this.element.querySelector('.coveo-small-close');
+    const closeButton = this.closeButton;
     closeButton.setAttribute('aria-label', l('Close'));
     closeButton.setAttribute('role', 'button');
     closeButton.tabIndex = 0;
-    closeButton.focus();
     $$(closeButton).on(
       'keyup',
       KeyboardUtils.keypressAction(KEYBOARD.ENTER, () => closeButton.click())
     );
+  }
+
+  private updateFocus() {
+    const focusOnElement: HTMLElement = (this.options.focusOnOpen && this.options.focusOnOpen()) || this.closeButton;
+    focusOnElement.focus();
   }
 
   private onModalClose() {

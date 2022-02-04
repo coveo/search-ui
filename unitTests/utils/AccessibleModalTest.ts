@@ -1,4 +1,4 @@
-import { AccessibleModal } from '../../src/utils/AccessibleModal';
+import { AccessibleModal, IAccessibleModalOptions } from '../../src/utils/AccessibleModal';
 import { $$ } from '../../src/utils/Dom';
 import { Simulate } from '../Simulate';
 import { FocusTrap } from '../../src/ui/FocusTrap/FocusTrap';
@@ -18,11 +18,12 @@ export function AccessibleModalTest() {
       return (bodyElement = $$('div').el);
     }
 
-    function createAccessibleModal() {
+    function createAccessibleModal(options: Partial<IAccessibleModalOptions> = {}) {
       return (accessibleModal = new AccessibleModal(
         modalClass,
         createBody() as HTMLBodyElement,
-        (modalBoxMock = Simulate.modalBoxModule())
+        (modalBoxMock = Simulate.modalBoxModule()),
+        options
       ));
     }
 
@@ -39,10 +40,6 @@ export function AccessibleModalTest() {
       return validationSpy as () => boolean;
     }
 
-    beforeEach(() => {
-      createAccessibleModal();
-    });
-
     describe('when calling open', () => {
       let focusTrap: FocusTrap;
       let container: HTMLElement;
@@ -58,6 +55,7 @@ export function AccessibleModalTest() {
       }
 
       beforeEach(() => {
+        createAccessibleModal();
         accessibleModal.open({
           title: createTitle(),
           content: createContent(),
@@ -160,6 +158,22 @@ export function AccessibleModalTest() {
           expect(focusTrap['enabled']).toEqual(false);
         });
       });
+    });
+
+    it(`when defining the focusOnOpen option & opening the modal
+    it should not focus on the close button but on the defined element`, () => {
+      const focusTarget = document.createElement('div');
+      spyOn(focusTarget, 'focus');
+      createAccessibleModal({ focusOnOpen: () => focusTarget });
+      accessibleModal.open({
+        title: createTitle(),
+        content: createContent(),
+        validation: createValidationSpy(),
+        origin: document.createElement('div')
+      });
+      const closeButton: HTMLElement = accessibleModal.element.querySelector('.coveo-small-close');
+      expect(closeButton.focus).not.toHaveBeenCalled();
+      expect(focusTarget.focus).toHaveBeenCalledTimes(1);
     });
   });
 }
