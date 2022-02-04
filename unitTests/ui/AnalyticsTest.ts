@@ -1,6 +1,5 @@
 import * as Mock from '../MockEnvironment';
 import { Analytics } from '../../src/ui/Analytics/Analytics';
-import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { IAnalyticsOptions } from '../../src/ui/Analytics/Analytics';
 import { Simulate } from '../Simulate';
@@ -43,7 +42,6 @@ export function AnalyticsTest() {
               queryStringArguments: { organizationId: 'another organization' },
               restUri: 'another/uri'
             });
-            env.componentOptionsModel = new ComponentOptionsModel(env.searchInterface.element);
             return env;
           })
         );
