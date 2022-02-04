@@ -1,5 +1,6 @@
 import * as Mock from '../MockEnvironment';
 import { Analytics } from '../../src/ui/Analytics/Analytics';
+import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
 import { SearchEndpoint } from '../../src/rest/SearchEndpoint';
 import { IAnalyticsOptions } from '../../src/ui/Analytics/Analytics';
 import { Simulate } from '../Simulate';
@@ -42,6 +43,7 @@ export function AnalyticsTest() {
               queryStringArguments: { organizationId: 'another organization' },
               restUri: 'another/uri'
             });
+            env.componentOptionsModel = new ComponentOptionsModel(env.searchInterface.element);
             return env;
           })
         );
@@ -371,6 +373,15 @@ export function AnalyticsTest() {
 
           let simulation = Simulate.query(test.env);
           expect(simulation.queryBuilder.build().searchHub).toBe('yoo');
+        });
+
+        it('searchhub will be put in the query params even when Analytics are disabled', () => {
+          options = { searchHub: 'still here' };
+          initAnalytics();
+          test.cmp.disable();
+
+          let simulation = Simulate.query(test.env);
+          expect(simulation.queryBuilder.build().searchHub).toBe('still here');
         });
 
         it("searchhub should be put in the component options model for other component to see it's value", () => {
