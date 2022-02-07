@@ -50,6 +50,8 @@ export interface IAnalyticsOptions {
  * You can use analytics data to evaluate how users are interacting with your search interface, improve relevance and
  * produce analytics dashboards within the Coveo Cloud Platform.
  *
+ * See [JavaScript Search Framework Usage Analytics](https://docs.coveo.com/en/365) for an introduction.
+ * 
  * See also [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events) for more advanced use cases.
  */
 
