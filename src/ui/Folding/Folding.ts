@@ -471,6 +471,9 @@ export class Folding extends Component {
     if (Utils.isNonEmptyString(fieldValue)) {
       builder.advancedExpression.addFieldExpression(<string>this.options.field, '=', [fieldValue]);
       query.aq = builder.build().aq;
+      query.facets = [];
+      query.categoryFacets = [];
+      query.facetOptions = {};
     }
 
     if (Utils.isNonEmptyString(originalQuery.q)) {
