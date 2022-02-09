@@ -140,9 +140,9 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      *
      * Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.
      *
-     * @examples 500
+     * @examples 1500
      */
-    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
+    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 1000 }),
 
     /**
      * Whether to enable the **More** and **Less** buttons in the Facet.
