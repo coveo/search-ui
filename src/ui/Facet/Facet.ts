@@ -66,6 +66,8 @@ import { OmniboxValuesList } from './OmniboxValuesList';
 import { ValueElement } from './ValueElement';
 import { ValueElementRenderer } from './ValueElementRenderer';
 import { IFieldValueCompatibleFacet } from '../FieldValue/IFieldValueCompatibleFacet';
+import { IQueryOptions } from '../../controllers/QueryController';
+import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 
 type ComputedFieldOperation = 'sum' | 'average' | 'minimum' | 'maximum';
 type ComputedFieldFormat = 'c0' | 'n0' | 'n2';
@@ -315,10 +317,12 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
      * The injection depth determines how many results to scan in the index to ensure that the facet lists all potential
      * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
      *
-     * Default value is `1000`. Minimum value is `0`.
+     * Default value is `1000`. Minimum value is `1000`.
      * @notSupportedIn salesforcefree
+     *
+     * @examples 1500
      */
-    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
+    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 1000 }),
     showIcon: ComponentOptions.buildBooleanOption({
       defaultValue: false,
       deprecated: 'This option is exposed for legacy reasons. It is not recommended to use this option.'
@@ -1265,11 +1269,11 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
   }
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
-    if (!beforeExecuteQuery) {
-      this.queryController.executeQuery({ ignoreWarningSearchEvent: true });
-    } else {
-      this.queryController.executeQuery({ beforeExecuteQuery });
-    }
+    const options: IQueryOptions = {
+      ...(beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true }),
+      closeModalBox: !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root))
+    };
+    this.queryController.executeQuery(options);
     this.showWaitingAnimation();
   }
 

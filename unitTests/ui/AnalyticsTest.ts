@@ -373,6 +373,15 @@ export function AnalyticsTest() {
           expect(simulation.queryBuilder.build().searchHub).toBe('yoo');
         });
 
+        it('searchhub will be put in the query params even when Analytics are disabled', () => {
+          options = { searchHub: 'still here' };
+          initAnalytics();
+          test.cmp.disable();
+
+          let simulation = Simulate.query(test.env);
+          expect(simulation.queryBuilder.build().searchHub).toBe('still here');
+        });
+
         it("searchhub should be put in the component options model for other component to see it's value", () => {
           options = { searchHub: 'mama mia' };
           initAnalytics();

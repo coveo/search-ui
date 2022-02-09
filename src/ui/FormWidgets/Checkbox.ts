@@ -119,9 +119,10 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
     }).el;
     this.button = $$('button', {
       type: 'button',
+      role: 'checkbox',
       className: 'coveo-checkbox-button',
       ariaLabel: this.ariaLabel || this.label,
-      ariaPressed: this.isSelected().toString()
+      ariaChecked: this.isSelected().toString()
     }).el;
     const labelSpan = $$('span', { className: 'coveo-checkbox-span-label' });
     labelSpan.text(this.label);
@@ -151,6 +152,6 @@ export class Checkbox implements IFormWidgetWithLabel, IFormWidgetSelectable {
   }
 
   private updateAccessibilityAttributes() {
-    this.button.setAttribute('aria-pressed', this.isSelected().toString());
+    this.button.setAttribute('aria-checked', this.isSelected().toString());
   }
 }

@@ -66,6 +66,10 @@ export function ExplanationModalTest() {
     getFirstChild(ClassNames.SEND_BUTTON_CLASSNAME).click();
   }
 
+  function pressCancelButton() {
+    getFirstChild(ClassNames.CANCEL_BUTTON_CLASSNAME).click();
+  }
+
   function writeDetails() {
     (getFirstChild(ClassNames.DETAILS_TEXTAREA_CLASSNAME) as HTMLTextAreaElement).value = details;
   }
@@ -86,7 +90,7 @@ export function ExplanationModalTest() {
       });
 
       it('should give the modal the right title', () => {
-        expect(getAccessibleModalOpenParameters().title).toEqual(l('UsefulnessFeedbackExplainWhyImperative'));
+        expect(getAccessibleModalOpenParameters().title.innerText).toEqual(l('UsefulnessFeedbackExplainWhyImperative'));
       });
 
       it('should give the root the right class', () => {
@@ -219,9 +223,13 @@ export function ExplanationModalTest() {
         });
       });
 
-      describe('after pressing the close button', () => {
+      describe('after pressing the cancel button', () => {
         beforeEach(() => {
-          accessibleModal.close();
+          pressCancelButton();
+        });
+
+        it('closes the modal', () => {
+          expect(accessibleModal.close).toHaveBeenCalledTimes(1);
         });
 
         it('calls onClosed', () => {
