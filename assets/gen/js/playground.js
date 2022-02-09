@@ -15477,8 +15477,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10093.4',
-    product: '2.10093.4',
+    lib: '2.10093.5',
+    product: '2.10093.5',
     supportedApiVersion: 2
 };
 
@@ -40962,8 +40962,7 @@ var InitializationEvents_1 = __webpack_require__(11);
  * You can use analytics data to evaluate how users are interacting with your search interface, improve relevance and
  * produce analytics dashboards within the Coveo Cloud Platform.
  *
- * See [Step 7 - Usage Analytics](https://docs.coveo.com/en/347/) of the Getting Started with the JavaScript
- * Search Framework V1 tutorial for an introduction to usage analytics.
+ * See [JavaScript Search Framework Usage Analytics](https://docs.coveo.com/en/365) for an introduction.
  *
  * See also [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events) for more advanced use cases.
  */
@@ -40998,7 +40997,7 @@ var Analytics = /** @class */ (function (_super) {
         }
         _this.initializeAnalyticsClient();
         Assert_1.Assert.exists(_this.client);
-        _this.bind.onRootElement(QueryEvents_1.QueryEvents.buildingQuery, function (data) { return _this.handleBuildingQuery(data); });
+        Dom_1.$$(_this.root).on(QueryEvents_1.QueryEvents.buildingQuery, function (e, data) { return _this.handleBuildingQuery(data); });
         _this.bind.onRootElement(QueryEvents_1.QueryEvents.queryError, function (data) { return _this.handleQueryError(data); });
         _this.bind.onRootElement(InitializationEvents_1.InitializationEvents.afterComponentsInitialization, function () { return _this.handleDoNotTrack(); });
         if (_this.options.autoPushToGtmDataLayer && _this.isGtmDataLayerInitialized) {
@@ -41015,7 +41014,7 @@ var Analytics = /** @class */ (function (_super) {
         if (_this.componentOptionsModel) {
             _this.componentOptionsModel.set(ComponentOptionsModel_1.ComponentOptionsModel.attributesEnum.searchHub, _this.options.searchHub);
             var event_1 = _this.componentOptionsModel.getEventName(Model_1.Model.eventTypes.changeOne + ComponentOptionsModel_1.ComponentOptionsModel.attributesEnum.searchHub);
-            _this.bind.onRootElement(event_1, function (args) { return _this.handleSearchHubChanged(args); });
+            Dom_1.$$(_this.root).on(event_1, function (e, args) { return _this.handleSearchHubChanged(args); });
         }
         _this.createClientId();
         return _this;
