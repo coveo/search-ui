@@ -291,8 +291,10 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.
      *
      * @availablesince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
+     *
+     * @examples 1500
      */
-    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
+    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 1000 }),
 
     /**
      * Whether to exclude folded result parents when estimating result counts for facet values.
