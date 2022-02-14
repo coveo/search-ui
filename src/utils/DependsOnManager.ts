@@ -1,6 +1,6 @@
 import { isFunction } from 'underscore';
 import { QueryStateModel, QueryEvents, Component } from '../Core';
-import { MODEL_EVENTS } from '../models/Model';
+//import { MODEL_EVENTS } from '../models/Model';
 import { ComponentsTypes } from './ComponentsTypes';
 import { $$ } from './Dom';
 import { InitializationEvents } from '../events/InitializationEvents';
@@ -40,7 +40,7 @@ export class DependsOnManager {
     this.parentFacetRef = this.getParentFacet(this.facet.ref);
 
     if (this.parentFacetRef) {
-      this.facet.ref.bind.onQueryState(MODEL_EVENTS.CHANGE, undefined, () => this.resetIfConditionUnfullfiled());
+      $$(this.facet.ref.root).on('state:change', () => this.resetIfConditionUnfullfiled());
     }
   }
 
@@ -64,12 +64,19 @@ export class DependsOnManager {
 
   private getDependsOnCondition(component: IDependsOnCompatibleFacet): IDependentFacetCondition {
     const conditionOption = component.options.dependsOnCondition;
-    return conditionOption && isFunction(conditionOption) ? conditionOption : () => this.parentHasSelectedValues(component);
+    return conditionOption && isFunction(conditionOption)
+      ? conditionOption
+      : () => this.parentHasSelectedValues(component) && this.parentIsEnabled(component);
   }
 
   private parentHasSelectedValues(component: IDependsOnCompatibleFacet) {
     const parent = this.getParentFacet(component);
     return parent && this.valuesExistForFacetWithId(this.getId(parent));
+  }
+
+  private parentIsEnabled(component: IDependsOnCompatibleFacet) {
+    const parent = this.getParentFacet(component);
+    return parent && !parent.disabled;
   }
 
   private valuesExistForFacetWithId(facetId: string) {
