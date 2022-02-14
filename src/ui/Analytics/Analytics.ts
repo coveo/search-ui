@@ -50,9 +50,8 @@ export interface IAnalyticsOptions {
  * You can use analytics data to evaluate how users are interacting with your search interface, improve relevance and
  * produce analytics dashboards within the Coveo Cloud Platform.
  *
- * See [Step 7 - Usage Analytics](https://docs.coveo.com/en/347/) of the Getting Started with the JavaScript
- * Search Framework V1 tutorial for an introduction to usage analytics.
- *
+ * See [JavaScript Search Framework Usage Analytics](https://docs.coveo.com/en/365) for an introduction.
+ * 
  * See also [Logging Your Own Search Events](https://docs.coveo.com/en/2726/#logging-your-own-search-events) for more advanced use cases.
  */
 
@@ -245,7 +244,7 @@ export class Analytics extends Component {
     this.initializeAnalyticsClient();
     Assert.exists(this.client);
 
-    this.bind.onRootElement(QueryEvents.buildingQuery, (data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));
+    $$(this.root).on(QueryEvents.buildingQuery, (e, data: IBuildingQueryEventArgs) => this.handleBuildingQuery(data));
     this.bind.onRootElement(QueryEvents.queryError, (data: IQueryErrorEventArgs) => this.handleQueryError(data));
     this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => this.handleDoNotTrack());
 
@@ -265,7 +264,7 @@ export class Analytics extends Component {
     if (this.componentOptionsModel) {
       this.componentOptionsModel.set(ComponentOptionsModel.attributesEnum.searchHub, this.options.searchHub);
       let event = this.componentOptionsModel.getEventName(Model.eventTypes.changeOne + ComponentOptionsModel.attributesEnum.searchHub);
-      this.bind.onRootElement(event, (args: IAttributeChangedEventArg) => this.handleSearchHubChanged(args));
+      $$(this.root).on(event, (e, args: IAttributeChangedEventArg) => this.handleSearchHubChanged(args));
     }
 
     this.createClientId();

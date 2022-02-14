@@ -158,10 +158,12 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
      * The injection depth determines how many results to scan in the index to ensure that the category facet lists all potential
      * facet values. Increasing this value enhances the accuracy of the listed values at the cost of performance.
      *
-     * Default value is `1000`. Minimum value is `0`.
+     * Default value is `1000`. Minimum value is `1000`.
      * @notSupportedIn salesforcefree
+     *
+     * @examples 1500
      */
-    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
+    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 1000 }),
     /**
      * If the [`enableFacetSearch`]{@link CategoryFacet.options.enableFacetSearch} option is `true`, specifies the number of
      * values to display in the facet search results popup.

@@ -1,6 +1,6 @@
 import 'styling/DynamicFacet/_DynamicFacet';
 import { IDynamicFacet, IDynamicFacetOptions } from './IDynamicFacet';
-import { difference, findIndex } from 'underscore';
+import { defer, difference, findIndex } from 'underscore';
 import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { Component } from '../Base/Component';
@@ -291,8 +291,10 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      * Setting this option to a higher value may enhance the accuracy of facet value counts at the cost of slower query performance.
      *
      * @availablesince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
+     *
+     * @examples 1500
      */
-    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 0 }),
+    injectionDepth: ComponentOptions.buildNumberOption({ defaultValue: 1000, min: 1000 }),
 
     /**
      * Whether to exclude folded result parents when estimating result counts for facet values.
@@ -311,6 +313,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
   private includedAttributeId: string;
   private listenToQueryStateChange = true;
   private search: DynamicFacetSearch;
+  private valueToFocusOnRender: string | null;
   public header: DynamicFacetHeader;
 
   public options: IDynamicFacetOptions;
@@ -445,6 +448,16 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     facetValue.toggleSelect();
     this.logger.info('Toggle select facet value', facetValue);
     this.updateQueryStateModel();
+  }
+
+  /**
+   * Keyboard focuses a value once it has been re-rendered.
+   *
+   * @param value The name of the facet value to focus
+   */
+  public focusValueAfterRerender(value: string) {
+    Assert.exists(value);
+    this.valueToFocusOnRender = value;
   }
 
   /**
@@ -688,6 +701,11 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     this.updateQueryStateModel();
     this.values.render();
     this.updateAppearance();
+    if (this.valueToFocusOnRender) {
+      const value = this.valueToFocusOnRender;
+      this.valueToFocusOnRender = null;
+      defer(() => this.values.focus(value));
+    }
   }
 
   private onNewValues(facetResponse: IFacetResponse) {
