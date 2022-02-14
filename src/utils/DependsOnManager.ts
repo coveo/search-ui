@@ -1,6 +1,5 @@
 import { isFunction } from 'underscore';
 import { QueryStateModel, QueryEvents, Component } from '../Core';
-//import { MODEL_EVENTS } from '../models/Model';
 import { ComponentsTypes } from './ComponentsTypes';
 import { $$ } from './Dom';
 import { InitializationEvents } from '../events/InitializationEvents';
