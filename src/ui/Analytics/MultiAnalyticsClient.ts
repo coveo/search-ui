@@ -102,10 +102,15 @@ export class MultiAnalyticsClient implements IAnalyticsClient {
     _.each(this.analyticsClients, (analyticsClient: IAnalyticsClient) => analyticsClient.setOriginContext(originContext));
   }
 
+  public getOriginContext(): string {
+    return _.first(this.analyticsClients).getOriginContext();
+  }
+
+  public getUserDisplayName(): string {
+    return _.first(this.analyticsClients).getUserDisplayName();
+  }
+
   private mergeTopQueries(values: string[][], pageSize: number = 5) {
-    return _.chain(values)
-      .flatten()
-      .first(pageSize)
-      .value();
+    return _.chain(values).flatten().first(pageSize).value();
   }
 }

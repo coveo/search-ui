@@ -8,6 +8,7 @@ import { ExecutionPlan } from '../../src/rest/Plan';
 import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import * as HistoryStore from '../../src/utils/HistoryStore';
 import { IQueryResults } from '../../src/rest/QueryResults';
+import { AnalyticsInformation } from '../../src/ui/Analytics/AnalyticsInformation';
 
 export function QueryControllerTest() {
   describe('QueryController', () => {
@@ -78,6 +79,14 @@ export function QueryControllerTest() {
           numberOfResults: 50
         }),
         jasmine.any(Object)
+      );
+    });
+
+    it('should pass in an AnalyticsInformation instance to search endpoint', () => {
+      test.cmp.executeQuery();
+      expect(test.env.searchEndpoint.search).toHaveBeenCalledWith(
+        jasmine.any(Object),
+        jasmine.objectContaining({ analyticsInformation: jasmine.any(AnalyticsInformation) })
       );
     });
 

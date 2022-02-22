@@ -17,6 +17,7 @@ import { IFacetSearchRequest } from './Facet/FacetSearchRequest';
 import { IFacetSearchResponse } from './Facet/FacetSearchResponse';
 import { ExecutionPlan } from './Plan';
 import { AccessToken } from './AccessToken';
+import { AnalyticsInformation } from '../ui/Analytics/AnalyticsInformation';
 
 /**
  * The possible options when creating a {@link SearchEndpoint}
@@ -69,6 +70,7 @@ export interface ISearchEndpointOptions extends IEndpointCallerOptions {
  */
 export interface IEndpointCallOptions {
   authentication?: string[];
+  analyticsInformation?: AnalyticsInformation;
 }
 
 /**
