@@ -17,6 +17,7 @@ import { IFacetSearchResponse } from '../../src/rest/Facet/FacetSearchResponse';
 import { ExecutionPlan } from '../../src/rest/Plan';
 import { buildHistoryStore } from '../../src/utils/HistoryStore';
 import { AnalyticsInformation } from '../../src/ui/Analytics/AnalyticsInformation';
+import { PendingSearchEvent } from '../../src/ui/Analytics/PendingSearchEvent';
 
 interface ILastSentAnalytics {
   visitorId: string;
@@ -24,6 +25,10 @@ interface ILastSentAnalytics {
   documentLocation: string;
   documentReferrer: string;
   pageId: string;
+  actionCause?: string;
+  customData?: Record<string, any>;
+  userDisplayName?: string;
+  originContext?: string;
 }
 
 export function SearchEndpointTest() {
@@ -54,6 +59,15 @@ export function SearchEndpointTest() {
       documentReferrer: document.referrer,
       documentLocation: document.location.href,
       pageId
+    };
+    const expectedAnalyticsForSearch: ILastSentAnalytics = {
+      ...expectedAnalytics,
+      actionCause: 'foo',
+      customData: {
+        bar: 'buzz'
+      },
+      userDisplayName: 'bob',
+      originContext: 'context'
     };
     function getLastSentAnalyticsFromURI(): ILastSentAnalytics {
       const lastParams = jasmine.Ajax.requests.mostRecent().params;
@@ -368,10 +382,17 @@ export function SearchEndpointTest() {
 
         it('for search', done => {
           const qbuilder = new QueryBuilder();
+          const analyticsInformation = new AnalyticsInformation();
+          analyticsInformation.pendingSearchEvent = ({
+            getEventCause: () => 'foo',
+            getEventMeta: () => ({ bar: 'buzz' })
+          } as any) as PendingSearchEvent;
+          analyticsInformation.originContext = 'context';
+          analyticsInformation.userDisplayName = 'bob';
           qbuilder.expression.add('batman');
           qbuilder.numberOfResults = 153;
           qbuilder.enableCollaborativeRating = true;
-          const promiseSuccess = ep.search(qbuilder.build());
+          const promiseSuccess = ep.search(qbuilder.build(), { analyticsInformation });
           expect(jasmine.Ajax.requests.mostRecent().url).toContain(ep.getBaseUri() + '?');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('organizationId=myOrgId');
           expect(jasmine.Ajax.requests.mostRecent().url).toContain('potatoe=mashed');
@@ -380,7 +401,7 @@ export function SearchEndpointTest() {
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('enableCollaborativeRating=true');
           expect(jasmine.Ajax.requests.mostRecent().params).toContain('actionsHistory=');
           const analytics = getLastSentAnalyticsFromURI();
-          expect(analytics).toEqual(expectedAnalytics);
+          expect(analytics).toEqual(expectedAnalyticsForSearch);
           expect(jasmine.Ajax.requests.mostRecent().params);
           expect(jasmine.Ajax.requests.mostRecent().method).toBe('POST');
           promiseSuccess.then((data: IQueryResults) => {

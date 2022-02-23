@@ -1434,12 +1434,29 @@ function includeAnalytics() {
   return function (target: Object, key: string, descriptor: TypedPropertyDescriptor<any>) {
     const { originalMethod, nbParams } = decoratorSetup(target, key, descriptor);
     descriptor.value = function (this: SearchEndpoint, ...args: any[]) {
-      const analyticsInstance = new AnalyticsInformation();
+      const analyticsInstance = (args && args[1] && (args[1].analyticsInformation as AnalyticsInformation)) || new AnalyticsInformation();
+      const actionCause = analyticsInstance.pendingSearchEvent ? analyticsInstance.pendingSearchEvent.getEventCause() : null;
+      const customData = analyticsInstance.pendingSearchEvent ? analyticsInstance.pendingSearchEvent.getEventMeta() : null;
+      const userDisplayName = analyticsInstance.userDisplayName;
+      const originContext = analyticsInstance.originContext;
+
       const analytics = {
         clientId: analyticsInstance.clientId,
         documentLocation: analyticsInstance.location,
         documentReferrer: analyticsInstance.referrer,
-        pageId: analyticsInstance.lastPageId
+        pageId: analyticsInstance.lastPageId,
+        ...(actionCause && {
+          actionCause
+        }),
+        ...(customData && {
+          customData
+        }),
+        ...(userDisplayName && {
+          userDisplayName
+        }),
+        ...(originContext && {
+          originContext
+        })
       };
       getEndpointCallParameters(nbParams, args).requestData.analytics = mapObject(analytics, value => value || '');
       return originalMethod.apply(this, args);

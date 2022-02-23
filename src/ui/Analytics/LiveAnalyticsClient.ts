@@ -170,6 +170,14 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     this.originContext = originContext;
   }
 
+  public getOriginContext() {
+    return this.originContext;
+  }
+
+  public getUserDisplayName(): string {
+    return this.userDisplayName;
+  }
+
   private pushCustomEvent(
     actionCause: IAnalyticsActionCause,
     metaObject: IChangeableAnalyticsMetaObject,
