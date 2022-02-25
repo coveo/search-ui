@@ -20,7 +20,6 @@ import {
 } from '../../events/QueryEvents';
 import { IBeforeRedirectEventArgs, StandaloneSearchInterfaceEvents } from '../../events/StandaloneSearchInterfaceEvents';
 import { Assert } from '../../misc/Assert';
-import { SentryLogger } from '../../misc/SentryLogger';
 import { ComponentOptionsModel } from '../../models/ComponentOptionsModel';
 import { ComponentStateModel } from '../../models/ComponentStateModel';
 import { IAttributeChangedEventArg, Model } from '../../models/Model';
@@ -562,7 +561,6 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.usageAnalytics = this.initializeAnalytics();
     this.queryController = new QueryController(element, this.options, this.usageAnalytics, this);
     this.facetValueStateHandler = new FacetValueStateHandler(this);
-    new SentryLogger(this.queryController);
 
     const missingTermManagerArgs: IMissingTermManagerArgs = {
       element: this.element,
