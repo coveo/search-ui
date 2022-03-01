@@ -44,7 +44,7 @@
         "system_certifier": "snyk"
       },
       {
-        "system_certifier": "veracode"
+        "system_certifier": "snyk-code"
       }
     ],
     "prd": [
@@ -67,10 +67,8 @@
       }
     ]
   },
-  "veracode": {
-    "sandbox_name": "JS UI",
-    "scan_include_patterns": "*",
-    "app_name": "JSUI"
+  "snyk_code": {
+    "no_scan": false
   },
   "observatory": {
     "no_endpoint": true
