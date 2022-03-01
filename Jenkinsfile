@@ -68,10 +68,6 @@ node('linux && docker') {
             sh 'node ./build/npm.deploy.js'
         }
 
-        sh 'rm -rf veracode && mkdir veracode'
-        sh 'mkdir veracode/search-ui'
-        sh 'cp -R src package.json yarn.lock veracode/search-ui'
-
         sh 'node ./build/deployment-pipeline.deploy.js || true'
       }
     }
