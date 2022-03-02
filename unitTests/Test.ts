@@ -381,9 +381,6 @@ RegisteredNamedMethodsTest();
 import { FacetValuesOrderTest } from './ui/FacetValuesOrderTest';
 FacetValuesOrderTest();
 
-import { SentryLoggerTest } from './misc/SentryLoggerTest';
-SentryLoggerTest();
-
 import { DebugTest } from './ui/DebugTest';
 DebugTest();
 
