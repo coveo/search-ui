@@ -68,7 +68,14 @@
     ]
   },
   "snyk_code": {
-    "no_scan": false
+    "no_scan": false,
+    "configurations": [
+      {
+        "path": ".",
+        "project_name": "search-ui",
+        "org": "coveo-jsui"
+      }
+    ]
   },
   "observatory": {
     "no_endpoint": true
