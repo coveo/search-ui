@@ -284,7 +284,9 @@ export class ResultLink extends Component {
     if (this.options.openQuickview == null) {
       this.options.openQuickview = result.raw['connectortype'] == 'ExchangeCrawler' && DeviceUtils.isMobileDevice();
     }
-    this.element.setAttribute('tabindex', '0');
+    if (!this.element.hasAttribute('tabindex')) {
+      this.element.setAttribute('tabindex', '0');
+    }
 
     Assert.exists(this.componentOptionsModel);
     Assert.exists(this.result);
