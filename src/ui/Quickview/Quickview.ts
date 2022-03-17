@@ -196,8 +196,6 @@ export class Quickview extends Component {
      * selector of the HTML element you wish to display, or the `id` of a previously registered template (see
      * [`TemplateCache`]{@link TemplateCache}).
      *
-     * See [Customizing the Quickview Loading Animation](https://docs.coveo.com/en/296/#customizing-the-quickview-loading-animation).
-     *
      * **Examples:**
      *
      * * Specifying the CSS selector of the HTML element to display:
@@ -213,7 +211,7 @@ export class Quickview extends Component {
      * ```
      *
      * By default, the loading animation is a Coveo animation, which you can customize with CSS (see
-     * [Customizing the Default Loading Animation](https://docs.coveo.com/en/296/#customizing-the-default-search-page-animation).
+     * [Styling the Coveo JavaScript Search Framework](https://docs.coveo.com/en/423/).
      */
     loadingAnimation: ComponentOptions.buildOption<HTMLElement | Promise<HTMLElement>>(
       ComponentOptionsType.NONE,
