@@ -211,7 +211,7 @@ export class Quickview extends Component {
      * ```
      *
      * By default, the loading animation is a Coveo animation, which you can customize with CSS (see
-     * [Styling the Coveo JavaScript Search Framework](https://docs.coveo.com/en/423/).
+     * [Styling the Coveo JavaScript Search Framework](https://docs.coveo.com/en/423/)).
      */
     loadingAnimation: ComponentOptions.buildOption<HTMLElement | Promise<HTMLElement>>(
       ComponentOptionsType.NONE,
