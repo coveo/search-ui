@@ -10,6 +10,7 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { MissingTermManager } from './MissingTermManager';
 import XRegExp = require('xregexp');
 import { intersection } from 'underscore';
+import { Utils } from '../../UtilsModules';
 
 export interface IMissingTermsOptions {
   caption?: string;
@@ -83,7 +84,7 @@ export class MissingTerms extends Component {
     this.addMissingTerms();
   }
 
-  private get absentTerms() {
+  private get allResultTerms() {
     let absentTerms = this.result.absentTerms;
 
     if (this.result.attachments) {
@@ -102,23 +103,52 @@ export class MissingTerms extends Component {
   }
 
   /**
-   * Returns all original basic query expression terms that were not matched by the result item the component instance is associated with.
+   * Returns all original basic query expression terms and phrases that were not matched by the result item the component instance is associated with.
    */
-  public get missingTerms(): string[] {
-    const terms = [];
+  public get missingTerms() {
+    return [...this.absentTerms, ...this.absentPhrases];
+  }
 
-    for (const term of this.absentTerms) {
-      const regex = this.createWordBoundaryDelimitedRegex(term);
-      const query = this.queryStateModel.get('q');
-      const result = regex.exec(query);
+  private get absentTerms() {
+    const terms: string[] = [];
+    const absentTerms = this.allResultTerms.filter(value => !this.isMissingPhrase(value));
 
-      if (result) {
-        const originalKeywordInQuery = result[4];
-        terms.push(originalKeywordInQuery);
-      }
+    for (const term of absentTerms) {
+      const termMatch = this.queryMatch(term);
+      termMatch && terms.push(termMatch);
     }
 
     return terms;
+  }
+
+  private get absentPhrases() {
+    const phrases: string[] = [];
+    const absentPhrases = this.allResultTerms.filter(value => this.isMissingPhrase(value));
+
+    for (const phrase of absentPhrases) {
+      const withoutQuotes = phrase.slice(1, -1);
+      const phraseMatch = this.queryMatch(withoutQuotes);
+      phraseMatch && phrases.push(phraseMatch);
+    }
+
+    return phrases;
+  }
+
+  private isMissingPhrase(value: string) {
+    return Utils.stringStartsWith(value, '"') && Utils.stringEndsWith(value, '"');
+  }
+
+  private queryMatch(term: string): string | null {
+    const regex = this.createWordBoundaryDelimitedRegex(term);
+    const query = this.queryStateModel.get('q');
+    const result = regex.exec(query);
+
+    if (result) {
+      const originalKeywordInQuery = result[4];
+      return originalKeywordInQuery;
+    }
+
+    return null;
   }
 
   /**
@@ -171,11 +201,11 @@ export class MissingTerms extends Component {
   }
 
   private buildMissingTerms(): Dom[] {
-    const validTerms = this.missingTerms.filter(term => this.isValidTerm(term));
-    const terms: Dom[] = validTerms.map(term => {
+    const validTerms = this.absentTerms.filter(term => this.isValidTerm(term));
+    const validPhrases = this.absentPhrases.filter(phrase => this.isValidPhrase(phrase, validTerms));
+    return [...validTerms, ...validPhrases].map(term => {
       return this.makeTermClickableIfEnabled(term);
     });
-    return terms;
   }
 
   private executeNewQuery(missingTerm: string = this.queryStateModel.get('q')) {
@@ -240,6 +270,13 @@ export class MissingTerms extends Component {
 
   private isValidTerm(term: string) {
     return this.isNonBoundaryTerm(term) && !this.containsFeaturedResults(term);
+  }
+
+  private isValidPhrase(phrase: string, terms: string[]) {
+    return terms.every(term => {
+      const regex = this.createWordBoundaryDelimitedRegex(term);
+      return !regex.exec(phrase);
+    });
   }
 
   private isNonBoundaryTerm(term: string) {
