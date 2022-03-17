@@ -42,7 +42,11 @@ export class Utils {
   }
 
   static stringStartsWith(str: string, startWith: string): boolean {
-    return str.slice(0, startWith.length) == startWith;
+    return str.slice(0, startWith.length) === startWith;
+  }
+
+  static stringEndsWith(str: string, endsWith: string): boolean {
+    return str.substring(str.length - endsWith.length, str.length) === endsWith;
   }
 
   static isNonEmptyArray(obj: any): boolean {
