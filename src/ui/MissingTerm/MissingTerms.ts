@@ -110,28 +110,28 @@ export class MissingTerms extends Component {
   }
 
   private get absentTerms() {
-    const terms: string[] = [];
-    const absentTerms = this.allResultTerms.filter(value => !this.isMissingPhrase(value));
+    const absentTerms: string[] = [];
+    const terms = this.allResultTerms.filter(value => !this.isMissingPhrase(value));
 
-    for (const term of absentTerms) {
+    for (const term of terms) {
       const termMatch = this.queryMatch(term);
-      termMatch && terms.push(termMatch);
+      termMatch && absentTerms.push(termMatch);
     }
 
-    return terms;
+    return absentTerms;
   }
 
   private get absentPhrases() {
-    const phrases: string[] = [];
-    const absentPhrases = this.allResultTerms.filter(value => this.isMissingPhrase(value));
+    const absentPhrases: string[] = [];
+    const phrases = this.allResultTerms.filter(value => this.isMissingPhrase(value));
 
-    for (const phrase of absentPhrases) {
+    for (const phrase of phrases) {
       const withoutQuotes = phrase.slice(1, -1);
       const phraseMatch = this.queryMatch(withoutQuotes);
-      phraseMatch && phrases.push(phraseMatch);
+      phraseMatch && absentPhrases.push(phraseMatch);
     }
 
-    return phrases;
+    return absentPhrases;
   }
 
   private isMissingPhrase(value: string) {
@@ -275,7 +275,8 @@ export class MissingTerms extends Component {
   private isValidPhrase(phrase: string, terms: string[]) {
     return terms.every(term => {
       const regex = this.createWordBoundaryDelimitedRegex(term);
-      return !regex.exec(phrase);
+      const termInPhrase = regex.exec(phrase);
+      return !termInPhrase;
     });
   }
 
