@@ -17,6 +17,7 @@ import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { ResponsiveDropdownModalContent } from './ResponsiveDropdown/ResponsiveDropdownModalContent';
 import { FacetsMobileMode, IFacetsMobileModeOptions } from '../FacetsMobileMode/FacetsMobileMode';
 import { FacetsMobileModeEvents } from '../../events/FacetsMobileModeEvents';
+import { ComponentOptions } from '../Base/ComponentOptions';
 
 export class ResponsiveFacetColumn implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
@@ -70,9 +71,10 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     const facetsMobileModeComponent = this.facetsMobileModeComponent;
     if (!facetsMobileModeComponent) {
       return {
-        isModal: false,
-        preventScrolling: false,
-        displayOverlayWhileOpen: true
+        isModal: true,
+        preventScrolling: true,
+        displayOverlayWhileOpen: false,
+        scrollContainer: ComponentOptions.findParentScrollLockable(this.searchInterface.element)
       };
     }
     return facetsMobileModeComponent.options;
