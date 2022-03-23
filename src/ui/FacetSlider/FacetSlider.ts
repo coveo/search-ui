@@ -631,7 +631,7 @@ export class FacetSlider extends Component {
         facetField: this.options.field.toString(),
         facetTitle: this.options.title
       });
-      this.executeQuery();
+      this.queryController.executeQuery();
     });
     return elem;
   }
@@ -726,7 +726,7 @@ export class FacetSlider extends Component {
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
       });
-      this.executeQuery();
+      this.queryController.executeQuery();
     }
   }
 
@@ -752,7 +752,7 @@ export class FacetSlider extends Component {
         facetRangeStart: this.startOfSlider.toString(),
         facetRangeEnd: this.endOfSlider.toString()
       });
-      this.executeQuery();
+      this.queryController.executeQuery();
     }
   }
 
@@ -1052,10 +1052,6 @@ export class FacetSlider extends Component {
       every(groupByResults.values, value => Utils.isNullOrUndefined(value) || value.numberOfResults === 0) ||
       data.results.results.length == 0
     );
-  }
-
-  private executeQuery() {
-    this.queryController.executeQuery({ closeModalBox: !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root)) });
   }
 }
 
