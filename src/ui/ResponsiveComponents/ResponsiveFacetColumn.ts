@@ -74,7 +74,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
         isModal: true,
         preventScrolling: true,
         displayOverlayWhileOpen: false,
-        scrollContainer: ComponentOptions.findParentScrollLockable(this.searchInterface.element)
+        scrollContainer: this.searchInterface ? ComponentOptions.findParentScrollLockable(this.searchInterface.element) : undefined
       };
     }
     return facetsMobileModeComponent.options;
