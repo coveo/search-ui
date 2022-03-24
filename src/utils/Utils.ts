@@ -45,6 +45,10 @@ export class Utils {
     return str.slice(0, startWith.length) == startWith;
   }
 
+  static stringEndsWith(str: string, endsWith: string): boolean {
+    return str.substring(str.length - endsWith.length, str.length) === endsWith;
+  }
+
   static isNonEmptyArray(obj: any): boolean {
     return _.isArray(obj) && obj.length > 0;
   }

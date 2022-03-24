@@ -10,6 +10,7 @@ import { ComponentOptions } from '../Base/ComponentOptions';
 import { MissingTermManager } from './MissingTermManager';
 import XRegExp = require('xregexp');
 import { intersection } from 'underscore';
+import { Utils } from '../../UtilsModules';
 
 export interface IMissingTermsOptions {
   caption?: string;
@@ -83,7 +84,7 @@ export class MissingTerms extends Component {
     this.addMissingTerms();
   }
 
-  private get absentTerms() {
+  private get allResultTerms() {
     let absentTerms = this.result.absentTerms;
 
     if (this.result.attachments) {
@@ -102,23 +103,54 @@ export class MissingTerms extends Component {
   }
 
   /**
-   * Returns all original basic query expression terms that were not matched by the result item the component instance is associated with.
+   * Returns all original basic query expression terms and phrases that were not matched by the result item the component instance is associated with.
    */
-  public get missingTerms(): string[] {
-    const terms = [];
+  public get missingTerms() {
+    return [...this.absentTerms, ...this.absentPhrases];
+  }
 
-    for (const term of this.absentTerms) {
-      const regex = this.createWordBoundaryDelimitedRegex(term);
-      const query = this.queryStateModel.get('q');
-      const result = regex.exec(query);
+  private get absentTerms() {
+    const absentTerms: string[] = [];
+    const terms = this.allResultTerms.filter(value => !this.isMissingPhrase(value));
 
-      if (result) {
-        const originalKeywordInQuery = result[4];
-        terms.push(originalKeywordInQuery);
-      }
+    for (const term of terms) {
+      const termMatch = this.queryMatch(term);
+      termMatch && absentTerms.push(termMatch);
     }
 
-    return terms;
+    return absentTerms;
+  }
+
+  private get absentPhrases() {
+    const absentPhrases: string[] = [];
+    const phrases = this.allResultTerms.filter(value => this.isMissingPhrase(value));
+
+    for (const phrase of phrases) {
+      const withoutQuotes = phrase.slice(1, -1);
+      const phraseMatch = this.queryMatch(withoutQuotes, true);
+      phraseMatch && absentPhrases.push(phraseMatch);
+    }
+
+    return absentPhrases;
+  }
+
+  private isMissingPhrase(value: string) {
+    return Utils.stringStartsWith(value, '"') && Utils.stringEndsWith(value, '"');
+  }
+
+  private queryMatch(term: string, stripBreakingCharacters = false): string | null {
+    const regex = this.createWordBoundaryDelimitedRegex(term);
+    const query: string = this.queryStateModel.get('q');
+    // Mimics the query received by the index
+    const queryToExec = stripBreakingCharacters ? query.replace(XRegExp(this.breakingCharacters, 'gi'), ' ') : query;
+    const result = regex.exec(queryToExec);
+
+    if (result) {
+      const originalKeywordInQuery = result[4];
+      return originalKeywordInQuery;
+    }
+
+    return null;
   }
 
   /**
@@ -171,11 +203,11 @@ export class MissingTerms extends Component {
   }
 
   private buildMissingTerms(): Dom[] {
-    const validTerms = this.missingTerms.filter(term => this.isValidTerm(term));
-    const terms: Dom[] = validTerms.map(term => {
+    const validTerms = this.absentTerms.filter(term => this.isValidTerm(term));
+    const validPhrases = this.absentPhrases.filter(phrase => this.isValidPhrase(phrase, validTerms));
+    return [...validTerms, ...validPhrases].map(term => {
       return this.makeTermClickableIfEnabled(term);
     });
-    return terms;
   }
 
   private executeNewQuery(missingTerm: string = this.queryStateModel.get('q')) {
@@ -242,9 +274,21 @@ export class MissingTerms extends Component {
     return this.isNonBoundaryTerm(term) && !this.containsFeaturedResults(term);
   }
 
+  private isValidPhrase(phrase: string, terms: string[]) {
+    return terms.every(term => {
+      const regex = this.createWordBoundaryDelimitedRegex(term);
+      const termInPhrase = regex.exec(phrase);
+      return !termInPhrase;
+    });
+  }
+
+  private get breakingCharacters() {
+    return `[-'?\*’.~=,\/\\\\:\`;_!&\(\)]+`;
+  }
+
   private isNonBoundaryTerm(term: string) {
     //p{L} is a Unicode script that matches any character in any language.
-    const wordWithBreakpoints = `\\p{L}*[-'?\*’.~=,\/\\\\:\`;_!&\(\)]+\\p{L}*`;
+    const wordWithBreakpoints = `\\p{L}*${this.breakingCharacters}\\p{L}*`;
     const regex = XRegExp(wordWithBreakpoints, 'gi');
     const query = this.queryStateModel.get('q');
     const matches = query.match(regex) || [];
