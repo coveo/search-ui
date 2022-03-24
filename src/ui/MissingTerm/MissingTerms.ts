@@ -127,7 +127,7 @@ export class MissingTerms extends Component {
 
     for (const phrase of phrases) {
       const withoutQuotes = phrase.slice(1, -1);
-      const phraseMatch = this.queryMatch(withoutQuotes);
+      const phraseMatch = this.queryMatch(withoutQuotes, true);
       phraseMatch && absentPhrases.push(phraseMatch);
     }
 
@@ -138,10 +138,12 @@ export class MissingTerms extends Component {
     return Utils.stringStartsWith(value, '"') && Utils.stringEndsWith(value, '"');
   }
 
-  private queryMatch(term: string): string | null {
+  private queryMatch(term: string, stripBreakingCharacters = false): string | null {
     const regex = this.createWordBoundaryDelimitedRegex(term);
-    const query = this.queryStateModel.get('q');
-    const result = regex.exec(query);
+    const query: string = this.queryStateModel.get('q');
+    // Mimics the query received by the index
+    const queryToExec = stripBreakingCharacters ? query.replace(XRegExp(this.breakingCharacters, 'gi'), ' ') : query;
+    const result = regex.exec(queryToExec);
 
     if (result) {
       const originalKeywordInQuery = result[4];
@@ -280,9 +282,13 @@ export class MissingTerms extends Component {
     });
   }
 
+  private get breakingCharacters() {
+    return `[-'?\*’.~=,\/\\\\:\`;_!&\(\)]+`;
+  }
+
   private isNonBoundaryTerm(term: string) {
     //p{L} is a Unicode script that matches any character in any language.
-    const wordWithBreakpoints = `\\p{L}*[-'?\*’.~=,\/\\\\:\`;_!&\(\)]+\\p{L}*`;
+    const wordWithBreakpoints = `\\p{L}*${this.breakingCharacters}\\p{L}*`;
     const regex = XRegExp(wordWithBreakpoints, 'gi');
     const query = this.queryStateModel.get('q');
     const matches = query.match(regex) || [];
