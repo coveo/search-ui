@@ -31,7 +31,6 @@ export interface IAccessibleModalOpenNormalParameters extends IAccessibleModalOp
 }
 
 export class AccessibleModal {
-  private static MODAL_TITLE_ID = 'coveo-accessible-modal-title';
   private focusTrap: FocusTrap;
   private activeModal: Coveo.ModalBox.ModalBox;
   private options: IAccessibleModalOptions;
@@ -93,10 +92,6 @@ export class AccessibleModal {
   }
 
   private openModalAndTrap(parameters: IAccessibleModalOpenNormalParameters) {
-    if (parameters.title) {
-      parameters.title.id = AccessibleModal.MODAL_TITLE_ID;
-    }
-
     this.initiallyFocusedElement = parameters.origin || (document.activeElement as HTMLElement);
     this.activeModal = this.modalboxModule.open(parameters.content, {
       title: parameters.title,
@@ -122,8 +117,6 @@ export class AccessibleModal {
 
   private makeAccessible(title?: string) {
     this.element.setAttribute('aria-modal', 'true');
-    this.element.setAttribute('role', 'dialog');
-    this.element.setAttribute('aria-labelledby', AccessibleModal.MODAL_TITLE_ID);
     if (title) {
       this.headerElement.setAttribute('aria-label', title);
     }
@@ -152,7 +145,7 @@ export class AccessibleModal {
   }
 
   private onModalClose() {
-    this.focusTrap && this.focusTrap.disable();
+    this.focusTrap.disable();
     this.focusTrap = null;
     if (this.initiallyFocusedElement && document.body.contains(this.initiallyFocusedElement)) {
       this.initiallyFocusedElement.focus();

@@ -21,6 +21,8 @@ import { FacetsMobileModeEvents } from '../../events/FacetsMobileModeEvents';
 export class ResponsiveFacetColumn implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
 
+  private static DROPDOWN_MIN_WIDTH: number = 280;
+  private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
 
   private searchInterface: SearchInterface;
@@ -145,6 +147,12 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     let dropdownContent = this.buildDropdownContent();
     let dropdownHeader = this.buildDropdownHeader();
     let dropdown = responsiveDropdown ? responsiveDropdown : new ResponsiveDropdown(dropdownContent, dropdownHeader, this.coveoRoot);
+    if (!this.facetsMobileModeOptions.displayOverlayWhileOpen) {
+      dropdown.disablePopupBackground();
+    }
+    if (this.facetsMobileModeOptions.preventScrolling) {
+      dropdown.enableScrollLocking(this.facetsMobileModeOptions.scrollContainer);
+    }
     return dropdown;
   }
 
@@ -158,7 +166,13 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
     if (this.facetsMobileModeOptions.isModal) {
       return new ResponsiveDropdownModalContent('facet', dropdownContentElement, l('CloseFiltersDropdown'), () => this.dropdown.close());
     }
-    return new ResponsiveDropdownContent(dropdownContentElement);
+    return new ResponsiveDropdownContent(
+      'facet',
+      dropdownContentElement,
+      this.coveoRoot,
+      ResponsiveFacetColumn.DROPDOWN_MIN_WIDTH,
+      ResponsiveFacetColumn.DROPDOWN_WIDTH_RATIO
+    );
   }
 
   private buildDropdownHeader() {

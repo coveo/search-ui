@@ -78,10 +78,18 @@ export function ResponsiveFacetColumnTest() {
         expect(dropdown.dropdownContent instanceof ResponsiveDropdownContent).toBeTruthy();
       });
 
+      it('should show the background', () => {
+        expect(dropdown['popupBackgroundIsEnabled']).toBeTruthy();
+      });
+
       describe('when opened', () => {
         beforeEach(() => {
           column.handleResizeEvent();
           dropdown.open();
+        });
+
+        it('should allow scrolling on the body', () => {
+          expect(root.el.style.overflow).toBeFalsy();
         });
       });
     });
@@ -127,6 +135,65 @@ export function ResponsiveFacetColumnTest() {
         });
       });
 
+      describe('with preventScrolling enabled', () => {
+        describe('without a scroll container', () => {
+          beforeEach(() => {
+            prepareTestWithMobileMode({ preventScrolling: true });
+          });
+
+          describe('when opened', () => {
+            beforeEach(() => {
+              column.handleResizeEvent();
+              dropdown.open();
+            });
+
+            it("shouldn't allow scrolling on the body", () => {
+              expect(root.el.style.overflow).toEqual('hidden');
+            });
+
+            describe('then closed', () => {
+              beforeEach(() => {
+                dropdown.close();
+              });
+
+              it('should re-allow scrolling on the body', () => {
+                expect(root.el.style.overflow).toBeFalsy();
+              });
+            });
+          });
+        });
+
+        describe('with a scroll container', () => {
+          let container: HTMLElement;
+
+          beforeEach(() => {
+            container = $$('div').el;
+            prepareTestWithMobileMode({ preventScrolling: true, scrollContainer: container });
+          });
+
+          describe('when opened', () => {
+            beforeEach(() => {
+              column.handleResizeEvent();
+              dropdown.open();
+            });
+
+            it("shouldn't allow scrolling on the container", () => {
+              expect(container.style.overflow).toEqual('hidden');
+            });
+
+            describe('then closed', () => {
+              beforeEach(() => {
+                dropdown.close();
+              });
+
+              it('should re-allow scrolling on the container', () => {
+                expect(container.style.overflow).toBeFalsy();
+              });
+            });
+          });
+        });
+      });
+
       describe('with bound events', () => {
         let popupOpened: jasmine.Spy;
         let popupClosed: jasmine.Spy;
@@ -161,20 +228,19 @@ export function ResponsiveFacetColumnTest() {
             beforeEach(() => {
               dropdown.open();
               popupOpened.calls.reset();
-              popupClosed.calls.reset();
             });
 
             it('should trigger the closed event when closing the popup', () => {
               dropdown.close();
               expect(popupOpened).not.toHaveBeenCalled();
-              expect(popupClosed).toHaveBeenCalled();
+              expect(popupClosed).toHaveBeenCalledTimes(1);
             });
 
             it('should trigger the closed event when large mode is activated', () => {
               setScreenWidth(TEST_SCREEN_WIDTH_DESKTOP);
               column.handleResizeEvent();
               expect(popupOpened).not.toHaveBeenCalled();
-              expect(popupClosed).toHaveBeenCalled();
+              expect(popupClosed).toHaveBeenCalledTimes(1);
             });
           });
         });

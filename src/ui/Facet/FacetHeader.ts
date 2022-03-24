@@ -9,7 +9,6 @@ import 'styling/_FacetHeader';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { AccessibleButton } from '../../utils/AccessibleButton';
-import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 
 export interface IFacetHeaderOptions {
   facetElement: HTMLElement;
@@ -219,6 +218,6 @@ export class FacetHeader {
       facetField: cmp.options.field.toString(),
       facetTitle: cmp.options.title
     });
-    cmp.queryController.executeQuery({ closeModalBox: !ResponsiveComponentsUtils.isSmallFacetActivated($$(cmp.root)) });
+    cmp.queryController.executeQuery();
   }
 }

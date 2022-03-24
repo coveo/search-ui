@@ -37,7 +37,6 @@ import { DependsOnManager, IDependentFacet, IDependentFacetCondition } from '../
 import { DynamicFacetValueCreator } from './DynamicFacetValues/DynamicFacetValueCreator';
 import { Logger } from '../../misc/Logger';
 import { FacetUtils } from '../Facet/FacetUtils';
-import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 
 /**
  * The `DynamicFacet` component displays a *facet* of the results for the current query. A facet is a list of values for a
@@ -836,10 +835,8 @@ export class DynamicFacet extends Component implements IDynamicFacet {
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
     this.beforeSendingQuery();
-    const options: IQueryOptions = {
-      ...(beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true }),
-      closeModalBox: !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root))
-    };
+
+    const options: IQueryOptions = beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true };
 
     this.queryController.executeQuery(options);
   }
