@@ -1,6 +1,6 @@
 import { ResponsiveDropdown } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdown';
 import { ResponsiveDropdownHeader } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownHeader';
-import { ResponsiveDropdownContent } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownContent';
+import { ResponsiveDropdownModalContent } from '../../../src/ui/ResponsiveComponents/ResponsiveDropdown/ResponsiveDropdownModalContent';
 import { ResponsiveComponentsManager } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsManager';
 import { ResponsiveComponentsUtils } from '../../../src/ui/ResponsiveComponents/ResponsiveComponentsUtils';
 import { ResponsiveFacets } from '../../../src/ui/ResponsiveComponents/ResponsiveFacets';
@@ -22,7 +22,7 @@ export function ResponsiveFacetsTest() {
     let root: Dom;
     let responsiveDropdown: ResponsiveDropdown;
     let responsiveDropdownHeader: ResponsiveDropdownHeader;
-    let responsiveDropdownContent: ResponsiveDropdownContent;
+    let responsiveDropdownModalContent: ResponsiveDropdownModalContent;
     let responsiveFacets: ResponsiveFacets;
     let facet: Facet;
     let envBuilder: Mock.MockEnvironmentBuilder;
@@ -58,18 +58,19 @@ export function ResponsiveFacetsTest() {
         'cleanUp',
         'open',
         'close',
-        'disablePopupBackground'
+        'disablePopupBackground',
+        'enableScrollLocking'
       ]);
-      responsiveDropdownContent = jasmine.createSpyObj('responsiveDropdownContent', [
+      responsiveDropdownModalContent = jasmine.createSpyObj('responsiveDropdownModalContent', [
         'positionDropdown',
         'hideDropdown',
         'cleanUp',
         'element'
       ]);
-      responsiveDropdownContent.element = $$('div');
+      responsiveDropdownModalContent.element = $$('div');
       responsiveDropdownHeader = jasmine.createSpyObj('responsiveDropdownHeader', ['open', 'close', 'cleanUp', 'show', 'hide']);
       responsiveDropdownHeader.element = $$('div', { className: dropdownHeaderClassName });
-      responsiveDropdown.dropdownContent = responsiveDropdownContent;
+      responsiveDropdown.dropdownContent = responsiveDropdownModalContent;
       responsiveDropdown.dropdownHeader = responsiveDropdownHeader;
       responsiveFacets = new ResponsiveFacets(root, '', {}, responsiveDropdown);
 
@@ -79,7 +80,7 @@ export function ResponsiveFacetsTest() {
     it('when a facet is registered then position search results is called on scroll', done => {
       spyOn(facet.facetSearch, 'positionSearchResults');
 
-      $$(responsiveDropdownContent.element).trigger('scroll');
+      $$(responsiveDropdownModalContent.element).trigger('scroll');
 
       setTimeout(() => {
         expect(facet.facetSearch.positionSearchResults).toHaveBeenCalled();
@@ -94,7 +95,7 @@ export function ResponsiveFacetsTest() {
     it('calls position dropdown when handleResizeEvent is called if the dropdown is opened', () => {
       responsiveDropdown.isOpened = true;
       responsiveFacets.handleResizeEvent();
-      expect(responsiveDropdownContent.positionDropdown).toHaveBeenCalled();
+      expect(responsiveDropdownModalContent.positionDropdown).toHaveBeenCalled();
     });
 
     describe('when it should switch to small mode', () => {

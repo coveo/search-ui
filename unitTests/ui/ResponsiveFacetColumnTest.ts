@@ -74,12 +74,12 @@ export function ResponsiveFacetColumnTest() {
         prepareTest();
       });
 
-      it('should instantiate a normal dropdown', () => {
-        expect(dropdown.dropdownContent instanceof ResponsiveDropdownContent).toBeTruthy();
+      it('should instantiate a modal dropdown', () => {
+        expect(dropdown.dropdownContent instanceof ResponsiveDropdownModalContent).toBeTruthy();
       });
 
-      it('should show the background', () => {
-        expect(dropdown['popupBackgroundIsEnabled']).toBeTruthy();
+      it("shouldn't show the background", () => {
+        expect(dropdown['popupBackgroundIsEnabled']).toBeFalsy();
       });
 
       describe('when opened', () => {
@@ -88,8 +88,8 @@ export function ResponsiveFacetColumnTest() {
           dropdown.open();
         });
 
-        it('should allow scrolling on the body', () => {
-          expect(root.el.style.overflow).toBeFalsy();
+        it("shouldn't allow scrolling on the body", () => {
+          expect(root.el.style.overflow).toEqual('hidden');
         });
       });
     });
@@ -122,6 +122,20 @@ export function ResponsiveFacetColumnTest() {
 
         it("shouldn't show the background", () => {
           expect(dropdown['popupBackgroundIsEnabled']).toBeFalsy();
+        });
+      });
+
+      describe('with isModal disabled', () => {
+        beforeEach(() => {
+          prepareTestWithMobileMode({ isModal: false });
+        });
+
+        it('should instantiate a normal dropdown', () => {
+          expect(dropdown.dropdownContent instanceof ResponsiveDropdownContent).toBeTruthy();
+        });
+
+        it('should show the background', () => {
+          expect(dropdown['popupBackgroundIsEnabled']).toBeTruthy();
         });
       });
 
