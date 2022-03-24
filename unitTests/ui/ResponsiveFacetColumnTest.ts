@@ -82,10 +82,6 @@ export function ResponsiveFacetColumnTest() {
         expect(dropdown['popupBackgroundIsEnabled']).toBeFalsy();
       });
 
-      it('should show the background', () => {
-        expect(dropdown['popupBackgroundIsEnabled']).toBeTruthy();
-      });
-
       describe('when opened', () => {
         beforeEach(() => {
           column.handleResizeEvent();
