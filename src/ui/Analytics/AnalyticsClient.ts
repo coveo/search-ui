@@ -160,4 +160,13 @@ export interface IAnalyticsClient {
    * @param originContext The origin context value.
    */
   setOriginContext(originContext: string);
+  /**
+   * Get the Origin Context dimension on the analytic events.
+   */
+  getOriginContext(): string;
+
+  /**
+   * Get the user display name;
+   */
+  getUserDisplayName(): string;
 }

@@ -3,11 +3,17 @@ import { LocalStorageUtils } from '../../Core';
 import { Cookie } from '../../utils/CookieUtils';
 import { buildHistoryStore } from '../../utils/HistoryStore';
 import { SafeLocalStorage } from '../../utils/LocalStorageUtils';
+import { PendingSearchEvent } from './PendingSearchEvent';
 
 export class AnalyticsInformation {
   private readonly visitorIdKey = 'visitorId';
   private readonly clientIdKey = 'clientId';
   private readonly storage = new SafeLocalStorage();
+
+  public pendingSearchEvent: PendingSearchEvent;
+
+  public originContext: string;
+  public userDisplayName: string;
 
   public get clientId() {
     // Yes, its backwards: We are using a key named "visitorId" to fetched something for "clientId"

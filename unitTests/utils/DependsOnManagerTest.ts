@@ -97,6 +97,31 @@ export function DependsOnManagerTest() {
       });
     });
 
+    describe(`when a parent facet has selected value(s) and is disabled (default condition not fulfilled),
+    when triggering "building query"`, () => {
+      beforeEach(() => {
+        queryStateModel.registerNewAttribute(parentStateAttribute(), ['a value']);
+        parentMock.facet.ref.disabled = true;
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+      });
+
+      it('should disable the dependent facet', () => {
+        spyOn(dependentMock.facet.ref, 'disable');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(dependentMock.facet.ref.disable).toHaveBeenCalledTimes(1);
+      });
+
+      it('hides the facet', () => {
+        const facet = $$(dependentMock.facet.ref.element);
+        facet.removeClass('coveo-hidden-dependant-facet');
+
+        $$(root).trigger(QueryEvents.buildingQuery);
+        expect(facet.hasClass('coveo-hidden-dependant-facet')).toBe(true);
+      });
+    });
+
     describe(`when a parent facet has no selected value (default condition not fulfilled),
     when triggering "building query"`, () => {
       it('should disable the dependent facet', () => {

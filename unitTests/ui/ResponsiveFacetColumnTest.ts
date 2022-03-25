@@ -74,14 +74,22 @@ export function ResponsiveFacetColumnTest() {
         prepareTest();
       });
 
-      it('should instantiate a normal dropdown', () => {
-        expect(dropdown.dropdownContent instanceof ResponsiveDropdownContent).toBeTruthy();
+      it('should instantiate a modal dropdown', () => {
+        expect(dropdown.dropdownContent instanceof ResponsiveDropdownModalContent).toBeTruthy();
+      });
+
+      it("shouldn't show the background", () => {
+        expect(dropdown['popupBackgroundIsEnabled']).toBeFalsy();
       });
 
       describe('when opened', () => {
         beforeEach(() => {
           column.handleResizeEvent();
           dropdown.open();
+        });
+
+        it("shouldn't allow scrolling on the body", () => {
+          expect(root.el.style.overflow).toEqual('hidden');
         });
       });
     });
@@ -117,6 +125,20 @@ export function ResponsiveFacetColumnTest() {
         });
       });
 
+      describe('with isModal disabled', () => {
+        beforeEach(() => {
+          prepareTestWithMobileMode({ isModal: false });
+        });
+
+        it('should instantiate a normal dropdown', () => {
+          expect(dropdown.dropdownContent instanceof ResponsiveDropdownContent).toBeTruthy();
+        });
+
+        it('should show the background', () => {
+          expect(dropdown['popupBackgroundIsEnabled']).toBeTruthy();
+        });
+      });
+
       describe('with displayOverlayWhileOpen disabled', () => {
         beforeEach(() => {
           prepareTestWithMobileMode({ displayOverlayWhileOpen: false });
@@ -124,6 +146,65 @@ export function ResponsiveFacetColumnTest() {
 
         it("shouldn't show the background", () => {
           expect(dropdown['popupBackgroundIsEnabled']).toBeFalsy();
+        });
+      });
+
+      describe('with preventScrolling enabled', () => {
+        describe('without a scroll container', () => {
+          beforeEach(() => {
+            prepareTestWithMobileMode({ preventScrolling: true });
+          });
+
+          describe('when opened', () => {
+            beforeEach(() => {
+              column.handleResizeEvent();
+              dropdown.open();
+            });
+
+            it("shouldn't allow scrolling on the body", () => {
+              expect(root.el.style.overflow).toEqual('hidden');
+            });
+
+            describe('then closed', () => {
+              beforeEach(() => {
+                dropdown.close();
+              });
+
+              it('should re-allow scrolling on the body', () => {
+                expect(root.el.style.overflow).toBeFalsy();
+              });
+            });
+          });
+        });
+
+        describe('with a scroll container', () => {
+          let container: HTMLElement;
+
+          beforeEach(() => {
+            container = $$('div').el;
+            prepareTestWithMobileMode({ preventScrolling: true, scrollContainer: container });
+          });
+
+          describe('when opened', () => {
+            beforeEach(() => {
+              column.handleResizeEvent();
+              dropdown.open();
+            });
+
+            it("shouldn't allow scrolling on the container", () => {
+              expect(container.style.overflow).toEqual('hidden');
+            });
+
+            describe('then closed', () => {
+              beforeEach(() => {
+                dropdown.close();
+              });
+
+              it('should re-allow scrolling on the container', () => {
+                expect(container.style.overflow).toBeFalsy();
+              });
+            });
+          });
         });
       });
 
@@ -161,20 +242,19 @@ export function ResponsiveFacetColumnTest() {
             beforeEach(() => {
               dropdown.open();
               popupOpened.calls.reset();
-              popupClosed.calls.reset();
             });
 
             it('should trigger the closed event when closing the popup', () => {
               dropdown.close();
               expect(popupOpened).not.toHaveBeenCalled();
-              expect(popupClosed).toHaveBeenCalled();
+              expect(popupClosed).toHaveBeenCalledTimes(1);
             });
 
             it('should trigger the closed event when large mode is activated', () => {
               setScreenWidth(TEST_SCREEN_WIDTH_DESKTOP);
               column.handleResizeEvent();
               expect(popupOpened).not.toHaveBeenCalled();
-              expect(popupClosed).toHaveBeenCalled();
+              expect(popupClosed).toHaveBeenCalledTimes(1);
             });
           });
         });

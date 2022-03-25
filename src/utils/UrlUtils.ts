@@ -126,11 +126,11 @@ export class UrlUtils {
   }
 
   private static startsWith(searchString: string, targetString: string) {
-    return targetString.substr(0, searchString.length) === searchString;
+    return Utils.stringStartsWith(targetString, searchString);
   }
 
   private static endsWith(searchString: string, targetString: string) {
-    return targetString.substring(targetString.length - searchString.length, targetString.length) === searchString;
+    return Utils.stringEndsWith(targetString, searchString);
   }
 
   private static removeAtEnd(searchString: string, targetString: string) {

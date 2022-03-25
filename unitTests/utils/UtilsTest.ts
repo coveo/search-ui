@@ -66,5 +66,25 @@ export function UtilsTest() {
         objectsToSort[3]
       ]);
     });
+
+    describe('stringStartsWith', () => {
+      it('returns true when string starts with value', () => {
+        expect(Utils.stringStartsWith('valid value', 'valid')).toBe(true);
+      });
+
+      it('returns true when string starts with value', () => {
+        expect(Utils.stringStartsWith('invalid value', 'valid')).toBe(false);
+      });
+    });
+
+    describe('stringEndsWith', () => {
+      it('returns true when string ends with value', () => {
+        expect(Utils.stringEndsWith('value is good', 'good')).toBe(true);
+      });
+
+      it('returns false when string ends with value', () => {
+        expect(Utils.stringEndsWith('value is bad', 'good')).toBe(false);
+      });
+    });
   });
 }

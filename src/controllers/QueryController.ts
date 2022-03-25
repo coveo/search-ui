@@ -32,6 +32,7 @@ import { UrlUtils } from '../utils/UrlUtils';
 import { Utils } from '../utils/Utils';
 import { IAnalyticsClient } from '../ui/Analytics/AnalyticsClient';
 import { ExecutionPlan } from '../rest/Plan';
+import { AnalyticsInformation } from '../ui/Analytics/AnalyticsInformation';
 
 /**
  * Possible options when performing a query with the query controller
@@ -242,7 +243,7 @@ export class QueryController extends RootComponent {
 
     let endpointToUse = this.getEndpoint();
 
-    let promise = (this.currentPendingQuery = endpointToUse.search(query));
+    let promise = (this.currentPendingQuery = endpointToUse.search(query, { analyticsInformation: this.getAnalyticsInformation() }));
     promise
       .then(queryResults => {
         Assert.exists(queryResults);
@@ -718,5 +719,13 @@ export class QueryController extends RootComponent {
       time: JSON.stringify(new Date())
     };
     this.historyStore.addElement(queryElement);
+  }
+
+  private getAnalyticsInformation(): AnalyticsInformation {
+    const analyticsInfo = new AnalyticsInformation();
+    analyticsInfo.pendingSearchEvent = this.usageAnalytics.getPendingSearchEvent();
+    analyticsInfo.originContext = this.usageAnalytics.getOriginContext();
+    analyticsInfo.userDisplayName = this.usageAnalytics.getUserDisplayName();
+    return analyticsInfo;
   }
 }

@@ -40,7 +40,6 @@ import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { Logger } from '../../misc/Logger';
 import { DynamicHierarchicalFacetSearch } from '../DynamicHierarchicalFacetSearch/DynamicHierarchicalFacetSearch';
-import { ResponsiveComponentsUtils } from '../ResponsiveComponents/ResponsiveComponentsUtils';
 
 /**
  * The `DynamicHierarchicalFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
@@ -484,10 +483,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
 
   public triggerNewQuery(beforeExecuteQuery?: () => void) {
     this.beforeSendingQuery();
-    const options: IQueryOptions = {
-      ...(beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true }),
-      closeModalBox: !ResponsiveComponentsUtils.isSmallFacetActivated($$(this.root))
-    };
+    const options: IQueryOptions = beforeExecuteQuery ? { beforeExecuteQuery } : { ignoreWarningSearchEvent: true };
     this.queryController.executeQuery(options);
   }
 

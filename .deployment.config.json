@@ -44,7 +44,7 @@
         "system_certifier": "snyk"
       },
       {
-        "system_certifier": "veracode"
+        "system_certifier": "snyk-code"
       }
     ],
     "prd": [
@@ -67,10 +67,18 @@
       }
     ]
   },
+  "snyk_code": {
+    "no_scan": false,
+    "configurations": [
+      {
+        "path": ".",
+        "project_name": "search-ui",
+        "org": "coveo-jsui"
+      }
+    ]
+  },
   "veracode": {
-    "sandbox_name": "JS UI",
-    "scan_include_patterns": "*",
-    "app_name": "JSUI"
+    "no_scan": true
   },
   "observatory": {
     "no_endpoint": true

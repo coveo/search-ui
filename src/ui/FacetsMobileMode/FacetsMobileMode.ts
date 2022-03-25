@@ -19,7 +19,6 @@ export interface IFacetsMobileModeOptions {
  * **Notes:**
  * - You can include this component anywhere under the root element of your search interface.
  * - You should only include this component once in your search interface.
- * - If you do not include this component in your search interface, facets will still have a default mobile responsive behavior.
  */
 export class FacetsMobileMode extends Component {
   static ID = 'FacetsMobileMode';
@@ -36,8 +35,9 @@ export class FacetsMobileMode extends Component {
     breakpoint: ComponentOptions.buildNumberOption(),
     /**
      * Whether to display the facets in a modal instead of a pop-up when the end user expands them in mobile responsive mode.
+     * Set this option to `false` in order to keep the old behaviour.
      */
-    isModal: ComponentOptions.buildBooleanOption({ defaultValue: false }),
+    isModal: ComponentOptions.buildBooleanOption({ defaultValue: true }),
     /**
      * Whether to display an overlay behind the facets when the end user expands them in mobile responsive mode.
      *

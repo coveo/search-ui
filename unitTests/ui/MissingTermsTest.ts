@@ -29,6 +29,15 @@ export function MissingTermsTest() {
       return test;
     };
 
+    function visibleMissingTerms() {
+      return $$(test.cmp.element)
+        .findAll('.coveo-missing-term')
+        .filter(element => {
+          return element.style.display === '';
+        })
+        .map(element => element.innerText);
+    }
+
     beforeEach(() => {
       fakeResult = FakeResults.createFakeResult();
     });
@@ -101,22 +110,12 @@ export function MissingTermsTest() {
         });
 
         it('allows the user to set the maximum number of MissingTerm to be displayed', () => {
-          const visibleMissingTerm = $$(test.cmp.element)
-            .findAll('.coveo-missing-term')
-            .filter(element => {
-              return element.style.display === '';
-            });
-          expect(visibleMissingTerm.length).toBe(1);
+          expect(visibleMissingTerms().length).toBe(1);
         });
 
         it('when the show more button is clicked, show all the missing terms', () => {
           $$(test.cmp.element).find('.coveo-missing-term-show-more').click();
-          const visibleMissingTerm = $$(test.cmp.element)
-            .findAll('.coveo-missing-term')
-            .filter(element => {
-              return element.style.display === '';
-            });
-          expect(visibleMissingTerm.length).toBe(2);
+          expect(visibleMissingTerms().length).toBe(2);
         });
       });
     });
@@ -328,6 +327,76 @@ export function MissingTermsTest() {
 
         test = mockComponent('hello world bye forever');
         expect(test.cmp.missingTerms).toEqual(['hello', 'world']);
+      });
+    });
+
+    describe('with phrases', () => {
+      describe('with query not containing breaking characters', () => {
+        it('handles absent phrases', () => {
+          const query = 'welcome hello world';
+          fakeResult.absentTerms = ['"hello world"'];
+
+          test = mockComponent(query);
+
+          const expected = ['hello world'];
+          expect(test.cmp.missingTerms).toEqual(expected);
+          expect(visibleMissingTerms()).toEqual(expected);
+        });
+
+        it('handles absent phrases & unrelated absent terms', () => {
+          const query = 'welcome hello world friends';
+          fakeResult.absentTerms = ['friends', '"hello world"'];
+
+          test = mockComponent(query);
+
+          const expected = ['friends', 'hello world'];
+          expect(test.cmp.missingTerms).toEqual(expected);
+          expect(visibleMissingTerms()).toEqual(expected);
+        });
+
+        it("don't display phrases containing other missing terms", () => {
+          const query = 'welcome hello world friends';
+          fakeResult.absentTerms = ['hello', 'world', '"hello world"'];
+
+          test = mockComponent(query);
+
+          expect(test.cmp.missingTerms).toEqual(['hello', 'world', 'hello world']);
+          expect(visibleMissingTerms()).toEqual(['hello', 'world']);
+        });
+      });
+
+      describe('with query containing breaking characters', () => {
+        it('handles absent phrases', () => {
+          const query = 'welcome hello.world/all';
+          fakeResult.absentTerms = ['"hello world all"'];
+
+          test = mockComponent(query);
+
+          const expected = ['hello world all'];
+          expect(test.cmp.missingTerms).toEqual(expected);
+          expect(visibleMissingTerms()).toEqual(expected);
+        });
+
+        it('handles absent phrases & unrelated absent terms', () => {
+          const query = 'welcome hello-world friends';
+          fakeResult.absentTerms = ['friends', '"hello world"'];
+
+          test = mockComponent(query);
+
+          const expected = ['friends', 'hello world'];
+          expect(test.cmp.missingTerms).toEqual(expected);
+          expect(visibleMissingTerms()).toEqual(expected);
+        });
+
+        it('uses absent phrase as a fallback for words containing breaking characters', () => {
+          const query = 'welcome hello.world friends';
+          fakeResult.absentTerms = ['hello', 'world', '"hello world"'];
+
+          test = mockComponent(query);
+
+          expect(test.cmp.missingTerms).toEqual(['hello', 'world', 'hello world']);
+          expect(visibleMissingTerms()).toEqual(['hello world']);
+        });
       });
     });
   });
