@@ -44,8 +44,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var RankingInfoTable_1 = __webpack_require__(337);
 var MetaDataTable_1 = __webpack_require__(342);
 var Dom_1 = __webpack_require__(1);
-var ExternalModulesShim_1 = __webpack_require__(33);
-var Core_1 = __webpack_require__(31);
+var ExternalModulesShim_1 = __webpack_require__(43);
+var Core_1 = __webpack_require__(42);
 var RelevanceInspectorTabs_1 = __webpack_require__(343);
 __webpack_require__(344);
 var ExecutionReport_1 = __webpack_require__(332);
@@ -517,7 +517,7 @@ var ExecutionReportSimpleSection_1 = __webpack_require__(336);
 var ExecutionReportEffectiveIndexQuerySection_1 = __webpack_require__(349);
 var UtilsModules_1 = __webpack_require__(79);
 var ExecutionReportRankingModifiers_1 = __webpack_require__(350);
-var Core_1 = __webpack_require__(31);
+var Core_1 = __webpack_require__(42);
 var ExecutionReportITDSection_1 = __webpack_require__(351);
 var EXECUTION_REPORT_SECTION;
 (function (EXECUTION_REPORT_SECTION) {
@@ -802,7 +802,7 @@ exports.ExecutionReportGenericSection = ExecutionReportGenericSection;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var underscore_1 = __webpack_require__(0);
-var StringUtils_1 = __webpack_require__(19);
+var StringUtils_1 = __webpack_require__(20);
 var Dom_1 = __webpack_require__(1);
 exports.buildListOfTermsElement = function (weightPerTerm) {
     var listItems = underscore_1.map(weightPerTerm, function (value, key) {
@@ -1261,23 +1261,23 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Component_1 = __webpack_require__(7);
-var ComponentOptions_1 = __webpack_require__(23);
+var ComponentOptions_1 = __webpack_require__(14);
 var ComponentOptionsModel_1 = __webpack_require__(22);
-var AnalyticsActionListMeta_1 = __webpack_require__(10);
-var ResultListEvents_1 = __webpack_require__(34);
+var AnalyticsActionListMeta_1 = __webpack_require__(11);
+var ResultListEvents_1 = __webpack_require__(32);
 var HighlightUtils_1 = __webpack_require__(82);
-var DeviceUtils_1 = __webpack_require__(32);
+var DeviceUtils_1 = __webpack_require__(30);
 var OSUtils_1 = __webpack_require__(120);
 var Initialization_1 = __webpack_require__(12);
-var QueryUtils_1 = __webpack_require__(20);
+var QueryUtils_1 = __webpack_require__(21);
 var Assert_1 = __webpack_require__(2);
 var Utils_1 = __webpack_require__(3);
-var Defer_1 = __webpack_require__(21);
+var Defer_1 = __webpack_require__(31);
 var Dom_1 = __webpack_require__(1);
 var StreamHighlightUtils_1 = __webpack_require__(117);
-var StringUtils_1 = __webpack_require__(19);
+var StringUtils_1 = __webpack_require__(20);
 var underscore_1 = __webpack_require__(0);
-var GlobalExports_1 = __webpack_require__(24);
+var GlobalExports_1 = __webpack_require__(23);
 __webpack_require__(340);
 var AccessibleButton_1 = __webpack_require__(122);
 var MiscModules_1 = __webpack_require__(81);
@@ -1327,7 +1327,9 @@ var ResultLink = /** @class */ (function (_super) {
         if (_this.options.openQuickview == null) {
             _this.options.openQuickview = result.raw['connectortype'] == 'ExchangeCrawler' && DeviceUtils_1.DeviceUtils.isMobileDevice();
         }
-        _this.element.setAttribute('tabindex', '0');
+        if (!_this.element.hasAttribute('tabindex')) {
+            _this.element.setAttribute('tabindex', '0');
+        }
         Assert_1.Assert.exists(_this.componentOptionsModel);
         Assert_1.Assert.exists(_this.result);
         if (!_this.quickviewShouldBeOpened()) {
@@ -1893,8 +1895,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var TableBuilder_1 = __webpack_require__(331);
 var underscore_1 = __webpack_require__(0);
 var Dom_1 = __webpack_require__(1);
-var StringUtils_1 = __webpack_require__(19);
-var DateUtils_1 = __webpack_require__(56);
+var StringUtils_1 = __webpack_require__(20);
+var DateUtils_1 = __webpack_require__(57);
 var TextInput_1 = __webpack_require__(118);
 var MetaDataTable = /** @class */ (function () {
     function MetaDataTable(results, bindings) {
