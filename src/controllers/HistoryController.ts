@@ -15,6 +15,7 @@ import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsActionCause } 
 import { logSearchBoxSubmitEvent, logSortEvent } from '../ui/Analytics/SharedAnalyticsCalls';
 import { Model } from '../models/Model';
 import { IHistoryManager } from './HistoryManager';
+import { QueryEvents } from '../Core';
 
 /**
  * This component is instantiated automatically by the framework on the root if the {@link SearchInterface}.<br/>
@@ -27,7 +28,7 @@ export class HistoryController extends RootComponent implements IHistoryManager 
 
   static attributesThatDoNotTriggerQuery = ['quickview'];
 
-  private initialHashChange = false;
+  private initialHashChange = true;
   private willUpdateHash: boolean = false;
   private hashchange: (...args: any[]) => void;
   private lastState: IStringMap<any>;
@@ -53,10 +54,13 @@ export class HistoryController extends RootComponent implements IHistoryManager 
     Assert.exists(this.queryStateModel);
     Assert.exists(this.queryController);
 
+    $$(this.element).one(QueryEvents.querySuccess, () => {
+      this.initialHashChange = false;
+    });
+
     $$(this.element).on(InitializationEvents.restoreHistoryState, () => {
       this.logger.trace('Restore history state. Update model');
       this.updateModelFromHash();
-      this.initialHashChange = false;
       this.lastState = this.queryStateModel.getAttributes();
     });
 
@@ -95,6 +99,10 @@ export class HistoryController extends RootComponent implements IHistoryManager 
     this.window.location.replace(hash);
   }
 
+  private replaceUrl(url: string) {
+    this.window.location.replace(url);
+  }
+
   /**
    * Set the given map of key value in the hash of the URL
    * @param values
@@ -108,19 +116,17 @@ export class HistoryController extends RootComponent implements IHistoryManager 
 
     this.logger.trace('initialHashChange', this.initialHashChange);
     this.logger.trace('from', this.window.location.hash, 'to', hash);
+    const location = this.window.location;
+    const url = `${location.pathname}${location.search}${hash}`;
 
     if (this.initialHashChange) {
-      this.initialHashChange = false;
       if (hashHasChanged) {
         // Using replace avoids adding an entry in the History of the browser.
         // This means that this new URL will become the new initial URL.
-        this.replaceState(values);
+        this.replaceUrl(url);
         this.logger.trace('History hash modified', hash);
       }
     } else if (hashHasChanged) {
-      const location = this.window.location;
-      const url = `${location.pathname}${location.search}${hash}`;
-
       this.window.history.pushState('', '', url);
       this.logger.trace('History hash created', hash);
     }
@@ -175,7 +181,6 @@ export class HistoryController extends RootComponent implements IHistoryManager 
         diff.push(key);
       }
     });
-    this.initialHashChange = true;
     this.queryStateModel.setMultiple(toSet);
     return diff;
   }
