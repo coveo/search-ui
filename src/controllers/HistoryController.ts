@@ -15,7 +15,6 @@ import { analyticsActionCauseList, IAnalyticsFacetMeta, IAnalyticsActionCause } 
 import { logSearchBoxSubmitEvent, logSortEvent } from '../ui/Analytics/SharedAnalyticsCalls';
 import { Model } from '../models/Model';
 import { IHistoryManager } from './HistoryManager';
-import { QueryEvents } from '../Core';
 
 /**
  * This component is instantiated automatically by the framework on the root if the {@link SearchInterface}.<br/>
@@ -28,7 +27,6 @@ export class HistoryController extends RootComponent implements IHistoryManager 
 
   static attributesThatDoNotTriggerQuery = ['quickview'];
 
-  private initialHashChange = true;
   private willUpdateHash: boolean = false;
   private hashchange: (...args: any[]) => void;
   private lastState: IStringMap<any>;
@@ -53,10 +51,6 @@ export class HistoryController extends RootComponent implements IHistoryManager 
 
     Assert.exists(this.queryStateModel);
     Assert.exists(this.queryController);
-
-    $$(this.element).one(QueryEvents.querySuccess, () => {
-      this.initialHashChange = false;
-    });
 
     $$(this.element).on(InitializationEvents.restoreHistoryState, () => {
       this.logger.trace('Restore history state. Update model');
@@ -114,12 +108,11 @@ export class HistoryController extends RootComponent implements IHistoryManager 
     const hash = encoded ? `#${encoded}` : '';
     const hashHasChanged = this.window.location.hash != hash;
 
-    this.logger.trace('initialHashChange', this.initialHashChange);
     this.logger.trace('from', this.window.location.hash, 'to', hash);
     const location = this.window.location;
     const url = `${location.pathname}${location.search}${hash}`;
 
-    if (this.initialHashChange) {
+    if (this.queryController.firstQuery) {
       if (hashHasChanged) {
         // Using replace avoids adding an entry in the History of the browser.
         // This means that this new URL will become the new initial URL.
