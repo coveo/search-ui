@@ -74,12 +74,12 @@ export function ResponsiveFacetColumnTest() {
         prepareTest();
       });
 
-      it('should instantiate a modal dropdown', () => {
-        expect(dropdown.dropdownContent instanceof ResponsiveDropdownModalContent).toBeTruthy();
+      it('should instantiate a normal dropdown', () => {
+        expect(dropdown.dropdownContent instanceof ResponsiveDropdownContent).toBeTruthy();
       });
 
-      it("shouldn't show the background", () => {
-        expect(dropdown['popupBackgroundIsEnabled']).toBeFalsy();
+      it('should show the background', () => {
+        expect(dropdown['popupBackgroundIsEnabled']).toBeTruthy();
       });
 
       describe('when opened', () => {
@@ -88,8 +88,8 @@ export function ResponsiveFacetColumnTest() {
           dropdown.open();
         });
 
-        it("shouldn't allow scrolling on the body", () => {
-          expect(root.el.style.overflow).toEqual('hidden');
+        it('should allow scrolling on the body', () => {
+          expect(root.el.style.overflow).toBeFalsy();
         });
       });
     });
