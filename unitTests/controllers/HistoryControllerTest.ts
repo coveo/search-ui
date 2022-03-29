@@ -10,6 +10,7 @@ import {
   IAnalyticsFacetMeta,
   IAnalyticsActionCause
 } from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { QueryEvents } from '../../src/Core';
 
 export function HistoryControllerTest() {
   describe('HistoryController', () => {
@@ -18,6 +19,10 @@ export function HistoryControllerTest() {
 
     function triggerRestoreHistoryEvent() {
       $$(historyController.element).trigger(InitializationEvents.restoreHistoryState);
+    }
+
+    function triggerFirstQuery() {
+      $$(historyController.element).trigger(QueryEvents.querySuccess);
     }
 
     beforeEach(() => {
@@ -46,6 +51,7 @@ export function HistoryControllerTest() {
         d: [2, 3, 4]
       };
 
+      triggerFirstQuery();
       $$(historyController.element).trigger('state:all');
       Defer.flush();
       expect(historyController.window.history.pushState).toHaveBeenCalledWith('', '', '#c=notDefault&d=[1,2,3]');
@@ -58,6 +64,7 @@ export function HistoryControllerTest() {
     it(`given at least one value in the hash, when calling #setHashValues with an empty object,
     it updates the url without including a hash to prevent the page from scrolling to the top`, () => {
       historyController.window.location.hash = '#f:@author=[TED]';
+      triggerFirstQuery();
       historyController.setHashValues({});
       expect(historyController.window.history.pushState).toHaveBeenCalledWith('', '', '');
     });
@@ -67,6 +74,7 @@ export function HistoryControllerTest() {
       const location = historyController.window.location;
       location.pathname = '/sports';
       location.search = '?type=basketball';
+      triggerFirstQuery();
       historyController.setHashValues({ q: 'shoes' });
 
       const expectedUrl = `${location.pathname}${location.search}#q=shoes`;
@@ -81,11 +89,12 @@ export function HistoryControllerTest() {
 
     it('should not set the hash when it has not changed on the first hash change', () => {
       triggerRestoreHistoryEvent();
+      triggerFirstQuery();
       expect(historyController.window.location.replace).not.toHaveBeenCalled();
     });
 
-    it('After the first hash change, when calling #setHashUtils, it pushes a new history entry instead of replacing state', () => {
-      triggerRestoreHistoryEvent();
+    it('After the first query, when calling #setHashUtils, it pushes a new history entry instead of replacing state', () => {
+      triggerFirstQuery();
       historyController.setHashValues({ q: 'hello' });
 
       expect(historyController.window.location.replace).not.toHaveBeenCalled();
