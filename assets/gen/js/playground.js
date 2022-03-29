@@ -15493,8 +15493,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10095.0',
-    product: '2.10095.0',
+    lib: '2.10095.1',
+    product: '2.10095.1',
     supportedApiVersion: 2
 };
 
@@ -18902,14 +18902,12 @@ var HistoryController = /** @class */ (function (_super) {
         _this.window = window;
         _this.queryStateModel = queryStateModel;
         _this.queryController = queryController;
-        _this.initialHashChange = false;
         _this.willUpdateHash = false;
         Assert_1.Assert.exists(_this.queryStateModel);
         Assert_1.Assert.exists(_this.queryController);
         Dom_1.$$(_this.element).on(InitializationEvents_1.InitializationEvents.restoreHistoryState, function () {
             _this.logger.trace('Restore history state. Update model');
             _this.updateModelFromHash();
-            _this.initialHashChange = false;
             _this.lastState = _this.queryStateModel.getAttributes();
         });
         Dom_1.$$(_this.element).on(_this.queryStateModel.getEventName(Model_1.Model.eventTypes.all), function () {
@@ -18948,6 +18946,9 @@ var HistoryController = /** @class */ (function (_super) {
         var hash = '#' + this.hashUtils.encodeValues(state);
         this.window.location.replace(hash);
     };
+    HistoryController.prototype.replaceUrl = function (url) {
+        this.window.location.replace(url);
+    };
     /**
      * Set the given map of key value in the hash of the URL
      * @param values
@@ -18957,20 +18958,18 @@ var HistoryController = /** @class */ (function (_super) {
         var encoded = this.hashUtils.encodeValues(values);
         var hash = encoded ? "#" + encoded : '';
         var hashHasChanged = this.window.location.hash != hash;
-        this.logger.trace('initialHashChange', this.initialHashChange);
         this.logger.trace('from', this.window.location.hash, 'to', hash);
-        if (this.initialHashChange) {
-            this.initialHashChange = false;
+        var location = this.window.location;
+        var url = "" + location.pathname + location.search + hash;
+        if (this.queryController.firstQuery) {
             if (hashHasChanged) {
                 // Using replace avoids adding an entry in the History of the browser.
                 // This means that this new URL will become the new initial URL.
-                this.replaceState(values);
+                this.replaceUrl(url);
                 this.logger.trace('History hash modified', hash);
             }
         }
         else if (hashHasChanged) {
-            var location_1 = this.window.location;
-            var url = "" + location_1.pathname + location_1.search + hash;
             this.window.history.pushState('', '', url);
             this.logger.trace('History hash created', hash);
         }
@@ -19019,7 +19018,6 @@ var HistoryController = /** @class */ (function (_super) {
                 diff.push(key);
             }
         });
-        this.initialHashChange = true;
         this.queryStateModel.setMultiple(toSet);
         return diff;
     };
