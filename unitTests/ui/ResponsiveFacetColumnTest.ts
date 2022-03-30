@@ -63,7 +63,8 @@ export function ResponsiveFacetColumnTest() {
     createResponsiveFacetColumn();
   }
 
-  function prepareTest() {
+  function prepareTestWithoutMobileMode() {
+    spyOn(ResponsiveFacetColumn['logger'], 'warn');
     mockSearchInterface();
     createResponsiveFacetColumn();
   }
@@ -71,7 +72,11 @@ export function ResponsiveFacetColumnTest() {
   describe('ResponsiveFacetColumn', () => {
     describe('without a FacetsMobileMode component', () => {
       beforeEach(() => {
-        prepareTest();
+        prepareTestWithoutMobileMode();
+      });
+
+      it('should log a warning', () => {
+        expect(ResponsiveFacetColumn['logger'].warn).toHaveBeenCalled();
       });
 
       it('should instantiate a normal dropdown', () => {
