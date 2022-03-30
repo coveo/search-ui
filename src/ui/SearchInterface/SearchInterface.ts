@@ -51,6 +51,7 @@ import {
 import { FacetColumnAutoLayoutAdjustment } from './FacetColumnAutoLayoutAdjustment';
 import { FacetValueStateHandler } from './FacetValueStateHandler';
 import RelevanceInspectorModule = require('../RelevanceInspector/RelevanceInspector');
+import FacetsMobileModeModule = require('../FacetsMobileMode/FacetsMobileMode');
 import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { ScrollRestorer } from './ScrollRestorer';
 
@@ -784,6 +785,27 @@ export class SearchInterface extends RootComponent implements IComponentBindings
     this.responsiveComponents.setMediumScreenWidth(this.options.responsiveMediumBreakpoint);
     this.responsiveComponents.setSmallScreenWidth(this.options.responsiveSmallBreakpoint);
     this.responsiveComponents.setResponsiveMode(this.options.responsiveMode);
+    this.ensureFacetsMobileMode();
+  }
+
+  private ensureFacetsMobileMode() {
+    if (this.root.querySelector('.CoveoFacetsMobileMode')) {
+      return;
+    }
+
+    require.ensure(
+      ['../FacetsMobileMode/FacetsMobileMode'],
+      () => {
+        const loadedModule = require('../FacetsMobileMode/FacetsMobileMode.ts');
+        const facetsMobileModeCtor = loadedModule.FacetsMobileMode as FacetsMobileModeModule.IFacetsMobileModeConstructor;
+        const facetsMobileModeEl = $$('div');
+        $$(this.element).prepend(facetsMobileModeEl.el);
+        const options = this.options.originalOptionsObject['FacetsMobileMode'] || {};
+        new facetsMobileModeCtor(facetsMobileModeEl.el, options, this.getBindings());
+      },
+      null,
+      'FacetsMobileMode'
+    );
   }
 
   private handleDebugModeChange(args: IAttributeChangedEventArg) {

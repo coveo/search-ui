@@ -63,7 +63,8 @@ export function ResponsiveFacetColumnTest() {
     createResponsiveFacetColumn();
   }
 
-  function prepareTest() {
+  function prepareTestWithoutMobileMode() {
+    spyOn(ResponsiveFacetColumn['logger'], 'warn');
     mockSearchInterface();
     createResponsiveFacetColumn();
   }
@@ -71,15 +72,19 @@ export function ResponsiveFacetColumnTest() {
   describe('ResponsiveFacetColumn', () => {
     describe('without a FacetsMobileMode component', () => {
       beforeEach(() => {
-        prepareTest();
+        prepareTestWithoutMobileMode();
       });
 
-      it('should instantiate a modal dropdown', () => {
-        expect(dropdown.dropdownContent instanceof ResponsiveDropdownModalContent).toBeTruthy();
+      it('should log a warning', () => {
+        expect(ResponsiveFacetColumn['logger'].warn).toHaveBeenCalled();
       });
 
-      it("shouldn't show the background", () => {
-        expect(dropdown['popupBackgroundIsEnabled']).toBeFalsy();
+      it('should instantiate a normal dropdown', () => {
+        expect(dropdown.dropdownContent instanceof ResponsiveDropdownContent).toBeTruthy();
+      });
+
+      it('should show the background', () => {
+        expect(dropdown['popupBackgroundIsEnabled']).toBeTruthy();
       });
 
       describe('when opened', () => {
@@ -88,8 +93,8 @@ export function ResponsiveFacetColumnTest() {
           dropdown.open();
         });
 
-        it("shouldn't allow scrolling on the body", () => {
-          expect(root.el.style.overflow).toEqual('hidden');
+        it('should allow scrolling on the body', () => {
+          expect(root.el.style.overflow).toBeFalsy();
         });
       });
     });

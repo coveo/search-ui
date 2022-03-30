@@ -17,11 +17,11 @@ import { ComponentsTypes } from '../../utils/ComponentsTypes';
 import { ResponsiveDropdownModalContent } from './ResponsiveDropdown/ResponsiveDropdownModalContent';
 import { FacetsMobileMode, IFacetsMobileModeOptions } from '../FacetsMobileMode/FacetsMobileMode';
 import { FacetsMobileModeEvents } from '../../events/FacetsMobileModeEvents';
-import { ComponentOptions } from '../Base/ComponentOptions';
 
 export class ResponsiveFacetColumn implements IResponsiveComponent {
   public static DEBOUNCE_SCROLL_WAIT = 250;
 
+  private static logger = new Logger('ResponsiveFacets');
   private static DROPDOWN_MIN_WIDTH: number = 280;
   private static DROPDOWN_WIDTH_RATIO: number = 0.35; // Used to set the width relative to the coveo root.
   private static DROPDOWN_HEADER_LABEL_DEFAULT_VALUE = 'Filters';
@@ -46,8 +46,7 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   private static findColumn(root: HTMLElement) {
     const column = $$(root).find('.coveo-facet-column');
     if (!column) {
-      const logger = new Logger('ResponsiveFacets');
-      logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
+      this.logger.info('No element with class coveo-facet-column. Responsive facets cannot be enabled');
     }
     return column;
   }
@@ -70,13 +69,14 @@ export class ResponsiveFacetColumn implements IResponsiveComponent {
   private get facetsMobileModeOptions(): IFacetsMobileModeOptions {
     const facetsMobileModeComponent = this.facetsMobileModeComponent;
     if (!facetsMobileModeComponent) {
+      ResponsiveFacetColumn.logger.warn('The "FacetsMobileMode" component did not load properly, disabling the ResponsiveFacets modal.');
       return {
-        isModal: true,
-        preventScrolling: true,
-        displayOverlayWhileOpen: false,
-        scrollContainer: this.searchInterface ? ComponentOptions.findParentScrollLockable(this.searchInterface.element) : undefined
+        isModal: false,
+        preventScrolling: false,
+        displayOverlayWhileOpen: true
       };
     }
+
     return facetsMobileModeComponent.options;
   }
 

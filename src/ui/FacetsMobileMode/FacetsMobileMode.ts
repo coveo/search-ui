@@ -5,6 +5,10 @@ import { exportGlobally } from '../../GlobalExports';
 import { Utils } from '../../Core';
 import { Initialization } from '../Base/Initialization';
 
+export interface IFacetsMobileModeConstructor {
+  new (element: HTMLElement, options: IFacetsMobileModeOptions, bindings: IComponentBindings): FacetsMobileMode;
+}
+
 export interface IFacetsMobileModeOptions {
   breakpoint?: number;
   isModal?: boolean;
