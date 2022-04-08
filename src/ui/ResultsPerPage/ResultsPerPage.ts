@@ -53,8 +53,8 @@ export class ResultsPerPage extends Component {
      * Default value is `[10, 25, 50, 100]`.
      */
     choicesDisplayed: ComponentOptions.buildCustomListOption<number[]>(
-      function(list: string[]) {
-        const values = _.map(list, function(value) {
+      function (list: string[]) {
+        const values = _.map(list, function (value) {
           return parseInt(value, 10);
         });
         return values.length == 0 ? null : values;
@@ -254,10 +254,9 @@ export class ResultsPerPage extends Component {
 
       listItem.appendChild(
         $$(
-          'a',
+          'span',
           {
             className: 'coveo-results-per-page-list-item-text',
-            tabindex: -1,
             ariaHidden: 'true'
           },
           numResultsList[i].toString()

@@ -140,11 +140,15 @@ export class Pager extends Component {
       this.handleQueryStateNumberOfResultsPerPageChanged(data)
     );
     this.addAlwaysActiveListeners();
+    if (!this.element.getAttribute('role')) {
+      this.element.setAttribute('role', 'navigation');
+    }
+    if (!this.element.hasAttribute('aria-label')) {
+      this.element.setAttribute('aria-label', l('Pagination'));
+    }
 
     this.list = $$('ul', {
-      className: 'coveo-pager-list',
-      role: 'navigation',
-      ariaLabel: l('Pagination')
+      className: 'coveo-pager-list'
     }).el;
     element.appendChild(this.list);
   }
@@ -269,8 +273,8 @@ export class Pager extends Component {
           const isCurrentPage = page === this.currentPage;
           if (isCurrentPage) {
             $$(listItem).addClass('coveo-active');
+            listItem.setAttribute('aria-current', 'page');
           }
-          $$(listItem).setAttribute('aria-pressed', isCurrentPage.toString());
 
           const clickAction = () => this.handleClickPage(page);
 
@@ -279,6 +283,7 @@ export class Pager extends Component {
             .withLabel(l('PageNumber', i.toString(10)))
             .withClickAction(clickAction)
             .withEnterKeyboardAction(clickAction)
+            .withRole('listitem')
             .build();
 
           listItem.appendChild(listItemValue);
@@ -399,6 +404,7 @@ export class Pager extends Component {
       .withElement(previousButton)
       .withLabel(l('Previous'))
       .withSelectAction(() => this.handleClickPrevious())
+      .withRole('listitem')
       .build();
 
     return previousButton;
@@ -432,6 +438,7 @@ export class Pager extends Component {
       .withElement(nextButton)
       .withLabel(l('Next'))
       .withSelectAction(() => this.handleClickNext())
+      .withRole('listitem')
       .build();
 
     return nextButton;
