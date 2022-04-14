@@ -140,12 +140,7 @@ export class Pager extends Component {
       this.handleQueryStateNumberOfResultsPerPageChanged(data)
     );
     this.addAlwaysActiveListeners();
-    if (!this.element.getAttribute('role')) {
-      this.element.setAttribute('role', 'navigation');
-    }
-    if (!this.element.hasAttribute('aria-label')) {
-      this.element.setAttribute('aria-label', l('Pagination'));
-    }
+    this.addAccessibilityAttributes();
 
     this.list = $$('ul', {
       className: 'coveo-pager-list'
@@ -212,6 +207,15 @@ export class Pager extends Component {
     this.setPage(this.currentPage + 1, analyticsActionCauseList.pagerNext);
   }
 
+  private addAccessibilityAttributes() {
+    if (!this.element.getAttribute('role')) {
+      this.element.setAttribute('role', 'navigation');
+    }
+    if (!this.element.hasAttribute('aria-label')) {
+      this.element.setAttribute('aria-label', l('Pagination'));
+    }
+  }
+
   private addAlwaysActiveListeners() {
     this.searchInterface.element.addEventListener(ResultListEvents.newResultsDisplayed, () =>
       ResultListUtils.hideIfInfiniteScrollEnabled(this)
@@ -255,38 +259,36 @@ export class Pager extends Component {
       this.currentPage = pagerBoundary.currentPage;
       if (pagerBoundary.end - pagerBoundary.start > 0) {
         for (let i = pagerBoundary.start; i <= pagerBoundary.end; i++) {
-          const listItemValue = $$(
-            'a',
+          const page = i;
+          const isCurrentPage = page === this.currentPage;
+          const button = $$(
+            'span',
             {
               className: 'coveo-pager-list-item-text coveo-pager-anchor',
-              tabindex: -1,
-              ariaHidden: 'true'
+              tabindex: 0,
+              ariaPressed: `${isCurrentPage}`
             },
             i.toString(10)
           ).el;
 
-          const page = i;
           const listItem = $$('li', {
-            className: 'coveo-pager-list-item',
-            tabindex: 0
+            className: 'coveo-pager-list-item'
           }).el;
-          const isCurrentPage = page === this.currentPage;
           if (isCurrentPage) {
             $$(listItem).addClass('coveo-active');
-            listItem.setAttribute('aria-current', 'page');
+            button.setAttribute('aria-current', 'page');
           }
 
           const clickAction = () => this.handleClickPage(page);
 
           new AccessibleButton()
-            .withElement(listItem)
+            .withElement(button)
             .withLabel(l('PageNumber', i.toString(10)))
             .withClickAction(clickAction)
             .withEnterKeyboardAction(clickAction)
-            .withRole('listitem')
             .build();
 
-          listItem.appendChild(listItemValue);
+          listItem.appendChild(button);
           this.list.appendChild(listItem);
         }
 
@@ -377,14 +379,13 @@ export class Pager extends Component {
   }
 
   private renderPreviousButton() {
-    const previousButton = $$('li', {
+    const previousListItem = $$('li', {
       className: 'coveo-pager-previous coveo-pager-anchor coveo-pager-list-item'
     });
 
-    const previousLink = $$('a', {
+    const previousButton = $$('span', {
       title: l('Previous'),
-      tabindex: -1,
-      ariaHidden: 'true'
+      tabindex: 0
     });
 
     const previousIcon = $$(
@@ -397,28 +398,26 @@ export class Pager extends Component {
 
     SVGDom.addClassToSVGInContainer(previousIcon.el, 'coveo-pager-previous-icon-svg');
 
-    previousLink.append(previousIcon.el);
-    previousButton.append(previousLink.el);
+    previousButton.append(previousIcon.el);
+    previousListItem.append(previousButton.el);
 
     new AccessibleButton()
       .withElement(previousButton)
       .withLabel(l('Previous'))
       .withSelectAction(() => this.handleClickPrevious())
-      .withRole('listitem')
       .build();
 
-    return previousButton;
+    return previousListItem;
   }
 
   private renderNextButton() {
-    const nextButton = $$('li', {
+    const nextListItem = $$('li', {
       className: 'coveo-pager-next coveo-pager-anchor coveo-pager-list-item'
     });
 
-    const nextLink = $$('a', {
+    const nextButton = $$('span', {
       title: l('Next'),
-      tabindex: -1,
-      ariaHidden: 'true'
+      tabindex: 0
     });
 
     const nextIcon = $$(
@@ -431,17 +430,16 @@ export class Pager extends Component {
 
     SVGDom.addClassToSVGInContainer(nextIcon.el, 'coveo-pager-next-icon-svg');
 
-    nextLink.append(nextIcon.el);
-    nextButton.append(nextLink.el);
+    nextButton.append(nextIcon.el);
+    nextListItem.append(nextButton.el);
 
     new AccessibleButton()
       .withElement(nextButton)
       .withLabel(l('Next'))
       .withSelectAction(() => this.handleClickNext())
-      .withRole('listitem')
       .build();
 
-    return nextButton;
+    return nextListItem;
   }
 
   private handleQueryStateFirstResultChanged(data: IAttributeChangedEventArg) {

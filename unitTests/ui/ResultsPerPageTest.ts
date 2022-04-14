@@ -29,7 +29,6 @@ export function ResultsPerPageTest() {
 
       expect(label.id).toBeTruthy();
       expect(list.getAttribute('aria-labelledby')).toEqual(label.id);
-      expect(list.getAttribute('role')).toEqual('radiogroup');
     });
 
     describe('when calling #setResultsPerPage', () => {
@@ -167,11 +166,11 @@ export function ResultsPerPageTest() {
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(100)
         });
-        expect($$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text').length).toBe(4);
+        expect($$(test.cmp.element).findAll('span.coveo-results-per-page-list-item-text').length).toBe(4);
         expect(test.env.queryController.options.resultsPerPage).toBe(15);
       });
 
-      it('choicesDisplayed links display the right aria-label', () => {
+      it('choicesDisplayed buttons display the right aria-label', () => {
         test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
           choicesDisplayed: [10, 25, 50]
         });
@@ -179,9 +178,9 @@ export function ResultsPerPageTest() {
           results: FakeResults.createFakeResults(100)
         });
 
-        const anchors = $$(test.cmp.element).findAll('a.coveo-results-per-page-list-item-text');
-        expect($$(anchors[0]).text()).toBe('10');
-        expect(anchors[0].parentElement.getAttribute('aria-label')).toBe('Display 10 results per page');
+        const buttons = $$(test.cmp.element).findAll('[role="button"]');
+        expect($$(buttons[0]).text()).toBe('10');
+        expect(buttons[0].getAttribute('aria-label')).toBe('Display 10 results per page');
       });
 
       it('initialChoice allows to choose the first choice of the number of results per page options', () => {
@@ -241,7 +240,7 @@ export function ResultsPerPageTest() {
       describe('with choices displayed 5, 10, 15 and 20', () => {
         const initialChoice = 10;
         const choicesDisplayed = [5, initialChoice, 15, 20];
-        let choiceElements: HTMLElement[];
+        let buttons: HTMLElement[];
         beforeEach(() => {
           test = Mock.optionsComponentSetup<ResultsPerPage, IResultsPerPageOptions>(ResultsPerPage, {
             initialChoice,
@@ -251,32 +250,22 @@ export function ResultsPerPageTest() {
           Simulate.query(test.env, {
             results: FakeResults.createFakeResults(100)
           });
-          choiceElements = $$(test.cmp['list']).children();
+          buttons = $$(test.cmp.element).findAll('[role="button"]');
         });
 
-        it('gives the radiogroup role to the container', () => {
-          expect(test.cmp['list'].getAttribute('role')).toEqual('radiogroup');
+        it('gives the button role to the choices', () => {
+          buttons.forEach(choiceElement => expect(choiceElement.getAttribute('role')).toEqual('button'));
         });
 
-        it('gives the radio role to the choices', () => {
-          choiceElements.forEach(choiceElement => expect(choiceElement.getAttribute('role')).toEqual('radio'));
-        });
-
-        it('sets the aria-checked attribute on choice elements', () => {
-          choiceElements.forEach((choiceElement, index) => {
-            expect(choiceElement.getAttribute('aria-checked')).toEqual((index === 1).toString());
+        it('sets the aria-pressed attribute on choice elements', () => {
+          buttons.forEach((choiceElement, index) => {
+            expect(choiceElement.getAttribute('aria-pressed')).toEqual((index === 1).toString());
           });
         });
 
-        it('sets tabindex to -1 on every link element', () => {
-          choiceElements.forEach(choiceElement => {
-            expect(choiceElement.children.item(0).getAttribute('tabindex')).toEqual('-1');
-          });
-        });
-
-        it('sets aria-hidden to true on every link element', () => {
-          choiceElements.forEach(choiceElement => {
-            expect(choiceElement.children.item(0).getAttribute('aria-hidden')).toEqual('true');
+        it('sets tabindex to 0 on every button element', () => {
+          buttons.forEach(choiceElement => {
+            expect(choiceElement.getAttribute('tabindex')).toEqual('0');
           });
         });
       });

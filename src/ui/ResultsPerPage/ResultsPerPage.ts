@@ -221,7 +221,6 @@ export class ResultsPerPage extends Component {
     this.element.appendChild(this.span);
     this.list = $$('ul', {
       className: 'coveo-results-per-page-list',
-      role: 'radiogroup',
       'aria-labelledby': this.span.id
     }).el;
     this.element.appendChild(this.list);
@@ -232,36 +231,34 @@ export class ResultsPerPage extends Component {
     const numResultsList: number[] = this.options.choicesDisplayed;
     for (var i = 0; i < numResultsList.length; i++) {
       const listItem = $$('li', {
-        className: 'coveo-results-per-page-list-item',
-        role: 'radio',
-        tabindex: 0
+        className: 'coveo-results-per-page-list-item'
       }).el;
       const resultsPerPage = numResultsList[i];
       const isActive = resultsPerPage === this.currentResultsPerPage;
       if (isActive) {
         $$(listItem).addClass('coveo-active');
       }
-      listItem.setAttribute('aria-checked', isActive.toString());
 
       const clickAction = () => this.handleClickPage(resultsPerPage);
 
+      const button = $$(
+        'span',
+        {
+          className: 'coveo-results-per-page-list-item-text',
+          tabindex: 0,
+          ariaPressed: isActive.toString()
+        },
+        numResultsList[i].toString()
+      ).el;
+      listItem.appendChild(button);
+
       new AccessibleButton()
-        .withElement(listItem)
+        .withElement(button)
         .withLabel(l('DisplayResultsPerPage', numResultsList[i].toString()))
         .withClickAction(clickAction)
         .withEnterKeyboardAction(clickAction)
         .build();
 
-      listItem.appendChild(
-        $$(
-          'span',
-          {
-            className: 'coveo-results-per-page-list-item-text',
-            ariaHidden: 'true'
-          },
-          numResultsList[i].toString()
-        ).el
-      );
       this.list.appendChild(listItem);
     }
   }
