@@ -90,6 +90,11 @@ export function QueryControllerTest() {
       );
     });
 
+    it('should not throw when the analytics instance set on query controller incorrectly implement the interface', () => {
+      test.cmp.searchInterface.usageAnalytics = { ...test.cmp.usageAnalytics, getOriginContext: null, getUserDisplayName: null };
+      expect(() => test.cmp.executeQuery()).not.toThrow();
+    });
+
     it('should allow to get the last query', done => {
       $$(test.cmp.element).on(QueryEvents.buildingQuery, (e, args: IBuildingQueryEventArgs) => {
         args.queryBuilder.expression.add('mamamia');
