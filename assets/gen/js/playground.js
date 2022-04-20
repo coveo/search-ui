@@ -12469,8 +12469,19 @@ var QueryController = /** @class */ (function (_super) {
     QueryController.prototype.getAnalyticsInformation = function () {
         var analyticsInfo = new AnalyticsInformation_1.AnalyticsInformation();
         analyticsInfo.pendingSearchEvent = this.usageAnalytics.getPendingSearchEvent();
-        analyticsInfo.originContext = this.usageAnalytics.getOriginContext();
-        analyticsInfo.userDisplayName = this.usageAnalytics.getUserDisplayName();
+        // add fallback for custom code that incorrectly implement the interface.
+        if (this.usageAnalytics.getOriginContext) {
+            analyticsInfo.originContext = this.usageAnalytics.getOriginContext();
+        }
+        else {
+            analyticsInfo.originContext = 'Search';
+        }
+        if (this.usageAnalytics.getUserDisplayName) {
+            analyticsInfo.userDisplayName = this.usageAnalytics.getUserDisplayName();
+        }
+        else {
+            analyticsInfo.userDisplayName = undefined;
+        }
         return analyticsInfo;
     };
     QueryController.ID = 'QueryController';
@@ -15508,8 +15519,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10095.3',
-    product: '2.10095.3',
+    lib: '2.10095.4',
+    product: '2.10095.4',
     supportedApiVersion: 2
 };
 
