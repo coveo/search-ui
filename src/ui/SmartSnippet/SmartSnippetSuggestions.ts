@@ -12,6 +12,7 @@ import { Initialization } from '../Base/Initialization';
 import { Utils } from '../../utils/Utils';
 import { getDefaultSnippetStyle } from './SmartSnippetCommon';
 import { ComponentOptions } from '../Base/ComponentOptions';
+import { IFieldOption } from '../Base/IComponentOptions';
 
 const BASE_CLASSNAME = 'coveo-smart-snippet-suggestions';
 const HAS_QUESTIONS_CLASSNAME = `${BASE_CLASSNAME}-has-questions`;
@@ -25,6 +26,8 @@ export const SmartSnippetSuggestionsClassNames = {
 };
 
 export interface ISmartSnippetSuggestionsOptions {
+  titleField: IFieldOption;
+  hrefTemplate?: string;
   useIFrame?: boolean;
 }
 
@@ -45,6 +48,38 @@ export class SmartSnippetSuggestions extends Component {
    * @componentOptions
    */
   static options: ISmartSnippetSuggestionsOptions = {
+    /**
+     * The field to display for the title.
+     */
+    titleField: ComponentOptions.buildFieldOption({ defaultValue: '@title' }),
+
+    /**
+     * Specifies a template literal from which to generate the title and URI's `href` attribute value (see
+     * [Template literals](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals)).
+     *
+     * This option overrides the [`field`]{@link SmartSnippet.options.uriField} option value.
+     *
+     * The template literal can reference any number of fields from the parent result. It can also reference global
+     * scope properties.
+     *
+     * **Examples:**
+     *
+     * - The following markup generates an `href` value such as `http://uri.com?id=itemTitle`:
+     *
+     * ```html
+     * <a class='CoveoSmartSnippet' data-href-template='${clickUri}?id=${raw.title}'></a>
+     * ```
+     *
+     * - The following markup generates an `href` value such as `localhost/fooBar`:
+     *
+     * ```html
+     * <a class='CoveoSmartSnippet' data-href-template='${window.location.hostname}/{Foo.Bar}'></a>
+     * ```
+     *
+     * Default value is `undefined`.
+     */
+    hrefTemplate: ComponentOptions.buildStringOption(),
+
     /**
      * Specify if the SmartSnippetSuggestion snippet should be displayed inside an iframe or not.
      *
@@ -120,16 +155,18 @@ export class SmartSnippetSuggestions extends Component {
     const innerCSS = this.getInnerCSS();
     const answers = questionAnswers.map(
       questionAnswer =>
-        new SmartSnippetCollapsibleSuggestion(
+        new SmartSnippetCollapsibleSuggestion({
           questionAnswer,
-          this.getBindings(),
-          Utils.isNullOrUndefined(innerCSS)
+          bindings: this.getBindings(),
+          innerCSS: Utils.isNullOrUndefined(innerCSS)
             ? getDefaultSnippetStyle(SmartSnippetCollapsibleSuggestionClassNames.RAW_CONTENT_CLASSNAME)
             : innerCSS,
-          this.searchUid,
-          this.getCorrespondingResult(questionAnswer),
-          this.options.useIFrame
-        )
+          searchUid: this.searchUid,
+          titleField: this.options.titleField,
+          hrefTemplate: this.options.hrefTemplate,
+          source: this.getCorrespondingResult(questionAnswer),
+          useIFrame: this.options.useIFrame
+        })
     );
     const container = $$(
       'ul',

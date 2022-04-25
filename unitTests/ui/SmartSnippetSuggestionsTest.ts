@@ -21,10 +21,11 @@ const ClassNames = {
 };
 
 export function SmartSnippetSuggestionsTest() {
-  const sources: { title: string; url: string; id: IQuestionAnswerResponse['documentId'] }[] = [
+  const sources: { title: string; url: string; alt: string; id: IQuestionAnswerResponse['documentId'] }[] = [
     {
       title: 'First title',
       url: 'https://www.google.com/1',
+      alt: 'http://127.0.0.1/1',
       id: {
         contentIdKey: 'unique-identifier-a',
         contentIdValue: 'identifier-of-the-first-result'
@@ -33,6 +34,7 @@ export function SmartSnippetSuggestionsTest() {
     {
       title: 'Second title',
       url: 'https://www.google.com/2',
+      alt: 'http://127.0.0.1/2',
       id: {
         contentIdKey: 'unique-identifier-b',
         contentIdValue: 'identifier-of-the-second-result'
@@ -41,6 +43,7 @@ export function SmartSnippetSuggestionsTest() {
     {
       title: 'Third title',
       url: 'https://www.google.com/3',
+      alt: 'http://127.0.0.1/3',
       id: {
         contentIdKey: 'unique-identifier-c',
         contentIdValue: 'identifier-of-the-third-result'
@@ -65,6 +68,7 @@ export function SmartSnippetSuggestionsTest() {
           title: source.title,
           clickUri: source.url,
           raw: {
+            alt: source.alt,
             [source.id.contentIdKey]: source.id.contentIdValue
           }
         }
@@ -419,6 +423,67 @@ export function SmartSnippetSuggestionsTest() {
           expect(styleElement.innerHTML).toEqual('');
         });
       });
+    });
+
+    it('displays the specified titleField', async done => {
+      instantiateSmartSnippetSuggestions(null, { titleField: '@alt' });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      findClass(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((title, i) => expect(title.innerText).toEqual(sources[i].alt));
+      findClass(ClassNames.SOURCE_URL_CLASSNAME).forEach((source, i) => expect(source.innerText).toEqual(sources[i].alt));
+      test.env.root.remove();
+      done();
+    });
+
+    it('uses and displays the specified hrefTemplate', async done => {
+      instantiateSmartSnippetSuggestions(null, { hrefTemplate: '${raw.alt}/?abcd=1' });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      const expectedHref = (i: number) => `${sources[i].alt}/?abcd=1`;
+      findClass<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((title, i) => expect(title.href).toEqual(expectedHref(i)));
+      findClass<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).forEach((source, i) => {
+        expect(source.innerText).toEqual(expectedHref(i));
+        expect(source.innerText).toEqual(expectedHref(i));
+      });
+      test.env.root.remove();
+      done();
+    });
+
+    it('displays resolved relative URLs when specified in the hrefTemplate', async done => {
+      instantiateSmartSnippetSuggestions(null, { hrefTemplate: '../${raw.alt}' });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      findClass(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((title, i) =>
+        expect(title.innerText.indexOf(window.location.protocol)).toEqual(0)
+      );
+      test.env.root.remove();
+      done();
+    });
+
+    it('resists XSS injections in hrefTemplate (1)', async done => {
+      instantiateSmartSnippetSuggestions(null, {
+        hrefTemplate: 'https://test.com?q=<img src="abcd.png" onerror="window.XSSInjected = true;">'
+      });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      await Promise.resolve();
+      expect('XSSInjected' in window).toBeFalsy();
+      delete window['XSSInjected'];
+      test.env.root.remove();
+      done();
+    });
+
+    it('resists XSS injections in hrefTemplate (2)', async done => {
+      instantiateSmartSnippetSuggestions(null, {
+        hrefTemplate: 'https://test.com?q="/><img src="abcd.png" onerror="window.XSSInjected = true;"><span title="'
+      });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      await Promise.resolve();
+      expect('XSSInjected' in window).toBeFalsy();
+      delete window['XSSInjected'];
+      test.env.root.remove();
+      done();
     });
   });
 }
