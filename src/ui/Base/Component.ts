@@ -454,7 +454,14 @@ export class Component extends BaseComponent {
   static resolveRoot(element: HTMLElement): HTMLElement {
     Assert.exists(element);
     const resolvedSearchInterface = Component.resolveBinding(element, SearchInterface);
-    return resolvedSearchInterface ? resolvedSearchInterface.element : document.body;
+    if (resolvedSearchInterface) {
+      return resolvedSearchInterface.element;
+    }
+    const resolvedRootFromParent = Component.findRootInParents(element);
+    if (resolvedRootFromParent) {
+      return resolvedRootFromParent;
+    }
+    return document.body;
   }
 
   static resolveBinding(element: HTMLElement, componentClass: any): BaseComponent {
@@ -494,5 +501,19 @@ export class Component extends BaseComponent {
     _.each(_.compact(inputs), input => {
       input.setAttribute('form', 'coveo-dummy-form');
     });
+  }
+
+  private static findRootInParents(element: HTMLElement): HTMLElement | null {
+    const boundComponents = Component.getBoundComponentsForElement(element);
+    for (let i = 0; i < boundComponents.length; i++) {
+      const component = boundComponents[i];
+      if (component instanceof Component) {
+        return component.root;
+      }
+    }
+    if (!element.parentElement) {
+      return null;
+    }
+    return Component.findRootInParents(element.parentElement);
   }
 }

@@ -155,6 +155,37 @@ export function ComponentTest() {
       });
     });
 
+    describe('the static resolveRoot method', () => {
+      it('resolves the root when called on the root', () => {
+        const searchInterface = Component.resolveRoot(env.root);
+        expect(searchInterface).toEqual(env.root);
+      });
+
+      it('resolves the root when called on a descendant element of the root', () => {
+        const childElement = document.createElement('div');
+        env.root.appendChild(childElement);
+        const descendantElement = document.createElement('div');
+        childElement.appendChild(descendantElement);
+
+        const searchInterface = Component.resolveRoot(descendantElement);
+        expect(searchInterface).toEqual(env.root);
+      });
+
+      it('resolves the root when called on a descendant element of an external component', () => {
+        const element = document.createElement('div');
+        const component = new Component(element, 'test', cmp.getBindings());
+
+        const childElement = document.createElement('div');
+        element.appendChild(childElement);
+        const descendantElement = document.createElement('div');
+        childElement.appendChild(descendantElement);
+
+        const searchInterface = Component.resolveRoot(descendantElement);
+        expect(searchInterface).toEqual(env.root);
+        expect(component.element.parentElement).toBeNull();
+      });
+    });
+
     describe('the static resolveBinding method', () => {
       it('when the specified element holds the target class, it resolves the target class', () => {
         const searchInterface = Component.resolveBinding(env.root, SearchInterface);
