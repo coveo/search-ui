@@ -161,7 +161,7 @@
     "exponential-backoff": "^2.2.0",
     "jstimezonedetect": "^1.0.6",
     "modal-box": "^2.0.10",
-    "moment": "~2.22.2",
+    "moment": "^2.29.3",
     "pikaday": "^1.4.0",
     "popper.js": "^1.14.3",
     "underscore": "^1.13.1",
