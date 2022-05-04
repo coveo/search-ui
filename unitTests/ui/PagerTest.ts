@@ -27,7 +27,7 @@ export function PagerTest() {
 
     function getRenderedButtonLabels() {
       return $$(test.cmp.element)
-        .findAll('a.coveo-pager-list-item-text')
+        .findAll('span.coveo-pager-list-item-text')
         .map(item => item.innerText);
     }
 
@@ -129,9 +129,9 @@ export function PagerTest() {
     it('should render the pager boundary correctly', () => {
       simulatePageCount(100, 8);
 
-      const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+      const anchors = $$(test.cmp.element).findAll('span.coveo-pager-list-item-text');
       expect($$(anchors[0]).text()).toBe('6');
-      expect(anchors[0].parentElement.getAttribute('tabindex')).toBe('0');
+      expect(anchors[0].getAttribute('tabindex')).toBe('0');
       expect($$(anchors[anchors.length - 1]).text()).toBe('10');
     });
 
@@ -188,7 +188,7 @@ export function PagerTest() {
     });
 
     describe('with 100 fake results', () => {
-      let listItems: HTMLElement[];
+      let buttons: HTMLElement[];
       beforeEach(() => {
         const builder = new QueryBuilder();
         builder.firstResult = 50;
@@ -196,20 +196,20 @@ export function PagerTest() {
           query: builder.build(),
           results: FakeResults.createFakeResults(100)
         });
-        listItems = $$(test.cmp.element).findAll('.coveo-pager-list-item');
+        buttons = $$(test.cmp.element).findAll('[role="button"]');
       });
 
       it('should set the aria-label on the navigation element', () => {
-        expect(test.cmp['list'].getAttribute('aria-label')).toEqual(l('Pagination'));
+        expect(test.cmp.element.getAttribute('aria-label')).toEqual(l('Pagination'));
       });
 
       it('should set the role on the navigation element', () => {
-        expect(test.cmp['list'].getAttribute('role')).toEqual('navigation');
+        expect(test.cmp.element.getAttribute('role')).toEqual('navigation');
       });
 
       it('should set the aria-label on elements correctly', () => {
-        listItems.forEach((listItem, index) => {
-          if (index !== 0 && index !== listItems.length - 1) {
+        buttons.forEach((listItem, index) => {
+          if (index !== 0 && index !== buttons.length - 1) {
             const pageNumber = parseInt($$(listItem).text());
             expect(listItem.getAttribute('aria-label')).toEqual(l('PageNumber', pageNumber.toString()));
           }
@@ -217,7 +217,7 @@ export function PagerTest() {
       });
 
       it('should set the role on elements', () => {
-        listItems.forEach(listItem => expect(listItem.getAttribute('role')).toEqual('button'));
+        buttons.forEach(listItem => expect(listItem.getAttribute('role')).toEqual('button'));
       });
 
       it('should not make the next arrow a toggle', () => {
@@ -229,13 +229,13 @@ export function PagerTest() {
       });
 
       it('should set aria-pressed to true on the active page element', () => {
-        const activeElement = find(listItems, listItem => $$(listItem).text() === test.cmp.currentPage.toString());
+        const activeElement = find(buttons, listItem => $$(listItem).text() === test.cmp.currentPage.toString());
         expect(activeElement.getAttribute('aria-pressed')).toEqual(true.toString());
       });
 
       it('should set aria-pressed to false on every inactive page element', () => {
-        listItems.forEach((listItem, index) => {
-          if (index !== 0 && index !== listItems.length - 1) {
+        buttons.forEach((listItem, index) => {
+          if (index !== 0 && index !== buttons.length - 1) {
             if ($$(listItem).text() !== test.cmp.currentPage.toString()) {
               expect(listItem.getAttribute('aria-pressed')).toEqual(false.toString());
             }
@@ -243,12 +243,8 @@ export function PagerTest() {
         });
       });
 
-      it('should set tabindex to -1 on every link element', () => {
-        listItems.forEach(listItem => expect(listItem.children.item(0).getAttribute('tabindex')).toEqual('-1'));
-      });
-
-      it('should set aria-hidden to true on every link element', () => {
-        listItems.forEach(listItem => expect(listItem.children.item(0).getAttribute('aria-hidden')).toEqual('true'));
+      it('should set tabindex to 0 on every button element', () => {
+        buttons.forEach(button => expect(button.getAttribute('tabindex')).toEqual('0'));
       });
     });
 
@@ -316,7 +312,7 @@ export function PagerTest() {
         // Page 1 to 5
         execQuery(test, 10, 0, 1000);
 
-        let anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+        let anchors = $$(test.cmp.element).findAll('span.coveo-pager-list-item-text');
         expect($$(anchors[0]).text()).toBe('1');
         expect($$(anchors[anchors.length - 1]).text()).toBe('5');
 
@@ -324,7 +320,7 @@ export function PagerTest() {
         // Page 1 to 2
         execQuery(test, 500, 0, 1000);
 
-        anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+        anchors = $$(test.cmp.element).findAll('span.coveo-pager-list-item-text');
         expect($$(anchors[0]).text()).toBe('1');
         expect($$(anchors[anchors.length - 1]).text()).toBe('2');
       });
@@ -410,7 +406,7 @@ export function PagerTest() {
         Simulate.query(test.env, {
           results: FakeResults.createFakeResults(1000)
         });
-        expect($$(test.cmp.element).findAll('a.coveo-pager-list-item-text').length).toBe(22);
+        expect($$(test.cmp.element).findAll('span.coveo-pager-list-item-text').length).toBe(22);
       });
 
       it('enableNavigationButton can enable or disable nav buttons', () => {
@@ -451,7 +447,7 @@ export function PagerTest() {
           results: FakeResults.createFakeResults(1000) // return much more results than 31, but the option should still work properly
         });
 
-        const anchors = $$(test.cmp.element).findAll('a.coveo-pager-list-item-text');
+        const anchors = $$(test.cmp.element).findAll('span.coveo-pager-list-item-text');
         // 31 results max from the index
         // divided by 10 results per page
         // means 4 pages

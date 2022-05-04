@@ -724,8 +724,19 @@ export class QueryController extends RootComponent {
   private getAnalyticsInformation(): AnalyticsInformation {
     const analyticsInfo = new AnalyticsInformation();
     analyticsInfo.pendingSearchEvent = this.usageAnalytics.getPendingSearchEvent();
-    analyticsInfo.originContext = this.usageAnalytics.getOriginContext();
-    analyticsInfo.userDisplayName = this.usageAnalytics.getUserDisplayName();
+
+    // add fallback for custom code that incorrectly implement the interface.
+    if (this.usageAnalytics.getOriginContext) {
+      analyticsInfo.originContext = this.usageAnalytics.getOriginContext();
+    } else {
+      analyticsInfo.originContext = 'Search';
+    }
+    if (this.usageAnalytics.getUserDisplayName) {
+      analyticsInfo.userDisplayName = this.usageAnalytics.getUserDisplayName();
+    } else {
+      analyticsInfo.userDisplayName = undefined;
+    }
+
     return analyticsInfo;
   }
 }
