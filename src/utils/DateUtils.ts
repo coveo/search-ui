@@ -202,8 +202,7 @@ export class DateUtils {
     } else if (date !== null && !isNaN(Number(date))) {
       return moment(Number(date)).toDate();
     } else if (_.isString(date)) {
-      const formats = ['YYYY/MM/DD@HH:mm:ssZ', moment.ISO_8601];
-      const dateMoment = moment(date, formats);
+      const dateMoment = moment(date, 'YYYY/MM/DD@HH:mm:ssZ');
       return dateMoment.toDate();
     }
   }
@@ -265,9 +264,7 @@ export class DateUtils {
    * @returns {Date} An offset Date object corresponding to the `date` argument value plus the `offset` value.
    */
   static offsetDateByDays(date: Date, offset: number): Date {
-    return moment(date)
-      .add(offset, 'days')
-      .toDate();
+    return moment(date).add(offset, 'days').toDate();
   }
 
   private static isTodayYesterdayOrTomorrow(d: Date, options?: IDateToStringOptions): boolean {
