@@ -36,6 +36,19 @@
           "acl": "public-read"
         }
       }
+    },
+    {
+      "id": "npm-latest-tag-updated",
+      "team_jenkins": {
+        "disabled": true,
+        "job_name": "search_ui/job/update_npm_latest_tag",
+        "extra_parameters": {
+          "LATEST_NPM_VERSION": "$[LATEST_NPM_VERSION]"
+        },
+        "prd": {
+          "disabled": false
+        }
+      }
     }
   ],
   "certifiers": {
@@ -45,15 +58,6 @@
       },
       {
         "system_certifier": "snyk-code"
-      }
-    ],
-    "prd": [
-      {
-        "job_name": "search_ui/job/update_npm_latest_tag",
-        "tag_suffix": "npm_latest_tag_updated",
-        "extra_parameters": {
-          "LATEST_NPM_VERSION": "$[LATEST_NPM_VERSION]"
-        }
       }
     ]
   },
