@@ -3,7 +3,7 @@ const colors = require('colors');
 const AWS = require('aws-sdk');
 
 const cloudfront = new AWS.CloudFront();
-const pathToInvalidate = `/searchui/v${process.env.MAJOR_MINOR_VERSION}/*`;
+const pathToInvalidate = `/searchui/v2.10096/*`;
 
 const invalidationRequest = cloudfront.createInvalidation({
   DistributionId: process.env.AWS_CLOUDFRONT_DISTRIBUTION_ID,
