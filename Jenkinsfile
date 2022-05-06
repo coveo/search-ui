@@ -70,17 +70,6 @@ node('linux && docker') {
 
         sh 'node ./build/deployment-pipeline.deploy.js || true'
       }
-
-      stage('Cloudfront invalidation') {
-        withCredentials([
-          [
-            $class: "AmazonWebServicesCredentialsBinding",
-            credentialsId: "CloudfrontCacheInvalidation",
-          ]
-        ]) {
-            sh 'node invalidate.cloudfront.js'
-        }
-      }
     }
 
   }
