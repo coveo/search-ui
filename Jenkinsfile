@@ -70,6 +70,20 @@ node('linux && docker') {
 
         sh 'node ./build/deployment-pipeline.deploy.js || true'
       }
+
+      // TODO: uncomment
+      // stage('Cloudfront invalidation') {
+      //   withCredentials([
+      //     [
+      //       $class: "AmazonWebServicesCredentialsBinding",
+      //       credentialsId: "CloudfrontCacheInvalidation",
+      //     ]
+      //   ]) {
+      //       sh 'npm ci';
+      //       sh 'node ./invalidate.cloudfront.js'
+      //   }
+      // }
+
     }
 
   }
