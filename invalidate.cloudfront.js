@@ -6,7 +6,7 @@ const cloudfront = new AWS.CloudFront();
 const pathToInvalidate = `/searchui/v2.10096/*`;
 
 const invalidationRequest = cloudfront.createInvalidation({
-  DistributionId: process.env.AWS_CLOUDFRONT_DISTRIBUTION_ID,
+  DistributionId: 'E2VWLFSCSD1GLA',
   InvalidationBatch: {
     CallerReference: new Date().getTime().toString(),
     Paths: {
