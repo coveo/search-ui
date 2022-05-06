@@ -79,8 +79,7 @@ node('linux && docker') {
       //       credentialsId: "CloudfrontCacheInvalidation",
       //     ]
       //   ]) {
-      //       sh 'npm ci';
-      //       sh 'node ./invalidate.cloudfront.js'
+      //       sh 'node invalidate.cloudfront.js'
       //   }
       // }
 
