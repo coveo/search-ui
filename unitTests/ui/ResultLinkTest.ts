@@ -60,7 +60,7 @@ export function ResultLinkTest() {
       });
 
       it('should have an aria-label to prevent screen readers from reading the #title attribute', () => {
-        expect(test.cmp.element.getAttribute('aria-label')).toBe('Result');
+        expect(test.cmp.element.getAttribute('aria-label')).toBe(test.cmp.element.title);
       });
 
       describe('with global result link options', () => {

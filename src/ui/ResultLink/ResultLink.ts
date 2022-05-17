@@ -22,7 +22,6 @@ import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_ResultLink';
 import { AccessibleButton } from '../../utils/AccessibleButton';
-import { l } from '../../MiscModules';
 
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
@@ -319,7 +318,7 @@ export class ResultLink extends Component {
     if (/^\s*$/.test(this.element.innerHTML)) {
       const title = this.getDisplayedTitle();
       this.element.innerHTML = title;
-      this.element.setAttribute('aria-label', l('Result'));
+      this.element.setAttribute('aria-label', title);
 
       if (!this.element.title) {
         this.element.title = this.getDisplayedTitleAsText();
