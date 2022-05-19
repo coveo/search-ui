@@ -318,10 +318,14 @@ export class ResultLink extends Component {
     if (/^\s*$/.test(this.element.innerHTML)) {
       const title = this.getDisplayedTitle();
       this.element.innerHTML = title;
-      this.element.setAttribute('aria-label', title);
+
+      const titleAsText = this.getDisplayedTitleAsText();
+      if (!this.element.hasAttribute('aria-label')) {
+        this.element.setAttribute('aria-label', titleAsText);
+      }
 
       if (!this.element.title) {
-        this.element.title = this.getDisplayedTitleAsText();
+        this.element.title = titleAsText;
       }
     }
   }
