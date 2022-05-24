@@ -347,6 +347,7 @@ export class FacetSlider extends Component {
   public facetHeader: FacetHeader;
   public onResize: EventListener;
   public isSimpleSliderConfig = false;
+  public isFieldValueCompatible = false;
 
   private rangeQueryStateAttribute: string;
   private isEmpty = false;

@@ -327,6 +327,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   public position: number;
   public dynamicFacetManager: DynamicFacetManager;
   public isDynamicFacet = true;
+  public isFieldValueCompatible = false;
 
   constructor(public element: HTMLElement, options: IDynamicHierarchicalFacetOptions, bindings?: IComponentBindings) {
     super(element, 'DynamicHierarchicalFacet', bindings);

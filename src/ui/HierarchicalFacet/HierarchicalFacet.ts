@@ -176,6 +176,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
   public facetQueryController: HierarchicalFacetQueryController;
   public topLevelHierarchy: IValueHierarchy[];
   public shouldReshuffleFacetValuesClientSide = false;
+  public isFieldValueCompatible = false;
 
   private valueHierarchy: { [facetValue: string]: IValueHierarchy };
   private originalNumberOfValuesToShow: number;

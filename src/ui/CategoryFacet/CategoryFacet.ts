@@ -331,6 +331,7 @@ export class CategoryFacet extends Component implements IAutoLayoutAdjustableIns
   public activeCategoryValue: CategoryValue | undefined;
   public positionInQuery: number;
   public dependsOnManager: DependsOnManager;
+  public isFieldValueCompatible = false;
   public static MAXIMUM_NUMBER_OF_VALUES_BEFORE_TRUNCATING = 15;
   public static NUMBER_OF_VALUES_TO_KEEP_AFTER_TRUNCATING = 10;
 
