@@ -76,56 +76,36 @@ export class TimespanFacet extends Component {
     });
   };
 
+  public isFieldValueCompatible = false;
+
   private rangeValues: IRangeValue[] = [
     {
       start: moment(0).toDate(),
-      end: moment()
-        .endOf('day')
-        .toDate(),
+      end: moment().endOf('day').toDate(),
       label: l('AllDates'),
       endInclusive: false
     },
     {
-      start: moment()
-        .startOf('day')
-        .subtract(1, 'day')
-        .toDate(),
-      end: moment()
-        .endOf('day')
-        .toDate(),
+      start: moment().startOf('day').subtract(1, 'day').toDate(),
+      end: moment().endOf('day').toDate(),
       label: l('WithinLastDay'),
       endInclusive: false
     },
     {
-      start: moment()
-        .startOf('day')
-        .subtract(1, 'week')
-        .toDate(),
-      end: moment()
-        .endOf('day')
-        .toDate(),
+      start: moment().startOf('day').subtract(1, 'week').toDate(),
+      end: moment().endOf('day').toDate(),
       label: l('WithinLastWeek'),
       endInclusive: false
     },
     {
-      start: moment()
-        .startOf('day')
-        .subtract(1, 'month')
-        .toDate(),
-      end: moment()
-        .endOf('day')
-        .toDate(),
+      start: moment().startOf('day').subtract(1, 'month').toDate(),
+      end: moment().endOf('day').toDate(),
       label: l('WithinLastMonth'),
       endInclusive: false
     },
     {
-      start: moment()
-        .startOf('day')
-        .subtract(1, 'year')
-        .toDate(),
-      end: moment()
-        .endOf('day')
-        .toDate(),
+      start: moment().startOf('day').subtract(1, 'year').toDate(),
+      end: moment().endOf('day').toDate(),
       label: l('WithinLastYear'),
       endInclusive: false
     }
