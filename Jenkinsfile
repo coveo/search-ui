@@ -42,15 +42,6 @@ node('linux && docker') {
         return
       }
 
-      stage('Docs') {
-        withCredentials([
-            usernameColonPassword(credentialsId: 'github-commit-token', variable: 'GITHUB_TOKEN')
-        ]) {
-            sh './deploy.doc.sh'
-        }
-        sh 'yarn run docsitemap'
-      }
-
       stage('Github Release') {
         sh 'yarn run zipForGitReleases'
         
@@ -69,6 +60,15 @@ node('linux && docker') {
         }
 
         sh 'node ./build/deployment-pipeline.deploy.js || true'
+      }
+
+      stage('Docs') {
+        withCredentials([
+            usernameColonPassword(credentialsId: 'github-commit-token', variable: 'GITHUB_TOKEN')
+        ]) {
+            sh './deploy.doc.sh'
+        }
+        sh 'yarn run docsitemap'
       }
     }
 
