@@ -1,0 +1,31 @@
+node('linux && docker') {
+  checkout scm
+  def tag = env.TAG_NAME
+
+  withEnv([
+    'npm_config_cache=npm-cache'
+  ]){
+    withDockerContainer(image: 'nikolaik/python-nodejs:python3.8-nodejs14', args: '-u=root') {
+      stage('Install') {
+        sh 'yarn install'
+      }
+
+      stage('Build') {
+        sh 'yarn run injectVersion'
+        sh 'yarn run build'
+
+        sh 'yarn run minimize'
+      }
+
+      stage('Docs') {
+        withCredentials([
+          usernameColonPassword(credentialsId: 'github-commit-token', variable: 'GITHUB_TOKEN')
+        ]) {
+          sh './deploy.doc.sh'
+        }
+        sh 'yarn run docsitemap'
+      }
+    }
+
+  }
+}

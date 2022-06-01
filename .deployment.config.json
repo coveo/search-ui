@@ -62,6 +62,16 @@
           "disabled": false
         }
       }
+    },
+    {
+      "id": "prod-generate-docs",
+      "team_jenkins": {
+        "disabled": true,
+        "job_name": "search_ui/job/generate_docs",
+        "prd": {
+          "disabled": false
+        }
+      }
     }
   ],
   "certifiers": {
