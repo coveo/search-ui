@@ -10,7 +10,7 @@ import { DynamicHierarchicalFacetQueryController } from '../../controllers/Dynam
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { IAttributesChangedEventArg, MODEL_EVENTS } from '../../models/Model';
 import { Utils } from '../../utils/Utils';
-import { isArray, findIndex } from 'underscore';
+import { isArray, findIndex, last, isEqual } from 'underscore';
 import { Assert } from '../../misc/Assert';
 import { QueryEvents, IQuerySuccessEventArgs, IDoneBuildingQueryEventArgs } from '../../events/QueryEvents';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
@@ -40,6 +40,7 @@ import { FacetValueState } from '../../rest/Facet/FacetValueState';
 import { FacetSortCriteria } from '../../rest/Facet/FacetSortCriteria';
 import { Logger } from '../../misc/Logger';
 import { DynamicHierarchicalFacetSearch } from '../DynamicHierarchicalFacetSearch/DynamicHierarchicalFacetSearch';
+import { IFieldValueCompatibleFacet } from '../FieldValue/IFieldValueCompatibleFacet';
 
 /**
  * The `DynamicHierarchicalFacet` component is a facet that renders values in a hierarchical fashion. It determines the filter to apply depending on the
@@ -51,7 +52,7 @@ import { DynamicHierarchicalFacetSearch } from '../DynamicHierarchicalFacetSearc
  * @availablesince [January 2020 Release (v2.7968)](https://docs.coveo.com/en/3163/)
  * @externaldocs [Using Hierarchical Facets](https://docs.coveo.com/en/2667)
  */
-export class DynamicHierarchicalFacet extends Component implements IDynamicHierarchicalFacet {
+export class DynamicHierarchicalFacet extends Component implements IDynamicHierarchicalFacet, IFieldValueCompatibleFacet {
   static ID = 'DynamicHierarchicalFacet';
   static doExport = () => {
     exportGlobally({
@@ -327,7 +328,8 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
   public position: number;
   public dynamicFacetManager: DynamicFacetManager;
   public isDynamicFacet = true;
-  public isFieldValueCompatible = false;
+  public isFieldValueCompatible = true;
+  public isFieldValueHierarchical = true;
 
   constructor(public element: HTMLElement, options: IDynamicHierarchicalFacetOptions, bindings?: IComponentBindings) {
     super(element, 'DynamicHierarchicalFacet', bindings);
@@ -359,6 +361,23 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
 
   public get hasActiveValues() {
     return this.values.hasSelectedValue;
+  }
+
+  public hasSelectedValue(value: string) {
+    const values = this.splitValue(value);
+    return isEqual(values, this.values.selectedPath);
+  }
+
+  public selectValue(value: string) {
+    this.selectPath(this.splitValue(value));
+  }
+
+  public deselectValue() {
+    this.clear();
+  }
+
+  public getCaptionForStringValue(value: string) {
+    return this.getCaption(last(this.splitValue(value)));
   }
 
   private initQueryEvents() {
@@ -456,13 +475,15 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
     this.updateAppearance();
   }
 
+  private splitValue(value: string) {
+    return value.trim().split(this.options.delimitingCharacter);
+  }
+
   private onNewValues(facetResponse: IFacetResponse) {
     this.moreValuesAvailable = facetResponse.moreValuesAvailable;
     this.values.createFromResponse(facetResponse);
     if (this.options.customSort) {
-      const order = this.options.customSort
-        .split(this.options.customSortDelimitingCharacter)
-        .map(value => value.trim().split(this.options.delimitingCharacter));
+      const order = this.options.customSort.split(this.options.customSortDelimitingCharacter).map(value => this.splitValue(value));
       this.values.reorderValues(order);
     }
   }
