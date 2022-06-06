@@ -2,7 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { FieldValue } from '../../src/ui/FieldValue/FieldValue';
 import { FakeResults } from '../Fake';
 import { IFieldValueOptions } from '../../src/ui/FieldValue/FieldValue';
-import { $$ } from '../../src/utils/Dom';
+import { $$, Dom } from '../../src/utils/Dom';
 import { TemplateHelpers } from '../../src/ui/Templates/TemplateHelpers';
 import { Facet } from '../../src/ui/Facet/Facet';
 import { IDateToStringOptions } from '../../src/utils/DateUtils';
@@ -51,6 +51,7 @@ export function FieldValueTest() {
       const newFacet = Mock.mockComponent<IFieldValueCompatibleFacet>(Facet);
 
       newFacet.isFieldValueCompatible = true;
+      newFacet.isFieldValueHierarchical = false;
 
       newFacet.constructor['ID'] = Facet.ID;
 
@@ -335,6 +336,61 @@ export function FieldValueTest() {
         facet.disabled = false;
         initializeFieldValueComponent({ field: '@objecttype' }, FakeResults.createFakeResult(), facet);
         expect(test.cmp.element.querySelector('.coveo-clickable')).toBeNull();
+      });
+    });
+
+    describe('with a related hierarchical facet', () => {
+      let facet: IFieldValueCompatibleFacet;
+      let hasSelectedValueSpy: jasmine.Spy;
+
+      function initializeHierarchicalFacetWithValueComponent(isFullPathSelected: boolean) {
+        facet.hasSelectedValue = hasSelectedValueSpy = jasmine.createSpy('hasSelectedValue', () => isFullPathSelected).and.callThrough();
+        const fakeResult = FakeResults.createFakeResult();
+        fakeResult.raw['category'] = ['Electronics', 'Electronics>Printers', 'Electronics>Printers>3D Printers'];
+        initializeFieldValueComponent({ field: '@category' }, fakeResult, facet);
+      }
+
+      beforeEach(() => {
+        facet = initializeFacet({ field: '@category' });
+        facet.isFieldValueHierarchical = true;
+        facet.getCaptionForStringValue = value => value.split('>').slice(-1)[0];
+      });
+
+      describe('when the full path is selected in the facet', () => {
+        beforeEach(() => {
+          initializeHierarchicalFacetWithValueComponent(true);
+        });
+
+        it('should display only the last leaf', () => {
+          expect(Dom.nodeListToArray(test.cmp.element.querySelectorAll('.coveo-clickable')).map(el => el.textContent)).toEqual([
+            '3D Printers'
+          ]);
+        });
+
+        it('should call hasSelectedValue with the full path', () => {
+          expect(hasSelectedValueSpy).toHaveBeenCalledTimes(1);
+          expect(hasSelectedValueSpy.calls.mostRecent().args).toEqual(['Electronics>Printers>3D Printers']);
+        });
+
+        it('should display the leaf as selected', () => {
+          expect(test.cmp.element.querySelector('.coveo-clickable').classList.contains('coveo-selected')).toBeTruthy();
+        });
+      });
+
+      describe('when only part of the path is selected', () => {
+        beforeEach(() => {
+          initializeHierarchicalFacetWithValueComponent(false);
+        });
+
+        it('should display only the last leaf', () => {
+          expect(Dom.nodeListToArray(test.cmp.element.querySelectorAll('.coveo-clickable')).map(el => el.textContent)).toEqual([
+            '3D Printers'
+          ]);
+        });
+
+        it('should display the leaf as selected', () => {
+          expect(test.cmp.element.querySelector('.coveo-clickable').classList.contains('coveo-selected')).toBeFalsy();
+        });
       });
     });
 
