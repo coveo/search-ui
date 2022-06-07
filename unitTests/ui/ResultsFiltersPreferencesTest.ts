@@ -35,13 +35,14 @@ export function ResultsFiltersPreferencesTest() {
     });
 
     describe('with a predetermined filter', () => {
+      const testCaption = "Test my friend's' filter";
       beforeEach(() => {
         test = Mock.advancedComponentSetup<ResultsFiltersPreferences>(
           ResultsFiltersPreferences,
           new Mock.AdvancedComponentSetupOptions(
             undefined,
             {
-              filters: { 'Test filter': { expression: 'test expression' } }
+              filters: { [testCaption]: { expression: 'test expression' } }
             },
             env => {
               return env.withElement(testPreferencesPanel.cmp.element);
@@ -87,7 +88,7 @@ export function ResultsFiltersPreferencesTest() {
         $$(choiceInput).trigger('change');
         let breadcrumbItems: IBreadcrumbItem[] = [];
         $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: breadcrumbItems });
-        expect($$(breadcrumbItems[0].element).text()).toContain('Test filter');
+        expect($$(breadcrumbItems[0].element).text()).toContain(testCaption);
       });
 
       it('breadcrumb element should have the right accessibility attributes', () => {
@@ -96,7 +97,7 @@ export function ResultsFiltersPreferencesTest() {
         $$(test.env.root).trigger(BreadcrumbEvents.populateBreadcrumb, { breadcrumbs: breadcrumbItems });
 
         const breadcrumbValue = $$(breadcrumbItems[0].element).find('.coveo-value');
-        expect(breadcrumbValue.getAttribute('aria-label')).toBe('Remove inclusion filter on Test filter');
+        expect(breadcrumbValue.getAttribute('aria-label')).toBe('Remove inclusion filter on ' + testCaption);
         expect(breadcrumbValue.getAttribute('role')).toBe('button');
         expect(breadcrumbValue.getAttribute('tabindex')).toBe('0');
       });
