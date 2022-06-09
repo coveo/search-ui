@@ -266,7 +266,7 @@ export class ResultsFiltersPreferences extends Component {
     const onlineHelp = $$(
       'a',
       {
-        href: 'https://docs.coveo.com/en/2053/index-content/inspect-items-with-the-content-browser#results-filtering-expressions',
+        href: 'https://docs.coveo.com/en/2053/index-content/inspect-items-with-the-content-browser#result-filtering-expressions',
         className: 'coveo-online-help'
       },
       '?'
