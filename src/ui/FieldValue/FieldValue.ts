@@ -280,6 +280,9 @@ export class FieldValue extends Component {
       loadedValueFromComponent = loadedValueFromComponent.toString();
       values = [loadedValueFromComponent];
     }
+    if (values.length > 1 && this.isValueHierarchical) {
+      values = values.slice(-1);
+    }
     this.appendValuesToDom(values);
     if (this.options.textCaption != null) {
       this.prependTextCaptionToDom();
@@ -430,6 +433,15 @@ export class FieldValue extends Component {
       return facetsWithMatchingId;
     }
     return facets.filter(facet => facet.options.field === this.options.field);
+  }
+
+  private get isValueHierarchical() {
+    for (let facet of this.getFacets()) {
+      if (facet.isFieldValueHierarchical) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private bindFacets(element: HTMLElement, originalFacetValue: string, renderedFacetValue: string) {

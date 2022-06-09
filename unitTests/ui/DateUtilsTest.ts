@@ -20,6 +20,7 @@ export function DateUtilsTest() {
         predefinedFormat: undefined
       };
       String['locale'] = 'en';
+      DateUtils.setLocale();
     });
 
     it('should use the correct locale if the locale is `no`', () => {
@@ -113,18 +114,14 @@ export function DateUtilsTest() {
     });
 
     it('dateTimeToString should respect includeTimeIfToday if the date is not today', () => {
-      const notToday = moment(new Date())
-        .subtract(2, 'days')
-        .toDate();
+      const notToday = moment(new Date()).subtract(2, 'days').toDate();
 
       const result = DateUtils.dateTimeToString(notToday, { includeTimeIfToday: true, includeTimeIfThisWeek: false });
       expect(containsTime(result)).toBe(false);
     });
 
     it('dateTimeToString should respect includeTimeIfThisWeek if the date is not this week', () => {
-      const notThisWeek = moment(new Date())
-        .subtract(2, 'week')
-        .toDate();
+      const notThisWeek = moment(new Date()).subtract(2, 'week').toDate();
 
       const result = DateUtils.dateTimeToString(notThisWeek, { includeTimeIfToday: false, includeTimeIfThisWeek: true });
       expect(containsTime(result)).toBe(false);
@@ -141,9 +138,9 @@ export function DateUtilsTest() {
       expect(DateUtils.dateTimeToString(testDate(), options)).toBe('80');
     });
 
-    it(`when the #predefinedFormat is 'yyy', it does not recognize the sequence`, () => {
+    it(`when the #predefinedFormat is 'yyy', it displays the four digits of the year`, () => {
       options.predefinedFormat = 'yyy';
-      expect(DateUtils.dateTimeToString(testDate(), options)).toBe('yyy');
+      expect(DateUtils.dateTimeToString(testDate(), options)).toBe('1980');
     });
 
     it(`when the #predefinedFormat is 'yyyy', it displays the four digits of the year`, () => {

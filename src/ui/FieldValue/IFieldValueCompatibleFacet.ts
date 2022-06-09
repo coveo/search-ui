@@ -6,6 +6,7 @@ export function isFacetFieldValueCompatible(facet: Component): facet is IFieldVa
 
 export interface IFieldValueCompatibleFacet extends Component {
   isFieldValueCompatible: boolean;
+  isFieldValueHierarchical: boolean;
   hasSelectedValue(value: string): boolean;
   selectValue(value: string): void;
   deselectValue(value: string): void;

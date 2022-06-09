@@ -595,7 +595,7 @@ export class ResultsFiltersPreferences extends Component {
   }
 
   private getFilterElementByCaption(caption: string): HTMLElement {
-    return $$(this.preferenceContainer).find("input[value='" + caption + "']").parentElement;
+    return $$(this.preferenceContainer).find("input[value='" + caption.replace(/'/g, "\\'") + "']").parentElement;
   }
 
   private fromResultsFilterOptionToResultsPreferenceInterface() {

@@ -9,6 +9,7 @@ import { ITabOptions, Tab } from '../../../src/ui/Tab/Tab';
 import { InitializationEvents } from '../../../src/Core';
 import { ResponsiveFacets } from '../../../src/ui/ResponsiveComponents/ResponsiveFacets';
 import { Facet, IFacetOptions } from '../../../src/ui/Facet/Facet';
+import { Simulate } from '../../Simulate';
 
 export function ResponsiveComponentsManagerTest() {
   const SMALL_RESPONSIVE_MODE = 'small';
@@ -137,6 +138,16 @@ export function ResponsiveComponentsManagerTest() {
       responsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
 
       expect(registerComponent).toHaveBeenCalledTimes(2);
+    });
+
+    it('should trigger a resize event once on the initial query success to account for page layout changes', () => {
+      spyOn(ResponsiveComponentsManager, 'resizeAllComponentsManager').and.callThrough();
+      ResponsiveComponentsManager.register(responsiveComponent, root, 'id', component, {});
+      const env = new Mock.MockEnvironmentBuilder().withRoot(root.el).build();
+      Simulate.query(env);
+      Simulate.query(env);
+      Simulate.query(env);
+      expect(ResponsiveComponentsManager.resizeAllComponentsManager).toHaveBeenCalledTimes(1);
     });
   });
 }

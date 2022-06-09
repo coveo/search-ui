@@ -60,6 +60,7 @@ export class ResponsiveComponentsManager {
     // options.initializationEventRoot can be set in some instance (like recommendation) where the root of the interface triggering the init event
     // is different from the one that will be used for calculation size.
     const initEventRoot = options.initializationEventRoot || root;
+
     initEventRoot.on(InitializationEvents.afterInitialization, () => {
       if (this.shouldEnableResponsiveMode(root)) {
         this.registerComponentIfResponsiveModeEnabled(responsiveComponentConstructor, root, ID, component, options);
@@ -79,6 +80,9 @@ export class ResponsiveComponentsManager {
           this.resizeAllComponentsManager();
         }
       }
+    });
+    initEventRoot.one(QueryEvents.querySuccess, () => {
+      this.resizeAllComponentsManager();
     });
     this.remainingComponentInitializations++;
   }
