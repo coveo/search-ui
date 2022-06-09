@@ -66,6 +66,7 @@ export function SmartSnippetSuggestionsTest() {
       source =>
         <Partial<IQueryResult>>{
           title: source.title,
+          titleHighlights: [],
           clickUri: source.url,
           raw: {
             alt: source.alt,
@@ -430,7 +431,7 @@ export function SmartSnippetSuggestionsTest() {
       document.body.appendChild(test.env.root);
       await triggerQuestionAnswerQuery(true);
       findClass(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((title, i) => expect(title.innerText).toEqual(sources[i].alt));
-      findClass(ClassNames.SOURCE_URL_CLASSNAME).forEach((source, i) => expect(source.innerText).toEqual(sources[i].alt));
+      findClass(ClassNames.SOURCE_URL_CLASSNAME).forEach((source, i) => expect(source.innerText).toEqual(sources[i].url));
       test.env.root.remove();
       done();
     });
@@ -453,7 +454,7 @@ export function SmartSnippetSuggestionsTest() {
       instantiateSmartSnippetSuggestions(null, { hrefTemplate: '../${raw.alt}' });
       document.body.appendChild(test.env.root);
       await triggerQuestionAnswerQuery(true);
-      findClass(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((title, i) =>
+      findClass(ClassNames.SOURCE_URL_CLASSNAME).forEach((title, i) =>
         expect(title.innerText.indexOf(window.location.protocol)).toEqual(0)
       );
       test.env.root.remove();
