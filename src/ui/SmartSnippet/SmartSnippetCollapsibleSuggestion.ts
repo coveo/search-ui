@@ -14,6 +14,7 @@ import {
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Utils } from '../../utils/Utils';
+import { IFieldOption } from '../Base/IComponentOptions';
 
 const QUESTION_CLASSNAME = `coveo-smart-snippet-suggestions-question`;
 const QUESTION_TITLE_CLASSNAME = `${QUESTION_CLASSNAME}-title`;
@@ -54,12 +55,16 @@ export class SmartSnippetCollapsibleSuggestion {
   private expanded = false;
 
   constructor(
-    private readonly questionAnswer: IRelatedQuestionAnswerResponse,
-    private readonly bindings: IComponentBindings,
-    private readonly innerCSS: string,
-    private readonly searchUid: string,
-    private readonly source?: IQueryResult,
-    private readonly useIFrame?: boolean
+    private readonly options: {
+      readonly questionAnswer: IRelatedQuestionAnswerResponse;
+      readonly bindings: IComponentBindings;
+      readonly innerCSS: string;
+      readonly searchUid: string;
+      readonly titleField: IFieldOption;
+      readonly hrefTemplate?: string;
+      readonly source?: IQueryResult;
+      readonly useIFrame?: boolean;
+    }
   ) {}
 
   public get loading() {
@@ -68,11 +73,11 @@ export class SmartSnippetCollapsibleSuggestion {
 
   public build() {
     const collapsibleContainer = this.buildCollapsibleContainer(
-      this.questionAnswer.answerSnippet,
-      this.questionAnswer.question,
-      this.buildStyle(this.innerCSS)
+      this.options.questionAnswer.answerSnippet,
+      this.options.questionAnswer.question,
+      this.buildStyle(this.options.innerCSS)
     );
-    const title = this.buildTitle(this.questionAnswer.question);
+    const title = this.buildTitle(this.options.questionAnswer.question);
     this.updateExpanded();
     return $$(
       'li',
@@ -123,13 +128,13 @@ export class SmartSnippetCollapsibleSuggestion {
     this.contentLoaded = attachShadow(shadowContainer.el, {
       mode: 'open',
       title: l('AnswerSpecificSnippet', title),
-      useIFrame: this.useIFrame
+      useIFrame: this.options.useIFrame
     }).then(shadowRoot => {
       shadowRoot.appendChild(this.buildAnswerSnippetContent(innerHTML, style).el);
     });
-    if (this.source) {
-      this.snippetAndSourceContainer.append(this.buildSourceUrl());
-      this.snippetAndSourceContainer.append(this.buildSourceTitle());
+    if (this.options.source) {
+      this.snippetAndSourceContainer.append(this.buildSourceUrl().el);
+      this.snippetAndSourceContainer.append(this.buildSourceTitle().el);
     }
     return this.collapsibleContainer;
   }
@@ -142,21 +147,24 @@ export class SmartSnippetCollapsibleSuggestion {
   }
 
   private buildSourceTitle() {
-    return this.buildLink(this.source.title, SOURCE_TITLE_CLASSNAME);
+    const link = this.buildLink(SOURCE_TITLE_CLASSNAME);
+    link.text(Utils.getFieldValue(this.options.source!, <string>this.options.titleField));
+    return link;
   }
 
   private buildSourceUrl() {
-    return this.buildLink(this.source.clickUri, SOURCE_URL_CLASSNAME);
+    const link = this.buildLink(SOURCE_URL_CLASSNAME);
+    link.text((link.el as HTMLAnchorElement).href);
+    return link;
   }
 
-  private buildLink(text: string, className: string) {
-    const element = $$('a', { className: `CoveoResultLink ${className}` }).el as HTMLAnchorElement;
-    element.innerText = text;
+  private buildLink(className: string) {
+    const element = $$('a', { className: `CoveoResultLink ${className}` });
     new ResultLink(
-      element,
-      { logAnalytics: href => this.sendOpenSourceAnalytics(element, href) },
-      { ...this.bindings, resultElement: this.collapsibleContainer.el },
-      this.source
+      element.el,
+      { hrefTemplate: this.options.hrefTemplate, logAnalytics: href => this.sendOpenSourceAnalytics(element.el, href) },
+      { ...this.options.bindings, resultElement: this.collapsibleContainer.el },
+      this.options.source
     );
     return element;
   }
@@ -189,38 +197,38 @@ export class SmartSnippetCollapsibleSuggestion {
   }
 
   private sendExpandAnalytics() {
-    return this.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
+    return this.options.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
       analyticsActionCauseList.expandSmartSnippetSuggestion,
       {
-        searchQueryUid: this.searchUid,
-        documentId: this.questionAnswer.documentId
+        searchQueryUid: this.options.searchUid,
+        documentId: this.options.questionAnswer.documentId
       },
       this.checkbox.el
     );
   }
 
   private sendCollapseAnalytics() {
-    return this.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
+    return this.options.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
       analyticsActionCauseList.collapseSmartSnippetSuggestion,
       {
-        searchQueryUid: this.searchUid,
-        documentId: this.questionAnswer.documentId
+        searchQueryUid: this.options.searchUid,
+        documentId: this.options.questionAnswer.documentId
       },
       this.checkbox.el
     );
   }
 
   private sendOpenSourceAnalytics(element: HTMLElement, href: string) {
-    return this.bindings.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetSuggestionOpenSourceMeta>(
+    return this.options.bindings.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetSuggestionOpenSourceMeta>(
       analyticsActionCauseList.openSmartSnippetSuggestionSource,
       {
-        searchQueryUid: this.searchUid,
-        documentTitle: this.source.title,
-        author: Utils.getFieldValue(this.source, 'author'),
+        searchQueryUid: this.options.searchUid,
+        documentTitle: this.options.source.title,
+        author: Utils.getFieldValue(this.options.source, 'author'),
         documentURL: href,
-        documentId: this.questionAnswer.documentId
+        documentId: this.options.questionAnswer.documentId
       },
-      this.source,
+      this.options.source,
       element
     );
   }
