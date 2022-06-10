@@ -76,7 +76,7 @@ export class SearchButton extends Component {
     this.logger.debug('Performing query following button click');
     this.updateQueryStateModelWithSearchboxQuery();
     this.usageAnalytics.logSearchEvent<IAnalyticsNoMeta>(analyticsActionCauseList.searchboxSubmit, {});
-    this.queryController.executeQuery({ origin: this });
+    this.queryController.executeQuery({ origin: this, logInActionsHistory: true });
   }
 
   private updateQueryStateModelWithSearchboxQuery() {
