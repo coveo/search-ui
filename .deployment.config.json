@@ -3,22 +3,15 @@
   "team_name": "searchui",
   "general": {
     "aws_regions": {
-      "sequential": [
-        "us-east-1"
-      ]
+      "sequential": ["us-east-1"]
     },
     "environments_order": {
-      "sequential": [
-        "dev",
-        "prd"
-      ]
+      "sequential": ["dev", "prd"]
     },
     "team_jenkins": "searchuibuilds",
     "start_environment_automatically": false,
     "notifications": {
-      "slack_channels": [
-        "#searchuibuilds"
-      ]
+      "slack_channels": ["#searchuibuilds"]
     }
   },
   "ordered_phases": [
