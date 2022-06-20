@@ -3,15 +3,22 @@
   "team_name": "searchui",
   "general": {
     "aws_regions": {
-      "sequential": ["us-east-1"]
+      "sequential": [
+        "us-east-1"
+      ]
     },
     "environments_order": {
-      "sequential": ["dev", "qa", "prd"]
+      "sequential": [
+        "dev",
+        "prd"
+      ]
     },
     "team_jenkins": "searchuibuilds",
     "start_environment_automatically": false,
     "notifications": {
-      "slack_channels": ["#searchuibuilds"]
+      "slack_channels": [
+        "#searchuibuilds"
+      ]
     }
   },
   "ordered_phases": [
@@ -94,14 +101,11 @@
       }
     ]
   },
-  "veracode": {
-    "no_scan": true
-  },
   "observatory": {
     "no_endpoint": true
   },
   "package_rollout": {
     "only_consider_changesets_after": "16247824e24b"
   },
-  "deployment_config_version": 2
+  "deployment_config_version": 7
 }
