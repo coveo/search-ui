@@ -3,10 +3,10 @@
   "team_name": "searchui",
   "general": {
     "aws_regions": {
-      "sequential": ["us-east-1"]
+      "sequential": ["FIRST_MAIN_REGION"]
     },
     "environments_order": {
-      "sequential": ["dev", "prd"]
+      "sequential": ["dev", "stg", "prd"]
     },
     "team_jenkins": "searchuibuilds",
     "start_environment_automatically": false,
@@ -65,7 +65,7 @@
     }
   ],
   "certifiers": {
-    "dev": [
+    "stg": [
       {
         "system_certifier": "snyk"
       },
