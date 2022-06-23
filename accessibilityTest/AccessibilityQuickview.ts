@@ -6,7 +6,6 @@ export const AccessibilityQuickview = () => {
   describe('Quickview', () => {
     async function openQuickview() {
       await (get(document.querySelector(`.${Component.computeCssClassName(Quickview)}`)) as Quickview).open();
-      console.log(`.${Component.computeCssClassName(Quickview)}`);
     }
 
     function getQuickviewCloseButton(): HTMLElement {
