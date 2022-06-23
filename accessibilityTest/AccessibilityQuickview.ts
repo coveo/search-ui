@@ -6,6 +6,7 @@ export const AccessibilityQuickview = () => {
   describe('Quickview', () => {
     async function openQuickview() {
       await (get(document.querySelector(`.${Component.computeCssClassName(Quickview)}`)) as Quickview).open();
+      console.log(`.${Component.computeCssClassName(Quickview)}`);
     }
 
     function getQuickviewCloseButton(): HTMLElement {
@@ -38,8 +39,8 @@ export const AccessibilityQuickview = () => {
 
     it('should open an accessible modal', async done => {
       await openQuickview();
-      if (!getModal().querySelector('iframe[title]')) {
-        await waitUntilSelectorIsPresent(getModal(), 'iframe[title]');
+      if (!getModal().querySelector('.coveo-iframeWrapper iframe')) {
+        await waitUntilSelectorIsPresent(getModal(), '.coveo-iframeWrapper iframe');
       }
       const axeResults = await axe.run(getModal());
       expect(axeResults).toBeAccessible();
