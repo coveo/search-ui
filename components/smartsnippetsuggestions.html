@@ -11,11 +11,11 @@
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10097/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10098/css/CoveoFullSearch.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10097/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10098/js/CoveoJsSearch.min.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
@@ -271,6 +271,8 @@
 						<section class="tsd-index-section ">
 							<h3>Component Options</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="smartsnippetsuggestions.html#options.hreftemplate" class="tsd-kind-icon">href<wbr>Template</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="smartsnippetsuggestions.html#options.titlefield" class="tsd-kind-icon">title<wbr>Field</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-object-literal"><a href="smartsnippetsuggestions.html#options.useiframe" class="tsd-kind-icon">useIFrame</a></li>
 							</ul>
 						</section>
@@ -666,14 +668,77 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Component Options</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.hreftemplate" class="tsd-anchor"></a>
+					<h3>href<wbr>Template</h3>
+					<div class="tsd-signature tsd-kind-icon">href<wbr>Template<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SmartSnippet/SmartSnippetSuggestions.ts#L81">ui/SmartSnippet/SmartSnippetSuggestions.ts
+							:81</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Specifies a template literal from which to generate the title and URI&#39;s <code>href</code> attribute value (see
+							<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals">Template literals</a>).</p>
+						</div>
+						<p>This option overrides the [<code>field</code>]{@link SmartSnippet.options.uriField} option value.</p>
+						<p>The template literal can reference any number of fields from the parent result. It can also reference global
+						scope properties.</p>
+						<p><strong>Examples:</strong></p>
+						<ul>
+							<li>The following markup generates an <code>href</code> value such as <code>http://uri.com?id=itemTitle</code>:</li>
+						</ul>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSmartSnippet'</span> <span class="hljs-attr">data-href-template</span>=<span class="hljs-string">'${clickUri}?id=${raw.title}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></code></pre>
+						<ul>
+							<li>The following markup generates an <code>href</code> value such as <code>localhost/fooBar</code>:</li>
+						</ul>
+						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSmartSnippet'</span> <span class="hljs-attr">data-href-template</span>=<span class="hljs-string">'${window.location.hostname}/{Foo.Bar}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></code></pre>
+						<p>Default value is <code>undefined</code>.</p>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-href-template&#x3D;&#x27;foo&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+					<a name="options.titlefield" class="tsd-anchor"></a>
+					<h3>title<wbr>Field</h3>
+					<div class="tsd-signature tsd-kind-icon">title<wbr>Field<span class="tsd-signature-symbol">:</span> <a href="../interfaces/ifieldoption.html" class="tsd-signature-type">IFieldOption</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SmartSnippet/SmartSnippetSuggestions.ts#L54">ui/SmartSnippet/SmartSnippetSuggestions.ts
+							:54</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-deprecated">
+						</dl>
+						<div class="lead">
+							<p>The field to display for the title.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>Default</dt>
+							<dd><p><code>@title</code></p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-panel">
+						<div class="tsd-signature-type">Markup configuration example(s) :</div>
+						<pre>data-title-field&#x3D;&#x27;@foo&#x27;</pre>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 					<a name="options.useiframe" class="tsd-anchor"></a>
 					<h3>useIFrame</h3>
 					<div class="tsd-signature tsd-kind-icon">useIFrame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in
-								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SmartSnippet/SmartSnippetSuggestions.ts#L61">ui/SmartSnippet/SmartSnippetSuggestions.ts
-							:61</a></li>
+								<a href="https://github.com/coveo/search-ui/tree/master/src/ui/SmartSnippet/SmartSnippetSuggestions.ts#L96">ui/SmartSnippet/SmartSnippetSuggestions.ts
+							:96</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
