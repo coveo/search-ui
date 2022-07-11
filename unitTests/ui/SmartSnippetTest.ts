@@ -84,7 +84,7 @@ export function SmartSnippetTest() {
     function instantiateSmartSnippet(styling: string | null, options: Partial<ISmartSnippetOptions> = {}) {
       test = advancedComponentSetup<SmartSnippet>(
         SmartSnippet,
-        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling)])).el, options)
+        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling!)])).el, options)
       );
     }
 
@@ -224,6 +224,26 @@ export function SmartSnippetTest() {
       await Promise.resolve();
       expect('XSSInjected' in window).toBeFalsy();
       delete window['XSSInjected'];
+      test.env.root.remove();
+      done();
+    });
+
+    it("doesn't set the target when alwaysOpenInNewWindow is unset", async done => {
+      instantiateSmartSnippet(null);
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).target).toEqual('');
+      expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME).target).toEqual('');
+      test.env.root.remove();
+      done();
+    });
+
+    it('sets the target when alwaysOpenInNewWindow is set', async done => {
+      instantiateSmartSnippet(null, { alwaysOpenInNewWindow: true });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).target).toEqual('_blank');
+      expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME).target).toEqual('_blank');
       test.env.root.remove();
       done();
     });

@@ -77,6 +77,7 @@ export interface ISmartSnippetOptions {
   maximumSnippetHeight: number;
   titleField: IFieldOption;
   hrefTemplate?: string;
+  alwaysOpenInNewWindow?: boolean;
   useIFrame?: boolean;
 }
 /**
@@ -136,6 +137,14 @@ export class SmartSnippet extends Component {
      * Default value is `undefined`.
      */
     hrefTemplate: ComponentOptions.buildStringOption(),
+
+    /**
+     * Specifies whether the component should open its links in a new window instead of opening it in the current
+     * context.
+     *
+     * Default value is `false`.
+     */
+    alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specify if the SmartSnippet should be displayed inside an iframe or not.
@@ -342,7 +351,11 @@ export class SmartSnippet extends Component {
     element.addClass(className);
     new ResultLink(
       element.el,
-      { hrefTemplate: this.options.hrefTemplate, logAnalytics: href => this.sendClickSourceAnalytics(element.el, href) },
+      {
+        hrefTemplate: this.options.hrefTemplate,
+        logAnalytics: href => this.sendClickSourceAnalytics(element.el, href),
+        alwaysOpenInNewWindow: this.options.alwaysOpenInNewWindow
+      },
       { ...this.getBindings(), resultElement: this.element },
       this.lastRenderedResult
     );
