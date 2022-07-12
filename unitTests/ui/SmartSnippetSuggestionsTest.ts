@@ -126,10 +126,10 @@ export function SmartSnippetSuggestionsTest() {
     let test: IBasicComponentSetup<SmartSnippetSuggestions>;
     let searchUid: string;
 
-    function instantiateSmartSnippetSuggestions(styling: string, options: Partial<ISmartSnippetSuggestionsOptions> = {}) {
+    function instantiateSmartSnippetSuggestions(styling: string | null, options: Partial<ISmartSnippetSuggestionsOptions> = {}) {
       test = advancedComponentSetup<SmartSnippetSuggestions>(
         SmartSnippetSuggestions,
-        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling)])).el, options)
+        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling!)])).el, options)
       );
     }
 
@@ -483,6 +483,26 @@ export function SmartSnippetSuggestionsTest() {
       await Promise.resolve();
       expect('XSSInjected' in window).toBeFalsy();
       delete window['XSSInjected'];
+      test.env.root.remove();
+      done();
+    });
+
+    it("doesn't set the target when alwaysOpenInNewWindow is unset", async done => {
+      instantiateSmartSnippetSuggestions(null);
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      expect(findClass<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME)[0].target).toEqual('');
+      expect(findClass<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME)[0].target).toEqual('');
+      test.env.root.remove();
+      done();
+    });
+
+    it('sets the target when alwaysOpenInNewWindow is set', async done => {
+      instantiateSmartSnippetSuggestions(null, { alwaysOpenInNewWindow: true });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      expect(findClass<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME)[0].target).toEqual('_blank');
+      expect(findClass<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME)[0].target).toEqual('_blank');
       test.env.root.remove();
       done();
     });
