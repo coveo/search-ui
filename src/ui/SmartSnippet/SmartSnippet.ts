@@ -139,7 +139,7 @@ export class SmartSnippet extends Component {
     hrefTemplate: ComponentOptions.buildStringOption(),
 
     /**
-     * Specifies whether the component should open its links in a new window instead of opening it in the current
+     * Specifies whether the component should open its links in a new window instead of opening them in the current
      * context.
      *
      * Default value is `false`.
