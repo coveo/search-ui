@@ -62,6 +62,7 @@ export class SmartSnippetCollapsibleSuggestion {
       readonly searchUid: string;
       readonly titleField: IFieldOption;
       readonly hrefTemplate?: string;
+      readonly alwaysOpenInNewWindow?: boolean;
       readonly source?: IQueryResult;
       readonly useIFrame?: boolean;
     }
@@ -162,7 +163,11 @@ export class SmartSnippetCollapsibleSuggestion {
     const element = $$('a', { className: `CoveoResultLink ${className}` });
     new ResultLink(
       element.el,
-      { hrefTemplate: this.options.hrefTemplate, logAnalytics: href => this.sendOpenSourceAnalytics(element.el, href) },
+      {
+        hrefTemplate: this.options.hrefTemplate,
+        logAnalytics: href => this.sendOpenSourceAnalytics(element.el, href),
+        alwaysOpenInNewWindow: this.options.alwaysOpenInNewWindow
+      },
       { ...this.options.bindings, resultElement: this.collapsibleContainer.el },
       this.options.source
     );

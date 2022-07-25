@@ -28,6 +28,7 @@ export const SmartSnippetSuggestionsClassNames = {
 export interface ISmartSnippetSuggestionsOptions {
   titleField: IFieldOption;
   hrefTemplate?: string;
+  alwaysOpenInNewWindow?: boolean;
   useIFrame?: boolean;
 }
 
@@ -79,6 +80,14 @@ export class SmartSnippetSuggestions extends Component {
      * Default value is `undefined`.
      */
     hrefTemplate: ComponentOptions.buildStringOption(),
+
+    /**
+     * Specifies whether the component should open its links in a new window instead of opening them in the current
+     * context.
+     *
+     * Default value is `false`.
+     */
+    alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specify if the SmartSnippetSuggestion snippet should be displayed inside an iframe or not.
@@ -164,6 +173,7 @@ export class SmartSnippetSuggestions extends Component {
           searchUid: this.searchUid,
           titleField: this.options.titleField,
           hrefTemplate: this.options.hrefTemplate,
+          alwaysOpenInNewWindow: this.options.alwaysOpenInNewWindow,
           source: this.getCorrespondingResult(questionAnswer),
           useIFrame: this.options.useIFrame
         })
