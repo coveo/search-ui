@@ -10,6 +10,7 @@ import { $$ } from '../../utils/Dom';
 import { exportGlobally } from '../../GlobalExports';
 import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import * as _ from 'underscore';
+import { AccessibleModal } from '../../utils/AccessibleModal';
 
 import 'styling/_PreferencesPanel';
 import { InitializationEvents } from '../../events/InitializationEvents';
@@ -36,7 +37,7 @@ export class PreferencesPanel extends Component {
   };
 
   static options: IPreferencesPanelOptions = {};
-  private modalbox: Coveo.ModalBox.ModalBox;
+  private modalbox: AccessibleModal;
   private content: HTMLElement[] = [];
 
   /**
@@ -67,27 +68,28 @@ export class PreferencesPanel extends Component {
     this.bind.onRootElement(InitializationEvents.afterComponentsInitialization, () => {
       this.content = $$(this.element).children();
     });
+    this.modalbox = new AccessibleModal('coveo-preferences-panel', this.searchInterface.options.modalContainer, this.ModalBox, {
+      overlayClose: true
+    });
   }
 
   /**
    * Opens the PreferencesPanel.
    */
   public open(): void {
-    if (this.modalbox == null) {
-      let root = $$('div');
-      _.each(this.content, oneChild => {
-        root.append(oneChild);
-      });
-
-      this.modalbox = this.ModalBox.open(root.el, {
-        title: l('Preferences'),
-        validation: () => {
-          this.cleanupOnExit();
-          return true;
-        },
-        body: this.searchInterface.options.modalContainer
-      });
-    }
+    let root = $$('div');
+    _.each(this.content, oneChild => {
+      root.append(oneChild);
+    });
+    this.modalbox.open({
+      title: l('Preferences'),
+      content: root.el,
+      origin: this.element,
+      validation: () => {
+        this.cleanupOnExit();
+        return true;
+      }
+    });
   }
 
   /**
@@ -96,11 +98,8 @@ export class PreferencesPanel extends Component {
    * Also triggers the `exitPreferencesWithoutSave` event.
    */
   public close(): void {
-    if (this.modalbox) {
-      this.cleanupOnExit();
-      this.modalbox.close();
-      this.modalbox = null;
-    }
+    this.cleanupOnExit();
+    this.modalbox.close();
   }
 
   /**
