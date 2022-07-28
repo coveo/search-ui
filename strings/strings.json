@@ -7575,6 +7575,18 @@
     "en": "Send",
     "fr": "Envoyer"
   },
+  "Edit": {
+    "en": "Edit",
+    "fr": "Éditer"
+  },
+  "Delete": {
+    "en": "Delete",
+    "fr": "Supprimer"
+  },
+  "Save": {
+    "en": "Save",
+    "fr": "Sauvegarder"
+  },
   "UsefulnessFeedbackReason": {
     "en": "Reason",
     "fr": "Raison"
