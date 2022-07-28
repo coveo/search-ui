@@ -260,7 +260,7 @@ export class ResultsFiltersPreferences extends Component {
     this.advancedFilters = $$('div', { className: 'coveo-advanced-filters' }, l('Create')).el;
     new AccessibleButton()
       .withElement(this.advancedFilters)
-      .withLabel(l('Create'))
+      .withoutLabelOrTitle()
       .withSelectAction(() => this.openAdvancedFilterSectionOrSaveFilters())
       .build();
 
