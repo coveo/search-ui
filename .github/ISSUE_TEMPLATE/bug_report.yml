@@ -14,8 +14,8 @@ body:
   - type: input
     id: version
     attributes:
-      label: search-ui version
-      description: Which Search UI version are you using?
+      label: ui-kit version
+      description: Which UI-kit version are you using?
     validations:
       required: true
   - type: textarea
