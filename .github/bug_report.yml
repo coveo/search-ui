@@ -1,5 +1,5 @@
 name: Bug Report
-description: File a bug report for the ui-kit
+description: File a bug report for the JSUI
 title: "[Bug]: "
 labels: ["bug", "triage"]
 body:
