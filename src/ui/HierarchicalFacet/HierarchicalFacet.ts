@@ -32,6 +32,7 @@ import 'styling/_HierarchicalFacet';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;
@@ -664,9 +665,12 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       collapseChilds.el
     ).el;
 
-    $$(openAndCloseChilds).on('click', () => {
-      $$(hierarchyElement).hasClass('coveo-open') ? this.close(hierarchy) : this.open(hierarchy);
-    });
+    new AccessibleButton()
+      .withElement(openAndCloseChilds)
+      .withSelectAction(() => {
+        $$(hierarchyElement).hasClass('coveo-open') ? this.close(hierarchy) : this.open(hierarchy);
+      })
+      .build();
 
     $$(hierarchyElement).prepend(openAndCloseChilds);
   }
