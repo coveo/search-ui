@@ -893,7 +893,7 @@ var parseTermsWeights = function (termsWeight) {
     return null;
 };
 var parseQREWeights = function (value) {
-    var REGEX_EXTRACT_QRE_WEIGHTS = /(Expression:\s".*")\sScore:\s(?!0)([0-9]+)\n+/g;
+    var REGEX_EXTRACT_QRE_WEIGHTS = /(Expression:\s".*")\sScore:\s(?!0)([-0-9]+)\n+/g;
     var qreWeightsRegexResult = REGEX_EXTRACT_QRE_WEIGHTS.exec(value);
     var qreWeights = [];
     while (qreWeightsRegexResult) {
