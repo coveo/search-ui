@@ -667,6 +667,7 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
 
     new AccessibleButton()
       .withElement(openAndCloseChilds)
+      .withoutLabelOrTitle()
       .withSelectAction(() => {
         $$(hierarchyElement).hasClass('coveo-open') ? this.close(hierarchy) : this.open(hierarchy);
       })
