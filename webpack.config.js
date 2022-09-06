@@ -213,6 +213,19 @@ module.exports = {
         ]
       },
       {
+        test: /\.woff2?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: production ? '../fonts/[name].[ext]' : 'http://localhost:8080/fonts/[name].[ext]',
+              emitFile: false,
+              publicPath: ' '
+            }
+          }
+        ]
+      },
+      {
         test: /\.svg$/,
         use: [
           {
