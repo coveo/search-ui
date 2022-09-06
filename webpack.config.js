@@ -200,12 +200,12 @@ module.exports = {
         ]
       },
       {
-        test: /(filetypes[\/\/].*\.svg)$/,
+        test: /\.woff2?$/,
         use: [
           {
             loader: 'file-loader',
             options: {
-              name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
+              name: production ? '../fonts/[name].[ext]' : 'http://localhost:8080/fonts/[name].[ext]',
               emitFile: false,
               publicPath: ' '
             }
@@ -213,12 +213,12 @@ module.exports = {
         ]
       },
       {
-        test: /\.woff2?$/,
+        test: /(filetypes[\/\/].*\.svg)$/,
         use: [
           {
             loader: 'file-loader',
             options: {
-              name: production ? '../fonts/[name].[ext]' : 'http://localhost:8080/fonts/[name].[ext]',
+              name: production ? '../image/[name].[ext]' : 'http://localhost:8080/image/[name].[ext]',
               emitFile: false,
               publicPath: ' '
             }
