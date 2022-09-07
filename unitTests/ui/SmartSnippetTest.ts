@@ -228,6 +228,22 @@ export function SmartSnippetTest() {
       done();
     });
 
+    it('resists XSS injections in content', async done => {
+      instantiateSmartSnippet(null, { useIFrame: false });
+      document.body.appendChild(test.env.root);
+      await triggerQuerySuccess({
+        results: <IQueryResults>{
+          results: [mockResult()],
+          questionAnswer: { ...mockQuestionAnswer(), answerSnippet: '<img src="abcd.png" onerror="window.XSSInjected = true;">' }
+        }
+      });
+      await Utils.resolveAfter(100);
+      expect('XSSInjected' in window).toBeFalsy();
+      delete window['XSSInjected'];
+      test.env.root.remove();
+      done();
+    });
+
     it("doesn't set the target when alwaysOpenInNewWindow is unset", async done => {
       instantiateSmartSnippet(null);
       document.body.appendChild(test.env.root);
