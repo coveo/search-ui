@@ -1531,13 +1531,13 @@ export var analyticsActionCauseList = {
    *
    * ```javascript
    * {
-   *  actionCause: "openSmartSnippetSnippetInlineLink",
+   *  actionCause: "openSmartSnippetInlineLink",
    *  actionType: "smartSnippet"
    * }
    * ```
    */
-  openSmartSnippetSnippetInlineLink: <IAnalyticsActionCause>{
-    name: 'openSmartSnippetSnippetInlineLink',
+  openSmartSnippetInlineLink: <IAnalyticsActionCause>{
+    name: 'openSmartSnippetInlineLink',
     type: 'smartSnippet'
   },
   /**
@@ -1591,13 +1591,13 @@ export var analyticsActionCauseList = {
    *
    * ```javascript
    * {
-   *  actionCause: "openSmartSnippetSuggestionSnippetInlineLink",
+   *  actionCause: "openSmartSnippetSuggestionInlineLink",
    *  actionType: "smartSnippet"
    * }
    * ```
    */
-  openSmartSnippetSuggestionSnippetInlineLink: <IAnalyticsActionCause>{
-    name: 'openSmartSnippetSuggestionSnippetInlineLink',
+  openSmartSnippetSuggestionInlineLink: <IAnalyticsActionCause>{
+    name: 'openSmartSnippetSuggestionInlineLink',
     type: 'smartSnippet'
   }
 };

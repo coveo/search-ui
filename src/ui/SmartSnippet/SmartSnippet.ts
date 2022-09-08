@@ -445,7 +445,7 @@ export class SmartSnippet extends Component {
 
   private sendClickSnippetLinkAnalytics(link: HTMLAnchorElement) {
     return this.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetOpenSnippetInlineLinkMeta>(
-      analyticsActionCauseList.openSmartSnippetSnippetInlineLink,
+      analyticsActionCauseList.openSmartSnippetInlineLink,
       {
         searchQueryUid: this.searchUid,
         linkText: link.innerText,

@@ -243,7 +243,7 @@ export class SmartSnippetCollapsibleSuggestion {
 
   private sendOpenSnippetLinkAnalytics(link: HTMLAnchorElement) {
     return this.options.bindings.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetSuggestionOpenSnippetInlineLinkMeta>(
-      analyticsActionCauseList.openSmartSnippetSuggestionSnippetInlineLink,
+      analyticsActionCauseList.openSmartSnippetSuggestionInlineLink,
       {
         searchQueryUid: this.options.searchUid,
         linkText: link.innerText,
