@@ -23,7 +23,7 @@ import { l } from '../../strings/Strings';
 import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { bindAnalyticsToSnippetLinks, getDefaultSnippetStyle } from './SmartSnippetCommon';
+import { transformSnippetLinks, getDefaultSnippetStyle } from './SmartSnippetCommon';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IFieldOption } from '../Base/IComponentOptions';
 
@@ -326,7 +326,7 @@ export class SmartSnippet extends Component {
 
   private renderSnippet(content: string) {
     this.snippetContainer.innerHTML = content;
-    bindAnalyticsToSnippetLinks(this.snippetContainer, link => this.sendClickSnippetLinkAnalytics(link));
+    transformSnippetLinks(this.snippetContainer, this.options.alwaysOpenInNewWindow, link => this.sendClickSnippetLinkAnalytics(link));
   }
 
   private renderSource() {

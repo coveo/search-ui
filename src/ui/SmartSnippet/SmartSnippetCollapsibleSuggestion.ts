@@ -16,7 +16,7 @@ import { ResultLink } from '../ResultLink/ResultLink';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Utils } from '../../utils/Utils';
 import { IFieldOption } from '../Base/IComponentOptions';
-import { bindAnalyticsToSnippetLinks } from './SmartSnippetCommon';
+import { transformSnippetLinks } from './SmartSnippetCommon';
 
 const QUESTION_CLASSNAME = `coveo-smart-snippet-suggestions-question`;
 const QUESTION_TITLE_CLASSNAME = `${QUESTION_CLASSNAME}-title`;
@@ -144,7 +144,7 @@ export class SmartSnippetCollapsibleSuggestion {
 
   private buildAnswerSnippetContent(innerHTML: string, style: HTMLStyleElement) {
     const snippet = $$('div', { className: RAW_CONTENT_CLASSNAME }, innerHTML);
-    bindAnalyticsToSnippetLinks(snippet.el, link => this.sendOpenSnippetLinkAnalytics(link));
+    transformSnippetLinks(snippet.el, this.options.alwaysOpenInNewWindow, link => this.sendOpenSnippetLinkAnalytics(link));
     const container = $$('div', {}, snippet);
     container.append(style);
     return container;

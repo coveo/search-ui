@@ -15,8 +15,13 @@ export const getDefaultSnippetStyle = (contentClassName: string) => `
   }
 `;
 
-export const bindAnalyticsToSnippetLinks = (renderedSnippetParent: HTMLElement, logAnalytics: (link: HTMLAnchorElement) => void) => {
-  Dom.nodeListToArray(renderedSnippetParent.querySelectorAll('a')).forEach(link =>
-    bindAnalyticsToLink(link, () => logAnalytics(link as HTMLAnchorElement))
-  );
+export const transformSnippetLinks = (
+  renderedSnippetParent: HTMLElement,
+  alwaysOpenInNewWindow: boolean,
+  logAnalytics: (link: HTMLAnchorElement) => void
+) => {
+  Dom.nodeListToArray(renderedSnippetParent.querySelectorAll('a')).forEach((link: HTMLAnchorElement) => {
+    bindAnalyticsToLink(link, () => logAnalytics(link));
+    link.target = alwaysOpenInNewWindow ? '_blank' : '_top';
+  });
 };
