@@ -17,11 +17,12 @@ import { Defer } from '../../misc/Defer';
 import { $$ } from '../../utils/Dom';
 import { StreamHighlightUtils } from '../../utils/StreamHighlightUtils';
 import { StringUtils } from '../../utils/StringUtils';
-import { once, debounce, extend, escape } from 'underscore';
+import { debounce, extend, escape } from 'underscore';
 import { exportGlobally } from '../../GlobalExports';
 
 import 'styling/_ResultLink';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+import { bindAnalyticsToLink } from './ResultLinkCommon';
 
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
@@ -298,18 +299,7 @@ export class ResultLink extends Component {
       // It's still only one "click" event as far as UA is concerned.
       // Also need to handle "longpress" on mobile (the contextual menu), which we assume to be 1 s long.
 
-      const executeOnlyOnce = once(() => this.logAnalytics());
-
-      $$(element).on(['contextmenu', 'click', 'mousedown', 'mouseup'], executeOnlyOnce);
-      let longPressTimer: number;
-      $$(element).on('touchstart', () => {
-        longPressTimer = window.setTimeout(executeOnlyOnce, 1000);
-      });
-      $$(element).on('touchend', () => {
-        if (longPressTimer) {
-          clearTimeout(longPressTimer);
-        }
-      });
+      bindAnalyticsToLink(element, () => this.logAnalytics());
     }
     this.renderUri(element, result);
     this.bindEventToOpen();

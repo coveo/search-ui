@@ -14,7 +14,8 @@ import {
   IAnalyticsNoMeta,
   IAnalyticsSmartSnippetFeedbackMeta,
   AnalyticsSmartSnippetFeedbackReason,
-  IAnalyticsSmartSnippetOpenSourceMeta
+  IAnalyticsSmartSnippetOpenSourceMeta,
+  IAnalyticsSmartSnippetOpenSnippetLinkMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
 import { ExplanationModal, IReason } from './ExplanationModal';
@@ -22,7 +23,7 @@ import { l } from '../../strings/Strings';
 import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { getDefaultSnippetStyle } from './SmartSnippetCommon';
+import { bindAnalyticsToSnippetLinks, getDefaultSnippetStyle } from './SmartSnippetCommon';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IFieldOption } from '../Base/IComponentOptions';
 
@@ -325,6 +326,7 @@ export class SmartSnippet extends Component {
 
   private renderSnippet(content: string) {
     this.snippetContainer.innerHTML = content;
+    bindAnalyticsToSnippetLinks(this.snippetContainer, link => this.sendClickSnippetLinkAnalytics(link));
   }
 
   private renderSource() {
@@ -438,6 +440,19 @@ export class SmartSnippet extends Component {
       },
       this.lastRenderedResult,
       element
+    );
+  }
+
+  private sendClickSnippetLinkAnalytics(link: HTMLAnchorElement) {
+    return this.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetOpenSnippetLinkMeta>(
+      analyticsActionCauseList.openSmartSnippetSnippetLink,
+      {
+        searchQueryUid: this.searchUid,
+        linkText: link.innerText,
+        linkURL: link.href
+      },
+      this.lastRenderedResult,
+      link
     );
   }
 }
