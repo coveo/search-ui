@@ -9,7 +9,7 @@ import { IQueryResult } from '../../rest/QueryResult';
 import {
   analyticsActionCauseList,
   IAnalyticsSmartSnippetSuggestionMeta,
-  IAnalyticsSmartSnippetSuggestionOpenSnippetLinkMeta,
+  IAnalyticsSmartSnippetSuggestionOpenSnippetInlineLinkMeta,
   IAnalyticsSmartSnippetSuggestionOpenSourceMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { ResultLink } from '../ResultLink/ResultLink';
@@ -242,8 +242,8 @@ export class SmartSnippetCollapsibleSuggestion {
   }
 
   private sendOpenSnippetLinkAnalytics(link: HTMLAnchorElement) {
-    return this.options.bindings.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetSuggestionOpenSnippetLinkMeta>(
-      analyticsActionCauseList.openSmartSnippetSuggestionSnippetLink,
+    return this.options.bindings.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetSuggestionOpenSnippetInlineLinkMeta>(
+      analyticsActionCauseList.openSmartSnippetSuggestionSnippetInlineLink,
       {
         searchQueryUid: this.options.searchUid,
         linkText: link.innerText,

@@ -256,7 +256,7 @@ export interface IAnalyticsSmartSnippetOpenSourceMeta extends IAnalyticsSmartSni
   author: string;
 }
 
-export interface IAnalyticsSmartSnippetOpenSnippetLinkMeta extends IAnalyticsSmartSnippetMeta {
+export interface IAnalyticsSmartSnippetOpenSnippetInlineLinkMeta extends IAnalyticsSmartSnippetMeta {
   /**
    * The URL of the clicked link.
    */
@@ -286,7 +286,7 @@ export interface IAnalyticsSmartSnippetSuggestionOpenSourceMeta extends IAnalyti
   author: string;
 }
 
-export interface IAnalyticsSmartSnippetSuggestionOpenSnippetLinkMeta extends IAnalyticsSmartSnippetSuggestionMeta {
+export interface IAnalyticsSmartSnippetSuggestionOpenSnippetInlineLinkMeta extends IAnalyticsSmartSnippetSuggestionMeta {
   /**
    * The URL of the clicked link.
    */
@@ -1531,13 +1531,13 @@ export var analyticsActionCauseList = {
    *
    * ```javascript
    * {
-   *  actionCause: "openSmartSnippetSnippetLink",
+   *  actionCause: "openSmartSnippetSnippetInlineLink",
    *  actionType: "smartSnippet"
    * }
    * ```
    */
-  openSmartSnippetSnippetLink: <IAnalyticsActionCause>{
-    name: 'openSmartSnippetSnippetLink',
+  openSmartSnippetSnippetInlineLink: <IAnalyticsActionCause>{
+    name: 'openSmartSnippetSnippetInlineLink',
     type: 'smartSnippet'
   },
   /**
@@ -1591,13 +1591,13 @@ export var analyticsActionCauseList = {
    *
    * ```javascript
    * {
-   *  actionCause: "openSmartSnippetSuggestionSnippetLink",
+   *  actionCause: "openSmartSnippetSuggestionSnippetInlineLink",
    *  actionType: "smartSnippet"
    * }
    * ```
    */
-  openSmartSnippetSuggestionSnippetLink: <IAnalyticsActionCause>{
-    name: 'openSmartSnippetSuggestionSnippetLink',
+  openSmartSnippetSuggestionSnippetInlineLink: <IAnalyticsActionCause>{
+    name: 'openSmartSnippetSuggestionSnippetInlineLink',
     type: 'smartSnippet'
   }
 };

@@ -15,7 +15,7 @@ import {
   IAnalyticsSmartSnippetFeedbackMeta,
   AnalyticsSmartSnippetFeedbackReason,
   IAnalyticsSmartSnippetOpenSourceMeta,
-  IAnalyticsSmartSnippetOpenSnippetLinkMeta
+  IAnalyticsSmartSnippetOpenSnippetInlineLinkMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
 import { ExplanationModal, IReason } from './ExplanationModal';
@@ -444,8 +444,8 @@ export class SmartSnippet extends Component {
   }
 
   private sendClickSnippetLinkAnalytics(link: HTMLAnchorElement) {
-    return this.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetOpenSnippetLinkMeta>(
-      analyticsActionCauseList.openSmartSnippetSnippetLink,
+    return this.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetOpenSnippetInlineLinkMeta>(
+      analyticsActionCauseList.openSmartSnippetSnippetInlineLink,
       {
         searchQueryUid: this.searchUid,
         linkText: link.innerText,
