@@ -157,6 +157,7 @@
     "coveo.analytics": "^0.7.0",
     "d3": "^5.16.0",
     "d3-scale": "^2.2.2",
+    "dompurify": "^2.4.0",
     "es6-promise": "^4.0.5",
     "exponential-backoff": "^2.2.0",
     "jstimezonedetect": "^1.0.6",

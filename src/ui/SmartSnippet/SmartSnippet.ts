@@ -22,7 +22,7 @@ import { l } from '../../strings/Strings';
 import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { getDefaultSnippetStyle } from './SmartSnippetCommon';
+import { getDefaultSnippetStyle, getSanitizedAnswerSnippet } from './SmartSnippetCommon';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IFieldOption } from '../Base/IComponentOptions';
 
@@ -314,7 +314,7 @@ export class SmartSnippet extends Component {
     this.ensureDom();
     this.feedbackBanner.reset();
     this.questionContainer.innerText = questionAnswer.question;
-    this.renderSnippet(questionAnswer.answerSnippet);
+    this.renderSnippet(questionAnswer);
     this.lastRenderedResult = this.getCorrespondingResult(questionAnswer);
     if (this.lastRenderedResult) {
       this.renderSource();
@@ -323,8 +323,8 @@ export class SmartSnippet extends Component {
     }
   }
 
-  private renderSnippet(content: string) {
-    this.snippetContainer.innerHTML = content;
+  private renderSnippet(questionAnswer: IQuestionAnswerResponse) {
+    this.snippetContainer.innerHTML = getSanitizedAnswerSnippet(questionAnswer);
   }
 
   private renderSource() {
