@@ -1,3 +1,5 @@
+import { sanitize } from 'dompurify';
+import { IQuestionAnswerResponse, IRelatedQuestionAnswerResponse } from '../../rest/QuestionAnswerResponse';
 import { Dom } from '../../utils/Dom';
 import { bindAnalyticsToLink } from '../ResultLink/ResultLinkCommon';
 
@@ -14,6 +16,15 @@ export const getDefaultSnippetStyle = (contentClassName: string) => `
     margin-bottom: 0;
   }
 `;
+
+export function getSanitizedAnswerSnippet(questionAnswer: IQuestionAnswerResponse | IRelatedQuestionAnswerResponse) {
+  return (
+    questionAnswer.answerSnippet &&
+    sanitize(questionAnswer.answerSnippet, {
+      USE_PROFILES: { html: true }
+    })
+  );
+}
 
 export const transformSnippetLinks = (
   renderedSnippetParent: HTMLElement,

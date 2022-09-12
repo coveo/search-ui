@@ -16,7 +16,7 @@ import { ResultLink } from '../ResultLink/ResultLink';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Utils } from '../../utils/Utils';
 import { IFieldOption } from '../Base/IComponentOptions';
-import { transformSnippetLinks } from './SmartSnippetCommon';
+import { getSanitizedAnswerSnippet, transformSnippetLinks } from './SmartSnippetCommon';
 
 const QUESTION_CLASSNAME = `coveo-smart-snippet-suggestions-question`;
 const QUESTION_TITLE_CLASSNAME = `${QUESTION_CLASSNAME}-title`;
@@ -75,11 +75,7 @@ export class SmartSnippetCollapsibleSuggestion {
   }
 
   public build() {
-    const collapsibleContainer = this.buildCollapsibleContainer(
-      this.options.questionAnswer.answerSnippet,
-      this.options.questionAnswer.question,
-      this.buildStyle(this.options.innerCSS)
-    );
+    const collapsibleContainer = this.buildCollapsibleContainer(this.options.questionAnswer, this.buildStyle(this.options.innerCSS));
     const title = this.buildTitle(this.options.questionAnswer.question);
     this.updateExpanded();
     return $$(
@@ -124,16 +120,16 @@ export class SmartSnippetCollapsibleSuggestion {
     return this.checkbox;
   }
 
-  private buildCollapsibleContainer(innerHTML: string, title: string, style: HTMLStyleElement) {
+  private buildCollapsibleContainer(questionAnswer: IRelatedQuestionAnswerResponse, style: HTMLStyleElement) {
     const shadowContainer = $$('div', { className: SHADOW_CLASSNAME });
     this.snippetAndSourceContainer = $$('div', { className: QUESTION_SNIPPET_CONTAINER_CLASSNAME }, shadowContainer);
     this.collapsibleContainer = $$('div', { className: QUESTION_SNIPPET_CLASSNAME, id: this.snippetId }, this.snippetAndSourceContainer);
     this.contentLoaded = attachShadow(shadowContainer.el, {
       mode: 'open',
-      title: l('AnswerSpecificSnippet', title),
+      title: l('AnswerSpecificSnippet', questionAnswer.question),
       useIFrame: this.options.useIFrame
     }).then(shadowRoot => {
-      shadowRoot.appendChild(this.buildAnswerSnippetContent(innerHTML, style).el);
+      shadowRoot.appendChild(this.buildAnswerSnippetContent(questionAnswer, style).el);
     });
     if (this.options.source) {
       this.snippetAndSourceContainer.append(this.buildSourceUrl().el);
@@ -142,8 +138,8 @@ export class SmartSnippetCollapsibleSuggestion {
     return this.collapsibleContainer;
   }
 
-  private buildAnswerSnippetContent(innerHTML: string, style: HTMLStyleElement) {
-    const snippet = $$('div', { className: RAW_CONTENT_CLASSNAME }, innerHTML);
+  private buildAnswerSnippetContent(questionAnswer: IRelatedQuestionAnswerResponse, style: HTMLStyleElement) {
+    const snippet = $$('div', { className: RAW_CONTENT_CLASSNAME }, getSanitizedAnswerSnippet(questionAnswer));
     transformSnippetLinks(snippet.el, this.options.alwaysOpenInNewWindow, link => this.sendOpenSnippetLinkAnalytics(link));
     const container = $$('div', {}, snippet);
     container.append(style);
