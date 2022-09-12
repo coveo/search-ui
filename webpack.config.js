@@ -8,6 +8,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const production = process.env.NODE_ENV === 'production';
 const globalizePath = __dirname + '/lib/globalize/globalize.min.js';
 const analyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { getMajorMinorVersion, getPatchVersion } = require('./build/version.utilities');
 
 let bail;
 let plugins = [];
@@ -29,6 +30,18 @@ plugins.push(
 plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
 plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 
+function getFontPaths() {
+  const majorMinorVersion = getMajorMinorVersion();
+  const patchVersion = getPatchVersion();
+  const basePaths = [
+    '../fonts',
+    `https://static.cloud.coveo.com/searchui/v${majorMinorVersion}/${patchVersion}/fonts`,
+    `https://staticdev.cloud.coveo.com/searchui/v${majorMinorVersion}/${patchVersion}/fonts`
+  ];
+  const fonts = ['lato.woff2', 'lato.woff'];
+  return fonts.flatMap(font => basePaths.map(basePath => `${basePath}/${font}`));
+}
+
 if (production) {
   const cssFilename = minimize ? '../css/CoveoFullSearch.min.css' : '../css/CoveoFullSearch.css';
   const extractSass = new ExtractTextPlugin({
@@ -38,6 +51,16 @@ if (production) {
     test: /\.scss/,
     use: extractSass.extract({
       use: [
+        {
+          loader: 'string-replace-loader',
+          options: {
+            search: '__FONTS',
+            flags: 'g',
+            replace: getFontPaths()
+              .map(path => `url('${path}')`)
+              .join(', ')
+          }
+        },
         {
           loader: 'css-loader',
           options: {
@@ -69,6 +92,16 @@ if (production) {
   additionalRules.push({
     test: /\.scss/,
     use: [
+      {
+        loader: 'string-replace-loader',
+        options: {
+          search: '__FONTS',
+          flags: 'g',
+          replace: getFontPaths()
+            .map(path => `url('${path}')`)
+            .join(', ')
+        }
+      },
       {
         loader: 'style-loader',
         options: {
