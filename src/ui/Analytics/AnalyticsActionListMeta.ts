@@ -1527,7 +1527,7 @@ export var analyticsActionCauseList = {
     type: 'smartSnippet'
   },
   /**
-   * The custom event logged when a user clicks on an inline link inside of an answer in a [SmartSnippet]{@link SmartSnippet}..
+   * The custom event logged when a user clicks on an inline link inside of an answer in a [SmartSnippet]{@link SmartSnippet}.
    *
    * ```javascript
    * {
@@ -1573,7 +1573,7 @@ export var analyticsActionCauseList = {
     type: 'smartSnippetSuggestions'
   },
   /**
-   * The custom event logged when a user clicks on the source of an answer in a [SmartSnippetSuggestions]{@link SmartSnippetSuggestions}.
+   * The custom event logged when a user clicks on the source of an answer in a [SmartSnippetSuggestion]{@link SmartSnippetSuggestions}.
    *
    * ```javascript
    * {
@@ -1587,7 +1587,7 @@ export var analyticsActionCauseList = {
     type: 'smartSnippet'
   },
   /**
-   * The custom event logged when a user clicks on an inline link inside of an answer in an expanded [SmartSnippetSuggestions]{@link SmartSnippetSuggestions}.
+   * The custom event logged when a user clicks on an inline link inside of an answer in an expanded [SmartSnippetSuggestion]{@link SmartSnippetSuggestions}.
    *
    * ```javascript
    * {
