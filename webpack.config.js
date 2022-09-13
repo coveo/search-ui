@@ -34,9 +34,9 @@ function getFontPaths() {
   const majorMinorVersion = getMajorMinorVersion();
   const patchVersion = getPatchVersion();
   const basePaths = [
-    '../fonts',
     `https://static.cloud.coveo.com/searchui/v${majorMinorVersion}/${patchVersion}/fonts`,
-    `https://staticdev.cloud.coveo.com/searchui/v${majorMinorVersion}/${patchVersion}/fonts`
+    `https://staticdev.cloud.coveo.com/searchui/v${majorMinorVersion}/${patchVersion}/fonts`,
+    '../fonts'
   ];
   const fonts = ['lato.woff2', 'lato.woff'];
   return fonts.flatMap(font => basePaths.map(basePath => `${basePath}/${font}`));
