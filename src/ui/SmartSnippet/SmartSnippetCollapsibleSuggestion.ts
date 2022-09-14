@@ -9,13 +9,14 @@ import { IQueryResult } from '../../rest/QueryResult';
 import {
   analyticsActionCauseList,
   IAnalyticsSmartSnippetSuggestionMeta,
+  IAnalyticsSmartSnippetSuggestionOpenSnippetInlineLinkMeta,
   IAnalyticsSmartSnippetSuggestionOpenSourceMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { Utils } from '../../utils/Utils';
 import { IFieldOption } from '../Base/IComponentOptions';
-import { getSanitizedAnswerSnippet } from './SmartSnippetCommon';
+import { getSanitizedAnswerSnippet, transformSnippetLinks } from './SmartSnippetCommon';
 
 const QUESTION_CLASSNAME = `coveo-smart-snippet-suggestions-question`;
 const QUESTION_TITLE_CLASSNAME = `${QUESTION_CLASSNAME}-title`;
@@ -139,6 +140,7 @@ export class SmartSnippetCollapsibleSuggestion {
 
   private buildAnswerSnippetContent(questionAnswer: IRelatedQuestionAnswerResponse, style: HTMLStyleElement) {
     const snippet = $$('div', { className: RAW_CONTENT_CLASSNAME }, getSanitizedAnswerSnippet(questionAnswer));
+    transformSnippetLinks(snippet.el, this.options.alwaysOpenInNewWindow, link => this.sendOpenSnippetLinkAnalytics(link));
     const container = $$('div', {}, snippet);
     container.append(style);
     return container;
@@ -232,6 +234,20 @@ export class SmartSnippetCollapsibleSuggestion {
       },
       this.options.source,
       element
+    );
+  }
+
+  private sendOpenSnippetLinkAnalytics(link: HTMLAnchorElement) {
+    return this.options.bindings.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetSuggestionOpenSnippetInlineLinkMeta>(
+      analyticsActionCauseList.openSmartSnippetSuggestionInlineLink,
+      {
+        searchQueryUid: this.options.searchUid,
+        linkText: link.innerText,
+        linkURL: link.href,
+        documentId: this.options.questionAnswer.documentId
+      },
+      this.options.source,
+      link
     );
   }
 }

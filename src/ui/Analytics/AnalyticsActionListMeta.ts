@@ -243,17 +243,28 @@ export interface IAnalyticsSmartSnippetFeedbackMeta extends IAnalyticsSmartSnipp
 
 export interface IAnalyticsSmartSnippetOpenSourceMeta extends IAnalyticsSmartSnippetMeta {
   /**
-   * The URL of the clicked item.
+   * The URL of the snippet's source.
    */
   documentURL: string;
   /**
-   * The title of the clicked item.
+   * The title of the snippet's source.
    */
   documentTitle: string;
   /**
-   * The author of the clicked item.
+   * The author of the snippet's source..
    */
   author: string;
+}
+
+export interface IAnalyticsSmartSnippetOpenSnippetInlineLinkMeta extends IAnalyticsSmartSnippetMeta {
+  /**
+   * The URL of the clicked link.
+   */
+  linkURL: string;
+  /**
+   * The text of the clicked link.
+   */
+  linkText: string;
 }
 
 export interface IAnalyticsSmartSnippetSuggestionMeta extends IAnalyticsSmartSnippetMeta {
@@ -262,17 +273,28 @@ export interface IAnalyticsSmartSnippetSuggestionMeta extends IAnalyticsSmartSni
 
 export interface IAnalyticsSmartSnippetSuggestionOpenSourceMeta extends IAnalyticsSmartSnippetSuggestionMeta {
   /**
-   * The URL of the clicked item.
+   * The URL of the snippet's source.
    */
   documentURL: string;
   /**
-   * The title of the clicked item.
+   * The title of the snippet's source.
    */
   documentTitle: string;
   /**
-   * The author of the clicked item.
+   * The author of the snippet's source..
    */
   author: string;
+}
+
+export interface IAnalyticsSmartSnippetSuggestionOpenSnippetInlineLinkMeta extends IAnalyticsSmartSnippetSuggestionMeta {
+  /**
+   * The URL of the clicked link.
+   */
+  linkURL: string;
+  /**
+   * The text of the clicked link.
+   */
+  linkText: string;
 }
 
 /**
@@ -1505,6 +1527,20 @@ export var analyticsActionCauseList = {
     type: 'smartSnippet'
   },
   /**
+   * The custom event logged when a user clicks on an inline link inside of an answer in a [SmartSnippet]{@link SmartSnippet}.
+   *
+   * ```javascript
+   * {
+   *  actionCause: "openSmartSnippetInlineLink",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  openSmartSnippetInlineLink: <IAnalyticsActionCause>{
+    name: 'openSmartSnippetInlineLink',
+    type: 'smartSnippet'
+  },
+  /**
    * The custom event logged when a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is expanded.
    *
    * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
@@ -1537,7 +1573,7 @@ export var analyticsActionCauseList = {
     type: 'smartSnippetSuggestions'
   },
   /**
-   * The custom event logged when a user clicks on the source of an answer in a [SmartSnippet]{@link SmartSnippet}..
+   * The custom event logged when a user clicks on the source of an answer in a [SmartSnippetSuggestion]{@link SmartSnippetSuggestions}.
    *
    * ```javascript
    * {
@@ -1548,6 +1584,20 @@ export var analyticsActionCauseList = {
    */
   openSmartSnippetSuggestionSource: <IAnalyticsActionCause>{
     name: 'openSmartSnippetSuggestionSource',
+    type: 'smartSnippet'
+  },
+  /**
+   * The custom event logged when a user clicks on an inline link inside of an answer in an expanded [SmartSnippetSuggestion]{@link SmartSnippetSuggestions}.
+   *
+   * ```javascript
+   * {
+   *  actionCause: "openSmartSnippetSuggestionInlineLink",
+   *  actionType: "smartSnippet"
+   * }
+   * ```
+   */
+  openSmartSnippetSuggestionInlineLink: <IAnalyticsActionCause>{
+    name: 'openSmartSnippetSuggestionInlineLink',
     type: 'smartSnippet'
   }
 };

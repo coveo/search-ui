@@ -9,11 +9,12 @@ import {
 import { advancedComponentSetup, AdvancedComponentSetupOptions, IBasicComponentSetup } from '../MockEnvironment';
 import { SmartSnippetCollapsibleSuggestionClassNames } from '../../src/ui/SmartSnippet/SmartSnippetCollapsibleSuggestion';
 import { $$ } from '../../src/utils/Dom';
-import { expectChildren } from '../TestUtils';
+import { expectChildren, expectEquivalentDOM } from '../TestUtils';
 import { analyticsActionCauseList, IAnalyticsSmartSnippetSuggestionMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { Utils } from '../../src/Core';
 import { getDefaultSnippetStyle } from '../../src/ui/SmartSnippet/SmartSnippetCommon';
+import { flatten, toArray } from 'underscore';
 
 const ClassNames = {
   ...SmartSnippetSuggestionsClassNames,
@@ -78,25 +79,23 @@ export function SmartSnippetSuggestionsTest() {
 
   function mockSnippet(id: number) {
     return $$(
-      'main',
-      {
-        className: 'abc'
-      },
-      $$(
-        'header',
-        {
-          className: 'def--abc'
-        },
-        $$('span', {}, `Hello, my id is ${id}!`)
-      ),
-      $$('span', {}, 'Some more text'),
-      $$(
-        'a',
-        {
-          href: 'https://somewebsite.com'
-        },
-        'Some external link'
-      )
+      'div',
+      {},
+      `
+    <span>I am snippet #${id}!</span>
+
+    <ol>
+      <li>On the <a href="https://platform.cloud.coveo.com/admin/#/orgid/search/in-app-widgets/">In-Product Experiences</a> page, click Add <b>In-Product Experience</b>.</li>
+      <li>In the Configuration tab, fill the Basic settings section.</li>
+      <li>(Optional) Use the Design and Content access tabs to <a href="https://docs.coveo.com/en/3160/#customizing-an-ipx-interface">customize your <b>IPX</b> interface</a>.</li>
+      <li>Click Save.</li>
+      <li>In the Loader snippet panel that appears, you may click Copy to save the loader snippet for your <b>IPX</b> interface to your clipboard, and then click Save.  You can Always retrieve the loader snippet later.</li>
+    </ol>
+    
+    <p>
+      You're now ready to <a href="https://docs.coveo.com/en/3160/build-a-search-ui/manage-coveo-in-product-experiences-ipx#embed-your-ipx-interface-in-sites-and-applications">embed your IPX interface</a>. However, we recommend that you <a href="https://docs.coveo.com/en/3160/build-a-search-ui/manage-coveo-in-product-experiences-ipx#configuring-query-pipelines-for-an-ipx-interface-recommended">configure query pipelines for your IPX interface</a> before.
+    </p>
+  `
     ).el;
   }
 
@@ -160,7 +159,7 @@ export function SmartSnippetSuggestionsTest() {
     }
 
     function getShadowRoots() {
-      return findClass(ClassNames.SHADOW_CLASSNAME).map(shadowContainer => shadowContainer.shadowRoot.childNodes.item(0) as HTMLElement);
+      return findClass(ClassNames.SHADOW_CLASSNAME).map(shadowContainer => shadowContainer.shadowRoot!.childNodes.item(0) as HTMLElement);
     }
 
     function resetAnalyticsSpyHistory() {
@@ -180,7 +179,7 @@ export function SmartSnippetSuggestionsTest() {
       });
 
       it('should render the style', () => {
-        const renderedStyles = getShadowRoots().map(shadowRoot => shadowRoot.querySelector('style').innerHTML);
+        const renderedStyles = getShadowRoots().map(shadowRoot => shadowRoot.querySelector('style')!.innerHTML);
         expect(renderedStyles).toEqual([style, style, style]);
       });
 
@@ -240,7 +239,7 @@ export function SmartSnippetSuggestionsTest() {
         });
 
         it('the iframe of the second question has tabindex=-1', () => {
-          expect(findClass(ClassNames.SHADOW_CLASSNAME)[1].querySelector('iframe').getAttribute('tabindex')).toEqual('-1');
+          expect(findClass(ClassNames.SHADOW_CLASSNAME)[1].querySelector('iframe')!.getAttribute('tabindex')).toEqual('-1');
         });
 
         it('has the has-question class', () => {
@@ -314,7 +313,7 @@ export function SmartSnippetSuggestionsTest() {
             getShadowRoots().forEach((shadowRoot, i) => {
               const [shadowContainer] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
 
-              expect(shadowContainer.innerHTML).toEqual(mockSnippet(i).innerHTML);
+              expectEquivalentDOM(shadowContainer, mockSnippet(i), { ignoreRoot: true, ignoreAttributes: ['target'] });
             });
           });
         });
@@ -326,7 +325,7 @@ export function SmartSnippetSuggestionsTest() {
           });
 
           it("the iframe doesn't have a tabindex", () => {
-            expect(findClass(ClassNames.SHADOW_CLASSNAME)[1].querySelector('iframe').hasAttribute('tabindex')).toBeFalsy();
+            expect(findClass(ClassNames.SHADOW_CLASSNAME)[1].querySelector('iframe')!.hasAttribute('tabindex')).toBeFalsy();
           });
 
           it('sends expand analytics', () => {
@@ -364,7 +363,7 @@ export function SmartSnippetSuggestionsTest() {
             getShadowRoots().forEach((shadowRoot, i) => {
               const [shadowContainer] = expectChildren(shadowRoot, [ClassNames.RAW_CONTENT_CLASSNAME, null]);
 
-              expect(shadowContainer.innerHTML).toEqual(mockSnippet(i).innerHTML);
+              expectEquivalentDOM(shadowContainer, mockSnippet(i), { ignoreRoot: true, ignoreAttributes: ['target'] });
             });
           });
 
@@ -391,7 +390,7 @@ export function SmartSnippetSuggestionsTest() {
         });
         document.body.appendChild(test.env.root);
         await triggerQuestionAnswerQuery(true);
-        expect(test.cmp.element.querySelector(`.${IFRAME_CLASSNAME}`).nodeName).toEqual('DIV');
+        expect(test.cmp.element.querySelector(`.${IFRAME_CLASSNAME}`)!.nodeName).toEqual('DIV');
         done();
       });
 
@@ -400,7 +399,7 @@ export function SmartSnippetSuggestionsTest() {
         instantiateSmartSnippetSuggestions(null);
         document.body.appendChild(test.env.root);
         await triggerQuestionAnswerQuery(true);
-        expect(test.cmp.element.querySelector(`.${IFRAME_CLASSNAME}`).nodeName).toEqual('IFRAME');
+        expect(test.cmp.element.querySelector(`.${IFRAME_CLASSNAME}`)!.nodeName).toEqual('IFRAME');
         done();
       });
     });
@@ -507,7 +506,7 @@ export function SmartSnippetSuggestionsTest() {
       done();
     });
 
-    it("doesn't set the target when alwaysOpenInNewWindow is unset", async done => {
+    it("doesn't set the target of the source when alwaysOpenInNewWindow is unset", async done => {
       instantiateSmartSnippetSuggestions(null);
       document.body.appendChild(test.env.root);
       await triggerQuestionAnswerQuery(true);
@@ -517,12 +516,34 @@ export function SmartSnippetSuggestionsTest() {
       done();
     });
 
-    it('sets the target when alwaysOpenInNewWindow is set', async done => {
+    it('sets the target of the links to _top when alwaysOpenInNewWindow is false/unset', async done => {
+      instantiateSmartSnippetSuggestions(null, { useIFrame: false });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      flatten(
+        findClass(ClassNames.RAW_CONTENT_CLASSNAME).map(content => toArray<HTMLAnchorElement>(content.querySelectorAll('a')))
+      ).forEach(link => expect(link.target).toEqual('_top'));
+      test.env.root.remove();
+      done();
+    });
+
+    it('sets the target of the source when alwaysOpenInNewWindow is set', async done => {
       instantiateSmartSnippetSuggestions(null, { alwaysOpenInNewWindow: true });
       document.body.appendChild(test.env.root);
       await triggerQuestionAnswerQuery(true);
       expect(findClass<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME)[0].target).toEqual('_blank');
       expect(findClass<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME)[0].target).toEqual('_blank');
+      test.env.root.remove();
+      done();
+    });
+
+    it('sets the target of the links to _blank when alwaysOpenInNewWindow is set', async done => {
+      instantiateSmartSnippetSuggestions(null, { alwaysOpenInNewWindow: true, useIFrame: false });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      flatten(
+        findClass(ClassNames.RAW_CONTENT_CLASSNAME).map(content => toArray<HTMLAnchorElement>(content.querySelectorAll('a')))
+      ).forEach(link => expect(link.target).toEqual('_blank'));
       test.env.root.remove();
       done();
     });
