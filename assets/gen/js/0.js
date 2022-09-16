@@ -42,16 +42,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var RankingInfoTable_1 = __webpack_require__(337);
-var MetaDataTable_1 = __webpack_require__(342);
+var MetaDataTable_1 = __webpack_require__(343);
 var Dom_1 = __webpack_require__(1);
 var ExternalModulesShim_1 = __webpack_require__(43);
 var Core_1 = __webpack_require__(42);
-var RelevanceInspectorTabs_1 = __webpack_require__(343);
-__webpack_require__(344);
+var RelevanceInspectorTabs_1 = __webpack_require__(344);
+__webpack_require__(345);
 var ExecutionReport_1 = __webpack_require__(332);
-var AvailableFieldsTable_1 = __webpack_require__(352);
+var AvailableFieldsTable_1 = __webpack_require__(353);
 var underscore_1 = __webpack_require__(0);
-var InlineRankingInfo_1 = __webpack_require__(353);
+var InlineRankingInfo_1 = __webpack_require__(354);
 var RelevanceInspector = /** @class */ (function () {
     function RelevanceInspector(element, bindings) {
         var _this = this;
@@ -510,15 +510,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReportAuthenticationSection_1 = __webpack_require__(346);
-var ExecutionReportResolvedPipelineSection_1 = __webpack_require__(347);
-var ExecutionReportQueryOverrideSection_1 = __webpack_require__(348);
+var ExecutionReportAuthenticationSection_1 = __webpack_require__(347);
+var ExecutionReportResolvedPipelineSection_1 = __webpack_require__(348);
+var ExecutionReportQueryOverrideSection_1 = __webpack_require__(349);
 var ExecutionReportSimpleSection_1 = __webpack_require__(336);
-var ExecutionReportEffectiveIndexQuerySection_1 = __webpack_require__(349);
+var ExecutionReportEffectiveIndexQuerySection_1 = __webpack_require__(350);
 var UtilsModules_1 = __webpack_require__(79);
-var ExecutionReportRankingModifiers_1 = __webpack_require__(350);
+var ExecutionReportRankingModifiers_1 = __webpack_require__(351);
 var Core_1 = __webpack_require__(42);
-var ExecutionReportITDSection_1 = __webpack_require__(351);
+var ExecutionReportITDSection_1 = __webpack_require__(352);
 var EXECUTION_REPORT_SECTION;
 (function (EXECUTION_REPORT_SECTION) {
     EXECUTION_REPORT_SECTION["PERFORM_AUTHENTICATION"] = "PerformAuthentication";
@@ -1280,6 +1280,7 @@ var underscore_1 = __webpack_require__(0);
 var GlobalExports_1 = __webpack_require__(21);
 __webpack_require__(340);
 var AccessibleButton_1 = __webpack_require__(123);
+var ResultLinkCommon_1 = __webpack_require__(342);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.
@@ -1338,17 +1339,7 @@ var ResultLink = /** @class */ (function (_super) {
             // it should not matter if the end user open the same link multiple times with different methods.
             // It's still only one "click" event as far as UA is concerned.
             // Also need to handle "longpress" on mobile (the contextual menu), which we assume to be 1 s long.
-            var executeOnlyOnce_1 = underscore_1.once(function () { return _this.logAnalytics(); });
-            Dom_1.$$(element).on(['contextmenu', 'click', 'mousedown', 'mouseup'], executeOnlyOnce_1);
-            var longPressTimer_1;
-            Dom_1.$$(element).on('touchstart', function () {
-                longPressTimer_1 = window.setTimeout(executeOnlyOnce_1, 1000);
-            });
-            Dom_1.$$(element).on('touchend', function () {
-                if (longPressTimer_1) {
-                    clearTimeout(longPressTimer_1);
-                }
-            });
+            ResultLinkCommon_1.bindAnalyticsToLink(element, function () { return _this.logAnalytics(); });
         }
         _this.renderUri(element, result);
         _this.bindEventToOpen();
@@ -1818,8 +1809,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js??ref--0-2!../node_modules/resolve-url-loader/index.js??ref--0-3!../node_modules/sass-loader/lib/loader.js??ref--0-4!./_ResultLink.scss", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js??ref--0-2!../node_modules/resolve-url-loader/index.js??ref--0-3!../node_modules/sass-loader/lib/loader.js??ref--0-4!./_ResultLink.scss");
+		module.hot.accept("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/lib/loader.js??ref--0-5!./_ResultLink.scss", function() {
+			var newContent = require("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/lib/loader.js??ref--0-5!./_ResultLink.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -1846,6 +1837,32 @@ exports.push([module.i, "/*\n* @param direction vertical or horizontal\n* @param
 /***/ }),
 
 /***/ 342:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var underscore_1 = __webpack_require__(0);
+var Dom_1 = __webpack_require__(1);
+function bindAnalyticsToLink(element, logAnalytics) {
+    var executeOnlyOnce = underscore_1.once(function () { return logAnalytics(); });
+    Dom_1.$$(element).on(['contextmenu', 'click', 'mousedown', 'mouseup'], executeOnlyOnce);
+    var longPressTimer;
+    Dom_1.$$(element).on('touchstart', function () {
+        longPressTimer = window.setTimeout(executeOnlyOnce, 1000);
+    });
+    Dom_1.$$(element).on('touchend', function () {
+        if (longPressTimer) {
+            clearTimeout(longPressTimer);
+        }
+    });
+}
+exports.bindAnalyticsToLink = bindAnalyticsToLink;
+
+
+/***/ }),
+
+/***/ 343:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2104,7 +2121,7 @@ exports.FieldValuesRenderer = FieldValuesRenderer;
 
 /***/ }),
 
-/***/ 343:
+/***/ 344:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2184,13 +2201,13 @@ exports.RelevanceInspectorTabs = RelevanceInspectorTabs;
 
 /***/ }),
 
-/***/ 344:
+/***/ 345:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(345);
+var content = __webpack_require__(346);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2204,8 +2221,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js??ref--0-2!../node_modules/resolve-url-loader/index.js??ref--0-3!../node_modules/sass-loader/lib/loader.js??ref--0-4!./_RelevanceInspector.scss", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js??ref--0-2!../node_modules/resolve-url-loader/index.js??ref--0-3!../node_modules/sass-loader/lib/loader.js??ref--0-4!./_RelevanceInspector.scss");
+		module.hot.accept("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/lib/loader.js??ref--0-5!./_RelevanceInspector.scss", function() {
+			var newContent = require("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/lib/loader.js??ref--0-5!./_RelevanceInspector.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -2216,7 +2233,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 345:
+/***/ 346:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(329)();
@@ -2231,7 +2248,7 @@ exports.push([module.i, "/*\n* @param direction vertical or horizontal\n* @param
 
 /***/ }),
 
-/***/ 346:
+/***/ 347:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2379,7 +2396,7 @@ exports.ExecutionReportAuthenticationSection = ExecutionReportAuthenticationSect
 
 /***/ }),
 
-/***/ 347:
+/***/ 348:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2465,7 +2482,7 @@ exports.ExecutionReportResolvedPipelineSection = ExecutionReportResolvedPipeline
 
 /***/ }),
 
-/***/ 348:
+/***/ 349:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2551,7 +2568,7 @@ exports.ExecutionReportQueryOverrideSection = ExecutionReportQueryOverrideSectio
 
 /***/ }),
 
-/***/ 349:
+/***/ 350:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2647,7 +2664,7 @@ exports.ExecutionReportEffectiveIndexQuerySection = ExecutionReportEffectiveInde
 
 /***/ }),
 
-/***/ 350:
+/***/ 351:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2792,7 +2809,7 @@ exports.ExecutionReportRankingModifiers = ExecutionReportRankingModifiers;
 
 /***/ }),
 
-/***/ 351:
+/***/ 352:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2950,7 +2967,7 @@ exports.ExecutionReportITDSection = ExecutionReportITDSection;
 
 /***/ }),
 
-/***/ 352:
+/***/ 353:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3288,7 +3305,7 @@ exports.AvailableFieldsDatasource = AvailableFieldsDatasource;
 
 /***/ }),
 
-/***/ 353:
+/***/ 354:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

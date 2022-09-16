@@ -6751,6 +6751,20 @@ exports.analyticsActionCauseList = {
         type: 'smartSnippet'
     },
     /**
+     * The custom event logged when a user clicks on an inline link inside of an answer in a [SmartSnippet]{@link SmartSnippet}.
+     *
+     * ```javascript
+     * {
+     *  actionCause: "openSmartSnippetInlineLink",
+     *  actionType: "smartSnippet"
+     * }
+     * ```
+     */
+    openSmartSnippetInlineLink: {
+        name: 'openSmartSnippetInlineLink',
+        type: 'smartSnippet'
+    },
+    /**
      * The custom event logged when a suggestion from [SmartSnippetSuggestions]{@link SmartSnippetSuggestions} is expanded.
      *
      * Implements the [IAnalyticsActionCause]{@link IAnalyticsActionCause} interface as such:
@@ -6783,7 +6797,7 @@ exports.analyticsActionCauseList = {
         type: 'smartSnippetSuggestions'
     },
     /**
-     * The custom event logged when a user clicks on the source of an answer in a [SmartSnippet]{@link SmartSnippet}..
+     * The custom event logged when a user clicks on the source of an answer in a [SmartSnippetSuggestion]{@link SmartSnippetSuggestions}.
      *
      * ```javascript
      * {
@@ -6794,6 +6808,20 @@ exports.analyticsActionCauseList = {
      */
     openSmartSnippetSuggestionSource: {
         name: 'openSmartSnippetSuggestionSource',
+        type: 'smartSnippet'
+    },
+    /**
+     * The custom event logged when a user clicks on an inline link inside of an answer in an expanded [SmartSnippetSuggestion]{@link SmartSnippetSuggestions}.
+     *
+     * ```javascript
+     * {
+     *  actionCause: "openSmartSnippetSuggestionInlineLink",
+     *  actionType: "smartSnippet"
+     * }
+     * ```
+     */
+    openSmartSnippetSuggestionInlineLink: {
+        name: 'openSmartSnippetSuggestionInlineLink',
         type: 'smartSnippet'
     }
 };
@@ -15536,8 +15564,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10100.1',
-    product: '2.10100.1',
+    lib: '2.10101.0',
+    product: '2.10101.0',
     supportedApiVersion: 2
 };
 

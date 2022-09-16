@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);/*
+/*
 * @param direction vertical or horizontal
 * @param position type of positioning to apply (relative/absolute)
 */
@@ -8050,6 +8050,13 @@ select.coveo-dropdown::-ms-expand {
 * @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;
 * @param $size size of the icon to use
 */
+
+@font-face {
+  font-family: 'Lato';
+  src: url('https://static.cloud.coveo.com/searchui/v2.10101/0/fonts/lato.woff2'), url('https://staticdev.cloud.coveo.com/searchui/v2.10101/0/fonts/lato.woff2'), url('../fonts/lato.woff2'), url('https://static.cloud.coveo.com/searchui/v2.10101/0/fonts/lato.woff'), url('https://staticdev.cloud.coveo.com/searchui/v2.10101/0/fonts/lato.woff'), url('../fonts/lato.woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 .CoveoSearchInterface {
   min-height: 100%;
