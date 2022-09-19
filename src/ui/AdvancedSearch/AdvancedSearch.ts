@@ -30,6 +30,7 @@ import { ModalBox as ModalBoxModule } from '../../ExternalModulesShim';
 import { BreadcrumbEvents, IPopulateBreadcrumbEventArgs, IClearBreadcrumbEventArgs } from '../../events/BreadcrumbEvents';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+import { getHeadingTag } from '../../utils/AccessibilityUtils';
 
 export interface IAdvancedSearchOptions {
   includeKeywords?: boolean;
@@ -169,7 +170,7 @@ export class AdvancedSearch extends Component {
 
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     if (this.needToPopulateBreadcrumb) {
-      const { container, title, clear } = this.buildBreadcrumbElements();
+      const { container, title, clear } = this.buildBreadcrumbElements(args.headingLevel);
 
       container.append(title.el);
       container.append(clear.el);
@@ -180,10 +181,10 @@ export class AdvancedSearch extends Component {
     }
   }
 
-  private buildBreadcrumbElements() {
+  private buildBreadcrumbElements(headingLevel?: number) {
     return {
       container: this.buildBreadcrumbContainer(),
-      title: this.buildBreadcrumbTitle(),
+      title: this.buildBreadcrumbTitle(headingLevel),
       clear: this.buildBreacrumbClear()
     };
   }
@@ -194,9 +195,9 @@ export class AdvancedSearch extends Component {
     });
   }
 
-  private buildBreadcrumbTitle() {
+  private buildBreadcrumbTitle(headingLevel?: number) {
     return $$(
-      'span',
+      getHeadingTag(headingLevel, 'span'),
       {
         className: 'coveo-advanced-search-breadcrumb-title'
       },

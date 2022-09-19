@@ -5,11 +5,16 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { IDynamicFacet, IDynamicFacetValue } from './IDynamicFacet';
 import { escape } from 'underscore';
+import { getHeadingTag } from '../../utils/AccessibilityUtils';
+
+export interface IDynamicFacetBreadcrumbsOptions {
+  headingLevel?: number;
+}
 
 export class DynamicFacetBreadcrumbs {
   public element: HTMLElement;
 
-  constructor(private facet: IDynamicFacet) {
+  constructor(private facet: IDynamicFacet, private readonly options?: IDynamicFacetBreadcrumbsOptions) {
     this.create();
   }
 
@@ -29,8 +34,11 @@ export class DynamicFacetBreadcrumbs {
   }
 
   private createAndAppendTitle() {
-    const titleElement = $$('h3', { className: 'coveo-dynamic-facet-breadcrumb-title', ariaHidden: 'true' }, `${this.facet.options.title}:`)
-      .el;
+    const titleElement = $$(
+      getHeadingTag(this.options && this.options.headingLevel, 'h3'),
+      { className: 'coveo-dynamic-facet-breadcrumb-title', ariaHidden: 'true' },
+      `${this.facet.options.title}:`
+    ).el;
     this.element.appendChild(titleElement);
   }
 

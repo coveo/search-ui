@@ -7,6 +7,11 @@ import { IBreadcrumbValueElementKlass } from './BreadcrumbValueElement';
 import { Facet } from './Facet';
 import { FacetValue } from './FacetValue';
 import { AccessibleButton } from '../../utils/AccessibleButton';
+import { getHeadingTag } from '../../utils/AccessibilityUtils';
+
+interface IBreadcrumbValueListOptions {
+  headingLevel?: number;
+}
 
 export class BreadcrumbValueList {
   private expanded: FacetValue[];
@@ -14,13 +19,18 @@ export class BreadcrumbValueList {
   protected elem: HTMLElement;
   private valueContainer: HTMLElement;
 
-  constructor(public facet: Facet, public facetValues: FacetValue[], public breadcrumbValueElementKlass: IBreadcrumbValueElementKlass) {
+  constructor(
+    public facet: Facet,
+    public facetValues: FacetValue[],
+    public breadcrumbValueElementKlass: IBreadcrumbValueElementKlass,
+    private readonly options?: IBreadcrumbValueListOptions
+  ) {
     this.setExpandedAndCollapsed();
     this.elem = $$('div', {
       className: 'coveo-facet-breadcrumb'
     }).el;
 
-    const title = $$('span');
+    const title = $$(getHeadingTag(this.options && this.options.headingLevel, 'span'));
     title.addClass('coveo-facet-breadcrumb-title');
     title.text(this.facet.options.title + ':');
     this.elem.appendChild(title.el);

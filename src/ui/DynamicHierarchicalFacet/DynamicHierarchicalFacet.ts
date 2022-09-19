@@ -312,6 +312,16 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
      * @availablesince [April 2020 Release (v2.8864)](https://docs.coveo.com/en/3231/)
      */
     basePath: ComponentOptions.buildListOption<string>({ defaultValue: [] }),
+
+    /**
+     * The [heading level](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements) to use for the heading above the facet.
+     *
+     * A value of 0 will render a [`div`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div) element instead.
+     *
+     * **Default:** `2`.
+     */
+    headingLevel: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0, max: 6 }),
+
     ...ResponsiveFacetOptions
   };
 
@@ -712,6 +722,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       id: this.options.id,
       title: this.options.title,
       enableCollapse: this.options.enableCollapse,
+      headingLevel: this.options.headingLevel,
       clear: () => this.clear(),
       toggleCollapse: () => this.toggleCollapse(),
       expand: () => this.expand(),
@@ -782,7 +793,7 @@ export class DynamicHierarchicalFacet extends Component implements IDynamicHiera
       return;
     }
 
-    const breadcrumbs = new DynamicHierarchicalFacetBreadcrumb(this);
+    const breadcrumbs = new DynamicHierarchicalFacetBreadcrumb(this, { headingLevel: args.headingLevel });
     args.breadcrumbs.push({ element: breadcrumbs.element });
   }
 

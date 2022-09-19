@@ -13,6 +13,7 @@ export interface IBreadcrumbItem {
  */
 export interface IPopulateBreadcrumbEventArgs {
   breadcrumbs: IBreadcrumbItem[];
+  headingLevel?: number;
 }
 
 export interface IClearBreadcrumbEventArgs {}

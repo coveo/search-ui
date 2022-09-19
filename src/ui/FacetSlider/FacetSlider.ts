@@ -16,6 +16,7 @@ import { IAttributeChangedEventArg, Model } from '../../models/Model';
 import { QueryStateModel } from '../../models/QueryStateModel';
 import { IGroupByResult } from '../../rest/GroupByResult';
 import { l } from '../../strings/Strings';
+import { getHeadingTag } from '../../utils/AccessibilityUtils';
 import { $$ } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
 import { SVGIcons } from '../../utils/SVGIcons';
@@ -568,7 +569,7 @@ export class FacetSlider extends Component {
     const populateBreadcrumb = () => {
       if (this.isActive()) {
         args.breadcrumbs.push(<IBreadcrumbItem>{
-          element: this.buildBreadcrumbFacetSlider()
+          element: this.buildBreadcrumbFacetSlider(args.headingLevel)
         });
       }
     };
@@ -588,12 +589,12 @@ export class FacetSlider extends Component {
     }
   }
 
-  private buildBreadcrumbFacetSlider(): HTMLElement {
+  private buildBreadcrumbFacetSlider(headingLevel?: number): HTMLElement {
     const elem = $$('div', {
       className: 'coveo-facet-slider-breadcrumb'
     }).el;
 
-    const title = $$('span', {
+    const title = $$(getHeadingTag(headingLevel, 'span'), {
       className: 'coveo-facet-slider-breadcrumb-title'
     });
     title.text(this.options.title + ': ');

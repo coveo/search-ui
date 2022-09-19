@@ -11,6 +11,7 @@ import { QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import XRegExp = require('xregexp');
 import { Breadcrumb } from '../Breadcrumb/Breadcrumb';
 import { escape } from 'underscore';
+import { getHeadingTag } from '../../utils/AccessibilityUtils';
 
 export class MissingTermManager {
   static ID = 'MissingTermManager';
@@ -56,7 +57,7 @@ export class MissingTermManager {
     }
 
     const missingTerms = this.buildTermForcedToAppear();
-    const BreadcrumbContainer = this.buildBreadcrumbContainer();
+    const BreadcrumbContainer = this.buildBreadcrumbContainer(args.headingLevel);
 
     missingTerms.forEach(term => $$(BreadcrumbContainer).append(term.el));
 
@@ -82,14 +83,14 @@ export class MissingTermManager {
     });
   }
 
-  private buildBreadcrumbContainer() {
+  private buildBreadcrumbContainer(headingLevel?: number) {
     return $$(
       'div',
       {
         className: 'coveo-remove-term-container'
       },
       $$(
-        'span',
+        getHeadingTag(headingLevel, 'span'),
         {
           className: 'coveo-missing-term-breadcrumb-title'
         },
