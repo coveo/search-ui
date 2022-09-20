@@ -9,7 +9,7 @@ import { FacetValue } from './FacetValue';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { getHeadingTag } from '../../utils/AccessibilityUtils';
 
-interface IBreadcrumbValueListOptions {
+export interface IBreadcrumbValueListOptions {
   headingLevel?: number;
 }
 

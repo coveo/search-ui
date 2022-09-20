@@ -7,7 +7,7 @@ import { HierarchicalBreadcrumbValueElement } from './HierarchicalBreadcrumbValu
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 
-interface IHierarchicalBreadcrumbValuesListOptions {
+export interface IHierarchicalBreadcrumbValuesListOptions {
   headingLevel?: number;
 }
 
