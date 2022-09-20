@@ -86,7 +86,7 @@ export type CategoryValueDescriptor = {
  * This facet requires a [`field`]{@link CategoryFacet.options.field} with a special format to work correctly (see [Using the Category Facet Component](https://docs.coveo.com/en/2667)).
  *
  * @notSupportedIn salesforcefree
- * @availablesince [January 2019 Release (v2.5395.12)]({{ site.baseurl }}/3277/#january-2019-release-v2539512)
+ * @availablesince [January 2019 Release (v2.5395.12)](https://docs.coveo.com/en/3277/#january-2019-release-v2539512)
  */
 export class CategoryFacet extends Component implements IAutoLayoutAdjustableInsideFacetColumn {
   static doExport = () => {
