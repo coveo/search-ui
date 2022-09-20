@@ -36,7 +36,7 @@ export class Breadcrumb extends Component {
   static ID = 'Breadcrumb';
 
   /**
-   * The options for the Breadcrumb
+   * The options for the Breadcrumb.
    * @componentOptions
    */
   static options: IBreadcrumbOptions = {
