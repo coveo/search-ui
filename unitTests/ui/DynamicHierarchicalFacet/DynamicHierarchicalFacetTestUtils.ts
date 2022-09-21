@@ -112,7 +112,8 @@ export class DynamicHierarchicalFacetTestUtils {
       expand: () => {},
       toggleCollapse: () => {},
       enableCollapse: facet.options.enableCollapse,
-      title: facet.options.title
+      title: facet.options.title,
+      headingLevel: 2
     };
 
     return facet;
