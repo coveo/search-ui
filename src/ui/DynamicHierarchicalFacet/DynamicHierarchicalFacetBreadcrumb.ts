@@ -4,11 +4,16 @@ import { SVGIcons } from '../../utils/SVGIcons';
 import { IDynamicHierarchicalFacet } from './IDynamicHierarchicalFacet';
 import { l } from '../../strings/Strings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
+import { getHeadingTag } from '../../utils/AccessibilityUtils';
+
+export interface IDynamicHierarchicalFacetBreadcrumbsOptions {
+  headingLevel?: number;
+}
 
 export class DynamicHierarchicalFacetBreadcrumb {
   public element: HTMLElement;
 
-  constructor(private facet: IDynamicHierarchicalFacet) {
+  constructor(private facet: IDynamicHierarchicalFacet, private readonly options?: IDynamicHierarchicalFacetBreadcrumbsOptions) {
     this.create();
   }
 
@@ -23,7 +28,11 @@ export class DynamicHierarchicalFacetBreadcrumb {
   }
 
   private createAndAppendTitle() {
-    const titleElement = $$('h3', { className: 'coveo-dynamic-facet-breadcrumb-title' }, `${this.facet.options.title}:`).el;
+    const titleElement = $$(
+      getHeadingTag(this.options && this.options.headingLevel, 'h3'),
+      { className: 'coveo-dynamic-facet-breadcrumb-title' },
+      `${this.facet.options.title}:`
+    ).el;
     this.element.appendChild(titleElement);
   }
 

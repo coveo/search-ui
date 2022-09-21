@@ -519,7 +519,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       let element = new HierarchicalBreadcrumbValuesList(
         this,
         this.values.getSelected().concat(this.values.getExcluded()),
-        this.getAllValueHierarchy()
+        this.getAllValueHierarchy(),
+        { headingLevel: args.headingLevel }
       ).build();
       args.breadcrumbs.push({
         element: element

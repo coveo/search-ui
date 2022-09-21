@@ -8,6 +8,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { MODEL_EVENTS } from '../../models/Model';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
+import { getHeadingTag } from '../../utils/AccessibilityUtils';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$ } from '../../utils/Dom';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
@@ -233,7 +234,7 @@ export class ResultsFiltersPreferences extends Component {
     const actives = this.getActiveFilters();
     if (Utils.isNonEmptyArray(actives)) {
       const container = $$('div', { className: 'coveo-results-filter-preferences-breadcrumb' });
-      const title = $$('span', { className: 'coveo-title' });
+      const title = $$(getHeadingTag(args.headingLevel, 'span'), { className: 'coveo-title' });
       title.text(l('FiltersInYourPreferences') + ':');
       container.el.appendChild(title.el);
 

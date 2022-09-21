@@ -5,11 +5,13 @@ import { SVGIcons } from '../../../utils/SVGIcons';
 import { SVGDom } from '../../../utils/SVGDom';
 import { DynamicFacetHeaderButton } from './DynamicFacetHeaderButton';
 import { DynamicFacetHeaderCollapseToggle } from './DynamicFacetHeaderCollapseToggle';
+import { getHeadingTag } from '../../../utils/AccessibilityUtils';
 
 export interface IDynamicFacetHeaderOptions {
   id: string;
   title: string;
   enableCollapse: boolean;
+  headingLevel: number;
   toggleCollapse: () => void;
   collapse: () => void;
   expand: () => void;
@@ -67,7 +69,7 @@ export class DynamicFacetHeader {
 
   private createTitle() {
     return $$(
-      'h2',
+      getHeadingTag(this.options.headingLevel),
       {
         className: 'coveo-dynamic-facet-header-title',
         ariaLabel: `${l('FacetTitle', this.options.title)}`,
