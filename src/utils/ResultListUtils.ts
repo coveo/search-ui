@@ -40,7 +40,10 @@ export class ResultListUtils {
 
   private static getActiveResultList(root: HTMLElement) {
     const resultLists = ResultListUtils.getResultLists(root);
-    return find(resultLists, resultList => !resultList.disabled);
+    return find(resultLists, resultList => {
+      const isRecInterface = resultList.searchInterface.element.classList.contains('CoveoRecommendation');
+      return !resultList.disabled && !isRecInterface;
+    });
   }
 
   private static getResultLists(root: HTMLElement) {
