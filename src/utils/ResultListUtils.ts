@@ -19,12 +19,12 @@ export class ResultListUtils {
   }
 
   public static isInfiniteScrollEnabled(root: HTMLElement) {
-    const resultList = ResultListUtils.getActiveResultList(root);
+    const resultList = ResultListUtils.getMainResultList(root);
     return resultList ? !!resultList.options.enableInfiniteScroll : false;
   }
 
   public static scrollToTop(root: HTMLElement) {
-    const resultList = ResultListUtils.getActiveResultList(root);
+    const resultList = ResultListUtils.getMainResultList(root);
     if (!resultList) {
       new Logger(this).warn('No active ResultList, scrolling to the top of the Window');
       return window.scrollTo(0, 0);
@@ -38,9 +38,12 @@ export class ResultListUtils {
     window.scrollTo(0, window.pageYOffset + searchInterfacePosition);
   }
 
-  private static getActiveResultList(root: HTMLElement) {
+  private static getMainResultList(root: HTMLElement) {
     const resultLists = ResultListUtils.getResultLists(root);
-    return find(resultLists, resultList => !resultList.disabled);
+    return find(resultLists, resultList => {
+      const isRecInterface = resultList.searchInterface.element.classList.contains('CoveoRecommendation');
+      return !resultList.disabled && !isRecInterface;
+    });
   }
 
   private static getResultLists(root: HTMLElement) {
