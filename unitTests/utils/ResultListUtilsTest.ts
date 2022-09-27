@@ -114,6 +114,16 @@ export const ResultListUtilsTest = () => {
         expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
       });
 
+      it('should filter out result lists part of CoveoRecommendation', () => {
+        const top = -100;
+
+        appendResultListToRoot();
+        spyOn(resultList.searchInterface.element, 'getBoundingClientRect').and.returnValue({ top });
+        resultList.searchInterface.element.classList.add('CoveoRecommendation');
+        utils.scrollToTop(root.element);
+        expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
+      });
+
       it(`when the top of the searchInterface is in the view port
       should not scroll`, () => {
         appendResultListToRoot();
