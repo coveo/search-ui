@@ -20,7 +20,7 @@ export class DynamicHierarchicalFacetValueRenderer {
     this.renderCount();
     this.toggleButtonStates();
 
-    return $$('li', { dataValue: this.facetValue.value }, this.button).el;
+    return $$('li', { role: 'none', dataValue: this.facetValue.value }, this.button).el;
   }
 
   private renderLabel() {
