@@ -16,8 +16,11 @@ export interface IDynamicFacetValueCreatorKlass {
 
 export class DynamicFacetValues implements IDynamicFacetValues {
   private facetValues: IDynamicFacetValue[];
-  private list = $$('ul', { className: 'coveo-dynamic-facet-values', 'aria-labelledby': getDynamicFacetHeaderId(this.facet.options.id) })
-    .el;
+  private list = $$('ul', {
+    className: 'coveo-dynamic-facet-values',
+    'aria-labelledby': getDynamicFacetHeaderId(this.facet.options.id),
+    role: 'group'
+  }).el;
   private valueCreator: IValueCreator;
 
   constructor(private facet: IDynamicFacet, creatorKlass: IDynamicFacetValueCreatorKlass) {
