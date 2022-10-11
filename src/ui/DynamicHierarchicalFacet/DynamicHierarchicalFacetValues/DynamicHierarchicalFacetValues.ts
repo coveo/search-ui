@@ -18,7 +18,8 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
   private _selectedPath: string[] = [];
   private list = $$('ul', {
     className: 'coveo-dynamic-hierarchical-facet-values',
-    'aria-labelledby': getDynamicFacetHeaderId(this.facet.options.id)
+    'aria-labelledby': getDynamicFacetHeaderId(this.facet.options.id),
+    role: 'group'
   }).el;
 
   constructor(private facet: IDynamicHierarchicalFacet) {}
@@ -181,7 +182,7 @@ export class DynamicHierarchicalFacetValues implements IDynamicHierarchicalFacet
     const arrowIcon = $$('div', { className: 'coveo-dynamic-hierarchical-facet-value-arrow-left' }, SVGIcons.icons.arrowDown);
     clearButton.prepend(arrowIcon.el);
 
-    const clear = $$('li', {}, clearButton);
+    const clear = $$('li', { role: 'none' }, clearButton);
     clear.on('click', () => this.facet.header.options.clear());
     $$(this.list).prepend(clear.el);
   }
