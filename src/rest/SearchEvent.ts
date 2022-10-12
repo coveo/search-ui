@@ -6,14 +6,6 @@ import { IAnalyticsFacetState } from '../ui/Analytics/IAnalyticsFacetState';
  */
 export interface ISearchEvent extends IAnalyticsEvent {
   /**
-   * The unique identifier of the related query.
-   *
-   * **Note:** The framework normally sets this field by retrieving the information from the related Search API query response.
-   *
-   * **Example:** `74682726-0e20-46eb-85ac-f37259346f57`
-   */
-  searchQueryUid: string;
-  /**
    * The name of the query pipeline to which the related query was routed.
    *
    * **Note:** The framework normally sets this field by retrieving the information from the related Search API query response.

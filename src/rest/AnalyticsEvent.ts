@@ -3,6 +3,14 @@
  */
 export interface IAnalyticsEvent {
   /**
+   * The unique identifier of the related query.
+   *
+   * **Note:** The framework normally sets this field by retrieving the information from the related Search API query response.
+   *
+   * **Example:** `74682726-0e20-46eb-85ac-f37259346f57`
+   */
+  searchQueryUid: string;
+  /**
    * A unique name describing the action that triggered the event.
    *
    * See the [`name`](https://coveo.github.io/search-ui/interfaces/ianalyticsactioncause.html#name) property of the [`IAnalyticsActionCause`](https://coveo.github.io/search-ui/interfaces/ianalyticsactioncause.html) interface.

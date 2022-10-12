@@ -12,6 +12,7 @@ export class DynamicFacetValueRenderer implements IValueRenderer {
   public render() {
     this.dom = $$('li', {
       className: 'coveo-dynamic-facet-value',
+      role: 'none',
       dataValue: this.facetValue.value
     });
 

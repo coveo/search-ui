@@ -30,6 +30,7 @@ import { QueryUtils } from '../../utils/QueryUtils';
 import * as _ from 'underscore';
 import { IComponentBindings } from '../Base/ComponentBindings';
 import { AnalyticsInformation } from './AnalyticsInformation';
+import { QueryController } from '../../ControllersModules';
 
 export class LiveAnalyticsClient implements IAnalyticsClient {
   public isContextual: boolean = false;
@@ -270,6 +271,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
   private buildAnalyticsEvent(actionCause: IAnalyticsActionCause, metaObject: IChangeableAnalyticsMetaObject): IAnalyticsEvent {
     return {
+      searchQueryUid: undefined,
       actionCause: actionCause.name,
       actionType: actionCause.type,
       username: this.userId,
@@ -338,6 +340,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     element: HTMLElement
   ): ICustomEvent {
     return this.merge<ICustomEvent>(this.buildAnalyticsEvent(actionCause, metaObject), {
+      searchQueryUid: this.getLastSearchQueryUid(),
       eventType: actionCause.type,
       eventValue: actionCause.name,
       originLevel2: this.getOriginLevel2(element),
@@ -347,6 +350,18 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
 
   protected getOriginLevel2(element: HTMLElement): string {
     return this.resolveActiveTabFromElement(element) || 'default';
+  }
+
+  private getLastSearchQueryUid() {
+    const queryController = Component.resolveBinding(Component.resolveRoot(this.rootElement), QueryController) as QueryController;
+    if (!queryController) {
+      return;
+    }
+    const lastResults = queryController.getLastResults();
+    if (!lastResults) {
+      return;
+    }
+    return lastResults.searchUid;
   }
 
   private buildMetaObject<TMeta>(meta: TMeta, result?: IQueryResult): IChangeableAnalyticsMetaObject {

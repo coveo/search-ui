@@ -21,7 +21,7 @@ export class DynamicFacetValueShowMoreLessButton {
       options.label
     );
 
-    this.element = $$('li', null, btn).el;
+    this.element = $$('li', { role: 'none' }, btn).el;
     btn.on('click', () => options.action());
   }
 }
