@@ -39,8 +39,6 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
-  "box user": "User",
-  "filetype_box user": "User",
   "html": "HTML File",
   "filetype_html": "HTML File",
   "wiki": "Wiki",
@@ -97,6 +95,8 @@ var dict = {
   "filetype_box": "User",
   "jiraissue": "Jira Issue",
   "filetype_jiraissue": "Jira Issue",
+  "box user": "User",
+  "filetype_box user": "User",
   "cfpage": "Confluence Page",
   "filetype_cfpage": "Confluence Page",
   "cfcomment": "Confluence Comment",
@@ -623,6 +623,8 @@ var dict = {
   "ShowMoreFacetResults": "Show more results for {0} facet",
   "ShowLessCategoryResults": "Show fewer results for the {0} category",
   "ShowMoreCategoryResults": "Show more results for the {0} category",
+  "ShowLessHierarchicalResults": "Show fewer results for the {0} facet",
+  "ShowMoreHierarchicalResults": "Show more results for the {0} facet",
   "SearchFacetResults": "Search for values in {0} facet",
   "Today": "Today",
   "Yesterday": "Yesterday",
@@ -910,8 +912,6 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
-  "box user": "User",
-  "filetype_box user": "User",
   "html": "HTML File",
   "filetype_html": "HTML File",
   "wiki": "Wiki",
@@ -968,6 +968,8 @@ var dict = {
   "filetype_box": "User",
   "jiraissue": "Jira Issue",
   "filetype_jiraissue": "Jira Issue",
+  "box user": "User",
+  "filetype_box user": "User",
   "cfpage": "Confluence Page",
   "filetype_cfpage": "Confluence Page",
   "cfcomment": "Confluence Comment",
@@ -1494,6 +1496,8 @@ var dict = {
   "ShowMoreFacetResults": "Show more results for {0} facet",
   "ShowLessCategoryResults": "Show fewer results for the {0} category",
   "ShowMoreCategoryResults": "Show more results for the {0} category",
+  "ShowLessHierarchicalResults": "Show fewer results for the {0} facet",
+  "ShowMoreHierarchicalResults": "Show more results for the {0} facet",
   "SearchFacetResults": "Search for values in {0} facet",
   "Today": "Today",
   "Yesterday": "Yesterday",

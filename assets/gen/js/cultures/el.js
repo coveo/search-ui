@@ -88,8 +88,6 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
-  "box user": "Χρήστης",
-  "filetype_box user": "Χρήστης",
   "html": "Αρχείο HTML",
   "filetype_html": "Αρχείο HTML",
   "wiki": "Wiki",
@@ -140,6 +138,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Έγγραφο Open Text",
   "filetype_odt": "Έγγραφο Open Text",
+  "box user": "Χρήστης",
+  "filetype_box user": "Χρήστης",
   "lithiummessage": "Μήνυμα Lithium",
   "filetype_lithiummessage": "Μήνυμα Lithium",
   "lithiumthread": "Συνομιλία Lithium",
@@ -781,8 +781,6 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
-  "box user": "Χρήστης",
-  "filetype_box user": "Χρήστης",
   "html": "Αρχείο HTML",
   "filetype_html": "Αρχείο HTML",
   "wiki": "Wiki",
@@ -833,6 +831,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Έγγραφο Open Text",
   "filetype_odt": "Έγγραφο Open Text",
+  "box user": "Χρήστης",
+  "filetype_box user": "Χρήστης",
   "lithiummessage": "Μήνυμα Lithium",
   "filetype_lithiummessage": "Μήνυμα Lithium",
   "lithiumthread": "Συνομιλία Lithium",

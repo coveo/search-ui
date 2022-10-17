@@ -85,8 +85,6 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
-  "box user": "Utilisateur",
-  "filetype_box user": "Utilisateur",
   "html": "Fichier HTML",
   "filetype_html": "Fichier HTML",
   "wiki": "Wiki",
@@ -143,6 +141,8 @@ var dict = {
   "filetype_box": "Utilisateur",
   "jiraissue": "Issue Jira",
   "filetype_jiraissue": "Issue Jira",
+  "box user": "Utilisateur",
+  "filetype_box user": "Utilisateur",
   "cfpage": "Page Confluence",
   "filetype_cfpage": "Page Confluence",
   "cfcomment": "Commentaire Confluence",
@@ -669,6 +669,8 @@ var dict = {
   "ShowMoreFacetResults": "Afficher plus de résultats pour la facette {0}",
   "ShowLessCategoryResults": "Afficher moins de résultats pour la catégorie {0}",
   "ShowMoreCategoryResults": "Afficher plus de résultats pour la catégorie {0}",
+  "ShowLessHierarchicalResults": "Afficher moins de résultats pour la facette {0}",
+  "ShowMoreHierarchicalResults": "Afficher plus de résultats pour la facette {0}",
   "SearchFacetResults": "Rechercher des valeurs dans la facette {0}",
   "Today": "Aujourd'hui",
   "Yesterday": "Hier",
@@ -956,8 +958,6 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
-  "box user": "Utilisateur",
-  "filetype_box user": "Utilisateur",
   "html": "Fichier HTML",
   "filetype_html": "Fichier HTML",
   "wiki": "Wiki",
@@ -1014,6 +1014,8 @@ var dict = {
   "filetype_box": "Utilisateur",
   "jiraissue": "Issue Jira",
   "filetype_jiraissue": "Issue Jira",
+  "box user": "Utilisateur",
+  "filetype_box user": "Utilisateur",
   "cfpage": "Page Confluence",
   "filetype_cfpage": "Page Confluence",
   "cfcomment": "Commentaire Confluence",
@@ -1540,6 +1542,8 @@ var dict = {
   "ShowMoreFacetResults": "Afficher plus de résultats pour la facette {0}",
   "ShowLessCategoryResults": "Afficher moins de résultats pour la catégorie {0}",
   "ShowMoreCategoryResults": "Afficher plus de résultats pour la catégorie {0}",
+  "ShowLessHierarchicalResults": "Afficher moins de résultats pour la facette {0}",
+  "ShowMoreHierarchicalResults": "Afficher plus de résultats pour la facette {0}",
   "SearchFacetResults": "Rechercher des valeurs dans la facette {0}",
   "Today": "Aujourd'hui",
   "Yesterday": "Hier",

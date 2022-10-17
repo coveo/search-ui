@@ -83,8 +83,6 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
-  "box user": "Kullanıcı",
-  "filetype_box user": "Kullanıcı",
   "html": "HTML Dosyası",
   "filetype_html": "HTML Dosyası",
   "wiki": "Wiki",
@@ -135,6 +133,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Open Text Belgesi",
   "filetype_odt": "Open Text Belgesi",
+  "box user": "Kullanıcı",
+  "filetype_box user": "Kullanıcı",
   "lithiummessage": "Lithium Mesajı",
   "filetype_lithiummessage": "Lithium Mesajı",
   "lithiumthread": "Lithium Mesaj Dizisi",
@@ -776,8 +776,6 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
-  "box user": "Kullanıcı",
-  "filetype_box user": "Kullanıcı",
   "html": "HTML Dosyası",
   "filetype_html": "HTML Dosyası",
   "wiki": "Wiki",
@@ -828,6 +826,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Open Text Belgesi",
   "filetype_odt": "Open Text Belgesi",
+  "box user": "Kullanıcı",
+  "filetype_box user": "Kullanıcı",
   "lithiummessage": "Lithium Mesajı",
   "filetype_lithiummessage": "Lithium Mesajı",
   "lithiumthread": "Lithium Mesaj Dizisi",

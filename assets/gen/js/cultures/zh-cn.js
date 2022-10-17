@@ -79,8 +79,6 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
-  "box user": "用户",
-  "filetype_box user": "用户",
   "html": "HTML 文件",
   "filetype_html": "HTML 文件",
   "wiki": "维基百科",
@@ -131,6 +129,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "打开文本文档",
   "filetype_odt": "打开文本文档",
+  "box user": "用户",
+  "filetype_box user": "用户",
   "lithiummessage": "Lithium 消息",
   "filetype_lithiummessage": "Lithium 消息",
   "lithiumthread": "Lithium 线程",
@@ -772,8 +772,6 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
-  "box user": "用户",
-  "filetype_box user": "用户",
   "html": "HTML 文件",
   "filetype_html": "HTML 文件",
   "wiki": "维基百科",
@@ -824,6 +822,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "打开文本文档",
   "filetype_odt": "打开文本文档",
+  "box user": "用户",
+  "filetype_box user": "用户",
   "lithiummessage": "Lithium 消息",
   "filetype_lithiummessage": "Lithium 消息",
   "lithiumthread": "Lithium 线程",

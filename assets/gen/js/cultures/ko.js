@@ -102,8 +102,6 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
-  "box user": "사용자",
-  "filetype_box user": "사용자",
   "html": "HTML 파일",
   "filetype_html": "HTML 파일",
   "wiki": "위키",
@@ -154,6 +152,8 @@ var dict = {
   "filetype_salesforceitem": "세일즈포스",
   "odt": "오픈 텍스트 문서",
   "filetype_odt": "오픈 텍스트 문서",
+  "box user": "사용자",
+  "filetype_box user": "사용자",
   "lithiummessage": "Lithium 메시지",
   "filetype_lithiummessage": "Lithium 메시지",
   "lithiumthread": "Lithium 스레드",
@@ -795,8 +795,6 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
-  "box user": "사용자",
-  "filetype_box user": "사용자",
   "html": "HTML 파일",
   "filetype_html": "HTML 파일",
   "wiki": "위키",
@@ -847,6 +845,8 @@ var dict = {
   "filetype_salesforceitem": "세일즈포스",
   "odt": "오픈 텍스트 문서",
   "filetype_odt": "오픈 텍스트 문서",
+  "box user": "사용자",
+  "filetype_box user": "사용자",
   "lithiummessage": "Lithium 메시지",
   "filetype_lithiummessage": "Lithium 메시지",
   "lithiumthread": "Lithium 스레드",

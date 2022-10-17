@@ -85,8 +85,6 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
-  "box user": "Usuário",
-  "filetype_box user": "Usuário",
   "html": "Arquivo HTML",
   "filetype_html": "Arquivo HTML",
   "wiki": "Wiki",
@@ -137,6 +135,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Documento do Open Text",
   "filetype_odt": "Documento do Open Text",
+  "box user": "Usuário",
+  "filetype_box user": "Usuário",
   "lithiummessage": "Mensagem do Lithium",
   "filetype_lithiummessage": "Mensagem do Lithium",
   "lithiumthread": "Tópico da conversa do Lithium",
@@ -778,8 +778,6 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
-  "box user": "Usuário",
-  "filetype_box user": "Usuário",
   "html": "Arquivo HTML",
   "filetype_html": "Arquivo HTML",
   "wiki": "Wiki",
@@ -830,6 +828,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Documento do Open Text",
   "filetype_odt": "Documento do Open Text",
+  "box user": "Usuário",
+  "filetype_box user": "Usuário",
   "lithiummessage": "Mensagem do Lithium",
   "filetype_lithiummessage": "Mensagem do Lithium",
   "lithiumthread": "Tópico da conversa do Lithium",
