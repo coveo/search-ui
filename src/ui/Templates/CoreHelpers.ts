@@ -783,6 +783,11 @@ TemplateHelpers.registerTemplateHelper('isMobileDevice', () => {
   return DeviceUtils.isMobileDevice() ? DeviceUtils.getDeviceName() : null;
 });
 
+TemplateHelpers.registerTemplateHelper('pluralReplyHelper', (count: number) => {
+  if (count <= 1) return 'reply';
+  else return 'replies';
+});
+
 function resolveQueryResult(): IQueryResult {
   let found;
   let resultList = Component.getComponentRef('ResultList');
