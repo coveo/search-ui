@@ -568,5 +568,24 @@ export function CoreHelperTest() {
         expect(TemplateHelpers.getHelper('isMobileDevice')()).toBeNull();
       });
     });
+
+    describe('pluralReplyHelper', () => {
+      const testCases = [
+        {
+          repliesCount: 1,
+          expected: 'reply'
+        },
+        {
+          repliesCount: 5,
+          expected: 'replies'
+        }
+      ];
+
+      testCases.forEach(test => {
+        it(`should return ${test.expected} when number of replies is ${test.repliesCount}`, () => {
+          expect(TemplateHelpers.getHelper('pluralReplyHelper')(test.repliesCount)).toEqual(test.expected);
+        });
+      });
+    });
   });
 }
