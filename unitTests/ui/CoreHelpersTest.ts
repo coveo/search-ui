@@ -8,6 +8,7 @@ import { mockSearchEndpoint, MockEnvironmentBuilder } from '../MockEnvironment';
 import { IQueryResult } from '../../src/rest/QueryResult';
 import { IIconOptions } from '../../src/ui/Icon/Icon';
 import { Component } from '../../src/Core';
+import { IPluralOptions } from '../../src/ui/Templates/CoreHelpers';
 import * as _ from 'underscore';
 
 export function CoreHelperTest() {
@@ -566,6 +567,26 @@ export function CoreHelperTest() {
     describe('isMobileDevice', () => {
       it('should return information about the device', () => {
         expect(TemplateHelpers.getHelper('isMobileDevice')()).toBeNull();
+      });
+    });
+
+    describe('pluralReplyHelper', () => {
+      const options: IPluralOptions = { singular: 'reply', plural: 'replies' };
+      const testCases = [
+        {
+          repliesCount: 1,
+          expected: 'reply'
+        },
+        {
+          repliesCount: 5,
+          expected: 'replies'
+        }
+      ];
+
+      testCases.forEach(test => {
+        it(`should return ${test.expected} when number of replies is ${test.repliesCount}`, () => {
+          expect(TemplateHelpers.getHelper('pluralHelper')(test.repliesCount, options)).toEqual(test.expected);
+        });
       });
     });
   });
