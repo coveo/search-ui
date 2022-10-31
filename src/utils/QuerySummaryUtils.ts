@@ -92,15 +92,15 @@ export class QuerySummaryUtils {
     const strings = QuerySummaryUtils.getSummaryStrings(data);
 
     return {
-      first: QuerySummaryUtils.wrapWithSpanTag(strings.first),
-      last: QuerySummaryUtils.wrapWithSpanTag(strings.last),
-      totalCount: QuerySummaryUtils.wrapWithSpanTag(strings.totalCount),
-      query: QuerySummaryUtils.wrapWithSpanTag(strings.query)
+      first: QuerySummaryUtils.wrapWithSpanTag(strings.first, 'coveo-highlight-first'),
+      last: QuerySummaryUtils.wrapWithSpanTag(strings.last, 'coveo-highlight-last'),
+      totalCount: QuerySummaryUtils.wrapWithSpanTag(strings.totalCount, 'coveo-highlight-total-count'),
+      query: QuerySummaryUtils.wrapWithSpanTag(strings.query, 'coveo-highlight-query')
     };
   }
 
-  private static wrapWithSpanTag(word: string) {
-    return $$('span', { className: 'coveo-highlight' }, word).el.outerHTML;
+  private static wrapWithSpanTag(word: string, className: string) {
+    return $$('span', { className: `coveo-highlight ${className}` }, word).el.outerHTML;
   }
 
   private static getSummaryStrings(data: IQuerySuccessEventArgs): ISummaryStrings {
