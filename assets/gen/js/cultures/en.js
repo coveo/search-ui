@@ -39,6 +39,8 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
+  "box user": "User",
+  "filetype_box user": "User",
   "html": "HTML File",
   "filetype_html": "HTML File",
   "wiki": "Wiki",
@@ -95,8 +97,6 @@ var dict = {
   "filetype_box": "User",
   "jiraissue": "Jira Issue",
   "filetype_jiraissue": "Jira Issue",
-  "box user": "User",
-  "filetype_box user": "User",
   "cfpage": "Confluence Page",
   "filetype_cfpage": "Confluence Page",
   "cfcomment": "Confluence Comment",
@@ -912,6 +912,8 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
+  "box user": "User",
+  "filetype_box user": "User",
   "html": "HTML File",
   "filetype_html": "HTML File",
   "wiki": "Wiki",
@@ -968,8 +970,6 @@ var dict = {
   "filetype_box": "User",
   "jiraissue": "Jira Issue",
   "filetype_jiraissue": "Jira Issue",
-  "box user": "User",
-  "filetype_box user": "User",
   "cfpage": "Confluence Page",
   "filetype_cfpage": "Confluence Page",
   "cfcomment": "Confluence Comment",

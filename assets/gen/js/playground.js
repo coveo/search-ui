@@ -15564,8 +15564,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10102.0',
-    product: '2.10102.0',
+    lib: '2.10103.0',
+    product: '2.10103.0',
     supportedApiVersion: 2
 };
 
@@ -15667,6 +15667,8 @@ var merge = function (obj1, obj2) {
     return obj3;
 };
 var dict = {
+    "box user": "User",
+    "filetype_box user": "User",
     "html": "HTML File",
     "filetype_html": "HTML File",
     "wiki": "Wiki",
@@ -15723,8 +15725,6 @@ var dict = {
     "filetype_box": "User",
     "jiraissue": "Jira Issue",
     "filetype_jiraissue": "Jira Issue",
-    "box user": "User",
-    "filetype_box user": "User",
     "cfpage": "Confluence Page",
     "filetype_cfpage": "Confluence Page",
     "cfcomment": "Confluence Comment",
@@ -32525,14 +32525,14 @@ var QuerySummaryUtils = /** @class */ (function () {
     QuerySummaryUtils.getHtmlSummaryStrings = function (data) {
         var strings = QuerySummaryUtils.getSummaryStrings(data);
         return {
-            first: QuerySummaryUtils.wrapWithSpanTag(strings.first),
-            last: QuerySummaryUtils.wrapWithSpanTag(strings.last),
-            totalCount: QuerySummaryUtils.wrapWithSpanTag(strings.totalCount),
-            query: QuerySummaryUtils.wrapWithSpanTag(strings.query)
+            first: QuerySummaryUtils.wrapWithSpanTag(strings.first, 'first'),
+            last: QuerySummaryUtils.wrapWithSpanTag(strings.last, 'last'),
+            totalCount: QuerySummaryUtils.wrapWithSpanTag(strings.totalCount, 'total-count'),
+            query: QuerySummaryUtils.wrapWithSpanTag(strings.query, 'query')
         };
     };
-    QuerySummaryUtils.wrapWithSpanTag = function (word) {
-        return Dom_1.$$('span', { className: 'coveo-highlight' }, word).el.outerHTML;
+    QuerySummaryUtils.wrapWithSpanTag = function (word, classSuffix) {
+        return Dom_1.$$('span', { className: "coveo-highlight coveo-highlight-" + classSuffix }, word).el.outerHTML;
     };
     QuerySummaryUtils.getSummaryStrings = function (data) {
         var queryPerformed = data.query;
