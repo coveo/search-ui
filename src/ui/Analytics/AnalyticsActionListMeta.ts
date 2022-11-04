@@ -186,7 +186,7 @@ export interface IAnalyticsResultsPerPageMeta {
 }
 
 export interface IAnalyticsTriggerNotify {
-  notification: string;
+  notifications: string[];
 }
 
 export interface IAnalyticsTriggerRedirect {
@@ -198,8 +198,13 @@ export interface IAnalyticsTriggerQuery {
   query: string;
 }
 
+export interface IAnalyticsTriggerExecution {
+  functionName: string;
+  params: (string | number | boolean)[];
+}
+
 export interface IAnalyticsTriggerExecute {
-  executed: string;
+  executions: IAnalyticsTriggerExecution[];
 }
 
 export interface IAnalyticsSearchAlertsMeta {

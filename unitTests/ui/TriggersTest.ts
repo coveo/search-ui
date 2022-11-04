@@ -152,24 +152,30 @@ export function TriggersTest() {
 
       it("for an 'execute' trigger", function () {
         test.cmp._window['doSomething'] = () => null;
-        results.triggers = [<ITriggerExecute>{ type: 'execute', content: { name: 'doSomething' } }];
+        results.triggers = [
+          <ITriggerExecute>{ type: 'execute', content: { name: 'doSomething', params: [true, 3, 'hello'] } },
+          <ITriggerExecute>{ type: 'execute', content: { name: 'doSomethingElse', params: ['test'] } }
+        ];
         Simulate.query(test.env, { results: results });
         expect(analyticsSpy).toHaveBeenCalledWith(
           analyticsActionCauseList.triggerExecute,
           {
-            executed: 'doSomething'
+            executions: [{ functionName: 'doSomething', params: [true, 3, 'hello'] }]
           },
           test.cmp.element
         );
       });
 
       it("for a 'notify' trigger", function () {
-        results.triggers = [<ITriggerNotify>{ type: 'notify', content: 'hello there' }];
+        results.triggers = [
+          <ITriggerNotify>{ type: 'notify', content: 'hello there' },
+          <ITriggerNotify>{ type: 'notify', content: 'goodbye!' }
+        ];
         Simulate.query(test.env, { results: results });
         expect(analyticsSpy).toHaveBeenCalledWith(
           analyticsActionCauseList.triggerNotify,
           {
-            notification: 'hello there'
+            notifications: ['hello there', 'goodbye!']
           },
           test.cmp.element
         );
