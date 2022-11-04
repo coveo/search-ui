@@ -87,7 +87,8 @@ export const QuerySummaryUtilsTest = () => {
         it(`when calling #htmlMessage,
         it returns the expected message`, () => {
           const message = utils.htmlMessage(root, data);
-          const expected = 'Result <span class="coveo-highlight">1</span> of <span class="coveo-highlight">1</span>';
+          const expected =
+            'Result <span class="coveo-highlight coveo-highlight-first">1</span> of <span class="coveo-highlight coveo-highlight-total-count">1</span>';
           expect(message).toBe(expected);
         });
       });
@@ -124,7 +125,7 @@ export const QuerySummaryUtilsTest = () => {
 
         it(`when calling #htmlMessage, it returns the expected message`, () => {
           const message = utils.htmlMessage(root, data);
-          const expected = '<span class="coveo-highlight">1</span> result';
+          const expected = '<span class="coveo-highlight coveo-highlight-total-count">1</span> result';
           expect(message).toBe(expected);
         });
       });

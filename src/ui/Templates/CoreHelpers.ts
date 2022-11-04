@@ -404,6 +404,11 @@ export interface IHelperStreamHighlightOptions {
   opts?: IStreamHighlightOptions;
 }
 
+export interface IPluralOptions {
+  singular: string;
+  plural: string;
+}
+
 export class CoreHelpers {
   public constructor() {}
 
@@ -782,6 +787,10 @@ TemplateHelpers.registerTemplateHelper('encodeCarriageReturn', (data: string) =>
 TemplateHelpers.registerTemplateHelper('isMobileDevice', () => {
   return DeviceUtils.isMobileDevice() ? DeviceUtils.getDeviceName() : null;
 });
+
+TemplateHelpers.registerTemplateHelper('pluralHelper', (count: number, options: IPluralOptions) =>
+  count > 1 ? options.plural : options.singular
+);
 
 function resolveQueryResult(): IQueryResult {
   let found;
