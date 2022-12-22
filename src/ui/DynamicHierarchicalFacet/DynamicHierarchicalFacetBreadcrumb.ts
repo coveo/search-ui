@@ -5,6 +5,7 @@ import { IDynamicHierarchicalFacet } from './IDynamicHierarchicalFacet';
 import { l } from '../../strings/Strings';
 import { analyticsActionCauseList } from '../Analytics/AnalyticsActionListMeta';
 import { getHeadingTag } from '../../utils/AccessibilityUtils';
+import { escape } from 'underscore';
 
 export interface IDynamicHierarchicalFacetBreadcrumbsOptions {
   headingLevel?: number;
@@ -21,7 +22,7 @@ export class DynamicHierarchicalFacetBreadcrumb {
     this.element = $$('div', { className: 'coveo-dynamic-facet-breadcrumb coveo-breadcrumb-item' }).el;
 
     const pathToRender = this.facet.values.selectedPath;
-    const captionLabel = pathToRender.map(pathPart => this.facet.getCaption(pathPart)).join(' / ');
+    const captionLabel = pathToRender.map(pathPart => escape(this.facet.getCaption(pathPart))).join(' / ');
 
     this.createAndAppendTitle();
     this.createAndAppendCaption(captionLabel);
