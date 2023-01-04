@@ -8053,7 +8053,7 @@ select.coveo-dropdown::-ms-expand {
 
 @font-face {
   font-family: 'Lato';
-  src: url('https://static.cloud.coveo.com/searchui/v2.10104/0/fonts/lato.woff2'), url('https://staticdev.cloud.coveo.com/searchui/v2.10104/0/fonts/lato.woff2'), url('../fonts/lato.woff2'), url('https://static.cloud.coveo.com/searchui/v2.10104/0/fonts/lato.woff'), url('https://staticdev.cloud.coveo.com/searchui/v2.10104/0/fonts/lato.woff'), url('../fonts/lato.woff');
+  src: url('https://static.cloud.coveo.com/searchui/v2.10105/0/fonts/lato.woff2'), url('https://staticdev.cloud.coveo.com/searchui/v2.10105/0/fonts/lato.woff2'), url('../fonts/lato.woff2'), url('https://static.cloud.coveo.com/searchui/v2.10105/0/fonts/lato.woff'), url('https://staticdev.cloud.coveo.com/searchui/v2.10105/0/fonts/lato.woff'), url('../fonts/lato.woff');
   font-weight: normal;
   font-style: normal;
 }
