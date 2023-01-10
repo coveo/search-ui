@@ -210,7 +210,9 @@ export function SmartSnippetSuggestionsTest() {
 
       it('with only a question answer, does not render', async done => {
         await triggerQuerySuccess({
-          results: <IQueryResults>{ questionAnswer: { question: 'abc', answerSnippet: 'def', relatedQuestions: [] } }
+          results: (<Pick<IQueryResults, 'questionAnswer'>>{
+            questionAnswer: { question: 'abc', answerSnippet: 'def', relatedQuestions: [], documentId: sources[0].id, score: 0 }
+          }) as IQueryResults
         });
         expect(test.cmp.element.classList.contains(ClassNames.HAS_QUESTIONS_CLASSNAME)).toBeFalsy();
         done();
@@ -331,7 +333,12 @@ export function SmartSnippetSuggestionsTest() {
           it('sends expand analytics', () => {
             expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
               analyticsActionCauseList.expandSmartSnippetSuggestion,
-              <IAnalyticsSmartSnippetSuggestionMeta>{ documentId: sources[1].id, searchQueryUid: searchUid },
+              <IAnalyticsSmartSnippetSuggestionMeta>{
+                documentId: sources[1].id,
+                searchQueryUid: searchUid,
+                question: questions[1],
+                answerSnippet: mockSnippet(1).innerHTML
+              },
               findClass(ClassNames.QUESTION_TITLE_CHECKBOX_CLASSNAME)[1]
             );
           });
@@ -353,7 +360,12 @@ export function SmartSnippetSuggestionsTest() {
             it('sends collapse analytics', () => {
               expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
                 analyticsActionCauseList.collapseSmartSnippetSuggestion,
-                <IAnalyticsSmartSnippetSuggestionMeta>{ documentId: sources[1].id, searchQueryUid: searchUid },
+                <IAnalyticsSmartSnippetSuggestionMeta>{
+                  documentId: sources[1].id,
+                  searchQueryUid: searchUid,
+                  question: questions[1],
+                  answerSnippet: mockSnippet(1).innerHTML
+                },
                 findClass(ClassNames.QUESTION_TITLE_CHECKBOX_CLASSNAME)[1]
               );
             });
