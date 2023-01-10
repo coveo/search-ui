@@ -274,6 +274,8 @@ export interface IAnalyticsSmartSnippetOpenSnippetInlineLinkMeta extends IAnalyt
 
 export interface IAnalyticsSmartSnippetSuggestionMeta extends IAnalyticsSmartSnippetMeta {
   documentId: { contentIdKey: string; contentIdValue: string };
+  question: string;
+  answerSnippet: string;
 }
 
 export interface IAnalyticsSmartSnippetSuggestionOpenSourceMeta extends IAnalyticsSmartSnippetSuggestionMeta {

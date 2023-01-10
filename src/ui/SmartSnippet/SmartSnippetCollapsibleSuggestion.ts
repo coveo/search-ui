@@ -74,6 +74,16 @@ export class SmartSnippetCollapsibleSuggestion {
     return this.contentLoaded;
   }
 
+  private get analyticsSuggestionMeta(): IAnalyticsSmartSnippetSuggestionMeta {
+    const { documentId, question, answerSnippet } = this.options.questionAnswer;
+    return {
+      searchQueryUid: this.options.searchUid,
+      documentId,
+      question,
+      answerSnippet
+    };
+  }
+
   public build() {
     const collapsibleContainer = this.buildCollapsibleContainer(this.options.questionAnswer, this.buildStyle(this.options.innerCSS));
     const title = this.buildTitle(this.options.questionAnswer.question);
@@ -203,10 +213,7 @@ export class SmartSnippetCollapsibleSuggestion {
   private sendExpandAnalytics() {
     return this.options.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
       analyticsActionCauseList.expandSmartSnippetSuggestion,
-      {
-        searchQueryUid: this.options.searchUid,
-        documentId: this.options.questionAnswer.documentId
-      },
+      this.analyticsSuggestionMeta,
       this.checkbox.el
     );
   }
@@ -214,10 +221,7 @@ export class SmartSnippetCollapsibleSuggestion {
   private sendCollapseAnalytics() {
     return this.options.bindings.usageAnalytics.logCustomEvent<IAnalyticsSmartSnippetSuggestionMeta>(
       analyticsActionCauseList.collapseSmartSnippetSuggestion,
-      {
-        searchQueryUid: this.options.searchUid,
-        documentId: this.options.questionAnswer.documentId
-      },
+      this.analyticsSuggestionMeta,
       this.checkbox.el
     );
   }
@@ -226,11 +230,10 @@ export class SmartSnippetCollapsibleSuggestion {
     return this.options.bindings.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetSuggestionOpenSourceMeta>(
       analyticsActionCauseList.openSmartSnippetSuggestionSource,
       {
-        searchQueryUid: this.options.searchUid,
+        ...this.analyticsSuggestionMeta,
         documentTitle: this.options.source.title,
         author: Utils.getFieldValue(this.options.source, 'author'),
-        documentURL: href,
-        documentId: this.options.questionAnswer.documentId
+        documentURL: href
       },
       this.options.source,
       element
@@ -241,10 +244,9 @@ export class SmartSnippetCollapsibleSuggestion {
     return this.options.bindings.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetSuggestionOpenSnippetInlineLinkMeta>(
       analyticsActionCauseList.openSmartSnippetSuggestionInlineLink,
       {
-        searchQueryUid: this.options.searchUid,
+        ...this.analyticsSuggestionMeta,
         linkText: link.innerText,
-        linkURL: link.href,
-        documentId: this.options.questionAnswer.documentId
+        linkURL: link.href
       },
       this.options.source,
       link
