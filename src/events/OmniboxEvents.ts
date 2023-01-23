@@ -38,6 +38,10 @@ export interface IQuerySuggestSuccessArgs {
   completions: IQuerySuggestCompletion[];
 }
 
+export interface IQuerySuggestRenderedArgs {
+  numberOfSuggestions: number;
+}
+
 /**
  * Describes the object that all [`querySuggestGetFocus`]{@link querySuggestGetFocus} and [`querySuggestSelection`]{@link querySuggestSelection} event handlers receive as an argument.
  */
