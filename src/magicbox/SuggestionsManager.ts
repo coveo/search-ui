@@ -205,7 +205,8 @@ export class SuggestionsManager {
         this.suggestionsListbox.append(dom.el);
       });
 
-    $$(this.root).trigger(OmniboxEvents.querySuggestRendered);
+    const numberOfSuggestions = this.suggestionsListbox.findAll(`.${this.options.suggestionClass}`).length;
+    $$(this.root).trigger(OmniboxEvents.querySuggestRendered, { numberOfSuggestions });
   }
 
   public get selectedSuggestion(): Suggestion {
