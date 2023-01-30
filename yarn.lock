@@ -7762,7 +7762,7 @@ regjsparser@^0.1.4:
 
 "remap-istanbul@https://github.com/coveord/remap-istanbul/tarball/master":
   version "0.9.5"
-  resolved "https://github.com/coveord/remap-istanbul/tarball/master#79921faa879e8e815d992622e5b22e939fff51fb"
+  resolved "https://github.com/coveord/remap-istanbul/tarball/master#8e4f4eb69ee591392a19f47402d0a86a6e4a9ada"
   dependencies:
     amdefine "^1.0.0"
     gulp-util "3.0.7"
