@@ -15564,8 +15564,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10105.0',
-    product: '2.10105.0',
+    lib: '2.10106.3',
+    product: '2.10106.3',
     supportedApiVersion: 2
 };
 
@@ -32383,7 +32383,6 @@ var EventsModules_1 = __webpack_require__(92);
 var AriaLive = /** @class */ (function () {
     function AriaLive(root) {
         this.root = root;
-        this.querySuggestions = 0;
         this.initAriaLiveEl();
         this.appendToRoot();
         this.addQueryEventListeners();
@@ -32407,10 +32406,13 @@ var AriaLive = /** @class */ (function () {
         root.on(QueryEvents_1.QueryEvents.duringQuery, function () { return _this.onDuringQuery(); });
         root.on(QueryEvents_1.QueryEvents.querySuccess, function (e, args) { return _this.onQuerySuccess(args); });
         root.on(QueryEvents_1.QueryEvents.queryError, function (e, args) { return _this.onQueryError(args); });
-        root.on(EventsModules_1.OmniboxEvents.querySuggestSuccess, function (e, args) {
-            return args.completions.length ? (_this.querySuggestions = args.completions.length) : _this.onNoQuerySuggest();
+        root.on(EventsModules_1.OmniboxEvents.querySuggestRendered, function (e, args) {
+            if (args.numberOfSuggestions > 0) {
+                _this.onQuerySuggest(args.numberOfSuggestions);
+                return;
+            }
+            _this.onNoQuerySuggest();
         });
-        root.on(EventsModules_1.OmniboxEvents.querySuggestRendered, function () { return _this.onQuerySuggest(); });
     };
     AriaLive.prototype.onDuringQuery = function () {
         var message = Strings_1.l('UpdatingResults');
@@ -32420,8 +32422,8 @@ var AriaLive = /** @class */ (function () {
         var message = this.messageForResultCount(args);
         this.updateText(message);
     };
-    AriaLive.prototype.onQuerySuggest = function () {
-        var message = Strings_1.l('QuerySuggestionsAvailable', this.querySuggestions, this.querySuggestions);
+    AriaLive.prototype.onQuerySuggest = function (numberOfSuggestions) {
+        var message = Strings_1.l('QuerySuggestionsAvailable', numberOfSuggestions, numberOfSuggestions);
         this.updateText(message);
     };
     AriaLive.prototype.onNoQuerySuggest = function () {
