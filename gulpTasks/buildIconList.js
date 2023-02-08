@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const walk = require('walk');
 const _ = require('underscore');
-const nodeSass = require('node-sass');
+const nodeSass = require('sass');
 
 let args = require('yargs')
   .option('icons', {
