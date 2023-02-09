@@ -30,7 +30,7 @@ export class QueryUtils {
   // This method is a fallback as it's generate a lot of collisions in Chrome.
   static generateWithRandom(): string {
     // http://stackoverflow.com/a/2117523
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       let r = (Math.random() * 16) | 0,
         v = c == 'x' ? r : (r & 0x3) | 0x8;
       return v.toString(16);
@@ -40,7 +40,7 @@ export class QueryUtils {
   static generateWithCrypto(): string {
     let buf = new Uint16Array(8);
     crypto.getRandomValues(buf);
-    let S4 = function(num) {
+    let S4 = function (num) {
       let ret = num.toString(16);
       while (ret.length < 4) {
         ret = '0' + ret;
@@ -143,9 +143,10 @@ export class QueryUtils {
     };
   }
 
-  static quoteAndEscapeIfNeeded(str: string): string {
+  static quoteAndEscapeIfNeeded(str: string, forceEscape = false): string {
     Assert.isString(str);
-    return QueryUtils.isAtomicString(str) || (QueryUtils.isRangeString(str) || QueryUtils.isRangeWithoutOuterBoundsString(str))
+    return !forceEscape &&
+      (QueryUtils.isAtomicString(str) || QueryUtils.isRangeString(str) || QueryUtils.isRangeWithoutOuterBoundsString(str))
       ? str
       : QueryUtils.quoteAndEscape(str);
   }
@@ -175,29 +176,29 @@ export class QueryUtils {
     return /^\d+(\.\d+)?$|^\d{4}\/\d{2}\/\d{2}@\d{2}:\d{2}:\d{2}$/.test(str);
   }
 
-  static buildFieldExpression(field: string, operator: string, values: string[]) {
+  static buildFieldExpression(field: string, operator: string, values: string[], forceEscape = false) {
     Assert.isNonEmptyString(field);
     Assert.stringStartsWith(field, '@');
     Assert.isNonEmptyString(operator);
     Assert.isLargerOrEqualsThan(1, values.length);
 
     if (values.length == 1) {
-      return field + operator + QueryUtils.quoteAndEscapeIfNeeded(values[0]);
+      return field + operator + QueryUtils.quoteAndEscapeIfNeeded(values[0], forceEscape);
     } else {
-      return field + operator + '(' + _.map(values, str => QueryUtils.quoteAndEscapeIfNeeded(str)).join(',') + ')';
+      return field + operator + '(' + _.map(values, str => QueryUtils.quoteAndEscapeIfNeeded(str, forceEscape)).join(',') + ')';
     }
   }
 
-  static buildFieldNotEqualExpression(field: string, values: string[]) {
+  static buildFieldNotEqualExpression(field: string, values: string[], forceEscape = false) {
     Assert.isNonEmptyString(field);
     Assert.stringStartsWith(field, '@');
     Assert.isLargerOrEqualsThan(1, values.length);
 
     let filter: string;
     if (values.length == 1) {
-      filter = field + '==' + QueryUtils.quoteAndEscapeIfNeeded(values[0]);
+      filter = field + '==' + QueryUtils.quoteAndEscapeIfNeeded(values[0], forceEscape);
     } else {
-      filter = field + '==' + '(' + _.map(values, str => QueryUtils.quoteAndEscapeIfNeeded(str)).join(',') + ')';
+      filter = field + '==' + '(' + _.map(values, str => QueryUtils.quoteAndEscapeIfNeeded(str, forceEscape)).join(',') + ')';
     }
 
     return '(NOT ' + filter + ')';
