@@ -709,7 +709,7 @@ export function FacetTest() {
         });
         test.cmp.selectMultipleValues(['foo', 'bar']);
         var simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.build().aq).toBe('(@field==foo) (@field==bar)');
+        expect(simulation.queryBuilder.build().aq).toBe('(@field=="foo") (@field=="bar")');
 
         test = Mock.optionsComponentSetup<Facet, IFacetOptions>(Facet, {
           field: '@field',
@@ -717,7 +717,7 @@ export function FacetTest() {
         });
         test.cmp.selectMultipleValues(['foo', 'bar']);
         simulation = Simulate.query(test.env);
-        expect(simulation.queryBuilder.build().aq).toBe('@field==(foo,bar)');
+        expect(simulation.queryBuilder.build().aq).toBe('@field==("foo","bar")');
       });
 
       it('allowTogglingOperator should specify if the toggle is rendered in header ', () => {

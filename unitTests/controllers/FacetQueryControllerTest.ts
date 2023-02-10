@@ -39,11 +39,11 @@ export function FacetQueryControllerTest() {
       (<jasmine.Spy>mockFacet.values.getExcluded).and.returnValue([]);
 
       let expectedBuilder = new ExpressionBuilder();
-      expectedBuilder.addFieldExpression('@field', '==', ['foo', 'bar']);
+      expectedBuilder.addFieldExpression('@field', '==', ['foo', 'bar'], true);
       expect(facetQueryController.computeOurFilterExpression()).toBe(expectedBuilder.build());
 
       (<jasmine.Spy>mockFacet.values.getExcluded).and.returnValue([FacetValue.create('exclude1'), FacetValue.create('exclude2')]);
-      expectedBuilder.addFieldNotEqualExpression('@field', ['exclude1', 'exclude2']);
+      expectedBuilder.addFieldNotEqualExpression('@field', ['exclude1', 'exclude2'], true);
       expect(facetQueryController.computeOurFilterExpression()).toBe(expectedBuilder.build());
     });
 
