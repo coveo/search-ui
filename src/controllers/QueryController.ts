@@ -33,6 +33,7 @@ import { Utils } from '../utils/Utils';
 import { IAnalyticsClient } from '../ui/Analytics/AnalyticsClient';
 import { ExecutionPlan } from '../rest/Plan';
 import { AnalyticsInformation } from '../ui/Analytics/AnalyticsInformation';
+import { QueryboxQueryParameters } from '../ui/Querybox/QueryboxQueryParameters';
 
 /**
  * Possible options when performing a query with the query controller
@@ -433,6 +434,7 @@ export class QueryController extends RootComponent {
   public createQueryBuilder(options: IQueryOptions): QueryBuilder {
     Assert.exists(options);
 
+    QueryboxQueryParameters.allowDuplicateQuery();
     this.createdOneQueryBuilder = true;
 
     let queryBuilder = new QueryBuilder();
