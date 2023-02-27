@@ -47,7 +47,7 @@ export class QueryUtils {
       }
       return ret;
     };
-    let prefix = function (str: string, version: number) {
+    const prefix = function (str: string, version: number) {
       return version + str.slice(1);
     };
     return (
