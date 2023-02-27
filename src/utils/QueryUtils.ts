@@ -47,7 +47,23 @@ export class QueryUtils {
       }
       return ret;
     };
-    return S4(buf[0]) + S4(buf[1]) + '-' + S4(buf[2]) + '-' + S4(buf[3]) + '-' + S4(buf[4]) + '-' + S4(buf[5]) + S4(buf[6]) + S4(buf[7]);
+    const prefix = function (str: string, version: number) {
+      return version + str.slice(1);
+    };
+    return (
+      S4(buf[0]) +
+      S4(buf[1]) +
+      '-' +
+      S4(buf[2]) +
+      '-' +
+      prefix(S4(buf[3]), 4) +
+      '-' +
+      S4(buf[4]) +
+      '-' +
+      S4(buf[5]) +
+      S4(buf[6]) +
+      S4(buf[7])
+    );
   }
 
   static setStateObjectOnQueryResults(state: any, results: IQueryResults) {
