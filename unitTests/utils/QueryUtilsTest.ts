@@ -103,7 +103,7 @@ export function QueryUtilsTest() {
 
     it('should always return a UUID version 4', () => {
       let uuid = QueryUtils.generateWithCrypto();
-      let versionBit = 13;
+      let versionBit = 14;
       expect(uuid[versionBit]).toBe('4');
     });
 
