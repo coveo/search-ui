@@ -11,11 +11,11 @@
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10106/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10107/css/CoveoFullSearch.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10106/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10107/js/CoveoJsSearch.min.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
@@ -271,15 +271,15 @@
 					<a name="addfieldexpression" class="tsd-anchor"></a>
 					<h3>add<wbr>Field<wbr>Expression</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Field<wbr>Expression<span class="tsd-signature-symbol">(</span>field<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, operator<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Field<wbr>Expression<span class="tsd-signature-symbol">(</span>field<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, operator<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string[]</span>, forceEscape<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L38">ui/Base/ExpressionBuilder.ts
-									:38</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L39">ui/Base/ExpressionBuilder.ts
+									:39</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -308,6 +308,9 @@
 										<p>The values to put in the expression.</p>
 									</div>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> forceEscape: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -317,15 +320,15 @@
 					<a name="addfieldnotequalexpression" class="tsd-anchor"></a>
 					<h3>add<wbr>Field<wbr>Not<wbr>Equal<wbr>Expression</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Field<wbr>Not<wbr>Equal<wbr>Expression<span class="tsd-signature-symbol">(</span>field<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Field<wbr>Not<wbr>Equal<wbr>Expression<span class="tsd-signature-symbol">(</span>field<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string[]</span>, forceEscape<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L53">ui/Base/ExpressionBuilder.ts
-									:53</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L55">ui/Base/ExpressionBuilder.ts
+									:55</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -348,6 +351,9 @@
 										<p>The values to put in the expression.</p>
 									</div>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> forceEscape: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -364,8 +370,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L86">ui/Base/ExpressionBuilder.ts
-									:86</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L88">ui/Base/ExpressionBuilder.ts
+									:88</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -429,8 +435,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L101">ui/Base/ExpressionBuilder.ts
-									:101</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L103">ui/Base/ExpressionBuilder.ts
+									:103</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -451,8 +457,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L77">ui/Base/ExpressionBuilder.ts
-									:77</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L79">ui/Base/ExpressionBuilder.ts
+									:79</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -475,8 +481,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L65">ui/Base/ExpressionBuilder.ts
-									:65</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L67">ui/Base/ExpressionBuilder.ts
+									:67</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -507,8 +513,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L110">ui/Base/ExpressionBuilder.ts
-									:110</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L112">ui/Base/ExpressionBuilder.ts
+									:112</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -540,8 +546,8 @@
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in
-										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L124">ui/Base/ExpressionBuilder.ts
-									:124</a></li>
+										<a href="https://github.com/coveo/search-ui/tree/master/src/ui/Base/ExpressionBuilder.ts#L126">ui/Base/ExpressionBuilder.ts
+									:126</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

@@ -41,17 +41,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var RankingInfoTable_1 = __webpack_require__(338);
-var MetaDataTable_1 = __webpack_require__(344);
+var RankingInfoTable_1 = __webpack_require__(339);
+var MetaDataTable_1 = __webpack_require__(345);
 var Dom_1 = __webpack_require__(1);
 var ExternalModulesShim_1 = __webpack_require__(43);
 var Core_1 = __webpack_require__(42);
-var RelevanceInspectorTabs_1 = __webpack_require__(345);
-__webpack_require__(346);
-var ExecutionReport_1 = __webpack_require__(333);
-var AvailableFieldsTable_1 = __webpack_require__(354);
+var RelevanceInspectorTabs_1 = __webpack_require__(346);
+__webpack_require__(347);
+var ExecutionReport_1 = __webpack_require__(334);
+var AvailableFieldsTable_1 = __webpack_require__(355);
 var underscore_1 = __webpack_require__(0);
-var InlineRankingInfo_1 = __webpack_require__(355);
+var InlineRankingInfo_1 = __webpack_require__(356);
 var RelevanceInspector = /** @class */ (function () {
     function RelevanceInspector(element, bindings) {
         var _this = this;
@@ -224,7 +224,7 @@ exports.RelevanceInspector = RelevanceInspector;
 
 /***/ }),
 
-/***/ 332:
+/***/ 333:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -273,10 +273,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var AgGrid_1 = __webpack_require__(339);
+var AgGrid_1 = __webpack_require__(340);
 var underscore_1 = __webpack_require__(0);
-var UtilsModules_1 = __webpack_require__(79);
-var ResultLink_1 = __webpack_require__(340);
+var UtilsModules_1 = __webpack_require__(80);
+var ResultLink_1 = __webpack_require__(341);
 exports.defaultGridOptions = {
     domLayout: 'autoHeight',
     enableColResize: true,
@@ -469,7 +469,7 @@ exports.GenericHtmlRenderer = GenericHtmlRenderer;
 
 /***/ }),
 
-/***/ 333:
+/***/ 334:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -510,15 +510,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReportAuthenticationSection_1 = __webpack_require__(348);
-var ExecutionReportResolvedPipelineSection_1 = __webpack_require__(349);
-var ExecutionReportQueryOverrideSection_1 = __webpack_require__(350);
-var ExecutionReportSimpleSection_1 = __webpack_require__(337);
-var ExecutionReportEffectiveIndexQuerySection_1 = __webpack_require__(351);
-var UtilsModules_1 = __webpack_require__(79);
-var ExecutionReportRankingModifiers_1 = __webpack_require__(352);
+var ExecutionReportAuthenticationSection_1 = __webpack_require__(349);
+var ExecutionReportResolvedPipelineSection_1 = __webpack_require__(350);
+var ExecutionReportQueryOverrideSection_1 = __webpack_require__(351);
+var ExecutionReportSimpleSection_1 = __webpack_require__(338);
+var ExecutionReportEffectiveIndexQuerySection_1 = __webpack_require__(352);
+var UtilsModules_1 = __webpack_require__(80);
+var ExecutionReportRankingModifiers_1 = __webpack_require__(353);
 var Core_1 = __webpack_require__(42);
-var ExecutionReportITDSection_1 = __webpack_require__(353);
+var ExecutionReportITDSection_1 = __webpack_require__(354);
 var EXECUTION_REPORT_SECTION;
 (function (EXECUTION_REPORT_SECTION) {
     EXECUTION_REPORT_SECTION["PERFORM_AUTHENTICATION"] = "PerformAuthentication";
@@ -668,13 +668,13 @@ exports.ExecutionReport = ExecutionReport;
 
 /***/ }),
 
-/***/ 334:
+/***/ 335:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableBuilder_1 = __webpack_require__(332);
+var TableBuilder_1 = __webpack_require__(333);
 var underscore_1 = __webpack_require__(0);
 var Dom_1 = __webpack_require__(1);
 var defaultNullOutput = '-- NULL --';
@@ -757,7 +757,7 @@ exports.GenericValueOutput = GenericValueOutput;
 
 /***/ }),
 
-/***/ 335:
+/***/ 336:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -771,7 +771,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var GenericValueOutput_1 = __webpack_require__(334);
+var GenericValueOutput_1 = __webpack_require__(335);
 var ExecutionReportGenericSection = /** @class */ (function () {
     function ExecutionReportGenericSection() {
     }
@@ -795,7 +795,7 @@ exports.ExecutionReportGenericSection = ExecutionReportGenericSection;
 
 /***/ }),
 
-/***/ 336:
+/***/ 337:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -909,7 +909,7 @@ var parseQREWeights = function (value) {
 
 /***/ }),
 
-/***/ 337:
+/***/ 338:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -958,11 +958,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(333);
+var ExecutionReport_1 = __webpack_require__(334);
 var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(335);
-var GenericValueOutput_1 = __webpack_require__(334);
-var TableBuilder_1 = __webpack_require__(332);
+var ExecutionReportGenericSection_1 = __webpack_require__(336);
+var GenericValueOutput_1 = __webpack_require__(335);
+var TableBuilder_1 = __webpack_require__(333);
 var ExecutionReportSimpleSection = /** @class */ (function () {
     function ExecutionReportSimpleSection(topLevelProperty, secondLevelProperty, sectionTitle) {
         this.topLevelProperty = topLevelProperty;
@@ -1015,7 +1015,7 @@ exports.ExecutionReportSimpleSection = ExecutionReportSimpleSection;
 
 /***/ }),
 
-/***/ 338:
+/***/ 339:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1064,9 +1064,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var RankingInfoParser_1 = __webpack_require__(336);
+var RankingInfoParser_1 = __webpack_require__(337);
 var underscore_1 = __webpack_require__(0);
-var TableBuilder_1 = __webpack_require__(332);
+var TableBuilder_1 = __webpack_require__(333);
 var Dom_1 = __webpack_require__(1);
 var RankingInfoTable = /** @class */ (function () {
     function RankingInfoTable(results, bindings) {
@@ -1165,7 +1165,7 @@ exports.RankingInfoTable = RankingInfoTable;
 
 /***/ }),
 
-/***/ 339:
+/***/ 340:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1236,7 +1236,7 @@ var addAgGridScriptsToDocument = function (doc) {
 
 /***/ }),
 
-/***/ 340:
+/***/ 341:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1265,7 +1265,7 @@ var ComponentOptions_1 = __webpack_require__(14);
 var ComponentOptionsModel_1 = __webpack_require__(23);
 var AnalyticsActionListMeta_1 = __webpack_require__(11);
 var ResultListEvents_1 = __webpack_require__(32);
-var HighlightUtils_1 = __webpack_require__(81);
+var HighlightUtils_1 = __webpack_require__(82);
 var DeviceUtils_1 = __webpack_require__(30);
 var OSUtils_1 = __webpack_require__(122);
 var Initialization_1 = __webpack_require__(12);
@@ -1278,9 +1278,9 @@ var StreamHighlightUtils_1 = __webpack_require__(118);
 var StringUtils_1 = __webpack_require__(20);
 var underscore_1 = __webpack_require__(0);
 var GlobalExports_1 = __webpack_require__(21);
-__webpack_require__(341);
+__webpack_require__(342);
 var AccessibleButton_1 = __webpack_require__(124);
-var ResultLinkCommon_1 = __webpack_require__(343);
+var ResultLinkCommon_1 = __webpack_require__(344);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.
@@ -1789,13 +1789,13 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultLink);
 
 /***/ }),
 
-/***/ 341:
+/***/ 342:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(342);
+var content = __webpack_require__(343);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1803,14 +1803,14 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(331)(content, options);
+var update = __webpack_require__(332)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/lib/loader.js??ref--0-5!./_ResultLink.scss", function() {
-			var newContent = require("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/lib/loader.js??ref--0-5!./_ResultLink.scss");
+		module.hot.accept("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/dist/cjs.js??ref--0-5!./_ResultLink.scss", function() {
+			var newContent = require("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/dist/cjs.js??ref--0-5!./_ResultLink.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -1821,22 +1821,22 @@ if(false) {
 
 /***/ }),
 
-/***/ 342:
+/***/ 343:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(330)();
+exports = module.exports = __webpack_require__(331)();
 // imports
 
 
 // module
-exports.push([module.i, "/*\n* @param direction vertical or horizontal\n* @param position type of positioning to apply (relative/absolute)\n*/\n\n/*\n* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;\n* @param $size size of the icon to use\n*/\n\n.CoveoResultLink,\na.CoveoResultLink,\n.CoveoResult a.CoveoResultLink {\n  color: #0059b3;\n  text-decoration: none;\n  cursor: pointer;\n  word-wrap: break-word;\n}\n\n.CoveoResultLink:visited,\n.CoveoResultLink:visited:hover,\na.CoveoResultLink:visited,\na.CoveoResultLink:visited:hover,\n.CoveoResult a.CoveoResultLink:visited,\n.CoveoResult a.CoveoResultLink:visited:hover {\n  color: #609;\n}\n\n.CoveoResultLink:hover,\n.CoveoResultLink:hover a,\n.CoveoResultLink:focus,\n.CoveoResultLink:focus a,\na.CoveoResultLink:hover,\na.CoveoResultLink:hover a,\na.CoveoResultLink:focus,\na.CoveoResultLink:focus a,\n.CoveoResult a.CoveoResultLink:hover,\n.CoveoResult a.CoveoResultLink:hover a,\n.CoveoResult a.CoveoResultLink:focus,\n.CoveoResult a.CoveoResultLink:focus a {\n  text-decoration: underline;\n}\n\n.CoveoResultLink.coveo-selected *,\na.CoveoResultLink.coveo-selected *,\n.CoveoResult a.CoveoResultLink.coveo-selected * {\n  color: #0059b3;\n}\n\n.coveo-card-overlay a.CoveoResultLink {\n  color: #0059b3;\n  text-decoration: none;\n  cursor: pointer;\n  color: #f7f8f9;\n  text-decoration: underline;\n}\n\n.coveo-card-overlay a.CoveoResultLink:visited,\n.coveo-card-overlay a.CoveoResultLink:visited:hover {\n  color: #609;\n  color: #f7f8f9;\n}\n\n.coveo-card-overlay a.CoveoResultLink:hover,\n.coveo-card-overlay a.CoveoResultLink:hover a,\n.coveo-card-overlay a.CoveoResultLink:focus,\n.coveo-card-overlay a.CoveoResultLink:focus a {\n  text-decoration: underline;\n}\n\n.coveo-card-overlay a.CoveoResultLink.coveo-selected * {\n  color: #0059b3;\n  color: #f7f8f9;\n}\n\n", ""]);
+exports.push([module.i, ".CoveoResultLink,\na.CoveoResultLink,\n.CoveoResult a.CoveoResultLink {\n  color: #0059b3;\n  text-decoration: none;\n  cursor: pointer;\n  word-wrap: break-word;\n}\n\n.CoveoResultLink:visited,\n.CoveoResultLink:visited:hover,\na.CoveoResultLink:visited,\na.CoveoResultLink:visited:hover,\n.CoveoResult a.CoveoResultLink:visited,\n.CoveoResult a.CoveoResultLink:visited:hover {\n  color: #609;\n}\n\n.CoveoResultLink:hover,\n.CoveoResultLink:hover a,\n.CoveoResultLink:focus,\n.CoveoResultLink:focus a,\na.CoveoResultLink:hover,\na.CoveoResultLink:hover a,\na.CoveoResultLink:focus,\na.CoveoResultLink:focus a,\n.CoveoResult a.CoveoResultLink:hover,\n.CoveoResult a.CoveoResultLink:hover a,\n.CoveoResult a.CoveoResultLink:focus,\n.CoveoResult a.CoveoResultLink:focus a {\n  text-decoration: underline;\n}\n\n.CoveoResultLink.coveo-selected *,\na.CoveoResultLink.coveo-selected *,\n.CoveoResult a.CoveoResultLink.coveo-selected * {\n  color: #0059b3;\n}\n\n.coveo-card-overlay a.CoveoResultLink {\n  color: #0059b3;\n  text-decoration: none;\n  cursor: pointer;\n  color: #f7f8f9;\n  text-decoration: underline;\n}\n\n.coveo-card-overlay a.CoveoResultLink:visited,\n.coveo-card-overlay a.CoveoResultLink:visited:hover {\n  color: #609;\n  color: #f7f8f9;\n}\n\n.coveo-card-overlay a.CoveoResultLink:hover,\n.coveo-card-overlay a.CoveoResultLink:hover a,\n.coveo-card-overlay a.CoveoResultLink:focus,\n.coveo-card-overlay a.CoveoResultLink:focus a {\n  text-decoration: underline;\n}\n\n.coveo-card-overlay a.CoveoResultLink.coveo-selected * {\n  color: #0059b3;\n  color: #f7f8f9;\n}\n\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 343:
+/***/ 344:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1862,7 +1862,7 @@ exports.bindAnalyticsToLink = bindAnalyticsToLink;
 
 /***/ }),
 
-/***/ 344:
+/***/ 345:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1911,7 +1911,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableBuilder_1 = __webpack_require__(332);
+var TableBuilder_1 = __webpack_require__(333);
 var underscore_1 = __webpack_require__(0);
 var Dom_1 = __webpack_require__(1);
 var StringUtils_1 = __webpack_require__(20);
@@ -2121,7 +2121,7 @@ exports.FieldValuesRenderer = FieldValuesRenderer;
 
 /***/ }),
 
-/***/ 345:
+/***/ 346:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2201,13 +2201,13 @@ exports.RelevanceInspectorTabs = RelevanceInspectorTabs;
 
 /***/ }),
 
-/***/ 346:
+/***/ 347:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(347);
+var content = __webpack_require__(348);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2215,14 +2215,14 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(331)(content, options);
+var update = __webpack_require__(332)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/lib/loader.js??ref--0-5!./_RelevanceInspector.scss", function() {
-			var newContent = require("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/lib/loader.js??ref--0-5!./_RelevanceInspector.scss");
+		module.hot.accept("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/dist/cjs.js??ref--0-5!./_RelevanceInspector.scss", function() {
+			var newContent = require("!!../node_modules/string-replace-loader/index.js??ref--0-2!../node_modules/css-loader/index.js??ref--0-3!../node_modules/resolve-url-loader/index.js??ref--0-4!../node_modules/sass-loader/dist/cjs.js??ref--0-5!./_RelevanceInspector.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -2233,22 +2233,22 @@ if(false) {
 
 /***/ }),
 
-/***/ 347:
+/***/ 348:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(330)();
+exports = module.exports = __webpack_require__(331)();
 // imports
 
 
 // module
-exports.push([module.i, "/*\n* @param direction vertical or horizontal\n* @param position type of positioning to apply (relative/absolute)\n*/\n\n/*\n* @param $selector css selector on which to apply the icon. Can be '&' if the icon should be applied on the current element;\n* @param $size size of the icon to use\n*/\n\n@-webkit-keyframes fadeout {\n  from {\n    opacity: 1;\n  }\n\n  to {\n    opacity: 0;\n  }\n}\n\n@-moz-keyframes fadeout {\n  from {\n    opacity: 1;\n  }\n\n  to {\n    opacity: 0;\n  }\n}\n\n@-o-keyframes fadeout {\n  from {\n    opacity: 1;\n  }\n\n  to {\n    opacity: 0;\n  }\n}\n\n@keyframes fadeout {\n  from {\n    opacity: 1;\n  }\n\n  to {\n    opacity: 0;\n  }\n}\n\n@-webkit-keyframes fadein {\n  from {\n    opacity: 0;\n  }\n\n  to {\n    opacity: 1;\n  }\n}\n\n@-moz-keyframes fadein {\n  from {\n    opacity: 0;\n  }\n\n  to {\n    opacity: 1;\n  }\n}\n\n@-o-keyframes fadein {\n  from {\n    opacity: 0;\n  }\n\n  to {\n    opacity: 1;\n  }\n}\n\n@keyframes fadein {\n  from {\n    opacity: 0;\n  }\n\n  to {\n    opacity: 1;\n  }\n}\n\n@keyframes slideInLeft {\n  0% {\n    -webkit-transform: translateX(-2000px);\n    -moz-transform: translateX(-2000px);\n    -ms-transform: translateX(-2000px);\n    -o-transform: translateX(-2000px);\n    transform: translateX(-2000px);\n    opacity: 0;\n  }\n\n  100% {\n    -webkit-transform: translateX(0);\n    -moz-transform: translateX(0);\n    -ms-transform: translateX(0);\n    -o-transform: translateX(0);\n    transform: translateX(0);\n    opacity: 1;\n  }\n}\n\n@-webkit-keyframes coveo-spin {\n  from {\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n\n  to {\n    -webkit-transform: rotate(360deg);\n    -moz-transform: rotate(360deg);\n    -ms-transform: rotate(360deg);\n    -o-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n\n@-moz-keyframes coveo-spin {\n  from {\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n\n  to {\n    -webkit-transform: rotate(360deg);\n    -moz-transform: rotate(360deg);\n    -ms-transform: rotate(360deg);\n    -o-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n\n@-o-keyframes coveo-spin {\n  from {\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n\n  to {\n    -webkit-transform: rotate(360deg);\n    -moz-transform: rotate(360deg);\n    -ms-transform: rotate(360deg);\n    -o-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes coveo-spin {\n  from {\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n\n  to {\n    -webkit-transform: rotate(360deg);\n    -moz-transform: rotate(360deg);\n    -ms-transform: rotate(360deg);\n    -o-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n\n@-webkit-keyframes loadingFade {\n  0% {\n    opacity: 0;\n  }\n\n  50% {\n    opacity: 0.8;\n  }\n\n  100% {\n    opacity: 0;\n  }\n}\n\n@-moz-keyframes loadingFade {\n  0% {\n    opacity: 0;\n  }\n\n  50% {\n    opacity: 0.8;\n  }\n\n  100% {\n    opacity: 0;\n  }\n}\n\n@-o-keyframes loadingFade {\n  0% {\n    opacity: 0;\n  }\n\n  50% {\n    opacity: 0.8;\n  }\n\n  100% {\n    opacity: 0;\n  }\n}\n\n@keyframes loadingFade {\n  0% {\n    opacity: 0;\n  }\n\n  50% {\n    opacity: 0.8;\n  }\n\n  100% {\n    opacity: 0;\n  }\n}\n\n.coveo-relevance-inspector {\n  text-align: center;\n  padding: 10px;\n  line-height: 20px;\n  height: 40px;\n  top: 0;\n  z-index: 1000;\n}\n\n.coveo-relevance-inspector.coveo-hidden {\n  display: none;\n}\n\n.relevance-inspector-modal .coveo-logo {\n  height: 64px;\n  width: 178px;\n}\n\n.ag-theme-fresh .ag-cell {\n  overflow: auto;\n  white-space: normal;\n  word-break: break-word;\n}\n\n.ag-theme-fresh .ag-font-style {\n  user-select: auto;\n}\n\n.coveo-relevance-inspector-tab-navigation-section {\n  margin-bottom: 20px;\n}\n\n.coveo-relevance-inspector-tab-content {\n  display: none;\n}\n\n.coveo-relevance-inspector-tab-content.coveo-selected {\n  display: block;\n  -webkit-animation: slideInLeft 0.3s ease-in;\n  -moz-animation: slideInLeft 0.3s ease-in;\n  animation: slideInLeft 0.3s ease-in;\n}\n\n.coveo-relevance-inspector-tab {\n  display: -webkit-box;\n  display: -moz-box;\n  display: -webkit-flex;\n  display: -moz-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -moz-box-align: center;\n  box-align: center;\n  -webkit-align-items: center;\n  -moz-align-items: center;\n  -ms-align-items: center;\n  -o-align-items: center;\n  align-items: center;\n  -ms-flex-align: center;\n  font-size: 12px;\n  font-weight: bold;\n  padding: 0 5px 10px;\n  border-bottom: 1px solid #bcc3ca;\n  text-transform: uppercase;\n  border-bottom: 2px solid #bcc3ca;\n  display: inline-block;\n  margin-right: 10px;\n}\n\n.coveo-relevance-inspector-tab.coveo-selected,\n.coveo-relevance-inspector-tab.coveo-selected:hover {\n  border-bottom: 2px solid #263e55;\n}\n\n.coveo-relevance-inspector-tab:hover {\n  color: #263e55;\n}\n\n.coveo-relevance-inspector-highlight {\n  display: inline-block;\n  font-weight: bold;\n}\n\n.coveo-relevance-inspector-result-thumbnail {\n  min-width: 500px;\n  white-space: normal;\n}\n\n.coveo-relevance-inspector-dt {\n  font-weight: bold;\n}\n\n.coveo-relevance-inspector-dt,\n.coveo-relevance-inspector-dd {\n  font-size: 14px;\n  line-height: 14px;\n  padding: 2px 0 4px;\n}\n\n.coveo-relevance-inspector-metadata-name,\n.coveo-relevance-inspector-metadata-value {\n  background-color: #e9ecef;\n  display: block;\n  padding: 10px;\n  line-height: 1.5;\n  border: 1px solid #ced4da;\n  border-radius: 2px;\n  position: relative;\n  flex: 1 1 auto;\n  margin-bottom: 0;\n}\n\n.coveo-relevance-inspector-metadata-name {\n  max-width: 25%;\n  min-width: 25%;\n}\n\n.coveo-relevance-inspector-metadata-value {\n  width: 75%;\n  overflow: auto;\n}\n\n.coveo-relevance-inspector-input-group {\n  position: relative;\n  display: flex;\n  flex-wrap: wrap;\n  align-items: stretch;\n  width: 100%;\n}\n\n.coveo-relevance-inspector-tab-content .coveo-input {\n  margin: 40px 0 10px;\n}\n\n.coveo-relevance-inspector-available-fields-popup {\n  background: white;\n  border: 1px solid #bcc3ca;\n  border-radius: 2px;\n  padding: 10px 5px 10px 20px;\n  width: 200px;\n  overflow: hidden;\n  list-style-type: none;\n}\n\n.coveo-relevance-inspector-available-fields-popup-value {\n  padding: 0 0 10px;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n}\n\n.coveo-available-fields-table-button {\n  overflow: hidden;\n  display: inline-block;\n  position: relative;\n  top: 50%;\n  -webkit-transform: translateY(-50%);\n  -moz-transform: translateY(-50%);\n  -ms-transform: translateY(-50%);\n  -o-transform: translateY(-50%);\n  transform: translateY(-50%);\n}\n\n.coveo-relevance-inspector-effective-query-collapsible {\n  display: none;\n}\n\n.coveo-relevance-inspector-effective-query-collapsible.coveo-active {\n  display: inherit;\n}\n\n.coveo-relevance-inspector-table {\n  width: 100%;\n  text-align: left;\n  border: none;\n  border-spacing: 0;\n}\n\n.coveo-relevance-inspector-table tr {\n  height: 37px;\n  font-size: 15px;\n  line-height: 18px;\n}\n\n.coveo-relevance-inspector-table tr:first-child {\n  padding-left: 10px;\n}\n\n.coveo-relevance-inspector-table tr:hover td {\n  background-color: #e6ecf0;\n}\n\n.coveo-relevance-inspector-table td {\n  position: relative;\n  text-align: left;\n  vertical-align: middle;\n  padding: 9px 15px;\n  margin-left: 15px;\n  text-align: left;\n  border-bottom: 1px solid #bcc3ca;\n}\n\n.coveo-relevance-inspector-table td:first-child {\n  border-left: 5px solid transparent;\n}\n\n.coveo-relevance-inspector-inline-ranking {\n  border: 1px solid #bcc3ca;\n  border-radius: 2px;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -webkit-flex;\n  display: -moz-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-lines: multiple;\n  -moz-box-lines: multiple;\n  box-lines: multiple;\n  -webkit-flex-wrap: wrap;\n  -moz-flex-wrap: wrap;\n  -ms-flex-wrap: wrap;\n  flex-wrap: wrap;\n  padding: 10px;\n  margin-bottom: 10px;\n}\n\n.coveo-relevance-inspector-inline-ranking-section {\n  margin: 10px;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms {\n  display: none;\n  padding: 10px;\n  width: 100%;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms.coveo-active {\n  display: block;\n  -webkit-animation: fadein 0.5s;\n  -moz-animation: fadein 0.5s;\n  animation: fadein 0.5s;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms h2 {\n  border-bottom: 1px solid #bcc3ca;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms dl {\n  display: -webkit-box;\n  display: -moz-box;\n  display: -webkit-flex;\n  display: -moz-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-lines: multiple;\n  -moz-box-lines: multiple;\n  box-lines: multiple;\n  -webkit-flex-wrap: wrap;\n  -moz-flex-wrap: wrap;\n  -ms-flex-wrap: wrap;\n  flex-wrap: wrap;\n  -webkit-box-align: center;\n  -moz-box-align: center;\n  box-align: center;\n  -webkit-align-items: center;\n  -moz-align-items: center;\n  -ms-align-items: center;\n  -o-align-items: center;\n  align-items: center;\n  -ms-flex-align: center;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms dt {\n  margin: 10px 20px;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms dd {\n  margin-left: 0;\n}\n\n.coveo-relevance-inspector-inline-ranking-button {\n  height: 35px;\n  margin: 5px 0;\n}\n\n.relevance-inspector-list-output {\n  padding-left: 5px;\n  margin-top: 0;\n}\n\n.coveo-relevance-inspector-inline-ranking-qre-expression {\n  font-weight: bold;\n  word-break: break-all;\n}\n\n", ""]);
+exports.push([module.i, "@-webkit-keyframes fadeout {\n  from {\n    opacity: 1;\n  }\n\n  to {\n    opacity: 0;\n  }\n}\n\n@-moz-keyframes fadeout {\n  from {\n    opacity: 1;\n  }\n\n  to {\n    opacity: 0;\n  }\n}\n\n@-o-keyframes fadeout {\n  from {\n    opacity: 1;\n  }\n\n  to {\n    opacity: 0;\n  }\n}\n\n@keyframes fadeout {\n  from {\n    opacity: 1;\n  }\n\n  to {\n    opacity: 0;\n  }\n}\n\n@-webkit-keyframes fadein {\n  from {\n    opacity: 0;\n  }\n\n  to {\n    opacity: 1;\n  }\n}\n\n@-moz-keyframes fadein {\n  from {\n    opacity: 0;\n  }\n\n  to {\n    opacity: 1;\n  }\n}\n\n@-o-keyframes fadein {\n  from {\n    opacity: 0;\n  }\n\n  to {\n    opacity: 1;\n  }\n}\n\n@keyframes fadein {\n  from {\n    opacity: 0;\n  }\n\n  to {\n    opacity: 1;\n  }\n}\n\n@keyframes slideInLeft {\n  0% {\n    -webkit-transform: translateX(-2000px);\n    -moz-transform: translateX(-2000px);\n    -ms-transform: translateX(-2000px);\n    -o-transform: translateX(-2000px);\n    transform: translateX(-2000px);\n    opacity: 0;\n  }\n\n  100% {\n    -webkit-transform: translateX(0);\n    -moz-transform: translateX(0);\n    -ms-transform: translateX(0);\n    -o-transform: translateX(0);\n    transform: translateX(0);\n    opacity: 1;\n  }\n}\n\n@-webkit-keyframes coveo-spin {\n  from {\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n\n  to {\n    -webkit-transform: rotate(360deg);\n    -moz-transform: rotate(360deg);\n    -ms-transform: rotate(360deg);\n    -o-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n\n@-moz-keyframes coveo-spin {\n  from {\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n\n  to {\n    -webkit-transform: rotate(360deg);\n    -moz-transform: rotate(360deg);\n    -ms-transform: rotate(360deg);\n    -o-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n\n@-o-keyframes coveo-spin {\n  from {\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n\n  to {\n    -webkit-transform: rotate(360deg);\n    -moz-transform: rotate(360deg);\n    -ms-transform: rotate(360deg);\n    -o-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n\n@keyframes coveo-spin {\n  from {\n    -webkit-transform: rotate(0deg);\n    -moz-transform: rotate(0deg);\n    -ms-transform: rotate(0deg);\n    -o-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n\n  to {\n    -webkit-transform: rotate(360deg);\n    -moz-transform: rotate(360deg);\n    -ms-transform: rotate(360deg);\n    -o-transform: rotate(360deg);\n    transform: rotate(360deg);\n  }\n}\n\n@-webkit-keyframes loadingFade {\n  0% {\n    opacity: 0;\n  }\n\n  50% {\n    opacity: .8;\n  }\n\n  100% {\n    opacity: 0;\n  }\n}\n\n@-moz-keyframes loadingFade {\n  0% {\n    opacity: 0;\n  }\n\n  50% {\n    opacity: .8;\n  }\n\n  100% {\n    opacity: 0;\n  }\n}\n\n@-o-keyframes loadingFade {\n  0% {\n    opacity: 0;\n  }\n\n  50% {\n    opacity: .8;\n  }\n\n  100% {\n    opacity: 0;\n  }\n}\n\n@keyframes loadingFade {\n  0% {\n    opacity: 0;\n  }\n\n  50% {\n    opacity: .8;\n  }\n\n  100% {\n    opacity: 0;\n  }\n}\n\n.coveo-relevance-inspector {\n  text-align: center;\n  padding: 10px;\n  line-height: 20px;\n  height: 40px;\n  top: 0;\n  z-index: 1000;\n}\n\n.coveo-relevance-inspector.coveo-hidden {\n  display: none;\n}\n\n.relevance-inspector-modal .coveo-logo {\n  height: 64px;\n  width: 178px;\n}\n\n.ag-theme-fresh .ag-cell {\n  overflow: auto;\n  white-space: normal;\n  word-break: break-word;\n}\n\n.ag-theme-fresh .ag-font-style {\n  user-select: auto;\n}\n\n.coveo-relevance-inspector-tab-navigation-section {\n  margin-bottom: 20px;\n}\n\n.coveo-relevance-inspector-tab-content {\n  display: none;\n}\n\n.coveo-relevance-inspector-tab-content.coveo-selected {\n  display: block;\n  -webkit-animation: slideInLeft .3s ease-in;\n  -moz-animation: slideInLeft .3s ease-in;\n  animation: slideInLeft .3s ease-in;\n}\n\n.coveo-relevance-inspector-tab {\n  display: -webkit-box;\n  display: -moz-box;\n  display: -webkit-flex;\n  display: -moz-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n  -moz-box-align: center;\n  box-align: center;\n  -webkit-align-items: center;\n  -moz-align-items: center;\n  -ms-align-items: center;\n  -o-align-items: center;\n  align-items: center;\n  -ms-flex-align: center;\n  font-size: 12px;\n  font-weight: bold;\n  padding: 0 5px 10px;\n  border-bottom: 1px solid #bcc3ca;\n  text-transform: uppercase;\n  border-bottom: 2px solid #bcc3ca;\n  display: inline-block;\n  margin-right: 10px;\n}\n\n.coveo-relevance-inspector-tab.coveo-selected,\n.coveo-relevance-inspector-tab.coveo-selected:hover {\n  border-bottom: 2px solid #263e55;\n}\n\n.coveo-relevance-inspector-tab:hover {\n  color: #263e55;\n}\n\n.coveo-relevance-inspector-highlight {\n  display: inline-block;\n  font-weight: bold;\n}\n\n.coveo-relevance-inspector-result-thumbnail {\n  min-width: 500px;\n  white-space: normal;\n}\n\n.coveo-relevance-inspector-dt {\n  font-weight: bold;\n}\n\n.coveo-relevance-inspector-dt,\n.coveo-relevance-inspector-dd {\n  font-size: 14px;\n  line-height: 14px;\n  padding: 2px 0 4px;\n}\n\n.coveo-relevance-inspector-metadata-name,\n.coveo-relevance-inspector-metadata-value {\n  background-color: #e9ecef;\n  display: block;\n  padding: 10px;\n  line-height: 1.5;\n  border: 1px solid #ced4da;\n  border-radius: 2px;\n  position: relative;\n  flex: 1 1 auto;\n  margin-bottom: 0;\n}\n\n.coveo-relevance-inspector-metadata-name {\n  max-width: 25%;\n  min-width: 25%;\n}\n\n.coveo-relevance-inspector-metadata-value {\n  width: 75%;\n  overflow: auto;\n}\n\n.coveo-relevance-inspector-input-group {\n  position: relative;\n  display: flex;\n  flex-wrap: wrap;\n  align-items: stretch;\n  width: 100%;\n}\n\n.coveo-relevance-inspector-tab-content .coveo-input {\n  margin: 40px 0 10px;\n}\n\n.coveo-relevance-inspector-available-fields-popup {\n  background: #fff;\n  border: 1px solid #bcc3ca;\n  border-radius: 2px;\n  padding: 10px 5px 10px 20px;\n  width: 200px;\n  overflow: hidden;\n  list-style-type: none;\n}\n\n.coveo-relevance-inspector-available-fields-popup-value {\n  padding: 0 0 10px;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  overflow: hidden;\n}\n\n.coveo-available-fields-table-button {\n  overflow: hidden;\n  display: inline-block;\n  position: relative;\n  top: 50%;\n  -webkit-transform: translateY(-50%);\n  -moz-transform: translateY(-50%);\n  -ms-transform: translateY(-50%);\n  -o-transform: translateY(-50%);\n  transform: translateY(-50%);\n}\n\n.coveo-relevance-inspector-effective-query-collapsible {\n  display: none;\n}\n\n.coveo-relevance-inspector-effective-query-collapsible.coveo-active {\n  display: inherit;\n}\n\n.coveo-relevance-inspector-table {\n  width: 100%;\n  text-align: left;\n  border: none;\n  border-spacing: 0;\n}\n\n.coveo-relevance-inspector-table tr {\n  height: 37px;\n  font-size: 15px;\n  line-height: 18px;\n}\n\n.coveo-relevance-inspector-table tr:first-child {\n  padding-left: 10px;\n}\n\n.coveo-relevance-inspector-table tr:hover td {\n  background-color: #e6ecf0;\n}\n\n.coveo-relevance-inspector-table td {\n  position: relative;\n  text-align: left;\n  vertical-align: middle;\n  padding: 9px 15px;\n  margin-left: 15px;\n  text-align: left;\n  border-bottom: 1px solid #bcc3ca;\n}\n\n.coveo-relevance-inspector-table td:first-child {\n  border-left: 5px solid rgba(0,0,0,0);\n}\n\n.coveo-relevance-inspector-inline-ranking {\n  border: 1px solid #bcc3ca;\n  border-radius: 2px;\n  display: -webkit-box;\n  display: -moz-box;\n  display: -webkit-flex;\n  display: -moz-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-lines: multiple;\n  -moz-box-lines: multiple;\n  box-lines: multiple;\n  -webkit-flex-wrap: wrap;\n  -moz-flex-wrap: wrap;\n  -ms-flex-wrap: wrap;\n  flex-wrap: wrap;\n  padding: 10px;\n  margin-bottom: 10px;\n}\n\n.coveo-relevance-inspector-inline-ranking-section {\n  margin: 10px;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms {\n  display: none;\n  padding: 10px;\n  width: 100%;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms.coveo-active {\n  display: block;\n  -webkit-animation: fadein .5s;\n  -moz-animation: fadein .5s;\n  animation: fadein .5s;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms h2 {\n  border-bottom: 1px solid #bcc3ca;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms dl {\n  display: -webkit-box;\n  display: -moz-box;\n  display: -webkit-flex;\n  display: -moz-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-lines: multiple;\n  -moz-box-lines: multiple;\n  box-lines: multiple;\n  -webkit-flex-wrap: wrap;\n  -moz-flex-wrap: wrap;\n  -ms-flex-wrap: wrap;\n  flex-wrap: wrap;\n  -webkit-box-align: center;\n  -moz-box-align: center;\n  box-align: center;\n  -webkit-align-items: center;\n  -moz-align-items: center;\n  -ms-align-items: center;\n  -o-align-items: center;\n  align-items: center;\n  -ms-flex-align: center;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms dt {\n  margin: 10px 20px;\n}\n\n.coveo-relevance-inspector-inline-ranking-terms dd {\n  margin-left: 0;\n}\n\n.coveo-relevance-inspector-inline-ranking-button {\n  height: 35px;\n  margin: 5px 0;\n}\n\n.relevance-inspector-list-output {\n  padding-left: 5px;\n  margin-top: 0;\n}\n\n.coveo-relevance-inspector-inline-ranking-qre-expression {\n  font-weight: bold;\n  word-break: break-all;\n}\n\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 348:
+/***/ 349:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2297,11 +2297,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(333);
-var TableBuilder_1 = __webpack_require__(332);
+var ExecutionReport_1 = __webpack_require__(334);
+var TableBuilder_1 = __webpack_require__(333);
 var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(335);
-var GenericValueOutput_1 = __webpack_require__(334);
+var ExecutionReportGenericSection_1 = __webpack_require__(336);
+var GenericValueOutput_1 = __webpack_require__(335);
 var ExecutionReportAuthenticationSection = /** @class */ (function () {
     function ExecutionReportAuthenticationSection() {
     }
@@ -2396,92 +2396,6 @@ exports.ExecutionReportAuthenticationSection = ExecutionReportAuthenticationSect
 
 /***/ }),
 
-/***/ 349:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(333);
-var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(335);
-var TableBuilder_1 = __webpack_require__(332);
-var GenericValueOutput_1 = __webpack_require__(334);
-var ExecutionReportResolvedPipelineSection = /** @class */ (function () {
-    function ExecutionReportResolvedPipelineSection() {
-    }
-    ExecutionReportResolvedPipelineSection.prototype.build = function (executionReport) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _a, container, agGridElement, gridOptions, resolvedPipelineSection, dataSource, tableBuilder;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = ExecutionReport_1.ExecutionReport.standardSectionHeader('Pipeline'), container = _a.container, agGridElement = _a.agGridElement;
-                        resolvedPipelineSection = underscore_1.find(executionReport.children, function (child) { return child.name == ExecutionReport_1.EXECUTION_REPORT_SECTION.RESOLVE_PIPELINE; });
-                        if (!resolvedPipelineSection) return [3 /*break*/, 2];
-                        dataSource = [
-                            __assign({}, new ExecutionReportGenericSection_1.ExecutionReportGenericSection().build(resolvedPipelineSection), { Pipeline: new GenericValueOutput_1.GenericValueOutput().output(resolvedPipelineSection.result.pipeline) }, { 'Split Test': new GenericValueOutput_1.GenericValueOutput().output(resolvedPipelineSection.result.splitTest) })
-                        ];
-                        return [4 /*yield*/, new TableBuilder_1.TableBuilder().build(dataSource, agGridElement)];
-                    case 1:
-                        tableBuilder = _b.sent();
-                        gridOptions = tableBuilder.gridOptions;
-                        _b.label = 2;
-                    case 2: return [2 /*return*/, { container: container, gridOptions: gridOptions }];
-                }
-            });
-        });
-    };
-    return ExecutionReportResolvedPipelineSection;
-}());
-exports.ExecutionReportResolvedPipelineSection = ExecutionReportResolvedPipelineSection;
-
-
-/***/ }),
-
 /***/ 350:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2531,11 +2445,97 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(333);
+var ExecutionReport_1 = __webpack_require__(334);
 var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(335);
-var TableBuilder_1 = __webpack_require__(332);
-var GenericValueOutput_1 = __webpack_require__(334);
+var ExecutionReportGenericSection_1 = __webpack_require__(336);
+var TableBuilder_1 = __webpack_require__(333);
+var GenericValueOutput_1 = __webpack_require__(335);
+var ExecutionReportResolvedPipelineSection = /** @class */ (function () {
+    function ExecutionReportResolvedPipelineSection() {
+    }
+    ExecutionReportResolvedPipelineSection.prototype.build = function (executionReport) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, container, agGridElement, gridOptions, resolvedPipelineSection, dataSource, tableBuilder;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = ExecutionReport_1.ExecutionReport.standardSectionHeader('Pipeline'), container = _a.container, agGridElement = _a.agGridElement;
+                        resolvedPipelineSection = underscore_1.find(executionReport.children, function (child) { return child.name == ExecutionReport_1.EXECUTION_REPORT_SECTION.RESOLVE_PIPELINE; });
+                        if (!resolvedPipelineSection) return [3 /*break*/, 2];
+                        dataSource = [
+                            __assign({}, new ExecutionReportGenericSection_1.ExecutionReportGenericSection().build(resolvedPipelineSection), { Pipeline: new GenericValueOutput_1.GenericValueOutput().output(resolvedPipelineSection.result.pipeline) }, { 'Split Test': new GenericValueOutput_1.GenericValueOutput().output(resolvedPipelineSection.result.splitTest) })
+                        ];
+                        return [4 /*yield*/, new TableBuilder_1.TableBuilder().build(dataSource, agGridElement)];
+                    case 1:
+                        tableBuilder = _b.sent();
+                        gridOptions = tableBuilder.gridOptions;
+                        _b.label = 2;
+                    case 2: return [2 /*return*/, { container: container, gridOptions: gridOptions }];
+                }
+            });
+        });
+    };
+    return ExecutionReportResolvedPipelineSection;
+}());
+exports.ExecutionReportResolvedPipelineSection = ExecutionReportResolvedPipelineSection;
+
+
+/***/ }),
+
+/***/ 351:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var ExecutionReport_1 = __webpack_require__(334);
+var underscore_1 = __webpack_require__(0);
+var ExecutionReportGenericSection_1 = __webpack_require__(336);
+var TableBuilder_1 = __webpack_require__(333);
+var GenericValueOutput_1 = __webpack_require__(335);
 var ExecutionReportQueryOverrideSection = /** @class */ (function () {
     function ExecutionReportQueryOverrideSection() {
     }
@@ -2568,7 +2568,7 @@ exports.ExecutionReportQueryOverrideSection = ExecutionReportQueryOverrideSectio
 
 /***/ }),
 
-/***/ 351:
+/***/ 352:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2609,9 +2609,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(333);
+var ExecutionReport_1 = __webpack_require__(334);
 var underscore_1 = __webpack_require__(0);
-var GenericValueOutput_1 = __webpack_require__(334);
+var GenericValueOutput_1 = __webpack_require__(335);
 var Dom_1 = __webpack_require__(1);
 var collapsibleSectionsInReport = ['Facets', 'RankingOverrides', 'RankingExpressions'];
 var ExecutionReportEffectiveIndexQuerySection = /** @class */ (function () {
@@ -2664,7 +2664,7 @@ exports.ExecutionReportEffectiveIndexQuerySection = ExecutionReportEffectiveInde
 
 /***/ }),
 
-/***/ 352:
+/***/ 353:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2713,11 +2713,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(333);
-var TableBuilder_1 = __webpack_require__(332);
+var ExecutionReport_1 = __webpack_require__(334);
+var TableBuilder_1 = __webpack_require__(333);
 var underscore_1 = __webpack_require__(0);
-var GenericValueOutput_1 = __webpack_require__(334);
-var QueryBuilder_1 = __webpack_require__(80);
+var GenericValueOutput_1 = __webpack_require__(335);
+var QueryBuilder_1 = __webpack_require__(81);
 var ExecutionReportRankingModifiers = /** @class */ (function () {
     function ExecutionReportRankingModifiers() {
     }
@@ -2809,7 +2809,7 @@ exports.ExecutionReportRankingModifiers = ExecutionReportRankingModifiers;
 
 /***/ }),
 
-/***/ 353:
+/***/ 354:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2850,13 +2850,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(333);
+var ExecutionReport_1 = __webpack_require__(334);
 var underscore_1 = __webpack_require__(0);
-var TableBuilder_1 = __webpack_require__(332);
+var TableBuilder_1 = __webpack_require__(333);
 var Dom_1 = __webpack_require__(1);
 var Utils_1 = __webpack_require__(3);
 var StreamHighlightUtils_1 = __webpack_require__(118);
-var ExecutionReportSimpleSection_1 = __webpack_require__(337);
+var ExecutionReportSimpleSection_1 = __webpack_require__(338);
 var ExecutionReportITDSection = /** @class */ (function () {
     function ExecutionReportITDSection() {
     }
@@ -2967,7 +2967,7 @@ exports.ExecutionReportITDSection = ExecutionReportITDSection;
 
 /***/ }),
 
-/***/ 354:
+/***/ 355:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3016,11 +3016,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableBuilder_1 = __webpack_require__(332);
+var TableBuilder_1 = __webpack_require__(333);
 var underscore_1 = __webpack_require__(0);
-var GenericValueOutput_1 = __webpack_require__(334);
-var UtilsModules_1 = __webpack_require__(79);
-var QueryBuilder_1 = __webpack_require__(80);
+var GenericValueOutput_1 = __webpack_require__(335);
+var UtilsModules_1 = __webpack_require__(80);
+var QueryBuilder_1 = __webpack_require__(81);
 var PopupUtils_1 = __webpack_require__(123);
 var AvailableFieldsTable = /** @class */ (function () {
     function AvailableFieldsTable(bindings) {
@@ -3305,13 +3305,13 @@ exports.AvailableFieldsDatasource = AvailableFieldsDatasource;
 
 /***/ }),
 
-/***/ 355:
+/***/ 356:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var RankingInfoParser_1 = __webpack_require__(336);
+var RankingInfoParser_1 = __webpack_require__(337);
 var Dom_1 = __webpack_require__(1);
 var underscore_1 = __webpack_require__(0);
 var Utils_1 = __webpack_require__(3);
