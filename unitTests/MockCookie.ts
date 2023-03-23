@@ -1,3 +1,5 @@
+import { entries } from 'lodash';
+
 function mapToObject<T = any>(list: string[], predicate: (value: string) => [string, string]): T {
   const obj = {};
   list.forEach(listMember => {
@@ -10,8 +12,19 @@ function mapToObject<T = any>(list: string[], predicate: (value: string) => [str
 const cookiesDescriptor =
   Object.getOwnPropertyDescriptor(Document.prototype, 'cookie') || Object.getOwnPropertyDescriptor(HTMLDocument.prototype, 'cookie');
 
+declare global {
+  interface Window {
+    mockCookie?: MockCookie;
+  }
+}
+
+export interface MockSingleCookie {
+  value: string;
+  properties: Record<string, string>;
+}
+
 export class MockCookie {
-  private cookiesDict: { [cookieName: string]: string } = {};
+  private cookiesDict: { [cookieName: string]: MockSingleCookie } = {};
 
   static mockBrowserCookies() {
     if (!cookiesDescriptor || !cookiesDescriptor.configurable) {
@@ -22,6 +35,7 @@ export class MockCookie {
       get: () => mockCookie.cookie,
       set: value => (mockCookie.cookie = value)
     });
+    window.mockCookie = mockCookie;
     return true;
   }
 
@@ -33,9 +47,31 @@ export class MockCookie {
     return true;
   }
 
+  static get(name: string) {
+    if (!window.mockCookie) {
+      throw "Cookies aren't mocked.";
+    }
+    const cookie = window.mockCookie.cookiesDict[name];
+    return cookie && cookie.value ? cookie : null;
+  }
+
+  static set(name: string, value: string, properties?: Record<string, string>) {
+    if (!window.mockCookie) {
+      throw "Cookies aren't mocked.";
+    }
+    window.mockCookie.cookiesDict[name] = { value, properties: properties || {} };
+  }
+
+  static clear() {
+    if (!window.mockCookie) {
+      throw "Cookies aren't mocked.";
+    }
+    window.mockCookie.cookiesDict = {};
+  }
+
   public get cookie() {
-    return Object.keys(this.cookiesDict)
-      .map(key => `${key}=${this.cookiesDict[key]}`)
+    return entries(this.cookiesDict)
+      .map(([key, { value }]) => `${key}=${value}`)
       .join('; ');
   }
 
@@ -46,7 +82,7 @@ export class MockCookie {
     if ('expiration' in properties && parseInt(properties.expiration, 10) < Date.now()) {
       delete properties.expiration;
     } else {
-      this.cookiesDict[cookieName] = cookieValue;
+      this.cookiesDict[cookieName] = { value: cookieValue, properties };
     }
   }
 }

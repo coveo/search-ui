@@ -3,7 +3,7 @@ export class Cookie {
   private static prefix: string = 'coveo_';
 
   static set(name: string, value: string, expiration?: number) {
-    const host = location.hostname;
+    const host = this.getHostname();
     if (host.split('.').length === 1) {
       // no '.' in a domain - it's localhost or something similar
       document.cookie = this.buildCookie(name, value, expiration);
@@ -31,6 +31,10 @@ export class Cookie {
         document.cookie = this.buildCookie(name, value, expiration, domain);
       }
     }
+  }
+
+  private static getHostname() {
+    return location.hostname;
   }
 
   private static buildCookie(name: string, value: string, expiration?: number, domain?: string) {

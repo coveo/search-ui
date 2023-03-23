@@ -1,6 +1,7 @@
 import { AnalyticsInformation } from '../../src/ui/Analytics/AnalyticsInformation';
-import { buildHistoryStore } from '../../src/utils/HistoryStore';
 import { Cookie } from '../../src/utils/CookieUtils';
+import { buildHistoryStore } from '../../src/utils/HistoryStore';
+import { MockCookie } from '../MockCookie';
 
 type HistoryStore = ReturnType<typeof buildHistoryStore>;
 
@@ -19,12 +20,11 @@ export function AnalyticsInformationTest() {
     let analyticsInformation: AnalyticsInformation;
     beforeEach(() => {
       analyticsInformation = new AnalyticsInformation();
-      historyStore = buildHistoryStore();
-      historyStore.clear();
-      analyticsInformation.clear();
+      MockCookie.clear();
+      localStorage.clear();
     });
 
-    describe('without localstorage', () => {
+    describe('without localstorage nor cookies', () => {
       it("doesn't have a clientId", () => {
         expect(analyticsInformation.clientId).toBeNull();
       });
@@ -38,16 +38,22 @@ export function AnalyticsInformationTest() {
       });
     });
 
-    describe('with legacy cookies, but without localstorage', () => {
+    describe('with cookies from coveo.analytics', () => {
+      const cookieName = 'coveo_visitorId';
       const visitorId = 'def';
 
       beforeEach(() => {
-        Cookie.set('visitorId', visitorId);
+        MockCookie.set(cookieName, visitorId);
+      });
+
+      it('has a clientId', () => {
+        expect(analyticsInformation.clientId).toEqual(visitorId);
+        4;
       });
 
       it('calling #clear removes the cookies', () => {
         analyticsInformation.clear();
-        expect(analyticsInformation.clientId).toBeNull();
+        expect(MockCookie.get(cookieName)).toBeNull();
       });
     });
 
@@ -87,6 +93,7 @@ export function AnalyticsInformationTest() {
 
     describe('without a PageView event', () => {
       beforeEach(() => {
+        historyStore = buildHistoryStore();
         addHistoryElement('PageVieww', 'abc');
       });
 
@@ -98,11 +105,28 @@ export function AnalyticsInformationTest() {
     describe('with a PageView event', () => {
       const pageId = 'ghi';
       beforeEach(() => {
+        historyStore = buildHistoryStore();
         addHistoryElement('PageView', pageId);
       });
 
       it('has a pageId', () => {
         expect(analyticsInformation.lastPageId).toEqual(pageId);
+      });
+    });
+
+    describe('when setting the clientId', () => {
+      const testClientId = 'hello';
+      beforeEach(() => {
+        spyOn(Cookie, 'set');
+        new AnalyticsInformation().clientId = testClientId;
+      });
+
+      it('sets the cookie using the same utility as coveo.analytics', () => {
+        expect(Cookie.set).toHaveBeenCalledWith('visitorId', testClientId);
+      });
+
+      it('sets the cookie in the local storage', () => {
+        expect(localStorage.getItem('visitorId')).toEqual(testClientId);
       });
     });
   });

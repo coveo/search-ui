@@ -7,7 +7,8 @@ import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsAction
 import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
 import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
 import { MultiAnalyticsClient } from '../../src/ui/Analytics/MultiAnalyticsClient';
-import { AnalyticsEvents, $$ } from '../../src/Core';
+import { AnalyticsEvents, $$, QueryUtils } from '../../src/Core';
+import { MockCookie } from '../MockCookie';
 
 export function AnalyticsTest() {
   describe('Analytics', () => {
@@ -401,6 +402,37 @@ export function AnalyticsTest() {
           initAnalytics();
 
           expect(analyticsClient().splitTestRunVersion).toBe('foobar');
+        });
+      });
+    });
+
+    describe('initializes the visitorId correctly', () => {
+      beforeEach(() => {
+        MockCookie.clear();
+        localStorage.clear();
+      });
+
+      describe("when there's no cookie nor local storage", () => {
+        function getLastGeneratedGuid() {
+          return (QueryUtils.createGuid as jasmine.Spy).calls.mostRecent().returnValue as string;
+        }
+
+        beforeEach(() => {
+          spyOn(QueryUtils, 'createGuid').and.callThrough();
+          initAnalytics();
+        });
+
+        it('generates a visitorId', () => {
+          expect(getLastGeneratedGuid()).toBeTruthy();
+        });
+
+        it('creates a cookie supported by coveo.analytics', () => {
+          const cookie = MockCookie.get('coveo_visitorId');
+          expect(cookie && cookie.value).toEqual(getLastGeneratedGuid());
+        });
+
+        it('creates a localStorage value supported by coveo.analytics', () => {
+          expect(localStorage.getItem('visitorId')).toEqual(getLastGeneratedGuid());
         });
       });
     });

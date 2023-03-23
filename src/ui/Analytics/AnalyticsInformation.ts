@@ -1,14 +1,14 @@
 import { findLastIndex } from 'underscore';
 import { LocalStorageUtils } from '../../Core';
+import { CookieAndLocalStorage } from '../../utils/CookieAndLocalStorageUtils';
 import { Cookie } from '../../utils/CookieUtils';
 import { buildHistoryStore } from '../../utils/HistoryStore';
-import { SafeLocalStorage } from '../../utils/LocalStorageUtils';
 import { PendingSearchEvent } from './PendingSearchEvent';
 
 export class AnalyticsInformation {
   private readonly visitorIdKey = 'visitorId';
   private readonly clientIdKey = 'clientId';
-  private readonly storage = new SafeLocalStorage();
+  private readonly storage = new CookieAndLocalStorage();
 
   public pendingSearchEvent: PendingSearchEvent;
 
@@ -45,17 +45,16 @@ export class AnalyticsInformation {
   }
 
   public clear() {
-    this.clearLocalStorage();
-    this.clearCookies();
+    this.clearVisitorId();
+    this.clearClientId();
   }
 
-  private clearLocalStorage() {
+  private clearVisitorId() {
     this.storage.removeItem(this.visitorIdKey);
-    new LocalStorageUtils(this.clientIdKey).remove();
   }
 
-  private clearCookies() {
-    Cookie.erase(this.visitorIdKey);
+  private clearClientId() {
+    new LocalStorageUtils(this.clientIdKey).remove();
     Cookie.erase(this.clientIdKey);
   }
 }
