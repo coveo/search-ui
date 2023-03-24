@@ -1,5 +1,3 @@
-import { entries } from 'lodash';
-
 function mapToObject<T = any>(list: string[], predicate: (value: string) => [string, string]): T {
   const obj = {};
   list.forEach(listMember => {
@@ -70,8 +68,8 @@ export class MockCookie {
   }
 
   public get cookie() {
-    return entries(this.cookiesDict)
-      .map(([key, { value }]) => `${key}=${value}`)
+    return Object.keys(this.cookiesDict)
+      .map(key => `${key}=${this.cookiesDict[key]}`)
       .join('; ');
   }
 
