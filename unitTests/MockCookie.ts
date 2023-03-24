@@ -69,7 +69,7 @@ export class MockCookie {
 
   public get cookie() {
     return Object.keys(this.cookiesDict)
-      .map(key => `${key}=${this.cookiesDict[key]}`)
+      .map(key => `${key}=${this.cookiesDict[key].value}`)
       .join('; ');
   }
 
