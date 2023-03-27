@@ -5,6 +5,7 @@ import { chain, compact, contains, each, flatten, map, unique, without, uniqueId
 import {
   IBuildingQueryEventArgs,
   IDuringQueryEventArgs,
+  IFetchMoreSuccessEventArgs,
   INewQueryEventArgs,
   IQueryErrorEventArgs,
   IQuerySuccessEventArgs,
@@ -52,6 +53,7 @@ import ResultLayoutSelectorModule = require('../ResultLayoutSelector/ResultLayou
 import { IResultListOptions } from './ResultListOptions';
 import { ResultListUtils } from '../../utils/ResultListUtils';
 import { TemplateToHtml, ITemplateToHtml } from '../Templates/TemplateToHtml';
+import { IQuery } from '../../rest/Query';
 
 CoreHelpers.exportAllHelpersGlobally(window['Coveo']);
 
@@ -212,13 +214,13 @@ export class ResultList extends Component {
      *
      * Setting this option to `true` ensures that the Coveo Search API does not return fields that are unnecessary for
      * the UI to function.
-     * 
+     *
      * If you set this option to `true`, the fields referenced in your result folding templates won't be automatically resolved.
      * In such a case, you must manually specify those fields using the [`fieldsToInclude`]{@link ResultList.options.fieldsToInclude} option.
      *
      * **Notes:**
      *
-     * - Many interfaces created with the JavaScript Search Interface Editor explicitly set this option to `true`.   
+     * - Many interfaces created with the JavaScript Search Interface Editor explicitly set this option to `true`.
      * - You cannot set this option to `true` in the Coveo for Sitecore integration.
      */
     autoSelectFieldsToInclude: ComponentOptions.buildBooleanOption({ defaultValue: false }),
@@ -229,13 +231,13 @@ export class ResultList extends Component {
      * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
      * `true`, the Coveo Search API returns the fields you specify for this option (if those fields are available) in
      * addition to the fields which the `ResultList` automatically requests. Note that the `autoSelectFieldsToInclude`
-     * option doesn't automatically request fields for folding templates; in such a case, you must manually specify 
+     * option doesn't automatically request fields for folding templates; in such a case, you must manually specify
      * fields using this option to avoid empty results.
      *
      * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
      * `false`, the Coveo Search API only returns the fields you specify for this option (if those fields are
      * available).
-     * 
+     *
      * If you set the [`autoSelectFieldsToInclude`]{@link ResultList.options.autoSelectFieldsToInclude} option to
      * `false` and leave this option undefined, the Coveo Search API returns all available fields.
      */
@@ -341,6 +343,9 @@ export class ResultList extends Component {
     );
     this.bind.onRootElement<IQuerySuccessEventArgs>(QueryEvents.querySuccess, (args: IQuerySuccessEventArgs) =>
       this.handleQuerySuccess(args)
+    );
+    this.bind.onRootElement<IFetchMoreSuccessEventArgs>(QueryEvents.fetchMoreSuccess, (args: IFetchMoreSuccessEventArgs) =>
+      this.handleFetchMoreSuccess(args)
     );
     this.bind.onRootElement<IDuringQueryEventArgs>(QueryEvents.duringQuery, (args: IDuringQueryEventArgs) => this.handleDuringQuery());
     this.bind.onRootElement<IQueryErrorEventArgs>(QueryEvents.queryError, (args: IQueryErrorEventArgs) => this.handleQueryError());
@@ -547,7 +552,6 @@ export class ResultList extends Component {
       Assert.exists(data);
       this.usageAnalytics.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.pagerScrolling, {}, this.element);
 
-      this.reachedTheEndOfResults = count > data.results.length;
       this.renderNewResults(data);
 
       this.resetStateAfterFetchingMoreResults();
@@ -604,7 +608,6 @@ export class ResultList extends Component {
     this.hideWaitingAnimation();
 
     ResultList.resultCurrentlyBeingRendered = undefined;
-    this.reachedTheEndOfResults = data.query.numberOfResults > data.results.results.length;
 
     this.currentlyDisplayedResults = [];
     this.buildResults(data.results).then(async (elements: HTMLElement[]) => {
@@ -622,6 +625,16 @@ export class ResultList extends Component {
         this.handleScrollOfResultList();
       }
     });
+    this.handleQueryOrFetchMoreSuccess(data.query, results);
+  }
+
+  private handleFetchMoreSuccess(data: IFetchMoreSuccessEventArgs) {
+    this.handleQueryOrFetchMoreSuccess(data.query, data.results);
+  }
+
+  private handleQueryOrFetchMoreSuccess(query: IQuery, results: IQueryResults) {
+    const firstResultOfNextPage = (query.firstResult || 0) + results.results.length;
+    this.reachedTheEndOfResults = firstResultOfNextPage >= results.totalCountFiltered;
   }
 
   private handleScrollOfResultList() {
