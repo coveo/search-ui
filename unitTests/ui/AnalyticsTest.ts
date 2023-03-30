@@ -407,9 +407,16 @@ export function AnalyticsTest() {
     });
 
     describe('initializes the visitorId correctly', () => {
+      const mockDate = new Date(1680204658699);
       beforeEach(() => {
         MockCookie.clear();
         localStorage.clear();
+        jasmine.clock().install();
+        jasmine.clock().mockDate(mockDate);
+      });
+
+      afterEach(() => {
+        jasmine.clock().uninstall();
       });
 
       describe("when there's no cookie nor local storage", () => {
@@ -429,6 +436,12 @@ export function AnalyticsTest() {
         it('creates a cookie supported by coveo.analytics', () => {
           const cookie = MockCookie.get('coveo_visitorId');
           expect(cookie && cookie.value).toEqual(getLastGeneratedGuid());
+        });
+
+        it('sets the cookie expiration to 1 year', () => {
+          const cookie = MockCookie.get('coveo_visitorId');
+          const expirationDate = new Date(mockDate.getTime() + 31556926000);
+          expect(cookie && cookie.properties.expires).toEqual(expirationDate.toUTCString());
         });
 
         it('creates a localStorage value supported by coveo.analytics', () => {

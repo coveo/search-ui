@@ -16,6 +16,6 @@ export class CookieAndLocalStorage implements Partial<Storage> {
 
   setItem(key: string, data: string): void {
     this.safeLocalStorage.setItem(key, data);
-    Cookie.set(key, data);
+    Cookie.set(key, data, 31556926000); // 1 year first party cookie
   }
 }
