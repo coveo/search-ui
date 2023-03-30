@@ -1,11 +1,11 @@
 // Code originally modified from : https://developers.livechatinc.com/blog/setting-cookies-to-subdomains-in-javascript/
 // Should always match: https://github.com/coveo/coveo.analytics.js/blob/master/src/cookieutils.ts
 export class CoveoAnalyticsCookie {
-  static getHostname() {
+  private static getHostname() {
     return location.hostname;
   }
 
-  set(name: string, value: string, expire?: number) {
+  static set(name: string, value: string, expire?: number) {
     var domain: string, expirationDate: Date | undefined, domainParts: string[];
     if (expire) {
       expirationDate = new Date();
@@ -22,7 +22,7 @@ export class CoveoAnalyticsCookie {
     }
   }
 
-  get(name: string) {
+  static get(name: string) {
     var cookiePrefix = name + '=';
     var cookieArray = document.cookie.split(';');
     for (var i = 0; i < cookieArray.length; i++) {
@@ -35,7 +35,7 @@ export class CoveoAnalyticsCookie {
     return null;
   }
 
-  erase(name: string) {
+  static erase(name: string) {
     this.set(name, '', -1);
   }
 }
@@ -50,18 +50,17 @@ function writeCookie(name: string, value: string, expirationDate?: Date, domain?
 
 export class Cookie {
   private static prefix: string = 'coveo_';
-  private static coveoAnalyticsCookie = new CoveoAnalyticsCookie();
 
   static set(name: string, value: string, expire?: number) {
-    this.coveoAnalyticsCookie.set(this.getRealCookieName(name), value, expire);
+    CoveoAnalyticsCookie.set(this.getRealCookieName(name), value, expire);
   }
 
   static get(name: string) {
-    return this.coveoAnalyticsCookie.get(this.getRealCookieName(name));
+    return CoveoAnalyticsCookie.get(this.getRealCookieName(name));
   }
 
   static erase(name: string) {
-    return this.coveoAnalyticsCookie.erase(this.getRealCookieName(name));
+    return CoveoAnalyticsCookie.erase(this.getRealCookieName(name));
   }
 
   private static getRealCookieName(name: string) {
