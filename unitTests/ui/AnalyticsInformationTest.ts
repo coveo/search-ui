@@ -1,5 +1,5 @@
 import { AnalyticsInformation } from '../../src/ui/Analytics/AnalyticsInformation';
-import { CoveoAnalyticsCookie } from '../../src/utils/CookieUtils';
+import { ScopedCookie } from '../../src/utils/CookieUtils';
 import { buildHistoryStore } from '../../src/utils/HistoryStore';
 import { MockCookie } from '../MockCookie';
 
@@ -117,12 +117,12 @@ export function AnalyticsInformationTest() {
     describe('when setting the clientId', () => {
       const testClientId = 'hello';
       beforeEach(() => {
-        spyOn(CoveoAnalyticsCookie, 'set');
+        spyOn(ScopedCookie, 'set');
         new AnalyticsInformation().clientId = testClientId;
       });
 
       it('sets the cookie using the same utility as coveo.analytics', () => {
-        expect(CoveoAnalyticsCookie.set).toHaveBeenCalledWith('coveo_visitorId', testClientId, 31556926000);
+        expect(ScopedCookie.set).toHaveBeenCalledWith('visitorId', testClientId, 31556926000);
       });
 
       it('sets the cookie in the local storage', () => {

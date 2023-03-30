@@ -8,7 +8,7 @@ export { AnalyticsUtils } from './utils/AnalyticsUtils';
 export { HashUtils } from './utils/HashUtils';
 export { DeviceUtils } from './utils/DeviceUtils';
 export { ColorUtils } from './utils/ColorUtils';
-export { Cookie } from './utils/CookieUtils';
+export { ScopedCookie as Cookie } from './utils/CookieUtils';
 export { CurrencyUtils } from './utils/CurrencyUtils';
 export { DateUtils } from './utils/DateUtils';
 export { analyticsActionCauseList } from './ui/Analytics/AnalyticsActionListMeta';

@@ -1,21 +1,21 @@
-import { Cookie, CoveoAnalyticsCookie } from '../../src/utils/CookieUtils';
+import { ScopedCookie, CookieContext } from '../../src/utils/CookieUtils';
 import { MockCookie, MockSingleCookie } from '../MockCookie';
 import { Simulate } from '../Simulate';
 
 export function CookieUtilsTest() {
   describe('CookieUtils', function () {
     it('sets a cookie accordingly', () => {
-      Cookie.set('foo', 'bar');
+      ScopedCookie.set('foo', 'bar');
       expect(document.cookie.indexOf('foo=bar')).not.toBe(-1);
     });
 
     it('gets the right cookie when cookie exists', () => {
-      Cookie.set('dude', 'dudevalue');
-      expect(Cookie.get('dude')).toBe('dudevalue');
+      ScopedCookie.set('dude', 'dudevalue');
+      expect(ScopedCookie.get('dude')).toBe('dudevalue');
     });
 
     it("returns null if cookie doesn't exist", () => {
-      expect(Cookie.get('foobar2000')).toBe(null);
+      expect(ScopedCookie.get('foobar2000')).toBe(null);
     });
 
     it('erases cookie accordingly', () => {
@@ -24,7 +24,7 @@ export function CookieUtilsTest() {
         expect(true).toBe(true);
       } else {
         document.cookie = 'coveo_patate=frite';
-        Cookie.erase('patate');
+        ScopedCookie.erase('patate');
         expect(document.cookie.replace(' ', '').indexOf('coveo_patate=frite')).toBe(-1);
       }
     });
@@ -34,8 +34,8 @@ export function CookieUtilsTest() {
       const cookieName = `coveo_${scopedCookieName}`;
       const cookieValue = 'testvalue';
       function testCookie(options: { simulatedHostname: string }) {
-        spyOn(CoveoAnalyticsCookie, 'getHostname').and.returnValue(options.simulatedHostname);
-        Cookie.set(scopedCookieName, cookieValue);
+        spyOn(CookieContext, 'getHostname').and.returnValue(options.simulatedHostname);
+        ScopedCookie.set(scopedCookieName, cookieValue);
       }
 
       function buildMockSingleCookie(domain: string | null): MockSingleCookie {

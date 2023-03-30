@@ -1,21 +1,23 @@
-// Code originally modified from : https://developers.livechatinc.com/blog/setting-cookies-to-subdomains-in-javascript/
-// Should always match: https://github.com/coveo/coveo.analytics.js/blob/master/src/cookieutils.ts
-export class CoveoAnalyticsCookie {
-  private static getHostname() {
+export class CookieContext {
+  public static getHostname() {
     return location.hostname;
   }
+}
 
+// Code originally modified from : https://developers.livechatinc.com/blog/setting-cookies-to-subdomains-in-javascript/
+// Should always match: https://github.com/coveo/coveo.analytics.js/blob/master/src/cookieutils.ts
+class Cookie {
   static set(name: string, value: string, expire?: number) {
     var domain: string, expirationDate: Date | undefined, domainParts: string[];
     if (expire) {
       expirationDate = new Date();
       expirationDate.setTime(expirationDate.getTime() + expire);
     }
-    if (CoveoAnalyticsCookie.getHostname().indexOf('.') === -1) {
+    if (CookieContext.getHostname().indexOf('.') === -1) {
       // no "." in a domain - single domain name, it's localhost or something similar
       writeCookie(name, value, expirationDate);
     } else {
-      domainParts = CoveoAnalyticsCookie.getHostname().split('.');
+      domainParts = CookieContext.getHostname().split('.');
       // we always have at least 2 domain parts
       domain = domainParts[domainParts.length - 2] + '.' + domainParts[domainParts.length - 1];
       writeCookie(name, value, expirationDate, domain);
@@ -48,19 +50,19 @@ function writeCookie(name: string, value: string, expirationDate?: Date, domain?
     ';SameSite=Lax';
 }
 
-export class Cookie {
+export class ScopedCookie {
   private static prefix: string = 'coveo_';
 
   static set(name: string, value: string, expire?: number) {
-    CoveoAnalyticsCookie.set(this.getRealCookieName(name), value, expire);
+    Cookie.set(this.getRealCookieName(name), value, expire);
   }
 
   static get(name: string) {
-    return CoveoAnalyticsCookie.get(this.getRealCookieName(name));
+    return Cookie.get(this.getRealCookieName(name));
   }
 
   static erase(name: string) {
-    return CoveoAnalyticsCookie.erase(this.getRealCookieName(name));
+    return Cookie.erase(this.getRealCookieName(name));
   }
 
   private static getRealCookieName(name: string) {

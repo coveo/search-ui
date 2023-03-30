@@ -1,7 +1,7 @@
 import { findLastIndex } from 'underscore';
 import { LocalStorageUtils } from '../../Core';
 import { CookieAndLocalStorage } from '../../utils/CookieAndLocalStorageUtils';
-import { Cookie } from '../../utils/CookieUtils';
+import { ScopedCookie } from '../../utils/CookieUtils';
 import { buildHistoryStore } from '../../utils/HistoryStore';
 import { PendingSearchEvent } from './PendingSearchEvent';
 
@@ -55,6 +55,6 @@ export class AnalyticsInformation {
 
   private clearClientId() {
     new LocalStorageUtils(this.clientIdKey).remove();
-    Cookie.erase(this.clientIdKey);
+    ScopedCookie.erase(this.clientIdKey);
   }
 }
