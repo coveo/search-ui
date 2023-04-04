@@ -4,10 +4,10 @@ import { IQueryResults } from '../src/rest/QueryResults';
 import { IEndpointError } from '../src/rest/EndpointError';
 import { IQueryCorrection } from '../src/rest/QueryCorrection';
 import { IGroupByResult } from '../src/rest/GroupByResult';
-import { IMockEnvironment } from './MockEnvironment';
+import { IMockEnvironment, mockComponent } from './MockEnvironment';
 import { FakeResults } from './Fake';
 import { $$, Dom } from '../src/utils/Dom';
-import { QueryEvents } from '../src/events/QueryEvents';
+import { IFetchMoreSuccessEventArgs, QueryEvents } from '../src/events/QueryEvents';
 import {
   INewQueryEventArgs,
   IBuildingQueryEventArgs,
@@ -30,23 +30,30 @@ import { Component } from '../src/ui/Base/Component';
 import { QueryError } from '../src/rest/QueryError';
 import { InitializationEvents } from '../src/Core';
 import { IQuerySuggestCompletion } from '../src/rest/QuerySuggest';
+import { IQueryResult } from '../src/rest/QueryResult';
+
+export interface ISimulateIndexData {
+  results: IQueryResult[];
+}
 
 export interface ISimulateQueryData {
-  query?: IQuery;
-  queryBuilder?: QueryBuilder;
-  searchAsYouType?: boolean;
-  promise?: Promise<IQueryResults>;
+  query: IQuery;
+  queryBuilder: QueryBuilder;
+  searchAsYouType: boolean;
+  promise: Promise<IQueryResults>;
   error?: IEndpointError;
-  results?: IQueryResults;
+  results: IQueryResults;
   queryCorrections?: IQueryCorrection[];
   groupByResults?: IGroupByResult[];
-  callbackDuringQuery?: () => void;
-  callbackAfterNoResults?: () => void;
-  callbackAfterQuery?: () => void;
+  callbackDuringQuery: () => void;
+  callbackAfterNoResults: () => void;
+  callbackAfterQuery: () => void;
   doNotFlushDefer?: boolean;
-  deferSuccess?: boolean;
-  cancel?: boolean;
-  origin?: Component;
+  deferSuccess: boolean;
+  cancel: boolean;
+  origin: Component;
+  numberOfResults?: number;
+  simulatedIndex: ISimulateIndexData;
 }
 
 Object.defineProperty(navigator, 'doNotTrack', {
@@ -66,7 +73,7 @@ export class Simulate {
     return navigator.userAgent.indexOf('HeadlessChrome') != -1;
   }
 
-  static queryError(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
+  static queryError(env: IMockEnvironment, options?: Partial<ISimulateQueryData>): ISimulateQueryData {
     const opt = {
       ...options,
       ...{
@@ -83,7 +90,7 @@ export class Simulate {
     return Simulate.query(env, opt);
   }
 
-  static noResults(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
+  static noResults(env: IMockEnvironment, options?: Partial<ISimulateQueryData>): ISimulateQueryData {
     const opt = {
       ...options,
       results: FakeResults.createFakeResults(0)
@@ -91,24 +98,8 @@ export class Simulate {
     return Simulate.query(env, opt);
   }
 
-  static query(env: IMockEnvironment, options?: ISimulateQueryData): ISimulateQueryData {
-    options = _.extend(
-      {},
-      {
-        query: new QueryBuilder().build(),
-        queryBuilder: new QueryBuilder(),
-        searchAsYouType: false,
-        promise: new Promise(() => {}),
-        results: FakeResults.createFakeResults(),
-        callbackDuringQuery: () => {},
-        callbackAfterNoResults: () => {},
-        callbackAfterQuery: () => {},
-        deferSuccess: false,
-        cancel: false,
-        origin: NoopComponent
-      },
-      options
-    );
+  static query(env: IMockEnvironment, partialOptions?: Partial<ISimulateQueryData>): ISimulateQueryData {
+    const options = this.fillSimulatedQueryData(env, partialOptions || {}, 0);
 
     if (options.queryCorrections) {
       options.results.queryCorrections = options.queryCorrections;
@@ -148,16 +139,21 @@ export class Simulate {
 
     var success = () => {
       if (Utils.exists(options.error)) {
+        this.updateLastQueryAndResults(env, options.query, options.results);
         var queryErrorEventArgs: IQueryErrorEventArgs = {
           queryBuilder: options.queryBuilder,
           query: options.query,
           endpoint: env.searchEndpoint,
-          error: options.error,
+          error: options.error!,
           searchAsYouType: options.searchAsYouType
         };
         Promise.reject(options.promise).catch(e => {});
         $$(env.root).trigger(QueryEvents.queryError, queryErrorEventArgs);
       } else {
+        if (!('results' in (partialOptions || {}))) {
+          options.results = this.getSimulatedResults(options.query, options.simulatedIndex);
+        }
+        this.updateLastQueryAndResults(env, options.query, options.results);
         var preprocessResultsEventArgs: IPreprocessResultsEventArgs = {
           queryBuilder: options.queryBuilder,
           query: options.query,
@@ -206,6 +202,26 @@ export class Simulate {
       success();
     }
 
+    return options;
+  }
+
+  static fetchMore(env: IMockEnvironment, partialOptions?: Partial<ISimulateQueryData>) {
+    const options = this.fillSimulatedQueryData(env, partialOptions || {}, 'next');
+    const duringQueryEventArgs: IDuringQueryEventArgs = {
+      query: options.query,
+      queryBuilder: options.queryBuilder,
+      promise: options.promise,
+      searchAsYouType: options.searchAsYouType
+    };
+    $$(env.root).trigger(QueryEvents.duringFetchMoreQuery, duringQueryEventArgs);
+    const fetchMoreSuccessEventArgs: IFetchMoreSuccessEventArgs = {
+      query: options.query,
+      queryBuilder: options.queryBuilder,
+      results: options.results,
+      searchAsYouType: options.searchAsYouType
+    };
+    this.updateLastQueryAndResults(env, options.query, options.results);
+    $$(env.root).trigger(QueryEvents.fetchMoreSuccess, fetchMoreSuccessEventArgs);
     return options;
   }
 
@@ -352,5 +368,98 @@ export class Simulate {
 
   static removeJQuery(): void {
     window['Coveo']['$'] = null;
+  }
+
+  private static getDefaultQueryBuilder(
+    env: IMockEnvironment,
+    partialData: Partial<ISimulateQueryData>,
+    firstResult: number | 'next'
+  ): QueryBuilder {
+    const queryBuilder = new QueryBuilder();
+    if (!Utils.isNullOrUndefined(partialData.numberOfResults)) {
+      queryBuilder.numberOfResults = partialData.numberOfResults!;
+    }
+    if (typeof firstResult === 'number') {
+      queryBuilder.firstResult = firstResult;
+    } else {
+      const { lastQuery, lastResults } = this.getLastQueryAndResults(env);
+      queryBuilder.firstResult = (lastQuery ? lastQuery.firstResult || 0 : 0) + (lastResults ? lastResults.results.length : 0);
+    }
+    return queryBuilder;
+  }
+
+  private static getDefaultSimulatedIndex(partialData: Partial<ISimulateQueryData>, query: IQuery): ISimulateIndexData {
+    if (!partialData.results) {
+      return { results: FakeResults.createFakeResults(query.numberOfResults).results };
+    }
+    return { results: partialData.results.results };
+  }
+
+  private static fillSimulatedQueryData(
+    env: IMockEnvironment,
+    partialData: Partial<ISimulateQueryData>,
+    fallbackFirstResult: number | 'next'
+  ): ISimulateQueryData {
+    const queryBuilder = partialData.queryBuilder || this.getDefaultQueryBuilder(env, partialData, fallbackFirstResult);
+    const query = partialData.query || queryBuilder.build();
+    const simulatedIndex: ISimulateIndexData = partialData.simulatedIndex || this.getDefaultSimulatedIndex(partialData, query);
+    const results = partialData.results || this.getSimulatedResults(query, simulatedIndex);
+    return {
+      ..._.extend({}, partialData, {
+        searchAsYouType: false,
+        promise: new Promise(() => {}),
+        callbackDuringQuery: () => {},
+        callbackAfterNoResults: () => {},
+        callbackAfterQuery: () => {},
+        deferSuccess: false,
+        cancel: false,
+        origin: mockComponent<NoopComponent>(NoopComponent, NoopComponent.ID)
+      }),
+      query,
+      queryBuilder,
+      results,
+      simulatedIndex
+    };
+  }
+
+  private static getSimulatedResults(query: IQuery, simulatedIndex: ISimulateIndexData) {
+    const firstResult = Utils.isNullOrUndefined(query.firstResult) ? 0 : query.firstResult!;
+    const numberOfResults = Utils.isNullOrUndefined(query.numberOfResults) ? 10 : query.numberOfResults!;
+    return {
+      ...FakeResults.createFakeResults(0, { totalCount: simulatedIndex.results.length }),
+      results: simulatedIndex.results.slice(firstResult, firstResult + numberOfResults)
+    };
+  }
+
+  private static getLastQueryAndResults(env: IMockEnvironment) {
+    const getLastQuerySpy = this.getLastQuerySpy(env);
+    const getLastResultsSpy = this.getLastResultsSpy(env);
+    if (!getLastQuerySpy || !getLastResultsSpy) {
+      throw "The query controller was expected to be a mock, but it wasn't.";
+    }
+    const lastQuery = getLastQuerySpy() as IQuery;
+    const lastResults = getLastResultsSpy() as IQueryResults;
+    return { lastQuery, lastResults };
+  }
+
+  private static updateLastQueryAndResults(env: IMockEnvironment, query: IQuery, results: IQueryResults) {
+    const getLastQuerySpy = this.getLastQuerySpy(env);
+    const getLastResultsSpy = this.getLastResultsSpy(env);
+    getLastQuerySpy && getLastQuerySpy.and.returnValue(query);
+    getLastResultsSpy && getLastResultsSpy.and.returnValue(results);
+  }
+
+  private static getLastQuerySpy(env: IMockEnvironment) {
+    if (!jasmine.isSpy(env.queryController.getLastQuery)) {
+      return null;
+    }
+    return env.queryController.getLastQuery as jasmine.Spy;
+  }
+
+  private static getLastResultsSpy(env: IMockEnvironment) {
+    if (!jasmine.isSpy(env.queryController.getLastResults)) {
+      return null;
+    }
+    return env.queryController.getLastResults as jasmine.Spy;
   }
 }
