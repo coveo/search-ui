@@ -17,11 +17,20 @@ import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLa
 import { ResultListUtils } from '../../src/utils/ResultListUtils';
 import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
 import { Utils } from '../../src/utils/Utils';
+import { QueryEvents } from '../../src/EventsModules';
+import { IDuringQueryEventArgs } from '../../src/events/QueryEvents';
 
 export function ResultListTest() {
   describe('ResultList', () => {
     function waitForResultsToBeDisplayed() {
       return new Promise(resolve => $$(test.env.root).one(ResultListEvents.newResultsDisplayed, resolve));
+    }
+
+    function waitForQuerySuccess() {
+      return new Promise(resolve => {
+        $$(test.env.root).one(QueryEvents.querySuccess, resolve);
+        $$(test.env.root).one(QueryEvents.fetchMoreSuccess, resolve);
+      });
     }
 
     async function simulateSearch(simulateQueryData?: Partial<ISimulateQueryData>) {
@@ -126,30 +135,30 @@ export function ResultListTest() {
           done();
         });
 
-        it('should queue up another scroll when it receives results to fill up the container, if infinite scrolling is enabled', async done => {
+        it('should queue up another scroll when it receives results to fill up the container', async done => {
           await simulateFetchMore();
           expect(test.env.queryController.fetchMore).toHaveBeenCalled();
           done();
         });
 
         it('should not queue up infinite amount of request if it is trying to fill up the scrolling container', async done => {
-          async function waitForFetchingMoreResults() {
-            const fetchingMoreResults = test.cmp['fetchingMoreResults'];
-            if (!!fetchingMoreResults) {
-              await fetchingMoreResults;
-            } else {
-              await Utils.resolveAfter(0);
-              const newFetchingMoreResults = test.cmp['fetchingMoreResults'];
-              if (!newFetchingMoreResults) {
-                return;
-              }
-              await newFetchingMoreResults;
+          async function waitForSuccessAndAllAdditionalQueries() {
+            let newQueryPromises: Promise<any>[] = [];
+            function duringQueryHandler(_, args: IDuringQueryEventArgs) {
+              newQueryPromises.push(args.promise);
             }
-            await waitForFetchingMoreResults();
+            $$(test.env.root).on(QueryEvents.duringFetchMoreQuery, duringQueryHandler);
+            await waitForQuerySuccess();
+            await Utils.resolveAfter(5);
+            while (newQueryPromises.length > 0) {
+              await newQueryPromises.pop();
+              await Utils.resolveAfter(5);
+            }
+            $$(test.env.root).off(QueryEvents.duringFetchMoreQuery, duringQueryHandler);
           }
 
           test.cmp.displayMoreResults(resultsPerPage);
-          await waitForFetchingMoreResults();
+          await waitForSuccessAndAllAdditionalQueries();
           // Once at the initial request, + 5 (ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS)
           expect(test.env.queryController.fetchMore).toHaveBeenCalledTimes(6);
           done();
