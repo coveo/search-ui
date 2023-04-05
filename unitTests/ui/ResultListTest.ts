@@ -49,19 +49,12 @@ export function ResultListTest() {
       }
 
       (<jasmine.Spy>test.env.queryController.executeQuery).and.callFake(
-        async (_: undefined, simulateQueryData?: Partial<ISimulateQueryData>) => {
-          const { env } = test;
-          await Utils.resolveAfter(0);
-          const simulatedQuery = Simulate.query(env, simulateQueryData || getSimulateQueryData());
-          return simulatedQuery.results;
-        }
+        (_: undefined, simulateQueryData?: Partial<ISimulateQueryData>) =>
+          Simulate.query(test.env, simulateQueryData || getSimulateQueryData()).promise
       );
-      (<jasmine.Spy>test.env.queryController.fetchMore).and.callFake(async (count: number) => {
-        const { env } = test;
-        await Utils.resolveAfter(0);
-        const simulatedQuery = Simulate.fetchMore(env, getSimulateQueryData(count));
-        return simulatedQuery.results;
-      });
+      (<jasmine.Spy>test.env.queryController.fetchMore).and.callFake(
+        (count: number) => Simulate.fetchMore(test.env, getSimulateQueryData(count)).promise
+      );
     }
 
     let test: Mock.IBasicComponentSetup<ResultList>;

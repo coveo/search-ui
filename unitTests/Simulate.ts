@@ -37,12 +37,12 @@ export interface ISimulateIndexData {
 }
 
 export interface ISimulateQueryData {
-  query: IQuery;
+  query?: IQuery;
   queryBuilder: QueryBuilder;
   searchAsYouType: boolean;
-  promise: Promise<IQueryResults>;
+  promise?: Promise<IQueryResults>;
   error?: IEndpointError;
-  results: IQueryResults;
+  results?: IQueryResults;
   queryCorrections?: IQueryCorrection[];
   groupByResults?: IGroupByResult[];
   callbackDuringQuery: () => void;
@@ -101,13 +101,6 @@ export class Simulate {
   static query(env: IMockEnvironment, partialOptions?: Partial<ISimulateQueryData>): ISimulateQueryData {
     const options = this.fillSimulatedQueryData(env, partialOptions || {}, 0);
 
-    if (options.queryCorrections) {
-      options.results.queryCorrections = options.queryCorrections;
-    }
-    if (options.groupByResults) {
-      options.results.groupByResults = options.groupByResults;
-    }
-
     var newQueryEventArgs: INewQueryEventArgs = {
       searchAsYouType: options.searchAsYouType,
       cancel: options.cancel,
@@ -116,8 +109,9 @@ export class Simulate {
     };
     $$(env.root).trigger(QueryEvents.newQuery, newQueryEventArgs);
 
+    const queryBuilder = options.queryBuilder;
     var buildingQueryEventArgs: IBuildingQueryEventArgs = {
-      queryBuilder: options.queryBuilder,
+      queryBuilder,
       searchAsYouType: false,
       cancel: false
     };
@@ -128,65 +122,63 @@ export class Simulate {
       return options;
     }
 
-    var duringQueryEventArgs: IDuringQueryEventArgs = {
-      query: options.query,
-      queryBuilder: options.queryBuilder,
-      promise: options.promise,
-      searchAsYouType: options.searchAsYouType
-    };
-    $$(env.root).trigger(QueryEvents.duringQuery, duringQueryEventArgs);
-    options.callbackDuringQuery();
+    const query = options.query || queryBuilder.build();
+    let results: IQueryResults | null;
+    if (!Utils.exists(options.error)) {
+      results = options.results || this.getSimulatedResults(query, options.simulatedIndex);
+      if (options.queryCorrections) {
+        results.queryCorrections = options.queryCorrections;
+      }
+      if (options.groupByResults) {
+        results.groupByResults = options.groupByResults;
+      }
+    }
 
     var success = () => {
-      if (Utils.exists(options.error)) {
-        this.updateLastQueryAndResults(env, options.query, options.results);
+      this.updateLastQueryAndResults(env, query, results);
+      if (!results) {
         var queryErrorEventArgs: IQueryErrorEventArgs = {
-          queryBuilder: options.queryBuilder,
-          query: options.query,
+          queryBuilder,
+          query,
           endpoint: env.searchEndpoint,
           error: options.error!,
           searchAsYouType: options.searchAsYouType
         };
         Promise.reject(options.promise).catch(e => {});
         $$(env.root).trigger(QueryEvents.queryError, queryErrorEventArgs);
+        return results!;
+      }
+      var preprocessResultsEventArgs: IPreprocessResultsEventArgs = {
+        queryBuilder,
+        query,
+        results: results,
+        searchAsYouType: options.searchAsYouType
+      };
+      $$(env.root).trigger(QueryEvents.preprocessResults, preprocessResultsEventArgs);
+
+      var noResultsEventArgs: INoResultsEventArgs = {
+        query,
+        queryBuilder,
+        results: results,
+        searchAsYouType: options.searchAsYouType,
+        retryTheQuery: false
+      };
+      if (results!.totalCount == 0 || results.results.length == 0) {
+        $$(env.root).trigger(QueryEvents.noResults, noResultsEventArgs);
+        options.callbackAfterNoResults();
+      }
+
+      if (noResultsEventArgs.retryTheQuery) {
+        // do nothing, as this could cause test to loop endlessly if they do not handle the query being retried.
       } else {
-        if (!('results' in (partialOptions || {}))) {
-          options.results = this.getSimulatedResults(options.query, options.simulatedIndex);
-        }
-        this.updateLastQueryAndResults(env, options.query, options.results);
-        var preprocessResultsEventArgs: IPreprocessResultsEventArgs = {
-          queryBuilder: options.queryBuilder,
-          query: options.query,
-          results: options.results,
+        var querySuccessEventArgs: IQuerySuccessEventArgs = {
+          query,
+          queryBuilder,
+          results,
           searchAsYouType: options.searchAsYouType
         };
-        $$(env.root).trigger(QueryEvents.preprocessResults, preprocessResultsEventArgs);
-
-        var noResultsEventArgs: INoResultsEventArgs = {
-          query: options.query,
-          queryBuilder: options.queryBuilder,
-          results: options.results,
-          searchAsYouType: options.searchAsYouType,
-          retryTheQuery: false
-        };
-
-        if (options.results.totalCount == 0 || options.results.results.length == 0) {
-          $$(env.root).trigger(QueryEvents.noResults, noResultsEventArgs);
-          options.callbackAfterNoResults();
-        }
-
-        if (noResultsEventArgs.retryTheQuery) {
-          // do nothing, as this could cause test to loop endlessly if they do not handle the query being retried.
-        } else {
-          var querySuccessEventArgs: IQuerySuccessEventArgs = {
-            query: options.query,
-            queryBuilder: options.queryBuilder,
-            results: options.results,
-            searchAsYouType: options.searchAsYouType
-          };
-          $$(env.root).trigger(QueryEvents.querySuccess, querySuccessEventArgs);
-          $$(env.root).trigger(QueryEvents.deferredQuerySuccess, querySuccessEventArgs);
-        }
+        $$(env.root).trigger(QueryEvents.querySuccess, querySuccessEventArgs);
+        $$(env.root).trigger(QueryEvents.deferredQuerySuccess, querySuccessEventArgs);
       }
 
       if (!options.doNotFlushDefer) {
@@ -194,35 +186,69 @@ export class Simulate {
       }
 
       options.callbackAfterQuery();
+      return results;
     };
 
-    if (options.deferSuccess) {
-      Defer.defer(success);
-    } else {
-      success();
-    }
+    const actualPromise = new Promise<IQueryResults>(resolve => {
+      const promise = options.promise || actualPromise;
+      const duringQueryEventArgs: IDuringQueryEventArgs = {
+        query,
+        queryBuilder,
+        promise,
+        searchAsYouType: options.searchAsYouType
+      };
+      $$(env.root).trigger(QueryEvents.duringQuery, duringQueryEventArgs);
+      options.callbackDuringQuery();
+      if (options.deferSuccess) {
+        Defer.defer(() => resolve(success()));
+      } else {
+        resolve(success());
+      }
+    });
+    const promise = options.promise || actualPromise;
 
-    return options;
+    return { ...options, queryBuilder, query, results: results!, promise };
   }
 
-  static fetchMore(env: IMockEnvironment, partialOptions?: Partial<ISimulateQueryData>) {
+  static fetchMore(env: IMockEnvironment, partialOptions?: Partial<ISimulateQueryData>): ISimulateQueryData {
     const options = this.fillSimulatedQueryData(env, partialOptions || {}, 'next');
-    const duringQueryEventArgs: IDuringQueryEventArgs = {
-      query: options.query,
-      queryBuilder: options.queryBuilder,
-      promise: options.promise,
-      searchAsYouType: options.searchAsYouType
+    const queryBuilder = options.queryBuilder;
+    const query = options.query || queryBuilder.build();
+    const results = options.results || this.getSimulatedResults(query, options.simulatedIndex);
+    const actualPromise = new Promise<IQueryResults>(resolve => {
+      const promise = options.promise || actualPromise;
+      const duringQueryEventArgs: IDuringQueryEventArgs = {
+        query,
+        queryBuilder,
+        promise,
+        searchAsYouType: options.searchAsYouType
+      };
+      $$(env.root).trigger(QueryEvents.duringFetchMoreQuery, duringQueryEventArgs);
+      const preprocessResultsEventArgs: IPreprocessResultsEventArgs = {
+        queryBuilder,
+        query,
+        results,
+        searchAsYouType: options.searchAsYouType
+      };
+      $$(env.root).trigger(QueryEvents.preprocessResults, preprocessResultsEventArgs);
+      const fetchMoreSuccessEventArgs: IFetchMoreSuccessEventArgs = {
+        query,
+        queryBuilder,
+        results,
+        searchAsYouType: options.searchAsYouType
+      };
+      this.updateLastQueryAndResults(env, query, results);
+      $$(env.root).trigger(QueryEvents.fetchMoreSuccess, fetchMoreSuccessEventArgs);
+      resolve(results);
+    });
+    const promise = options.promise || actualPromise;
+    return {
+      ...options,
+      queryBuilder,
+      query,
+      results,
+      promise
     };
-    $$(env.root).trigger(QueryEvents.duringFetchMoreQuery, duringQueryEventArgs);
-    const fetchMoreSuccessEventArgs: IFetchMoreSuccessEventArgs = {
-      query: options.query,
-      queryBuilder: options.queryBuilder,
-      results: options.results,
-      searchAsYouType: options.searchAsYouType
-    };
-    this.updateLastQueryAndResults(env, options.query, options.results);
-    $$(env.root).trigger(QueryEvents.fetchMoreSuccess, fetchMoreSuccessEventArgs);
-    return options;
   }
 
   static querySuggest(env: IMockEnvironment, query: string, completions: string[] = []) {
@@ -401,23 +427,23 @@ export class Simulate {
     fallbackFirstResult: number | 'next'
   ): ISimulateQueryData {
     const queryBuilder = partialData.queryBuilder || this.getDefaultQueryBuilder(env, partialData, fallbackFirstResult);
-    const query = partialData.query || queryBuilder.build();
-    const simulatedIndex: ISimulateIndexData = partialData.simulatedIndex || this.getDefaultSimulatedIndex(partialData, query);
-    const results = partialData.results || this.getSimulatedResults(query, simulatedIndex);
+    const simulatedIndex: ISimulateIndexData =
+      partialData.simulatedIndex || this.getDefaultSimulatedIndex(partialData, partialData.query || queryBuilder.build());
     return {
-      ..._.extend({}, partialData, {
-        searchAsYouType: false,
-        promise: new Promise(() => {}),
-        callbackDuringQuery: () => {},
-        callbackAfterNoResults: () => {},
-        callbackAfterQuery: () => {},
-        deferSuccess: false,
-        cancel: false,
-        origin: mockComponent<NoopComponent>(NoopComponent, NoopComponent.ID)
-      }),
-      query,
+      ..._.extend(
+        {},
+        {
+          searchAsYouType: false,
+          callbackDuringQuery: () => {},
+          callbackAfterNoResults: () => {},
+          callbackAfterQuery: () => {},
+          deferSuccess: false,
+          cancel: false,
+          origin: mockComponent<NoopComponent>(NoopComponent, NoopComponent.ID)
+        },
+        partialData
+      ),
       queryBuilder,
-      results,
       simulatedIndex
     };
   }
@@ -442,7 +468,7 @@ export class Simulate {
     return { lastQuery, lastResults };
   }
 
-  private static updateLastQueryAndResults(env: IMockEnvironment, query: IQuery, results: IQueryResults) {
+  private static updateLastQueryAndResults(env: IMockEnvironment, query: IQuery, results: IQueryResults | null) {
     const getLastQuerySpy = this.getLastQuerySpy(env);
     const getLastResultsSpy = this.getLastResultsSpy(env);
     getLastQuerySpy && getLastQuerySpy.and.returnValue(query);
