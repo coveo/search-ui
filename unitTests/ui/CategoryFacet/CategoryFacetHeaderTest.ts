@@ -9,7 +9,7 @@ export function CategoryFacetHeaderTest() {
   describe('CategoryFacetHeader', () => {
     let categoryFacetHeader: CategoryFacetHeader;
     let test: Mock.IBasicComponentSetup<CategoryFacet>;
-    let simulateQueryData: ISimulateQueryData;
+    let simulateQueryData: Partial<ISimulateQueryData>;
     let baseOptions: ICategoryFacetHeaderOptions;
 
     function initCategoryFacetHeader() {
