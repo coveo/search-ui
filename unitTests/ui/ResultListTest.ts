@@ -2,7 +2,7 @@ import * as Mock from '../MockEnvironment';
 import { ResultList } from '../../src/ui/ResultList/ResultList';
 import { registerCustomMatcher } from '../CustomMatchers';
 import { FakeResults } from '../Fake';
-import { Simulate } from '../Simulate';
+import { ISimulateQueryData, Simulate } from '../Simulate';
 import { $$ } from '../../src/utils/Dom';
 import { ResultListEvents, IChangeLayoutEventArgs } from '../../src/events/ResultListEvents';
 import { IResultListOptions } from '../../src/ui/ResultList/ResultListOptions';
@@ -12,19 +12,67 @@ import { AdvancedComponentSetupOptions } from '../MockEnvironment';
 import { TemplateList } from '../../src/ui/Templates/TemplateList';
 import { QueryBuilder } from '../../src/ui/Base/QueryBuilder';
 import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsActionListMeta';
-import { IQueryResults } from '../../src/rest/QueryResults';
 import { Defer } from '../../src/misc/Defer';
 import { ResultLayoutSelector } from '../../src/ui/ResultLayoutSelector/ResultLayoutSelector';
 import { ResultListUtils } from '../../src/utils/ResultListUtils';
 import { QUERY_STATE_ATTRIBUTES } from '../../src/models/QueryStateModel';
+import { Utils } from '../../src/utils/Utils';
+import { QueryEvents } from '../../src/EventsModules';
+import { IDuringQueryEventArgs } from '../../src/events/QueryEvents';
 
 export function ResultListTest() {
   describe('ResultList', () => {
-    let test: Mock.IBasicComponentSetup<ResultList>;
+    function waitForResultsToBeDisplayed() {
+      return new Promise(resolve => $$(test.env.root).one(ResultListEvents.newResultsDisplayed, resolve));
+    }
 
+    function waitForQuerySuccess() {
+      return new Promise(resolve => {
+        $$(test.env.root).one(QueryEvents.querySuccess, resolve);
+        $$(test.env.root).one(QueryEvents.fetchMoreSuccess, resolve);
+      });
+    }
+
+    async function simulateSearch(simulateQueryData?: Partial<ISimulateQueryData>) {
+      const promise = waitForResultsToBeDisplayed();
+      await (test.env.queryController.executeQuery as jasmine.Spy)(undefined, simulateQueryData);
+      await promise;
+    }
+
+    async function simulateFetchMore() {
+      const promise = waitForResultsToBeDisplayed();
+      const results = await test.cmp.displayMoreResults(resultsPerPage);
+      if (results) {
+        await promise;
+      }
+    }
+
+    function mockQueryControllerSearches() {
+      function getSimulateQueryData(count?: number): Partial<ISimulateQueryData> {
+        return {
+          simulatedIndex: {
+            results: FakeResults.createFakeResults(resultsPerPage * numberOfPages).results
+          },
+          numberOfResults: Utils.isNullOrUndefined(count) ? resultsPerPage : count
+        };
+      }
+
+      (<jasmine.Spy>test.env.queryController.executeQuery).and.callFake(
+        (_: undefined, simulateQueryData?: Partial<ISimulateQueryData>) =>
+          Simulate.query(test.env, simulateQueryData || getSimulateQueryData()).promise
+      );
+      (<jasmine.Spy>test.env.queryController.fetchMore).and.callFake(
+        (count: number) => Simulate.fetchMore(test.env, getSimulateQueryData(count)).promise
+      );
+    }
+
+    let test: Mock.IBasicComponentSetup<ResultList>;
+    const resultsPerPage = 10;
+    const numberOfPages = 3;
     beforeEach(() => {
       test = Mock.basicComponentSetup<ResultList>(ResultList);
       registerCustomMatcher();
+      mockQueryControllerSearches();
     });
 
     afterEach(() => {
@@ -32,149 +80,118 @@ export function ResultListTest() {
     });
 
     describe('displayMoreResults', () => {
-      beforeEach(() => {
+      beforeEach(async done => {
         // Fill the result list one time first, so we can have more results.
-        Simulate.query(test.env);
+        await simulateSearch();
+        done();
       });
 
-      describe('when returning less than 10 results', () => {
-        let promiseResults: Promise<IQueryResults>;
-        beforeEach(() => {
-          promiseResults = new Promise(resolve => {
-            resolve(FakeResults.createFakeResults(5));
-          });
-
-          (<jasmine.Spy>test.env.queryController.fetchMore).and.returnValue(promiseResults);
-        });
-
-        it('should stop asking for more results if consecutive calls are queued', done => {
-          Defer.defer(() => {
-            test.cmp.displayMoreResults(10);
-            test.cmp.displayMoreResults(10);
-            test.cmp.displayMoreResults(10);
-            expect(test.env.queryController.fetchMore).toHaveBeenCalledTimes(1);
-            done();
-          });
-        });
-
-        it('should stop asking for more results if less results than requested are returned', done => {
-          Defer.defer(() => {
-            test.cmp.displayMoreResults(10);
-            promiseResults.then(() => {
-              test.cmp.displayMoreResults(10);
-              expect(test.env.queryController.fetchMore).toHaveBeenCalledTimes(1);
-              done();
-            });
-          });
-        });
+      it('should stop asking for more results if consecutive calls are queued', async done => {
+        await Promise.all([simulateFetchMore(), simulateFetchMore(), simulateFetchMore()]);
+        expect(test.env.queryController.fetchMore).toHaveBeenCalledTimes(1);
+        done();
       });
 
-      describe('when returning 10 or more results', () => {
-        let promiseResults: Promise<IQueryResults>;
-        beforeEach(() => {
-          promiseResults = new Promise(resolve => {
-            resolve(FakeResults.createFakeResults(10));
-          });
+      it('should stop asking for more results if totalCount implies there are no more results left', async done => {
+        await simulateFetchMore();
+        await simulateFetchMore();
+        await simulateFetchMore();
+        expect(test.env.queryController.fetchMore).toHaveBeenCalledTimes(2);
+        done();
+      });
 
-          (<jasmine.Spy>test.env.queryController.fetchMore).and.returnValue(promiseResults);
+      it('should trigger 10 new result displayed event when fetching more results', async done => {
+        const newResultSpy = jasmine.createSpy('newresultspy');
+        $$(test.cmp.element).on(ResultListEvents.newResultDisplayed, newResultSpy);
+        await simulateFetchMore();
+        expect(newResultSpy).toHaveBeenCalledTimes(10);
+        done();
+      });
+
+      it('should trigger a single new results displayed event when fetching more results', async done => {
+        const newResultsSpy = jasmine.createSpy('newresultsspy');
+        $$(test.cmp.element).on(ResultListEvents.newResultsDisplayed, newResultsSpy);
+        await simulateFetchMore();
+        expect(newResultsSpy).toHaveBeenCalledTimes(1);
+        done();
+      });
+
+      it('should log an analytics event when more results are returned', async done => {
+        await simulateFetchMore();
+        expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
+          analyticsActionCauseList.pagerScrolling,
+          jasmine.any(Object),
+          test.cmp.element
+        );
+        done();
+      });
+
+      describe('when infinite scrolling is enabled', () => {
+        beforeEach(async done => {
+          test = Mock.basicComponentSetup<ResultList>(ResultList, { enableInfiniteScroll: true, infiniteScrollPageSize: 1 });
+          mockQueryControllerSearches();
+          await simulateSearch();
+          spyOn(test.cmp as any, 'isScrollingOfResultListAlmostAtTheBottom').and.returnValue(true);
+          done();
         });
 
-        afterEach(() => {
-          promiseResults = null;
+        it('should queue up another scroll when it receives results to fill up the container', async done => {
+          await simulateFetchMore();
+          expect(test.env.queryController.fetchMore).toHaveBeenCalled();
+          done();
         });
 
-        it('should trigger 10 new result displayed event when fetching more results', done => {
-          const newResultSpy = jasmine.createSpy('newresultspy');
-          $$(test.cmp.element).on(ResultListEvents.newResultDisplayed, newResultSpy);
-          Defer.defer(() => {
-            test.cmp.displayMoreResults(10).then(() => {
-              expect(newResultSpy).toHaveBeenCalledTimes(10);
-              done();
-            });
-          });
-        });
+        it('should not queue up infinite amount of request if it is trying to fill up the scrolling container', async done => {
+          async function waitForSuccessAndAllAdditionalQueries() {
+            let newQueryPromises: Promise<any>[] = [];
+            function duringQueryHandler(_, args: IDuringQueryEventArgs) {
+              newQueryPromises.push(args.promise);
+            }
+            $$(test.env.root).on(QueryEvents.duringFetchMoreQuery, duringQueryHandler);
+            await waitForQuerySuccess();
+            await Utils.resolveAfter(5);
+            while (newQueryPromises.length > 0) {
+              await newQueryPromises.pop();
+              await Utils.resolveAfter(5);
+            }
+            $$(test.env.root).off(QueryEvents.duringFetchMoreQuery, duringQueryHandler);
+          }
 
-        it('should trigger a single new results displayed event when fetching more results', done => {
-          const newResultsSpy = jasmine.createSpy('newresultsspy');
-          $$(test.cmp.element).on(ResultListEvents.newResultsDisplayed, newResultsSpy);
-
-          Defer.defer(() => {
-            test.cmp.displayMoreResults(10).then(() => {
-              expect(newResultsSpy).toHaveBeenCalledTimes(1);
-              done();
-            });
-          });
-        });
-
-        it('should log an analytics event when more results are returned', done => {
-          Defer.defer(() => {
-            test.cmp.displayMoreResults(10).then(() => {
-              expect(test.env.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-                analyticsActionCauseList.pagerScrolling,
-                jasmine.any(Object),
-                test.cmp.element
-              );
-              done();
-            });
-          });
-        });
-
-        it('should queue up another scroll when it receives results to fill up the container, if infinite scrolling is enabled', done => {
-          test.cmp.options.enableInfiniteScroll = true;
-          Defer.defer(() => {
-            test.cmp.displayMoreResults(10);
-            promiseResults.then(() => {
-              setTimeout(() => {
-                expect(test.env.queryController.fetchMore).toHaveBeenCalled();
-                done();
-              }, 1000);
-            });
-          });
-        });
-
-        it('should not queue up infinite amount of request if it is trying to fill up the scrolling container', done => {
-          test.cmp.options.enableInfiniteScroll = true;
-          test.cmp.displayMoreResults(10);
-          promiseResults.then(() => {
-            setTimeout(() => {
-              // Once at the initial request, + 5 (ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS)
-              expect(test.env.queryController.fetchMore).toHaveBeenCalledTimes(6);
-              done();
-            }, 1000);
-          });
+          test.cmp.displayMoreResults(resultsPerPage);
+          await waitForSuccessAndAllAdditionalQueries();
+          // Once at the initial request, + 5 (ResultList.MAX_AMOUNT_OF_SUCESSIVE_REQUESTS)
+          expect(test.env.queryController.fetchMore).toHaveBeenCalledTimes(6);
+          done();
         });
       });
     });
 
-    it('should tell if there are more results to display after a successful query', done => {
+    it('should tell if there are more results to display after a successful query', async done => {
+      const results = FakeResults.createFakeResults(10, { totalCount: 11 });
       const queryBuilder = new QueryBuilder();
       queryBuilder.numberOfResults = 10;
 
-      Simulate.query(test.env, {
-        results: FakeResults.createFakeResults(10),
+      await simulateSearch({
+        results,
         query: queryBuilder.build()
       });
 
-      Defer.defer(() => {
-        expect(test.cmp.hasPotentiallyMoreResultsToDisplay()).toBeTruthy();
-        done();
-      });
+      expect(test.cmp.hasPotentiallyMoreResultsToDisplay()).toBeTruthy();
+      done();
     });
 
-    it('should tell if there are no more results to display after a successful query with a limited amount of results returned', done => {
-      const results = FakeResults.createFakeResults(5);
+    it('should tell if there are no more results to display after a successful query with a limited amount of results returned', async done => {
+      const results = FakeResults.createFakeResults(10, { totalCount: 10 });
       const queryBuilder = new QueryBuilder();
       queryBuilder.numberOfResults = 10;
 
-      Simulate.query(test.env, {
-        results: results,
+      await simulateSearch({
+        results,
         query: queryBuilder.build()
       });
 
-      Defer.defer(() => {
-        expect(test.cmp.hasPotentiallyMoreResultsToDisplay()).toBeFalsy();
-        done();
-      });
+      expect(test.cmp.hasPotentiallyMoreResultsToDisplay()).toBeFalsy();
+      done();
     });
 
     it('should allow to return the currently displayed result', () => {
@@ -637,35 +654,32 @@ export function ResultListTest() {
         });
       });
 
-      it('enableInfiniteScroll allow to enable infinite scrolling', done => {
+      it('enableInfiniteScroll allow to enable infinite scrolling', async done => {
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           enableInfiniteScroll: false
         });
-        Simulate.query(test.env);
-        Defer.defer(() => {
-          expect(test.env.queryController.fetchMore).not.toHaveBeenCalled();
+        mockQueryControllerSearches();
+        await simulateSearch();
+        expect(test.env.queryController.fetchMore).not.toHaveBeenCalled();
 
-          test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
-            enableInfiniteScroll: true
-          });
-          Simulate.query(test.env);
-          Defer.defer(() => {
-            expect(test.env.queryController.fetchMore).toHaveBeenCalled();
-            done();
-          });
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          enableInfiniteScroll: true
         });
+        mockQueryControllerSearches();
+        await simulateSearch();
+        expect(test.env.queryController.fetchMore).toHaveBeenCalled();
+        done();
       });
 
-      it('infiniteScrollPageSize allow to specify the number of result to fetch when scrolling', done => {
+      it('infiniteScrollPageSize allow to specify the number of result to fetch when scrolling', async done => {
         test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
           enableInfiniteScroll: true,
           infiniteScrollPageSize: 26
         });
-        Simulate.query(test.env);
-        Defer.defer(() => {
-          expect(test.env.queryController.fetchMore).toHaveBeenCalledWith(26);
-          done();
-        });
+        mockQueryControllerSearches();
+        await simulateSearch();
+        expect(test.env.queryController.fetchMore).toHaveBeenCalledWith(26);
+        done();
       });
 
       it('fieldsToInclude allow to specify an array of fields to include in the query', () => {

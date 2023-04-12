@@ -567,7 +567,6 @@ export class ResultList extends Component {
     const elements = await this.buildResults(data);
     this.renderResults(elements, true);
     this.currentlyDisplayedResults.push(...data.results);
-    this.triggerNewResultsDisplayed();
   }
 
   private resetStateAfterFetchingMoreResults() {

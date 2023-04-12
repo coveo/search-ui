@@ -16,19 +16,25 @@ import { ICategoryFacetResult } from '../src/rest/CategoryFacetResult';
 import { range } from 'underscore';
 import { IPlanResponse } from '../src/rest/Plan';
 
+export interface CreateFakeResultsOptions {
+  token: string;
+  totalCount: number;
+}
+
 export class FakeResults {
-  static createFakeResults(count = 10, token = ''): IQueryResults {
+  static createFakeResults(count = 10, options: Partial<CreateFakeResultsOptions> = {}): IQueryResults {
+    const resolvedOptions: CreateFakeResultsOptions = { token: '', totalCount: count, ...options };
     var results: IQueryResult[] = [];
     for (var i = 0; i < count; ++i) {
-      results.push(FakeResults.createFakeResult(token + i.toString()));
+      results.push(FakeResults.createFakeResult(resolvedOptions.token + i.toString()));
     }
 
     return {
       searchUid: QueryUtils.createGuid(),
       pipeline: 'pipeline',
       splitTestRun: 'splitTestRunName',
-      totalCount: count != 0 ? count + 1 : 0,
-      totalCountFiltered: count,
+      totalCount: resolvedOptions.totalCount,
+      totalCountFiltered: resolvedOptions.totalCount,
       duration: 321,
       indexDuration: 123,
       clientDuration: 456,
