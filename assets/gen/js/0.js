@@ -41,17 +41,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var RankingInfoTable_1 = __webpack_require__(339);
-var MetaDataTable_1 = __webpack_require__(345);
+var RankingInfoTable_1 = __webpack_require__(340);
+var MetaDataTable_1 = __webpack_require__(346);
 var Dom_1 = __webpack_require__(1);
 var ExternalModulesShim_1 = __webpack_require__(43);
 var Core_1 = __webpack_require__(42);
-var RelevanceInspectorTabs_1 = __webpack_require__(346);
-__webpack_require__(347);
-var ExecutionReport_1 = __webpack_require__(334);
-var AvailableFieldsTable_1 = __webpack_require__(355);
+var RelevanceInspectorTabs_1 = __webpack_require__(347);
+__webpack_require__(348);
+var ExecutionReport_1 = __webpack_require__(335);
+var AvailableFieldsTable_1 = __webpack_require__(356);
 var underscore_1 = __webpack_require__(0);
-var InlineRankingInfo_1 = __webpack_require__(356);
+var InlineRankingInfo_1 = __webpack_require__(357);
 var RelevanceInspector = /** @class */ (function () {
     function RelevanceInspector(element, bindings) {
         var _this = this;
@@ -224,7 +224,7 @@ exports.RelevanceInspector = RelevanceInspector;
 
 /***/ }),
 
-/***/ 333:
+/***/ 334:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -273,10 +273,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var AgGrid_1 = __webpack_require__(340);
+var AgGrid_1 = __webpack_require__(341);
 var underscore_1 = __webpack_require__(0);
-var UtilsModules_1 = __webpack_require__(80);
-var ResultLink_1 = __webpack_require__(341);
+var UtilsModules_1 = __webpack_require__(81);
+var ResultLink_1 = __webpack_require__(342);
 exports.defaultGridOptions = {
     domLayout: 'autoHeight',
     enableColResize: true,
@@ -469,7 +469,7 @@ exports.GenericHtmlRenderer = GenericHtmlRenderer;
 
 /***/ }),
 
-/***/ 334:
+/***/ 335:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -510,15 +510,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReportAuthenticationSection_1 = __webpack_require__(349);
-var ExecutionReportResolvedPipelineSection_1 = __webpack_require__(350);
-var ExecutionReportQueryOverrideSection_1 = __webpack_require__(351);
-var ExecutionReportSimpleSection_1 = __webpack_require__(338);
-var ExecutionReportEffectiveIndexQuerySection_1 = __webpack_require__(352);
-var UtilsModules_1 = __webpack_require__(80);
-var ExecutionReportRankingModifiers_1 = __webpack_require__(353);
+var ExecutionReportAuthenticationSection_1 = __webpack_require__(350);
+var ExecutionReportResolvedPipelineSection_1 = __webpack_require__(351);
+var ExecutionReportQueryOverrideSection_1 = __webpack_require__(352);
+var ExecutionReportSimpleSection_1 = __webpack_require__(339);
+var ExecutionReportEffectiveIndexQuerySection_1 = __webpack_require__(353);
+var UtilsModules_1 = __webpack_require__(81);
+var ExecutionReportRankingModifiers_1 = __webpack_require__(354);
 var Core_1 = __webpack_require__(42);
-var ExecutionReportITDSection_1 = __webpack_require__(354);
+var ExecutionReportITDSection_1 = __webpack_require__(355);
 var EXECUTION_REPORT_SECTION;
 (function (EXECUTION_REPORT_SECTION) {
     EXECUTION_REPORT_SECTION["PERFORM_AUTHENTICATION"] = "PerformAuthentication";
@@ -668,13 +668,13 @@ exports.ExecutionReport = ExecutionReport;
 
 /***/ }),
 
-/***/ 335:
+/***/ 336:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableBuilder_1 = __webpack_require__(333);
+var TableBuilder_1 = __webpack_require__(334);
 var underscore_1 = __webpack_require__(0);
 var Dom_1 = __webpack_require__(1);
 var defaultNullOutput = '-- NULL --';
@@ -757,7 +757,7 @@ exports.GenericValueOutput = GenericValueOutput;
 
 /***/ }),
 
-/***/ 336:
+/***/ 337:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -771,7 +771,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var GenericValueOutput_1 = __webpack_require__(335);
+var GenericValueOutput_1 = __webpack_require__(336);
 var ExecutionReportGenericSection = /** @class */ (function () {
     function ExecutionReportGenericSection() {
     }
@@ -795,7 +795,7 @@ exports.ExecutionReportGenericSection = ExecutionReportGenericSection;
 
 /***/ }),
 
-/***/ 337:
+/***/ 338:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -909,7 +909,7 @@ var parseQREWeights = function (value) {
 
 /***/ }),
 
-/***/ 338:
+/***/ 339:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -958,11 +958,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(334);
+var ExecutionReport_1 = __webpack_require__(335);
 var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(336);
-var GenericValueOutput_1 = __webpack_require__(335);
-var TableBuilder_1 = __webpack_require__(333);
+var ExecutionReportGenericSection_1 = __webpack_require__(337);
+var GenericValueOutput_1 = __webpack_require__(336);
+var TableBuilder_1 = __webpack_require__(334);
 var ExecutionReportSimpleSection = /** @class */ (function () {
     function ExecutionReportSimpleSection(topLevelProperty, secondLevelProperty, sectionTitle) {
         this.topLevelProperty = topLevelProperty;
@@ -1015,7 +1015,7 @@ exports.ExecutionReportSimpleSection = ExecutionReportSimpleSection;
 
 /***/ }),
 
-/***/ 339:
+/***/ 340:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1064,9 +1064,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var RankingInfoParser_1 = __webpack_require__(337);
+var RankingInfoParser_1 = __webpack_require__(338);
 var underscore_1 = __webpack_require__(0);
-var TableBuilder_1 = __webpack_require__(333);
+var TableBuilder_1 = __webpack_require__(334);
 var Dom_1 = __webpack_require__(1);
 var RankingInfoTable = /** @class */ (function () {
     function RankingInfoTable(results, bindings) {
@@ -1165,7 +1165,7 @@ exports.RankingInfoTable = RankingInfoTable;
 
 /***/ }),
 
-/***/ 340:
+/***/ 341:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1236,7 +1236,7 @@ var addAgGridScriptsToDocument = function (doc) {
 
 /***/ }),
 
-/***/ 341:
+/***/ 342:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1265,7 +1265,7 @@ var ComponentOptions_1 = __webpack_require__(14);
 var ComponentOptionsModel_1 = __webpack_require__(23);
 var AnalyticsActionListMeta_1 = __webpack_require__(11);
 var ResultListEvents_1 = __webpack_require__(32);
-var HighlightUtils_1 = __webpack_require__(82);
+var HighlightUtils_1 = __webpack_require__(83);
 var DeviceUtils_1 = __webpack_require__(30);
 var OSUtils_1 = __webpack_require__(122);
 var Initialization_1 = __webpack_require__(12);
@@ -1278,9 +1278,9 @@ var StreamHighlightUtils_1 = __webpack_require__(118);
 var StringUtils_1 = __webpack_require__(20);
 var underscore_1 = __webpack_require__(0);
 var GlobalExports_1 = __webpack_require__(21);
-__webpack_require__(342);
+__webpack_require__(343);
 var AccessibleButton_1 = __webpack_require__(124);
-var ResultLinkCommon_1 = __webpack_require__(344);
+var ResultLinkCommon_1 = __webpack_require__(345);
 /**
  * The `ResultLink` component automatically transform a search result title into a clickable link pointing to the
  * original item.
@@ -1789,13 +1789,13 @@ Initialization_1.Initialization.registerAutoCreateComponent(ResultLink);
 
 /***/ }),
 
-/***/ 342:
+/***/ 343:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(343);
+var content = __webpack_require__(344);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1803,7 +1803,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(332)(content, options);
+var update = __webpack_require__(333)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -1821,10 +1821,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 343:
+/***/ 344:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(331)();
+exports = module.exports = __webpack_require__(332)();
 // imports
 
 
@@ -1836,7 +1836,7 @@ exports.push([module.i, ".CoveoResultLink,\na.CoveoResultLink,\n.CoveoResult a.C
 
 /***/ }),
 
-/***/ 344:
+/***/ 345:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1862,7 +1862,7 @@ exports.bindAnalyticsToLink = bindAnalyticsToLink;
 
 /***/ }),
 
-/***/ 345:
+/***/ 346:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1911,7 +1911,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableBuilder_1 = __webpack_require__(333);
+var TableBuilder_1 = __webpack_require__(334);
 var underscore_1 = __webpack_require__(0);
 var Dom_1 = __webpack_require__(1);
 var StringUtils_1 = __webpack_require__(20);
@@ -2121,7 +2121,7 @@ exports.FieldValuesRenderer = FieldValuesRenderer;
 
 /***/ }),
 
-/***/ 346:
+/***/ 347:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2201,13 +2201,13 @@ exports.RelevanceInspectorTabs = RelevanceInspectorTabs;
 
 /***/ }),
 
-/***/ 347:
+/***/ 348:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(348);
+var content = __webpack_require__(349);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2215,7 +2215,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(332)(content, options);
+var update = __webpack_require__(333)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -2233,10 +2233,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 348:
+/***/ 349:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(331)();
+exports = module.exports = __webpack_require__(332)();
 // imports
 
 
@@ -2248,7 +2248,7 @@ exports.push([module.i, "@-webkit-keyframes fadeout {\n  from {\n    opacity: 1;
 
 /***/ }),
 
-/***/ 349:
+/***/ 350:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2297,11 +2297,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(334);
-var TableBuilder_1 = __webpack_require__(333);
+var ExecutionReport_1 = __webpack_require__(335);
+var TableBuilder_1 = __webpack_require__(334);
 var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(336);
-var GenericValueOutput_1 = __webpack_require__(335);
+var ExecutionReportGenericSection_1 = __webpack_require__(337);
+var GenericValueOutput_1 = __webpack_require__(336);
 var ExecutionReportAuthenticationSection = /** @class */ (function () {
     function ExecutionReportAuthenticationSection() {
     }
@@ -2396,92 +2396,6 @@ exports.ExecutionReportAuthenticationSection = ExecutionReportAuthenticationSect
 
 /***/ }),
 
-/***/ 350:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(334);
-var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(336);
-var TableBuilder_1 = __webpack_require__(333);
-var GenericValueOutput_1 = __webpack_require__(335);
-var ExecutionReportResolvedPipelineSection = /** @class */ (function () {
-    function ExecutionReportResolvedPipelineSection() {
-    }
-    ExecutionReportResolvedPipelineSection.prototype.build = function (executionReport) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _a, container, agGridElement, gridOptions, resolvedPipelineSection, dataSource, tableBuilder;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = ExecutionReport_1.ExecutionReport.standardSectionHeader('Pipeline'), container = _a.container, agGridElement = _a.agGridElement;
-                        resolvedPipelineSection = underscore_1.find(executionReport.children, function (child) { return child.name == ExecutionReport_1.EXECUTION_REPORT_SECTION.RESOLVE_PIPELINE; });
-                        if (!resolvedPipelineSection) return [3 /*break*/, 2];
-                        dataSource = [
-                            __assign({}, new ExecutionReportGenericSection_1.ExecutionReportGenericSection().build(resolvedPipelineSection), { Pipeline: new GenericValueOutput_1.GenericValueOutput().output(resolvedPipelineSection.result.pipeline) }, { 'Split Test': new GenericValueOutput_1.GenericValueOutput().output(resolvedPipelineSection.result.splitTest) })
-                        ];
-                        return [4 /*yield*/, new TableBuilder_1.TableBuilder().build(dataSource, agGridElement)];
-                    case 1:
-                        tableBuilder = _b.sent();
-                        gridOptions = tableBuilder.gridOptions;
-                        _b.label = 2;
-                    case 2: return [2 /*return*/, { container: container, gridOptions: gridOptions }];
-                }
-            });
-        });
-    };
-    return ExecutionReportResolvedPipelineSection;
-}());
-exports.ExecutionReportResolvedPipelineSection = ExecutionReportResolvedPipelineSection;
-
-
-/***/ }),
-
 /***/ 351:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2531,11 +2445,97 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(334);
+var ExecutionReport_1 = __webpack_require__(335);
 var underscore_1 = __webpack_require__(0);
-var ExecutionReportGenericSection_1 = __webpack_require__(336);
-var TableBuilder_1 = __webpack_require__(333);
-var GenericValueOutput_1 = __webpack_require__(335);
+var ExecutionReportGenericSection_1 = __webpack_require__(337);
+var TableBuilder_1 = __webpack_require__(334);
+var GenericValueOutput_1 = __webpack_require__(336);
+var ExecutionReportResolvedPipelineSection = /** @class */ (function () {
+    function ExecutionReportResolvedPipelineSection() {
+    }
+    ExecutionReportResolvedPipelineSection.prototype.build = function (executionReport) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, container, agGridElement, gridOptions, resolvedPipelineSection, dataSource, tableBuilder;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = ExecutionReport_1.ExecutionReport.standardSectionHeader('Pipeline'), container = _a.container, agGridElement = _a.agGridElement;
+                        resolvedPipelineSection = underscore_1.find(executionReport.children, function (child) { return child.name == ExecutionReport_1.EXECUTION_REPORT_SECTION.RESOLVE_PIPELINE; });
+                        if (!resolvedPipelineSection) return [3 /*break*/, 2];
+                        dataSource = [
+                            __assign({}, new ExecutionReportGenericSection_1.ExecutionReportGenericSection().build(resolvedPipelineSection), { Pipeline: new GenericValueOutput_1.GenericValueOutput().output(resolvedPipelineSection.result.pipeline) }, { 'Split Test': new GenericValueOutput_1.GenericValueOutput().output(resolvedPipelineSection.result.splitTest) })
+                        ];
+                        return [4 /*yield*/, new TableBuilder_1.TableBuilder().build(dataSource, agGridElement)];
+                    case 1:
+                        tableBuilder = _b.sent();
+                        gridOptions = tableBuilder.gridOptions;
+                        _b.label = 2;
+                    case 2: return [2 /*return*/, { container: container, gridOptions: gridOptions }];
+                }
+            });
+        });
+    };
+    return ExecutionReportResolvedPipelineSection;
+}());
+exports.ExecutionReportResolvedPipelineSection = ExecutionReportResolvedPipelineSection;
+
+
+/***/ }),
+
+/***/ 352:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var ExecutionReport_1 = __webpack_require__(335);
+var underscore_1 = __webpack_require__(0);
+var ExecutionReportGenericSection_1 = __webpack_require__(337);
+var TableBuilder_1 = __webpack_require__(334);
+var GenericValueOutput_1 = __webpack_require__(336);
 var ExecutionReportQueryOverrideSection = /** @class */ (function () {
     function ExecutionReportQueryOverrideSection() {
     }
@@ -2568,7 +2568,7 @@ exports.ExecutionReportQueryOverrideSection = ExecutionReportQueryOverrideSectio
 
 /***/ }),
 
-/***/ 352:
+/***/ 353:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2609,9 +2609,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(334);
+var ExecutionReport_1 = __webpack_require__(335);
 var underscore_1 = __webpack_require__(0);
-var GenericValueOutput_1 = __webpack_require__(335);
+var GenericValueOutput_1 = __webpack_require__(336);
 var Dom_1 = __webpack_require__(1);
 var collapsibleSectionsInReport = ['Facets', 'RankingOverrides', 'RankingExpressions'];
 var ExecutionReportEffectiveIndexQuerySection = /** @class */ (function () {
@@ -2664,7 +2664,7 @@ exports.ExecutionReportEffectiveIndexQuerySection = ExecutionReportEffectiveInde
 
 /***/ }),
 
-/***/ 353:
+/***/ 354:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2713,11 +2713,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(334);
-var TableBuilder_1 = __webpack_require__(333);
+var ExecutionReport_1 = __webpack_require__(335);
+var TableBuilder_1 = __webpack_require__(334);
 var underscore_1 = __webpack_require__(0);
-var GenericValueOutput_1 = __webpack_require__(335);
-var QueryBuilder_1 = __webpack_require__(81);
+var GenericValueOutput_1 = __webpack_require__(336);
+var QueryBuilder_1 = __webpack_require__(82);
 var ExecutionReportRankingModifiers = /** @class */ (function () {
     function ExecutionReportRankingModifiers() {
     }
@@ -2809,7 +2809,7 @@ exports.ExecutionReportRankingModifiers = ExecutionReportRankingModifiers;
 
 /***/ }),
 
-/***/ 354:
+/***/ 355:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2850,13 +2850,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ExecutionReport_1 = __webpack_require__(334);
+var ExecutionReport_1 = __webpack_require__(335);
 var underscore_1 = __webpack_require__(0);
-var TableBuilder_1 = __webpack_require__(333);
+var TableBuilder_1 = __webpack_require__(334);
 var Dom_1 = __webpack_require__(1);
 var Utils_1 = __webpack_require__(3);
 var StreamHighlightUtils_1 = __webpack_require__(118);
-var ExecutionReportSimpleSection_1 = __webpack_require__(338);
+var ExecutionReportSimpleSection_1 = __webpack_require__(339);
 var ExecutionReportITDSection = /** @class */ (function () {
     function ExecutionReportITDSection() {
     }
@@ -2967,7 +2967,7 @@ exports.ExecutionReportITDSection = ExecutionReportITDSection;
 
 /***/ }),
 
-/***/ 355:
+/***/ 356:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3016,11 +3016,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var TableBuilder_1 = __webpack_require__(333);
+var TableBuilder_1 = __webpack_require__(334);
 var underscore_1 = __webpack_require__(0);
-var GenericValueOutput_1 = __webpack_require__(335);
-var UtilsModules_1 = __webpack_require__(80);
-var QueryBuilder_1 = __webpack_require__(81);
+var GenericValueOutput_1 = __webpack_require__(336);
+var UtilsModules_1 = __webpack_require__(81);
+var QueryBuilder_1 = __webpack_require__(82);
 var PopupUtils_1 = __webpack_require__(123);
 var AvailableFieldsTable = /** @class */ (function () {
     function AvailableFieldsTable(bindings) {
@@ -3305,13 +3305,13 @@ exports.AvailableFieldsDatasource = AvailableFieldsDatasource;
 
 /***/ }),
 
-/***/ 356:
+/***/ 357:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var RankingInfoParser_1 = __webpack_require__(337);
+var RankingInfoParser_1 = __webpack_require__(338);
 var Dom_1 = __webpack_require__(1);
 var underscore_1 = __webpack_require__(0);
 var Utils_1 = __webpack_require__(3);
