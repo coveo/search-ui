@@ -52,7 +52,11 @@ export function RankingInfoParserTest() {
       expect(parsed.qreWeights[0].expression).toBe(
         'Expression: "@permanentid=95ad18de4cb8e17023f0224e9d44dd2f7177c6dceac6cb81b16f3659a3c3"'
       );
-      expect(parsed.qreWeights.length).toBe(1);
+      expect(parsed.qreWeights[1].score).toBe(-1000);
+      expect(parsed.qreWeights[1].expression).toBe(
+        'Expression: "@permanentid=4119a14f02a63d0c2d92b51d4501dd83580831caea327179934dd1bc6645"'
+      );
+      expect(parsed.qreWeights.length).toBe(2);
     });
 
     it('should parse ranking info properly with no QRE', () => {

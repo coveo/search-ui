@@ -5,14 +5,6 @@ import { IAnalyticsEvent } from './AnalyticsEvent';
  */
 export interface IClickEvent extends IAnalyticsEvent {
   /**
-   * The unique identifier of the Search API query that returned the clicked result item.
-   *
-   * **Note:** The framework normally sets this field by retrieving the information from the related Search API query response.
-   *
-   * **Example:** `74682726-0e20-46eb-85ac-f37259346f57`
-   */
-  searchQueryUid: string;
-  /**
    * The name of the query pipeline to which the Search API query that returned the clicked result item was routed.
    *
    * **Note:** The framework normally sets this field by retrieving the information from the related Search API query response.

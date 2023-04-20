@@ -34,14 +34,15 @@ export class ExpressionBuilder {
    * @param field The field for which to create an expression (e.g.: @foo).
    * @param operator The operator to use e.g.: = (equal) == (strict equal) <> (not equal).
    * @param values The values to put in the expression.
+   * @param forceValueEscape Force the escaping of the values
    */
-  public addFieldExpression(field: string, operator: string, values: string[]) {
+  public addFieldExpression(field: string, operator: string, values: string[], forceEscape = false) {
     Assert.isNonEmptyString(field);
     Assert.stringStartsWith(field, '@');
     Assert.isNonEmptyString(operator);
     Assert.isLargerOrEqualsThan(1, values.length);
 
-    this.add(QueryUtils.buildFieldExpression(field, operator, values));
+    this.add(QueryUtils.buildFieldExpression(field, operator, values, forceEscape));
   }
 
   /**
@@ -49,13 +50,14 @@ export class ExpressionBuilder {
    * eg : NOT @field==(value1, value2, value3).
    * @param field The field for which to create an expression (e.g.: @foo)
    * @param values The values to put in the expression.
+   * @param forceValueEscape Force the escaping of the values
    */
-  public addFieldNotEqualExpression(field: string, values: string[]) {
+  public addFieldNotEqualExpression(field: string, values: string[], forceEscape = false) {
     Assert.isNonEmptyString(field);
     Assert.stringStartsWith(field, '@');
     Assert.isLargerOrEqualsThan(1, values.length);
 
-    this.add(QueryUtils.buildFieldNotEqualExpression(field, values));
+    this.add(QueryUtils.buildFieldNotEqualExpression(field, values, (forceEscape = false)));
   }
 
   /**

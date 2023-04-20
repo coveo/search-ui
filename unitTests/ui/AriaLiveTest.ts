@@ -4,6 +4,7 @@ import { $$, OmniboxEvents } from '../../src/Core';
 import { Simulate } from '../Simulate';
 import { MockEnvironmentBuilder, IMockEnvironment } from '../MockEnvironment';
 import { FakeResults } from '../Fake';
+import { IQuerySuggestRenderedArgs } from '../../src/events/OmniboxEvents';
 
 export const AriaLiveTest = () => {
   describe('AriaLive', () => {
@@ -81,7 +82,10 @@ export const AriaLiveTest = () => {
     describe('when fetching query suggestions', () => {
       describe('when there are no suggestions', () => {
         beforeEach(() => {
-          Simulate.querySuggest(env, '', []);
+          const querySuggestRenderedArgs: IQuerySuggestRenderedArgs = {
+            numberOfSuggestions: 0
+          };
+          $$(env.root).trigger(OmniboxEvents.querySuggestRendered, querySuggestRenderedArgs);
         });
 
         it('updates the text', () => {
@@ -91,21 +95,14 @@ export const AriaLiveTest = () => {
 
       describe('when there are 5 suggestions', () => {
         beforeEach(() => {
-          Simulate.querySuggest(env, '', ['', '', '', '', '']);
+          const querySuggestRenderedArgs: IQuerySuggestRenderedArgs = {
+            numberOfSuggestions: 5
+          };
+          $$(env.root).trigger(OmniboxEvents.querySuggestRendered, querySuggestRenderedArgs);
         });
 
-        it('does not update the text', () => {
-          expect(ariaLiveEl().textContent).toEqual('');
-        });
-
-        describe('when the suggestions are rendered', () => {
-          beforeEach(() => {
-            $$(env.root).trigger(OmniboxEvents.querySuggestRendered);
-          });
-
-          it('updates the text', () => {
-            expect(ariaLiveEl().textContent).toContain('5');
-          });
+        it('updates the text', () => {
+          expect(ariaLiveEl().textContent).toContain('5');
         });
       });
     });

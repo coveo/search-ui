@@ -6,6 +6,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { Assert } from '../../misc/Assert';
 import { Logger } from '../../misc/Logger';
 import { l } from '../../strings/Strings';
+import { getHeadingTag } from '../../utils/AccessibilityUtils';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$, Dom } from '../../utils/Dom';
 import { SVGDom } from '../../utils/SVGDom';
@@ -510,7 +511,11 @@ export class SimpleFilter extends Component {
   private handlePopulateBreadcrumb(args: IPopulateBreadcrumbEventArgs) {
     if (this.getSelectedLabeledCheckboxes().length > 0) {
       const elem = $$('div', { className: 'coveo-simplefilter-breadcrumb' });
-      const title = $$('span', { className: 'coveo-simplefilter-breadcrumb-title' }, `${this.options.title}:`);
+      const title = $$(
+        getHeadingTag(args.headingLevel, 'span'),
+        { className: 'coveo-simplefilter-breadcrumb-title' },
+        `${this.options.title}:`
+      );
       elem.append(title.el);
       const values = $$('span', { className: 'coveo-simplefilter-breadcrumb-values' });
       elem.append(values.el);

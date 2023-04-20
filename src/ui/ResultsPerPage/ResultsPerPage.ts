@@ -239,7 +239,10 @@ export class ResultsPerPage extends Component {
         $$(listItem).addClass('coveo-active');
       }
 
-      const clickAction = () => this.handleClickPage(resultsPerPage);
+      const clickAction = e => {
+        e.stopPropagation();
+        this.handleClickPage(resultsPerPage);
+      };
 
       const button = $$(
         'span',
@@ -251,6 +254,8 @@ export class ResultsPerPage extends Component {
         numResultsList[i].toString()
       ).el;
       listItem.appendChild(button);
+
+      listItem.addEventListener('click', e => clickAction(e));
 
       new AccessibleButton()
         .withElement(button)

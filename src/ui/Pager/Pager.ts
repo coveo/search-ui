@@ -279,7 +279,10 @@ export class Pager extends Component {
             button.setAttribute('aria-current', 'page');
           }
 
-          const clickAction = () => this.handleClickPage(page);
+          const clickAction = (e: Event) => {
+            e.stopPropagation();
+            this.handleClickPage(page);
+          };
 
           new AccessibleButton()
             .withElement(button)
@@ -287,6 +290,8 @@ export class Pager extends Component {
             .withClickAction(clickAction)
             .withEnterKeyboardAction(clickAction)
             .build();
+
+          $$(listItem).on('click', e => clickAction(e));
 
           listItem.appendChild(button);
           this.list.appendChild(listItem);

@@ -7,6 +7,8 @@ node('linux && docker') {
   ]){
     withDockerContainer(image: 'nikolaik/python-nodejs:python3.8-nodejs14', args: '-u=root') {
       stage('Install') {
+        // Prevents "not a git directory" issue.
+        sh "git config --global --add safe.directory '*'"
         sh 'yarn install'
       }
 

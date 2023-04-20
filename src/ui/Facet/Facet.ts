@@ -1304,11 +1304,9 @@ export class Facet extends Component implements IFieldValueCompatibleFacet {
     Assert.exists(args);
 
     if (this.values.hasSelectedOrExcludedValues()) {
-      const element = new BreadcrumbValueList(
-        this,
-        this.values.getSelected().concat(this.values.getExcluded()),
-        BreadcrumbValueElement
-      ).build();
+      const element = new BreadcrumbValueList(this, this.values.getSelected().concat(this.values.getExcluded()), BreadcrumbValueElement, {
+        headingLevel: args.headingLevel
+      }).build();
       args.breadcrumbs.push({ element: element });
     }
   }

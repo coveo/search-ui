@@ -13,7 +13,9 @@ import { IComponentBindings } from '../Base/ComponentBindings';
 import { ComponentOptions } from '../Base/ComponentOptions';
 import { Initialization } from '../Base/Initialization';
 
-export interface IBreadcrumbOptions {}
+export interface IBreadcrumbOptions {
+  headingLevel?: number;
+}
 
 /**
  * The Breadcrumb component displays a summary of the currently active query filters.
@@ -32,7 +34,19 @@ export interface IBreadcrumbOptions {}
  */
 export class Breadcrumb extends Component {
   static ID = 'Breadcrumb';
-  static options: IBreadcrumbOptions = {};
+
+  /**
+   * The options for the Breadcrumb.
+   * @componentOptions
+   */
+  static options: IBreadcrumbOptions = {
+    /**
+     * The [heading level](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements) to use for the heading before the breadcrumbs.
+     *
+     * A value of 0 will render a [`div`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div) element instead.
+     */
+    headingLevel: ComponentOptions.buildNumberOption({ min: 0, max: 6 })
+  };
 
   static doExport = () => {
     exportGlobally({
@@ -70,7 +84,7 @@ export class Breadcrumb extends Component {
    * @returns {IBreadcrumbItem[]} A populated breadcrumb item list.
    */
   public getBreadcrumbs(): IBreadcrumbItem[] {
-    const args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [] };
+    const args = <IPopulateBreadcrumbEventArgs>{ breadcrumbs: [], headingLevel: this.options.headingLevel };
     this.bind.trigger(this.root, BreadcrumbEvents.populateBreadcrumb, args);
     this.logger.debug('Retrieved breadcrumbs', args.breadcrumbs);
 

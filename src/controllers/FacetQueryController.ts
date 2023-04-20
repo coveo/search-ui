@@ -49,15 +49,24 @@ export class FacetQueryController {
     if (selected.length > 0) {
       if (this.facet.options.useAnd) {
         _.each(selected, (value: FacetValue) => {
-          builder.addFieldExpression(<string>this.facet.options.field, '==', [value.value]);
+          builder.addFieldExpression(<string>this.facet.options.field, '==', [value.value], true);
         });
       } else {
-        builder.addFieldExpression(<string>this.facet.options.field, '==', _.map(selected, (value: FacetValue) => value.value));
+        builder.addFieldExpression(
+          <string>this.facet.options.field,
+          '==',
+          _.map(selected, (value: FacetValue) => value.value),
+          true
+        );
       }
     }
     const excluded = this.facet.values.getExcluded();
     if (excluded.length > 0) {
-      builder.addFieldNotEqualExpression(<string>this.facet.options.field, _.map(excluded, (value: FacetValue) => value.value));
+      builder.addFieldNotEqualExpression(
+        <string>this.facet.options.field,
+        _.map(excluded, (value: FacetValue) => value.value),
+        true
+      );
     }
     if (Utils.isNonEmptyString(this.facet.options.additionalFilter)) {
       builder.add(this.facet.options.additionalFilter);
