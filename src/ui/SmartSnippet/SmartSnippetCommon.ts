@@ -18,12 +18,17 @@ export const getDefaultSnippetStyle = (contentClassName: string) => `
 `;
 
 export function getSanitizedAnswerSnippet(questionAnswer: IQuestionAnswerResponse | IRelatedQuestionAnswerResponse) {
-  return (
-    questionAnswer.answerSnippet &&
-    sanitize(questionAnswer.answerSnippet, {
+  if (!questionAnswer.answerSnippet) {
+    return '';
+  }
+  // dompurify can fail to execute in some environment (salesforce locker service)
+  try {
+    return sanitize(questionAnswer.answerSnippet, {
       USE_PROFILES: { html: true }
-    })
-  );
+    });
+  } catch (e) {
+    questionAnswer.answerSnippet;
+  }
 }
 
 export const transformSnippetLinks = (
