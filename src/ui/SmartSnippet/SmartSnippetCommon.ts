@@ -27,7 +27,7 @@ export function getSanitizedAnswerSnippet(questionAnswer: IQuestionAnswerRespons
       USE_PROFILES: { html: true }
     });
   } catch (e) {
-    questionAnswer.answerSnippet;
+    return questionAnswer.answerSnippet;
   }
 }
 
