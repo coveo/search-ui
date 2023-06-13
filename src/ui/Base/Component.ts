@@ -107,7 +107,7 @@ export class ComponentEvents {
    * Execute only if the component is "enabled" (see {@link Component.enable}).<br/>
    * Execute the handler only ONE time.
    * @param el The target on which the event will originate.
-   * @param event The event for which to register an handler.
+   * @param event The event for which to register a handler.
    * @param handler The function to execute when the event is triggered.
    */
   public one(el: HTMLElement, event: string, handler: Function);
@@ -123,7 +123,7 @@ export class ComponentEvents {
   /**
    * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}.<br/>
    * Bind an event using native javascript code.
-   * @param event The event for which to register an handler.
+   * @param event The event for which to register a handler.
    * @param handler The function to execute when the event is triggered.
    */
   public onRootElement<T>(event: string, handler: (args: T) => any) {
@@ -134,7 +134,7 @@ export class ComponentEvents {
    * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}.<br/>
    * Bind an event using native javascript code.
    * The handler will execute only ONE time.
-   * @param event The event for which to register an handler.
+   * @param event The event for which to register a handler.
    * @param handler The function to execute when the event is triggered.
    */
   public oneRootElement<T>(event: string, handler: (args: T) => any) {
