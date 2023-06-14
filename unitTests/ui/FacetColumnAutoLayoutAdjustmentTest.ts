@@ -91,7 +91,7 @@ export function FacetColumnAutoLayoutAdjustmentTest() {
         expect(isHidden()).toBeTruthy();
       });
 
-      describe('with a custom element inside the facet column with an hidden component', () => {
+      describe('with a custom element inside the facet column with a hidden component', () => {
         let customElement: Dom;
         let component;
         beforeEach(() => {

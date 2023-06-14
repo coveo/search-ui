@@ -3,7 +3,7 @@ import { HistoryController } from '../../src/controllers/HistoryController';
 import { LocalStorageHistoryController } from '../../src/controllers/LocalStorageHistoryController';
 import { QueryController } from '../../src/controllers/QueryController';
 import { InitializationEvents } from '../../src/Core';
-import { IDoneBuildingQueryEventArgs, QueryEvents } from '../../src/events/QueryEvents';
+import { IBuildingQueryEventArgs, IDoneBuildingQueryEventArgs, QueryEvents } from '../../src/events/QueryEvents';
 import { ComponentOptionsModel } from '../../src/models/ComponentOptionsModel';
 import { ComponentStateModel } from '../../src/models/ComponentStateModel';
 import { QueryStateModel } from '../../src/models/QueryStateModel';
@@ -370,7 +370,7 @@ export function SearchInterfaceTest() {
           expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
         });
 
-        it('enableHistory can be disabled and there will still be an history manager to access', () => {
+        it('enableHistory can be disabled and there will still be a history manager to access', () => {
           const searchInterface = setupSearchInterface({
             enableHistory: false
           });
@@ -679,9 +679,18 @@ export function SearchInterfaceTest() {
             done();
           });
 
-          it('should allow to switch back to a waiting mode if a new empty query is performed', async done => {
+          it('should allow to switch back to a waiting mode if the first query is cancelled and a new empty query is performed', async done => {
+            $$(div).one(QueryEvents.buildingQuery, (_, args: IBuildingQueryEventArgs) => {
+              args.cancel = true;
+            });
             await isInWaitingForQueryModeAfterQuery('foo');
             expect(await isInWaitingForQueryModeAfterQuery('')).toBe(true);
+            done();
+          });
+
+          it("should not allow to switch back to a waiting mode if the first query isn't cancelled and a new empty query is performed", async done => {
+            await isInWaitingForQueryModeAfterQuery('foo');
+            expect(await isInWaitingForQueryModeAfterQuery('')).toBe(false);
             done();
           });
 

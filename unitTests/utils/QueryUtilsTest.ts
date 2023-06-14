@@ -96,6 +96,17 @@ export function QueryUtilsTest() {
       expect(QueryUtils.containsAttachment(result)).toBeFalsy();
     });
 
+    it('should return a valid UUID', () => {
+      expect(QueryUtils.generateWithCrypto()).toContain('-');
+      expect(QueryUtils.generateWithCrypto().length).toBe(36);
+    });
+
+    it('should always return a UUID version 4', () => {
+      let uuid = QueryUtils.generateWithCrypto();
+      let versionBit = 14;
+      expect(uuid[versionBit]).toBe('4');
+    });
+
     it('should expose a last resort method to generate UUID for analytics events if everything else fails', () => {
       expect(QueryUtils.generateWithRandom()).toContain('-');
       expect(QueryUtils.generateWithRandom().length).toBe(36);

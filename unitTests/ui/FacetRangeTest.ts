@@ -35,6 +35,13 @@ export function FacetRangeTest() {
       );
     });
 
+    it('should query an unescaped range', () => {
+      const facetValue = FacetValue.create('0.5..42');
+      test.cmp.selectValue(facetValue);
+      const simulation = Simulate.query(test.env);
+      expect(simulation.queryBuilder.build().aq).toEqual('@foo==0.5..42');
+    });
+
     describe('with a date', () => {
       beforeEach(() => {
         test = Mock.optionsComponentSetup<FacetRange, IFacetRangeOptions>(FacetRange, <IFacetRangeOptions>{
@@ -46,6 +53,24 @@ export function FacetRangeTest() {
       it('should allow to get a formatted value caption', () => {
         const facetValue: FacetValue = FacetValue.create('2015/01/01..2016/01/01');
         expect(test.cmp.getValueCaption(facetValue)).toEqual('1/1/2015 - 1/1/2016');
+      });
+
+      describe('with a range', () => {
+        beforeEach(() => {
+          test = Mock.optionsComponentSetup<FacetRange, IFacetRangeOptions>(FacetRange, <IFacetRangeOptions>{
+            field: '@foo',
+            dateField: true,
+            ranges: [
+              { start: '2010-04-05T00:00:00.000Z', end: '2015-06-12T00:00:00.000Z', endInclusive: true, label: '2010/04/05 - 2015/06/12' }
+            ]
+          });
+        });
+        it('should query an unescaped range', () => {
+          const facetValue = FacetValue.create('2010/04/05@00:00:00..2015/06/12@00:00:00');
+          test.cmp.selectValue(facetValue);
+          const simulation = Simulate.query(test.env);
+          expect(simulation.queryBuilder.build().aq).toEqual('@foo==2010/04/05@00:00:00..2015/06/12@00:00:00');
+        });
       });
     });
 

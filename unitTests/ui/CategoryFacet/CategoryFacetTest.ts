@@ -11,7 +11,11 @@ import { first, range, pluck, shuffle, partition, chain } from 'underscore';
 import { analyticsActionCauseList } from '../../../src/ui/Analytics/AnalyticsActionListMeta';
 import { ResultListUtils } from '../../../src/utils/ResultListUtils';
 
-export function buildCategoryFacetResults(numberOfResults = 11, numberOfRequestedValues = 11, field = '@field'): ISimulateQueryData {
+export function buildCategoryFacetResults(
+  numberOfResults = 11,
+  numberOfRequestedValues = 11,
+  field = '@field'
+): Partial<ISimulateQueryData> {
   const fakeResults = FakeResults.createFakeResults();
   const queryBuilder = new QueryBuilder();
   fakeResults.categoryFacets.push(FakeResults.createFakeCategoryFacetResult(field, [], 'value', numberOfResults));
@@ -27,7 +31,7 @@ export function CategoryFacetTest() {
   describe('CategoryFacet', () => {
     let test: IBasicComponentSetup<CategoryFacet>;
     let options: ICategoryFacetOptions;
-    let simulateQueryData: ISimulateQueryData;
+    let simulateQueryData: Partial<ISimulateQueryData>;
 
     beforeEach(() => {
       options = { field: '@field' };

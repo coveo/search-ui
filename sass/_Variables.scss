@@ -196,17 +196,17 @@ $standard-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   color: $color-teal;
 }
 
-$allFacetsType: '
-.CoveoFacet,
-.CoveoFacetRange,
-.CoveoFacetSlider,
-.CoveoHierarchicalFacet,
-.CoveoCategoryFacet,
-.CoveoTimespanFacet,
+$allFacetsType: '\
+.CoveoFacet,\
+.CoveoFacetRange,\
+.CoveoFacetSlider,\
+.CoveoHierarchicalFacet,\
+.CoveoCategoryFacet,\
+.CoveoTimespanFacet,\
 ';
 
-$allDynamicFacetsType: '
-.CoveoDynamicFacet,
-.CoveoDynamicFacetRange,
-.CoveoDynamicHierarchicalFacet,
+$allDynamicFacetsType: '\
+.CoveoDynamicFacet,\
+.CoveoDynamicFacetRange,\
+.CoveoDynamicHierarchicalFacet,\
 ';

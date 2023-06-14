@@ -75,24 +75,11 @@
     ]
   },
   "snyk": {
-    "org": "coveo-jsui",
-    "no_container_images": true,
-    "configurations": [
-      {
-        "directory": ".",
-        "project_name": "search-ui"
-      }
-    ]
+    "no_dependencies": true,
+    "no_container_images": true
   },
   "snyk_code": {
-    "no_scan": false,
-    "configurations": [
-      {
-        "path": ".",
-        "project_name": "search-ui",
-        "org": "coveo-jsui"
-      }
-    ]
+    "no_scan": true
   },
   "observatory": {
     "no_endpoint": true

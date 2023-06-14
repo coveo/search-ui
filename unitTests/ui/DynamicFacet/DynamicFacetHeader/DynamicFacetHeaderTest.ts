@@ -63,7 +63,7 @@ export function DynamicFacetHeaderTest() {
       }, DynamicFacetHeader.showLoadingDelay + 1);
     });
 
-    it('should create an hidden clear button', () => {
+    it('should create a hidden clear button', () => {
       expect($$(clearElement()).isVisible()).toBe(false);
     });
 

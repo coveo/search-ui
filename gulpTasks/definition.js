@@ -40,6 +40,7 @@ function cleanDefs() {
       .pipe(replace(/Partial<[A-z]*>/g, 'any'))
       .pipe(replace(/<\s?([a-z]+)\s?=\s?[a-z]+\s?>/gi, '<$1>'))
       .pipe(replace(/ShadowRootInit/, 'any'))
+      .pipe(replace(/\s*implements any(?=\s)/gs, ''))
       .pipe(gulp.dest('bin/ts/'))
   );
 }
@@ -83,6 +84,7 @@ function externalDefs() {
     .pipe(replace(/undefined/g, 'any'))
     .pipe(replace(/Partial<[A-z]*>/g, 'any'))
     .pipe(replace(/const version: string;/g, ''))
+    .pipe(replace(/\s*implements any(?=\s)/gs, ''))
     .pipe(gulp.dest('./bin/ts'));
 }
 
