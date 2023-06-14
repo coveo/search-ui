@@ -30,7 +30,7 @@ export class {{cmpName}} extends Component {
     super(element, {{cmpName}}.ID, bindings);
     this.options = ComponentOptions.initComponentOptions(element, {{cmpName}}, options);
 
-    // This is an example on how to hook an handler on a query event.
+    // This is an example on how to hook a handler on a query event.
     this.bind.onRootElement(QueryEvents.buildingQuery, (args: IBuildingQueryEventArgs) => this.handleBuildingQuery(args));
   }
 

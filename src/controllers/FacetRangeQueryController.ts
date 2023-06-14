@@ -9,7 +9,7 @@ export class FacetRangeQueryController extends FacetQueryController {
   public graphGroupByQueriesIndex: number;
 
   constructor(public facet: FacetRange) {
-    super(facet);
+    super(facet, false);
   }
 
   protected createBasicGroupByRequest(allowedValues?: string[], addComputedField: boolean = true) {

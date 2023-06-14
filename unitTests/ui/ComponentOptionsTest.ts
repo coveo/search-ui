@@ -121,7 +121,7 @@ export function ComponentOptionsTest() {
       });
 
       describe('camelCaseToHyphen', () => {
-        it('which transforms an hyphen string corresponding to the given camel case string', () => {
+        it('which transforms a hyphen string corresponding to the given camel case string', () => {
           const name = ComponentOptions.camelCaseToHyphen('fooBar');
           expect(name).toBe('foo-bar');
         });

@@ -47,7 +47,7 @@ export interface IAdvancedSearchSection {
  */
 export interface IExternalAdvancedSearchSection extends IAdvancedSearchSection {
   /**
-   * An handler to execute every time a new query is launched.
+   * A handler to execute every time a new query is launched.
    *
    * The handler will receive the inputs used to build the external section, as well as the queryBuilder object to allow to modify the query.
    * @param inputs
