@@ -11,11 +11,11 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 	<link rel="stylesheet" href="assets/css/overrides.css">
 	<link rel="stylesheet" href="assets/css/coveo-connect-header.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10109/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10110/css/CoveoFullSearch.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10109/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10110/js/CoveoJsSearch.min.js"></script>
 	<script src="assets/js/coveo-connect-header.js"></script>
 	<script src="assets/gen/js/playground.js"></script>
 	<script src="assets/js/searchUIrefDoc.js"></script>
@@ -67,7 +67,7 @@
 		<nav class="subnav">
 			<ul>
 				<li><a href="https://connect.coveo.com/" target="_blank">Community</a></li>
-				<li><a href="https://coveo.co1.qualtrics.com/jfe/form/SV_0OFD8lvnckM3qtv?Q_JFE=qdg" target="_blank">Feedback</a></li>
+				<li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeyNL18g4JWIDR5xEyIMY48JIjyjwXRmlCveecjXBNSLh4Ygg/viewform?usp=sf_link" target="_blank">Feedback</a></li>
 				<li><a href="https://docs.coveo.com/en/3378/">News</a></li>
 			</ul>
 		</nav>
@@ -1079,6 +1079,9 @@
 				<h1 id="search-ui-build-status-coverage-status-codefactor-typescript">Search UI <a href="https://travis-ci.org/coveo/search-ui"><img src="https://travis-ci.org/coveo/search-ui.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/coveo/search-ui?branch=master"><img src="https://coveralls.io/repos/github/coveo/search-ui/badge.svg?branch=master" alt="Coverage Status"></a> <a href="https://www.codefactor.io/repository/github/coveo/search-ui"><img src="https://www.codefactor.io/repository/github/coveo/search-ui/badge" alt="CodeFactor"></a> <a href="https://github.com/ellerbrock/typescript-badges/"><img src="https://badges.frapsoft.com/typescript/code/typescript.svg?v=101" alt="TypeScript"></a></h1>
 				<p>Coveo JavaScript Search UI Framework</p>
 				<img id='readme-image' src='https://raw.githubusercontent.com/coveo/search-ui/master/readme.png' />
+				<h2 id="⚠️-disclaimer-⚠️">⚠️ <strong>Disclaimer</strong> ⚠️</h2>
+				<p>The <a href="https://docs.coveo.com/en/375/javascript-search-framework/use-the-coveo-javascript-search-framework-classic">JavaScript Search Framework</a> is currently in maintenance mode.</p>
+				<p>To create a new project, we recommend checking out the <a href="https://docs.coveo.com/en/atomic/latest/">Atomic</a> and <a href="https://docs.coveo.com/en/headless/latest/">Headless</a> frameworks.</p>
 				<h2 id="installation">Installation</h2>
 				<p>You should install the Coveo JavaScript Search UI Framework as an npm package:</p>
 				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--save coveo-search-ui</span></code></pre><p>All resources will be available under <code>node_modules/coveo-search-ui/bin</code>. You can include those in your pages with <code>&lt;script&gt;</code> tags. This will make the variable <code>Coveo</code> globally available in your page.</p>
@@ -1126,7 +1129,7 @@
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFacet"</span> <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Year"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@year"</span> <span class="hljs-attr">data-tab</span>=<span class="hljs-string">"All"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
         <span class="hljs-comment">// The following line shows you how you could configure an endpoint against which to perform your search.</span>
-        <span class="hljs-comment">// Coveo.SearchEndpoint.configureCloudEndpoint('MyCoveoCloudEnpointName', 'my-authentification-token');</span>
+        <span class="hljs-comment">// Coveo.SearchEndpoint.configureCloudEndpoint('MyCoveoCloudEndpointName', 'my-authentication-token');</span>
 
         <span class="hljs-comment">// We provide a sample endpoint with public sources for demo purposes.</span>
         Coveo.SearchEndpoint.configureSampleEndpoint();
@@ -1137,7 +1140,7 @@
     </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></code></pre><p>You can find more examples of fully configured pages in the <code>./pages</code> folder.</p>
 				<p>A tutorial is available to help you get started (see
-				<a href="https://docs.coveo.com/en/361/">Coveo JavaScript Search UI Framework Getting Started Tutorial</a>).</p>
+				<a href="https://levelup.coveo.com/learn/courses/jsui">Coveo JavaScript Search UI Framework Getting Started Tutorial</a>).</p>
 				<h2 id="build">Build</h2>
 				<p>You should have node 10.x installed to build this project.</p>
 				<pre><code>npm <span class="hljs-keyword">install</span> -g yarn
@@ -1184,7 +1187,7 @@ gulp</code></pre><h2 id="important-gulp-tasks">Important Gulp Tasks</h2>
 				<p>Handwritten documentation with more examples is also available (see
 				<a href="https://docs.coveo.com/en/375/javascript-search-framework/javascript-search-framework-home">Coveo JavaScript Search UI Framework Home</a>).</p>
 				<p>A tutorial is also available (see
-					<a href="https://docs.coveo.com/en/361/">Coveo JavaScript Search UI Framework Getting Started Tutorial</a>).
+					<a href="https://levelup.coveo.com/learn/courses/jsui">Coveo JavaScript Search UI Framework Getting Started Tutorial</a>).
 					If you are new to the Coveo JavaScript Search UI Framework, you should definitely consult this tutorial, as it contains
 				valuable information.</p>
 				<p>You can also use Coveo Search to find answers to any specific issues/questions (see the

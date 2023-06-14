@@ -3116,7 +3116,7 @@ var JQueryutils_1 = __webpack_require__(45);
 var Utils_1 = __webpack_require__(3);
 var DeviceUtils_1 = __webpack_require__(30);
 /**
- * This is essentially an helper class for dom manipulation.<br/>
+ * This is essentially a helper class for dom manipulation.<br/>
  * This is intended to provide some basic functionality normally offered by jQuery.<br/>
  * To minimize the multiple jQuery conflict we have while integrating in various system, we implemented the very small subset that the framework needs.<br/>
  * See {@link $$}, which is a function that wraps this class constructor, for less verbose code.
@@ -4912,7 +4912,7 @@ var ComponentEvents = /** @class */ (function () {
     /**
      * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}.<br/>
      * Bind an event using native javascript code.
-     * @param event The event for which to register an handler.
+     * @param event The event for which to register a handler.
      * @param handler The function to execute when the event is triggered.
      */
     ComponentEvents.prototype.onRootElement = function (event, handler) {
@@ -4922,7 +4922,7 @@ var ComponentEvents = /** @class */ (function () {
      * Bind on the "root" of the Component. The root is typically the {@link SearchInterface}.<br/>
      * Bind an event using native javascript code.
      * The handler will execute only ONE time.
-     * @param event The event for which to register an handler.
+     * @param event The event for which to register a handler.
      * @param handler The function to execute when the event is triggered.
      */
     ComponentEvents.prototype.oneRootElement = function (event, handler) {
@@ -15583,8 +15583,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10109.0',
-    product: '2.10109.0',
+    lib: '2.10110.0',
+    product: '2.10110.0',
     supportedApiVersion: 2
 };
 
@@ -15794,6 +15794,22 @@ var dict = {
     "filetype_lithiumcategory": "Lithium Category",
     "lithiumcommunity": "Lithium Community",
     "filetype_lithiumcommunity": "Lithium Community",
+    "sn_hr_core_case": "HR Case",
+    "filetype_sn_hr_core_case": "HR Case",
+    "sc_cat_item": "Catalog Item",
+    "filetype_sc_cat_item": "Catalog Item",
+    "sn_customerservice_case": "Case",
+    "filetype_sn_customerservice_case": "Case",
+    "kb_social_qa_answer": "Answer",
+    "filetype_kb_social_qa_answer": "Answer",
+    "kb_social_qa_question": "Question",
+    "filetype_kb_social_qa_question": "Question",
+    "kb_social_qa_comment": "Comment",
+    "filetype_kb_social_qa_comment": "Comment",
+    "incident": "Incident",
+    "filetype_incident": "Incident",
+    "kb_knowledge": "Knowledge Article",
+    "filetype_kb_knowledge": "Knowledge Article",
     "people": "User",
     "objecttype_people": "User",
     "message": "Message",
@@ -15826,7 +15842,6 @@ var dict = {
     "objecttype_email": "Email",
     "goal": "Goal",
     "objecttype_goal": "Goal",
-    "incident": "Incident",
     "objecttype_incident": "Incident",
     "invoice": "Invoice",
     "objecttype_invoice": "Invoice",
@@ -15900,21 +15915,14 @@ var dict = {
     "objecttype_phonecall": "Phone call",
     "appointment": "Appointment",
     "objecttype_appointment": "Appointment",
-    "sn_hr_core_case": "HR Case",
-    "filetype_sn_hr_core_case": "HR Case",
-    "sc_cat_item": "Catalog Item",
-    "filetype_sc_cat_item": "Catalog Item",
-    "sn_customerservice_case": "Case",
-    "filetype_sn_customerservice_case": "Case",
-    "kb_social_qa_answer": "Answer",
-    "filetype_kb_social_qa_answer": "Answer",
-    "kb_social_qa_question": "Question",
-    "filetype_kb_social_qa_question": "Question",
-    "kb_social_qa_comment": "Comment",
-    "filetype_kb_social_qa_comment": "Comment",
-    "filetype_incident": "Incident",
-    "kb_knowledge": "Knowledge Article",
-    "filetype_kb_knowledge": "Knowledge Article",
+    "slackmessage": "Slack Message",
+    "filetype_slackmessage": "Slack Message",
+    "slackchannel": "Slack Channel",
+    "filetype_slackchannel": "Slack Channel",
+    "slackfile": "Slack File",
+    "filetype_slackfile": "Slack File",
+    "slackuser": "Slack User",
+    "filetype_slackuser": "Slack User",
     "spportal": "Portal",
     "filetype_spportal": "Portal",
     "spsite": "SharePoint Site",
@@ -16141,14 +16149,6 @@ var dict = {
     "filetype_spmicrofeedlist": "Microfeed",
     "splistfolder": "List Folder",
     "filetype_splistfolder": "List Folder",
-    "slackmessage": "Slack Message",
-    "filetype_slackmessage": "Slack Message",
-    "slackchannel": "Slack Channel",
-    "filetype_slackchannel": "Slack Channel",
-    "slackfile": "Slack File",
-    "filetype_slackfile": "Slack File",
-    "slackuser": "Slack User",
-    "filetype_slackuser": "Slack User",
     "youtubevideo": "YouTube video",
     "filetype_youtubevideo": "YouTube video",
     "youtubeplaylistitem": "YouTube playlist item",
@@ -19241,7 +19241,7 @@ var HistoryController = /** @class */ (function (_super) {
         var _this = this;
         if (!this.usageAnalytics) {
             this.logger.warn("The query state has been modified directly in the URL and we couldn't log the proper analytics call.");
-            this.logger.warn('This is caused by an history controller that has been initialized without the usage analytics parameter.');
+            this.logger.warn('This is caused by a history controller that has been initialized without the usage analytics parameter.');
             return;
         }
         if (QueryStateModel_1.QUERY_STATE_ATTRIBUTES.Q in stateDifference) {
