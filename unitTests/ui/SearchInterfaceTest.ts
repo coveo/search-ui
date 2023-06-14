@@ -370,7 +370,7 @@ export function SearchInterfaceTest() {
           expect(Component.resolveBinding(cmp.element, HistoryController)).toBeUndefined();
         });
 
-        it('enableHistory can be disabled and there will still be an history manager to access', () => {
+        it('enableHistory can be disabled and there will still be a history manager to access', () => {
           const searchInterface = setupSearchInterface({
             enableHistory: false
           });
