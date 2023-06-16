@@ -54,7 +54,7 @@ export class TemplateConditionEvaluator {
     // try to get the field value in the format raw.filetype == "YouTubeVideo"
     let firstRegexToGetValue = new RegExp(`raw\\.${field}\\s*=+\\s*["|']([a-zA-Z]+)["|']`, 'gi');
     // try to get the field value in the format raw['filetype'] == "YouTubeVideo"
-    let secondRegexToGetValue = new RegExp(`raw\[["|']${field}["|']\]\\s*=+\\s*["|']([a-zA-Z]+)["|']`, 'gi');
+    let secondRegexToGetValue = new RegExp(`raw\\[["|']${field}["|']\\]\\s*=+\\s*["|']([a-zA-Z]+)["|']`, 'gi');
 
     let matches = StringUtils.match(condition, firstRegexToGetValue).concat(StringUtils.match(condition, secondRegexToGetValue));
     matches.forEach(match => {
@@ -64,8 +64,8 @@ export class TemplateConditionEvaluator {
   }
 
   private static evaluateFieldShouldNotBeNull(field: string, condition: string): boolean {
-    let firstRegexToMatchNonNull = new RegExp(`raw\.${field}\\s*!=\\s*(?=null|undefined)`, 'gi');
-    let secondRegexToMatchNonNull = new RegExp(`raw\[["|']${field}["|']\]\\s*!=\\s*(?=null|undefined)`, 'gi');
+    let firstRegexToMatchNonNull = new RegExp(`raw\\.${field}\\s*!=\\s*(?=null|undefined)`, 'gi');
+    let secondRegexToMatchNonNull = new RegExp(`raw\\[["|']${field}["|']\\]\\s*!=\\s*(?=null|undefined)`, 'gi');
     return condition.match(firstRegexToMatchNonNull) != null || condition.match(secondRegexToMatchNonNull) != null;
   }
 
