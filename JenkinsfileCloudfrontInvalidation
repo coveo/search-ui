@@ -12,7 +12,8 @@ node('linux && docker') {
             credentialsId: "CloudfrontCacheInvalidation",
           ]
         ]) {
-            sh 'yarn install'
+            sh 'npm i -g npm@latest'
+            sh 'npm install'
             sh 'node invalidate.cloudfront.js'
         }
       }
