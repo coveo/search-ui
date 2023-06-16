@@ -203,7 +203,7 @@ export class HistoryController extends RootComponent implements IHistoryManager 
 
     if (!this.usageAnalytics) {
       this.logger.warn("The query state has been modified directly in the URL and we couldn't log the proper analytics call.");
-      this.logger.warn('This is caused by an history controller that has been initialized without the usage analytics parameter.');
+      this.logger.warn('This is caused by a history controller that has been initialized without the usage analytics parameter.');
       return;
     }
 

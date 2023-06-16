@@ -52,7 +52,7 @@ export function DebugHeaderTest() {
       expect(getQuerySyntaxCheckbox(elem.el)).not.toBeNull();
     });
 
-    it('should create an highlight checkbox', () => {
+    it('should create a highlight checkbox', () => {
       expect(getHighlightCheckbox(elem.el)).not.toBeNull();
     });
 

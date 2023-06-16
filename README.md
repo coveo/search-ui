@@ -4,6 +4,12 @@ Coveo JavaScript Search UI Framework
 
 <img id='readme-image' src='https://raw.githubusercontent.com/coveo/search-ui/master/readme.png' />
 
+## ⚠️ **Disclaimer** ⚠️
+
+The [JavaScript Search Framework](https://docs.coveo.com/en/375/javascript-search-framework/use-the-coveo-javascript-search-framework-classic) is currently in maintenance mode.
+
+To create a new project, we recommend checking out the [Atomic](https://docs.coveo.com/en/atomic/latest/) and [Headless](https://docs.coveo.com/en/headless/latest/) frameworks.
+
 ## Installation
 
 You should install the Coveo JavaScript Search UI Framework as an npm package:
@@ -68,7 +74,7 @@ For quick access to the latest CDN links, see [JavaScript Search Framework CDN L
     <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="All"></div>
     <script>
         // The following line shows you how you could configure an endpoint against which to perform your search.
-        // Coveo.SearchEndpoint.configureCloudEndpoint('MyCoveoCloudEnpointName', 'my-authentification-token');
+        // Coveo.SearchEndpoint.configureCloudEndpoint('MyCoveoCloudEndpointName', 'my-authentication-token');
 
         // We provide a sample endpoint with public sources for demo purposes.
         Coveo.SearchEndpoint.configureSampleEndpoint();
@@ -83,7 +89,7 @@ For quick access to the latest CDN links, see [JavaScript Search Framework CDN L
 You can find more examples of fully configured pages in the `./pages` folder.
 
 A tutorial is available to help you get started (see
-[Coveo JavaScript Search UI Framework Getting Started Tutorial](https://docs.coveo.com/en/361/)).
+[Coveo JavaScript Search UI Framework Getting Started Tutorial](https://levelup.coveo.com/learn/courses/jsui)).
 
 ## Build
 
@@ -161,7 +167,7 @@ Handwritten documentation with more examples is also available (see
 [Coveo JavaScript Search UI Framework Home](https://docs.coveo.com/en/375/javascript-search-framework/javascript-search-framework-home)).
 
 A tutorial is also available (see
-[Coveo JavaScript Search UI Framework Getting Started Tutorial](https://docs.coveo.com/en/361/)).
+[Coveo JavaScript Search UI Framework Getting Started Tutorial](https://levelup.coveo.com/learn/courses/jsui)).
 If you are new to the Coveo JavaScript Search UI Framework, you should definitely consult this tutorial, as it contains
 valuable information.
 

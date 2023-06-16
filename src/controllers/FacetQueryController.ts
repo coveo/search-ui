@@ -28,7 +28,7 @@ export class FacetQueryController {
 
   private currentSearchPromise: Promise<IQueryResults>;
 
-  constructor(public facet: Facet) {}
+  constructor(public facet: Facet, private shouldEscapeValueInFieldExpression: boolean = true) {}
 
   /**
    * Reset the expression for the facet search, used when a new query is triggered
@@ -49,14 +49,14 @@ export class FacetQueryController {
     if (selected.length > 0) {
       if (this.facet.options.useAnd) {
         _.each(selected, (value: FacetValue) => {
-          builder.addFieldExpression(<string>this.facet.options.field, '==', [value.value], true);
+          builder.addFieldExpression(<string>this.facet.options.field, '==', [value.value], this.shouldEscapeValueInFieldExpression);
         });
       } else {
         builder.addFieldExpression(
           <string>this.facet.options.field,
           '==',
           _.map(selected, (value: FacetValue) => value.value),
-          true
+          this.shouldEscapeValueInFieldExpression
         );
       }
     }
