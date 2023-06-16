@@ -5,7 +5,7 @@ node('linux && docker') {
   withEnv([
     'npm_config_cache=npm-cache'
   ]){
-    withDockerContainer(image: 'nikolaik/python-nodejs:python3.8-nodejs14', args: '-u=root') {
+    withDockerContainer(image: 'node:18', args: '-u=root') {
       stage('Install') {
         // Prevents "not a git directory" issue.
         sh "git config --global --add safe.directory '*'"
