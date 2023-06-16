@@ -52,7 +52,7 @@ export class TemplateConditionEvaluator {
   private static evaluateMatchingFieldValues(field: string, condition: string) {
     let foundForCurrentField = [];
     // try to get the field value in the format raw.filetype == "YouTubeVideo"
-    let firstRegexToGetValue = new RegExp(`raw\.${field}\\s*=+\\s*["|']([a-zA-Z]+)["|']`, 'gi');
+    let firstRegexToGetValue = new RegExp(`raw\\.${field}\\s*=+\\s*["|']([a-zA-Z]+)["|']`, 'gi');
     // try to get the field value in the format raw['filetype'] == "YouTubeVideo"
     let secondRegexToGetValue = new RegExp(`raw\[["|']${field}["|']\]\\s*=+\\s*["|']([a-zA-Z]+)["|']`, 'gi');
 
