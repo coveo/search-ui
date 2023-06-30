@@ -54,6 +54,8 @@ export class ExportToExcel extends Component {
      * value. However, this amount of time will increase exponentially as you set the value higher.
      *
      * Consequently, you should avoid setting this value above the default index limit of 1000 search results.
+     * 
+     * Note that for HIPAA organizations, the export size limit is 5 MB, and for non-HIPAA organizations, the limit is 25 MB.
      *
      * Default value is `100`. Minimum value is `1`.
      *
