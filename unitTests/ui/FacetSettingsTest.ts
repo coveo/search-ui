@@ -7,6 +7,7 @@ import { registerCustomMatcher } from '../CustomMatchers';
 import * as Mock from '../MockEnvironment';
 import { Simulate } from '../Simulate';
 import { FacetHeader } from '../../src/ui/Facet/FacetHeader';
+import { FacetSort } from '../../src/ui/Facet/FacetSort';
 
 export function FacetSettingsTest() {
   describe('FacetSettings', () => {
@@ -192,6 +193,15 @@ export function FacetSettingsTest() {
     it("should show direction section if there's two linked parameters that require changing direction", () => {
       sorts = ['alphaascending', 'alphadescending'];
       initFacetSettings();
+      facetSettings.open();
+
+      expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-ascending')).not.toBeNull();
+      expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-descending')).not.toBeNull();
+    });
+
+    it('should show direction section if the initial sort criteria requires changing direction', () => {
+      initFacetSettings();
+      facetSettings.activeSort = FacetSort.availableSorts.alphaascending;
       facetSettings.open();
 
       expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-ascending')).not.toBeNull();
