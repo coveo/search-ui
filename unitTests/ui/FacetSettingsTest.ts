@@ -200,12 +200,13 @@ export function FacetSettingsTest() {
     });
 
     it('should show direction section if the initial sort criteria requires changing direction', () => {
+      sorts = ['alphaascending', 'alphadescending'];
       initFacetSettings();
       facetSettings.activeSort = FacetSort.availableSorts.alphaascending;
       facetSettings.open();
 
-      expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-ascending')).not.toBeNull();
-      expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-descending')).not.toBeNull();
+      const ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
+      expect($$(ascendingSection).getAttribute('aria-disabled')).toBe('false');
     });
 
     it("should not show direction section if there's a single ascending or descending parameter", () => {
