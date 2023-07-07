@@ -38,7 +38,7 @@ export var L10N = {
     return value;
   },
   formatPlSn: (value: string, count: number | boolean) => {
-    let isPlural = _.isBoolean(count) ? count : count > 1;
+    let isPlural = _.isBoolean(count) ? count : count !== 1 && count !== -1;
     if (isPlural) {
       value = value.replace(pluralRegex, '$1').replace(singularRegex, '');
     } else {

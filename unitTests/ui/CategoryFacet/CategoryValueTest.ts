@@ -151,9 +151,9 @@ export function CategoryValueTest() {
             labelElement = categoryValue.element.find('.coveo-category-facet-value-label');
           });
 
-          it('uses the singular form of resultCount', () => {
+          it('uses the plural form of resultCount', () => {
             const labelAttribute = labelElement.attributes['aria-label'];
-            expect(labelAttribute.value).toMatch(/result$/);
+            expect(labelAttribute.value).toMatch(/results$/);
           });
         });
       });

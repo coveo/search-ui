@@ -46,18 +46,20 @@ export function L10NTest() {
       expect(L10N.format('TwoNumbers', '37', '42')).toBe('37 and 42');
     });
 
-    it('should automatically pluralize values higher than one', () => {
+    it('should automatically pluralize values other than 1 and -1', () => {
       String.locale = 'fr';
-      expect(L10N.format('baby', 0, 0)).toBe('0 bébé');
-      expect(L10N.format('baby', 0.42, 0.42)).toBe('0.42 bébé');
+      expect(L10N.format('baby', 0, 0)).toBe('0 bébés');
+      expect(L10N.format('baby', 0.42, 0.42)).toBe('0.42 bébés');
       expect(L10N.format('baby', 1, 1)).toBe('1 bébé');
+      expect(L10N.format('baby', -1, -1)).toBe('-1 bébé');
       expect(L10N.format('baby', 1.37, 1.37)).toBe('1.37 bébés');
       expect(L10N.format('baby', 42, 42)).toBe('42 bébés');
 
       String.locale = 'en';
-      expect(L10N.format('baby', 0, 0)).toBe('0 baby');
-      expect(L10N.format('baby', 0.42, 0.42)).toBe('0.42 baby');
+      expect(L10N.format('baby', 0, 0)).toBe('0 babies');
+      expect(L10N.format('baby', 0.42, 0.42)).toBe('0.42 babies');
       expect(L10N.format('baby', 1, 1)).toBe('1 baby');
+      expect(L10N.format('baby', -1, -1)).toBe('-1 baby');
       expect(L10N.format('baby', 1.37, 1.37)).toBe('1.37 babies');
       expect(L10N.format('baby', 42, 42)).toBe('42 babies');
     });
