@@ -454,7 +454,7 @@ export class FacetSettings extends FacetSort {
 
   private buildAscendingOrDescending(direction: string) {
     const elem = this.buildItem(l(direction));
-    elem.setAttribute('aria-disabled', 'true');
+    elem.setAttribute('aria-disabled', this.activeSort.directionToggle ? 'false' : 'true');
     elem.setAttribute('data-direction', direction.toLowerCase());
     return elem;
   }

@@ -7,6 +7,7 @@ import { registerCustomMatcher } from '../CustomMatchers';
 import * as Mock from '../MockEnvironment';
 import { Simulate } from '../Simulate';
 import { FacetHeader } from '../../src/ui/Facet/FacetHeader';
+import { FacetSort } from '../../src/ui/Facet/FacetSort';
 
 export function FacetSettingsTest() {
   describe('FacetSettings', () => {
@@ -196,6 +197,16 @@ export function FacetSettingsTest() {
 
       expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-ascending')).not.toBeNull();
       expect($$(facetSettings.settingsPopup).find('.coveo-facet-settings-section-direction-descending')).not.toBeNull();
+    });
+
+    it('should show direction section if the initial sort criteria requires changing direction', () => {
+      sorts = ['alphaascending', 'alphadescending'];
+      initFacetSettings();
+      facetSettings.activeSort = FacetSort.availableSorts.alphaascending;
+      facetSettings.open();
+
+      const ascendingSection = $$(facetSettings.settingsPopup).find('.coveo-facet-settings-item[data-direction="ascending"]');
+      expect($$(ascendingSection).getAttribute('aria-disabled')).toBe('false');
     });
 
     it("should not show direction section if there's a single ascending or descending parameter", () => {
