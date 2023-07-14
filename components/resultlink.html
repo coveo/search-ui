@@ -11,11 +11,11 @@
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10110/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10111/css/CoveoFullSearch.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10110/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10111/js/CoveoJsSearch.min.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
@@ -892,15 +892,17 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 							<li>With the following markup, the <code>ResultLink</code> outputs its <code>href</code> value using the <code>@uri</code> field (rather than the
 							default field):</li>
 						</ul>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@uri"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></code></pre>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@uri"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
 						<ul>
 							<li>In the following result template, the custom <code>getMyKBUri()</code> function provides the <code>href</code> value:</li>
 						</ul>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"KnowledgeArticle"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span>&gt;</span><span class="javascript">
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"KnowledgeArticle"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/underscore"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"result-template"</span>&gt;</span><span class="javascript">
   &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">'CoveoIcon&gt;'</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
   &lt;a <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoResultLink"</span> href=<span class="hljs-string">"&lt;%= getMyKBUri(raw) %&gt;"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
   &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"CoveoExcerpt"</span>&gt;<span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
 						<p>See also <a href="resultlink.html#options.hreftemplate"><code>hrefTemplate</code></a>, which can override this option.</p>
 						<p>By default, the component uses the <code>@clickUri</code> field of the item to output the value of its <code>href</code> attribute.</p>
 					</div>
@@ -932,11 +934,13 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 						<ul>
 							<li>The following markup generates an <code>href</code> value such as <code>http://uri.com?id=itemTitle</code>:</li>
 						</ul>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span> <span class="hljs-attr">data-href-template</span>=<span class="hljs-string">'${clickUri}?id=${raw.title}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></code></pre>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span> <span class="hljs-attr">data-href-template</span>=<span class="hljs-string">'${clickUri}?id=${raw.title}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
 						<ul>
 							<li>The following markup generates an <code>href</code> value such as <code>localhost/fooBar</code>:</li>
 						</ul>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span> <span class="hljs-attr">data-href-template</span>=<span class="hljs-string">'${window.location.hostname}/{Foo.Bar}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></code></pre>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoResultLink'</span> <span class="hljs-attr">data-href-template</span>=<span class="hljs-string">'${window.location.hostname}/{Foo.Bar}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
 						<p>Default value is <code>undefined</code>.</p>
 					</div>
 					<div class="tsd-panel">
@@ -960,7 +964,7 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 							<p>Specify this option to log additional analytics when this result link is pressed.</p>
 						</div>
 						<p><strong>Example:</strong></p>
-						<pre><code class="language-javascript"><span class="hljs-keyword">const</span> resultLink = <span class="hljs-keyword">new</span> Coveo.ResultLink(
+						<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> resultLink = <span class="hljs-keyword">new</span> Coveo.ResultLink(
   linkElement,
   {
     <span class="hljs-attr">logAnalytics</span>: <span class="hljs-function">(<span class="hljs-params">href</span>) =&gt;</span> Coveo.logCustomEvent(
@@ -976,7 +980,8 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
   },
   searchInterface.getBindings(),
   result
-)</code></pre>
+)
+</code></pre>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -1027,7 +1032,7 @@ data-always-open-in-new-window&#x3D;&#x27;false&#x27;</pre>
 							<a href="https://docs.coveo.com/en/346/#passing-component-options-before-the-init-call">Passing Component Options Before the init Call</a>).</p>
 						</blockquote>
 						<p><strong>Example:</strong></p>
-						<pre><code class="language-javascript"><span class="hljs-comment">// You can set the option in the 'init' call:</span>
+						<pre><code class="lang-javascript"><span class="hljs-comment">// You can set the option in the 'init' call:</span>
 Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"#search"</span>), {
   <span class="hljs-attr">ResultLink</span> : {
     <span class="hljs-attr">onClick</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, result</span>) </span>{
@@ -1047,7 +1052,8 @@ Coveo.init(<span class="hljs-built_in">document</span>.querySelector(<span class
 <span class="hljs-comment">//       openUriInASpecialTab(result.clickUri, result.title);</span>
 <span class="hljs-comment">//     }</span>
 <span class="hljs-comment">//   }</span>
-<span class="hljs-comment">// });</span></code></pre>
+<span class="hljs-comment">// });</span>
+</code></pre>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -1167,17 +1173,20 @@ data-open-quickview&#x3D;&#x27;false&#x27;</pre>
 							<li>The following markup generates a <code>ResultLink</code> display title such as <code>Case number: 123456</code> if both the
 							<code>raw.objecttype</code> and <code>raw.objectnumber</code> keys are defined in the parent result fields:</li>
 						</ul>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${raw.objecttype} number: ${raw.objectnumber}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></code></pre>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${raw.objecttype} number: ${raw.objectnumber}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
 						<ul>
 							<li>The following markup generates <code>${myField}</code> as a <code>ResultLink</code> display title if the <code>myField</code> key is undefined
 							in the parent result fields:</li>
 						</ul>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${myField}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></code></pre>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${myField}"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
 						<ul>
 							<li>The following markup generates <code>Foobar</code> as a <code>ResultLink</code> display title, because the <code>ResultLink</code> innterHTML is
 							not empty:</li>
 						</ul>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${will} ${be} ${ignored}"</span>&gt;</span>Foobar<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></code></pre>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoResultLink"</span> <span class="hljs-attr">data-title-template</span>=<span class="hljs-string">"${will} ${be} ${ignored}"</span>&gt;</span>Foobar<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
 						<p>Default value is <code>undefined</code>.</p>
 						<dl class="tsd-comment-tags">
 							<dt>Available since</dt>

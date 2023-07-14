@@ -11,11 +11,11 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 	<link rel="stylesheet" href="assets/css/overrides.css">
 	<link rel="stylesheet" href="assets/css/coveo-connect-header.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10110/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10111/css/CoveoFullSearch.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10110/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10111/js/CoveoJsSearch.min.js"></script>
 	<script src="assets/js/coveo-connect-header.js"></script>
 	<script src="assets/gen/js/playground.js"></script>
 	<script src="assets/js/searchUIrefDoc.js"></script>
@@ -1913,7 +1913,7 @@
 								<div class="lead">
 									<p>Initialize the framework with a basic search interface. Calls <a href="classes/initialization.html#initsearchinterface">Initialization.initSearchInterface</a>.</p>
 								</div>
-								<p>If using the jQuery extension, this is called using <code>$('#root').coveo('init');</code>.</p>
+								<p>If using the jQuery extension, this is called using <code>$(&#39;#root&#39;).coveo(&#39;init&#39;);</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1956,7 +1956,7 @@
 								<div class="lead">
 									<p>Initialize the framework with a recommendation interface. Calls <a href="classes/initialization.html#initrecommendationinterface">Initialization.initRecommendationInterface</a>.</p>
 								</div>
-								<p>If using the jQuery extension, this is called using <code>$('#root').coveo('initRecommendation');</code>.</p>
+								<p>If using the jQuery extension, this is called using <code>$(&#39;#root&#39;).coveo(&#39;initRecommendation&#39;);</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -2016,7 +2016,7 @@
 								<div class="lead">
 									<p>Initialize the framework with a standalone search box. Calls {@link Initialize.initStandaloneSearchInterface}.</p>
 								</div>
-								<p>If using the jQuery extension, this is called using <code>$('#root').coveo('initSearchbox');</code>.</p>
+								<p>If using the jQuery extension, this is called using <code>$(&#39;#root&#39;).coveo(&#39;initSearchbox&#39;);</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -2068,7 +2068,7 @@
 								<p>This is especially useful when you want to extend a base component, and make sure the lazy component loading process
 								recognizes it (see <a href="https://docs.coveo.com/en/295/">Lazy Versus Eager Component Loading</a>).</p>
 								<p><strong>Example:</strong></p>
-								<pre><code class="language-typescript"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">lazyCustomFacet</span>(<span class="hljs-params"></span>) </span>{
+								<pre><code class="lang-typescript"><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">lazyCustomFacet</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-keyword">return</span> Coveo.load&lt;Facet&gt;<span class="hljs-function">(<span class="hljs-params">'Facet'</span>).<span class="hljs-params">then</span>(<span class="hljs-params">(<span class="hljs-params">Facet</span>) =&gt; {
     <span class="hljs-keyword">class</span> CustomFacet <span class="hljs-keyword">extends</span> Facet {
       [ ... ]
@@ -2078,7 +2078,8 @@
   }</span>);
 };
 
-<span class="hljs-params">Coveo</span>.<span class="hljs-params">LazyInitialization</span>.<span class="hljs-params">registerLazyComponent</span>(<span class="hljs-params">'CustomFacet', lazyCustomFacet</span>);</span></code></pre>
+<span class="hljs-params">Coveo</span>.<span class="hljs-params">LazyInitialization</span>.<span class="hljs-params">registerLazyComponent</span>(<span class="hljs-params">'CustomFacet', lazyCustomFacet</span>);</span>
+</code></pre>
 								<p>You can also use this function to assert a component is fully loaded in your page before executing any code relating
 								to it.</p>
 								<p><strong>Example:</strong></p>
@@ -2539,22 +2540,26 @@
 								<p>Can perform the following actions:</p>
 								<ul>
 									<li><p>Get the <code>QueryStateModel</code> instance:</p>
-										<pre><code class="language-javascript">Coveo.state(element);</code></pre>
+										<pre><code class="lang-javascript">Coveo.state(element);
+</code></pre>
 									</li>
 									<li><p>Get the value of a single state attribute from the <code>QueryStateModel</code> instance:</p>
-										<pre><code class="language-javascript"><span class="hljs-comment">// You can replace `q` with any registered state attribute.</span>
-Coveo.state(element, <span class="hljs-string">"q"</span>);</code></pre>
+										<pre><code class="lang-javascript"><span class="hljs-comment">// You can replace `q` with any registered state attribute.</span>
+Coveo.state(element, <span class="hljs-string">"q"</span>);
+</code></pre>
 									</li>
 									<li><p>Set the value of a single state attribute in the <code>QueryStateModel</code> instance:</p>
-										<pre><code class="language-javascript"><span class="hljs-comment">// You can replace `q` with any registered state attribute.</span>
-Coveo.state(element, <span class="hljs-string">"q"</span>, <span class="hljs-string">"my new value"</span>);</code></pre>
+										<pre><code class="lang-javascript"><span class="hljs-comment">// You can replace `q` with any registered state attribute.</span>
+Coveo.state(element, <span class="hljs-string">"q"</span>, <span class="hljs-string">"my new value"</span>);
+</code></pre>
 									</li>
 									<li><p>Set multiple state attribute values in the <code>QueryStateModel</code> instance:</p>
-										<pre><code class="language-javascript"><span class="hljs-comment">// You can replace `q` and `sort` with any registered state attributes.</span>
+										<pre><code class="lang-javascript"><span class="hljs-comment">// You can replace `q` and `sort` with any registered state attributes.</span>
 Coveo.state(element, {
   <span class="hljs-string">"q"</span> : <span class="hljs-string">"my new value"</span>,
   <span class="hljs-string">"sort"</span> : <span class="hljs-string">"relevancy"</span>
-});</code></pre>
+});
+</code></pre>
 									</li>
 								</ul>
 								<p><strong>Note:</strong></p>
@@ -2562,7 +2567,8 @@ Coveo.state(element, {
 									<p>When setting one or several state attribute values with this function, you can pass an additional argument to set
 									the <code>silent</code> attribute to <code>true</code> in order to prevent the state change from triggering state change events.</p>
 									<p><strong>Example:</strong></p>
-									<pre><code class="language-javascript">Coveo.state(element, <span class="hljs-string">"q"</span>, <span class="hljs-string">"my new value"</span>, { <span class="hljs-string">"silent"</span> : <span class="hljs-literal">true</span> });</code></pre>
+									<pre><code class="lang-javascript">Coveo.state(element, <span class="hljs-string">"q"</span>, <span class="hljs-string">"my new value"</span>, { <span class="hljs-string">"silent"</span> : <span class="hljs-literal">true</span> });
+</code></pre>
 								</blockquote>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>

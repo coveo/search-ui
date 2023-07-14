@@ -11,11 +11,11 @@
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10110/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10111/css/CoveoFullSearch.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10110/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10111/js/CoveoJsSearch.min.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
@@ -690,11 +690,14 @@
 						<p>Note: This option uses a distinctive markup configuration syntax allowing multiple conditions to be expressed. Its underlying logic is the same as that of the field value conditions mechanism used by result templates.</p>
 						<p><strong>Examples:</strong>
 						Render the component if the query result item&#39;s @documenttype field value is Article or Documentation.</p>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoIcon"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@author"</span> <span class="hljs-attr">data-condition-field-documenttype</span>=<span class="hljs-string">"Article, Documentation"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoIcon"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@author"</span> <span class="hljs-attr">data-condition-field-documenttype</span>=<span class="hljs-string">"Article, Documentation"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 						<p>Render the component if the query result item&#39;s @documenttype field value is anything but Case.</p>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoIcon"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@author"</span> <span class="hljs-attr">data-condition-field-not-documenttype</span>=<span class="hljs-string">"Case"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoIcon"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@author"</span> <span class="hljs-attr">data-condition-field-not-documenttype</span>=<span class="hljs-string">"Case"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 						<p>Render the component if the query result item&#39;s @documenttype field value is Article, and if its @author field value is anything but Anonymous.</p>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoIcon"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@author"</span> <span class="hljs-attr">data-condition-field-documenttype</span>=<span class="hljs-string">"Article"</span> <span class="hljs-attr">data-condition-field-not-author</span>=<span class="hljs-string">"Anonymous"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoIcon"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@author"</span> <span class="hljs-attr">data-condition-field-documenttype</span>=<span class="hljs-string">"Article"</span> <span class="hljs-attr">data-condition-field-not-author</span>=<span class="hljs-string">"Anonymous"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 						<p>Default value is <code>undefined</code>.</p>
 					</div>
 				</section>

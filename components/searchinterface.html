@@ -11,11 +11,11 @@
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10110/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10111/css/CoveoFullSearch.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10110/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10111/js/CoveoJsSearch.min.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
@@ -224,7 +224,7 @@
 					<p>It is advisable to specify a unique HTML <code>id</code> attribute for the SearchInterface component in order to be able to
 					reference it easily.</p>
 					<p><strong>Example:</strong></p>
-					<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
 
 [ ... ]
 
@@ -252,7 +252,8 @@
 
   [ ... ]
 
-<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></code></pre>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+</code></pre>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -1045,7 +1046,7 @@ data-enable-scroll-restoration&#x3D;&#x27;false&#x27;</pre>
 						<p>Default value is <code>&#39;&#39;</code>.</p>
 						<dl class="tsd-comment-tags">
 							<dt>Default</dt>
-							<dd><p>``</p>
+							<dd><p><code></code></p>
 							</dd>
 						</dl>
 					</div>
@@ -1081,7 +1082,7 @@ data-enable-scroll-restoration&#x3D;&#x27;false&#x27;</pre>
 						<p>Default value is the empty string (<code>&#39;&#39;</code>).</p>
 						<dl class="tsd-comment-tags">
 							<dt>Default</dt>
-							<dd><p>``</p>
+							<dd><p><code></code></p>
 							</dd>
 						</dl>
 					</div>
@@ -1115,23 +1116,25 @@ data-enable-scroll-restoration&#x3D;&#x27;false&#x27;</pre>
 						<p>In this first case, the SearchInterface uses the HTML element whose <code>id</code> attribute is <code>MyAnimation</code> as the
 							loading animation only if the <code>class</code> attribute of this element also matches <code>coveo-first-loading-animation</code>.
 						Default loading animation CSS, which you can customize as you see fit, applies to this HTML element.</p>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchInterface'</span> <span class="hljs-attr">data-first-loading-animation</span>=<span class="hljs-string">'#MyAnimation'</span>&gt;</span>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchInterface'</span> <span class="hljs-attr">data-first-loading-animation</span>=<span class="hljs-string">'#MyAnimation'</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyAnimation'</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'coveo-first-loading-animation'</span>&gt;</span>
     <span class="hljs-comment">&lt;!-- ... --&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-comment">&lt;!-- ... --&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 						<p>In this second case, the SearchInterface uses the HTML element whose <code>id</code> attribute is <code>MyAnimation</code> as the
 							loading animation no matter what CSS class it matches. However, if the <code>class</code> attribute of the HTML element does
 							not match <code>coveo-first-loading-animation</code>, no default loading animation CSS applies to this HTML element.
 							Normally, you should only use <code>data-first-loading-animation-selector</code> if you want to completely override the
 						default loading animation CSS.</p>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchInterface'</span> <span class="hljs-attr">data-first-loading-animation-selector</span>=<span class="hljs-string">'#MyAnimation'</span>&gt;</span>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'CoveoSearchInterface'</span> <span class="hljs-attr">data-first-loading-animation-selector</span>=<span class="hljs-string">'#MyAnimation'</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'MyAnimation'</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'my-custom-loading-animation-class'</span>&gt;</span>
     <span class="hljs-comment">&lt;!-- ... --&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-comment">&lt;!-- ... --&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 						<p>By default, the loading animation is a Coveo CSS animation (which you can customize with CSS).</p>
 						<dl class="tsd-comment-tags">
 							<dt>deprecated</dt>
@@ -1234,14 +1237,16 @@ data-hide-until-first-query&#x3D;&#x27;false&#x27;</pre>
 						</div>
 						<p>Default value is <code>element.ownerDocument.body</code>.</p>
 						<p><strong>Example in attribute:</strong></p>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoSearchInterface"</span> <span class="hljs-attr">data-modal-container</span>=<span class="hljs-string">"#my-modal-container"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoSearchInterface"</span> <span class="hljs-attr">data-modal-container</span>=<span class="hljs-string">"#my-modal-container"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 						<p><strong>Example in init options:</strong></p>
-						<pre><code class="language-javascript"><span class="hljs-keyword">var</span> myContainer = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'my-modal-container'</span>);
+						<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> myContainer = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'my-modal-container'</span>);
 Coveo.init(root, {
   <span class="hljs-attr">SearchInterface</span>: {
     <span class="hljs-attr">modalContainer</span>: myContainer
   }
-});</code></pre>
+});
+</code></pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">

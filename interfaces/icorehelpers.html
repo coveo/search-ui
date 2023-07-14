@@ -11,11 +11,11 @@
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10110/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10111/css/CoveoFullSearch.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10110/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10111/js/CoveoJsSearch.min.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
@@ -245,9 +245,11 @@
 					</div>
 					<p><strong>Examples:</strong></p>
 					<p><strong>HTML</strong></p>
-					<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@videoduration"</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"timeSpan"</span> <span class="hljs-attr">data-helper-options-is-milliseconds</span>=<span class="hljs-string">"false"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+					<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@videoduration"</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"timeSpan"</span> <span class="hljs-attr">data-helper-options-is-milliseconds</span>=<span class="hljs-string">"false"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 					<p><strong>Underscore</strong></p>
-					<pre><code class="language-erb"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span></span></span><span class="ruby"> timeSpan(raw.videoduration, { <span class="hljs-symbol">isMilliseconds:</span> <span class="hljs-literal">false</span> }) </span><span class="xml"><span class="hljs-tag">%&gt;</span></span></code></pre>
+					<pre><code class="lang-erb"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span></span></span><span class="ruby"> timeSpan(raw.videoduration, { <span class="hljs-symbol">isMilliseconds:</span> <span class="hljs-literal">false</span> }) </span><span class="xml"><span class="hljs-tag">%&gt;</span></span>
+</code></pre>
 				</div>
 			</section>
 			<div class="preview-container tsd-panel">
@@ -1012,7 +1014,8 @@
 						</ul>
 						<p>When the helper is used in a <a href="../components/fieldvalue.html"><code>FieldValue</code></a> component, this value is automatically retrieved from the specified <a href="../components/fieldvalue.html#options.field"><code>field</code></a>.</p>
 						<p><strong>Example:</strong></p>
-						<pre><code class="language-html"> <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@viewcount"</span> <span class="hljs-attr">data-text-caption</span>=<span class="hljs-string">"Views"</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"number"</span> <span class="hljs-attr">data-helper-options-format</span>=<span class="hljs-string">"n0"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+						<pre><code class="lang-html"> <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@viewcount"</span> <span class="hljs-attr">data-text-caption</span>=<span class="hljs-string">"Views"</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"number"</span> <span class="hljs-attr">data-helper-options-format</span>=<span class="hljs-string">"n0"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
@@ -1231,11 +1234,13 @@
 						<p><strong>Examples:</strong></p>
 						<blockquote>
 							<p><strong>HTML</strong></p>
-							<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@size'</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"size"</span> <span class="hljs-attr">data-helper-options-base</span>=<span class="hljs-string">"1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+							<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoFieldValue"</span> <span class="hljs-attr">data-field</span>=<span class="hljs-string">'@size'</span> <span class="hljs-attr">data-helper</span>=<span class="hljs-string">"size"</span> <span class="hljs-attr">data-helper-options-base</span>=<span class="hljs-string">"1"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 						</blockquote>
 						<blockquote>
 							<p><strong>Underscore</strong></p>
-							<pre><code class="language-erb"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span></span></span><span class="ruby"> size(raw.size, {<span class="hljs-symbol">base:</span> <span class="hljs-number">0</span>, <span class="hljs-symbol">precision:</span> <span class="hljs-number">2</span>}) </span><span class="xml"><span class="hljs-tag">%&gt;</span></span></code></pre>
+							<pre><code class="lang-erb"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%=</span></span></span><span class="ruby"> size(raw.size, {<span class="hljs-symbol">base:</span> <span class="hljs-number">0</span>, <span class="hljs-symbol">precision:</span> <span class="hljs-number">2</span>}) </span><span class="xml"><span class="hljs-tag">%&gt;</span></span>
+</code></pre>
 						</blockquote>
 						<ul>
 							<li><code>value</code>: The number to format</li>

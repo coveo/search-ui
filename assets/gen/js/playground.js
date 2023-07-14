@@ -9912,7 +9912,7 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 /* 19 */
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.6.9' };
+var core = module.exports = { version: '2.6.11' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -15583,8 +15583,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10110.0',
-    product: '2.10110.0',
+    lib: '2.10111.0',
+    product: '2.10111.0',
     supportedApiVersion: 2
 };
 
@@ -15794,22 +15794,6 @@ var dict = {
     "filetype_lithiumcategory": "Lithium Category",
     "lithiumcommunity": "Lithium Community",
     "filetype_lithiumcommunity": "Lithium Community",
-    "sn_hr_core_case": "HR Case",
-    "filetype_sn_hr_core_case": "HR Case",
-    "sc_cat_item": "Catalog Item",
-    "filetype_sc_cat_item": "Catalog Item",
-    "sn_customerservice_case": "Case",
-    "filetype_sn_customerservice_case": "Case",
-    "kb_social_qa_answer": "Answer",
-    "filetype_kb_social_qa_answer": "Answer",
-    "kb_social_qa_question": "Question",
-    "filetype_kb_social_qa_question": "Question",
-    "kb_social_qa_comment": "Comment",
-    "filetype_kb_social_qa_comment": "Comment",
-    "incident": "Incident",
-    "filetype_incident": "Incident",
-    "kb_knowledge": "Knowledge Article",
-    "filetype_kb_knowledge": "Knowledge Article",
     "people": "User",
     "objecttype_people": "User",
     "message": "Message",
@@ -15842,6 +15826,7 @@ var dict = {
     "objecttype_email": "Email",
     "goal": "Goal",
     "objecttype_goal": "Goal",
+    "incident": "Incident",
     "objecttype_incident": "Incident",
     "invoice": "Invoice",
     "objecttype_invoice": "Invoice",
@@ -15915,14 +15900,21 @@ var dict = {
     "objecttype_phonecall": "Phone call",
     "appointment": "Appointment",
     "objecttype_appointment": "Appointment",
-    "slackmessage": "Slack Message",
-    "filetype_slackmessage": "Slack Message",
-    "slackchannel": "Slack Channel",
-    "filetype_slackchannel": "Slack Channel",
-    "slackfile": "Slack File",
-    "filetype_slackfile": "Slack File",
-    "slackuser": "Slack User",
-    "filetype_slackuser": "Slack User",
+    "sn_hr_core_case": "HR Case",
+    "filetype_sn_hr_core_case": "HR Case",
+    "sc_cat_item": "Catalog Item",
+    "filetype_sc_cat_item": "Catalog Item",
+    "sn_customerservice_case": "Case",
+    "filetype_sn_customerservice_case": "Case",
+    "kb_social_qa_answer": "Answer",
+    "filetype_kb_social_qa_answer": "Answer",
+    "kb_social_qa_question": "Question",
+    "filetype_kb_social_qa_question": "Question",
+    "kb_social_qa_comment": "Comment",
+    "filetype_kb_social_qa_comment": "Comment",
+    "filetype_incident": "Incident",
+    "kb_knowledge": "Knowledge Article",
+    "filetype_kb_knowledge": "Knowledge Article",
     "spportal": "Portal",
     "filetype_spportal": "Portal",
     "spsite": "SharePoint Site",
@@ -16149,6 +16141,14 @@ var dict = {
     "filetype_spmicrofeedlist": "Microfeed",
     "splistfolder": "List Folder",
     "filetype_splistfolder": "List Folder",
+    "slackmessage": "Slack Message",
+    "filetype_slackmessage": "Slack Message",
+    "slackchannel": "Slack Channel",
+    "filetype_slackchannel": "Slack Channel",
+    "slackfile": "Slack File",
+    "filetype_slackfile": "Slack File",
+    "slackuser": "Slack User",
+    "filetype_slackuser": "Slack User",
     "youtubevideo": "YouTube video",
     "filetype_youtubevideo": "YouTube video",
     "youtubeplaylistitem": "YouTube playlist item",
@@ -18722,7 +18722,7 @@ exports.L10N = {
         return value;
     },
     formatPlSn: function (value, count) {
-        var isPlural = _.isBoolean(count) ? count : count > 1;
+        var isPlural = _.isBoolean(count) ? count : count !== 1 && count !== -1;
         if (isPlural) {
             value = value.replace(pluralRegex, '$1').replace(singularRegex, '');
         }
@@ -19474,9 +19474,9 @@ var TemplateConditionEvaluator = /** @class */ (function () {
     TemplateConditionEvaluator.evaluateMatchingFieldValues = function (field, condition) {
         var foundForCurrentField = [];
         // try to get the field value in the format raw.filetype == "YouTubeVideo"
-        var firstRegexToGetValue = new RegExp("raw." + field + "\\s*=+\\s*[\"|']([a-zA-Z]+)[\"|']", 'gi');
+        var firstRegexToGetValue = new RegExp("raw\\." + field + "\\s*=+\\s*[\"|']([a-zA-Z]+)[\"|']", 'gi');
         // try to get the field value in the format raw['filetype'] == "YouTubeVideo"
-        var secondRegexToGetValue = new RegExp("raw[[\"|']" + field + "[\"|']]\\s*=+\\s*[\"|']([a-zA-Z]+)[\"|']", 'gi');
+        var secondRegexToGetValue = new RegExp("raw\\[[\"|']" + field + "[\"|']\\]\\s*=+\\s*[\"|']([a-zA-Z]+)[\"|']", 'gi');
         var matches = StringUtils_1.StringUtils.match(condition, firstRegexToGetValue).concat(StringUtils_1.StringUtils.match(condition, secondRegexToGetValue));
         matches.forEach(function (match) {
             foundForCurrentField = foundForCurrentField.concat(match[1]);
@@ -19484,8 +19484,8 @@ var TemplateConditionEvaluator = /** @class */ (function () {
         return _.unique(foundForCurrentField);
     };
     TemplateConditionEvaluator.evaluateFieldShouldNotBeNull = function (field, condition) {
-        var firstRegexToMatchNonNull = new RegExp("raw." + field + "\\s*!=\\s*(?=null|undefined)", 'gi');
-        var secondRegexToMatchNonNull = new RegExp("raw[[\"|']" + field + "[\"|']]\\s*!=\\s*(?=null|undefined)", 'gi');
+        var firstRegexToMatchNonNull = new RegExp("raw\\." + field + "\\s*!=\\s*(?=null|undefined)", 'gi');
+        var secondRegexToMatchNonNull = new RegExp("raw\\[[\"|']" + field + "[\"|']\\]\\s*!=\\s*(?=null|undefined)", 'gi');
         return condition.match(firstRegexToMatchNonNull) != null || condition.match(secondRegexToMatchNonNull) != null;
     };
     TemplateConditionEvaluator.evaluateShouldUseSmallScreen = function (condition) {

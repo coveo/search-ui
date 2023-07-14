@@ -11,11 +11,11 @@
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10110/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10111/css/CoveoFullSearch.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10110/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10111/js/CoveoJsSearch.min.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
@@ -1098,7 +1098,7 @@ data-collapsed-by-default&#x3D;&#x27;false&#x27;</pre>
 						</div>
 						<p>Custom-ordered values won&#39;t necessarily retrieve values from the index.</p>
 						<p><strong>Example:</strong></p>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
   <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoDynamicHierarchicalFacet"</span>
   <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@countries"</span>
   <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Countries"</span>
@@ -1106,7 +1106,8 @@ data-collapsed-by-default&#x3D;&#x27;false&#x27;</pre>
   <span class="hljs-attr">data-clear-label</span>=<span class="hljs-string">"All Countries"</span>
   <span class="hljs-attr">data-delimiting-character</span>=<span class="hljs-string">"|"</span>
   <span class="hljs-attr">data-custom-sort</span>=<span class="hljs-string">"America, Asia|Japan, America|Mexico, America|Canada, Europe|Germany, Europe|France, Oceania"</span>
-&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 					</div>
 					<div class="tsd-panel">
 						<div class="tsd-signature-type">Markup configuration example(s) :</div>
@@ -1130,8 +1131,8 @@ data-collapsed-by-default&#x3D;&#x27;false&#x27;</pre>
 						<div class="lead">
 							<p>If a custom sort is defined, this specifies the delimiter that separates paths from each other.</p>
 						</div>
-						<p><em>Example:*</em></p>
-						<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+						<p>*Example:**</p>
+						<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
   <span class="hljs-attr">class</span>=<span class="hljs-string">"CoveoDynamicHierarchicalFacet"</span>
   <span class="hljs-attr">data-field</span>=<span class="hljs-string">"@countries"</span>
   <span class="hljs-attr">data-title</span>=<span class="hljs-string">"Countries"</span>
@@ -1140,7 +1141,8 @@ data-collapsed-by-default&#x3D;&#x27;false&#x27;</pre>
   <span class="hljs-attr">data-delimiting-character</span>=<span class="hljs-string">"|"</span>
   <span class="hljs-attr">data-custom-sort</span>=<span class="hljs-string">"America...Asia|Japan...America|Mexico...America|Canada...Europe|Germany...Europe|France...Oceania"</span>
   <span class="hljs-attr">data-custom-sort-delimiting-character</span>=<span class="hljs-string">"..."</span>
-&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
 						<dl class="tsd-comment-tags">
 							<dt>Only effective when</dt>
 							<dd><p><a href="dynamichierarchicalfacet.html#options.customsort"><code>customSort</code></a> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy">truthy</a></p>
