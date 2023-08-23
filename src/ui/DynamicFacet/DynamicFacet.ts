@@ -512,11 +512,13 @@ export class DynamicFacet extends Component implements IDynamicFacet {
    */
   public reset() {
     this.ensureDom();
-    if (this.values.hasActiveValues) {
-      this.logger.info('Deselect all values');
-      this.values.clearAll();
-      this.values.render();
+    if (!this.values.hasActiveValues) {
+      return;
     }
+
+    this.logger.info('Deselect all values');
+    this.values.clearAll();
+    this.values.render();
     this.enablePreventAutoSelectionFlag();
     this.updateAppearance();
     this.updateQueryStateModel();
