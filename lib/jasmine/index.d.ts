@@ -47,6 +47,7 @@ declare namespace jasmine {
   function anything(): Any;
   function arrayContaining(sample: any[]): ArrayContaining;
   function objectContaining(sample: any): ObjectContaining;
+  function isSpy(putativeSpy: any): putativeSpy is Spy;
   function createSpy(name: string, originalFn?: Function): Spy;
   function createSpyObj(baseName: string, methodNames: any[]): any;
   function createSpyObj<T>(baseName: string, methodNames: any[]): T;
@@ -448,6 +449,8 @@ declare namespace jasmine {
     object: any;
     /** All arguments passed to the call */
     args: any[];
+    /** The return value of the call */
+    returnValue: any;
   }
 
   interface Matchers {

@@ -14,7 +14,8 @@ import {
   IAnalyticsNoMeta,
   IAnalyticsSmartSnippetFeedbackMeta,
   AnalyticsSmartSnippetFeedbackReason,
-  IAnalyticsSmartSnippetOpenSourceMeta
+  IAnalyticsSmartSnippetOpenSourceMeta,
+  IAnalyticsSmartSnippetOpenSnippetInlineLinkMeta
 } from '../Analytics/AnalyticsActionListMeta';
 import { HeightLimiter } from './HeightLimiter';
 import { ExplanationModal, IReason } from './ExplanationModal';
@@ -22,7 +23,7 @@ import { l } from '../../strings/Strings';
 import { attachShadow } from '../../misc/AttachShadowPolyfill';
 import { Utils } from '../../utils/Utils';
 import { ComponentOptions } from '../Base/ComponentOptions';
-import { getDefaultSnippetStyle } from './SmartSnippetCommon';
+import { transformSnippetLinks, getDefaultSnippetStyle, getSanitizedAnswerSnippet } from './SmartSnippetCommon';
 import { ResultLink } from '../ResultLink/ResultLink';
 import { IFieldOption } from '../Base/IComponentOptions';
 
@@ -77,6 +78,7 @@ export interface ISmartSnippetOptions {
   maximumSnippetHeight: number;
   titleField: IFieldOption;
   hrefTemplate?: string;
+  alwaysOpenInNewWindow?: boolean;
   useIFrame?: boolean;
 }
 /**
@@ -136,6 +138,14 @@ export class SmartSnippet extends Component {
      * Default value is `undefined`.
      */
     hrefTemplate: ComponentOptions.buildStringOption(),
+
+    /**
+     * Specifies whether the component should open its links in a new window instead of opening them in the current
+     * context.
+     *
+     * Default value is `false`.
+     */
+    alwaysOpenInNewWindow: ComponentOptions.buildBooleanOption({ defaultValue: false }),
 
     /**
      * Specify if the SmartSnippet should be displayed inside an iframe or not.
@@ -305,7 +315,7 @@ export class SmartSnippet extends Component {
     this.ensureDom();
     this.feedbackBanner.reset();
     this.questionContainer.innerText = questionAnswer.question;
-    this.renderSnippet(questionAnswer.answerSnippet);
+    this.renderSnippet(questionAnswer);
     this.lastRenderedResult = this.getCorrespondingResult(questionAnswer);
     if (this.lastRenderedResult) {
       this.renderSource();
@@ -314,8 +324,9 @@ export class SmartSnippet extends Component {
     }
   }
 
-  private renderSnippet(content: string) {
-    this.snippetContainer.innerHTML = content;
+  private renderSnippet(questionAnswer: IQuestionAnswerResponse) {
+    this.snippetContainer.innerHTML = getSanitizedAnswerSnippet(questionAnswer);
+    transformSnippetLinks(this.snippetContainer, this.options.alwaysOpenInNewWindow, link => this.sendClickSnippetLinkAnalytics(link));
   }
 
   private renderSource() {
@@ -342,7 +353,11 @@ export class SmartSnippet extends Component {
     element.addClass(className);
     new ResultLink(
       element.el,
-      { hrefTemplate: this.options.hrefTemplate, logAnalytics: href => this.sendClickSourceAnalytics(element.el, href) },
+      {
+        hrefTemplate: this.options.hrefTemplate,
+        logAnalytics: href => this.sendClickSourceAnalytics(element.el, href),
+        alwaysOpenInNewWindow: this.options.alwaysOpenInNewWindow
+      },
       { ...this.getBindings(), resultElement: this.element },
       this.lastRenderedResult
     );
@@ -425,6 +440,19 @@ export class SmartSnippet extends Component {
       },
       this.lastRenderedResult,
       element
+    );
+  }
+
+  private sendClickSnippetLinkAnalytics(link: HTMLAnchorElement) {
+    return this.usageAnalytics.logClickEvent<IAnalyticsSmartSnippetOpenSnippetInlineLinkMeta>(
+      analyticsActionCauseList.openSmartSnippetInlineLink,
+      {
+        searchQueryUid: this.searchUid,
+        linkText: link.innerText,
+        linkURL: link.href
+      },
+      this.lastRenderedResult,
+      link
     );
   }
 }

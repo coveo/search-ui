@@ -14,7 +14,8 @@ export function DynamicFacetHeaderTest() {
         enableCollapse: true,
         toggleCollapse: jasmine.createSpy('toggleCollapse'),
         collapse: jasmine.createSpy('collapse'),
-        expand: jasmine.createSpy('clear')
+        expand: jasmine.createSpy('clear'),
+        headingLevel: 2
       };
       initializeComponent();
     });
@@ -62,7 +63,7 @@ export function DynamicFacetHeaderTest() {
       }, DynamicFacetHeader.showLoadingDelay + 1);
     });
 
-    it('should create an hidden clear button', () => {
+    it('should create a hidden clear button', () => {
       expect($$(clearElement()).isVisible()).toBe(false);
     });
 

@@ -306,7 +306,16 @@ export class DynamicFacet extends Component implements IDynamicFacet {
      *
      * @availablesince [March 2020 Release (v2.8521)](https://docs.coveo.com/en/3203/)
      */
-    filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' })
+    filterFacetCount: ComponentOptions.buildBooleanOption({ section: 'Filtering' }),
+
+    /**
+     * The [heading level](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements) to use for the heading above the facet.
+     *
+     * A value of 0 will render a [`div`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div) element instead.
+     *
+     * **Default:** `2`.
+     */
+    headingLevel: ComponentOptions.buildNumberOption({ defaultValue: 2, min: 0, max: 6 })
   };
 
   private includedAttributeId: string;
@@ -503,11 +512,13 @@ export class DynamicFacet extends Component implements IDynamicFacet {
    */
   public reset() {
     this.ensureDom();
-    if (this.values.hasActiveValues) {
-      this.logger.info('Deselect all values');
-      this.values.clearAll();
-      this.values.render();
+    if (!this.values.hasActiveValues) {
+      return;
     }
+
+    this.logger.info('Deselect all values');
+    this.values.clearAll();
+    this.values.render();
     this.enablePreventAutoSelectionFlag();
     this.updateAppearance();
     this.updateQueryStateModel();
@@ -757,7 +768,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
       return;
     }
 
-    const breadcrumbs = new DynamicFacetBreadcrumbs(this);
+    const breadcrumbs = new DynamicFacetBreadcrumbs(this, { headingLevel: args.headingLevel });
     args.breadcrumbs.push({ element: breadcrumbs.element });
   }
 
@@ -786,6 +797,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
       id: this.options.id,
       title: this.options.title,
       enableCollapse: this.options.enableCollapse,
+      headingLevel: this.options.headingLevel,
       clear: () => this.clear(),
       toggleCollapse: () => this.toggleCollapse(),
       collapse: () => this.collapse(),

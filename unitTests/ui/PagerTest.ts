@@ -11,17 +11,19 @@ import { Simulate } from '../Simulate';
 import { l } from '../../src/strings/Strings';
 import { find } from 'underscore';
 
+const resultsPerPage = 10;
+
 export function PagerTest() {
   describe('Pager', () => {
     let test: Mock.IBasicComponentSetup<Pager>;
 
     function simulatePageCount(pageCount: number, currentPage = 1) {
       const builder = new QueryBuilder();
-      builder.firstResult = (currentPage - 1) * 10;
+      builder.firstResult = (currentPage - 1) * resultsPerPage;
 
       Simulate.query(test.env, {
         query: builder.build(),
-        results: FakeResults.createFakeResults(pageCount * 10)
+        results: FakeResults.createFakeResults(resultsPerPage, { totalCount: pageCount * resultsPerPage })
       });
     }
 

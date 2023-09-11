@@ -4,7 +4,7 @@ import { QueryEvents, IQuerySuccessEventArgs, IQueryErrorEventArgs } from '../..
 import { QuerySummaryUtils } from '../../utils/QuerySummaryUtils';
 import { l } from '../../strings/Strings';
 import { OmniboxEvents } from '../../EventsModules';
-import { IQuerySuggestSuccessArgs } from '../../events/OmniboxEvents';
+import { IQuerySuggestRenderedArgs } from '../../events/OmniboxEvents';
 
 export interface IAriaLive {
   updateText: (text: string) => void;
@@ -12,7 +12,6 @@ export interface IAriaLive {
 
 export class AriaLive implements IAriaLive {
   private ariaLiveEl: HTMLElement;
-  private querySuggestions = 0;
 
   constructor(private root: HTMLElement) {
     this.initAriaLiveEl();
@@ -41,10 +40,14 @@ export class AriaLive implements IAriaLive {
     root.on(QueryEvents.duringQuery, () => this.onDuringQuery());
     root.on(QueryEvents.querySuccess, (e, args: IQuerySuccessEventArgs) => this.onQuerySuccess(args));
     root.on(QueryEvents.queryError, (e, args: IQueryErrorEventArgs) => this.onQueryError(args));
-    root.on(OmniboxEvents.querySuggestSuccess, (e, args: IQuerySuggestSuccessArgs) =>
-      args.completions.length ? (this.querySuggestions = args.completions.length) : this.onNoQuerySuggest()
-    );
-    root.on(OmniboxEvents.querySuggestRendered, () => this.onQuerySuggest());
+    root.on(OmniboxEvents.querySuggestRendered, (e, args: IQuerySuggestRenderedArgs) => {
+      if (args.numberOfSuggestions > 0) {
+        this.onQuerySuggest(args.numberOfSuggestions);
+        return;
+      }
+
+      this.onNoQuerySuggest();
+    });
   }
 
   private onDuringQuery() {
@@ -57,8 +60,8 @@ export class AriaLive implements IAriaLive {
     this.updateText(message);
   }
 
-  private onQuerySuggest() {
-    const message = l('QuerySuggestionsAvailable', this.querySuggestions, this.querySuggestions);
+  private onQuerySuggest(numberOfSuggestions: number) {
+    const message = l('QuerySuggestionsAvailable', numberOfSuggestions, numberOfSuggestions);
     this.updateText(message);
   }
 

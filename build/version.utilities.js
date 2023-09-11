@@ -18,6 +18,7 @@ function getPatchVersion() {
 }
 
 function parseVersion(version) {
+  /** @type {string[]} */
   const [major, minor, patch] = version.split('.').map(num => parseInt(num, 10));
   return { major, minor, patch };
 }

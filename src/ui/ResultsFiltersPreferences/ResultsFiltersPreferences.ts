@@ -8,6 +8,7 @@ import { exportGlobally } from '../../GlobalExports';
 import { MODEL_EVENTS } from '../../models/Model';
 import { QueryStateModel, QUERY_STATE_ATTRIBUTES } from '../../models/QueryStateModel';
 import { l } from '../../strings/Strings';
+import { getHeadingTag } from '../../utils/AccessibilityUtils';
 import { AccessibleButton } from '../../utils/AccessibleButton';
 import { $$ } from '../../utils/Dom';
 import { LocalStorageUtils } from '../../utils/LocalStorageUtils';
@@ -233,7 +234,7 @@ export class ResultsFiltersPreferences extends Component {
     const actives = this.getActiveFilters();
     if (Utils.isNonEmptyArray(actives)) {
       const container = $$('div', { className: 'coveo-results-filter-preferences-breadcrumb' });
-      const title = $$('span', { className: 'coveo-title' });
+      const title = $$(getHeadingTag(args.headingLevel, 'span'), { className: 'coveo-title' });
       title.text(l('FiltersInYourPreferences') + ':');
       container.el.appendChild(title.el);
 
@@ -258,11 +259,16 @@ export class ResultsFiltersPreferences extends Component {
 
   private buildAdvancedFilters() {
     this.advancedFilters = $$('div', { className: 'coveo-advanced-filters' }, l('Create')).el;
+    new AccessibleButton()
+      .withElement(this.advancedFilters)
+      .withoutLabelOrTitle()
+      .withSelectAction(() => this.openAdvancedFilterSectionOrSaveFilters())
+      .build();
+
     this.buildAdvancedFilterInput();
     this.buildAdvancedFilterFormValidate();
     this.advancedFiltersBuilder = $$('div', { className: 'coveo-advanced-filters-builder' }).el;
     this.advancedFiltersBuilder.appendChild(this.advancedFilterFormValidate);
-    $$(this.advancedFilters).on('click', () => this.openAdvancedFilterSectionOrSaveFilters());
     const onlineHelp = $$(
       'a',
       {
@@ -306,6 +312,11 @@ export class ResultsFiltersPreferences extends Component {
       SVGIcons.icons.save
     );
     SVGDom.addClassToSVGInContainer(saveFormButton.el, 'coveo-save-svg');
+    new AccessibleButton()
+      .withElement(saveFormButton.el)
+      .withLabel(l('Save'))
+      .withSelectAction(() => formSubmit.el.click())
+      .build();
 
     const closeFormButton = $$(
       'span',
@@ -315,6 +326,11 @@ export class ResultsFiltersPreferences extends Component {
       SVGIcons.icons.close
     );
     SVGDom.addClassToSVGInContainer(closeFormButton.el, 'coveo-close-svg');
+    new AccessibleButton()
+      .withElement(closeFormButton.el)
+      .withLabel(l('Close'))
+      .withSelectAction(() => this.hideAdvancedFilterBuilder())
+      .build();
 
     const saveAndCloseContainer = $$('div', {
       className: 'coveo-choice-container coveo-close-and-save'
@@ -334,13 +350,6 @@ export class ResultsFiltersPreferences extends Component {
 
     _.each([inputCaption, filtersExpression, filtersTabSelect, saveAndCloseContainer.el, formSubmit.el], (el: HTMLElement) => {
       this.advancedFilterFormValidate.appendChild(el);
-    });
-
-    saveFormButton.on('click', () => {
-      formSubmit.el.click();
-    });
-    closeFormButton.on('click', () => {
-      this.hideAdvancedFilterBuilder();
     });
 
     $$(this.advancedFilterFormValidate).on('submit', (e: Event) => this.validateAndSaveAdvancedFilter(e));
@@ -417,11 +426,15 @@ export class ResultsFiltersPreferences extends Component {
           },
           SVGIcons.icons.delete
         ).el;
+        new AccessibleButton()
+          .withElement(deleteElement)
+          .withLabel(l('Delete'))
+          .withSelectAction(() => this.confirmDelete(filter, filterElement))
+          .build();
         SVGDom.addClassToSVGInContainer(deleteElement, 'coveo-delete-svg');
         const filterElement = this.getFilterElementByCaption(filter.caption);
         const insertInto = $$(filterElement).find('.coveo-section-edit-delete');
         insertInto.appendChild(deleteElement);
-        $$(deleteElement).on('click', () => this.confirmDelete(filter, filterElement));
       }
     });
   }
@@ -436,11 +449,15 @@ export class ResultsFiltersPreferences extends Component {
           },
           SVGIcons.icons.edit
         );
+        new AccessibleButton()
+          .withElement(editElement)
+          .withLabel(l('Edit'))
+          .withSelectAction(() => this.editElement(filter, filterElement))
+          .build();
         SVGDom.addClassToSVGInContainer(editElement.el, 'coveo-edit-svg');
         const filterElement = this.getFilterElementByCaption(filter.caption);
         const insertInto = $$(filterElement).find('.coveo-section-edit-delete');
         insertInto.appendChild(editElement.el);
-        editElement.on('click', () => this.editElement(filter, filterElement));
       }
     });
   }

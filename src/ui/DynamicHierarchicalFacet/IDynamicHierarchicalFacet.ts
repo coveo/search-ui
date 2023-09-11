@@ -33,6 +33,7 @@ export interface IDynamicHierarchicalFacetOptions extends IResponsiveComponentOp
   filterFacetCount?: boolean;
   clearLabel?: string;
   basePath?: string[];
+  headingLevel?: number;
 }
 
 export interface IDynamicHierarchicalFacet extends Component, IDynamicManagerCompatibleFacet, IAutoLayoutAdjustableInsideFacetColumn {

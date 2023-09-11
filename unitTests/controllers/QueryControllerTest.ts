@@ -9,6 +9,7 @@ import { SearchInterface } from '../../src/ui/SearchInterface/SearchInterface';
 import * as HistoryStore from '../../src/utils/HistoryStore';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { AnalyticsInformation } from '../../src/ui/Analytics/AnalyticsInformation';
+import { QueryboxQueryParameters } from '../../src/ui/Querybox/QueryboxQueryParameters';
 
 export function QueryControllerTest() {
   describe('QueryController', () => {
@@ -535,6 +536,25 @@ export function QueryControllerTest() {
         expect(localStorage.getItem(key)).toBeFalsy();
         done();
       });
+    });
+
+    it('should allow adding new query box expression when creating a new query builder', () => {
+      const searchBoxOptions = {};
+
+      const firstBuilder = test.cmp.createQueryBuilder(searchBoxOptions);
+      const secondBuilder = test.cmp.createQueryBuilder(searchBoxOptions);
+
+      // Trying to add two expressions in the same call stack without a new builder being created in between should be blocked
+      new QueryboxQueryParameters(searchBoxOptions).addParameters(firstBuilder, 'the initial expression');
+      new QueryboxQueryParameters(searchBoxOptions).addParameters(secondBuilder, 'this should not be added to the query');
+
+      expect(firstBuilder.expression.build()).toEqual('the initial expression');
+      expect(secondBuilder.expression.build()).toBeUndefined();
+
+      // Creating this builder should unblock the QueryboxQueryParameters.addParameters function
+      const thirdBuilder = test.cmp.createQueryBuilder(searchBoxOptions);
+      new QueryboxQueryParameters(searchBoxOptions).addParameters(thirdBuilder, 'this should be added to the query');
+      expect(thirdBuilder.expression.build()).toEqual('this should be added to the query');
     });
   });
 }

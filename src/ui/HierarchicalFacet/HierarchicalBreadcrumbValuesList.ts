@@ -7,13 +7,18 @@ import { HierarchicalBreadcrumbValueElement } from './HierarchicalBreadcrumbValu
 import { $$ } from '../../utils/Dom';
 import * as _ from 'underscore';
 
+export interface IHierarchicalBreadcrumbValuesListOptions {
+  headingLevel?: number;
+}
+
 export class HierarchicalBreadcrumbValuesList extends BreadcrumbValueList {
   constructor(
     public facet: HierarchicalFacet,
     public facetValues: FacetValue[],
-    public valueHierarchy: { [facetValue: string]: IValueHierarchy }
+    public valueHierarchy: { [facetValue: string]: IValueHierarchy },
+    options?: IHierarchicalBreadcrumbValuesListOptions
   ) {
-    super(facet, facetValues, HierarchicalBreadcrumbValueElement);
+    super(facet, facetValues, HierarchicalBreadcrumbValueElement, options);
   }
 
   public buildAsString() {

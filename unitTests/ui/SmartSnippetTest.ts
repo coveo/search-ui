@@ -3,7 +3,7 @@ import { IQueryResult } from '../../src/rest/QueryResult';
 import { $$ } from '../../src/utils/Dom';
 import { QueryEvents, IQuerySuccessEventArgs } from '../../src/events/QueryEvents';
 import { ISmartSnippetOptions, SmartSnippet, SmartSnippetClassNames as ClassNames } from '../../src/ui/SmartSnippet/SmartSnippet';
-import { expectChildren } from '../TestUtils';
+import { expectChildren, expectEquivalentDOM } from '../TestUtils';
 import { UserFeedbackBannerClassNames } from '../../src/ui/SmartSnippet/UserFeedbackBanner';
 import { IBasicComponentSetup, advancedComponentSetup, AdvancedComponentSetupOptions } from '../MockEnvironment';
 import { HeightLimiterClassNames } from '../../src/ui/SmartSnippet/HeightLimiter';
@@ -11,6 +11,7 @@ import { IQueryResults } from '../../src/rest/QueryResults';
 import { Utils } from '../../src/Core';
 import { getDefaultSnippetStyle } from '../../src/ui/SmartSnippet/SmartSnippetCommon';
 import { ExplanationModalClassNames } from '../../src/ui/SmartSnippet/ExplanationModal';
+import { toArray } from 'underscore';
 
 export function SmartSnippetTest() {
   const sourceTitle = 'Google!';
@@ -44,25 +45,21 @@ export function SmartSnippetTest() {
 
   function mockSnippet() {
     return $$(
-      'main',
-      {
-        className: 'abc'
-      },
-      $$(
-        'header',
-        {
-          className: 'def--abc'
-        },
-        $$('span', {}, 'Some text here')
-      ),
-      $$('span', {}, 'Some more text'),
-      $$(
-        'a',
-        {
-          href: 'https://somewebsite.com'
-        },
-        'Some external link'
-      )
+      'div',
+      {},
+      `
+        <ol>
+          <li>On the <a href="https://platform.cloud.coveo.com/admin/#/orgid/search/in-app-widgets/">In-Product Experiences</a> page, click Add <b>In-Product Experience</b>.</li>
+          <li>In the Configuration tab, fill the Basic settings section.</li>
+          <li>(Optional) Use the Design and Content access tabs to <a href="https://docs.coveo.com/en/3160/#customizing-an-ipx-interface">customize your <b>IPX</b> interface</a>.</li>
+          <li>Click Save.</li>
+          <li>In the Loader snippet panel that appears, you may click Copy to save the loader snippet for your <b>IPX</b> interface to your clipboard, and then click Save.  You can Always retrieve the loader snippet later.</li>
+        </ol>
+        
+        <p>
+          You're now ready to <a href="https://docs.coveo.com/en/3160/build-a-search-ui/manage-coveo-in-product-experiences-ipx#embed-your-ipx-interface-in-sites-and-applications">embed your IPX interface</a>. However, we recommend that you <a href="https://docs.coveo.com/en/3160/build-a-search-ui/manage-coveo-in-product-experiences-ipx#configuring-query-pipelines-for-an-ipx-interface-recommended">configure query pipelines for your IPX interface</a> before.
+        </p>
+      `
     ).el;
   }
 
@@ -84,7 +81,7 @@ export function SmartSnippetTest() {
     function instantiateSmartSnippet(styling: string | null, options: Partial<ISmartSnippetOptions> = {}) {
       test = advancedComponentSetup<SmartSnippet>(
         SmartSnippet,
-        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling)])).el, options)
+        new AdvancedComponentSetupOptions($$('div', {}, ...(Utils.isNullOrUndefined(styling) ? [] : [mockStyling(styling!)])).el, options)
       );
     }
 
@@ -108,7 +105,7 @@ export function SmartSnippetTest() {
     }
 
     function getShadowRoot() {
-      return getFirstChild(ClassNames.SHADOW_CLASSNAME).shadowRoot;
+      return getFirstChild(ClassNames.SHADOW_CLASSNAME).shadowRoot!;
     }
 
     describe('when resolving result to build result link', () => {
@@ -224,6 +221,64 @@ export function SmartSnippetTest() {
       await Promise.resolve();
       expect('XSSInjected' in window).toBeFalsy();
       delete window['XSSInjected'];
+      test.env.root.remove();
+      done();
+    });
+
+    it('resists XSS injections in content', async done => {
+      instantiateSmartSnippet(null, { useIFrame: false });
+      document.body.appendChild(test.env.root);
+      await triggerQuerySuccess({
+        results: <IQueryResults>{
+          results: [mockResult()],
+          questionAnswer: { ...mockQuestionAnswer(), answerSnippet: '<img src="abcd.png" onerror="window.XSSInjected = true;">' }
+        }
+      });
+      await Utils.resolveAfter(100);
+      expect('XSSInjected' in window).toBeFalsy();
+      delete window['XSSInjected'];
+      test.env.root.remove();
+      done();
+    });
+
+    it("doesn't set the target of the source when alwaysOpenInNewWindow is unset", async done => {
+      instantiateSmartSnippet(null);
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).target).toEqual('');
+      expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME).target).toEqual('');
+      test.env.root.remove();
+      done();
+    });
+
+    it('sets the target of the links to _top when alwaysOpenInNewWindow is false/unset', async done => {
+      instantiateSmartSnippet(null, { useIFrame: false });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      toArray<HTMLAnchorElement>(getFirstChild(ClassNames.CONTENT_CLASSNAME).querySelectorAll('a')).forEach(link =>
+        expect(link.target).toEqual('_top')
+      );
+      test.env.root.remove();
+      done();
+    });
+
+    it('sets the target of the source when alwaysOpenInNewWindow is set', async done => {
+      instantiateSmartSnippet(null, { alwaysOpenInNewWindow: true });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).target).toEqual('_blank');
+      expect(getFirstChild<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME).target).toEqual('_blank');
+      test.env.root.remove();
+      done();
+    });
+
+    it('sets the target of the links to _blank when alwaysOpenInNewWindow is set', async done => {
+      instantiateSmartSnippet(null, { alwaysOpenInNewWindow: true, useIFrame: false });
+      document.body.appendChild(test.env.root);
+      await triggerQuestionAnswerQuery(true);
+      toArray<HTMLAnchorElement>(getFirstChild(ClassNames.CONTENT_CLASSNAME).querySelectorAll('a')).forEach(link =>
+        expect(link.target).toEqual('_blank')
+      );
       test.env.root.remove();
       done();
     });
@@ -403,7 +458,7 @@ export function SmartSnippetTest() {
         it('should wrap the snippet in a container in a shadow DOM', () => {
           const [shadowContainer] = expectChildren(getShadowRoot(), [ClassNames.CONTENT_CLASSNAME, null]);
 
-          expect(shadowContainer.innerHTML).toEqual(mockSnippet().innerHTML);
+          expectEquivalentDOM(shadowContainer, mockSnippet(), { ignoreRoot: true, ignoreAttributes: ['target'] });
         });
 
         it('should render the default style', () => {

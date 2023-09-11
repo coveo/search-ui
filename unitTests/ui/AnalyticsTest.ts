@@ -7,7 +7,8 @@ import { analyticsActionCauseList } from '../../src/ui/Analytics/AnalyticsAction
 import { NoopAnalyticsClient } from '../../src/ui/Analytics/NoopAnalyticsClient';
 import { LiveAnalyticsClient } from '../../src/ui/Analytics/LiveAnalyticsClient';
 import { MultiAnalyticsClient } from '../../src/ui/Analytics/MultiAnalyticsClient';
-import { AnalyticsEvents, $$ } from '../../src/Core';
+import { AnalyticsEvents, $$, QueryUtils } from '../../src/Core';
+import { MockCookie } from '../MockCookie';
 
 export function AnalyticsTest() {
   describe('Analytics', () => {
@@ -401,6 +402,50 @@ export function AnalyticsTest() {
           initAnalytics();
 
           expect(analyticsClient().splitTestRunVersion).toBe('foobar');
+        });
+      });
+    });
+
+    describe('initializes the visitorId correctly', () => {
+      const mockDate = new Date(1680204658699);
+      beforeEach(() => {
+        MockCookie.clear();
+        localStorage.clear();
+        jasmine.clock().install();
+        jasmine.clock().mockDate(mockDate);
+      });
+
+      afterEach(() => {
+        jasmine.clock().uninstall();
+      });
+
+      describe("when there's no cookie nor local storage", () => {
+        function getLastGeneratedGuid() {
+          return (QueryUtils.createGuid as jasmine.Spy).calls.mostRecent().returnValue as string;
+        }
+
+        beforeEach(() => {
+          spyOn(QueryUtils, 'createGuid').and.callThrough();
+          initAnalytics();
+        });
+
+        it('generates a visitorId', () => {
+          expect(getLastGeneratedGuid()).toBeTruthy();
+        });
+
+        it('creates a cookie supported by coveo.analytics', () => {
+          const cookie = MockCookie.get('coveo_visitorId');
+          expect(cookie && cookie.value).toEqual(getLastGeneratedGuid());
+        });
+
+        it('sets the cookie expiration to 1 year', () => {
+          const cookie = MockCookie.get('coveo_visitorId');
+          const expirationDate = new Date(mockDate.getTime() + 31556926000);
+          expect(cookie && cookie.properties.expires).toEqual(expirationDate.toUTCString());
+        });
+
+        it('creates a localStorage value supported by coveo.analytics', () => {
+          expect(localStorage.getItem('visitorId')).toEqual(getLastGeneratedGuid());
         });
       });
     });

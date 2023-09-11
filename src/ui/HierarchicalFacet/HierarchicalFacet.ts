@@ -32,6 +32,7 @@ import 'styling/_HierarchicalFacet';
 import { SVGIcons } from '../../utils/SVGIcons';
 import { SVGDom } from '../../utils/SVGDom';
 import { ResponsiveFacetOptions } from '../ResponsiveComponents/ResponsiveFacetOptions';
+import { AccessibleButton } from '../../utils/AccessibleButton';
 
 export interface IHierarchicalFacetOptions extends IFacetOptions {
   delimitingCharacter?: string;
@@ -518,7 +519,8 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       let element = new HierarchicalBreadcrumbValuesList(
         this,
         this.values.getSelected().concat(this.values.getExcluded()),
-        this.getAllValueHierarchy()
+        this.getAllValueHierarchy(),
+        { headingLevel: args.headingLevel }
       ).build();
       args.breadcrumbs.push({
         element: element
@@ -664,9 +666,13 @@ export class HierarchicalFacet extends Facet implements IComponentBindings {
       collapseChilds.el
     ).el;
 
-    $$(openAndCloseChilds).on('click', () => {
-      $$(hierarchyElement).hasClass('coveo-open') ? this.close(hierarchy) : this.open(hierarchy);
-    });
+    new AccessibleButton()
+      .withElement(openAndCloseChilds)
+      .withoutLabelOrTitle()
+      .withSelectAction(() => {
+        $$(hierarchyElement).hasClass('coveo-open') ? this.close(hierarchy) : this.open(hierarchy);
+      })
+      .build();
 
     $$(hierarchyElement).prepend(openAndCloseChilds);
   }

@@ -32,6 +32,7 @@ export interface IDynamicFacetOptions extends IResponsiveComponentOptions, IDepe
   valueCaption?: Record<string, string>;
   injectionDepth?: number;
   filterFacetCount?: boolean;
+  headingLevel?: number;
 }
 
 export interface IDynamicFacet

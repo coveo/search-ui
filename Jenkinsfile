@@ -5,16 +5,19 @@ node('linux && docker') {
   withEnv([
     'npm_config_cache=npm-cache'
   ]){
-    withDockerContainer(image: 'nikolaik/python-nodejs:python3.8-nodejs14', args: '-u=root') {
+    withDockerContainer(image: 'nikolaik/python-nodejs:python3.11-nodejs18', args: '-u=root') {
       stage('Install') {
-        sh 'yarn install'
+        // Prevents "not a git directory" issue.
+        sh "git config --global --add safe.directory '*'"
+        sh 'npm i -g npm@latest'
+        sh 'npm install'
       }
 
       stage('Build') {
-        sh 'yarn run injectVersion'
-        sh 'yarn run build'
+        sh 'npm run injectVersion'
+        sh 'npm run build'
 
-        sh 'yarn run minimize'
+        sh 'npm run minimize'
       }
 
       stage('Install Chrome') {
@@ -26,16 +29,16 @@ node('linux && docker') {
       }
 
       stage('Test') {
-        sh 'yarn run unitTests'
+        sh 'npm run unitTests'
         
         if (tag) {
-          sh 'yarn run accessibilityTests'
+          sh 'npm run accessibilityTests'
         }
 
         sh 'set +e'
-        // sh 'yarn run uploadCoverage'
+        // sh 'npm run uploadCoverage'
         sh 'set -e'
-        sh 'yarn run validateTypeDefinitions'
+        sh 'npm run validateTypeDefinitions'
       }
 
       if (!tag) {
@@ -48,11 +51,11 @@ node('linux && docker') {
         ]) {
             sh './deploy.doc.sh'
         }
-        sh 'yarn run docsitemap'
+        sh 'npm run docsitemap'
       }
 
       stage('Github Release') {
-        sh 'yarn run zipForGitReleases'
+        sh 'npm run zipForGitReleases'
         
         withCredentials([
           usernamePassword(credentialsId: 'github-commit-token', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_TOKEN')

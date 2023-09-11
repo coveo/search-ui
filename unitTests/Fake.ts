@@ -16,19 +16,25 @@ import { ICategoryFacetResult } from '../src/rest/CategoryFacetResult';
 import { range } from 'underscore';
 import { IPlanResponse } from '../src/rest/Plan';
 
+export interface CreateFakeResultsOptions {
+  token: string;
+  totalCount: number;
+}
+
 export class FakeResults {
-  static createFakeResults(count = 10, token = ''): IQueryResults {
+  static createFakeResults(count = 10, options: Partial<CreateFakeResultsOptions> = {}): IQueryResults {
+    const resolvedOptions: CreateFakeResultsOptions = { token: '', totalCount: count, ...options };
     var results: IQueryResult[] = [];
     for (var i = 0; i < count; ++i) {
-      results.push(FakeResults.createFakeResult(token + i.toString()));
+      results.push(FakeResults.createFakeResult(resolvedOptions.token + i.toString()));
     }
 
     return {
       searchUid: QueryUtils.createGuid(),
       pipeline: 'pipeline',
       splitTestRun: 'splitTestRunName',
-      totalCount: count != 0 ? count + 1 : 0,
-      totalCountFiltered: count,
+      totalCount: resolvedOptions.totalCount,
+      totalCountFiltered: resolvedOptions.totalCount,
       duration: 321,
       indexDuration: 123,
       clientDuration: 456,
@@ -211,9 +217,8 @@ export class FakeResults {
       for (var j = 0; j < countByLevel; j++) {
         let currentValue = FakeResults.createFakeHierarchicalValue(`${token}${j.toString()}`, i);
         if (weirdCasing) {
-          currentValue = _.map(
-            currentValue.split(delimitingCharacter),
-            (value, k) => ((i + j + k) % 2 == 0 ? value.toLowerCase() : value.toUpperCase())
+          currentValue = _.map(currentValue.split(delimitingCharacter), (value, k) =>
+            (i + j + k) % 2 == 0 ? value.toLowerCase() : value.toUpperCase()
           ).join(delimitingCharacter);
         }
         var currentGroupByValue = FakeResults.createFakeGroupByValue(currentValue, j + 1, 100, includeComputedValues ? 1000 : undefined);
@@ -431,7 +436,7 @@ export class FakeResults {
   }
 
   static createRankingInforWithQRE() {
-    return `Document weights:\nTitle: 0; Quality: 180; Date: 0; Adjacency: 0; Source: 500; Custom: 350; Collaborative rating: 0; QRE: 2500; Ranking functions: 0; \nQRE:\nExpression: \"@permanentid=95ad18de4cb8e17023f0224e9d44dd2f7177c6dceac6cb81b16f3659a3c3\" Score: 2500\nExpression: \"@permanentid=4119a14f02a63d0c2d92b51d4501dd83580831caea327179934dd1bc6645\" Score: 0\nExpression: \"@permanentid=39ce64557bee624c368c6cfe736787f1dd22667f43a9f3e46fafa67158d6\" Score: 0\nExpression: \"@permanentid=0d4e5fe9dca91c13d9de061c0c00d1a2733e0a1c0e198c588c2b93cfcd25\" Score: 0\nExpression: \"@permanentid=c612db560ef1f77316b6c11fbedfa3e9b728e09859a188639911aef9e6ea\" Score: 0\nRanking Functions:\n\nTotal weight: 3530`;
+    return `Document weights:\nTitle: 0; Quality: 180; Date: 0; Adjacency: 0; Source: 500; Custom: 350; Collaborative rating: 0; QRE: 2500; Ranking functions: 0; \nQRE:\nExpression: \"@permanentid=95ad18de4cb8e17023f0224e9d44dd2f7177c6dceac6cb81b16f3659a3c3\" Score: 2500\nExpression: \"@permanentid=4119a14f02a63d0c2d92b51d4501dd83580831caea327179934dd1bc6645\" Score: -1000\nExpression: \"@permanentid=39ce64557bee624c368c6cfe736787f1dd22667f43a9f3e46fafa67158d6\" Score: 0\nExpression: \"@permanentid=0d4e5fe9dca91c13d9de061c0c00d1a2733e0a1c0e198c588c2b93cfcd25\" Score: 0\nExpression: \"@permanentid=c612db560ef1f77316b6c11fbedfa3e9b728e09859a188639911aef9e6ea\" Score: 0\nRanking Functions:\n\nTotal weight: 3530`;
   }
 
   static createFieldDescription(): IFieldDescription {

@@ -3,6 +3,7 @@ const { buildLegacy } = require('./gulpTasks/legacy');
 const { doc } = require('./gulpTasks/doc');
 const { setNodeProdEnv } = require('./gulpTasks/nodeEnv');
 const { fileTypes } = require('./gulpTasks/filetypes');
+const { fonts } = require('./gulpTasks/fonts');
 const { iconList } = require('./gulpTasks/iconList');
 const { buildStrings, testString } = require('./gulpTasks/strings');
 const { setup } = require('./gulpTasks/setup');
@@ -19,7 +20,7 @@ const del = require('del');
 const cleanBin = () => del(['./bin']);
 const src = series(compile, definitions);
 
-const build = series(setNodeProdEnv, parallel(iconList, setup, templates), src);
+const build = series(setNodeProdEnv, parallel(fonts, iconList, setup, templates), src);
 const defaultTask = series(cleanBin, fileTypes, buildStrings, parallel(buildLegacy, build, doc));
 
 exports.default = defaultTask;

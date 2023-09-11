@@ -3,10 +3,10 @@
   "team_name": "searchui",
   "general": {
     "aws_regions": {
-      "sequential": ["us-east-1"]
+      "sequential": ["FIRST_MAIN_REGION"]
     },
     "environments_order": {
-      "sequential": ["dev", "qa", "prd"]
+      "sequential": ["dev", "stg", "prd"]
     },
     "team_jenkins": "searchuibuilds",
     "start_environment_automatically": false,
@@ -65,7 +65,7 @@
     }
   ],
   "certifiers": {
-    "dev": [
+    "stg": [
       {
         "system_certifier": "snyk"
       },
@@ -75,26 +75,10 @@
     ]
   },
   "snyk": {
-    "org": "coveo-jsui",
-    "no_container_images": true,
-    "configurations": [
-      {
-        "directory": ".",
-        "project_name": "search-ui"
-      }
-    ]
+    "no_dependencies": true,
+    "no_container_images": true
   },
   "snyk_code": {
-    "no_scan": false,
-    "configurations": [
-      {
-        "path": ".",
-        "project_name": "search-ui",
-        "org": "coveo-jsui"
-      }
-    ]
-  },
-  "veracode": {
     "no_scan": true
   },
   "observatory": {
@@ -103,5 +87,5 @@
   "package_rollout": {
     "only_consider_changesets_after": "16247824e24b"
   },
-  "deployment_config_version": 2
+  "deployment_config_version": 7
 }

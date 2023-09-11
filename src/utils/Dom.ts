@@ -12,7 +12,7 @@ export interface IOffset {
 }
 
 /**
- * This is essentially an helper class for dom manipulation.<br/>
+ * This is essentially a helper class for dom manipulation.<br/>
  * This is intended to provide some basic functionality normally offered by jQuery.<br/>
  * To minimize the multiple jQuery conflict we have while integrating in various system, we implemented the very small subset that the framework needs.<br/>
  * See {@link $$}, which is a function that wraps this class constructor, for less verbose code.

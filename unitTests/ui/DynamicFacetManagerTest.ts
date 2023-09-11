@@ -362,7 +362,7 @@ export function DynamicFacetManagerTest() {
         expect(expandedFacets()[1]).toBe(facets[1]);
       });
 
-      it(`when there is an hidden facet (e.g. depends on another facet)
+      it(`when there is a hidden facet (e.g. depends on another facet)
       should not be taken into consideration when expanding/collapsing`, () => {
         const dependantFacet = DynamicFacetTestUtils.createAdvancedFakeFacet({ field: '@dependantFacet', dependsOn: facets[0].options.id })
           .cmp;
