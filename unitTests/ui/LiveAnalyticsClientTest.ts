@@ -486,14 +486,14 @@ export function LiveAnalyticsClientTest() {
         expect(analyticsEventReadySpy).toHaveBeenCalled();
       });
 
-      it('should include searchQueryUid', function (done) {
+      it('should include lastSearchQueryUid', function (done) {
         Simulate.query(env, { promise });
         env.queryController.getLastResults = () => results;
         _.defer(function () {
           client.logCustomEvent<IAnalyticsNoMeta>(analyticsActionCauseList.documentOpen, {}, document.createElement('div'));
           expect(endpoint.sendCustomEvent).toHaveBeenCalledWith(
             jasmine.objectContaining({
-              searchQueryUid: results.searchUid
+              lastSearchQueryUid: results.searchUid
             })
           );
           done();
