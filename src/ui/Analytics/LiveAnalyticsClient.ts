@@ -340,7 +340,7 @@ export class LiveAnalyticsClient implements IAnalyticsClient {
     element: HTMLElement
   ): ICustomEvent {
     return this.merge<ICustomEvent>(this.buildAnalyticsEvent(actionCause, metaObject), {
-      searchQueryUid: this.getLastSearchQueryUid(),
+      lastSearchQueryUid: this.getLastSearchQueryUid(),
       eventType: actionCause.type,
       eventValue: actionCause.name,
       originLevel2: this.getOriginLevel2(element),
