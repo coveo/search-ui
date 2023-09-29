@@ -20,4 +20,11 @@ export interface ICustomEvent extends IAnalyticsEvent {
    * **Example:** `pagerNext`
    */
   eventValue: string;
+
+  /**
+   * The searchQueryUid of the last search event that occurred before this event.
+   *
+   * **Example:** `74682726-0e20-46eb-85ac-f37259346f57`
+   */
+  lastSearchQueryUid: string;
 }
