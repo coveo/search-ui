@@ -15583,8 +15583,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10112.0',
-    product: '2.10112.0',
+    lib: '2.10113.0',
+    product: '2.10113.0',
     supportedApiVersion: 2
 };
 
@@ -15686,8 +15686,6 @@ var merge = function (obj1, obj2) {
     return obj3;
 };
 var dict = {
-    "box user": "User",
-    "filetype_box user": "User",
     "html": "HTML File",
     "filetype_html": "HTML File",
     "wiki": "Wiki",
@@ -15744,6 +15742,8 @@ var dict = {
     "filetype_box": "User",
     "jiraissue": "Jira Issue",
     "filetype_jiraissue": "Jira Issue",
+    "box user": "User",
+    "filetype_box user": "User",
     "cfpage": "Confluence Page",
     "filetype_cfpage": "Confluence Page",
     "cfcomment": "Confluence Comment",
@@ -15915,20 +15915,6 @@ var dict = {
     "filetype_incident": "Incident",
     "kb_knowledge": "Knowledge Article",
     "filetype_kb_knowledge": "Knowledge Article",
-    "slackmessage": "Slack Message",
-    "filetype_slackmessage": "Slack Message",
-    "slackchannel": "Slack Channel",
-    "filetype_slackchannel": "Slack Channel",
-    "slackfile": "Slack File",
-    "filetype_slackfile": "Slack File",
-    "slackuser": "Slack User",
-    "filetype_slackuser": "Slack User",
-    "youtubevideo": "YouTube video",
-    "filetype_youtubevideo": "YouTube video",
-    "youtubeplaylistitem": "YouTube playlist item",
-    "filetype_youtubeplaylistitem": "YouTube playlist item",
-    "youtubeplaylist": "YouTube playlist",
-    "filetype_youtubeplaylist": "YouTube playlist",
     "spportal": "Portal",
     "filetype_spportal": "Portal",
     "spsite": "SharePoint Site",
@@ -16155,6 +16141,20 @@ var dict = {
     "filetype_spmicrofeedlist": "Microfeed",
     "splistfolder": "List Folder",
     "filetype_splistfolder": "List Folder",
+    "slackmessage": "Slack Message",
+    "filetype_slackmessage": "Slack Message",
+    "slackchannel": "Slack Channel",
+    "filetype_slackchannel": "Slack Channel",
+    "slackfile": "Slack File",
+    "filetype_slackfile": "Slack File",
+    "slackuser": "Slack User",
+    "filetype_slackuser": "Slack User",
+    "youtubevideo": "YouTube video",
+    "filetype_youtubevideo": "YouTube video",
+    "youtubeplaylistitem": "YouTube playlist item",
+    "filetype_youtubeplaylistitem": "YouTube playlist item",
+    "youtubeplaylist": "YouTube playlist",
+    "filetype_youtubeplaylist": "YouTube playlist",
     "Unknown": "Unknown",
     "And": "AND",
     "Authenticating": "Authenticating {0}...",
@@ -25960,7 +25960,7 @@ var LiveAnalyticsClient = /** @class */ (function () {
     };
     LiveAnalyticsClient.prototype.buildCustomEvent = function (actionCause, metaObject, element) {
         return this.merge(this.buildAnalyticsEvent(actionCause, metaObject), {
-            searchQueryUid: this.getLastSearchQueryUid(),
+            lastSearchQueryUid: this.getLastSearchQueryUid(),
             eventType: actionCause.type,
             eventValue: actionCause.name,
             originLevel2: this.getOriginLevel2(element),
@@ -42922,8 +42922,8 @@ var Analytics = /** @class */ (function (_super) {
          * Specifies the URL of the Usage Analytics service. You do not have to specify a value for this option, unless
          * the location of the service you use differs from the default Coveo Cloud Usage Analytics endpoint.
          *
-         * By deault, the value is `https://platform.cloud.coveo.com/rest/ua`, or
-         * `https://platform-<REGION_ABBREVIATION>.cloud.coveo.com/rest/ua` if you have
+         * By default, the value is `https://analytics.cloud.coveo.com/rest/ua`, or
+         * `https://analytics-<REGION_ABBREVIATION>.cloud.coveo.com/rest/ua` if you have
          * [configured your search endpoint]{@link SearchEndpoint.configureCloudV2Endpoint} to implement
          * data residency outside of the United States.
          */

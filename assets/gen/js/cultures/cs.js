@@ -91,8 +91,6 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
-  "box user": "Uživatel",
-  "filetype_box user": "Uživatel",
   "html": "Soubor HTML",
   "filetype_html": "Soubor HTML",
   "wiki": "Wikiweb",
@@ -143,6 +141,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Otevřený textový dokument",
   "filetype_odt": "Otevřený textový dokument",
+  "box user": "Uživatel",
+  "filetype_box user": "Uživatel",
   "lithiummessage": "Zpráva služby Lithium",
   "filetype_lithiummessage": "Zpráva služby Lithium",
   "lithiumthread": "Vlákno služby Lithium",
@@ -784,8 +784,6 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
-  "box user": "Uživatel",
-  "filetype_box user": "Uživatel",
   "html": "Soubor HTML",
   "filetype_html": "Soubor HTML",
   "wiki": "Wikiweb",
@@ -836,6 +834,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Otevřený textový dokument",
   "filetype_odt": "Otevřený textový dokument",
+  "box user": "Uživatel",
+  "filetype_box user": "Uživatel",
   "lithiummessage": "Zpráva služby Lithium",
   "filetype_lithiummessage": "Zpráva služby Lithium",
   "lithiumthread": "Vlákno služby Lithium",

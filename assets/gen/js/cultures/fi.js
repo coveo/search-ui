@@ -84,8 +84,6 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
-  "box user": "Käyttäjä",
-  "filetype_box user": "Käyttäjä",
   "html": "HTML-tiedosto",
   "filetype_html": "HTML-tiedosto",
   "wiki": "Wiki",
@@ -136,6 +134,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Open Text -tiedosto",
   "filetype_odt": "Open Text -tiedosto",
+  "box user": "Käyttäjä",
+  "filetype_box user": "Käyttäjä",
   "lithiummessage": "Lithium-viesti",
   "filetype_lithiummessage": "Lithium-viesti",
   "lithiumthread": "Lithium-viestiketju",
@@ -777,8 +777,6 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
-  "box user": "Käyttäjä",
-  "filetype_box user": "Käyttäjä",
   "html": "HTML-tiedosto",
   "filetype_html": "HTML-tiedosto",
   "wiki": "Wiki",
@@ -829,6 +827,8 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Open Text -tiedosto",
   "filetype_odt": "Open Text -tiedosto",
+  "box user": "Käyttäjä",
+  "filetype_box user": "Käyttäjä",
   "lithiummessage": "Lithium-viesti",
   "filetype_lithiummessage": "Lithium-viesti",
   "lithiumthread": "Lithium-viestiketju",

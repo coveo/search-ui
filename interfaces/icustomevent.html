@@ -11,11 +11,11 @@
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<link rel="stylesheet" href="../assets/css/overrides.css">
 	<link rel="stylesheet" href="../assets/css/coveo-connect-header.css">
-	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10112/css/CoveoFullSearch.min.css" />
+	<link rel="stylesheet" href="https://static.cloud.coveo.com/searchui/v2.10113/css/CoveoFullSearch.min.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://static.cloud.coveo.com/coveo.analytics.js/coveoua.js"></script>
 	<script src="../assets/js/modernizr.js"></script>
-	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10112/js/CoveoJsSearch.min.js"></script>
+	<script class="coveo-script" src="https://static.cloud.coveo.com/searchui/v2.10113/js/CoveoJsSearch.min.js"></script>
 	<script src="../assets/js/coveo-connect-header.js"></script>
 	<script src="../assets/gen/js/playground.js"></script>
 	<script src="../assets/js/searchUIrefDoc.js"></script>
@@ -171,6 +171,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="icustomevent.html#language" class="tsd-kind-icon">language</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="icustomevent.html#lastsearchqueryuid" class="tsd-kind-icon">last<wbr>Search<wbr>Query<wbr>Uid</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="icustomevent.html#mobile" class="tsd-kind-icon">mobile</a>
 							</li>
@@ -255,6 +258,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icustomevent.html#eventtype" class="tsd-kind-icon">event<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icustomevent.html#eventvalue" class="tsd-kind-icon">event<wbr>Value</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="icustomevent.html#language" class="tsd-kind-icon">language</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icustomevent.html#lastsearchqueryuid" class="tsd-kind-icon">last<wbr>Search<wbr>Query<wbr>Uid</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="icustomevent.html#mobile" class="tsd-kind-icon">mobile</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="icustomevent.html#origincontext" class="tsd-kind-icon">origin<wbr>Context</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="icustomevent.html#originlevel1" class="tsd-kind-icon">origin<wbr>Level1</a></li>
@@ -455,6 +459,24 @@
 						<p>Must be a valid <a href="https://en.wikipedia.org/wiki/ISO_639-1">ISO-639-1 code</a>.</p>
 						<p><strong>Note:</strong> By default, the framework sets this field according to the currently loaded culture file (see <a href="https://docs.coveo.com/en/421/">Changing the Language of Your Search Interface</a>).</p>
 						<p><strong>Example:</strong> <code>en</code></p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="lastsearchqueryuid" class="tsd-anchor"></a>
+					<h3>last<wbr>Search<wbr>Query<wbr>Uid</h3>
+					<div class="tsd-signature tsd-kind-icon">last<wbr>Search<wbr>Query<wbr>Uid<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in
+								<a href="https://github.com/coveo/search-ui/tree/master/src/rest/CustomEvent.ts#L29">rest/CustomEvent.ts
+							:29</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The searchQueryUid of the last search event that occurred before this event.</p>
+						</div>
+						<p><strong>Example:</strong> <code>74682726-0e20-46eb-85ac-f37259346f57</code></p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
