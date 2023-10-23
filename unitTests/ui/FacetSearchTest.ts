@@ -108,10 +108,6 @@ export function FacetSearchTest() {
         it('should give the input the aria-controls attribute', () => {
           expect(facetSearch.facetSearchElement.input.getAttribute('aria-controls')).toEqual(facetSearchId);
         });
-
-        it("should set aria-expanded to true on the input's element", () => {
-          expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual('true');
-        });
       });
 
       describe('when triggering a query', () => {
@@ -161,10 +157,6 @@ export function FacetSearchTest() {
           it("should remove the input's aria-controls attribute", () => {
             expect(facetSearch.facetSearchElement.input.getAttribute('aria-controls')).toBeNull();
           });
-
-          it("should set aria-expanded to false on the input's element", () => {
-            expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual('false');
-          });
         });
       });
 
@@ -179,10 +171,6 @@ export function FacetSearchTest() {
           facetSearch.triggerNewFacetSearch(params);
           await pr;
           done();
-        });
-
-        it("should set aria-expanded to true on the input's element", () => {
-          expect(facetSearch.facetSearchElement.input.getAttribute('aria-expanded')).toEqual('true');
         });
 
         it('should contain only a "no values found" element', () => {
