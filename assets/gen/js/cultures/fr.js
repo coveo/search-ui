@@ -85,6 +85,8 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
+  "box user": "Utilisateur",
+  "filetype_box user": "Utilisateur",
   "html": "Fichier HTML",
   "filetype_html": "Fichier HTML",
   "wiki": "Wiki",
@@ -141,8 +143,6 @@ var dict = {
   "filetype_box": "Utilisateur",
   "jiraissue": "Issue Jira",
   "filetype_jiraissue": "Issue Jira",
-  "box user": "Utilisateur",
-  "filetype_box user": "Utilisateur",
   "cfpage": "Page Confluence",
   "filetype_cfpage": "Page Confluence",
   "cfcomment": "Commentaire Confluence",
@@ -958,6 +958,8 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
+  "box user": "Utilisateur",
+  "filetype_box user": "Utilisateur",
   "html": "Fichier HTML",
   "filetype_html": "Fichier HTML",
   "wiki": "Wiki",
@@ -1014,8 +1016,6 @@ var dict = {
   "filetype_box": "Utilisateur",
   "jiraissue": "Issue Jira",
   "filetype_jiraissue": "Issue Jira",
-  "box user": "Utilisateur",
-  "filetype_box user": "Utilisateur",
   "cfpage": "Page Confluence",
   "filetype_cfpage": "Page Confluence",
   "cfcomment": "Commentaire Confluence",

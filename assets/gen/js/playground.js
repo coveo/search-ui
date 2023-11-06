@@ -15583,8 +15583,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10113.0',
-    product: '2.10113.0',
+    lib: '2.10114.0',
+    product: '2.10114.0',
     supportedApiVersion: 2
 };
 
@@ -15686,6 +15686,8 @@ var merge = function (obj1, obj2) {
     return obj3;
 };
 var dict = {
+    "box user": "User",
+    "filetype_box user": "User",
     "html": "HTML File",
     "filetype_html": "HTML File",
     "wiki": "Wiki",
@@ -15742,8 +15744,6 @@ var dict = {
     "filetype_box": "User",
     "jiraissue": "Jira Issue",
     "filetype_jiraissue": "Jira Issue",
-    "box user": "User",
-    "filetype_box user": "User",
     "cfpage": "Confluence Page",
     "filetype_cfpage": "Confluence Page",
     "cfcomment": "Confluence Comment",

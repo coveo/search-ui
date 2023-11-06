@@ -86,6 +86,8 @@ var merge = function(obj1, obj2) {
   return obj3;
 }
 var dict = {
+  "box user": "Felhasználó",
+  "filetype_box user": "Felhasználó",
   "html": "HTML-fájl",
   "filetype_html": "HTML-fájl",
   "wiki": "Wiki",
@@ -136,8 +138,6 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Open Text dokumentum",
   "filetype_odt": "Open Text dokumentum",
-  "box user": "Felhasználó",
-  "filetype_box user": "Felhasználó",
   "lithiummessage": "Lithium-üzenet",
   "filetype_lithiummessage": "Lithium-üzenet",
   "lithiumthread": "Lithium-szál",
@@ -779,6 +779,8 @@ var merge = function(obj1, obj2) {
 }
 
 var dict = {
+  "box user": "Felhasználó",
+  "filetype_box user": "Felhasználó",
   "html": "HTML-fájl",
   "filetype_html": "HTML-fájl",
   "wiki": "Wiki",
@@ -829,8 +831,6 @@ var dict = {
   "filetype_salesforceitem": "Salesforce",
   "odt": "Open Text dokumentum",
   "filetype_odt": "Open Text dokumentum",
-  "box user": "Felhasználó",
-  "filetype_box user": "Felhasználó",
   "lithiummessage": "Lithium-üzenet",
   "filetype_lithiummessage": "Lithium-üzenet",
   "lithiumthread": "Lithium-szál",
