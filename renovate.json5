@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "branchPrefix": "renovate/",
+  "extends": [
+    "config:base",
+    "github>coveo/renovate//presets/coveo-defaults.json5",
+    "schedule:earlyMondays",
+    "group:allNonMajor"
+  ],
+  "prConcurrentLimit": 3,
+  "prHeader": "DT-5590 <- Put your own jira issue here by setting the `prHeader` value in your renovate config",
+  "rebaseWhen": "auto"
+}
