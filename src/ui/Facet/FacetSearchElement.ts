@@ -87,10 +87,10 @@ export class FacetSearchElement {
 
   private onInputBlur(e: FocusEvent) {
     const target = e.relatedTarget as HTMLElement;
-    const isUsingKeyboard = !!target;
     const focusedOnSearchResult = this.searchResults.contains(target);
+    const focusedOnFacet = this.search.parentElement.contains(target);
 
-    if (isUsingKeyboard && !focusedOnSearchResult) {
+    if (focusedOnFacet && !focusedOnSearchResult) {
       this.facetSearch.dismissSearchResults();
     }
   }
