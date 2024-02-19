@@ -420,7 +420,7 @@ export class SearchInterface extends RootComponent implements IComponentBindings
      *
      * Default value is `undefined`, which means that the search interface lets the Coveo Search API determine the
      * maximum cache age. This is typically equivalent to 30 minutes (see
-     * [maximumAge](https://docs.coveo.com/en/1461/#RestQueryParameters-maximumAge)).
+     * [maximumAge](https://docs.coveo.com/en/13#operation/searchUsingPost-maximumAge)).
      */
     maximumAge: ComponentOptions.buildNumberOption(),
     /**
