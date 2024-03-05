@@ -9669,7 +9669,7 @@ var SearchInterface = /** @class */ (function (_super) {
          *
          * Default value is `undefined`, which means that the search interface lets the Coveo Search API determine the
          * maximum cache age. This is typically equivalent to 30 minutes (see
-         * [maximumAge](https://docs.coveo.com/en/1461/#RestQueryParameters-maximumAge)).
+         * [maximumAge](https://docs.coveo.com/en/13#operation/searchUsingPost-maximumAge)).
          */
         maximumAge: ComponentOptions_1.ComponentOptions.buildNumberOption(),
         /**
@@ -15583,8 +15583,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10114.1',
-    product: '2.10114.1',
+    lib: '2.10115.0',
+    product: '2.10115.0',
     supportedApiVersion: 2
 };
 
