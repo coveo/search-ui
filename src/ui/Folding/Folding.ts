@@ -144,7 +144,7 @@ export class Folding extends Component {
 
     /**
      * Specifies the sort criteria to apply to the top result and its child results (e.g., `date ascending`,
-     * `@myfield descending`, etc.). See [sortCriteria](https://docs.coveo.com/en/1461/#RestQueryParameters-sortCriteria).
+     * `@myfield descending`, etc.). See [sortCriteria](https://docs.coveo.com/en/13#operation/searchUsingPost-sortCriteria).
      *
      * This option works from the results returned by the index. This means that if only the three most relevant folded results are returned by the index
      * and you choose to rearrange the folded results by date, then the three most relevant results will be rearranged by date,

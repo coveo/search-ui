@@ -190,7 +190,7 @@ export class Tab extends Component {
      * > Tab (see {@link SearchInterface.options.maximumAge}).
      *
      * Default value is `undefined` and the Coveo Search API determines the maximum cache age. This is typically
-     * equivalent to 30 minutes (see [maximumAge](https://docs.coveo.com/en/1461/#RestQueryParameters-maximumAge)).
+     * equivalent to 30 minutes (see [maximumAge](https://docs.coveo.com/en/13#operation/searchUsingPost-maximumAge)).
      */
     maximumAge: ComponentOptions.buildNumberOption(),
 
