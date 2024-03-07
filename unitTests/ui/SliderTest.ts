@@ -77,6 +77,37 @@ export function SliderTest() {
         expect(slider.getValues()).toEqual([25, 75]);
       });
 
+      it('should return round values when using dateField', () => {
+        slider = new Slider(
+          el,
+          {
+            start: 0,
+            end: 100,
+            rangeSlider: true,
+            dateField: true
+          },
+          root
+        );
+        slider.element.style.width = '100px';
+        slider['sliderRange']['firstButton'].getPercent = () => 1 / 3;
+        expect(slider.getValues()[0]).toEqual(33);
+      });
+
+      it('should not round values when using dateField', () => {
+        slider = new Slider(
+          el,
+          {
+            start: 0,
+            end: 100,
+            rangeSlider: true
+          },
+          root
+        );
+        slider.element.style.width = '100px';
+        slider['sliderRange']['firstButton'].getPercent = () => 1 / 3;
+        expect(slider.getValues()[0]).toBeCloseTo(33.33, 2);
+      });
+
       it('should give position when initializing state with no value', () => {
         expect(() => slider.initializeState()).not.toThrow();
         expect(() => slider.getPosition()).not.toThrow();

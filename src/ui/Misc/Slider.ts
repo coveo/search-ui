@@ -343,6 +343,9 @@ export class SliderButton {
 
   public getValue() {
     const value = this.getPercent() * (this.slider.options.end - this.slider.options.start) + this.slider.options.start;
+    if (this.slider.options.dateField) {
+      return Math.round(value);
+    }
     return value;
   }
 
