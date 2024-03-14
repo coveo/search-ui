@@ -1,0 +1,26 @@
+product: crazyfrogtoprodspeedrun
+team_name: offsec
+general:
+  notifications:
+    slack_channels:
+      - "offsec-deployments"
+  team_jenkins: csecbuilds
+  dry_run: false
+  allow_parallel_deployments: true
+  start_environment_automatically: true
+  split_terraform_phases: true
+  environments_order:
+    sequential:
+      - concurrent:
+        - dev
+      - concurrent:
+        - prd
+phases:
+  terraform:
+    source: terraform
+    terragrunt_path: ""
+    auto_approve: true
+
+#Certifiers section
+observatory:
+  no_endpoint: true
