@@ -1,0 +1,22 @@
+name: Release
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  create-package:
+    name: Create and deploy package
+    runs-on: [ coveo, linux, x64, ec2 ]
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          fetch-depth: 0
+          ref: '512f492de13be5f2487c4435507b48174b246188' # THE BRANCH NAME TO ADD HERE
+      - uses: coveo-platform/deployment-pipeline-actions/setup-cli@main
+      - uses: coveo-platform/deployment-pipeline-actions/create-package@main
+        id: create-package
+      - name: Deploy
+        env:
+          PACKAGE_NAME: ${{ steps.create-package.outputs.package-name }}
+        run: deployment-package package deploy --package-name "$PACKAGE_NAME"
+
