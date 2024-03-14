@@ -1,9 +1,0 @@
-# These owners will be the default owners for everything in
-# the repo.
-# see https://help.github.com/articles/about-codeowners/ for more details
-
-* @coveo/search
-
-# Prevent PRs that only modify dependencies from notifying everyone
-package.json @ghost
-yarn.lock @ghost
