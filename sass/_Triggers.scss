@@ -1,9 +1,0 @@
-@import 'Variables';
-.CoveoTriggers {
-  .coveo-trigger-notify {
-    padding: 10px 0;
-  }
-  a {
-    @include clickable();
-  }
-}
