@@ -259,18 +259,19 @@ export class HighlightUtils {
         break;
       }
 
-      highlighted += _.escape(content.slice(last, start));
-      highlighted += `<span class="${cssClass}"`;
-      if (highlight.dataHighlightGroup) {
-        highlighted += ` data-highlight-group="${highlight.dataHighlightGroup.toString()}"`;
+      if (last <= start) {
+        highlighted += _.escape(content.slice(last, start));
+        highlighted += `<span class="${cssClass}"`;
+        if (highlight.dataHighlightGroup) {
+          highlighted += ` data-highlight-group="${highlight.dataHighlightGroup.toString()}"`;
+        }
+        if (highlight.dataHighlightGroupTerm) {
+          highlighted += ` data-highlight-group-term="${highlight.dataHighlightGroupTerm}"`;
+        }
+        highlighted += '>';
+        highlighted += _.escape(content.slice(start, end));
+        highlighted += '</span>';
       }
-      if (highlight.dataHighlightGroupTerm) {
-        highlighted += ` data-highlight-group-term="${highlight.dataHighlightGroupTerm}"`;
-      }
-      highlighted += '>';
-      highlighted += _.escape(content.slice(start, end));
-      highlighted += '</span>';
-
       last = end;
     }
     if (last != maxIndex) {

@@ -10,6 +10,17 @@ export function HighlightUtilsTest() {
     const localPath = 'C:\\Programmes\\Ces\\config\\sources\\salesforce';
 
     describe('highlightString', function () {
+      it('should handle highlights that overlap', function () {
+        let highlights: IHighlight[] = [
+          { offset: 9, length: 19 },
+          { offset: 16, length: 12 },
+          { offset: 18, length: 15 }
+        ];
+        let expectedHighlight =
+          'Lorem ips<span class="coveo-highlight">um dolor sit amet, </span>ctetur adipisicing elit, sed do eiusmod tempor incididunt ut';
+        expect(HighlightUtils.highlightString(lorem, highlights, null, 'coveo-highlight')).toBe(expectedHighlight);
+      });
+
       it('should wrap the passed highlights with tags using the specified class name', function () {
         let highlights: IHighlight[] = [
           { offset: 3, length: 5 },
