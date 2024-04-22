@@ -66,7 +66,7 @@ export class PublicPathUtils {
     return find(document.querySelectorAll('.coveo-script'), el => this.isScript(el));
   }
 
-  private static parseScriptDirectoryPath(script?: HTMLScriptElement) {
+  private static parseScriptDirectoryPath(script: HTMLScriptElement) {
     return script.src.replace(/\/[\w\.-]*\.js((#|\?)(.*)){0,1}$/, '/');
   }
 
