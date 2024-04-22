@@ -38,6 +38,9 @@ export class PublicPathUtils {
       return this.parseScriptDirectoryPath(coveoScript);
     } else {
       const scripts = document.getElementsByTagName('script');
+      if (scripts.length === 0) {
+        return '/';
+      }
       return this.parseScriptDirectoryPath(scripts[scripts.length - 1]);
     }
   }
@@ -63,7 +66,7 @@ export class PublicPathUtils {
     return find(document.querySelectorAll('.coveo-script'), el => this.isScript(el));
   }
 
-  private static parseScriptDirectoryPath(script: HTMLScriptElement) {
+  private static parseScriptDirectoryPath(script?: HTMLScriptElement) {
     return script.src.replace(/\/[\w\.-]*\.js((#|\?)(.*)){0,1}$/, '/');
   }
 
