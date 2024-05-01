@@ -1,0 +1,12 @@
+name: Release
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  create-package:
+    name: Create and deploy package
+    runs-on: [ coveo, linux, x64, ec2 ]
+    steps:
+      - name: test
+        run: "echo hi"
