@@ -1,5 +1,8 @@
 export * from './Core';
 
+import { PublicPathUtils } from './utils/PublicPathUtils';
+PublicPathUtils.detectPublicPath();
+
 export { CoreHelpers } from './ui/Templates/CoreHelpers';
 export { SearchInterface, StandaloneSearchInterface } from './ui/SearchInterface/SearchInterface';
 export { jQueryInstance as $ } from './ui/Base/CoveoJQuery';

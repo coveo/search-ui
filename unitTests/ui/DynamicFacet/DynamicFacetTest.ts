@@ -275,12 +275,30 @@ export function DynamicFacetTest() {
     });
 
     it(`when calling reset
-      when there are no active values
-      should not clear and rerender values`, () => {
+    when there is any active value
+    should set the flag for preventAutoSelect`, () => {
+      mockFacetValues[0].state = FacetValueState.selected;
+      initializeComponent();
+
+      test.cmp.reset();
+
+      expect(test.cmp.dynamicFacetQueryController.buildFacetRequest().preventAutoSelect).toBe(true);
+    });
+
+    it(`when calling reset
+    when there are no active values
+    should not clear and rerender values`, () => {
       test.cmp.reset();
 
       expect(test.cmp.values.clearAll).not.toHaveBeenCalled();
       expect(test.cmp.values.render).toHaveBeenCalledTimes(1);
+    });
+
+    it(`when calling reset
+    when there are no active values
+    should not set the flag for preventAutoSelect`, () => {
+      test.cmp.reset();
+      expect(test.cmp.dynamicFacetQueryController.buildFacetRequest().preventAutoSelect).toBe(false);
     });
 
     it('showMoreValues adds by the numberOfValues option by default', () => {

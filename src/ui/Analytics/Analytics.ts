@@ -103,8 +103,8 @@ export class Analytics extends Component {
      * Specifies the URL of the Usage Analytics service. You do not have to specify a value for this option, unless
      * the location of the service you use differs from the default Coveo Cloud Usage Analytics endpoint.
      *
-     * By deault, the value is `https://platform.cloud.coveo.com/rest/ua`, or
-     * `https://platform-<REGION_ABBREVIATION>.cloud.coveo.com/rest/ua` if you have
+     * By default, the value is `https://analytics.cloud.coveo.com/rest/ua`, or
+     * `https://analytics-<REGION_ABBREVIATION>.cloud.coveo.com/rest/ua` if you have
      * [configured your search endpoint]{@link SearchEndpoint.configureCloudV2Endpoint} to implement
      * data residency outside of the United States.
      */
