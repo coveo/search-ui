@@ -15583,8 +15583,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10116.0',
-    product: '2.10116.0',
+    lib: '2.10117.0',
+    product: '2.10117.0',
     supportedApiVersion: 2
 };
 
@@ -18138,17 +18138,19 @@ var HighlightUtils = /** @class */ (function () {
             if (end > maxIndex) {
                 break;
             }
-            highlighted += _.escape(content.slice(last, start));
-            highlighted += "<span class=\"" + cssClass + "\"";
-            if (highlight.dataHighlightGroup) {
-                highlighted += " data-highlight-group=\"" + highlight.dataHighlightGroup.toString() + "\"";
+            if (last <= start) {
+                highlighted += _.escape(content.slice(last, start));
+                highlighted += "<span class=\"" + cssClass + "\"";
+                if (highlight.dataHighlightGroup) {
+                    highlighted += " data-highlight-group=\"" + highlight.dataHighlightGroup.toString() + "\"";
+                }
+                if (highlight.dataHighlightGroupTerm) {
+                    highlighted += " data-highlight-group-term=\"" + highlight.dataHighlightGroupTerm + "\"";
+                }
+                highlighted += '>';
+                highlighted += _.escape(content.slice(start, end));
+                highlighted += '</span>';
             }
-            if (highlight.dataHighlightGroupTerm) {
-                highlighted += " data-highlight-group-term=\"" + highlight.dataHighlightGroupTerm + "\"";
-            }
-            highlighted += '>';
-            highlighted += _.escape(content.slice(start, end));
-            highlighted += '</span>';
             last = end;
         }
         if (last != maxIndex) {
@@ -42400,6 +42402,9 @@ var PublicPathUtils = /** @class */ (function () {
         }
         else {
             var scripts = document.getElementsByTagName('script');
+            if (scripts.length === 0) {
+                return '/';
+            }
             return this.parseScriptDirectoryPath(scripts[scripts.length - 1]);
         }
     };
