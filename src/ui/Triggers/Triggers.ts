@@ -44,7 +44,7 @@ function isTriggerExecute(trigger: ITrigger<any>): trigger is ITriggerExecute {
  * Search API (see [Trigger](https://docs.coveo.com/en/1458/)) in the query pipeline (see
  * [Managing the Query Pipeline](https://docs.coveo.com/en/1450/)).
  *
- * To enable the triggers functionality in the JSUI, simply incorporate a div with a class of `coveoTriggers` within the Search Interface. For example: `<div class="coveoTriggers"></div>`.
+ * To enable the triggers functionality in your JavaScript Search Framework interface, incorporate a div with the `coveoTriggers` class. For example: `<div class="coveoTriggers"></div>`.
  *
  * Note: adding the Triggers component gives query pipeline administrators the power to influence users' search experience.
  * Bad actors will be able to perform XSS attacks, or redirect users to dangerous sites. Make sure only individuals you trust
