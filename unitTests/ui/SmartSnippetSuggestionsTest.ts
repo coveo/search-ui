@@ -148,7 +148,7 @@ export function SmartSnippetSuggestionsTest() {
         results: <IQueryResults>{
           results,
           questionAnswer: mockQuestionAnswer(),
-          searchUid: searchUid = Math.random().toString().substr(2)
+          searchUid: (searchUid = Math.random().toString().substr(2))
         }
       });
       await waitForCollapsibleSuggestions();
@@ -299,8 +299,8 @@ export function SmartSnippetSuggestionsTest() {
           });
 
           it('gives the right text for each source element', () => {
-            findClass(ClassNames.SOURCE_URL_CLASSNAME).forEach((sourceUrl, i) => expect(sourceUrl.innerText).toEqual(sources[i].url));
-            findClass(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((sourceUrl, i) => expect(sourceUrl.innerText).toEqual(sources[i].title));
+            findClass(ClassNames.SOURCE_URL_CLASSNAME).forEach((sourceUrl, i) => expect(sourceUrl.textContent).toEqual(sources[i].url));
+            findClass(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((sourceUrl, i) => expect(sourceUrl.textContent).toEqual(sources[i].title));
           });
 
           it('is collapsed', () => {
@@ -508,7 +508,7 @@ export function SmartSnippetSuggestionsTest() {
             ...mockQuestionAnswer(),
             relatedQuestions: [{ ...mockRelatedQuestions()[0], answerSnippet: '<img src="abcd.png" onerror="window.XSSInjected = true;">' }]
           },
-          searchUid: searchUid = Math.random().toString().substr(2)
+          searchUid: (searchUid = Math.random().toString().substr(2))
         }
       });
       await Utils.resolveAfter(100);
