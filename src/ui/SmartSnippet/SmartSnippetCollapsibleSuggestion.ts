@@ -206,6 +206,7 @@ export class SmartSnippetCollapsibleSuggestion {
     this.checkbox.setHtml(this.expanded ? SVGIcons.icons.arrowUp : SVGIcons.icons.arrowDown);
     this.collapsibleContainer.setAttribute('aria-hidden', (!this.expanded).toString());
     this.collapsibleContainer.toggleClass(QUESTION_SNIPPET_HIDDEN_CLASSNAME, !this.expanded);
+    this.collapsibleContainer.el.style.visibility = this.expanded ? 'inherit' : 'hidden';
     this.collapsibleContainer.el.style.height = this.expanded ? `${this.snippetAndSourceContainer.el.clientHeight}px` : '0px';
     this.updateIFrameExpanded();
   }

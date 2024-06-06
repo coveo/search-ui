@@ -148,7 +148,7 @@ export function SmartSnippetSuggestionsTest() {
         results: <IQueryResults>{
           results,
           questionAnswer: mockQuestionAnswer(),
-          searchUid: searchUid = Math.random().toString().substr(2)
+          searchUid: (searchUid = Math.random().toString().substr(2))
         }
       });
       await waitForCollapsibleSuggestions();
@@ -299,8 +299,8 @@ export function SmartSnippetSuggestionsTest() {
           });
 
           it('gives the right text for each source element', () => {
-            findClass(ClassNames.SOURCE_URL_CLASSNAME).forEach((sourceUrl, i) => expect(sourceUrl.innerText).toEqual(sources[i].url));
-            findClass(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((sourceUrl, i) => expect(sourceUrl.innerText).toEqual(sources[i].title));
+            findClass(ClassNames.SOURCE_URL_CLASSNAME).forEach((sourceUrl, i) => expect(sourceUrl.textContent).toEqual(sources[i].url));
+            findClass(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((sourceUrl, i) => expect(sourceUrl.textContent).toEqual(sources[i].title));
           });
 
           it('is collapsed', () => {
@@ -441,8 +441,8 @@ export function SmartSnippetSuggestionsTest() {
       instantiateSmartSnippetSuggestions(null, { titleField: '@alt' });
       document.body.appendChild(test.env.root);
       await triggerQuestionAnswerQuery(true);
-      findClass(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((title, i) => expect(title.innerText).toEqual(sources[i].alt));
-      findClass(ClassNames.SOURCE_URL_CLASSNAME).forEach((source, i) => expect(source.innerText).toEqual(sources[i].url));
+      findClass(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((title, i) => expect(title.textContent).toEqual(sources[i].alt));
+      findClass(ClassNames.SOURCE_URL_CLASSNAME).forEach((source, i) => expect(source.textContent).toEqual(sources[i].url));
       test.env.root.remove();
       done();
     });
@@ -454,8 +454,8 @@ export function SmartSnippetSuggestionsTest() {
       const expectedHref = (i: number) => `${sources[i].alt}/?abcd=1`;
       findClass<HTMLAnchorElement>(ClassNames.SOURCE_TITLE_CLASSNAME).forEach((title, i) => expect(title.href).toEqual(expectedHref(i)));
       findClass<HTMLAnchorElement>(ClassNames.SOURCE_URL_CLASSNAME).forEach((source, i) => {
-        expect(source.innerText).toEqual(expectedHref(i));
-        expect(source.innerText).toEqual(expectedHref(i));
+        expect(source.textContent).toEqual(expectedHref(i));
+        expect(source.textContent).toEqual(expectedHref(i));
       });
       test.env.root.remove();
       done();
@@ -466,7 +466,7 @@ export function SmartSnippetSuggestionsTest() {
       document.body.appendChild(test.env.root);
       await triggerQuestionAnswerQuery(true);
       findClass(ClassNames.SOURCE_URL_CLASSNAME).forEach((title, i) =>
-        expect(title.innerText.indexOf(window.location.protocol)).toEqual(0)
+        expect((title.textContent || '').indexOf(window.location.protocol)).toEqual(0)
       );
       test.env.root.remove();
       done();
@@ -508,7 +508,7 @@ export function SmartSnippetSuggestionsTest() {
             ...mockQuestionAnswer(),
             relatedQuestions: [{ ...mockRelatedQuestions()[0], answerSnippet: '<img src="abcd.png" onerror="window.XSSInjected = true;">' }]
           },
-          searchUid: searchUid = Math.random().toString().substr(2)
+          searchUid: (searchUid = Math.random().toString().substr(2))
         }
       });
       await Utils.resolveAfter(100);
