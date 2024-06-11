@@ -52,7 +52,12 @@ export class ComboboxValues implements IComboboxValues {
     this.values.forEach((value, index) => {
       const elementWrapper = $$(
         'li',
-        { id: `${this.combobox.id}-value-${index}`, className: 'coveo-combobox-value', role: 'option', tabindex: 0 },
+        {
+          id: `${this.combobox.id}-value-${index}`,
+          className: 'coveo-combobox-value',
+          role: 'option',
+          tabindex: 0
+        },
         value.element
       ).el;
       this.highlightCurrentQueryInSearchResults(value.element);
