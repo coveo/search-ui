@@ -49,7 +49,7 @@ export class FacetSearchElement {
     this.clear.style.display = 'none';
     this.search.appendChild(this.clear);
 
-    this.combobox = this.buildCombobox();
+    this.combobox = this.buildSearchInputWrapper();
     this.search.appendChild(this.combobox);
 
     this.input = this.buildInputElement();
@@ -116,11 +116,9 @@ export class FacetSearchElement {
     this.searchDropdownNavigator = SearchDropdownNavigatorFactory(this.facetSearch, config);
   }
 
-  private buildCombobox() {
+  private buildSearchInputWrapper() {
     return $$('div', {
-      className: 'coveo-facet-search-middle',
-      ariaHaspopup: 'listbox',
-      ariaExpanded: 'true'
+      className: 'coveo-facet-search-middle'
     }).el;
   }
 
@@ -315,8 +313,8 @@ export class FacetSearchElement {
       return;
     }
 
-    this.combobox.setAttribute('role', 'combobox');
-    this.combobox.setAttribute('aria-owns', this.facetSearchId);
+    this.input.setAttribute('role', 'combobox');
+    this.input.setAttribute('aria-owns', this.facetSearchId);
     this.input.setAttribute('aria-controls', this.facetSearchId);
     this.input.setAttribute('aria-expanded', 'true');
     this.facetSearch.setExpandedFacetSearchAccessibilityAttributes(this.searchResults);
@@ -327,8 +325,8 @@ export class FacetSearchElement {
       return;
     }
 
-    this.combobox.removeAttribute('role');
-    this.combobox.removeAttribute('aria-owns');
+    this.input.removeAttribute('role');
+    this.input.removeAttribute('aria-owns');
     this.input.removeAttribute('aria-controls');
     this.input.removeAttribute('aria-activedescendant');
     this.input.setAttribute('aria-expanded', 'false');
