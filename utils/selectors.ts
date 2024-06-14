@@ -9,3 +9,10 @@ export const DynamicFacetSelectors = (page: Page, facetField = '@author') => Obj
     facetShowMore:page.locator(`.CoveoDynamicFacet[data-field="${facetField}"]`).getByLabel(/Show more/),
     facetShowLess:page.locator(`.CoveoDynamicFacet[data-field="${facetField}"]`).getByLabel(/Show fewer/)
 })
+
+export const BreadcrumbSelectors = (page: Page) => Object.freeze({
+    breadcrumbItemRow: page.locator('.coveo-breadcrumb-item'),
+    breadcrumbValue:page.locator('.coveo-dynamic-facet-breadcrumb-value'),
+    breadcrumbClearFacet: page.locator('.CoveoBreadcrumb').getByLabel(/Remove inclusion filter/),
+    breadcrumbClearAll: page.getByRole('button', { name: 'Clear All Filters' })
+})
