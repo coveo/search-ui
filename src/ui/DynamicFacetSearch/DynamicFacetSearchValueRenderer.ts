@@ -10,20 +10,17 @@ export class DynamicFacetSearchValueRenderer implements IValueRenderer {
   constructor(private facetValue: DynamicFacetValue, private facet: IDynamicFacet) {}
 
   public render() {
-    this.dom = $$('div', {
-      className: 'coveo-dynamic-facet-value',
-      dataValue: this.facetValue.value
-    });
-
-    this.renderCheckbox();
-    return this.dom.el;
-  }
-
-  private renderCheckbox() {
     this.valueCheckbox = new DynamicFacetValueCheckbox(this.facetValue);
-    $$(this.valueCheckbox.element).find('button').setAttribute('tabindex', '-1');
 
-    this.dom.append(this.valueCheckbox.element);
+    const button = $$(this.valueCheckbox.element).find('button');
+    button.setAttribute('tabindex', '-1');
+    button.setAttribute('inert', 'true');
+
+    const label = $$(this.valueCheckbox.element);
+    label.addClass('coveo-dynamic-facet-value');
+    label.setAttribute('aria-label', button.getAttribute('aria-label'));
+    this.dom = $$(this.valueCheckbox.element);
+    return this.dom.el;
   }
 
   public selectAction() {
