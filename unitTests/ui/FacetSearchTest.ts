@@ -97,12 +97,12 @@ export function FacetSearchTest() {
           expect(setExpandedFacetSearchAccessibilityAttributes).toHaveBeenCalledWith(facetSearch.facetSearchElement['searchResults']);
         });
 
-        it('should give the "combobox" role to the combobox', () => {
-          expect(facetSearch.facetSearchElement.combobox.getAttribute('role')).toEqual('combobox');
+        it('should give the "combobox" role to the input', () => {
+          expect(facetSearch.facetSearchElement.input.getAttribute('role')).toEqual('combobox');
         });
 
-        it('should give the combobox the aria-owns attribute', () => {
-          expect(facetSearch.facetSearchElement.combobox.getAttribute('aria-owns')).toEqual(facetSearchId);
+        it('should give the input the aria-owns attribute', () => {
+          expect(facetSearch.facetSearchElement.input.getAttribute('aria-owns')).toEqual(facetSearchId);
         });
 
         it('should give the input the aria-controls attribute', () => {

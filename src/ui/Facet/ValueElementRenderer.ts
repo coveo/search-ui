@@ -184,7 +184,7 @@ export class ValueElementRenderer {
   }
 
   private initAndAppendLabel() {
-    this.label = $$('label', { className: 'coveo-facet-value-label', role: 'group' }).el;
+    this.label = $$('label', { className: 'coveo-facet-value-label' }).el;
     this.tryToInitAndAppendComputedField();
     this.initAndAppendFacetValueLabelWrapper();
     this.listItem.appendChild(this.label);
