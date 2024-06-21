@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { compareAlphanumericalValues, pageURL } from '../utils/utils'
-import { isFacetSearchRequest, isSearchRequest, isUaCustomEvent, isUaSearchEvent } from '../utils/requests';
+import { isFacetSearchRequest, isUaCustomEvent, isUaSearchEvent } from '../utils/requests';
 import { DynamicFacetSelectors } from '../utils/selectors'
 
 const defaultFacetNumberOfValues = 8
@@ -28,7 +28,7 @@ test.describe('Dynamic Facet', async () => {
 
   test('Dynamic facet deselect', async ({ page }) => {
     await DynamicFacetSelectors(page).facetCheckbox.first().click();
-
+    await page.waitForLoadState("networkidle");
     const uaRequest = page.waitForRequest(
       (request) => isUaSearchEvent(request)
         && request.postDataJSON()[0]?.actionCause == 'facetDeselect'
