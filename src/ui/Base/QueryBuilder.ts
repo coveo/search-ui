@@ -484,7 +484,7 @@ export class QueryBuilder {
 
   public computeFieldsToInclude() {
     if (this.includeRequiredFields || this.fieldsToInclude != null) {
-      return this.requiredFields.concat(this.fieldsToInclude || []);
+      return _.uniq(this.requiredFields.concat(this.fieldsToInclude || []));
     } else {
       return null;
     }
