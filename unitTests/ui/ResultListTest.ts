@@ -569,6 +569,17 @@ export function ResultListTest() {
         );
       });
 
+      it('should also get the minimal amount of fields to include when the option is false', () => {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          autoSelectFieldsToInclude: false
+        });
+
+        const simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.build().fieldsToInclude).toEqual(
+          jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'permanentid'])
+        );
+      });
+
       it('should allow to get the auto select fields to include', () => {
         expect(test.cmp.getAutoSelectedFieldsToInclude()).toEqual(
           jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'permanentid'])
@@ -690,6 +701,16 @@ export function ResultListTest() {
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field1');
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field2');
         expect(simulation.queryBuilder.fieldsToInclude).toContain('field3');
+      });
+
+      it('fieldsToInclude should always include minimal amount of required fields', () => {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          fieldsToInclude: ['@field1', '@field2', '@field3']
+        });
+        const simulation = Simulate.query(test.env);
+        expect(simulation.queryBuilder.fieldsToInclude).toEqual(
+          jasmine.arrayContaining(['author', 'language', 'urihash', 'objecttype', 'collection', 'source', 'language', 'permanentid'])
+        );
       });
 
       describe('layout', () => {

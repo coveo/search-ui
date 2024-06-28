@@ -1,7 +1,7 @@
 import 'styling/_Result';
 import 'styling/_ResultFrame';
 import 'styling/_ResultList';
-import { chain, compact, contains, each, flatten, map, unique, without, uniqueId, find } from 'underscore';
+import { compact, contains, each, flatten, map, without, uniqueId, find, unique, chain } from 'underscore';
 import {
   IBuildingQueryEventArgs,
   IDuringQueryEventArgs,
@@ -668,6 +668,7 @@ export class ResultList extends Component {
   }
 
   protected handleBuildingQuery(args: IBuildingQueryEventArgs) {
+    args.queryBuilder.addFieldsToInclude(this.getMinimalFieldsToInclude());
     if (this.options.fieldsToInclude != null) {
       // remove the @
       args.queryBuilder.addFieldsToInclude(map(this.options.fieldsToInclude, field => field.substr(1)));
