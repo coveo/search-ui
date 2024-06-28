@@ -67,14 +67,16 @@ export class SortDropdown extends Component {
     this.buildDropdown();
   }
 
-  private clearDropdown() {
+  private clearDropdown(): boolean {
+    const hasFocus = this.dropdown && document.activeElement === this.dropdown.getElement();
     this.dropdown && this.element.removeChild(this.dropdown.getElement());
     this.dropdown = null;
+    return hasFocus;
   }
 
   private buildDropdown() {
     this.sortComponents = this.getEnabledSortComponents();
-    this.clearDropdown();
+    const hasFocus = this.clearDropdown();
 
     if (!this.sortComponents.length) {
       return;
@@ -88,6 +90,7 @@ export class SortDropdown extends Component {
     );
     this.element.appendChild(this.dropdown.getElement());
     this.update();
+    hasFocus && this.dropdown.getElement().focus();
   }
 
   private getEnabledSortComponents() {
@@ -99,9 +102,7 @@ export class SortDropdown extends Component {
           return sortCmp;
         } else {
           this.logger.warn(
-            `Each Sort component inside a SortDropdown should have only one sort criteria. Skipping ${
-              sortCmp.options.caption
-            } in the SortDropdown.`
+            `Each Sort component inside a SortDropdown should have only one sort criteria. Skipping ${sortCmp.options.caption} in the SortDropdown.`
           );
           return;
         }
