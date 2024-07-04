@@ -1,15 +1,15 @@
-import { Request } from '@playwright/test';
+import {Request} from '@playwright/test';
 
 /**
  * Tranform a query string into a json key value object.
  * @param queryString
  */
 export function parseQueryString(queryString: string) {
-  const res = {};
-  new URLSearchParams(decodeURI(queryString)).forEach((value, name) => {
-    res[name] = value;
-  });
-  return res;
+    const res = {};
+    new URLSearchParams(decodeURI(queryString)).forEach((value, name) => {
+        res[name] = value;
+    });
+    return res;
 }
 
 export const searchUrlRegex = /\/rest\/search\/v2/;
@@ -25,7 +25,7 @@ export const facetSearchUrlRegex = /\/rest\/search\/v2\/facet/;
  * @param request The request to check.
  */
 export function isSearchRequest(request: Request): boolean {
-  return request.method() === 'POST' && searchUrlRegex.test(request.url());
+    return request.method() === 'POST' && searchUrlRegex.test(request.url());
 }
 
 /**
@@ -33,7 +33,7 @@ export function isSearchRequest(request: Request): boolean {
  * @param request The request to check.
  */
 export function isUaSearchEvent(request: Request): boolean {
-  return request.method() === 'POST' && analyticsSearchesUrlRegex.test(request.url());
+    return request.method() === 'POST' && analyticsSearchesUrlRegex.test(request.url());
 }
 
 /**
@@ -41,7 +41,7 @@ export function isUaSearchEvent(request: Request): boolean {
  * @param request The request to check.
  */
 export function isUaClickEvent(request: Request): boolean {
-  return request.method() === 'POST' && analyticsClickUrlRegex.test(request.url());
+    return request.method() === 'POST' && analyticsClickUrlRegex.test(request.url());
 }
 
 /**
@@ -49,7 +49,7 @@ export function isUaClickEvent(request: Request): boolean {
  * @param request The request to check.
  */
 export function isUaCustomEvent(request: Request): boolean {
-  return request.method() === 'POST' && analyticsCustomUrlRegex.test(request.url());
+    return request.method() === 'POST' && analyticsCustomUrlRegex.test(request.url());
 }
 
 /**
@@ -57,7 +57,7 @@ export function isUaCustomEvent(request: Request): boolean {
  * @param request The request to check.
  */
 export function isQuerySuggestRequest(request: Request): boolean {
-  return request.method() === 'POST' && querySuggestUrlRegex.test(request.url());
+    return request.method() === 'POST' && querySuggestUrlRegex.test(request.url());
 }
 
 /**
@@ -65,9 +65,9 @@ export function isQuerySuggestRequest(request: Request): boolean {
  * @param request The request to check.
  */
 export function isSearchInsightRequest(request: Request): boolean {
-  return request.method() === 'POST' && searchInsightUrlRegex.test(request.url());
+    return request.method() === 'POST' && searchInsightUrlRegex.test(request.url());
 }
 
-export function isFacetSearchRequest(request:Request):boolean{
-  return request.method() === 'POST' && facetSearchUrlRegex.test(request.url());
+export function isFacetSearchRequest(request: Request): boolean {
+    return request.method() === 'POST' && facetSearchUrlRegex.test(request.url());
 }
