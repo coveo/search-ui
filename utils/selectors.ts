@@ -46,3 +46,10 @@ export const SearchboxSelectors = (page: Page) =>
         searchboxInput: page.getByRole('combobox', {name: 'Search'}),
         searchboxIcon: page.getByRole('button', {name: 'Search', exact: true}),
     });
+
+export const SortSelectors = (page: Page) =>
+    Object.freeze({
+        sortRelevance: page.getByLabel('Sort results by Relevance'),
+        sortDateDescending: page.getByLabel('Sort by Date in descending'),
+        sortDateAscending: page.getByLabel('Sort by Date in ascending'),
+    });

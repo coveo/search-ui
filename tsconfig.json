@@ -13,14 +13,6 @@
         "moduleResolution": "Node",
         "sourceMap": true,
         "outDir": "./e2e",
-        "lib": [
-            "es2016",
-            "dom",
-            "ES2018.Intl",
-            "dom.Iterable",
-            "ES2021.String",
-            "ES5"
-            
-        ]
+        "lib": ["es2016", "dom", "ES2018.Intl", "dom.Iterable", "ES2021.String", "ES5"]
     }
 }
