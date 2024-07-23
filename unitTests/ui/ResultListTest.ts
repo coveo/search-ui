@@ -713,6 +713,17 @@ export function ResultListTest() {
         );
       });
 
+      it('fieldsToInclude should not contain duplicates', () => {
+        test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
+          fieldsToInclude: ['@objecttype', '@author', '@author']
+        });
+        const simulation = Simulate.query(test.env);
+        const { fieldsToInclude } = simulation.queryBuilder;
+
+        const uniqueFields = fieldsToInclude.filter((field, index, self) => self.indexOf(field) === index);
+        expect(fieldsToInclude.length).toEqual(uniqueFields.length);
+      });
+
       describe('layout', () => {
         it('should correctly listen to populateResultLayout', () => {
           test = Mock.optionsComponentSetup<ResultList, IResultListOptions>(ResultList, {
