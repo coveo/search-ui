@@ -15583,8 +15583,8 @@ exports.TimeSpan = TimeSpan;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.version = {
-    lib: '2.10118.0',
-    product: '2.10118.0',
+    lib: '2.10119.0',
+    product: '2.10119.0',
     supportedApiVersion: 2
 };
 
@@ -17828,7 +17828,7 @@ var QueryBuilder = /** @class */ (function () {
     };
     QueryBuilder.prototype.computeFieldsToInclude = function () {
         if (this.includeRequiredFields || this.fieldsToInclude != null) {
-            return this.requiredFields.concat(this.fieldsToInclude || []);
+            return _.uniq(this.requiredFields.concat(this.fieldsToInclude || []));
         }
         else {
             return null;
