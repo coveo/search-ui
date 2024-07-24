@@ -1,0 +1,16 @@
+diff --git a/node_modules/modal-box/bin/ModalBox.js b/node_modules/modal-box/bin/ModalBox.js
+index 1c0cb6f..541d41e 100644
+--- a/node_modules/modal-box/bin/ModalBox.js
++++ b/node_modules/modal-box/bin/ModalBox.js
+@@ -79,9 +79,11 @@ var Coveo;
+             modalBoxContent.appendChild(header);
+             modalBoxContent.appendChild(buildBody(options, content));
+             closeIcon.addEventListener('click', function () {
++                document.removeEventListener('keyup', closeOnEscape);
+                 close();
+             });
+             overlay.addEventListener('click', function () {
++                document.removeEventListener('keyup', closeOnEscape);
+                 close();
+             });
+             var closeOnEscape = function (e) {
