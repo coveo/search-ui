@@ -27,6 +27,20 @@ export const DynamicFacetSelectors = (page: Page, facetField = '@author') =>
         facetShowLess: page.locator(`.CoveoDynamicFacet[data-field="${facetField}"]`).getByLabel(/Show fewer/),
     });
 
+export const DynamicCategoryFacetSelects = (page: Page, facetField = '@geographicalhierarchy') =>
+    Object.freeze({
+        categoryFacet: page.locator(`.CoveoDynamicHierarchicalFacet[data-field="${facetField}"]`),
+        clearAllCategory: page.getByRole('button', {name: 'Arrow Down All Categories'}),
+        valueL1: page.locator(
+            'ul li .coveo-dynamic-hierarchical-facet-value:not(.coveo-with-space) .coveo-dynamic-hierarchical-facet-value-label',
+        ),
+        valueL2: page.locator(
+            'ul li .coveo-dynamic-hierarchical-facet-value.coveo-with-space .coveo-dynamic-hierarchical-facet-value-label',
+        ),
+        showMore: page.locator('.coveo-dynamic-hierarchical-facet-show-more'),
+        showLess: page.locator('.coveo-dynamic-hierarchical-facet-show-less'),
+    });
+
 export const PagerSelectors = (page: Page) =>
     Object.freeze({
         nextButton: page.getByLabel('Next'),
