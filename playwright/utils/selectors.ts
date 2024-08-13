@@ -59,6 +59,7 @@ export const SearchboxSelectors = (page: Page) =>
     Object.freeze({
         searchboxInput: page.getByRole('combobox', {name: 'Search'}),
         searchboxIcon: page.getByRole('button', {name: 'Search', exact: true}),
+        searchboxClearIcon: page.getByRole('button', {name: 'Clear'}),
     });
 
 export const SortSelectors = (page: Page) =>
