@@ -43,8 +43,8 @@ export const DynamicCategoryFacetSelects = (page: Page, facetField = '@geographi
 
 export const PagerSelectors = (page: Page) =>
     Object.freeze({
-        nextButton: page.getByLabel('Next'),
-        previousButton: page.getByLabel('Previous'),
+        nextButton: page.getByLabel('Next', { exact: true }),
+        previousButton: page.getByLabel('Previous', { exact: true }),
         currentPagerItem: page.locator('.coveo-pager-list-item.coveo-active'),
     });
 
