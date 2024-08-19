@@ -41,10 +41,66 @@ export const DynamicCategoryFacetSelects = (page: Page, facetField = '@geographi
         showLess: page.locator('.coveo-dynamic-hierarchical-facet-show-less'),
     });
 
+export const DynamicFacetRangeSelects = (page: Page, facetField = '@ytviewcount') =>
+    Object.freeze({
+        facetRange: page.locator(`.CoveoDynamicFacetRange[data-field="${facetField}"]`),
+        value: page.locator(`.CoveoDynamicFacetRange[data-field="${facetField}"] span.coveo-checkbox-span-label`),
+    });
+    
+export const FacetSelectors = (page: Page, facetField = '@objecttype') =>
+    Object.freeze({
+        facet: page.locator(`.CoveoFacet[data-field="${facetField}"]`),
+        facetCheckbox: page.locator(`.CoveoFacet[data-field="${facetField}"] ul li`).getByRole('button'),
+        facetValue: page.locator(`.CoveoFacet[data-field="${facetField}"] span.coveo-facet-value-caption`),
+        excludeFacetButton: page
+            .locator(`.CoveoFacet[data-field="${facetField}"] ul li`)
+            .getByLabel(/Exclusion filter on/),
+        facetSearchButton: page.locator(`.CoveoFacet[data-field="${facetField}"]`).getByTitle('Search', {exact: true}),
+        facetSearchCheckbox: page
+            .locator(`.CoveoFacet[data-field="${facetField}"]`)
+            .locator('ul.coveo-facet-search-results li div.coveo-facet-value-checkbox'),
+        facetSearchValue: page
+            .locator(`.CoveoFacet[data-field="${facetField}"]`)
+            .locator('ul.coveo-facet-search-results li span.coveo-facet-value-caption'),
+        facetShowMore: page.locator(`.CoveoFacet[data-field="${facetField}"]`).getByLabel(/Show more/),
+        facetShowLess: page.locator(`.CoveoFacet[data-field="${facetField}"]`).getByLabel(/Show fewer/),
+        settingButton: page.locator(`.CoveoFacet[data-field="${facetField}"]`).getByLabel('Settings'),
+        sortByLabelButton: page.getByLabel('Label'),
+        colapseButton: page
+            .locator(`.CoveoFacet[data-field="${facetField}"] div`)
+            .getByLabel(/Collapse/)
+            .first(),
+        expandButton: page
+            .locator(`.CoveoFacet[data-field="${facetField}"] div`)
+            .getByLabel(/Expand/)
+            .first(),
+    });
+
+export const FacetRangSelectors = (page: Page, facetField = '@indexeddate') =>
+    Object.freeze({
+        facetRange: page.locator(`.CoveoFacetRange[data-field="${facetField}"]`),
+        facetRangeCheckbox: page.locator(`.CoveoFacetRange[data-field="${facetField}"] ul li`).getByRole('button'),
+        facetRangeValue: page.locator(`.CoveoFacetRange[data-field="${facetField}"] span.coveo-facet-value-caption`),
+    });
+
+export const FacetSliderlectors = (page: Page, facetField = '@ytviewcount') =>
+    Object.freeze({
+        facetSlider: page.locator(`.CoveoFacetSlider[data-field="${facetField}"]`),
+        startSlider: page
+            .locator(`.CoveoFacetSlider[data-field="${facetField}"]`)
+            .locator('.coveo-slider-button')
+            .first(),
+        endSlider: page.locator(`.CoveoFacetSlider[data-field="${facetField}"]`).locator('.coveo-slider-button').last(),
+        sliderBar: page
+            .locator(`.CoveoFacetSlider[data-field="${facetField}"]`)
+            .locator('.coveo-slider-line.coveo-active'),
+        sliderCaption: page.locator(`.CoveoFacetSlider[data-field="${facetField}"]`).locator('.coveo-slider-caption'),
+    });
+
 export const PagerSelectors = (page: Page) =>
     Object.freeze({
-        nextButton: page.getByLabel('Next', { exact: true }),
-        previousButton: page.getByLabel('Previous', { exact: true }),
+        nextButton: page.getByLabel('Next', {exact: true}),
+        previousButton: page.getByLabel('Previous', {exact: true}),
         currentPagerItem: page.locator('.coveo-pager-list-item.coveo-active'),
     });
 
