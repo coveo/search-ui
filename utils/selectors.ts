@@ -46,7 +46,7 @@ export const DynamicFacetRangeSelects = (page: Page, facetField = '@ytviewcount'
         facetRange: page.locator(`.CoveoDynamicFacetRange[data-field="${facetField}"]`),
         value: page.locator(`.CoveoDynamicFacetRange[data-field="${facetField}"] span.coveo-checkbox-span-label`),
     });
-    
+
 export const FacetSelectors = (page: Page, facetField = '@objecttype') =>
     Object.freeze({
         facet: page.locator(`.CoveoFacet[data-field="${facetField}"]`),
@@ -123,4 +123,12 @@ export const SortSelectors = (page: Page) =>
         sortRelevance: page.getByLabel('Sort results by Relevance'),
         sortDateDescending: page.getByLabel('Sort by Date in descending'),
         sortDateAscending: page.getByLabel('Sort by Date in ascending'),
+    });
+
+export const QuickviewSelectors = (page: Page) =>
+    Object.freeze({
+        quickviewIcon: page.locator('.CoveoQuickview'),
+        quickviewBackdrop: page.locator('.coveo-modal-backdrop'),
+        quickviewClose: page.getByRole('button', {name: 'Close'}),
+        quickviewResultLink: page.locator('a.coveo-quickview-pop-up-reminder.CoveoResultLink'),
     });
