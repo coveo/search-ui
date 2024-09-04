@@ -112,6 +112,9 @@ export interface IFacetOptions extends IResponsiveComponentOptions, IDependsOnCo
 }
 
 /**
+ * **Note:**
+ * > We recommend using the simpler and more powerful [`DynamicFacet`]{@link DynamicFacet} component instead.
+ *
  * The `Facet` component displays a *facet* of the results for the current query. A facet is a list of values for a
  * certain field occurring in the results, ordered using a configurable criteria (e.g., number of occurrences).
  *
