@@ -1,7 +1,7 @@
-import {test} from '@playwright/test';
+import {expect, test} from '@playwright/test';
 import {pageURL} from '../utils/utils';
 import {isUaSearchEvent} from '../utils/requests';
-import {SearchboxSelectors} from '../utils/selectors';
+import {FacetSelectors, SearchboxSelectors} from '../utils/selectors';
 
 test.describe('Searchbox search', () => {
     const query = 'test';
@@ -95,5 +95,29 @@ test.describe('Search as you type', () => {
             await uaRequestSearchAsYouType;
             await page.waitForLoadState('networkidle');
         }
+    });
+});
+
+test.describe('Nested query search', () => {
+    test('Nested query search', async ({page}) => {
+        const query =
+            '@objecttype="opportunity" [[@sfaccountid] @sfaccountname="Bank of America Corporation." @year=2017]';
+        await page.goto(pageURL('TestNextedQuery'));
+        await SearchboxSelectors(page).searchboxInput.first().fill(query);
+        const uaRequestSearchQuery = page.waitForRequest(
+            (request) =>
+                isUaSearchEvent(request) &&
+                request.postDataJSON()[0]?.actionCause === 'searchboxSubmit' &&
+                request.postDataJSON()[0]?.actionType === 'search box' &&
+                request.postDataJSON()[0]?.queryText === query,
+            {timeout: 5_000},
+        );
+        await SearchboxSelectors(page).searchboxIcon.click();
+        await uaRequestSearchQuery;
+        expect(await FacetSelectors(page, '@objecttype').facetValue.first().textContent()).toEqual('Opportunity');
+        expect(await FacetSelectors(page, '@sfaccountname').facetValue.first().textContent()).toEqual(
+            'Bank of America Corporation.',
+        );
+        expect(await FacetSelectors(page, '@year').facetValue.first().textContent()).toEqual('2017');
     });
 });
