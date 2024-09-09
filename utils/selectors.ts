@@ -132,3 +132,28 @@ export const QuickviewSelectors = (page: Page) =>
         quickviewClose: page.getByRole('button', {name: 'Close'}),
         quickviewResultLink: page.locator('a.coveo-quickview-pop-up-reminder.CoveoResultLink'),
     });
+
+export const GeneralSettingSelectors = (page: Page) =>
+    Object.freeze({
+        generalSettingButton: page.locator('.CoveoSettings '),
+        preferecesOption: page.getByLabel('Preferences', {exact: true}),
+        createFitleringButton: page.getByRole('button', {name: 'Create'}),
+        fitleringCaptionInput: page
+            .locator('div')
+            .filter({hasText: /^Caption$/})
+            .getByRole('textbox'),
+        filteringExpressionInput: page
+            .locator('div')
+            .filter({hasText: /^Expression$/})
+            .getByRole('textbox'),
+        filteringSaveButton: page.getByRole('button', {name: 'Save'}),
+        filteringCloseButton: page.getByRole('button', {name: 'Close'}),
+    });
+
+export const OmniAnalyticsSelectors = (page: Page) =>
+    Object.freeze({
+        suggestionItem: page.locator('.magic-box-suggestion'),
+        facetSuggestionItem: page.locator('ul.coveo-omnibox-selectable li .coveo-facet-value-caption'),
+        checkboxOmnifacet: page.locator('ul.coveo-omnibox-selectable .coveo-facet-value-checkbox'),
+        excludeButton: page.locator('ul.coveo-omnibox-selectable .coveo-facet-value-exclude'),
+    });
