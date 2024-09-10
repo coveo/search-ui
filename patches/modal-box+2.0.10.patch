@@ -1,16 +1,53 @@
 diff --git a/node_modules/modal-box/bin/ModalBox.js b/node_modules/modal-box/bin/ModalBox.js
-index 1c0cb6f..541d41e 100644
+index 1c0cb6f..cbb9bd6 100644
 --- a/node_modules/modal-box/bin/ModalBox.js
 +++ b/node_modules/modal-box/bin/ModalBox.js
-@@ -79,9 +79,11 @@ var Coveo;
-             modalBoxContent.appendChild(header);
-             modalBoxContent.appendChild(buildBody(options, content));
-             closeIcon.addEventListener('click', function () {
-+                document.removeEventListener('keyup', closeOnEscape);
-                 close();
-             });
-             overlay.addEventListener('click', function () {
-+                document.removeEventListener('keyup', closeOnEscape);
-                 close();
-             });
+@@ -71,6 +71,7 @@ var Coveo;
+                     if (overlay.parentNode) {
+                         overlay.parentNode.removeChild(overlay);
+                     }
++                    document.removeEventListener('keyup', closeOnEscape);
+                     return true;
+                 }
+                 return false;
+@@ -87,7 +88,6 @@ var Coveo;
              var closeOnEscape = function (e) {
+                 if (e.keyCode == 27 && body.className.indexOf('coveo-modal-opened') != -1) {
+                     close();
+-                    document.removeEventListener('keyup', closeOnEscape);
+                 }
+             };
+             document.addEventListener('keyup', closeOnEscape);
+diff --git a/node_modules/modal-box/bin/ModalBox.min.js b/node_modules/modal-box/bin/ModalBox.min.js
+index 8f75a5b..2528458 100644
+--- a/node_modules/modal-box/bin/ModalBox.min.js
++++ b/node_modules/modal-box/bin/ModalBox.min.js
+@@ -1 +1 @@
+-var Coveo;!function(e){var o;!function(e){function o(e,o){void 0===o&&(o={});var n=o.body||document.body;n.className?n.className.indexOf("coveo-modal-opened")==-1&&(n.className+=" coveo-modal-opened"):n.className="coveo-modal-opened";var s=document.createElement("div");s.className="coveo-modal-container coveo-opened ","small"==o.sizeMod&&(s.className+=" coveo-mod-small"),"big"==o.sizeMod&&(s.className+=" coveo-mod-big"),setTimeout(function(){s.className+=" coveo-mod-fade-in-scale"},0),n.appendChild(s),o.fullscreen===!0&&(s.className+=" coveo-fullscreen");var r=document.createElement("div");r.className="coveo-modal-backdrop coveo-modal-transparent",n.appendChild(r),setTimeout(function(){c(r,"coveo-modal-transparent")},0);var i=document.createElement("div");i.className="coveo-modal-content",s.appendChild(i);var m=function(e,a){void 0===e&&(e=0),void 0===a&&(a=!1);var t=null==o.validation||o.validation(e);if(t!==!1||a){s.parentElement&&s.parentElement.removeChild(s);var l=d.indexOf(m);return l>=0&&d.splice(l,1),null==n.querySelector(".coveo-modal-container")&&c(n,"coveo-modal-opened"),r.parentNode&&r.parentNode.removeChild(r),!0}return!1},v=a(o,m),u=v.header,p=v.closeIcon;i.appendChild(u),i.appendChild(t(o,e)),p.addEventListener("click",function(){m()}),r.addEventListener("click",function(){m()});var N=function(e){27==e.keyCode&&n.className.indexOf("coveo-modal-opened")!=-1&&(m(),document.removeEventListener("keyup",N))};document.addEventListener("keyup",N);var f,h=function(e,o){var n=document.createElement("button");n.className="coveo-btn",n.textContent=e,n.addEventListener("click",function(){return m(o)}),f.appendChild(n)};return null!=o.buttons&&(f=document.createElement("footer"),f.className="coveo-modal-footer",i.appendChild(f),o.buttons&l.OK&&h("Ok",l.OK),o.buttons&l.APPLY&&h("Apply",l.APPLY),o.buttons&l.YES&&h("Yes",l.YES),o.buttons&l.NO&&h("No",l.NO),o.buttons&l.CANCEL&&h("Cancel",l.CANCEL)),d.push(m),null!=o.className&&(s.className+=" "+o.className),{modalBox:s,wrapper:i,buttons:f,content:i,overlay:r,close:m}}function n(e){void 0===e&&(e=!1);for(var o=0;d.length>o;){var n=d[o](0,e);n||o++}}function a(e,o){var n=document.createElement("header");if(n.className="coveo-modal-header",null!=e.title){var a=document.createElement("h1");n.appendChild(a),e.title instanceof HTMLElement?a.appendChild(e.title):a.innerHTML=e.title,e.titleClose===!0&&a.addEventListener("click",function(){return o()})}var t=document.createElement("span");t.className="coveo-small-close",n.appendChild(t);var c='<svg viewBox="0 0 22 22" class="coveo-icon coveo-fill-pure-white">\n                    <g transform="matrix(.7071-.7071.7071.7071-3.142 11)">\n                        <path d="m9-3.4h2v26.9h-2z"></path>\n                        <path d="m-3.4 9h26.9v2h-26.9z"></path>\n                    </g>\n                </svg>';return t.innerHTML=c,{header:n,closeIcon:t}}function t(e,o){var n=document.createElement("div");return n.className="coveo-modal-body coveo-mod-header-paddding coveo-mod-form-top-bottom-padding",n.appendChild(o),n}function c(e,o){e.className=e.className.replace(new RegExp("(^|\\s)"+o+"(\\s|\\b)","g"),"$1")}!function(e){e[e.OK=1]="OK",e[e.APPLY=2]="APPLY",e[e.YES=4]="YES",e[e.NO=8]="NO",e[e.CANCEL=16]="CANCEL"}(e.BUTTON||(e.BUTTON={}));var l=e.BUTTON,d=[];e.open=o,e.close=n}(o=e.ModalBox||(e.ModalBox={}))}(Coveo||(Coveo={}));
+\ No newline at end of file
++var Coveo;!function(e){!function(e){function c(e,l){e.className=e.className.replace(new RegExp("(^|\\s)"+l+"(\\s|\\b)","g"),"$1")}!function(e){e[e.OK=1]="OK",e[e.APPLY=2]="APPLY",e[e.YES=4]="YES",e[e.NO=8]="NO",e[e.CANCEL=16]="CANCEL"}(e.BUTTON||(e.BUTTON={}));var l=e.BUTTON,d=[];e.open=function o(e,s){void 0===s&&(s={});var r=s.body||document.body;r.className?-1==r.className.indexOf("coveo-modal-opened")&&(r.className+=" coveo-modal-opened"):r.className="coveo-modal-opened";var i=document.createElement("div");i.className="coveo-modal-container coveo-opened ","small"==s.sizeMod&&(i.className+=" coveo-mod-small"),"big"==s.sizeMod&&(i.className+=" coveo-mod-big"),setTimeout((function(){i.className+=" coveo-mod-fade-in-scale"}),0),r.appendChild(i),!0===s.fullscreen&&(i.className+=" coveo-fullscreen");var v=document.createElement("div");v.className="coveo-modal-backdrop coveo-modal-transparent",r.appendChild(v),setTimeout((function(){c(v,"coveo-modal-transparent")}),0);var u=document.createElement("div");u.className="coveo-modal-content",i.appendChild(u);var m=function(e,l){if(void 0===e&&(e=0),void 0===l&&(l=!1),!1!==(null==s.validation||s.validation(e))||l){i.parentElement&&i.parentElement.removeChild(i);var u=d.indexOf(m);return document.removeEventListener("keyup",N),u>=0&&d.splice(u,1),null==r.querySelector(".coveo-modal-container")&&c(r,"coveo-modal-opened"),v.parentNode&&v.parentNode.removeChild(v),!0}return!1},p=function a(e,l){var d=document.createElement("header");if(d.className="coveo-modal-header",null!=e.title){var s=document.createElement("h1");d.appendChild(s),e.title instanceof HTMLElement?s.appendChild(e.title):s.innerHTML=e.title,!0===e.titleClose&&s.addEventListener("click",(function(){return l()}))}var r=document.createElement("span");r.className="coveo-small-close",d.appendChild(r);var i='<svg viewBox="0 0 22 22" class="coveo-icon coveo-fill-pure-white">\n                    <g transform="matrix(.7071-.7071.7071.7071-3.142 11)">\n                        <path d="m9-3.4h2v26.9h-2z"></path>\n                        <path d="m-3.4 9h26.9v2h-26.9z"></path>\n                    </g>\n                </svg>';return r.innerHTML=i,{header:d,closeIcon:r}}(s,m),f=p.header,C=p.closeIcon;u.appendChild(f),u.appendChild(function t(e,l){var d=document.createElement("div");return d.className="coveo-modal-body coveo-mod-header-paddding coveo-mod-form-top-bottom-padding",d.appendChild(l),d}(0,e)),C.addEventListener("click",(function(){m()})),v.addEventListener("click",(function(){m()}));var N=function(e){27==e.keyCode&&-1!=r.className.indexOf("coveo-modal-opened")&&m()};document.addEventListener("keyup",N);var E,h=function(e,l){var d=document.createElement("button");d.className="coveo-btn",d.textContent=e,d.addEventListener("click",(function(){return m(l)})),E.appendChild(d)};return null!=s.buttons&&((E=document.createElement("footer")).className="coveo-modal-footer",u.appendChild(E),s.buttons&l.OK&&h("Ok",l.OK),s.buttons&l.APPLY&&h("Apply",l.APPLY),s.buttons&l.YES&&h("Yes",l.YES),s.buttons&l.NO&&h("No",l.NO),s.buttons&l.CANCEL&&h("Cancel",l.CANCEL)),d.push(m),null!=s.className&&(i.className+=" "+s.className),{modalBox:i,wrapper:u,buttons:E,content:u,overlay:v,close:m}},e.close=function n(e){void 0===e&&(e=!1);for(var l=0;d.length>l;){d[l](0,e)||l++}}}(e.ModalBox||(e.ModalBox={}))}(Coveo||(Coveo={}));
+\ No newline at end of file
+diff --git a/node_modules/modal-box/src/ModalBox.ts b/node_modules/modal-box/src/ModalBox.ts
+index fc8e24e..93873b9 100644
+--- a/node_modules/modal-box/src/ModalBox.ts
++++ b/node_modules/modal-box/src/ModalBox.ts
+@@ -150,6 +150,7 @@ module Coveo.ModalBox {
+         if (overlay.parentNode) {
+           overlay.parentNode.removeChild(overlay);
+         }
++        document.removeEventListener('keyup', closeOnEscape);
+         return true;
+       }
+       return false;
+@@ -169,10 +170,9 @@ module Coveo.ModalBox {
+       close();
+     });
+ 
+-    let closeOnEscape = (e) => {
++    var closeOnEscape = (e) => {
+       if (e.keyCode == 27 && body.className.indexOf('coveo-modal-opened') != -1) {
+         close();
+-        document.removeEventListener('keyup', closeOnEscape);
+       }
+     };
+ 
