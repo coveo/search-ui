@@ -21,7 +21,10 @@ on:
 
 jobs:
   test-job:
-    runs-on: [ "coveo, arm64, linux, eks" ]
+    # Madama la Pievre blocks Coveo hosted runners from Private repos. We might neet to get it whitelisted
+    # https://github.com/coveo-platform/github-runners/blob/6a6b1a840f2ca9917531aa81b3ff67ba49683798/la-pieuvre/la_pieuvre/validations.py#L10
+    # runs-on: [ "coveo, arm64, linux, eks" ]
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy JSUI beta version on Netlify
         run: curl --request POST https://api.netlify.com/build_hooks/${{ secrets.NETLIFY_BUILD_HOOK_ID }}
