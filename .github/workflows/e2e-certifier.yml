@@ -21,7 +21,7 @@ on:
 
 jobs:
   test-job:
-    runs-on: [ "coveo env=${{ inputs.environment }} region=${{ inputs.region }}", arm64, linux, eks ]
+    runs-on: [ "coveo, arm64, linux, eks" ]
     steps:
       - name: Deploy JSUI beta version on Netlify
         run: curl --request POST https://api.netlify.com/build_hooks/${{ secrets.NETLIFY_BUILD_HOOK_ID }}
