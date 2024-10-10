@@ -5,8 +5,10 @@ on:
     inputs:
       environment:
         description: The environment in which to run the job
+        default: dev
       region:
         description: The region in which to run the job
+        default: us-east-1
       package:
         description: The package name
       job:
