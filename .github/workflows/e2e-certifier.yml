@@ -1,0 +1,44 @@
+name: 'End-to-end certifier'
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: The environment in which to run the job
+        default: dev
+      region:
+        description: The region in which to run the job
+        default: us-east-1
+      package:
+        description: The package name
+      job:
+        description: The name of the job (as defined in the deployment config)
+
+  # TEMPORARY: Remove this trigger before merging
+  push:
+    branches:
+      - JSUI-3538-add-e2e-certifier
+
+jobs:
+  test-job:
+    # Madama la Pievre blocks Coveo hosted runners from Private repos. We might neet to get it whitelisted
+    # https://github.com/coveo-platform/github-runners/blob/6a6b1a840f2ca9917531aa81b3ff67ba49683798/la-pieuvre/la_pieuvre/validations.py#L10
+    # runs-on: [ "coveo, arm64, linux, eks" ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy JSUI beta version on Netlify
+        run: curl --request POST https://api.netlify.com/build_hooks/${{ secrets.NETLIFY_BUILD_HOOK_ID }}
+      
+      - name: Pull tests from the test repository
+        run: git clone https://github.com/coveo/sfint-testauto.git
+      
+      - name: Install dependencies
+        run: |
+          cd sfint-testauto/playwright-jsui
+          npm install
+          npx playwright install
+      
+      - name: Run tests
+        run: |
+          cd sfint-testauto/playwright-jsui
+          npx playwright test
