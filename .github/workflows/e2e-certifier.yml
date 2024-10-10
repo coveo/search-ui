@@ -1,0 +1,34 @@
+name: 'End-to-end certifier'
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: The environment in which to run the job
+      region:
+        description: The region in which to run the job
+      package:
+        description: The package name
+      job:
+        description: The name of the job (as defined in the deployment config)
+
+jobs:
+  test-job:
+    runs-on: [ "coveo env=${{ inputs.environment }} region=${{ inputs.region }}", arm64, linux, eks ]
+    steps:
+      - name: Deploy JSUI beta version on Netlify
+        run: curl --request POST https://api.netlify.com/build_hooks/${{ secrets.NETLIFY_BUILD_HOOK_ID }}
+      
+      - name: Pull tests from the test repository
+        run: git clone https://github.com/coveo/sfint-testauto.git
+      
+      - name: Install dependencies
+        run: |
+          cd sfint-testauto/playwright-jsui
+          npm install
+          npx playwright install
+      
+      - name: Run tests
+        run: |
+          cd sfint-testauto/playwright-jsui
+          npx playwright test
