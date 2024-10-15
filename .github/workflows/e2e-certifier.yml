@@ -21,7 +21,7 @@ on:
 
 jobs:
   test-job:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Deploy JSUI beta version on Netlify
         run: curl --request POST https://api.netlify.com/build_hooks/${{ secrets.NETLIFY_BUILD_HOOK_ID }}
@@ -31,11 +31,6 @@ jobs:
 
       - name: Install test dependencies
         run: |
-          # sudo apt-get update
-          # sudo apt-get install -y software-properties-common
-          # sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse"
-          sudo apt-get update
-          sudo apt-get install -y libasound2 libicu70 libffi7 libx264-163
           cd ${{ github.workspace }}/playwright
           npm install
           npx playwright install --with-deps
