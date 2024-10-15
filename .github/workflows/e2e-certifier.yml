@@ -28,17 +28,13 @@ jobs:
 
       - name: Install test dependencies
         working-directory: ${{ github.workspace }}/playwright
-        run: |
-          npm install
-          npx playwright install --with-deps
+        run: npm install && npx playwright install --with-deps
 
       - name: Validate JSUI version
         working-directory: ${{ github.workspace }}/playwright
         env:
           JSUI_VERSION: ${{ inputs.JSUI_VERSION }}
-        run: |
-          echo "Expecting deployed JSUI version to be ${{ inputs.JSUI_VERSION }}"
-          npm run validate-jsui-version
+        run: npm run validate-jsui-version
 
       - name: Run tests
         working-directory: ${{ github.workspace }}/playwright
