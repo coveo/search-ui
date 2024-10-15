@@ -14,11 +14,6 @@ on:
       job:
         description: The name of the job (as defined in the deployment config)
 
-  # TEMPORARY: Remove this trigger before merging
-  push:
-    branches:
-      - JSUI-3538-add-e2e-certifier
-
 jobs:
   test-job:
     runs-on: ubuntu-24.04
