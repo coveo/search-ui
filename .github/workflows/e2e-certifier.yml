@@ -1,0 +1,35 @@
+name: 'End-to-end certifier'
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: The environment in which to run the job
+        default: dev
+      region:
+        description: The region in which to run the job
+        default: us-east-1
+      package:
+        description: The package name
+      job:
+        description: The name of the job (as defined in the deployment config)
+
+jobs:
+  test-job:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Deploy JSUI beta version on Netlify
+        run: curl --request POST https://api.netlify.com/build_hooks/${{ secrets.NETLIFY_BUILD_HOOK_ID }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install test dependencies
+        working-directory: ${{ github.workspace }}/playwright
+        run: |
+          npm install
+          npx playwright install --with-deps
+      
+      - name: Run tests
+        working-directory: ${{ github.workspace }}/playwright
+        run: npx playwright test
