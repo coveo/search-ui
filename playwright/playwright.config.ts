@@ -37,7 +37,13 @@ export default defineConfig({
     /* Configure projects for major browsers */
     projects: [
         {
+            name: 'validate-jsui-version',
+            testMatch: 'validateJsuiVersion.ts',
+        },
+
+        {
             name: 'chromium',
+            testIgnore: 'validateJsuiVersion.ts',
             use: {
                 ...devices['Desktop Chrome'],
                 headless: true,
@@ -46,6 +52,7 @@ export default defineConfig({
 
         {
             name: 'firefox',
+            testIgnore: 'validateJsuiVersion.ts',
             use: {
                 ...devices['Desktop Firefox'],
                 headless: true,
@@ -54,6 +61,7 @@ export default defineConfig({
 
         {
             name: 'webkit',
+            testIgnore: 'validateJsuiVersion.ts',
             use: {
                 ...devices['Desktop Safari'],
                 headless: true,

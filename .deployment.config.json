@@ -71,6 +71,17 @@
       },
       {
         "system_certifier": "snyk-code"
+      },
+      {
+        "github": {
+          "name": "e2e-certifier",
+          "workflow_repository": "coveo/search-ui",
+          "workflow_file": "e2e-certifier.yml",
+          "extra_parameters": {
+            "JSUI_VERSION": "$[MAJOR_MINOR_VERSION].$[PATCH_VERSION]"
+          },
+          "required": false  
+        }
       }
     ]
   },
