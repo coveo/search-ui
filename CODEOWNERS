@@ -9,4 +9,4 @@ package.json @ghost
 yarn.lock @ghost
 
 # Owners for the Playwright end-to-end test directory
-playwright/ @coveo-platform/qa
+playwright/ @coveo/search-qa
