@@ -30,12 +30,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install test dependencies
+        working-directory: ${{ github.workspace }}/playwright
         run: |
-          cd ${{ github.workspace }}/playwright
           npm install
           npx playwright install --with-deps
       
       - name: Run tests
-        run: |
-          cd ${{ github.workspace }}/playwright
-          npx playwright test
+        working-directory: ${{ github.workspace }}/playwright
+        run: npx playwright test
