@@ -21,7 +21,7 @@ on:
 
 jobs:
   test-job:
-    runs-on: ubuntu--latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Deploy JSUI beta version on Netlify
         run: curl --request POST https://api.netlify.com/build_hooks/${{ secrets.NETLIFY_BUILD_HOOK_ID }}
