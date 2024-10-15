@@ -17,7 +17,7 @@ on:
         description: The version of JSUI to test
 
 jobs:
-  test-job:
+  e2e-certifier:
     runs-on: ubuntu-24.04
     steps:
       - name: Deploy JSUI beta version on Netlify
@@ -38,6 +38,4 @@ jobs:
 
       - name: Run tests
         working-directory: ${{ github.workspace }}/playwright
-        env:
-          JSUI_VERSION: ${{ inputs.JSUI_VERSION }}
         run: npm test
