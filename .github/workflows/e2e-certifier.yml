@@ -13,6 +13,8 @@ on:
         description: The package name
       job:
         description: The name of the job (as defined in the deployment config)
+      JSUI_VERSION:
+        description: The version of JSUI to test
 
 jobs:
   test-job:
@@ -29,7 +31,17 @@ jobs:
         run: |
           npm install
           npx playwright install --with-deps
-      
+
+      - name: Validate JSUI version
+        working-directory: ${{ github.workspace }}/playwright
+        env:
+          JSUI_VERSION: ${{ inputs.JSUI_VERSION }}
+        run: |
+          echo "Expecting deployed JSUI version to be ${{ inputs.JSUI_VERSION }}"
+          npm run validate-jsui-version
+
       - name: Run tests
         working-directory: ${{ github.workspace }}/playwright
-        run: npx playwright test
+        env:
+          JSUI_VERSION: ${{ inputs.JSUI_VERSION }}
+        run: npm test
