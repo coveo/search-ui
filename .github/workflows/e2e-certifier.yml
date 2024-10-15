@@ -25,14 +25,17 @@ jobs:
     steps:
       - name: Deploy JSUI beta version on Netlify
         run: curl --request POST https://api.netlify.com/build_hooks/${{ secrets.NETLIFY_BUILD_HOOK_ID }}
-      
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Install test dependencies
         run: |
-          cd playwright
+          cd ${{ github.workspace }}/playwright
           npm install
           npx playwright install
       
       - name: Run tests
         run: |
-          cd playwright
+          cd ${{ github.workspace }}/playwright
           npx playwright test
