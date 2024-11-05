@@ -17,7 +17,7 @@ export const AccessibilityQuickview = () => {
       quickviewElement = $$('div', {
         className: Component.computeCssClassName(Quickview)
       });
-      addFieldEqualFilter('@author', ['Marie']);
+      addFieldEqualFilter('@filetype', ['txt']);
 
       testResultElement(quickviewElement.el);
       await afterQuerySuccess();
