@@ -1,0 +1,36 @@
+name: CloudFront Invalidator
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches:
+      - main
+  #i dont see the value of making this one manual
+
+jobs:
+  cloud-front-validation:
+    runs-on: [coveo, linux, x64, eks]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Verify Node.js installation
+        run: |
+          node --version
+          npm --version
+
+      - name: Run Invalidation
+        env:
+          CloudfrontCacheInvalidation: ${{ secrets.CLOUDFRONT_INVALIDATION }}
+        shell: bash
+        run: |
+          npm i -g npm@latest
+          node invalidate.cloudfront.js
+  

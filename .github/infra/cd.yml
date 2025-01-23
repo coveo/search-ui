@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    runs-on: [coveo, x64, ec2] # TODO: change this to coveo personnalized runner
+    runs-on: [coveo, linux, x64, eks] # TODO: change this to coveo personnalized runner
 
     steps:
       - name: Checkout repository
@@ -71,7 +71,7 @@ jobs:
 
       - name: Run DocSiteMap
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets. }}
         shell: bash
         run: |
           npm run docsitemap
