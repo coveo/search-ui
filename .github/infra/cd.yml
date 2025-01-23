@@ -1,18 +1,28 @@
 name: CD migrated from Jenkins file
 
 on:
+  push:
+    branches: ['main']
+    tags:
+      - '*'
+  pull_request:
+    branches: ['main']
   workflow_dispatch:
     inputs:
       environment:
         description: The environment in which to run the job
         default: dev
+        required: false
       region:
         description: The region in which to run the job
         default: us-east-1
+        required: false
       package:
         description: The package name
+        required: false
       job:
         description: The name of the job (as defined in the deployment config)
+        required: false
 
 jobs:
   build:
@@ -37,6 +47,10 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
       - name: Verify Python installation
         run: |
           python --version
@@ -50,24 +64,30 @@ jobs:
         run: |
           npm run injectVersion
           npm run build
-          nom run minimize
+          npm run minimize
 
       - name: Install Chrome
         shell: bash
         run: |
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
           echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list
-          apt-get update
-          apt-get install -y google-chrome-stable
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
           google-chrome --version
 
-      - name: Run tests
+      - name: Run tests (except accessibility-tests)
         #on tag -> run accessibilityTests
         run: |
           npm run unitTests
           npm run validateTypeDefinitions
-          if [[ -z "$TAG"  ]] &&
-          npm run accessibilityTests
+
+      - name: Run accessibility tests (if tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            npm run accessibilityTests
+          fi
 
       - name: Run DocSiteMap
         env:
@@ -91,9 +111,11 @@ jobs:
         shell: bash
         run: |
           node ./build/npm.deploy.js
-          node ./build/deployment-pipeline.deploy.js || true
+          node ./build/deployment-pipeline.deploy.js
 
   slack-notifications:
+    runs-on:
+    needs: build
     steps:
       - name: Notify
         uses: coveo-platform/actions/slack-notify@main
