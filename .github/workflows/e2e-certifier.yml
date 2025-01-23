@@ -13,8 +13,9 @@ on:
         description: The package name
       job:
         description: The name of the job (as defined in the deployment config)
-      JSUI_VERSION:
-        description: The version of JSUI to test
+      extra:
+        description: Extra parameters passed from the deployment config
+        default: { "JSUI_VERSION": "" }
 
 jobs:
   e2e-certifier:

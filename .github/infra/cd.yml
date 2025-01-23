@@ -1,0 +1,103 @@
+name: CD migrated from Jenkins file
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: The environment in which to run the job
+        default: dev
+      region:
+        description: The region in which to run the job
+        default: us-east-1
+      package:
+        description: The package name
+      job:
+        description: The name of the job (as defined in the deployment config)
+
+jobs:
+  build:
+    runs-on: [coveo, x64, ec2] # TODO: change this to coveo personnalized runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Verify Node.js installation
+        run: |
+          node --version
+          npm --version
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Verify Python installation
+        run: |
+          python --version
+          pip --version
+
+      - name: Install npm
+        run: npm install
+
+      - name: Build package
+        shell: bash
+        run: |
+          npm run injectVersion
+          npm run build
+          nom run minimize
+
+      - name: Install Chrome
+        shell: bash
+        run: |
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+          echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list
+          apt-get update
+          apt-get install -y google-chrome-stable
+          google-chrome --version
+
+      - name: Run tests
+        #on tag -> run accessibilityTests
+        run: |
+          npm run unitTests
+          npm run validateTypeDefinitions
+          if [[ -z "$TAG"  ]] &&
+          npm run accessibilityTests
+
+      - name: Run DocSiteMap
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          npm run docsitemap
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+        shell: bash
+        run: |
+          npm run zipForGitReleases
+          node ./build/github-release.deploy.js
+
+      - name: Deploy
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        shell: bash
+        run: |
+          node ./build/npm.deploy.js
+          node ./build/deployment-pipeline.deploy.js || true
+
+  slack-notifications:
+    steps:
+      - name: Notify
+        uses: coveo-platform/actions/slack-notify@main
+        with:
+          slack-channel-id: searchuibuilds
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+
