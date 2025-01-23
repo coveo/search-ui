@@ -122,4 +122,3 @@ jobs:
         with:
           slack-channel-id: searchuibuilds
           slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
-
