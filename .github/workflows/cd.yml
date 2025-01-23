@@ -113,12 +113,12 @@ jobs:
           node ./build/npm.deploy.js
           node ./build/deployment-pipeline.deploy.js
 
-  slack-notifications:
-    needs: build
-    steps:
-      - name: Notify
-        uses: coveo-platform/actions/slack-notify@main
-        with:
-          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
-          channel-id: 'searchuibuilds'
-          status: 'up'
+#  slack-notifications:
+#    needs: build
+#    steps:
+#      - name: Notify
+#        uses: coveo-platform/actions/slack-notify@main
+#        with:
+#          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+#          channel-id: 'searchuibuilds'
+#          status: 'up'
