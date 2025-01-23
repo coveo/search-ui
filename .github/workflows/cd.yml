@@ -1,32 +1,13 @@
 name: CD migrated from Jenkins file
 
 on:
-  push:
-    branches: ['main', 'master']
-    tags:
-      - '*'
-  pull_request:
-    branches: ['main', 'master']
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: The environment in which to run the job
-        default: dev
-        required: false
-      region:
-        description: The region in which to run the job
-        default: us-east-1
-        required: false
-      package:
-        description: The package name
-        required: false
-      job:
-        description: The name of the job (as defined in the deployment config)
-        required: false
+  repository_dispatch:
+    types: [deploy]
+
 
 jobs:
-  build:
-    runs-on: ['coveo', linux, x64, ec2]
+  send-to-pipeline:
+    runs-on: [coveo, linux, x64, ec2]
 
     steps:
       - name: Checkout repository
