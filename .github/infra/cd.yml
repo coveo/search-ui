@@ -2,11 +2,11 @@ name: CD migrated from Jenkins file
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'master']
     tags:
       - '*'
   pull_request:
-    branches: ['main']
+    branches: ['main', 'master']
   workflow_dispatch:
     inputs:
       environment:
