@@ -71,7 +71,7 @@ jobs:
 
       - name: Run DocSiteMap
         env:
-          GITHUB_TOKEN: ${{ secrets. }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
           npm run docsitemap
