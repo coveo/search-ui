@@ -26,7 +26,7 @@ on:
 
 jobs:
   build:
-    runs-on: [coveo, linux, x64, ec2 instance-type=t3.large] # TODO: change this to coveo personnalized runner
+    runs-on: ['coveo', linux, x64, ec2]
 
     steps:
       - name: Checkout repository

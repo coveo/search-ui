@@ -8,7 +8,7 @@ on:
 
 jobs:
   cloud-front-validation:
-    runs-on: [coveo, linux, x64, ec2 instance-type=t3.large]
+    runs-on: ['coveo', linux, x64, ec2]
 
     steps:
       - name: Checkout repository
