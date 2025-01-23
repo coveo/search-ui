@@ -7,11 +7,17 @@ on:
 
 jobs:
   send-to-pipeline:
+    name: Initiate Coveo Deployment Pipeline
+
     runs-on: [coveo, linux, x64, ec2]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          repository: coveo/search-ui
+          ref: release/${{ github.event.client_payload.version }}
+          fetch-depth: 0
 
       - name: Setup Node.js 18
         uses: actions/setup-node@v4
