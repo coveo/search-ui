@@ -1,0 +1,42 @@
+name: setup for cd
+description: setup of nodejs 18 and python 3.11 for search-ui
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js 18
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - name: Verify Node.js installation
+      run: |
+        node --version
+        npm --version
+
+    - name: Setup Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Python dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Verify Python installation
+      run: |
+        python --version
+        pip --version
+
+    - name: Install npm
+      run: npm install
+
+    - name: Install Chrome
+      shell: bash
+      run: |
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+        echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+        google-chrome --version

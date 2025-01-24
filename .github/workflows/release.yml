@@ -1,0 +1,64 @@
+name: Create release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      version:
+        required: false
+        default: ''
+        description: 'version of the env'
+      debug:
+        description: 'Add DEBUG=* to the env if true'
+        type: boolean
+        default: false
+        required: false
+      environment:
+        description: 'The environment in which to run the job'
+        required: false
+        default: us-east-1
+
+jobs:
+  release:
+    environment: 'Release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c95a14d0e5bab51a9f56296a4eb0e416910cd350 # v2.10.3
+        with:
+          egress-policy: audit
+
+      - name: Checkout repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Release
+        run: npm run release
+        env:
+          VERSION: ${{ inputs.version }}
+          DEBUG: ${{ inputs.debug && '*' || '' }}
+          RELEASER_APP_ID: ${{ secrets.RELEASER_APP_ID }}
+          RELEASER_PRIVATE_KEY: ${{ secrets.RELEASER_PRIVATE_KEY }}
+          RELEASER_CLIENT_ID: ${{ secrets.RELEASER_CLIENT_ID }}
+          RELEASER_CLIENT_SECRET: ${{ secrets.RELEASER_CLIENT_SECRET }}
+          RELEASER_INSTALLATION_ID: ${{ secrets.RELEASER_INSTALLATION_ID }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Call search-ui-cd
+        run: node ./scripts/deploy/trigger-search-ui-cd.mjs
+        env:
+          GH_TOKEN: ${{ secrets.UI_KIT_CD_DISPATCHER }}
+

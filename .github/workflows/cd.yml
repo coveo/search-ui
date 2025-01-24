@@ -4,7 +4,6 @@ on:
   repository_dispatch:
     types: [deploy]
 
-
 jobs:
   send-to-pipeline:
     name: Initiate Coveo Deployment Pipeline
