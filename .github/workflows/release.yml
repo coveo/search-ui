@@ -48,17 +48,9 @@ jobs:
       - name: Release
         run: npm run release
         env:
-          VERSION: ${{ inputs.version }}
-          DEBUG: ${{ inputs.debug && '*' || '' }}
-          RELEASER_APP_ID: ${{ secrets.RELEASER_APP_ID }}
-          RELEASER_PRIVATE_KEY: ${{ secrets.RELEASER_PRIVATE_KEY }}
-          RELEASER_CLIENT_ID: ${{ secrets.RELEASER_CLIENT_ID }}
-          RELEASER_CLIENT_SECRET: ${{ secrets.RELEASER_CLIENT_SECRET }}
-          RELEASER_INSTALLATION_ID: ${{ secrets.RELEASER_INSTALLATION_ID }}
-          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN = ${{ secrets.GITHUB_TOKEN }}
+
       - name: Call search-ui-cd
         run: node ./scripts/deploy/trigger-search-ui-cd.mjs
         env:
-          GH_TOKEN: ${{ secrets.UI_KIT_CD_DISPATCHER }}
-
+          GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
