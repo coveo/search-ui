@@ -1,28 +1,28 @@
-name: CloudFront Invalidator
-
-on:
-  repository_dispatch:
-    types: [ deploy ]
-
-jobs:
-  cloud-front-validation:
-    runs-on: ['coveo', linux, x64, ec2]
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js 18
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      - name: Verify Node.js installation
-        run: |
-          node --version
-          npm --version
-
-      - name: Run Invalidation
-        shell: bash
-        run: |
-          node invalidate.cloudfront.js
+#name: CloudFront Invalidator
+#
+#on:
+#  repository_dispatch:
+#    types: [ deploy ]
+#
+#jobs:
+#  cloud-front-validation:
+#    runs-on: ['coveo', linux, x64, ec2]
+#
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Setup Node.js 18
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: 18
+#
+#      - name: Verify Node.js installation
+#        run: |
+#          node --version
+#          npm --version
+#
+#      - name: Run Invalidation
+#        shell: bash
+#        run: |
+#          node invalidate.cloudfront.js
