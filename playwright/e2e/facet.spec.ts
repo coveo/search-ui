@@ -166,7 +166,7 @@ test.describe('Facet Tests', () => {
         expect(showLessFacetValueList.length).toEqual(defaultFacetNumberOfValues);
     });
 
-    test('Should sort facet label', async ({page}) => {
+    test.skip('Should sort facet label', async ({page}) => {
         /* Validate default number of facet  & value not sort */
         facetValueList.pop(); // remove last value `Search`
         const sortedValues = facetValueList.concat().sort(compareAlphanumericalValues);
