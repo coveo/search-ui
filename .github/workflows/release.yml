@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - main
+      - master
   pull_request:
     branches:
       - main
-    types: [opened, synchronize, reopened]
+      - master
   workflow_dispatch:
     inputs:
       version:

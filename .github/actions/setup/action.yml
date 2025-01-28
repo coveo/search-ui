@@ -15,20 +15,6 @@ runs:
         node --version
         npm --version
 
-    - name: Setup Python 3.11
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-
-    - name: Install Python dependencies
-      run: |
-        pip install -r requirements.txt
-
-    - name: Verify Python installation
-      run: |
-        python --version
-        pip --version
-
     - name: Install npm
       run: npm install
 
