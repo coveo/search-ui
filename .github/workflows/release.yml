@@ -50,9 +50,11 @@ jobs:
       - name: Release
         run: npm run release
         env:
-          GITHUB_TOKEN = ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN = ${{ secrets.COMMIT_TOKEN }}
 
       - name: Call search-ui-cd
         run: node ./scripts/deploy/trigger-search-ui-cd.mjs
         env:
           GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
+
+      - name:
