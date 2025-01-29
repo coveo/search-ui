@@ -13,4 +13,3 @@ runs:
         npm run injectVersion
         npm run build
         npm run minimize
-
