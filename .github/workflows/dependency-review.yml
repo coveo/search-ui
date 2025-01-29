@@ -2,7 +2,7 @@ name: 'Dependency Review'
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "feat/DT-7426/jenkins-migration-to-gha" ]
 
 permissions:
   contents: read
