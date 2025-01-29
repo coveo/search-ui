@@ -55,16 +55,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.COMMIT_TOKEN }}
 
-      - name: Check if CD repo can be called
-        run: |
-          if [[ -n "${{ secrets.SEARCH_UI_CD_DISPATCHER }}" ]]; then
-            echo "can Call CD repo (GH_TOKEN is set)"
-          else
-            echo "cannot Call CD repo (GH_TOKEN is missing)"
-            exit 1
-          fi
-
-#      - name: Call search-ui-cd
-#        run: node ./scripts/deploy/trigger-search-ui-cd.mjs
-#        env:
-#          GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
+      - name: Call search-ui-cd
+        run: node ./scripts/deploy/trigger-search-ui-cd.mjs
+        env:
+          GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
