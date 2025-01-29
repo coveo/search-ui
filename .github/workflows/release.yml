@@ -48,7 +48,10 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Release
-        run: npm run release
+        shell: bash
+        run: |
+          npm run zipForGitReleases
+          node ./build/github-release.deploy.js
         env:
           GITHUB_TOKEN: ${{ secrets.COMMIT_TOKEN }}
 
