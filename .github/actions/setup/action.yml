@@ -19,12 +19,18 @@ runs:
     - name: Install npm
       shell: bash
       run: npm ci
+#    - name: Install Chrome
+#      shell: bash
+#      run: |
+#        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo tee /usr/share/keyrings/google-linux-keyring.gpg > /dev/null
+#        echo 'deb [signed-by=/usr/share/keyrings/google-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
+#        sudo apt-get update
+#        sudo apt-get install -y google-chrome-stable
+#        google-chrome --version
 
-    - name: Install Chrome
-      shell: bash
-      run: |
-        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo tee /usr/share/keyrings/google-linux-keyring.gpg > /dev/null
-        echo 'deb [signed-by=/usr/share/keyrings/google-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
-        sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
-        google-chrome --version
+    - name: Install Google Chrome
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: 'stable'
+        install-chromedriver: false
+        install-dependencies: false
