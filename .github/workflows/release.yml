@@ -56,5 +56,3 @@ jobs:
         run: node ./scripts/deploy/trigger-search-ui-cd.mjs
         env:
           GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
-
-      - name:
