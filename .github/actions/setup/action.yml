@@ -11,11 +11,13 @@ runs:
         cache: 'npm'
 
     - name: Verify Node.js installation
+      shell: bash
       run: |
         node --version
         npm --version
 
     - name: Install npm
+      shell: bash
       run: npm install
 
     - name: Install Chrome
