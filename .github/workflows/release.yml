@@ -3,12 +3,10 @@ name: Create release
 on:
   push:
     branches:
-      - main
-      - feat/DT-7426/jenkins-migration-to-gha
+      - master
   pull_request:
     branches:
-      - main
-      - feat/DT-7426/jenkins-migration-to-gha
+      - master
   workflow_dispatch:
     inputs:
       version:
@@ -29,10 +27,6 @@ jobs:
   release:
     environment: 'Release'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
-      id-token: write
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@v2
