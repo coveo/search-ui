@@ -15,7 +15,7 @@ on:
         description: The name of the job (as defined in the deployment config)
       extra:
         description: Extra parameters passed from the deployment config
-        default: "{\"JSUI_VERSION\":\"\"}"
+        default: '{"JSUI_VERSION":""}'
 
 jobs:
   e2e-certifier:

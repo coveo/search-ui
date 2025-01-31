@@ -8,20 +8,6 @@ on:
     branches:
       - master
   workflow_dispatch:
-    inputs:
-      version:
-        required: false
-        default: ''
-        description: 'version of the env'
-      debug:
-        description: 'Add DEBUG=* to the env if true'
-        type: boolean
-        default: false
-        required: false
-      environment:
-        description: 'The environment in which to run the job'
-        required: false
-        default: us-east-1
 
 jobs:
   release:

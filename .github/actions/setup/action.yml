@@ -1,5 +1,5 @@
 name: setup for cd
-description: setup of nodejs 18 and python 3.11 for search-ui
+description: setup of nodejs 18 for search-ui
 
 runs:
   using: composite
