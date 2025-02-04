@@ -14,6 +14,7 @@ jobs:
   release:
     permissions:
       contents: write
+      actions: write
     environment: 'Release'
     runs-on: ubuntu-latest
     steps:
@@ -37,8 +38,6 @@ jobs:
           echo "Would run: node ./build/github-release.deploy.js"
 #          npm run zipForGitReleases
 #          node ./build/github-release.deploy.js
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Install dependencies
         shell: bash
@@ -47,5 +46,5 @@ jobs:
       - name: Call search-ui-cd
         run: node ./scripts/deploy/trigger-search-ui-cd.mjs
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
           TARGET_BRANCH: feat/DT-7426/configure-private-search-ui-deployment
