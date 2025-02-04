@@ -11,6 +11,8 @@ on:
 
 jobs:
   release:
+    permissions:
+      contents: write
     environment: 'Release'
     runs-on: ubuntu-latest
     steps:
@@ -33,7 +35,7 @@ jobs:
           npm run zipForGitReleases
           node ./build/github-release.deploy.js
         env:
-          GITHUB_TOKEN: ${{ secrets.COMMIT_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Call search-ui-cd
         run: node ./scripts/deploy/trigger-search-ui-cd.mjs
