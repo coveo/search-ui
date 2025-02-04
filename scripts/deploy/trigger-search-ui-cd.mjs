@@ -1,7 +1,9 @@
 import {context, getOctokit} from '@actions/github';
 
 const octokit = getOctokit(process.env.GH_TOKEN);
-const branchName = process.env.TARGET_BRANCH || 'main';
+const branchName = 'feat/DT-7426/configure-private-search-ui-deployment';
+
+console.log(`Triggering search-ui-cd for branch ${branchName}`);
 
 await octokit.rest.repos.createDispatchEvent({
   event_type: 'deploy',

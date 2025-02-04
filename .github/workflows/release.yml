@@ -49,4 +49,3 @@ jobs:
         run: node ./scripts/deploy/trigger-search-ui-cd.mjs
         env:
           GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
-          TARGET_BRANCH: feat/DT-7426/configure-private-search-ui-deployment
