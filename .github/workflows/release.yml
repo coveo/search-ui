@@ -47,5 +47,5 @@ jobs:
       - name: Call search-ui-cd
         run: node ./scripts/deploy/trigger-search-ui-cd.mjs
         env:
-          GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TARGET_BRANCH: feat/DT-7426/configure-private-search-ui-deployment
