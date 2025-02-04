@@ -38,6 +38,8 @@ jobs:
           echo "Would run: node ./build/github-release.deploy.js"
 #          npm run zipForGitReleases
 #          node ./build/github-release.deploy.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies
         shell: bash
