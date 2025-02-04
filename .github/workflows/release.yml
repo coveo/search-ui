@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - feat/DT-7426/jenkins-migration-to-gha
   pull_request:
     branches:
       - master
@@ -32,8 +33,10 @@ jobs:
       - name: Release
         shell: bash
         run: |
-          npm run zipForGitReleases
-          node ./build/github-release.deploy.js
+          echo "Would run: npm run zipForGitReleases"
+          echo "Would run: node ./build/github-release.deploy.js"
+#          npm run zipForGitReleases
+#          node ./build/github-release.deploy.js
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
