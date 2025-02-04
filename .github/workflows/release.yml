@@ -40,6 +40,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
+      - name: Install dependencies
+        shell: bash
+        run: npm install @actions/github
+
       - name: Call search-ui-cd
         run: node ./scripts/deploy/trigger-search-ui-cd.mjs
         env:
