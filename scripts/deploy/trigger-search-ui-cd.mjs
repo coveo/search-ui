@@ -6,7 +6,7 @@ await octokit.rest.repos.createDispatchEvent({
   event_type: 'deploy',
   client_payload: {
     run_Id: context.runId,
-    version: 'v3',
+    version: 'v2',
   },
   owner: 'coveo-platform',
   repo: 'search-ui-cd',
