@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - feat/DT-7426/jenkins-migration-to-gha
   pull_request:
     branches:
       - master
