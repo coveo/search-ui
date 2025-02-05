@@ -1,0 +1,29 @@
+name: setup for cd
+description: setup of nodejs 18 for search-ui
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js 18
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - name: Verify Node.js installation
+      shell: bash
+      run: |
+        node --version
+        npm --version
+
+    - name: Install npm
+      shell: bash
+      run: npm ci
+
+    - name: Install Chrome
+      shell: bash
+      run: |
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
+        sudo sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+        sudo apt-get update
+        sudo apt-get install google-chrome-stable

@@ -1,0 +1,42 @@
+name: Create release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    permissions:
+      contents: write
+      actions: write
+    environment: 'Release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Release
+        shell: bash
+        run: |
+          npm run zipForGitReleases
+          node ./build/github-release.deploy.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install dependencies
+        shell: bash
+        run: npm install @actions/github
+
+      - name: Call search-ui-cd
+        run: node ./scripts/deploy/trigger-search-ui-cd.mjs
+        env:
+          GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
