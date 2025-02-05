@@ -1,0 +1,15 @@
+name: Build search-ui
+description: 'Builds search-ui using npm'
+
+runs:
+  using: composite
+  steps:
+    - name: Setup environment
+      uses: ./.github/actions/setup
+
+    - name: Build
+      shell: bash
+      run: |
+        npm run injectVersion
+        npm run build
+        npm run minimize
