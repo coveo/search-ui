@@ -13,3 +13,21 @@ runs:
         npm run injectVersion
         npm run build
         npm run minimize
+
+    - name: Run Tests
+      shell: bash
+      run: |
+        npm run unitTests
+        npm run validateTypeDefinitions
+
+    - name: Run Accessibility Tests (If Tag Exists)
+      if: github.ref_type == 'tag'
+      shell: bash
+      run: npm run accessibilityTests
+
+    - name: Generate Documentation
+      if: github.ref_type == 'tag'
+      shell: bash
+      run: |
+        ./deploy.doc.sh
+        npm run docsitemap
