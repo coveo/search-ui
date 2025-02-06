@@ -14,7 +14,7 @@
       "slack_channels": ["#searchuibuilds"]
     }
   },
-  "ordered_phases": [
+  "dag_phases": [
     {
       "id": "cdn",
       "s3": {
@@ -51,17 +51,15 @@
       }
     },
     {
-      "id": "prod-cloudfront-invalidation",
-      "team_jenkins": {
-        "disabled": true,
-        "job_name": "search_ui/job/cloudfront_invalidation",
-        "extra_parameters": {
-          "MAJOR_MINOR_VERSION": "$[MAJOR_MINOR_VERSION]"
-        },
-        "prd": {
-          "disabled": false
-        }
-      }
+      "id": "cloudfront-invalidation",
+      "terraform": {
+        "terragrunt_path": "",
+        "source": "infra/terraform",
+        "auto_approve": true,
+        "auto_approve_in_production": true,
+        "run_strategy": "always"
+      },
+      "dependencies": ["cdn", "cdn-sri", "npm-latest-tag-updated"]
     }
   ],
   "certifiers": {
@@ -80,7 +78,7 @@
           "extra_parameters": {
             "JSUI_VERSION": "$[MAJOR_MINOR_VERSION].$[PATCH_VERSION]"
           },
-          "required": false  
+          "required": false
         }
       }
     ]
