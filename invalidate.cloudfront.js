@@ -4,13 +4,6 @@ const AWS = require('aws-sdk');
 
 const cloudfront = new AWS.CloudFront();
 const pathToInvalidate = `/searchui/v${process.env.MAJOR_MINOR_VERSION}/*`;
-const mapOfDistributionIds = {
-  prd: 'E2VWLFSCSD1GLA',
-  stg: '',
-  dev: ''
-};
-
-const prepareInvalidationRequest = environment => {};
 
 const invalidationRequest = cloudfront.createInvalidation({
   DistributionId: 'E2VWLFSCSD1GLA',
