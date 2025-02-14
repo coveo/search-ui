@@ -34,7 +34,7 @@ jobs:
       - name: Validate JSUI version
         working-directory: ${{ github.workspace }}/playwright
         env:
-          JSUI_VERSION: ${{ inputs.JSUI_VERSION }}
+          JSUI_VERSION: ${{ fromJSON(inputs.extra).JSUI_VERSION }}
         run: npm run validate-jsui-version
 
       - name: Run tests

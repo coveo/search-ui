@@ -2,6 +2,10 @@ name: Create release
 
 on:
   workflow_dispatch:
+    inputs:
+      branch-name:
+        description: The name of the branch that will be targeted by the pipeline.
+        required: true
 
 jobs:
   release:
@@ -21,8 +25,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup
-        uses: ./.github/actions/setup
+      - name: Build
+        uses: ./.github/actions/build
 
       - name: Release
         shell: bash
@@ -40,3 +44,4 @@ jobs:
         run: node ./scripts/deploy/trigger-search-ui-cd.mjs
         env:
           GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
+          RELEASE_BRANCH_NAME: ${{ github.event.inputs.branch-name }}

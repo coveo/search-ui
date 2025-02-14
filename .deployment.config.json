@@ -59,7 +59,7 @@
         "auto_approve_in_production": true,
         "run_strategy": "always"
       },
-      "dependencies": ["cdn", "cdn-sri", "npm-latest-tag-updated"]
+      "dependencies": ["cdn", "cdn-sri"]
     }
   ],
   "certifiers": {
