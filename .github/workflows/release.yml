@@ -29,6 +29,16 @@ jobs:
       - name: Build
         uses: ./.github/actions/build
 
+      - name: Set Tag Name
+        shell: bash
+        run: |
+          echo "TAG_NAME=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+
+      - name: Verify Tag
+        shell: bash
+        run: |
+          echo "Using tag: ${{ env.TAG_NAME }}"
+
       - name: Release
         shell: bash
         run: |
@@ -36,6 +46,16 @@ jobs:
           node ./build/github-release.deploy.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ env.TAG_NAME }}
+
+      - name: Ensure a Git Tag Exists
+        shell: bash
+        run: |
+          if [ -z "$(git tag --list)" ]; then
+            echo "❌ No Git tags found. A valid tag is required for release."
+            exit 1
+          fi
+          echo "✅ Git tags found."
 
       - name: Install dependencies
         shell: bash
