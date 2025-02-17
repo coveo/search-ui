@@ -28,6 +28,11 @@ jobs:
       - name: Build
         uses: ./.github/actions/build
 
+      - name: Create or update branch
+        env:
+          BRANCH_NAME: ${{ github.event.inputs.branch-name }}
+        run: node ./build/release-version.js
+
       - name: Set Tag Name
         shell: bash
         run: |
@@ -40,12 +45,12 @@ jobs:
 
       - name: Release
         shell: bash
-        run: |
-          npm run zipForGitReleases
-          node ./build/github-release.deploy.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ env.TAG_NAME }}
+        run: |
+          npm run zipForGitReleases
+          node ./build/github-release.deploy.js
 
       - name: Ensure a Git Tag Exists
         shell: bash
@@ -61,7 +66,7 @@ jobs:
         run: npm install @actions/github
 
       - name: Call search-ui-cd
-        run: node ./scripts/deploy/trigger-search-ui-cd.mjs
         env:
           GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
           RELEASE_BRANCH_NAME: ${{ github.event.inputs.branch-name }}
+        run: node ./scripts/deploy/trigger-search-ui-cd.mjs
