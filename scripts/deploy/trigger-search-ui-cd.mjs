@@ -18,11 +18,11 @@ try {
   });
 
   if (response.status === 204) {
-    console.log("✅ Successfully triggered the 'search-ui-cd' repository.");
+    console.log("✅ Successfully emitted dispatch to 'search-ui-cd' repository.");
   } else {
     console.warn("⚠️ Unexpected response status:", response.status);
   }
 } catch (error) {
-  console.error("❌ Failed to trigger 'search-ui-cd':", error.message);
+  console.error("❌ Failed to send dispatch to 'search-ui-cd':", error.message);
   process.exit(1);
 }

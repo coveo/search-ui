@@ -12,25 +12,29 @@ const repo = 'search-ui';
 const fileName = 'search-ui.zip';
 
 async function createRelease() {
-  console.log('🔍 Debug: GITHUB_TOKEN length:', token.length > 0 ? 'Set ✅' : 'Not Set ❌');
+  console.log('🔍 Debug: GITHUB_TOKEN length:', token.length > 0 ? 'Token is NOT empty ✅' : 'Token is empty ❌');
   console.log('🔍 Debug: TAG_NAME:', tag_name);
 
   if (!tag_name) {
     throw new Error('❌ TAG_NAME is missing! A valid Git tag is required to create a release.');
   }
 
-  const res = await github.repos.createRelease({
-    owner,
-    repo,
-    tag_name: tag_name,
-    name: `Release ${tag_name}`,
-    body: 'Auto-generated release',
-    draft: false,
-    prerelease: false
-  });
+  try {
+    const res = await github.repos.createRelease({
+      owner,
+      repo,
+      tag_name: tag_name,
+      name: `Release ${tag_name}`,
+      body: 'Auto-generated release',
+      draft: false,
+      prerelease: false
+    });
 
-  console.log(`✅ Created release for tag: ${tag_name}`);
-  return res.data.id;
+    console.log(`✅ Created release for tag: ${tag_name}`);
+    return res.data.id;
+  } catch (e) {
+    console.log(`failed to create release`, e.errors);
+  }
 }
 
 async function getReleaseId() {
