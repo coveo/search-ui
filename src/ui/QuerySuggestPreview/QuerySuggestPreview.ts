@@ -7,12 +7,6 @@ import { Template } from '../Templates/Template';
 import { TemplateComponentOptions } from '../Base/TemplateComponentOptions';
 import { ITemplateToHtml, TemplateToHtml } from '../Templates/TemplateToHtml';
 import { ResultLink } from '../ResultLink/ResultLink';
-import { OmniboxAnalytics } from '../Omnibox/OmniboxAnalytics';
-import {
-  IAnalyticsOmniboxSuggestionMeta,
-  analyticsActionCauseList,
-  IAnalyticsClickQuerySuggestPreviewMeta
-} from '../Analytics/AnalyticsActionListMeta';
 import { ISearchResultPreview } from '../../magicbox/ResultPreviewsManager';
 import { ImageFieldValue } from '../FieldImage/ImageFieldValue';
 import {
@@ -88,8 +82,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     executeQueryDelay: ComponentOptions.buildNumberOption({ defaultValue: 200 })
   };
 
-  private omniboxAnalytics: OmniboxAnalytics;
-
   /**
    * Creates a new QuerySuggestPreview component.
    * @param element The HTMLElement on which to instantiate the component.
@@ -116,8 +108,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
     this.bind.onRootElement(ResultPreviewsManagerEvents.populateSearchResultPreviews, (args: IPopulateSearchResultPreviewsEventArgs) =>
       this.populateSearchResultPreviews(args)
     );
-
-    this.omniboxAnalytics = this.searchInterface.getOmniboxAnalytics();
   }
 
   private buildDefaultSearchResultPreviewTemplate() {
@@ -150,7 +140,7 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
 
   private async fetchSearchResultPreviews(suggestion: Suggestion) {
     const query = this.buildQuery(suggestion);
-    this.logShowQuerySuggestPreview();
+    // this.logShowQuerySuggestPreview();
     const results = await this.queryController.getEndpoint().search(query);
     if (!results) {
       return [];
@@ -204,31 +194,12 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
   }
 
   private handleSelect(suggestion: Suggestion, element: HTMLElement, rank: number) {
-    this.logClickQuerySuggestPreview(suggestion, rank, element);
     const link = $$(element).find(`.${Component.computeCssClassNameForType('ResultLink')}`);
     if (link) {
       const resultLink = <ResultLink>Component.get(link);
       resultLink.openLinkAsConfigured();
       resultLink.openLink();
     }
-  }
-
-  private logShowQuerySuggestPreview() {
-    this.usageAnalytics.logSearchEvent<IAnalyticsOmniboxSuggestionMeta>(
-      analyticsActionCauseList.showQuerySuggestPreview,
-      this.omniboxAnalytics.buildCustomDataForPartialQueries()
-    );
-  }
-
-  private logClickQuerySuggestPreview(suggestion: Suggestion, displayedRank: number, element: HTMLElement) {
-    this.usageAnalytics.logCustomEvent<IAnalyticsClickQuerySuggestPreviewMeta>(
-      analyticsActionCauseList.clickQuerySuggestPreview,
-      {
-        suggestion: suggestion.text || suggestion.dom.innerText,
-        displayedRank
-      },
-      element
-    );
   }
 }
 
