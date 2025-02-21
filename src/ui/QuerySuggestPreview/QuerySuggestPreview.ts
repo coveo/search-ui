@@ -140,7 +140,6 @@ export class QuerySuggestPreview extends Component implements IComponentBindings
 
   private async fetchSearchResultPreviews(suggestion: Suggestion) {
     const query = this.buildQuery(suggestion);
-    // this.logShowQuerySuggestPreview();
     const results = await this.queryController.getEndpoint().search(query);
     if (!results) {
       return [];
