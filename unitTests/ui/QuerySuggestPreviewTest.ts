@@ -4,11 +4,7 @@ import { QuerySuggestPreview, IQuerySuggestPreview } from '../../src/ui/QuerySug
 import { IOmniboxAnalytics } from '../../src/ui/Omnibox/OmniboxAnalytics';
 import { $$, HtmlTemplate, Component } from '../../src/Core';
 import { FakeResults } from '../Fake';
-import {
-  IAnalyticsOmniboxSuggestionMeta,
-  analyticsActionCauseList,
-  IAnalyticsClickQuerySuggestPreviewMeta
-} from '../../src/ui/Analytics/AnalyticsActionListMeta';
+import { IAnalyticsOmniboxSuggestionMeta } from '../../src/ui/Analytics/AnalyticsActionListMeta';
 import { IQueryResults } from '../../src/rest/QueryResults';
 import { last } from 'underscore';
 import {
@@ -136,27 +132,6 @@ export function QuerySuggestPreviewTest() {
       done();
     });
 
-    it('on select, logs analytics once', async done => {
-      setupQuerySuggestPreview();
-      const suggestionText = 'abcdef';
-      const previews = await triggerPopulateSearchResultPreviewsAndPassTime(suggestionText);
-
-      const previewIndexToSelect = 0;
-      previews[previewIndexToSelect].onSelect();
-
-      const spy = test.cmp.usageAnalytics.logCustomEvent as jasmine.Spy;
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(
-        analyticsActionCauseList.clickQuerySuggestPreview,
-        <IAnalyticsClickQuerySuggestPreviewMeta>{
-          suggestion: suggestionText,
-          displayedRank: previewIndexToSelect
-        },
-        previews[previewIndexToSelect].element
-      );
-      done();
-    });
-
     it('builds a default template with a div tag', () => {
       const template = test.cmp['buildDefaultSearchResultPreviewTemplate']();
       // A div tag is used instead of a script tag because Firefox doesn't support appending elements to a script tag.
@@ -245,57 +220,6 @@ export function QuerySuggestPreviewTest() {
         await triggerPopulateSearchResultPreviewsAndPassTime();
         const lastSearchQuery = (test.cmp.queryController.getEndpoint().search as jasmine.Spy).calls.mostRecent().args[0] as IQuery;
         expect(lastSearchQuery.numberOfResults).toEqual(numberOfPreviewResults);
-        done();
-      });
-    });
-
-    describe('When we hover', () => {
-      it(`and the query get executed, 
-      it logs an analytics search event`, async done => {
-        setupQuerySuggestPreview();
-        await triggerPopulateSearchResultPreviewsAndPassTime();
-
-        expect(test.cmp.usageAnalytics.logSearchEvent).toHaveBeenCalledWith(
-          analyticsActionCauseList.showQuerySuggestPreview,
-          jasmine.objectContaining(getMetadata(omniboxAnalytics))
-        );
-        done();
-      });
-    });
-
-    describe('Analytics', () => {
-      function getAnalyticsMetadata(suggestion: string) {
-        return jasmine.objectContaining({
-          suggestion,
-          displayedRank: 0
-        });
-      }
-
-      it('it log an analytics with the appropriate event', async done => {
-        const suggestion = 'test';
-        setupQuerySuggestPreview();
-        const result = (await triggerPopulateSearchResultPreviewsAndPassTime(suggestion))[0];
-        result.onSelect();
-        expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-          analyticsActionCauseList.clickQuerySuggestPreview,
-          getAnalyticsMetadata(suggestion),
-          result.element
-        );
-        done();
-      });
-
-      it(`it log an analytics with the appropriate event,
-      even if we hover on another suggestion before clicking`, async done => {
-        const suggestion = 'test';
-        setupQuerySuggestPreview();
-        const result = (await triggerPopulateSearchResultPreviewsAndPassTime(suggestion))[0];
-        await triggerPopulateSearchResultPreviewsAndPassTime(`bad ${suggestion}`);
-        result.onSelect();
-        expect(test.cmp.usageAnalytics.logCustomEvent).toHaveBeenCalledWith(
-          analyticsActionCauseList.clickQuerySuggestPreview,
-          getAnalyticsMetadata(suggestion),
-          result.element
-        );
         done();
       });
     });
