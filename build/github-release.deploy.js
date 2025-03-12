@@ -37,6 +37,13 @@ async function createRelease() {
   }
 }
 
+async function getReleaseIdByTag() {
+  const res = await github.repos.getReleaseByTag({ owner, repo, tag: tag_name });
+  console.log(`found existing release for tag: ${tag_name}`);
+
+  return res.data.id;
+}
+
 async function getReleaseId() {
   try {
     return await createRelease();
