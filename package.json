@@ -71,6 +71,7 @@
   ],
   "homepage": "https://github.com/coveo/search-ui#readme",
   "devDependencies": {
+    "@actions/github": "^6.0.0",
     "@octokit/rest": "^18.0.12",
     "@salesforce-ux/design-system": "^2.6.0",
     "@types/ag-grid": "^3.2.0",
@@ -162,11 +163,11 @@
     "jstimezonedetect": "^1.0.6",
     "modal-box": "^2.0.10",
     "moment": "^2.29.4",
+    "patch-package": "^8.0.0",
     "pikaday": "^1.4.0",
     "popper.js": "^1.14.3",
     "underscore": "^1.13.1",
-    "xregexp": "^4.2.4",
-    "patch-package": "^8.0.0"
+    "xregexp": "^4.2.4"
   },
   "resolutions": {
     "lodash": "^4.17.12",
