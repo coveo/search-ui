@@ -20,30 +20,26 @@ jobs:
         with:
           egress-policy: audit
 
-      - name: Checkout repo
+      - name: Checkout Repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Build
-        uses: ./.github/actions/build
-
-      - name: Create or update branch
+      - name: Create or Update Branch
         env:
           BRANCH_NAME: ${{ github.event.inputs.branch-name }}
         run: node ./build/release-version.js
+
+      - name: Build and Run Unit Tests
+        uses: ./.github/actions/build
 
       - name: Set Tag Name
         shell: bash
         run: |
           echo "TAG_NAME=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
-
-      - name: Verify Tag
-        shell: bash
-        run: |
           echo "Using tag: ${{ env.TAG_NAME }}"
 
-      - name: Release
+      - name: Create Github Release
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -51,19 +47,6 @@ jobs:
         run: |
           npm run zipForGitReleases
           node ./build/github-release.deploy.js
-
-      - name: Ensure a Git Tag Exists
-        shell: bash
-        run: |
-          if [ -z "$(git tag --list)" ]; then
-            echo "❌ No Git tags found. A valid tag is required for release."
-            exit 1
-          fi
-          echo "✅ Git tags found."
-
-      - name: Install dependencies
-        shell: bash
-        run: npm install @actions/github
 
       - name: Call search-ui-cd
         env:
