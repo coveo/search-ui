@@ -3,7 +3,7 @@ import {pageURL} from '../utils/utils';
 import {isUaSearchEvent} from '../utils/requests';
 import {BreadcrumbSelectors, FacetRangSelectors} from '../utils/selectors';
 
-const defaultFacetNumberOfValues = 9;
+const defaultFacetNumberOfValues = 10;
 let facetTitle, facetField, facetValue, facetValueList;
 
 test.beforeEach(async ({page}) => {
