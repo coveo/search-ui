@@ -712,7 +712,7 @@ export class DynamicFacet extends Component implements IDynamicFacet {
     this.updateQueryStateModel();
     this.values.render();
     this.updateAppearance();
-    if (this.valueToFocusOnRender) {
+    if (this.valueToFocusOnRender && !this.options.enableScrollToTop) {
       const value = this.valueToFocusOnRender;
       this.valueToFocusOnRender = null;
       defer(() => this.values.focus(value));
