@@ -1,17 +1,26 @@
 {
+  "deployment_config_version": 19,
   "product": "coveo-search-ui",
   "team_name": "searchui",
   "general": {
     "aws_regions": {
-      "sequential": ["FIRST_MAIN_REGION"]
+      "sequential": [
+        "FIRST_MAIN_REGION"
+      ]
     },
     "environments_order": {
-      "sequential": ["dev", "stg", "prd"]
+      "sequential": [
+        "dev",
+        "stg",
+        "prd"
+      ]
     },
     "team_jenkins": "searchuibuilds",
     "start_environment_automatically": false,
     "notifications": {
-      "slack_channels": ["#searchuibuilds"]
+      "slack_channels": [
+        "#searchuibuilds"
+      ]
     }
   },
   "dag_phases": [
@@ -45,9 +54,16 @@
         "extra_parameters": {
           "LATEST_NPM_VERSION": "$[LATEST_NPM_VERSION]"
         },
-        "prd": {
-          "disabled": false
-        }
+        "overrides": [
+          {
+            "environments": [
+              "prd"
+            ],
+            "content": {
+              "disabled": false
+            }
+          }
+        ]
       }
     },
     {
@@ -59,18 +75,16 @@
         "auto_approve_in_production": true,
         "run_strategy": "always"
       },
-      "dependencies": ["cdn", "cdn-sri"]
+      "dependencies": [
+        "cdn",
+        "cdn-sri"
+      ]
     }
   ],
   "certifiers": {
-    "stg": [
+    "team_certifiers": [
       {
-        "system_certifier": "snyk"
-      },
-      {
-        "system_certifier": "snyk-code"
-      },
-      {
+        "environment": "stg",
         "github": {
           "name": "e2e-certifier",
           "workflow_repository": "coveo/search-ui",
@@ -81,20 +95,12 @@
           "required": false
         }
       }
-    ]
-  },
-  "snyk": {
-    "no_dependencies": true,
-    "no_container_images": true
-  },
-  "snyk_code": {
-    "no_scan": true
-  },
-  "observatory": {
-    "no_endpoint": true
-  },
-  "package_rollout": {
-    "only_consider_changesets_after": "16247824e24b"
-  },
-  "deployment_config_version": 7
+    ],
+    "observatory": {
+      "no_endpoint": true
+    },
+    "package_rollout": {
+      "only_consider_changesets_after": "16247824e24b"
+    }
+  }
 }
