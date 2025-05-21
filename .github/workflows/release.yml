@@ -39,7 +39,7 @@ jobs:
           echo "TAG_NAME=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
           echo "Using tag: ${{ env.TAG_NAME }}"
 
-      - name: Create Github Release
+      - name: Create release package in Github
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -48,7 +48,15 @@ jobs:
           npm run zipForGitReleases
           node ./build/github-release.deploy.js
 
-      - name: Call search-ui-cd
+      - name: Upload Github release to NPM
+        shell: bash
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          TAG_NAME: ${{ env.TAG_NAME }}
+        run: |
+          node ./build/npm.deploy.js
+
+      - name: Trigger search-ui-cd workflow
         env:
           GH_TOKEN: ${{ secrets.SEARCH_UI_CD_DISPATCHER }}
           RELEASE_BRANCH_NAME: ${{ github.event.inputs.branch-name }}

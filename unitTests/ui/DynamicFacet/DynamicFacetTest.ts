@@ -34,6 +34,7 @@ export function DynamicFacetTest() {
       test.cmp.moreValuesAvailable = true;
 
       spyOn(test.cmp.values, 'clearAll').and.callThrough();
+      spyOn(test.cmp.values, 'focus').and.callThrough();
       spyOn(test.cmp.values, 'render').and.callThrough();
       spyOn(test.cmp.values, 'createFromResponse');
       spyOn(test.cmp.values, 'resetValues');
@@ -647,6 +648,15 @@ export function DynamicFacetTest() {
       test.cmp.scrollToTop();
 
       expect(ResultListUtils.scrollToTop).not.toHaveBeenCalledWith(test.cmp.root);
+    });
+
+    it(`when the enableScrollToTop option is "true"
+    should not focus on value`, () => {
+      options.enableScrollToTop = true;
+      initializeComponent();
+      test.cmp.scrollToTop();
+
+      expect(test.cmp.values.focus).not.toHaveBeenCalled();
     });
 
     describe('Testing the header', () => {
