@@ -3,7 +3,6 @@ name: Daily E2E Tests for JSUI
 on:
   schedule:
     - cron: '30 8 * * 0-5'
-  workflow_dispatch:
 
 jobs:
     e2e-certifier:
