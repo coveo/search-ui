@@ -1,5 +1,9 @@
 name: 'End-to-end certifier'
 
+permissions:
+  actions: read
+  contents: read
+
 on:
   workflow_dispatch:
     inputs:
@@ -17,9 +21,6 @@ on:
         description: Extra parameters passed from the deployment config
         default: '{"JSUI_VERSION":""}'
   workflow_call:
-permissions:
-  actions: read
-  contents: read
 
 jobs:
   e2e-certifier:
