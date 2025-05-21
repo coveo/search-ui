@@ -18,7 +18,6 @@ if (expectedJsuiVersion) {
             expect(coveoVersion.product).toBe(expectedJsuiVersion);
         }).toPass({timeout});
     });
-
 } else {
     console.log('No JSUI version to validate.');
 }
