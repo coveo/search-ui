@@ -3,6 +3,16 @@ name: Daily E2E Tests for JSUI
 on:
   schedule:
     - cron: '30 8 * * 0-5'
+<<<<<<< Updated upstream
+=======
+  push:
+    branches:
+      - KIT-4246-daily-e2e-run-DEMO
+permissions:
+  actions: read
+  contents: read
+
+>>>>>>> Stashed changes
 
 jobs:
     e2e-certifier:
