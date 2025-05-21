@@ -62,38 +62,3 @@ jobs:
           name: playwright-report-json
           path: playwright/test-results.json
           retention-days: 30
-
-  publish-dashboard:
-    name: Create playwright-dashboard page
-    if: (success() || failure()) && github.event_name == 'schedule' && github.ref == 'refs/heads/master'
-    needs: [e2e-certifier]
-    runs-on:
-      [
-        "coveo uid=${{ github.run_id }}-${{ github.run_attempt }}",
-        linux,
-        arm64,
-        ec2,
-      ]
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-
-      - name: Publish google chart
-        uses: coveo-platform/actions/playwright-dashboard@playwright-dashboard-v1
-        with:
-          project_name: "JSUI"
-          artifact_name: playwright-report-json
-          json_report_name: test-results.json
-          filter_report_by_branch: "master"  
-          filter_report_by_event_type: "schedule"
-          filter_report_by_run_name: "Daily E2E Tests for JSUI"
-          days_in_past: "30"
-
-      - name: Upload Playwright report and charts to S3
-        run: |                   
-          aws s3 cp $GITHUB_WORKSPACE/playwright-report-html \
-          s3://playwright-dashboard-bucket/JSUI/JSUI-reports/${{ github.run_id }}/ \
-          --recursive || true
-
-          aws s3 cp $GITHUB_WORKSPACE/JSUI_chart.html \
-          s3://playwright-dashboard-bucket/JSUI/JSUI_chart.html
