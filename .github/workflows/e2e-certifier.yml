@@ -39,7 +39,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' && fromJSON(inputs.extra).JSUI_VERSION != '' }}
         working-directory: ${{ github.workspace }}/playwright
         env:
-          JSUI_VERSION: ${{ fromJSON(inputs.extra).JSUI_VERSION }}
+          JSUI_VERSION: ${{ fromJSON(inputs.extra || '{"JSUI_VERSION":""}').JSUI_VERSION }}
         run: npm run validate-jsui-version
 
       - name: Run tests
