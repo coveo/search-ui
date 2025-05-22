@@ -1,0 +1,14 @@
+name: Daily E2E Tests for JSUI
+
+permissions:
+  actions: read
+  contents: read
+
+on:
+  schedule:
+    - cron: '30 8 * * 0-5'
+
+jobs:
+    e2e-certifier:
+        uses: ./.github/workflows/e2e-certifier.yml
+
