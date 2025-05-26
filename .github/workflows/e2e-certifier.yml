@@ -1,5 +1,9 @@
 name: 'End-to-end certifier'
 
+permissions:
+  actions: read
+  contents: read
+
 on:
   workflow_dispatch:
     inputs:
@@ -16,27 +20,45 @@ on:
       extra:
         description: Extra parameters passed from the deployment config
         default: '{"JSUI_VERSION":""}'
+  workflow_call:
 
 jobs:
   e2e-certifier:
     runs-on: ubuntu-24.04
     steps:
       - name: Deploy JSUI beta version on Netlify
+        # Only run this step if a JSUI_VERSION has been specified:
+        if: ${{ github.event_name == 'workflow_dispatch' && fromJSON(inputs.extra).JSUI_VERSION != '' }}
         run: curl --request POST https://api.netlify.com/build_hooks/${{ secrets.NETLIFY_BUILD_HOOK_ID }}
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install test dependencies
         working-directory: ${{ github.workspace }}/playwright
         run: npm install && npx playwright install --with-deps
 
       - name: Validate JSUI version
+        # Only run this step if a JSUI_VERSION has been specified:
+        if: ${{ github.event_name == 'workflow_dispatch' && fromJSON(inputs.extra).JSUI_VERSION != '' }}
         working-directory: ${{ github.workspace }}/playwright
         env:
-          JSUI_VERSION: ${{ fromJSON(inputs.extra).JSUI_VERSION }}
+          JSUI_VERSION: ${{ fromJSON(inputs.extra || '{"JSUI_VERSION":""}').JSUI_VERSION }}
         run: npm run validate-jsui-version
 
       - name: Run tests
         working-directory: ${{ github.workspace }}/playwright
         run: npm test
+
+      - uses: actions/upload-artifact@v4
+        if: failure() || success()
+        with:
+          name: playwright-report-html
+          path: playwright/playwright-report/
+          retention-days: 3
+      - uses: actions/upload-artifact@v4
+        if: failure() || success()
+        with:
+          name: playwright-report-json
+          path: playwright/test-results.json
+          retention-days: 30
