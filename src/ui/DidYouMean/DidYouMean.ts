@@ -22,7 +22,7 @@ export interface IDidYouMeanOptions {
 /**
  * The DidYouMean component is responsible for displaying query corrections. If this component is in the page and the
  * query returns no results but finds a possible query correction, it automatically triggers a new query with the suggested term.
- * If the query only returns a few results, the results are displayed but a possible query correction is still suggested.
+ * If the query only returns a few results, the results are displayed, but a possible query correction is still suggested.
  */
 export class DidYouMean extends Component {
   static ID = 'DidYouMean';
