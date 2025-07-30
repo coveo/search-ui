@@ -165,7 +165,7 @@ module.exports = {
     alias: {
       l10n: __dirname + '/lib/l10n/l10n.min.js',
       globalize: globalizePath,
-      'modal-box': __dirname + '/node_modules/modal-box/bin/ModalBox' + (production ? '.min.js' : '.js'),
+      'modal-box': __dirname + '/lib/modal-box/ModalBox' + (production ? '.min.js' : '.js'),
       'default-language': __dirname + '/src/strings/DefaultLanguage.js',
       styling: __dirname + '/sass',
       svg: __dirname + '/image/svg'

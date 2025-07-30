@@ -1,0 +1,342 @@
+
+.coveo-btn {
+  display: inline-block;
+  height: 34px;
+  padding: 8.5px 16px;
+  color: #1d4f76;
+  font-family: "Lato", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 15px;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  vertical-align: middle;
+  white-space: nowrap;
+  background-color: #ffffff;
+  border: 1px solid #bcc3ca;
+  border-radius: 2px;
+  cursor: pointer; }
+  .coveo-btn .coveo-icon {
+    fill: #1d4f76; }
+  .coveo-btn:hover, .coveo-btn:focus {
+    text-decoration: none; }
+  .coveo-btn:focus {
+    background-color: #e6ecf0;
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px; }
+  .coveo-btn:disabled, .coveo-btn.coveo-state-disabled {
+    color: #bcc3ca;
+    cursor: default; }
+  .coveo-btn.coveo-mod-small {
+    height: 24px;
+    padding: 0 10px;
+    font-size: 11px;
+    line-height: 14px; }
+  .coveo-btn.coveo-mod-large {
+    height: 50px; }
+  .coveo-btn.coveo-mod-primary {
+    color: #ffffff;
+    background-color: #f58020;
+    border: 1px solid #f58020; }
+    .coveo-btn.coveo-mod-primary:hover, .coveo-btn.coveo-mod-primary:focus {
+      background-color: #f68e38;
+      border: 1px solid #f68e38; }
+    .coveo-btn.coveo-mod-primary:disabled, .coveo-btn.coveo-mod-primary.coveo-state-disabled {
+      background-color: #f9b882;
+      border: 1px solid #f9b882; }
+    .coveo-btn.coveo-mod-primary .coveo-icon {
+      fill: #ffffff; }
+  .coveo-btn.coveo-mod-danger {
+    color: #ffffff;
+    background-color: #ce3f00;
+    border: 1px solid #ce3f00; }
+    .coveo-btn.coveo-mod-danger:hover, .coveo-btn.coveo-mod-danger:focus {
+      background-color: #e84700;
+      border: 1px solid #e84700; }
+    .coveo-btn.coveo-mod-danger:disabled, .coveo-btn.coveo-mod-danger.coveo-state-disabled {
+      background-color: #ff7335;
+      border: 1px solid #ff7335; }
+    .coveo-btn.coveo-mod-danger .coveo-icon {
+      fill: #ffffff; }
+  .coveo-btn.coveo-mod-link {
+    background-color: transparent;
+    border: none; }
+  .coveo-btn + .coveo-btn, .coveo-btn + .coveo-btn-container {
+    margin-left: 10px; }
+  .coveo-btn .coveo-confirm-icon-error, .coveo-btn .coveo-confirm-icon-success {
+    display: none; }
+  .coveo-btn.coveo-mod-confirm-success, .coveo-btn.coveo-mod-confirm-error {
+    position: relative;
+    color: transparent;
+    outline: 0;
+    transition: background-color 0.2s ease;
+    user-select: none; }
+    .coveo-btn.coveo-mod-confirm-success:before, .coveo-btn.coveo-mod-confirm-error:before {
+      position: absolute;
+      top: 40px;
+      font-size: 11px;
+      text-transform: initial;
+      animation: coveo-vp-fadeIn ease-in 1;
+      animation-duration: 0.3s;
+      animation-fill-mode: forwards;
+      opacity: 0; }
+    .coveo-btn.coveo-mod-confirm-success.coveo-mod-confirm-right:before, .coveo-btn.coveo-mod-confirm-error.coveo-mod-confirm-right:before {
+      right: 0; }
+    .coveo-btn.coveo-mod-confirm-success.coveo-mod-confirm-left:before, .coveo-btn.coveo-mod-confirm-error.coveo-mod-confirm-left:before {
+      left: 0; }
+    .coveo-btn.coveo-mod-confirm-success .coveo-confirm-icon-error, .coveo-btn.coveo-mod-confirm-success .coveo-confirm-icon-success, .coveo-btn.coveo-mod-confirm-error .coveo-confirm-icon-error, .coveo-btn.coveo-mod-confirm-error .coveo-confirm-icon-success {
+      position: absolute;
+      top: calc(50% - 15px / 2);
+      right: calc(50% - 15px / 2);
+      display: inline-block;
+      font-size: 15px;
+      fill: #ffffff; }
+  .coveo-btn.coveo-mod-confirm {
+    margin-bottom: 20px; }
+  .coveo-btn.coveo-mod-confirm-success {
+    background-color: #009830;
+    border: 1px solid #009830; }
+    .coveo-btn.coveo-mod-confirm-success:focus, .coveo-btn.coveo-mod-confirm-success:hover {
+      background-color: #009830; }
+    .coveo-btn.coveo-mod-confirm-success:before {
+      color: #009830;
+      content: attr(data-confirm-success); }
+    .coveo-btn.coveo-mod-confirm-success .coveo-confirm-icon-error {
+      display: none; }
+  .coveo-btn.coveo-mod-confirm-error {
+    background-color: #ce3f00;
+    border: 1px solid #ce3f00; }
+    .coveo-btn.coveo-mod-confirm-error:focus, .coveo-btn.coveo-mod-confirm-error:hover {
+      background-color: #ce3f00; }
+    .coveo-btn.coveo-mod-confirm-error:before {
+      color: #ce3f00;
+      content: attr(data-confirm-error); }
+    .coveo-btn.coveo-mod-confirm-error .coveo-confirm-icon-success {
+      display: none; }
+
+.coveo-btn-container {
+  display: inline-block;
+  margin: 0; }
+  .coveo-btn-container .coveo-btn[disabled] {
+    pointer-events: none; }
+  .coveo-btn-container + .coveo-btn, .coveo-btn-container + .coveo-btn-container {
+    margin-left: 10px; }
+
+.coveo-modal-backdrop, .coveo-modal-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; }
+
+.coveo-modal-backdrop {
+  z-index: 1049;
+  background: #1d4f76;
+  transition: all 0.3s;
+  opacity: 0.9; }
+  .coveo-modal-backdrop.coveo-layer-1 {
+    z-index: 1049; }
+  .coveo-modal-backdrop.coveo-layer-2 {
+    z-index: 1069; }
+  .coveo-modal-backdrop.coveo-layer-3 {
+    z-index: 1089; }
+  .coveo-modal-backdrop.coveo-layer-4 {
+    z-index: 1109; }
+  .coveo-modal-backdrop.coveo-layer-5 {
+    z-index: 1129; }
+  .coveo-modal-backdrop.coveo-layer-6 {
+    z-index: 1149; }
+  .coveo-modal-backdrop.coveo-layer-7 {
+    z-index: 1169; }
+  .coveo-modal-backdrop.coveo-layer-8 {
+    z-index: 1189; }
+  .coveo-modal-backdrop.coveo-layer-9 {
+    z-index: 1209; }
+  .coveo-modal-backdrop.coveo-layer-10 {
+    z-index: 1229; }
+  .coveo-modal-backdrop.coveo-prompt-backdrop {
+    position: absolute;
+    opacity: 0.5; }
+    .coveo-modal-backdrop.coveo-prompt-backdrop .coveo-mask {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0; }
+  .coveo-modal-backdrop.coveo-clear, .coveo-modal-backdrop.coveo-closed {
+    opacity: 0; }
+  .coveo-modal-backdrop.coveo-closed {
+    visibility: hidden; }
+
+.coveo-modal-container {
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  display: flex;
+  visibility: hidden;
+  pointer-events: none; }
+  .coveo-modal-container.coveo-layer-1 {
+    z-index: 1050; }
+  .coveo-modal-container.coveo-layer-2 {
+    z-index: 1070; }
+  .coveo-modal-container.coveo-layer-3 {
+    z-index: 1090; }
+  .coveo-modal-container.coveo-layer-4 {
+    z-index: 1110; }
+  .coveo-modal-container.coveo-layer-5 {
+    z-index: 1130; }
+  .coveo-modal-container.coveo-layer-6 {
+    z-index: 1150; }
+  .coveo-modal-container.coveo-layer-7 {
+    z-index: 1170; }
+  .coveo-modal-container.coveo-layer-8 {
+    z-index: 1190; }
+  .coveo-modal-container.coveo-layer-9 {
+    z-index: 1210; }
+  .coveo-modal-container.coveo-layer-10 {
+    z-index: 1230; }
+  .coveo-modal-container.coveo-opening, .coveo-modal-container.coveo-opened {
+    visibility: visible; }
+    .coveo-modal-container.coveo-opening > .coveo-modal-content, .coveo-modal-container.coveo-opened > .coveo-modal-content {
+      opacity: 1; }
+  .coveo-modal-container .coveo-modal-content {
+    position: relative;
+    flex-direction: column;
+    display: flex;
+    width: 45%;
+    height: 50%;
+    opacity: 0;
+    pointer-events: auto; }
+  .coveo-modal-container.coveo-mod-medium > .coveo-modal-content {
+    width: 65%;
+    height: 70%; }
+  .coveo-modal-container.coveo-mod-big > .coveo-modal-content {
+    width: 85%;
+    height: 90%; }
+  .coveo-modal-container.coveo-mod-width-small > .coveo-modal-content {
+    width: 520px; }
+  .coveo-modal-container.coveo-mod-stick-bottom {
+    align-items: flex-end; }
+    .coveo-modal-container.coveo-mod-stick-bottom > .coveo-modal-content {
+      height: 55%; }
+      .coveo-modal-container.coveo-mod-stick-bottom > .coveo-modal-content > .coveo-modal-footer {
+        border-radius: 0; }
+    .coveo-modal-container.coveo-mod-stick-bottom.coveo-mod-medium > .coveo-modal-content {
+      height: 75%; }
+    .coveo-modal-container.coveo-mod-stick-bottom.coveo-mod-big > .coveo-modal-content {
+      height: 95%; }
+  .coveo-modal-container.coveo-mod-fade-in-scale > .coveo-modal-content {
+    transform: scale(0.7);
+    transition: all 0.3s; }
+  .coveo-modal-container.coveo-opened.coveo-mod-fade-in-scale > .coveo-modal-content {
+    transform: scale(1); }
+  .coveo-modal-container.coveo-mod-slide-in-bottom > .coveo-modal-content {
+    transform: translate3d(0, 20%, 0);
+    transition: all 0.3s; }
+  .coveo-modal-container.coveo-opened.coveo-mod-slide-in-bottom > .coveo-modal-content {
+    transform: translate3d(0, 0, 0); }
+
+.coveo-modal-header {
+  align-items: center;
+  display: flex;
+  height: 100px;
+  padding: 0 40px;
+  color: #ffffff;
+  background-color: #ffffff;
+  border-bottom: 1px solid #bcc3ca;
+  border-radius: 2px 2px 0 0; }
+  .coveo-modal-header.coveo-mod-confirmation {
+    background-color: #ecad00; }
+  .coveo-modal-header.coveo-mod-warning {
+    background-color: #ce3f00; }
+  .coveo-modal-header.coveo-mod-info {
+    background-color: #1d4f76; }
+  .coveo-modal-header h1 {
+    flex-grow: 1;
+    overflow: hidden;
+    color: #1d4f76;
+    line-height: 30px;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .coveo-modal-header .coveo-small-close {
+    position: absolute;
+    top: -2.10256em;
+    right: 0;
+    cursor: pointer; }
+    .coveo-modal-header .coveo-small-close, .coveo-modal-header .coveo-small-close .coveo-icon {
+      width: 1.33333em;
+      height: 1.33333em; }
+
+.coveo-modal-body {
+  flex-basis: 0;
+  flex-grow: 1;
+  overflow: auto;
+  background-color: #ffffff; }
+
+.coveo-modal-footer {
+  align-items: center;
+  justify-content: flex-end;
+  display: flex;
+  padding: 24px 40px;
+  overflow: hidden;
+  background-color: #f1f3f4;
+  border-top: 1px solid #bcc3ca;
+  border-radius: 0 0 2px 2px; }
+  .coveo-modal-footer.coveo-mod-small {
+    padding: 12px 20px; }
+
+.coveo-modal-header .coveo-small-close {
+  position: absolute;
+  top: -1.7em;
+  right: 0;
+  cursor: pointer; }
+  @media (max-height: 500px) {
+    .coveo-modal-header .coveo-small-close {
+      right: -1.7em;
+      top: 0; } }
+
+.coveo-fill-pure-white {
+  fill: #ffffff; }
+
+.coveo-modal-container {
+  font-family: "Lato", Arial, Helvetica, sans-serif;
+  box-sizing: border-box; }
+  .coveo-modal-container * {
+    box-sizing: border-box; }
+  .coveo-modal-container .coveo-modal-content {
+    transform: scale(0.7);
+    transition: all 0.3s; }
+    .coveo-modal-container .coveo-modal-content .coveo-media-max-width-800 {
+      width: 85%;
+      height: 90%; }
+    @media (max-width: 800px) {
+      .coveo-modal-container .coveo-modal-content {
+        width: 85%;
+        height: 90%; } }
+  .coveo-modal-container.coveo-mod-fade-in-scale .coveo-modal-content {
+    transform: scale(1); }
+
+.coveo-modal-transparent {
+  opacity: 0; }
+
+.coveo-modal-header h1 {
+  line-height: inherit;
+  font-size: 24px;
+  font-weight: 400; }
+
+.coveo-modal-header {
+  padding: 0 20px;
+  height: 80px; }
+  .coveo-modal-header .coveo-media-max-width-480 {
+    height: 50px; }
+  @media (max-width: 480px) {
+    .coveo-modal-header {
+      height: 50px; } }
+
+.coveo-modal-body {
+  padding: 10px 20px; }
