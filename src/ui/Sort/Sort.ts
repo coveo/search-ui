@@ -54,6 +54,11 @@ export class Sort extends Component {
      * You can specify a comma separated list of sort criteria to toggle between when interacting with this component instance (e.g., `data-sort-criteria="date descending,date ascending"`).
      *
      * You can specify multiple sort criteria to be used in the same request by separating them with a semicolon (e.g., `data-sort-criteria="@size ascending;date ascending"` ).
+     * However, this only works when combining:
+     * a relevancy criterion followed by one or more field or date criteria (e.g., `data-sort-criteria="relevancy; @length descending"`).
+     * a qre criterion followed by one or more field or date criteria (e.g., `data-sort-criteria="qre; @length descending"`).
+     * two or more field criteria (e.g., `data-sort-criteria="@size descending; @length ascending"`).
+     * a single date criterion and one or more field criteria in any order (e.g., `data-sort-criteria="@size descending; date ascending"`).
      *
      * Interacting with this component instance will cycle through those criteria in the order they are listed in.
      * Typically, you should only specify a list of sort criteria when you want the end user to be able to to toggle the direction of a `date` or `@field` sort criteria.
