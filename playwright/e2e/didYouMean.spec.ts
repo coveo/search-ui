@@ -5,7 +5,7 @@ import {SearchboxSelectors} from '../utils/selectors';
 
 test.describe('Did you mean', () => {
     test('Did you mean automatic', async ({page}) => {
-        const query = 'tets';
+        const query = 'teest';
         await page.goto(pageURL('00_standardSP4automated_1'));
         await SearchboxSelectors(page).searchboxInput.first().fill(query);
         const uaRequestSearchQuery = page.waitForRequest(
