@@ -4,23 +4,14 @@
   "team_name": "searchui",
   "general": {
     "aws_regions": {
-      "sequential": [
-        "FIRST_MAIN_REGION"
-      ]
+      "sequential": ["FIRST_MAIN_REGION"]
     },
     "environments_order": {
-      "sequential": [
-        "dev",
-        "stg",
-        "prd"
-      ]
+      "sequential": ["dev", "stg", "prd"]
     },
-    "team_jenkins": "searchuibuilds",
     "start_environment_automatically": false,
     "notifications": {
-      "slack_channels": [
-        "#searchuibuilds"
-      ]
+      "slack_channels": ["#searchuibuilds"]
     }
   },
   "dag_phases": [
@@ -47,18 +38,17 @@
       }
     },
     {
-      "id": "npm-latest-tag-updated",
-      "team_jenkins": {
+      "id": "update-npm-latest-tag",
+      "github": {
         "disabled": true,
-        "job_name": "search_ui/job/update_npm_latest_tag",
+        "workflow_file": "update-npm-latest-tag.yml",
+        "workflow_repository": "coveo-platform/search-ui-cd",
         "extra_parameters": {
           "LATEST_NPM_VERSION": "$[LATEST_NPM_VERSION]"
         },
         "overrides": [
           {
-            "environments": [
-              "prd"
-            ],
+            "environments": ["prd"],
             "content": {
               "disabled": false
             }
@@ -75,10 +65,7 @@
         "auto_approve_in_production": true,
         "run_strategy": "always"
       },
-      "dependencies": [
-        "cdn",
-        "cdn-sri"
-      ]
+      "dependencies": ["cdn", "cdn-sri"]
     }
   ],
   "certifiers": {
