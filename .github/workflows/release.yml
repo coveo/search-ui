@@ -12,6 +12,7 @@ jobs:
     permissions:
       contents: write
       actions: write
+      id-token: write
     environment: 'Release'
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +52,6 @@ jobs:
       - name: Upload Github release to NPM
         shell: bash
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           TAG_NAME: ${{ env.TAG_NAME }}
         run: |
           node ./build/npm.deploy.js

@@ -18,14 +18,6 @@ async function publishToNpm(publishArgs = [], successMessage) {
   console.log(successMessage);
 }
 
-function setNpmrcFile() {
-  const fileName = `${os.homedir()}/.npmrc`;
-  const npmrcString = `//registry.npmjs.org/:_authToken=${process.env.NPM_TOKEN}`;
-
-  console.log('setting npmrc file');
-  return new Promise((resolve, reject) => fs.writeFile(fileName, npmrcString, err => (err ? reject(err) : resolve())));
-}
-
 function isTagged() {
   const tag = process.env.TAG_NAME || '';
   return tag !== '';
@@ -36,7 +28,6 @@ async function main() {
     return console.log('Skipping NPM deployment because this is not a tagged commit');
   }
 
-  await setNpmrcFile();
   await deployTaggedVersion();
 }
 
