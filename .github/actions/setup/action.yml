@@ -4,12 +4,14 @@ description: setup of nodejs 18 for search-ui
 runs:
   using: composite
   steps:
-    - name: Setup Node.js 18
+    - name: Setup Node.js 24
       uses: actions/setup-node@v4
       with:
-        node-version: 18
-        cache: 'npm'
-
+        node-version-file: ".nvmrc"
+        cache: npm
+    - name: Install npm cli 11.6.0
+      shell: bash
+      run: npm i -g npm@11.6.0
     - name: Verify Node.js installation
       shell: bash
       run: |
