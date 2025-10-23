@@ -9,7 +9,9 @@ runs:
       with:
         node-version-file: ".nvmrc"
         cache: npm
-
+    - name: Install npm cli 11.6.0
+      shell: bash
+      run: npm i -g npm@11.6.0
     - name: Verify Node.js installation
       shell: bash
       run: |
