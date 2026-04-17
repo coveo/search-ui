@@ -329,6 +329,14 @@ export class QueryBuilder {
    */
   public commerce: ICommerceRequest;
   /**
+   * Specifies field aliases for the search operation.
+   */
+  public fieldAliases: Record<string, string>;
+  /**
+   * Specifies free text search fields for the search operation.
+   */
+  public freeTextSearchFields: string[];
+  /**
    * Build the current content or state of the query builder and return a {@link IQuery}.
    *
    * build can be called multiple times on the same QueryBuilder.
@@ -384,7 +392,9 @@ export class QueryBuilder {
       recommendation: this.recommendation,
       allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords,
       userActions: this.userActions,
-      commerce: this.commerce
+      commerce: this.commerce,
+      fieldAliases: this.fieldAliases,
+      freeTextSearchFields: this.freeTextSearchFields
     };
     return query;
   }

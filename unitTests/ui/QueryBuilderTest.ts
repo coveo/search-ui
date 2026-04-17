@@ -173,6 +173,18 @@ export function QueryBuilderTest() {
       });
     });
 
+    it('can set fieldAliases', () => {
+      const fieldAliases = { name: 'name.en', description: 'description.en' };
+      queryBuilder.fieldAliases = fieldAliases;
+      expect(queryBuilder.build().fieldAliases).toEqual(fieldAliases);
+    });
+
+    it('can set freeTextSearchFields', () => {
+      const freeTextSearchFields = ['field1', 'field2', 'field3'];
+      queryBuilder.freeTextSearchFields = freeTextSearchFields;
+      expect(queryBuilder.build().freeTextSearchFields).toEqual(freeTextSearchFields);
+    });
+
     it('should be able to detect end user keywords in the basic expression', () => {
       queryBuilder.expression.add('foo');
       expect(queryBuilder.containsEndUserKeywords()).toBeTruthy();
