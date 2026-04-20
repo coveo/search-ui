@@ -44,14 +44,7 @@ export interface ISearchAlertsOptions {
 }
 
 /**
- * The Search Alerts component renders items in the {@link Settings} menu that allow the end user to follow queries
- * and to manage search alerts. A user following a query receives email notifications when the query results change.
- *
- * **Note:**
- * > It is necessary to meet certain requirements to be able to use this component (see
- * > [Deploying Search Alerts on a Coveo JS Search Page](https://docs.coveo.com/en/1932/)).
- *
- * See also the {@link FollowItem} component.
+ * Search alerts have been decommissioned. This component has no functionality and should not be used.
  */
 export class SearchAlerts extends Component {
   static ID = 'SearchAlerts';
