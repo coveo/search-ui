@@ -1,0 +1,13 @@
+$schema: https://json.schemastore.org/catalog-info.json
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: search-ui
+  title: Search UI
+  description: Coveo Search UI library and components
+  annotations:
+    github.com/project-slug: coveo/search-ui
+spec:
+  type: library
+  lifecycle: production
+  owner: dxui
