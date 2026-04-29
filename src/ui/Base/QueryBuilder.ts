@@ -526,6 +526,27 @@ export class QueryBuilder {
   }
 
   /**
+   * Adds free text search fields, ensuring unique values.
+   *
+   * @param fields The free text search fields to add. Duplicate values are automatically removed.
+   */
+  public addFreeTextSearchFields(fields: string[]) {
+    this.freeTextSearchFields = _.uniq((this.freeTextSearchFields || []).concat(fields));
+  }
+
+  /**
+   * Merges the specified field aliases into the `fieldAliases` object.
+   *
+   * @param aliases The field aliases to merge into the `fieldAliases` object. If some keys are already present, their values are updated.
+   */
+  public addFieldAliases(aliases: Record<string, string>) {
+    if (this.fieldAliases == null) {
+      this.fieldAliases = {};
+    }
+    _.extend(this.fieldAliases, aliases);
+  }
+
+  /**
    * Returns true if the current query contains any expression that are considered "end user input".
    *
    * This usually means anything entered in the basic (see [q]{@link IQuery.options.q}) or long (see [lq]{@link IQuery.options.lq}) part of the query.
