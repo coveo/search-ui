@@ -329,6 +329,14 @@ export class QueryBuilder {
    */
   public commerce: ICommerceRequest;
   /**
+   * Specifies field aliases for the search operation.
+   */
+  public fieldAliases: Record<string, string>;
+  /**
+   * Specifies free text search fields for the search operation.
+   */
+  public freeTextSearchFields: string[];
+  /**
    * Build the current content or state of the query builder and return a {@link IQuery}.
    *
    * build can be called multiple times on the same QueryBuilder.
@@ -384,7 +392,9 @@ export class QueryBuilder {
       recommendation: this.recommendation,
       allowQueriesWithoutKeywords: this.allowQueriesWithoutKeywords,
       userActions: this.userActions,
-      commerce: this.commerce
+      commerce: this.commerce,
+      fieldAliases: this.fieldAliases,
+      freeTextSearchFields: this.freeTextSearchFields
     };
     return query;
   }
@@ -513,6 +523,27 @@ export class QueryBuilder {
       this.context = {};
     }
     _.extend(this.context, values);
+  }
+
+  /**
+   * Adds free text search fields, ensuring unique values.
+   *
+   * @param fields The free text search fields to add. Duplicate values are automatically removed.
+   */
+  public addFreeTextSearchFields(fields: string[]) {
+    this.freeTextSearchFields = _.uniq((this.freeTextSearchFields || []).concat(fields));
+  }
+
+  /**
+   * Merges the specified field aliases into the `fieldAliases` object.
+   *
+   * @param aliases The field aliases to merge into the `fieldAliases` object. If some keys are already present, their values are updated.
+   */
+  public addFieldAliases(aliases: Record<string, string>) {
+    if (this.fieldAliases == null) {
+      this.fieldAliases = {};
+    }
+    _.extend(this.fieldAliases, aliases);
   }
 
   /**

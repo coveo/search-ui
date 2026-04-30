@@ -305,6 +305,14 @@ export interface IQuery {
    */
   commerce?: ICommerceRequest;
   /**
+   * Specifies field aliases for the search operation.
+   */
+  fieldAliases?: Record<string, string>;
+  /**
+   * Specifies free text search fields for the search operation.
+   */
+  freeTextSearchFields?: string[];
+  /**
    * The format of a successful response.
    * If not specified, this parameter defaults to 'json'.
    */

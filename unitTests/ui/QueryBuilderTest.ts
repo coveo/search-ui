@@ -173,6 +173,41 @@ export function QueryBuilderTest() {
       });
     });
 
+    it('can set fieldAliases', () => {
+      const fieldAliases = { name: 'name.en', description: 'description.en' };
+      queryBuilder.fieldAliases = fieldAliases;
+      expect(queryBuilder.build().fieldAliases).toEqual(fieldAliases);
+    });
+
+    it('can addFreeTextSearchFields', () => {
+      queryBuilder.addFreeTextSearchFields(['field1', 'field2']);
+      expect(queryBuilder.build().freeTextSearchFields).toEqual(['field1', 'field2']);
+
+      queryBuilder.addFreeTextSearchFields(['field2', 'field3']);
+      expect(queryBuilder.build().freeTextSearchFields).toEqual(['field1', 'field2', 'field3']);
+    });
+
+    it('can set freeTextSearchFields', () => {
+      const freeTextSearchFields = ['field1', 'field2', 'field3'];
+      queryBuilder.freeTextSearchFields = freeTextSearchFields;
+      expect(queryBuilder.build().freeTextSearchFields).toEqual(freeTextSearchFields);
+    });
+
+    it('can addFieldAliases', () => {
+      queryBuilder.addFieldAliases({ name: 'name.en', description: 'description.en' });
+      expect(queryBuilder.build().fieldAliases).toEqual({
+        name: 'name.en',
+        description: 'description.en'
+      });
+
+      queryBuilder.addFieldAliases({ name: 'name.fr', category: 'category.fr' });
+      expect(queryBuilder.build().fieldAliases).toEqual({
+        name: 'name.fr',
+        description: 'description.en',
+        category: 'category.fr'
+      });
+    });
+
     it('should be able to detect end user keywords in the basic expression', () => {
       queryBuilder.expression.add('foo');
       expect(queryBuilder.containsEndUserKeywords()).toBeTruthy();
