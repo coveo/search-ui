@@ -11,7 +11,7 @@
     },
     "start_environment_automatically": false,
     "notifications": {
-      "slack_channels": ["#searchuibuilds"]
+      "slack_channels": ["#ops-dxui-deployments"]
     }
   },
   "dag_phases": [
