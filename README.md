@@ -93,12 +93,13 @@ A tutorial is available to help you get started (see
 
 ## Build
 
-You should have node 10.x installed to build this project.
+The required Node.js version is defined in `.nvmrc`.
 
-    npm install -g yarn
-    yarn global add gulp
-    yarn install
-    gulp
+```
+nvm use    # Or install the matching version manually
+npm ci
+npm run build
+```
 
 ## Important Gulp Tasks
 
