@@ -1,10 +1,10 @@
 name: setup for cd
-description: setup of nodejs 18 for search-ui
+description: Set up Node.js using the version specified in .nvmrc
 
 runs:
   using: composite
   steps:
-    - name: Setup Node.js 24
+    - name: Setup Node.js from .nvmrc
       uses: actions/setup-node@v4
       with:
         node-version-file: ".nvmrc"
