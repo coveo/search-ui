@@ -1,5 +1,11 @@
+## Description
 
+<!-- Describe the scope of this change in no more than 3 sentences. -->
 
+## Checklist
 
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/pipelines/a3535101-5bbf-4a5b-a909-47fcf8c9f149)
+- [ ] Jira key referenced in branch name or PR body
+- [ ] Scope described in ≤3 sentences above
+- [ ] Relevant test suite executed and passing
+- [ ] Accessibility impact: <!-- "none" or describe specific area affected -->
+- [ ] Self-review of diff completed
