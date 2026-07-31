@@ -154,8 +154,8 @@
   },
   "dependencies": {
     "coveo.analytics": "^0.7.0",
-    "d3": "^5.16.0",
-    "d3-scale": "^2.2.2",
+    "d3": "^7.9.0",
+    "d3-scale": "^4.0.2",
     "dompurify": "^2.4.0",
     "es6-promise": "^4.0.5",
     "exponential-backoff": "^2.2.0",
